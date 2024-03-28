@@ -93,13 +93,13 @@ export const MultiAttributeLoginEdit: FunctionComponent<GovernanceConnectorsPage
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -109,12 +109,12 @@ export const MultiAttributeLoginEdit: FunctionComponent<GovernanceConnectorsPage
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -139,13 +139,13 @@ export const MultiAttributeLoginEdit: FunctionComponent<GovernanceConnectorsPage
             title={ connector?.friendlyName }
             pageTitle={ connector?.friendlyName }
             description={
-                t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                t("governanceConnectors:connectorSubHeading", {
                     name: connector?.friendlyName
                 })
             }
             backButton={ {
                 onClick: () => onBackButtonClick(),
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             data-testid={ `${testId}-page-layout` }
         >

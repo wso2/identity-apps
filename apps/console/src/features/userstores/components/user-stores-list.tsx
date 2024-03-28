@@ -169,7 +169,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             open={ deleteConfirm }
             assertion={ deleteName }
             assertionHint={
-                t("console:manage.features.userstores.confirmation.hint")
+                t("userstores:confirmation.hint")
             }
             assertionType={ "checkbox" }
             primaryAction={ t("common:confirm") }
@@ -179,18 +179,18 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 deleteUserStore(deleteID)
                     .then(() => {
                         dispatch(addAlert({
-                            description: t("console:manage.features.userstores.notifications." +
+                            description: t("userstores:notifications." +
                                 "deleteUserstore.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("console:manage.features.userstores.notifications." +
+                            message: t("userstores:notifications." +
                                 "deleteUserstore.success.message")
 
                         }));
                         dispatch(addAlert({
-                            description: t("console:manage.features.userstores.notifications." +
+                            description: t("userstores:notifications." +
                                 "delay.description"),
                             level: AlertLevels.WARNING,
-                            message: t("console:manage.features.userstores.notifications." +
+                            message: t("userstores:notifications." +
                                 "delay.message")
                         }));
                         update();
@@ -198,11 +198,11 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     .catch((error: IdentityAppsError) => {
                         dispatch(addAlert({
                             description: error?.description
-                                ?? t("console:manage.features.userstores.notifications." +
+                                ?? t("userstores:notifications." +
                                     "deleteUserstore.genericError.description"),
                             level: AlertLevels.ERROR,
                             message: error?.message
-                                ?? t("console:manage.features.userstores.notifications." +
+                                ?? t("userstores:notifications." +
                                     "deleteUserstore.genericError.message")
                         }));
                     }).finally(() => {
@@ -215,19 +215,19 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }
             >
-                { t("console:manage.features.userstores.confirmation.header") }
+                { t("userstores:confirmation.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
-                { t("console:manage.features.userstores.confirmation.message") }
+                { t("userstores:confirmation.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-delete-confirmation-modal-content` }
             >
-                { t("console:manage.features.userstores.confirmation.content") }
+                { t("userstores:confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -266,9 +266,9 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     <EmptyPlaceholder
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        title={ t("console:manage.features.userstores.placeholders.emptyListReadOnly.title") }
+                        title={ t("userstores:placeholders.emptyListReadOnly.title") }
                         subtitle={ [
-                            t("console:manage.features.userstores.placeholders.emptyListReadOnly.subtitles")
+                            t("userstores:placeholders.emptyListReadOnly.subtitles")
                         ] }
                         data-testid={ `${ testId }-empty-placeholder` }
                     />
@@ -281,14 +281,14 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                         action={ (
                             <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                                 <Icon name="add" />
-                                { t("console:manage.features.userstores.placeholders.emptyList.action") }
+                                { t("userstores:placeholders.emptyList.action") }
                             </PrimaryButton>
                         ) }
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        title={ t("console:manage.features.userstores.placeholders.emptyList.title") }
+                        title={ t("userstores:placeholders.emptyList.title") }
                         subtitle={ [
-                            t("console:manage.features.userstores.placeholders.emptyList.subtitles")
+                            t("userstores:placeholders.emptyList.subtitles")
                         ] }
                         data-testid={ `${ testId }-empty-placeholder` }
                     />

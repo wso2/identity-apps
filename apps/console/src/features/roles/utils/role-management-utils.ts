@@ -18,7 +18,7 @@
 
 import { RoleGroupsInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
-import { SCIMConfigs } from "apps/console/src/extensions/configs/scim";
+import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { AppConstants } from "../../../features/core";
@@ -133,7 +133,7 @@ export class RoleManagementUtils {
     public static getUserStore = (nameWithUserstore: string): string =>
         nameWithUserstore?.split("/").length > 1
             ? nameWithUserstore?.split("/")[0]
-            : I18n.instance.t("console:manage.features.users.userstores.userstoreOptions.primary")
+            : I18n.instance.t("users:userstores.userstoreOptions.primary")
 
     /**
      * Get name to display of the user.

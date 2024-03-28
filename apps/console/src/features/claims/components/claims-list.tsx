@@ -255,11 +255,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 .catch((error: any) => {
                     dispatch(addAlert({
                         description: error?.description
-                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                            ?? t("userstores:notifications.fetchUserstores.genericError" +
                                 ".description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            ?? t("console:manage.features.userstores.notifications." +
+                            ?? t("userstores:notifications." +
                             "fetchUserstores.genericError.message")
                     }));
                 });
@@ -352,10 +352,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 updateMappedClaims(true);
                 dispatch(addAlert(
                     {
-                        description: t("console:manage.features.claims.local.notifications.deleteClaim.success."+
+                        description: t("claims:local.notifications.deleteClaim.success."+
                             "description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.claims.local.notifications.deleteClaim.success.message")
+                        message: t("claims:local.notifications.deleteClaim.success.message")
                     }
                 ));
             })
@@ -364,11 +364,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 dispatch(setAlert(
                     {
                         description: error?.description
-                            || t("console:manage.features.claims.local." +
+                            || t("claims:local." +
                             "notifications.deleteClaim.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("console:manage.features.claims.local.notifications.deleteClaim.genericError.message")
+                            || t("claims:local.notifications.deleteClaim.genericError.message")
                     }
                 ));
             });
@@ -391,10 +391,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 closeDeleteConfirm();
                 dispatch(addAlert(
                     {
-                        description: t("console:manage.features.claims.external.notifications." +
+                        description: t("claims:external.notifications." +
                             "deleteExternalClaim.success.description", { type: claim.claimURI }),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.claims.external.notifications." +
+                        message: t("claims:external.notifications." +
                             "deleteExternalClaim.success.message")
                     }
                 ));
@@ -404,11 +404,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 dispatch(addAlert(
                     {
                         description: error?.description
-                            || t("console:manage.features.claims.external.notifications." +
+                            || t("claims:external.notifications." +
                                 "deleteExternalClaim.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("console:manage.features.claims.external.notifications." +
+                            || t("claims:external.notifications." +
                                 "deleteExternalClaim.genericError.message")
                     }
                 ));
@@ -463,10 +463,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 closeDeleteConfirm();
                 dispatch(addAlert(
                     {
-                        description: t("console:manage.features.claims.dialects.notifications." +
+                        description: t("claims:dialects.notifications." +
                             "deleteDialect.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.claims.dialects.notifications." +
+                        message: t("claims:dialects.notifications." +
                             "deleteDialect.success.message")
                     }
                 ));
@@ -477,11 +477,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         //TODO: [Type Fix] Description attribute does not exist on
                         //AxiosError or IdentityAppsApiException.
                         description: error?.description
-                            || t("console:manage.features.claims.dialects.notifications." +
+                            || t("claims:dialects.notifications." +
                                 "deleteDialect.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("console:manage.features.claims.dialects.notifications." +
+                            || t("claims:dialects.notifications." +
                                 "deleteDialect.genericError.message")
                     }
                 ));
@@ -499,22 +499,22 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             listItem = {
                 assertion: deleteItem.displayName,
                 delete: deleteLocalClaim,
-                message:t("console:manage.features.claims.list.confirmation.local.message"),
-                name: t("console:manage.features.claims.list.confirmation.local.name")
+                message:t("claims:list.confirmation.local.message"),
+                name: t("claims:list.confirmation.local.name")
             };
         } else if (isDialect(deleteItem)) {
             listItem = {
                 assertion: deleteItem.dialectURI,
                 delete: deleteDialect,
-                message: t("console:manage.features.claims.list.confirmation.dialect.message"),
-                name: t("console:manage.features.claims.list.confirmation.dialect.name")
+                message: t("claims:list.confirmation.dialect.message"),
+                name: t("claims:list.confirmation.dialect.name")
             };
         } else {
             listItem = {
                 assertion: deleteItem.claimURI,
                 delete: deleteExternalClaim,
                 message: (
-                    t("console:manage.features.claims.list.confirmation.external.message", {
+                    t("claims:list.confirmation.external.message", {
                         type: deleteItem.claimURI
                     }) +
                     (attributeType && attributeType === OIDC
@@ -523,7 +523,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         "the attribute from the relevant scope."
                         : ClaimManagementConstants.EMPTY_STRING
                     )),
-                name: t("console:manage.features.claims.list.confirmation.external.name", {
+                name: t("claims:list.confirmation.external.name", {
                     type: deleteItem.claimURI
                 })
             };
@@ -534,9 +534,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 onClose={ closeDeleteConfirm }
                 type="negative"
                 open={ deleteConfirm }
-                assertionHint={ t("console:manage.features.claims.list.confirmation.hint") }
+                assertionHint={ t("claims:list.confirmation.hint") }
                 assertionType="checkbox"
-                primaryAction={ t("console:manage.features.claims.list.confirmation.action") }
+                primaryAction={ t("claims:list.confirmation.action") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {
                     setDeleteConfirm(false);
@@ -553,14 +553,14 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 <ConfirmationModal.Header
                     data-testid={ `${ testId }-delete-confirmation-modal-header` }
                 >
-                    { t("console:manage.features.claims.list.confirmation.header") }
+                    { t("claims:list.confirmation.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     negative
                     data-testid={ `${ testId }-delete-confirmation-modal-message` }
                 >
-                    { t("console:manage.features.claims.list.confirmation.message", {
+                    { t("claims:list.confirmation.message", {
                         name: listItem.name
                     }) }
                 </ConfirmationModal.Message>
@@ -568,7 +568,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     data-testid={ `${ testId }-delete-confirmation-modal-content` }
                 >
                     <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                    { t("console:manage.features.claims.list.confirmation.content", {
+                    { t("claims:list.confirmation.content", {
                         message: listItem.message
                     }) }
                 </ConfirmationModal.Content>
@@ -626,12 +626,12 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                     <Icon name="add"/>
                                     {
                                         isLocalClaim(list)
-                                            ?  t("console:manage.features.claims.list.placeholders.emptyList." +
+                                            ?  t("claims:list.placeholders.emptyList." +
                                                 "action.local")
                                             : isDialect(list)
-                                                ? t("console:manage.features.claims.list.placeholders.emptyList." +
+                                                ? t("claims:list.placeholders.emptyList." +
                                                     "action.dialect", { type: resolveType(attributeType, true) })
-                                                : t("console:manage.features.claims.list.placeholders." +
+                                                : t("claims:list.placeholders." +
                                             "emptyList.action.external", { type: resolveType(attributeType, true) })
                                     }
                                 </PrimaryButton>
@@ -641,11 +641,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     imageSize="tiny"
                     title={
                         isLocalClaim(list)
-                            ? t("console:manage.features.claims.list.placeholders.emptyList.title.local")
+                            ? t("claims:list.placeholders.emptyList.title.local")
                             : isDialect(list)
-                                ? t("console:manage.features.claims.list.placeholders.emptyList.title.dialect")
+                                ? t("claims:list.placeholders.emptyList.title.dialect")
                                 : t(
-                                    "console:manage.features.claims.list.placeholders.emptyList.title.external",
+                                    "claims:list.placeholders.emptyList.title.external",
                                     { type: resolveType(attributeType, true) }
                                 )
                     }
@@ -705,7 +705,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                             ) }
                                             content={ (
                                                 <div>
-                                                    { t("console:manage.features.claims.list.warning") }
+                                                    { t("claims:list.warning") }
                                                     <ul>
                                                         {
                                                             userStoresNotMapped.map((store: string, index: number) => {
@@ -745,7 +745,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         );
                     },
                     // TODO: Add i18n strings.
-                    title: t("console:manage.features.claims.list.columns.name")
+                    title: t("claims:list.columns.name")
                 },
                 {
                     allowToggleVisibility: false,
@@ -792,7 +792,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         );
                     },
                     // TODO: Add i18n strings.
-                    title: t("console:manage.features.claims.list.columns.dialectURI")
+                    title: t("claims:list.columns.dialectURI")
                 },
                 {
                     allowToggleVisibility: false,
@@ -875,8 +875,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         );
                     },
                     title: attributeType && attributeType === ClaimManagementConstants.SCIM
-                        ? t("console:manage.features.claims.list.columns.claimURI")
-                        : t("console:manage.features.claims.list.columns.name"),
+                        ? t("claims:list.columns.claimURI")
+                        : t("claims:list.columns.name"),
                     width: 8
                 },
                 {
@@ -913,7 +913,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                 />
                             )
                     ),
-                    title: t("console:manage.features.claims.list.columns.dialectURI"),
+                    title: t("claims:list.columns.dialectURI"),
                     width: 6
                 },
                 shouldRenderActionsColumn() ? {
@@ -988,7 +988,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     );
                 },
                 // TODO: Add i18n strings.
-                title: t("console:manage.features.claims.list.columns.dialectURI")
+                title: t("claims:list.columns.dialectURI")
             },
             {
                 allowToggleVisibility: false,

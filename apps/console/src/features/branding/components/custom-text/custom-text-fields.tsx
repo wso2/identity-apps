@@ -87,6 +87,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
     const {
         customTextDefaults,
         customTextScreenMeta,
+        isCustomTextPreferenceFetching,
         updateCustomTextFormSubscription,
         selectedScreen,
         selectedLocale,
@@ -100,7 +101,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
         [ fields ]
     );
 
-    if (!fields) {
+    if (!fields || isCustomTextPreferenceFetching) {
         return (
             <Box className="branding-preference-custom-text-fields">
                 { [ ...Array(2) ].map((key: number) => (
@@ -120,7 +121,11 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
     };
 
     const renderInputAdornment = (fieldName: string): ReactElement => {
-        if (customTextDefaults[fieldName.replaceAll("_", ".")] === fields[fieldName.replaceAll("_", ".")]) {
+        const customTextDefaultsIsSameAsFields: boolean = customTextDefaults
+            ? customTextDefaults[fieldName.replaceAll("_", ".")] === fields[fieldName.replaceAll("_", ".")]
+            : false;
+
+        if (customTextDefaultsIsSameAsFields) {
             return null;
         }
 
@@ -128,25 +133,23 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
             <InputAdornment position="end">
                 <Tooltip
                     title={
-                        t("console:brandingCustomText.form.genericFieldResetTooltip")
+                        t("branding:brandingCustomText.form.genericFieldResetTooltip")
                     }
                 >
-                    <div>
-                        <IconButton
-                            aria-label="Reset field to default"
-                            className="reset-field-to-default-adornment"
-                            onClick={ () =>
-                                resetCustomTextField(
-                                    fieldName.replaceAll("_", "."),
-                                    selectedScreen,
-                                    selectedLocale
-                                )
-                            }
-                            edge="end"
-                        >
-                            <ArrowRotateLeft height={ 12 } width={ 12 } />
-                        </IconButton>
-                    </div>
+                    <IconButton
+                        aria-label="Reset field to default"
+                        className="reset-field-to-default-adornment"
+                        onClick={ () =>
+                            resetCustomTextField(
+                                fieldName.replaceAll("_", "."),
+                                selectedScreen,
+                                selectedLocale
+                            )
+                        }
+                        edge="end"
+                    >
+                        <ArrowRotateLeft height={ 12 } width={ 12 } />
+                    </IconButton>
                 </Tooltip>
             </InputAdornment>
         );
@@ -185,7 +188,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                             { /* So `orderBy` is needed to stop the UI from glitching during rerenders.*/ }
                             { transformedFields &&
                                 orderBy(Object.keys(transformedFields), [], [ "asc" ]).map((fieldName: string) => {
-                                    const hintKey: string = `console:brandingCustomText.form.fields.${
+                                    const hintKey: string = `branding:brandingCustomText.form.fields.${
                                         fieldName.replaceAll("_", ".")
                                     }.hint`;
 
@@ -203,7 +206,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                             type="text"
                                             label={ getFieldLabel(fieldName) }
                                             placeholder={
-                                                t("console:brandingCustomText.form.genericFieldPlaceholder")
+                                                t("branding:brandingCustomText.form.genericFieldPlaceholder")
                                             }
                                             helperText={ (
                                                 i18n.exists(hintKey) && (
@@ -212,7 +215,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                             ) }
                                             component={ TextFieldAdapter }
                                             multiline={ customTextScreenMeta &&
-                                                customTextScreenMeta[fieldName.replaceAll("_", ".")].MULTI_LINE }
+                                                customTextScreenMeta[fieldName.replaceAll("_", ".")]?.MULTI_LINE }
                                             size="small"
                                             maxLength={
                                                 CustomTextPreferenceConstants.FORM_FIELD_CONSTRAINTS.MAX_LENGTH

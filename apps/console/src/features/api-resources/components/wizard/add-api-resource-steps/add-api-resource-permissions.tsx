@@ -84,7 +84,7 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
 
     const { t } = useTranslation();
 
-    const [ addedPermissions, setAddedPermissions ] 
+    const [ addedPermissions, setAddedPermissions ]
         = useState<Map<string, APIResourcePermissionInterface>>(initialPermissions ? initialPermissions : new Map());
 
     /**
@@ -93,10 +93,10 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
     useEffect(() => {
         setPermissionsList(addedPermissions);
     }, [ addedPermissions ]);
-    
+
     /**
      * Update the permission map when a new permission is added or deleted.
-     * 
+     *
      * @param permission - The permission to be added or deleted.  `APIResourcePermissionInterface`
      * @param action - The action to be performed. `set` or `delete`
      */
@@ -108,12 +108,12 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
                 updatedPermissions.set(permission.name, permission);
 
                 break;
-            
+
             case "delete":
                 updatedPermissions.delete(permission.name);
 
                 break;
-        
+
             default:
                 break;
         }
@@ -141,11 +141,11 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
                             as="h5"
                             className="bold-text mb-2"
                         >
-                            { t("console:apiResources.wizard.addApiResource.steps.scopes.form." +
+                            { t("apiResources:wizard.addApiResource.steps.scopes.form." +
                                 "fields.permissionList.label") }
                         </Header>
                         <EmphasizedSegment className="mt-0">
-                            <PermissionMappingList 
+                            <PermissionMappingList
                                 addedPermissions={ addedPermissions }
                                 updatePermissions={ updatePermissions } />
                         </EmphasizedSegment>

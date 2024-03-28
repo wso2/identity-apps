@@ -97,14 +97,14 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                         type="toggle"
                                                         required={ false }
                                                         requiredErrorMessage={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: name
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -133,14 +133,14 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                         type="toggle"
                                                         required={ false }
                                                         requiredErrorMessage={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: name
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -164,14 +164,14 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                     type="text"
                                                     required={ !disabled }
                                                     requiredErrorMessage={
-                                                        t("console:manage.features.userstores.forms." +
+                                                        t("userstores:forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
                                                                 name: name
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("console:manage.features.userstores.forms." +
+                                                        t("userstores:forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: name

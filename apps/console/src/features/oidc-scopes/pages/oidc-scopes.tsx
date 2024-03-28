@@ -66,7 +66,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         },
         {
             key: 1,
-            text: t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label"),
+            text: t("oidcScopes:forms.addScopeForm.inputs.scopeName.label"),
             value: "name"
         }
     ];
@@ -111,7 +111,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             dispatch(addAlert({
                 description: scopeListFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications.fetchApplications.error." +
+                message: t("applications:notifications.fetchApplications.error." +
                     "message")
             }));
 
@@ -119,10 +119,10 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.notifications.fetchApplications" +
+            description: t("applications:notifications.fetchApplications" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.notifications.fetchApplications.genericError." +
+            message: t("applications:notifications.fetchApplications.genericError." +
                 "message")
         }));
     }, [ scopeListFetchRequestError ]);
@@ -186,13 +186,13 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
                             <Icon name="add"/>
-                            { t("console:manage.features.oidcScopes.buttons.addScope") }
+                            { t("oidcScopes:buttons.addScope") }
                         </PrimaryButton>
                     </Show>
                 )
             }
-            title={ t("console:manage.pages.oidcScopes.title") }
-            description={ t("console:manage.pages.oidcScopes.subTitle") }
+            title={ t("pages:oidcScopes.title") }
+            description={ t("pages:oidcScopes.subTitle") }
             data-testid={ `${ testId }-page-layout` }
             backButton={ {
                 onClick: () => {
@@ -201,7 +201,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                         .replace(":customAttributeMappingID", "")
                     );
                 },
-                text: t("console:manage.features.claims.local.pageLayout.local.back")
+                text: t("claims:local.pageLayout.local.back")
             } }
         >
             <ListLayout
@@ -220,7 +220,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                             iconPosition="left"
                             value={ searchQuery }
                             onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value) }
-                            placeholder={ t("console:manage.features.oidcScopes.list.searchPlaceholder") }
+                            placeholder={ t("oidcScopes:list.searchPlaceholder") }
                             floated="right"
                             size="small"
                             onKeyPress={ (e: React.KeyboardEvent<HTMLInputElement>) => handleEnterKeyInSearch(e) }

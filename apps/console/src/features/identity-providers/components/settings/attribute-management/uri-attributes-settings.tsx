@@ -85,7 +85,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
             <Grid.Row>
                 <Grid.Column>
                     <Heading as="h4">
-                        { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
+                        { t("authenticationProvider:forms.uriAttributeSettings." +
                             "subject.heading") }
                     </Heading>
                     <Form>
@@ -95,7 +95,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 dropDownOptions.concat(
                                     {
                                         key: "default_subject",
-                                        text: t("console:develop.features.authenticationProvider.forms." +
+                                        text: t("authenticationProvider:forms." +
                                             "uriAttributeSettings.subject." +
                                             "placeHolder"),
                                         value: ""
@@ -103,7 +103,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 )
                             }
                             value={ getValidatedInitialValue(initialSubjectUri) }
-                            placeholder={ t("console:develop.features.authenticationProvider.forms." +
+                            placeholder={ t("authenticationProvider:forms." +
                                 "uriAttributeSettings.subject." +
                                 "placeHolder") }
                             onChange={
@@ -113,12 +113,12 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             }
                             search
                             fullTextSearch={ false }
-                            label={ t("console:develop.features.authenticationProvider.forms." +
+                            label={ t("authenticationProvider:forms." +
                                 "uriAttributeSettings.subject.label") }
                             data-testid={ `${ testId }-form-element-subject` }
                             error={ subjectError && {
-                                content: t("console:develop.features.authenticationProvider" +
-                                    ".forms.uriAttributeSettings.subject." +
+                                content: t("authenticationProvider:" +
+                                    "forms.uriAttributeSettings.subject." +
                                     "validation.empty"),
                                 pointing: "above"
                             } }
@@ -131,7 +131,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             ? (
                                 <Trans
                                     i18nKey={
-                                        "console:console:develop.features.authenticationProvider.forms" +
+                                        "console:authenticationProvider:forms" +
                                         ".uriAttributeSettings.subject.hint"
                                     }
                                 >
@@ -145,7 +145,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             : (
                                 <Trans
                                     i18nKey={
-                                        "console:console:develop.features.idp.forms.uriAttributeSettings" +
+                                        "console:idp:forms.uriAttributeSettings" +
                                         ".subject.hint"
                                     }
                                 >
@@ -162,7 +162,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     <Grid.Row columns={ 2 }>
                         <Grid.Column>
                             <Heading as="h4">
-                                { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
+                                { t("authenticationProvider:forms.uriAttributeSettings." +
                                     "group.heading") }
                             </Heading>
                             <Form>
@@ -172,15 +172,15 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         dropDownOptions.concat(
                                             {
                                                 key: "default_subject",
-                                                text: t("console:develop.features.authenticationProvider" +
-                                                    ".forms.uriAttributeSettings.group.placeHolder"),
+                                                text: t("authenticationProvider:" +
+                                                    "forms.uriAttributeSettings.group.placeHolder"),
                                                 value: ""
                                             } as DropdownOptionsInterface
                                         )
                                     }
                                     value={ getValidatedInitialValue(initialRoleUri) }
-                                    placeholder={ t("console:develop.features.authenticationProvider" +
-                                        ".forms.uriAttributeSettings.group.placeHolder") }
+                                    placeholder={ t("authenticationProvider:" +
+                                        "forms.uriAttributeSettings.group.placeHolder") }
                                     onChange={
                                         (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
                                             updateRole(data.value.toString());
@@ -188,19 +188,19 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     }
                                     search
                                     fullTextSearch={ false }
-                                    label={ t("console:develop.features.authenticationProvider.forms." +
+                                    label={ t("authenticationProvider:forms." +
                                         "forms.uriAttributeSettings.group.label") }
                                     data-testid={ `${ testId }-form-element-role` }
                                     error={ roleError && {
-                                        content: t("console:develop.features.authenticationProvider" +
-                                            ".forms.uriAttributeSettings.group.validation.empty"),
+                                        content: t("authenticationProvider:" +
+                                            "forms.uriAttributeSettings.group.validation.empty"),
                                         pointing: "above"
                                     } }
                                     readOnly={ isReadOnly }
                                 />
                             </Form>
                             <Hint>
-                                { t("console:develop.features.authenticationProvider." +
+                                { t("authenticationProvider:" +
                                     "forms.uriAttributeSettings.group.hint") }
                             </Hint>
                         </Grid.Column>

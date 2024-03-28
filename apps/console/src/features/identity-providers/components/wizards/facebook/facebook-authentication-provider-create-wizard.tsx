@@ -168,10 +168,10 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                     });
 
                     dispatch(addAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        description: t("authenticationProvider:notifications.addIDP." +
                         "success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        message: t("authenticationProvider:notifications.addIDP." +
                         "success.message")
                     }));
 
@@ -204,11 +204,11 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
 
                     if (error.response && error.response.data && error.response.data.description) {
                         setAlert({
-                            description: t("console:develop.features.authenticationProvider.notifications." +
+                            description: t("authenticationProvider:notifications." +
                             "addIDP.error.description",
                             { description: error.response.data.description }),
                             level: AlertLevels.ERROR,
-                            message: t("console:develop.features.authenticationProvider.notifications." +
+                            message: t("authenticationProvider:notifications." +
                             "addIDP.error.message")
                         });
 
@@ -216,10 +216,10 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                     }
 
                     setAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        description: t("authenticationProvider:notifications.addIDP." +
                         "genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        message: t("authenticationProvider:notifications.addIDP." +
                         "genericError.message")
                     });
                 })
@@ -344,7 +344,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
+                                    { t("authenticationProvider:wizards.buttons.next") }
                                 </PrimaryButton>
                             ) : (
                                 <>
@@ -357,7 +357,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                        { t("authenticationProvider:wizards.buttons.finish") }
                                     </PrimaryButton>
                                 </>
                             ) }
@@ -370,7 +370,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                                 } }
                                 data-testid={ `${ testId }-modal-previous-button` }
                             >
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                                { t("authenticationProvider:wizards.buttons.previous") }
                             </LinkButton>)
                             }
                         </Grid.Column>
@@ -400,7 +400,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
                             {
-                                t("console:develop.features.authenticationProvider.templates" +
+                                t("authenticationProvider:templates" +
                                     ".facebook.wizardHelp.heading")
                             }
                         </div>
@@ -429,19 +429,19 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                 { openLimitReachedModal &&
                     (<TierLimitReachErrorModal
                         actionLabel={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.action"
                         ) }
                         handleModalClose={ handleLimitReachedModalClose }
                         header={ t(
-                            "console:develop.features.idp.notifications.tierLimitReachedError.heading"
+                            "idp:notifications.tierLimitReachedError.heading"
                         ) }
                         description={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

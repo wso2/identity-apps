@@ -46,25 +46,25 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
     return (
         <div data-testid={ testId }>
             <Heading as="h5">
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.title") }
             </Heading>
             <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.subTitle") }
             </p>
             <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.example") }
             </p>
             <>
                 <Divider/>
                 <Heading as="h5">
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                         ".protocol.title") }
                 </Heading>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                         ".protocol.subTitle") }
                 </p>
             </>
@@ -73,13 +73,13 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
 
             <>
                 <Heading as="h5">
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.samlWeb" +
                         ".issuer.title") }
                 </Heading>
                 <p>
                     <Trans
                         i18nKey={
-                            "console:develop.features.applications.wizards.minimalAppCreationWizard.help.template" +
+                            "applications:wizards.minimalAppCreationWizard.help.template" +
                             ".samlWeb.issuer.subTitle"
                         }
                     >
@@ -89,22 +89,22 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
                     </Trans>
                 </p>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.samlWeb" +
                     ".issuer.example") }
                 </p>
 
                 <Divider/>
 
                 <Heading as="h5">
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.samlWeb" +
                         ".assertionResponseURLs.title") }
                 </Heading>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.samlWeb" +
                         ".assertionResponseURLs.subTitle") }
                 </p>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.samlWeb" +
                         ".assertionResponseURLs.example") }
                 </p>
             </>

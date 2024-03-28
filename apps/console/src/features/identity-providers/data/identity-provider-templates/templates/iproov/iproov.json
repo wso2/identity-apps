@@ -1,0 +1,127 @@
+{
+    "id": "iproov-idp",
+    "name": "iProov",
+    "description": "Enable login for users with iProov.",
+    "image": "iproov",
+    "category": "DEFAULT",
+    "displayOrder": 5,
+    "services": [],
+    "tags": [ "Passwordless" ],
+    "idp": {
+        "name": "iProov",
+        "description": "",
+        "image": "",
+        "isPrimary": false,
+        "isFederationHub": false,
+        "homeRealmIdentifier": "",
+        "certificate": {
+            "certificates": []
+        },
+        "alias": "https://localhost:9444/oauth2/token",
+        "idpIssuerName": "",
+        "claims": {
+            "userIdClaim": {
+                "uri": "http://wso2.org/claims/username"
+            },
+            "roleClaim": {
+                "uri": "http://wso2.org/claims/role"
+            },
+            "provisioningClaims": []
+        },
+        "roles": {
+            "mappings": [],
+            "outboundProvisioningRoles": []
+        },
+        "federatedAuthenticators": {
+            "defaultAuthenticatorId": "SXByb292QXV0aGVudGljYXRvcg",
+            "authenticators": [
+                {
+                    "authenticatorId": "SXByb292QXV0aGVudGljYXRvcg",
+                    "isEnabled": true,
+                    "properties": [
+                        {
+                            "key": "baseUrl",
+                            "displayName": "Base URL",
+                            "description": "Enter base URL",
+                            "type": "STRING",
+                            "displayOrder": 1,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "oauthUsername",
+                            "displayName": "OAuth Username",
+                            "description": "Enter OAuth Username",
+                            "type": "STRING",
+                            "displayOrder": 2,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "oauthPassword",
+                            "displayName": "OAuth Password",
+                            "description": "Enter OAuth Password",
+                            "type": "STRING",
+                            "displayOrder": 3,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": true,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "apiKey",
+                            "displayName": "API Key",
+                            "description": "Enter API Key",
+                            "type": "STRING",
+                            "displayOrder": 4,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "apiSecret",
+                            "displayName": "API Secret",
+                            "description": "Enter API Secret",
+                            "type": "STRING",
+                            "displayOrder": 5,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": true,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "enableProgressiveEnrollment",
+                            "displayName": "Enable Progressive Enrollment",
+                            "description": "Enable Progressive Enrollment with iProov",
+                            "type": "BOOLEAN",
+                            "displayOrder": 6,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": true,
+                            "subProperties": []
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "type": "PASSWORDLESS",
+    "templateId": "iproov-idp"
+}

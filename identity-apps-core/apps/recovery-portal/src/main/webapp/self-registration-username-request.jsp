@@ -178,6 +178,7 @@
     boolean isLocal = false;
     boolean isFederated = false;
     boolean isBasic = false;
+    boolean isSSOLoginTheOnlyAuthenticatorConfigured = false;
     // Enable basic account creation flow if there are no authenticators configured.
     if (configuredAuthenticators == null) {
         isBasic = true;
@@ -205,6 +206,13 @@
                     isFederated = true;
                 }
             }
+        }
+    }
+    if (isFederated) {
+        if (federatedAuthenticators.length() == 1) {
+            JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
+            String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
+            isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
         }
     }
 
@@ -510,27 +518,9 @@
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with.email")%>
                         </button>
                     </div>
-
-                    <!-- Do not show the horizontal divider, if the only federated authenticator available is the OrganizationAuthenticator. -->
-                    <%
-                        if (federatedAuthenticators.length() > 0) {
-                            Boolean isSSOLoginTheOnlyAuthenticatorConfigured = false;
-
-                            if (federatedAuthenticators.length() == 1) {
-                                JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
-                                String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
-                                isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
-                            }
-
-                            if (!isSSOLoginTheOnlyAuthenticatorConfigured) {
-                    %>
-                                <div class="ui horizontal divider">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "or")%>
-                                </div>
-                    <%       }
-                        }
-                    %>
-
+                    <div class="ui horizontal divider">
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "or")%>
+                    </div>
                 </div>
 
                 <!-- federated authenticators -->
@@ -1527,6 +1517,7 @@
             var hasLocal = false;
             var hasFederated = false;
             var isBasicForm = true;
+            var isSSOLoginTheOnlyAuthenticatorConfigured = <%=isSSOLoginTheOnlyAuthenticatorConfigured%>;
             try {
                 var hasLocal=JSON.parse(<%=isLocal%>);
                 var hasFederated = JSON.parse(<%=isFederated%>);
@@ -1535,10 +1526,10 @@
                 // Do nothing.
             }
 
-            if (hasLocal & hasFederated) {
+            if (hasLocal & hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
                 $("#continue-with-email").show();
                 $("#federated-authenticators").show();
-            } else if (hasFederated) {
+            } else if (hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
                 $("#federated-authenticators").show();
             } else {
                 $("#continue-with-email").hide();
@@ -2048,7 +2039,7 @@
 
                     return false;
             } else {
-                var usernamePattern = /^([\u00C0-\u00FFa-zA-Z0-9_\+\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,10})$/;
+                var usernamePattern = /(^[\u00C0-\u00FFa-zA-Z0-9](?:(?![!#$'+=^_.{|}~\-&]{2})[\u00C0-\u00FF\w!#$'+=^_.{|}~\-&]){0,63}(?=[\u00C0-\u00FFa-zA-Z0-9_]).\@(?![+.\-_])(?:(?![.+\-_]{2})[\w.+\-]){0,245}(?=[\u00C0-\u00FFa-zA-Z0-9]).\.[a-zA-Z]{2,10})$/;
                 if (!usernamePattern.test(usernameUserInput.value.trim()) && (emailRequired || !isAlphanumericUsernameEnabled())) {
                     username_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Please.enter.valid.email")%>")
                     username_error_msg.show();

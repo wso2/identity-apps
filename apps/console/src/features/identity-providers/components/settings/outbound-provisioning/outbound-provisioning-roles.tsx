@@ -32,7 +32,7 @@ import { getRolesList } from "../../../../roles/api";
 import { updateIDPRoleMappings } from "../../../api";
 import { IdentityProviderRolesInterface } from "../../../models";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../utils";
-import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 
 interface OutboundProvisioningRolesPropsInterface extends TestableComponentInterface {
     idpId: string;
@@ -114,11 +114,11 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
         ).then(() => {
             dispatch(addAlert(
                 {
-                    description: t("console:develop.features.authenticationProvider." +
+                    description: t("authenticationProvider:" +
                         "notifications.updateIDPRoleMappings." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider." +
+                    message: t("authenticationProvider:" +
                         "notifications.updateIDPRoleMappings.success.message")
                 }
             ));
@@ -135,7 +135,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             <Grid.Row>
                 <Grid.Column width={ 8 }>
                     <Heading as="h5">
-                        { t("console:develop.features.authenticationProvider.forms.outboundProvisioningRoles"
+                        { t("authenticationProvider:forms.outboundProvisioningRoles"
                             + ".heading") }
                     </Heading>
                 </Grid.Column>
@@ -153,8 +153,8 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 } as DropdownItemProps;
                             }) }
                             value={ selectedRole }
-                            placeholder={ t("console:develop.features.authenticationProvider" +
-                                ".forms.outboundProvisioningRoles" +
+                            placeholder={ t("authenticationProvider:" +
+                                "forms.outboundProvisioningRoles" +
                                 ".placeHolder") }
                             onChange={
                                 (event, data) => {
@@ -165,7 +165,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 }
                             }
                             search
-                            label={ t("console:develop.features.authenticationProvider.forms." +
+                            label={ t("authenticationProvider:forms." +
                                 "outboundProvisioningRoles.label") }
                             data-testid={ `${ testId }-role-select-dropdown` }
                             readOnly={ isReadOnly }
@@ -185,14 +185,14 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 )
                             }
                             position="top center"
-                            content={ t("console:develop.features.authenticationProvider.forms." +
+                            content={ t("authenticationProvider:forms." +
                                 "outboundProvisioningRoles.popup.content") }
                             inverted
                             data-testid={ `${ testId }-add-button` }
                         />
                     </Form>
                     <Hint>
-                        { t("console:develop.features.authenticationProvider.forms.outboundProvisioningRoles.hint") }
+                        { t("authenticationProvider:forms.outboundProvisioningRoles.hint") }
                     </Hint>
 
                     {

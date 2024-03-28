@@ -231,11 +231,11 @@ const GuestUserEditPage = (): ReactElement => {
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
+                        "user:profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
+                        "user:profile.notifications.updateProfileInfo.success.message"
                     )
                 }));
 
@@ -250,7 +250,7 @@ const GuestUserEditPage = (): ReactElement => {
                         description: error.response.data.description || error.response.data.detail,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.user.profile.notifications.updateProfileInfo.error.message"
+                            "user:profile.notifications.updateProfileInfo.error.message"
                         )
                     }));
 
@@ -259,11 +259,11 @@ const GuestUserEditPage = (): ReactElement => {
 
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.description"
+                        "user:profile.notifications.updateProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.message"
+                        "user:profile.notifications.updateProfileInfo.genericError.message"
                     )
                 }));
             })

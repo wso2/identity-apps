@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,20 +34,20 @@ import { getEmptyPlaceholderIllustrations, store } from "../../../../../core";
 export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): void => {
     if (error?.response?.data?.description) {
         store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idvp.notifications.getAllLocalClaims." +
+            description: I18n.instance.t("idvp:notifications.getAllLocalClaims." +
                 "error.description", { description: error.response.data.description }
             ),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idvp.notifications.getAllLocalClaims.error.message")
+            message: I18n.instance.t("idvp:notifications.getAllLocalClaims.error.message")
         }));
     }
 
     store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idvp.notifications.getAllLocalClaims." +
+        description: I18n.instance.t("idvp:notifications.getAllLocalClaims." +
             "genericError.description"
         ),
         level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idvp.notifications.getAllLocalClaims.genericError.message")
+        message: I18n.instance.t("idvp:notifications.getAllLocalClaims.genericError.message")
     }));
 };
 
@@ -60,7 +60,7 @@ export const getEmptyAttributeMappingPlaceholder = (): ReactElement => {
     return (
         <EmptyPlaceholder
             title={
-                I18n.instance.t("console:develop.features.idvp.forms.attributeSettings.attributeMapping." +
+                I18n.instance.t("idvp:forms.attributeSettings.attributeMapping." +
                     "emptyPlaceholderCreate.title")
             }
             subtitle={
@@ -68,7 +68,7 @@ export const getEmptyAttributeMappingPlaceholder = (): ReactElement => {
                     <Trans
                         key={ "no-attributes-configured" }
                         i18nKey={
-                            "console:develop.features.idvp.forms.attributeSettings.attributeMapping" +
+                            "idvp:forms.attributeSettings.attributeMapping" +
                             ".emptyPlaceholderCreate.subtitle"
                         }
                     >

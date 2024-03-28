@@ -228,7 +228,7 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
         >
             <TransferComponent
                 searchPlaceholder={
-                    t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
+                    t("applications:edit.sections.attributes.selection.addWizard.steps" +
                         ".select.transfer.searchPlaceholders.attribute")
                 }
                 addItems={ addAttributes }
@@ -241,13 +241,13 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
                     isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                     listType="unselected"
                     listHeaders={ [
-                        t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
+                        t("applications:edit.sections.attributes.selection.addWizard.steps" +
                             ".select.transfer.headers.attribute")
                     ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
                     data-testid={ `${ testId }-unselected-transfer-list` }
-                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                    emptyPlaceholderDefaultContent={ t("transferList:list."
                         + "emptyPlaceholders.default") }
                 >
                     {
@@ -272,13 +272,13 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
                     isListEmpty={ !(filterTempSelectedClaims.length > 0) }
                     listType="selected"
                     listHeaders={ [
-                        t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
+                        t("applications:edit.sections.attributes.selection.addWizard.steps" +
                             ".select.transfer.headers.attribute")
                     ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                     data-testid={ `${ testId }-selected-transfer-list` }
-                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                    emptyPlaceholderDefaultContent={ t("transferList:list."
                         + "emptyPlaceholders.default") }
                 >
                     {

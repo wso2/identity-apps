@@ -23,6 +23,7 @@ import {
     AuthenticationSequenceInterface
 } from "../../applications/models/application";
 import { GenericAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
+import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 import { VisualEditorFlowNodeMetaInterface } from "../models/visual-editor";
 
 /**
@@ -97,6 +98,11 @@ export type AuthenticationFlowContextProps = {
      * Flag to determine if the updated application a system application.
      */
     isSystemApplication?: boolean;
+    /**
+     * Callback to be fired when the active flow mode is changed.
+     * @param mode - Active flow mode.
+     */
+    onActiveFlowModeChange: (mode: AuthenticationFlowBuilderModes) => void;
     /**
      * Callback to be fired when the conditional authentication toggle is switched.
      * @param enabled - Is conditional authentication enabled or not.

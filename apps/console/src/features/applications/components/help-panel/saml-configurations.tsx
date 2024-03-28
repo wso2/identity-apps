@@ -81,7 +81,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-issuer-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.issuer") }
                         </label>
                     </Grid.Column>
@@ -105,7 +105,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-sso-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.sso") }
                         </label>
                     </Grid.Column>
@@ -129,7 +129,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-slo-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.slo") }
                         </label>
                     </Grid.Column>
@@ -156,7 +156,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                                         spaced="right"
                                     />
                                     <label data-testid={ `${ testId }-destination-url-label` }>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        { t("applications:helpPanel.tabs.start.content." +
                                             "samlConfigurations.labels.destinationURL") }
                                     </label>
                                 </Grid.Column>
@@ -180,7 +180,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                                         spaced="right"
                                     />
                                     <label data-testid={ `${ testId }-artifact-resolution-url-label` }>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        { t("applications:helpPanel.tabs.start.content." +
                                             "samlConfigurations.labels.artifactResolutionUrl") }
                                     </label>
                                 </Grid.Column>
@@ -207,7 +207,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-certificate-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.certificate") }
                         </label>
                     </Grid.Column>
@@ -222,7 +222,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                                 tenantName, samlConfigurations?.certificate) }
                         >
                             <Icon name="download" />
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "samlConfigurations.buttons.certificate") }
                         </Button>
                     </Grid.Column>
@@ -240,7 +240,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-metadata-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.metadata") }
                         </label>
                     </Grid.Column>
@@ -253,7 +253,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             onClick={ exportMetadataFile }
                         >
                             <Icon name="download" />
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "samlConfigurations.buttons.metadata") }
                         </Button>
                     </Grid.Column>

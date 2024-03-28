@@ -22,7 +22,7 @@ import {
     AppAvatar,
     TabPageLayout
 } from "@wso2is/react-components";
-import { hasRequiredScopes } from "modules/core/helpers";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import React, {
     FunctionComponent,
     ReactElement,

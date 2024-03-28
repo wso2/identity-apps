@@ -249,7 +249,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             backButton={ {
                 "data-testid": `${componentId}-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.rolesEdit.backButton", { type: "APIs" })
+                text: t("pages:rolesEdit.backButton", { type: "APIs" })
             } }
         >
             <ListLayout
@@ -264,15 +264,15 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("console:develop.features.applications.advancedSearch.form" +
+                            t("applications:advancedSearch.form" +
                                 ".inputs.filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:develop.features.applications.advancedSearch.form" +
+                            t("applications:advancedSearch.form" +
                                 ".inputs.filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
+                            t("applications:advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
                         placeholder={ "Search APIs by name" }

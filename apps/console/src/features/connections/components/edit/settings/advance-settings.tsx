@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { IdentityProviderManagementConstants } from "apps/console/src/features/identity-providers/constants";
+import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
 import { AxiosError } from "axios";
 import React, { Dispatch, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -111,10 +111,10 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         updateIdentityProviderDetails({ id: editingIDP.id, ...values })
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications." +
+                    description: t("authenticationProvider:notifications." +
                         "updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         "updateIDP.success.message")
                 }));
                 onUpdate(editingIDP.id);
@@ -133,10 +133,10 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         updateImplicitAssociationConfig(editingIDP.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications." +
+                    description: t("authenticationProvider:notifications." +
                         "updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         "updateIDP.success.message")
                 }));
                 onUpdate(editingIDP.id);

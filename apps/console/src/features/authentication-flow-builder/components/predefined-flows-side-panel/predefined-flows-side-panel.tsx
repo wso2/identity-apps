@@ -172,7 +172,8 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         adaptiveAuthTemplates,
         authenticators,
         defaultAuthenticationSequence,
-        updateAuthenticationSequence
+        updateAuthenticationSequence,
+        onConditionalAuthenticationToggle
     } = useAuthenticationFlow();
 
     const authenticatorsMeta: GenericAuthenticatorInterface[] = Object.values(
@@ -274,13 +275,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             let title: ReactNode = null;
 
             if (sequenceCategoryId === ((PredefinedFlowCategories.Basic as unknown) as string)) {
-                title = t("console:loginFlow.predefinedFlows.categories.basic.label");
+                title = t("authenticationFlow:predefinedFlows.categories.basic.label");
             } else if (sequenceCategoryId === ((PredefinedFlowCategories.MFA as unknown) as string)) {
-                title = t("console:loginFlow.predefinedFlows.categories.mfa.label");
+                title = t("authenticationFlow:predefinedFlows.categories.mfa.label");
             } else if (sequenceCategoryId === ((PredefinedFlowCategories.Passwordless as unknown) as string)) {
-                title = t("console:loginFlow.predefinedFlows.categories.passwordless.label");
+                title = t("authenticationFlow:predefinedFlows.categories.passwordless.label");
             } else if (sequenceCategoryId === ((PredefinedFlowCategories.Social as unknown) as string)) {
-                title = t("console:loginFlow.predefinedFlows.categories.social.label");
+                title = t("authenticationFlow:predefinedFlows.categories.social.label");
             }
 
             /**
@@ -293,13 +294,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             const getAuthenticatorDisplayName = (authenticatorName: string, authenticatorIdP: string): string => {
                 if (authenticatorIdP !== "LOCAL") {
                     if (authenticatorIdP === SocialIdPPlaceholders.Apple) {
-                        return t("console:loginFlow.predefinedFlows.authenticators.apple.displayName");
+                        return t("authenticationFlow:predefinedFlows.authenticators.apple.displayName");
                     } else if (authenticatorIdP === SocialIdPPlaceholders.Facebook) {
-                        return t("console:loginFlow.predefinedFlows.authenticators.facebook.displayName");
+                        return t("authenticationFlow:predefinedFlows.authenticators.facebook.displayName");
                     } else if (authenticatorIdP === SocialIdPPlaceholders.Google) {
-                        return t("console:loginFlow.predefinedFlows.authenticators.google.displayName");
+                        return t("authenticationFlow:predefinedFlows.authenticators.google.displayName");
                     } else if (authenticatorIdP === SocialIdPPlaceholders.GitHub) {
-                        return t("console:loginFlow.predefinedFlows.authenticators.github.displayName");
+                        return t("authenticationFlow:predefinedFlows.authenticators.github.displayName");
                     }
                 }
 
@@ -402,13 +403,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error?.response?.data?.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -418,12 +419,12 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -475,7 +476,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "updateConnector.success.message"
                         )
                     })
@@ -491,7 +492,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.error.message"
                             )
                         })
@@ -501,12 +502,12 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.genericError.message"
                             )
                         })
@@ -539,7 +540,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 <Modal.Header>
                     { connector?.friendlyName }
                     <Heading subHeading ellipsis as="h6">
-                        { t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                        { t("governanceConnectors:connectorSubHeading", {
                             name: connector?.friendlyName })
                         }
                     </Heading>
@@ -572,7 +573,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                                     floated="left"
                                     onClick={ () => handleELKAnalyticsModalClose() }
                                 >
-                                    { t("console:apiResources.tabs.scopes.form.cancelButton") }
+                                    { t("apiResources:tabs.scopes.form.cancelButton") }
                                 </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 }>
@@ -646,7 +647,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                                                     setShowAdaptiveAuthTemplateChangeConfirmationModal(true);
                                                 } }
                                             >
-                                                { t("console:loginFlow.predefinedFlows.adaptive.actions.add") }
+                                                { t("authenticationFlow:predefinedFlows.adaptive.actions.add") }
                                             </Button>
                                         </div>
                                     </div>
@@ -702,6 +703,9 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             };
         }
 
+        // Since the adaptive auth templates contains a script,
+        // need to enable the toggle. Else the script will be ignored on update.
+        onConditionalAuthenticationToggle(true);
         updateAuthenticationSequence(newSequence);
     };
 
@@ -709,7 +713,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         <div className="predefined-flows-side-panel" data-componentid={ componentId }>
             <div className="toolbar-container">
                 <Toolbar variant="dense">
-                    <Typography>{ t("console:loginFlow.predefinedFlows.header") }</Typography>
+                    <Typography>{ t("authenticationFlow:predefinedFlows.header") }</Typography>
                 </Toolbar>
             </div>
             <div
@@ -735,7 +739,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                             expandIcon={ <ChevronRightIcon height="14px" /> }
                             onClick={ () => handleAccordionChange("basic-login-panel") }
                         >
-                            <Typography>{ t("console:loginFlow.predefinedFlows.basic.header") }</Typography>
+                            <Typography>{ t("authenticationFlow:predefinedFlows.basic.header") }</Typography>
                         </AccordionSummary>
                         <AccordionDetails>{ generateLoginSequences() }</AccordionDetails>
                     </Accordion>
@@ -760,7 +764,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                             expandIcon={ <ChevronRightIcon height="14px" /> }
                             onClick={ () => handleAccordionChange("conditional-login-panel") }
                         >
-                            <Typography>{ t("console:loginFlow.predefinedFlows.adaptive.header") }</Typography>
+                            <Typography>{ t("authenticationFlow:predefinedFlows.adaptive.header") }</Typography>
                         </AccordionSummary>
                         <AccordionDetails>{ generateAdaptiveAuthTemplates() }</AccordionDetails>
                     </Accordion>

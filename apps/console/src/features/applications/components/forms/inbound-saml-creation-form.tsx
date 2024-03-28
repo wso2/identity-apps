@@ -151,17 +151,17 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                                             name="url"
                                             displayErrorOn="blur"
                                             label={
-                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                                t("applications:forms.inboundSAML.fields" +
                                             ".metaURL.label")
                                             }
                                             required={ true }
                                             requiredErrorMessage={
-                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                                t("applications:forms.inboundSAML.fields" +
                                             ".metaURL.validations.empty")
                                             }
                                             type="text"
                                             placeholder={
-                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                                t("applications:forms.inboundSAML.fields" +
                                             ".metaURL.placeholder")
                                             }
                                             validation={ (value: string, validation: Validation) => {
@@ -169,7 +169,7 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                                                 if (!FormValidation.url(value)) {
                                                     validation.isValid = false;
                                                     validation.errorMessages.push(
-                                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                                        t("applications:forms.inboundSAML" +
                                                     ".fields.metaURL.validations.invalid")
                                                     );
                                                 }
@@ -179,7 +179,7 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
 
                                                     validation.isValid = false;
                                                     validation.errorMessages.push(
-                                                        t("console:develop.features.idp.forms.common." +
+                                                        t("idp:forms.common." +
                                                     "internetResolvableErrorMessage")
                                                     );
                                                 }
@@ -189,7 +189,7 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                                         />
                                         <Hint>
                                             {
-                                                t("console:develop.features.applications.forms" +
+                                                t("applications:forms" +
                                                     ".inboundSAML.fields.metaURL.hint")
                                             }
                                         </Hint>

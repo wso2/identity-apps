@@ -95,7 +95,6 @@
         "applicationInsightsProxyEndpoint": "",
         "applicationInsightsInstrumentationKey": "",
         "applicationInsightsEnabled": false,
-        "defaultBrandedLoginScreenLogo": "",
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "deploymentRegion": "US",
         "asgardeoReservedAppRegex": "(^Asgardeo Try It$)|(WSO2_.+)",
@@ -103,14 +102,12 @@
         "asgardeoTryItURL": "",
         "applicationInsightsCookiePostfix": "",
         "upgradeButtonUrl": "",
-        "defaultBrandedLoginScreenLogoWhite": "",
         "applicationInsightsCookieDomain": "",
         "upgradeButtonEnabled": false,
         "regionQualifiedConsoleUrl": "",
         "community": "https://discord.gg/Xa5VubmThw",
         "feedbackEndPoint": "",
         "authzServiceHost": "",
-        "defaultBrandedLoginScreenFavicon": "",
         "userStoreAgentUrl": "",
         "helpCenterUrl": "",
         "supportEmail": "",
@@ -219,10 +216,10 @@
         "appTitle": "WSO2 Identity Server Console",
         "appName": "Console",
         "appLogoPath": "/assets/images/branding/logo.svg",
-        "appWhiteLogoPath": "/assets/images/branding/logo-white.svg",
+        "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
         "emailTemplates": {
             "defaultLogoUrl": "/libs/themes/default/assets/images/branding/logo.svg",
-            "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-white.svg"
+            "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-inverted.svg"
         },
         "enableCustomEmailTemplates": true,
         "appFaviconPath": "/assets/images/branding/favicon.ico",
@@ -1113,6 +1110,11 @@
         },
         "gravatarConfig": {
             "fallback": "404"
+        },
+        "governanceConnectors": {
+            "loginAttempts": {
+                "disabledFeatures": []
+            }
         },
         "hiddenAuthenticators": [
             "BasicAuthRequestPathAuthenticator",

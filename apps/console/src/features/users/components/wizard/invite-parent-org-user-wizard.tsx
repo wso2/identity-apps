@@ -84,9 +84,9 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
          */
         if (!error?.response || error?.response?.status === 401) {
             setAlert({
-                description: t("console:manage.features.invite.notifications.sendInvite.error.description"),
+                description: t("invite:notifications.sendInvite.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+                message: t("invite:notifications.sendInvite.error.message")
             });
         } else if (error?.response?.status === 403 &&
             error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
@@ -98,20 +98,20 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
         } else if (error?.response?.data?.description) {
             setAlert({
                 description: t(
-                    "console:manage.features.invite.notifications.sendInvite.error.description",
+                    "invite:notifications.sendInvite.error.description",
                     { description: error?.response?.data?.description }
                 ),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+                message: t("invite:notifications.sendInvite.error.message")
             });
         } else {
             // Generic error message
             setAlert({
                 description: t(
-                    "console:manage.features.invite.notifications.sendInvite.genericError.description"
+                    "invite:notifications.sendInvite.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.invite.notifications.sendInvite.genericError.message")
+                message: t("invite:notifications.sendInvite.genericError.message")
             });
         }
     };
@@ -155,9 +155,9 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("console:manage.features.parentOrgInvitations.addUserWizard.heading") }
+                { t("parentOrgInvitations:addUserWizard.heading") }
                 <Heading as="h6">
-                    { t("console:manage.features.parentOrgInvitations.addUserWizard.description") }
+                    { t("parentOrgInvitations:addUserWizard.description") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>

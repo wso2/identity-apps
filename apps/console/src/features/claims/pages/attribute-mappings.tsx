@@ -27,7 +27,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import Axios from "axios";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -136,7 +136,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         description:
                             error[0]?.response?.data?.description ||
                             t(
-                                "console:manage.features.claims.dialects.notifications." +
+                                "claims:dialects.notifications." +
                                 "fetchExternalClaims.genericError.description",
                                 { type: resolveType(type) }
                             ),
@@ -144,7 +144,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         message:
                             error[0]?.response?.data?.message ||
                             t(
-                                "console:manage.features.claims.dialects.notifications." +
+                                "claims:dialects.notifications." +
                                 "fetchExternalClaims.genericError.message"
                             )
                     })
@@ -161,25 +161,25 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             switch (type) {
                 case ClaimManagementConstants.OIDC:
                     return t(
-                        "console:manage.features.claims.attributeMappings.oidc.heading"
+                        "claims:attributeMappings.oidc.heading"
                     );
                 case ClaimManagementConstants.SCIM:
                     return t(
-                        "console:manage.features.claims.attributeMappings.scim.heading"
+                        "claims:attributeMappings.scim.heading"
                     );
                 case ClaimManagementConstants.AXSCHEMA:
                     return t(
-                        "console:manage.features.claims.attributeMappings.axschema.heading"
+                        "claims:attributeMappings.axschema.heading"
                     );
                 case ClaimManagementConstants.EIDAS:
                     return t(
-                        "console:manage.features.claims.attributeMappings.eidas.heading"
+                        "claims:attributeMappings.eidas.heading"
                     );
                 case ClaimManagementConstants.OTHERS:
                     return dialects && dialects[0]?.dialectURI;
                 default:
                     return t(
-                        "console:manage.features.claims.attributeMappings.custom.heading"
+                        "claims:attributeMappings.custom.heading"
                     );
             }
         };
@@ -194,7 +194,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 case ClaimManagementConstants.OIDC:
                     return (
                         <>
-                            { t("console:manage.features.claims.attributeMappings.oidc.description") }
+                            { t("claims:attributeMappings.oidc.description") }
                             <DocumentationLink
                                 link={ getLink("manage.attributes.oidcAttributes.learnMore") }
                             >
@@ -205,7 +205,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 case ClaimManagementConstants.SCIM:
                     return (
                         <>
-                            { t("console:manage.features.claims.attributeMappings.scim.description") }
+                            { t("claims:attributeMappings.scim.description") }
                             <DocumentationLink
                                 link={ getLink("manage.attributes.scimAttributes.learnMore") }
                             >
@@ -214,12 +214,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         </>
                     );
                 case ClaimManagementConstants.AXSCHEMA:
-                    return t("console:manage.features.claims.attributeMappings.axschema.description");
+                    return t("claims:attributeMappings.axschema.description");
                 case ClaimManagementConstants.EIDAS:
-                    return t("console:manage.features.claims.attributeMappings.eidas.description");
+                    return t("claims:attributeMappings.eidas.description");
                 default:
                     return t(
-                        "console:manage.features.claims.attributeMappings.custom.description"
+                        "claims:attributeMappings.custom.description"
                     );
             }
         };
@@ -373,14 +373,14 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             description:
                                 error?.response?.data?.description ||
                                 t(
-                                    "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                                    "claims:dialects.notifications.fetchDialects" +
                                     ".genericError.description"
                                 ),
                             level: AlertLevels.ERROR,
                             message:
                                 error?.response?.data?.message ||
                                 t(
-                                    "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                                    "claims:dialects.notifications.fetchDialects" +
                                     ".genericError.message"
                                 )
                         })
@@ -504,7 +504,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     onClick: () => {
                         history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
                     },
-                    text: t("console:manage.features.claims.local.pageLayout.local.back")
+                    text: t("claims:local.pageLayout.local.back")
                 } }
             >
                 { dialects?.length > 1 ? (

@@ -130,10 +130,10 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
     useEffect(() => {
         if (!isLoadingResidentProvisioningConfiguration && residentProvisioningConfigurationFetchError) {
             dispatch(addAlert({
-                description: t("console:develop.features.applications.resident.provisioning.outbound." +
+                description: t("applications:resident.provisioning.outbound." +
                     "notifications.fetch.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.resident.provisioning.outbound." +
+                message: t("applications:resident.provisioning.outbound." +
                     "notifications.fetch.genericError.message")
             }));
         }
@@ -166,10 +166,10 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
             setIsShowCreateWizard(false);
 
             dispatch(addAlert({
-                description: t("console:develop.features.applications.resident.provisioning.outbound." +
+                description: t("applications:resident.provisioning.outbound." +
                     "notifications.create.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.resident.provisioning.outbound." +
+                message: t("applications:resident.provisioning.outbound." +
                     "notifications.create.error.message")
             }));
 
@@ -198,18 +198,18 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
             setIsShowCreateWizard(false);
             if (isUpdating) {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.resident.provisioning.outbound." +
+                    description: t("applications:resident.provisioning.outbound." +
                         "notifications.update.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.resident.provisioning.outbound." +
+                    message: t("applications:resident.provisioning.outbound." +
                         "notifications.update.success.message")
                 }));
             } else {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.resident.provisioning.outbound." +
+                    description: t("applications:resident.provisioning.outbound." +
                         "notifications.create.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.resident.provisioning.outbound." +
+                    message: t("applications:resident.provisioning.outbound." +
                         "notifications.create.success.message")
                 }));
             }
@@ -217,18 +217,18 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
         } catch (error) {
             if (isUpdating) {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.resident.provisioning.outbound." +
+                    description: t("applications:resident.provisioning.outbound." +
                         "notifications.update.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.resident.provisioning.outbound." +
+                    message: t("applications:resident.provisioning.outbound." +
                         "notifications.update.genericError.message")
                 }));
             } else {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.resident.provisioning.outbound." +
+                    description: t("applications:resident.provisioning.outbound." +
                         "notifications.create.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.resident.provisioning.outbound." +
+                    message: t("applications:resident.provisioning.outbound." +
                         "notifications.create.genericError.message")
                 }));
             }
@@ -261,19 +261,19 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
             await updateResidentApplicationOutboundProvisioningList(updatedOutboundProvisioningIdps);
             setIsShowDeleteConfirmationModal(false);
             dispatch(addAlert({
-                description: t("console:develop.features.applications.resident.provisioning.outbound." +
+                description: t("applications:resident.provisioning.outbound." +
                     "notifications.delete.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.applications.resident.provisioning.outbound." +
+                message: t("applications:resident.provisioning.outbound." +
                     "notifications.delete.success.message")
             }));
             mutateResidentProvisioningConfiguration();
         } catch (error) {
             dispatch(addAlert({
-                description: t("console:develop.features.applications.resident.provisioning.outbound." +
+                description: t("applications:resident.provisioning.outbound." +
                     "notifications.delete.genericError.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.applications.resident.provisioning.outbound." +
+                message: t("applications:resident.provisioning.outbound." +
                     "notifications.delete.genericError.message")
             }));
         }
@@ -305,14 +305,14 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
 
     return (
         <PageLayout
-            pageTitle={ t("console:develop.features.applications.resident.provisioning.outbound.heading") }
-            title={ t("console:develop.features.applications.resident.provisioning.outbound.heading") }
-            description={ t("console:develop.features.applications.resident.provisioning.outbound.subHeading") }
+            pageTitle={ t("applications:resident.provisioning.outbound.heading") }
+            title={ t("applications:resident.provisioning.outbound.heading") }
+            description={ t("applications:resident.provisioning.outbound.subHeading") }
             data-componentid={ `${ componentId }-layout` }
             backButton={ {
                 "data-componentid": `${ componentId }-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             action={ residentProvisioningConfiguration?.
                 provisioningConfigurations?.outboundProvisioningIdps?.length > 0
@@ -323,7 +323,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                             data-componentid={ `${ componentId }-add-button` }
                         >
                             <Icon name="add"/>
-                            { t("console:develop.features.applications.resident." +
+                            { t("applications:resident." +
                                 "provisioning.outbound.emptyPlaceholder.action") }
                         </PrimaryButton>
                     )
@@ -392,12 +392,12 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                         <Segment>
                             <EmptyPlaceholder
                                 title={
-                                    t("console:develop.features.applications.resident." +
+                                    t("applications:resident." +
                                         "provisioning.outbound.emptyPlaceholder.title")
                                 }
                                 image={ getEmptyPlaceholderIllustrations().emptyList }
                                 subtitle={ [
-                                    t("console:develop.features.applications.resident." +
+                                    t("applications:resident." +
                                         "provisioning.outbound.emptyPlaceholder.subtitles")
                                 ] }
                                 imageSize="tiny"
@@ -407,7 +407,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                         data-componentid={ `${ componentId }-add-button` }
                                     >
                                         <Icon name="add"/>
-                                        { t("console:develop.features.applications.resident." +
+                                        { t("applications:resident." +
                                             "provisioning.outbound.emptyPlaceholder.action") }
                                     </PrimaryButton>
                                 ) }

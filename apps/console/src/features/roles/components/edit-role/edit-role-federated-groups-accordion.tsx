@@ -118,9 +118,9 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
         if (groupListFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("console:manage.features.roles.edit.groups.notifications.fetchError.description"),
+                    description: t("roles:edit.groups.notifications.fetchError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.edit.groups.notifications.fetchError.message")
+                    message: t("roles:edit.groups.notifications.fetchError.message")
                 })
             );
         }
@@ -271,7 +271,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                         renderInput={ (params: AutocompleteRenderInputParams) => (
                                             <TextField
                                                 { ...params }
-                                                placeholder= { t("console:manage.features.roles.edit.groups" +
+                                                placeholder= { t("roles:edit.groups" +
                                                     ".actions.search.placeholder") }
                                             />
                                         ) }
@@ -310,7 +310,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                         renderInput={ (params: AutocompleteRenderInputParams) => (
                                             <TextField
                                                 { ...params }
-                                                placeholder= { t("console:manage.features.roles.edit.groups" +
+                                                placeholder= { t("roles:edit.groups" +
                                                     ".actions.assign.placeholder") }
                                             />
                                         ) }
@@ -385,9 +385,9 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                         renderInput={ (params: AutocompleteRenderInputParams) => (
                                             <TextField
                                                 { ...params }
-                                                placeholder={ t("console:manage.features.roles.edit.groups" +
+                                                placeholder={ t("roles:edit.groups" +
                                                     ".actions.remove.placeholder") }
-                                                label={ t("console:manage.features.roles.edit.groups" +
+                                                label={ t("roles:edit.groups" +
                                                     ".actions.remove.label") }
                                                 margin="dense"
                                             />

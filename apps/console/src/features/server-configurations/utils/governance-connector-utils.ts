@@ -67,20 +67,20 @@ export class GovernanceConnectorUtils {
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        description: I18n.instance.t("governanceConnectors:notifications." +
                             "getConnectorCategories.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        message: I18n.instance.t("governanceConnectors:notifications." +
                             "getConfigurations.error.message")
                     }));
                 } else {
                     // Generic error message
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        description: I18n.instance.t("governanceConnectors:notifications." +
                             "getConfigurations.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        message: I18n.instance.t("governanceConnectors:notifications." +
                             "getConfigurations.genericError.message")
                     }));
                 }
@@ -196,6 +196,7 @@ export class GovernanceConnectorUtils {
                         id: ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
                         route: AppConstants.getPaths()
                             .get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+                        status: "beta",
                         testId: "alternative-login-identifier-card"
                     },
                     {
@@ -253,7 +254,7 @@ export class GovernanceConnectorUtils {
                     },
                     {
                         description: "Manage and configure user session settings and preferences.",
-                        header: I18n.instance.t("console:sessionManagement.title"),
+                        header: I18n.instance.t("sessionManagement:title"),
                         id: ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                         testId: "session-management-card"
@@ -350,14 +351,14 @@ export class GovernanceConnectorUtils {
                 connectors: [
                     {
                         description: "Configure settings for SAML2 Web Single Sign-On functionality.",
-                        header: I18n.instance.t("console:saml2Config.title"),
+                        header: I18n.instance.t("saml2Config:title"),
                         id: ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
                         testId: "saml2-web-sso-card"
                     },
                     {
                         description: "Manage settings for WS-Federation based single sign-on.",
-                        header: I18n.instance.t("console:wsFederationConfig.title"),
+                        header: I18n.instance.t("wsFederationConfig:title"),
                         id: ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
                         testId: "ws-federation-sso-card"
@@ -370,8 +371,8 @@ export class GovernanceConnectorUtils {
             {
                 connectors: [
                     {
-                        description: I18n.instance.t("console:manage.pages.emailDomainDiscovery.subTitle"),
-                        header: I18n.instance.t("console:manage.pages.emailDomainDiscovery.title"),
+                        description: I18n.instance.t("pages:emailDomainDiscovery.subTitle"),
+                        header: I18n.instance.t("pages:emailDomainDiscovery.title"),
                         id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
                         testId: "email-domain-discovery-card"
@@ -385,9 +386,9 @@ export class GovernanceConnectorUtils {
                 connectors: [
                     {
                         description: I18n.instance.t(
-                            "console:develop.features.applications.resident.provisioning.outbound.subHeading"),
+                            "applications:resident.provisioning.outbound.subHeading"),
                         header: I18n.instance.t(
-                            "console:develop.features.applications.resident.provisioning.outbound.heading"),
+                            "applications:resident.provisioning.outbound.heading"),
                         id: ServerConfigurationsConstants.OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
                         testId: "outbound-provisioning-settings-card"
@@ -401,7 +402,7 @@ export class GovernanceConnectorUtils {
     }
 
     public static resolveFieldLabel(category: string, name: string, displayName: string): string {
-        const fieldLabelKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+        const fieldLabelKey: string = "governanceConnectors:connectorCategories." +
                 camelCase(category) + ".connectors." + camelCase(name) +
                 ".properties." + camelCase(name) + ".label";
 
@@ -415,7 +416,7 @@ export class GovernanceConnectorUtils {
     }
 
     public static resolveFieldHint(category: string, name: string, description: string): string {
-        const fieldHintKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+        const fieldHintKey: string = "governanceConnectors:connectorCategories." +
                 camelCase(category) + ".connectors." + camelCase(name) +
                 ".properties." + camelCase(name) + ".hint";
 

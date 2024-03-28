@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -24,6 +25,7 @@ import {
     DocumentationLink,
     Heading,
     Hint,
+    Link,
     LinkButton,
     Message,
     PrimaryButton,
@@ -31,7 +33,6 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +43,14 @@ import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "../../../../connections";
-import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    history
+} from "../../../../core";
 import { getMultiFactorAuthenticatorDetails } from "../../../../identity-providers/api";
 import {
     IdentityProviderManagementConstants
@@ -343,10 +351,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         updateAuthenticationSequence(appId, requestBody)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                    description: t("applications:notifications.updateAuthenticationFlow" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                    message: t("applications:notifications.updateAuthenticationFlow" +
                         ".success.message")
                 }));
 
@@ -362,7 +370,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             <p>
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.applications.notifications" +
+                                        "applications:notifications" +
                                         ".conditionalScriptLoopingError.description"
                                     }>
                                     Looping constructs such as <Code>for</Code>, <Code>while</Code> and,
@@ -372,7 +380,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             </p>
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications" +
+                        message: t("applications:notifications" +
                             ".conditionalScriptLoopingError.message")
                     }));
 
@@ -383,7 +391,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                        message: t("applications:notifications.updateAuthenticationFlow" +
                             ".error.message")
                     }));
 
@@ -391,10 +399,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                    description: t("applications:notifications.updateAuthenticationFlow" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                    message: t("applications:notifications.updateAuthenticationFlow" +
                         ".genericError.message")
                 }));
             })
@@ -411,21 +419,21 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(addAlert({
-                        description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        description: t("applications:edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        message: t("applications:edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.message")
                     }));
                 } else {
                     // Generic error message
                     dispatch(addAlert({
-                        description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        description: t("applications:edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError." +
                             "description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        message: t("applications:edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError.message")
                     }));
                 }
@@ -485,9 +493,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const showRequestPathAuthenticators: ReactElement = (
         <>
-            <Heading as="h4">{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+            <Heading as="h4">{ t("applications:edit.sections.signOnMethod.sections." +
                 "requestPathAuthenticators.title") }</Heading>
-            <Hint>{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+            <Hint>{ t("applications:edit.sections.signOnMethod.sections." +
                 "requestPathAuthenticators.subTitle") }</Hint>
             <Forms>
                 <Grid>
@@ -638,7 +646,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                     <>
                                         <Trans
                                             i18nKey={
-                                                "console:develop.features.applications.edit.sections." +
+                                                "applications:edit.sections." +
                                                 "signOnMethod.sections.authenticationFlow.sections." +
                                                 "stepBased.federatedSMSOTPConflictNote.multipleIdps"
                                             }>
@@ -660,7 +668,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                     <>
                                         <Trans
                                             i18nKey={
-                                                "console:develop.features.applications.edit.sections." +
+                                                "applications:edit.sections." +
                                                 "signOnMethod.sections.authenticationFlow.sections." +
                                                 "stepBased.federatedSMSOTPConflictNote.singleIdp"
                                             }
@@ -702,13 +710,13 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             content={
                                 (
                                     <>
-                                        { t("console:develop.features.applications.edit.sections" +
+                                        { t("applications:edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.passkey.info.progressiveEnrollmentEnabled") }
                                         <p>
                                             <Trans
                                                 i18nKey={
-                                                    t("console:develop.features.applications.edit.sections" +
+                                                    t("applications:edit.sections" +
                                                     ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                                     "info.passkeyAsFirstStepWhenprogressiveEnrollmentEnabled")
                                                 }
@@ -738,14 +746,14 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             content={
                                 (<>
                                     {
-                                        t("console:develop.features.applications.edit.sections" +
+                                        t("applications:edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder." +
                                         "types.passkey.info.progressiveEnrollmentEnabled")
                                     }
                                     <p>
                                         <Trans
                                             i18nKey={
-                                                t("console:develop.features.applications.edit.sections" +
+                                                t("applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                                 "info.passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled")
                                             }
@@ -773,13 +781,25 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             (<>
                                 <Trans
                                     i18nKey={
-                                        t("console:develop.features.applications.edit.sections" +
+                                        t("applications:edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder." +
                                         "types.passkey.info.progressiveEnrollmentDisabled")
                                     }
                                 >
-                                Passkey progressive enrollment is disabled. Users must enroll
-                                their passkeys through <strong>My Account</strong> to use passwordless sign-in.
+                                    <Link
+                                        external={ false }
+                                        onClick={ () => {
+                                            history.push(
+                                                AppConstants.getPaths().get("IDP_EDIT")
+                                                    .replace(
+                                                        ":id", AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID)
+                                            );
+                                        } }
+                                    >
+                                    Passkey progressive enrollment
+                                    </Link>
+                                    &nbsp; is disabled. Users must enroll
+                                    their passkeys through <strong>My Account</strong> to use passwordless sign-in.
                                 </Trans>
                                 <DocumentationLink
                                     link={ getLink("develop.applications.editApplication.signInMethod.fido") }
@@ -803,7 +823,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     className="display-inline-block"
                 >
                     {
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        t("applications:edit.sections.signOnMethod.sections." +
                             "customization.heading")
                     }
                 </Heading>
@@ -826,13 +846,13 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 >
                                 </Icon>
                                 {
-                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                    t("applications:edit.sections.signOnMethod.sections." +
                                         "customization.revertToDefaultButton.label")
                                 }
                             </LinkButton>
                             <Hint inline popup>
                                 {
-                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                    t("applications:edit.sections.signOnMethod.sections." +
                                         "customization.revertToDefaultButton.hint")
                                 }
                             </Hint>

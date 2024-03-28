@@ -159,6 +159,19 @@ export const applicationConfig: ApplicationConfig = {
     },
     attributeSettings: {
         advancedAttributeSettings: {
+            isLinkedAccountsEnabled: (templateId: string): boolean => {
+                const allowedTemplates: string[] = [
+                    ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS,
+                    ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
+                    ApplicationManagementConstants.TRADITIONAL_WEB_APPLICATION_SAML,
+                    ApplicationManagementConstants.MOBILE,
+                    ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
+                    ApplicationManagementConstants.TRADITIONAL_WEB_APPLICATION_OIDC,
+                    ApplicationManagementConstants.SPA_APP_TEMPLATE_ID
+                ];
+
+                return allowedTemplates.includes(templateId);
+            },
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
@@ -434,12 +447,13 @@ export const applicationConfig: ApplicationConfig = {
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
                     applicationRoles?.enabled)
                 && (
-                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    application?.advancedConfigurations?.fragment ||
+                    (application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
-                    || application?.templateId === SamlWebAppTemplate?.id
+                    || application?.templateId === SamlWebAppTemplate?.id)
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -606,13 +620,15 @@ export const applicationConfig: ApplicationConfig = {
         showClientSecretMessage: false,
         showFrontChannelLogout: false,
         showIdTokenEncryption: true,
+        showIdTokenResponseSigningAlgorithm: true,
         showNativeClientSecretMessage: false,
+        showRequestObjectConfigurations: true,
         showRequestObjectSignatureValidation: false,
         showReturnAuthenticatedIdPList: false,
         showScopeValidators: false
     },
     inboundSAMLForm: {
-        artifactBindingAllowed:false,
+        artifactBindingAllowed: true,
         showApplicationQualifier: true,
         showAttributeConsumingServiceIndex: false,
         showQueryRequestProfile: true

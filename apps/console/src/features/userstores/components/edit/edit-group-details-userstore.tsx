@@ -194,10 +194,10 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
         patchUserStore(id, data)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications." +
+                    description: t("userstores:notifications." +
                         "updateUserstore.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.userstores.notifications." +
+                    message: t("userstores:notifications." +
                         "updateUserstore.success.message")
                 }));
 
@@ -206,9 +206,9 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification and fetch the new updates once backend is fixed.
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications.updateDelay.description"),
+                    description: t("userstores:notifications.updateDelay.description"),
                     level: AlertLevels.WARNING,
-                    message: t("console:manage.features.userstores.notifications.updateDelay.message")
+                    message: t("userstores:notifications.updateDelay.message")
                 }));
 
                 // Re-fetch the userstore details
@@ -217,10 +217,10 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
             .catch((error: IdentityAppsError) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error?.description
-                        || t("console:manage.features.userstores.notifications." +
+                        || t("userstores:notifications." +
                             "updateUserstore.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || t("console:manage.features.userstores.notifications." +
+                    message: error?.message || t("userstores:notifications." +
                         "updateUserstore.genericError.message")
                 }));
             })
@@ -263,7 +263,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                     showPassword={ t("common:showPassword") }
                                                     hidePassword={ t("common:hidePassword") }
                                                     placeholder={
-                                                        t("console:manage.features.userstores.forms." +
+                                                        t("userstores:forms." +
                                                             "custom.placeholder",
                                                         {
                                                             name: property.description.split("#")[ 0 ]
@@ -286,7 +286,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                 required={ false }
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
-                                                                    t("console:manage.features.userstores.forms." +
+                                                                    t("userstores:forms." +
                                                                     "custom.requiredErrorMessage",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
@@ -300,7 +300,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                 } }
                                                                 toggle
                                                                 placeholder={
-                                                                    t("console:manage.features.userstores.forms." +
+                                                                    t("userstores:forms." +
                                                                     "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
@@ -320,7 +320,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                 required={ false }
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
-                                                                    t("console:manage.features.userstores.forms.edit." +
+                                                                    t("userstores:forms.edit." +
                                                                         "custom.requiredErrorMessage",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
@@ -329,7 +329,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                 disabled={ disabled || readOnly }
                                                                 toggle
                                                                 placeholder={
-                                                                    t("console:manage.features.userstores.forms." +
+                                                                    t("userstores:forms." +
                                                                         "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
@@ -349,7 +349,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                         required={ !disabled }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("console:manage.features.userstores.forms.edit." +
+                                                            t("userstores:forms.edit." +
                                                                 "custom.requiredErrorMessage",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -363,7 +363,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                 : false)
                                                         }
                                                         placeholder={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                                 "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -427,7 +427,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                         required={ false }
                                                         label={ name }
                                                         requiredErrorMessage={
-                                                            t("console:manage.features.userstores.forms.edit." +
+                                                            t("userstores:forms.edit." +
                                                                 "custom.requiredErrorMessage",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -436,7 +436,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                         showPassword={ t("common:showPassword") }
                                                         hidePassword={ t("common:hidePassword") }
                                                         placeholder={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                                     "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -457,7 +457,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                             required={ false }
                                                             label={ property.description.split("#")[ 0 ] }
                                                             requiredErrorMessage={
-                                                                t("console:manage.features.userstores.forms." +
+                                                                t("userstores:forms." +
                                                                         "custom.requiredErrorMessage",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -466,7 +466,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                             disabled={ disabled || readOnly }
                                                             toggle
                                                             placeholder={
-                                                                t("console:manage.features.userstores.forms." +
+                                                                t("userstores:forms." +
                                                                     "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -485,7 +485,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                             required={ false }
                                                             label={ property.description.split("#")[ 0 ] }
                                                             requiredErrorMessage={
-                                                                t("console:manage.features.userstores.forms" +
+                                                                t("userstores:forms" +
                                                                     ".custom.requiredErrorMessage",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -493,7 +493,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                             }
                                                             disabled={ disabled || readOnly }
                                                             placeholder={
-                                                                t("console:manage.features.userstores.forms." +
+                                                                t("userstores:forms." +
                                                                     "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]

@@ -31,8 +31,8 @@ import {
     SegmentedAccordionTitleActionInterface,
     useDocumentation
 } from "@wso2is/react-components";
-import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
-import { IdentifiableComponentInterface } from "modules/core/src/models";
+import { OIDCScopesClaimsListInterface } from "../../../../oidc-scopes";
+import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import React, {
     ChangeEvent,
     Fragment,
@@ -547,7 +547,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                             <Header.Content className="align-self-center">
                                 <Hint warning={ true } popup compact>
                                     {
-                                        t("console:develop.features.applications.edit.sections.attributes" +
+                                        t("applications:edit.sections.attributes" +
                                             ".selection.scopelessAttributes.hint")
                                     }
                                 </Hint>
@@ -591,8 +591,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         <Table.HeaderCell width="1"></Table.HeaderCell>
                         <Table.HeaderCell width="10">
                             {
-                                t("console:develop.features" +
-                                        ".applications.edit.sections" +
+                                t("applications:edit.sections" +
                                         ".attributes.selection" +
                                         ".mappingTable.columns" +
                                         ".attribute")
@@ -600,8 +599,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         </Table.HeaderCell>
                         <Table.HeaderCell textAlign="center" width="4">
                             {
-                                t("console:develop.features" +
-                                        ".applications.edit.sections" +
+                                t("applications:edit.sections" +
                                         ".attributes.selection" +
                                         ".mappingTable.columns" +
                                         ".requested")
@@ -610,16 +608,14 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         </Table.HeaderCell>
                         <Table.HeaderCell width="4">
                             {
-                                t("console:develop.features" +
-                                    ".applications.edit.sections" +
+                                t("applications:edit.sections" +
                                     ".attributes.selection" +
                                     ".mappingTable.columns" +
                                     ".mandatory")
                             }
                             <Hint icon="info circle" popup>
                                 {
-                                    t("console:develop.features" +
-                                    ".applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".attributes.selection" +
                                     ".mandatoryAttributeHint",
                                     { productName:
@@ -704,10 +700,10 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             disabled: false,
             onChange: handleSelectedScopeCheckChange,
             popoverText: scope.selected
-                ? t("console:develop.features.applications.edit" +
+                ? t("applications:edit" +
                     ".sections.attributes.selection.mappingTable" +
                     ".listItem.actions.removeScopeRequested")
-                : t("console:develop.features.applications.edit" +
+                : t("applications:edit" +
                     ".sections.attributes.selection.mappingTable" +
                     ".listItem.actions.makeScopeRequested"),
             type: "checkbox popup",
@@ -723,12 +719,12 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 }>
                             <Heading as="h4">
                                 {
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                         ".attributes.selection.heading")
                                 }
                             </Heading>
                             <Heading as="h6" color="grey">
-                                { t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                { t("applications:edit.sections.attributes.selection" +
                                 ".description") }
                                 { resolveClaimDocumentationLink() }
                             </Heading>
@@ -748,7 +744,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                         iconPosition="left"
                                                         onChange={ handleChange }
                                                         placeholder={
-                                                            t("console:develop.features.applications.edit" +
+                                                            t("applications:edit" +
                                                                     ".sections.attributes.selection.mappingTable" +
                                                                     ".searchPlaceholder")
                                                         }
@@ -836,13 +832,13 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                                                     imageSize="tiny"
                                                     title={
-                                                        t("console:develop.features.applications.edit.sections." +
+                                                        t("applications:edit.sections." +
                                                         "attributes.emptySearchResults.title") }
                                                     subtitle={ [
-                                                        t("console:develop.features.applications.edit.sections." +
+                                                        t("applications:edit.sections." +
                                                         "attributes.emptySearchResults.subtitles.0",
                                                         { searchQuery: searchValue }),
-                                                        t("console:develop.features.applications.edit.sections." +
+                                                        t("applications:edit.sections." +
                                                         "attributes.emptySearchResults.subtitles.1")
                                                     ] }
                                                     data-testid={ `${ testId }-empty-search-placeholder` }
@@ -899,7 +895,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                             <Hint>
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.applications.edit.sections." +
+                                        "applications:edit.sections." +
                                         "attributes.selection.attributeComponentHint"
                                     }
                                 >
@@ -951,7 +947,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                     <Hint>
                         <Trans
                             i18nKey={
-                                "console:develop.features.applications.edit.sections.attributes." +
+                                "applications:edit.sections.attributes." +
                                            "selection.selectedScopesComponentHint"
                             }
                         >
@@ -968,7 +964,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                 ".manageOIDCScopes")
                                         }
                                     >
-                                        { t("console:develop.features.applications.edit.sections.attributes." +
+                                        { t("applications:edit.sections.attributes." +
                                             "selection.howToUseScopesHint") }
                                     </DocumentationLink>
                                 )

@@ -99,12 +99,12 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
         { key: 0, text: "All", value: ALL_STATUS },
         {
             key: 1,
-            text: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.success"),
+            text: t("user:modals.bulkImportUserWizard.wizardSummary.tableStatus.success"),
             value: BulkUserImportStatus.SUCCESS
         },
         {
             key: 2,
-            text: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.failed"),
+            text: t("user:modals.bulkImportUserWizard.wizardSummary.tableStatus.failed"),
             value: BulkUserImportStatus.FAILED
         }
     ];
@@ -112,13 +112,13 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     const bulkResponseOperationTypes: DropdownItemProps[] = [
         {
             key: 0,
-            text: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+            text: t("user:modals.bulkImportUserWizard.wizardSummary." +
                 "responseOperationType.userCreation"),
             value: BulkImportResponseOperationTypes.USER_CREATION
         },
         {
             key: 1,
-            text: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+            text: t("user:modals.bulkImportUserWizard.wizardSummary." +
                 "responseOperationType.roleAssignment"),
             value: BulkImportResponseOperationTypes.ROLE_ASSIGNMENT
         }
@@ -176,7 +176,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                         </Header>
                     );
                 },
-                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableHeaders.username")
+                title: t("user:modals.bulkImportUserWizard.wizardSummary.tableHeaders.username")
             },
             {
                 allowToggleVisibility: false,
@@ -198,7 +198,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                         </Header>
                     );
                 },
-                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableHeaders.status")
+                title: t("user:modals.bulkImportUserWizard.wizardSummary.tableHeaders.status")
             },
             {
                 allowToggleVisibility: false,
@@ -214,7 +214,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                         </Header>
                     );
                 },
-                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableHeaders.message")
+                title: t("user:modals.bulkImportUserWizard.wizardSummary.tableHeaders.message")
             }
         ];
 
@@ -300,16 +300,16 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                     ? null
                     : (
                         <LinkButton onClick={ handleSearchQueryClear }>
-                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                            { t("users:usersList.search.emptyResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
                 image={ getEmptyPlaceholderIllustrations().emptySearch }
                 imageSize="tiny"
-                title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                 subtitle={ [
-                    t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                    t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
                         { query: !searchQuery ? selectedStatus : searchQuery }),
-                    t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                    t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                 ] }
             />
         );
@@ -374,7 +374,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             ? [
                 {
                     key: 0,
-                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                    text: t("users:advancedSearch.form.dropdown." +
                     "filterAttributeOptions.username"),
                     value: "userName"
                 }
@@ -382,7 +382,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             : [
                 {
                     key: 1,
-                    text:  t("console:manage.features.user.modals.bulkImportUserWizard." +
+                    text:  t("user:modals.bulkImportUserWizard." +
                     "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder"),
                     value: "roleName"
                 }
@@ -402,12 +402,12 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                         <Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
                                             <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
                                                 {
-                                                    t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                    t("user:modals.bulkImportUserWizard." +
                                             "wizardSummary.alerts.importSuccess.message")
                                                 }
                                             </AlertTitle>
                                             {
-                                                t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                t("user:modals.bulkImportUserWizard." +
                                             "wizardSummary.alerts.importSuccess.description")
                                             }
                                         </Alert>
@@ -416,7 +416,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                     <Alert severity="error" data-componentid={ `${componentId}-error-alert` }>
                                         <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
                                             {
-                                                t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                t("user:modals.bulkImportUserWizard." +
                                                 "wizardSummary.alerts.importFailed.message")
                                             }
                                         </AlertTitle>
@@ -426,7 +426,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                                 <li>
                                                     <Trans
                                                         i18nKey={
-                                                            "console:manage.features.user.modals." +
+                                                            "user:modals." +
                                                             "bulkImportUserWizard.wizardSummary.alerts.importFailed." +
                                                             "userCreation"
                                                         }
@@ -448,7 +448,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                                 <li>
                                                     <Trans
                                                         i18nKey={
-                                                            "console:manage.features.user.modals." +
+                                                            "user:modals." +
                                                             "bulkImportUserWizard.wizardSummary.alerts.importFailed." +
                                                             "groupAssignment"
                                                         }
@@ -485,24 +485,24 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                 filterAttributeOptions={ advanceSearchFilterOptions }
                                 filterAttributePlaceholder={
                                     responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
-                                        ? t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                        ? t("users:advancedSearch.form.dropdown." +
                                             "filterAttributeOptions.username")
-                                        : t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                        : t("user:modals.bulkImportUserWizard." +
                                             "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                                    t("users:advancedSearch.form.inputs.filterCondition" +
                                     ".placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                                    t("users:advancedSearch.form.inputs.filterValue" +
                                     ".placeholder")
                                 }
                                 placeholder={
                                     responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
-                                        ? t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                        ? t("user:modals.bulkImportUserWizard." +
                                             "wizardSummary.advanceSearch.searchByUsername")
-                                        : t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                        : t("user:modals.bulkImportUserWizard." +
                                             "wizardSummary.advanceSearch.searchByGroup")
                                 }
                                 defaultSearchAttribute="resourceName"
@@ -542,11 +542,11 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                             {
                                 responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
                                     ? (
-                                        t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+                                        t("user:modals.bulkImportUserWizard.wizardSummary." +
                                         "totalUserCreationCount") + " : " + totalUserCreationCount
                                     )
                                     : (
-                                        t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+                                        t("user:modals.bulkImportUserWizard.wizardSummary." +
                                         "totalUserAssignmentCount") + " : " + totalUserAssignmentCount
                                     )
                             }

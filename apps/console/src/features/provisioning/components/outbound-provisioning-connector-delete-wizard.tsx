@@ -62,7 +62,7 @@ export const OutboundProvisioningConnectorDeleteWizard: FunctionComponent<
                 <p>
                     <Trans
                         i18nKey={
-                            "console:develop.features.applications.confirmations" +
+                            "applications:confirmations" +
                             ".deleteOutboundProvisioningIDP.assertionHint"
                         }
                         tOptions={ { name: deletingIdp?.idp } }
@@ -82,19 +82,19 @@ export const OutboundProvisioningConnectorDeleteWizard: FunctionComponent<
             <ConfirmationModal.Header
                 data-componentid={ `${ componentId }-connector-delete-confirmation-modal-header` }
             >
-                { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP.header") }
+                { t("applications:confirmations.deleteOutboundProvisioningIDP.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-componentid={ `${ componentId }-connector-delete-confirmation-modal-message` }
             >
-                { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP.message") }
+                { t("applications:confirmations.deleteOutboundProvisioningIDP.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
                 data-componentid={ `${ componentId }-connector-delete-confirmation-modal-content` }
             >
-                { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP.content") }
+                { t("applications:confirmations.deleteOutboundProvisioningIDP.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );

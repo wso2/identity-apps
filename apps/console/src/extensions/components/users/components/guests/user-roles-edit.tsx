@@ -487,7 +487,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 }
                 catch (e) {
                     description = t(
-                        "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
+                        "user:updateUser.roles.notifications.updateUserRoles." +
                         "error.message"
                     );
                 }
@@ -498,7 +498,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         description: description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
+                            "user:updateUser.roles.notifications.updateUserRoles." +
                             "error.message"
                         )
                     });
@@ -510,7 +510,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         description: description,
                         level: AlertLevels.WARNING,
                         message: t(
-                            "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
+                            "user:updateUser.roles.notifications.updateUserRoles." +
                             "error.message"
                         )
                     });
@@ -518,12 +518,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 } else {
                     onAlertFired({
                         description: t(
-                            "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
+                            "user:updateUser.roles.notifications.updateUserRoles." +
                             "success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
+                            "user:updateUser.roles.notifications.updateUserRoles." +
                             "success.message"
                         )
                     });
@@ -541,7 +541,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         description: error.response?.data?.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
+                            "user:updateUser.roles.notifications.updateUserRoles." +
                             "error.message"
                         )
                     });
@@ -551,12 +551,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
                 onAlertFired({
                     description: t(
-                        "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
+                        "user:updateUser.roles.notifications.updateUserRoles." +
                         "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
+                        "user:updateUser.roles.notifications.updateUserRoles." +
                         "genericError.message"
                     )
                 });
@@ -609,9 +609,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             className="user-roles"
         >
             <Modal.Header>
-                { t("console:manage.features.user.updateUser.roles.addRolesModal.heading") }
+                { t("user:updateUser.roles.addRolesModal.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.user.updateUser.roles.addRolesModal.subHeading") }
+                    { t("user:updateUser.roles.addRolesModal.subHeading") }
                 </Heading>
             </Modal.Header>
             { viewRolePermissions && (
@@ -693,7 +693,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     <Grid.Row>
                                         <Grid.Column>
                                             <Heading as="h4">
-                                                { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
+                                                { t("user:updateUser.roles.editRoles.heading") }
                                             </Heading>
                                             <Heading subHeading ellipsis as="h6">
                                                 { !hasRequiredScopes(featureConfig?.users,
@@ -819,7 +819,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     type="negative"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
-                        "console:manage.features.user.updateUser.roles.editRoles" + ".confirmationModal.assertionHint"
+                        "user:updateUser.roles.editRoles" + ".confirmationModal.assertionHint"
                     ) }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
@@ -832,17 +832,17 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-testid="user-mgt-update-roles-confirmation-modal-header">
-                        { t("console:manage.features.user.updateUser.roles.editRoles.confirmationModal" + ".header") }
+                        { t("user:updateUser.roles.editRoles.confirmationModal" + ".header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         data-testid="user-mgt-update-roles-confirmation-modal-message"
                         attached
                         negative
                     >
-                        { t("console:manage.features.user.updateUser.roles.editRoles.confirmationModal" + ".message") }
+                        { t("user:updateUser.roles.editRoles.confirmationModal" + ".message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-testid="user-mgt-update-roles-confirmation-modal-content">
-                        { t("console:manage.features.user.updateUser.roles.editRoles.confirmationModal" + ".content") }
+                        { t("user:updateUser.roles.editRoles.confirmationModal" + ".content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

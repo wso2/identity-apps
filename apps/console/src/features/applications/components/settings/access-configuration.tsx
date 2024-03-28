@@ -270,10 +270,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         deleteProtocol(appId, protocol)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
+                    description: t("applications:notifications.deleteProtocolConfig" +
                         ".success.description", { protocol: protocol }),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
+                    message: t("applications:notifications.deleteProtocolConfig" +
                         ".success.message")
                 }));
 
@@ -284,7 +284,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error?.response?.data?.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.deleteProtocolConfig.error" +
+                        message: t("applications:notifications.deleteProtocolConfig.error" +
                             ".message")
                     }));
 
@@ -292,10 +292,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
+                    description: t("applications:notifications.deleteProtocolConfig" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
+                    message: t("applications:notifications.deleteProtocolConfig" +
                         ".genericError.message")
                 }));
             });
@@ -317,7 +317,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error?.response?.data?.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.deleteProtocolConfig.error" +
+                        message: t("applications:notifications.deleteProtocolConfig.error" +
                             ".message")
                     }));
 
@@ -325,10 +325,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
+                    description: t("applications:notifications.deleteProtocolConfig" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
+                    message: t("applications:notifications.deleteProtocolConfig" +
                         ".genericError.message")
                 }));
             }).finally(() => {
@@ -349,10 +349,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         return updateAuthProtocolConfig<OIDCDataInterface | SAML2ConfigurationInterface>(appId, values, protocol)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +
+                    description: t("applications:notifications.updateInboundProtocolConfig" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +
+                    message: t("applications:notifications.updateInboundProtocolConfig" +
                         ".success.message")
                 }));
                 onAllowedOriginsUpdate();
@@ -363,7 +363,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +
+                        message: t("applications:notifications.updateInboundProtocolConfig" +
                             ".error.message")
                     }));
 
@@ -371,10 +371,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +
+                    description: t("applications:notifications.updateInboundProtocolConfig" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +
+                    message: t("applications:notifications.updateInboundProtocolConfig" +
                         ".genericError.message")
                 }));
             }).finally(() => {
@@ -415,7 +415,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateApplication.error" +
+                        message: t("applications:notifications.updateApplication.error" +
                             ".message")
                     }));
 
@@ -423,10 +423,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateApplication" +
+                    description: t("applications:notifications.updateApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
+                    message: t("applications:notifications.updateApplication.genericError" +
                         ".message")
                 }));
             }).finally(() => {
@@ -441,10 +441,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         regenerateClientSecret(appId)
             .then((response: AxiosResponse<OIDCDataInterface>) => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.regenerateSecret.success" +
+                    description: t("applications:notifications.regenerateSecret.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.regenerateSecret.success.message")
+                    message: t("applications:notifications.regenerateSecret.success.message")
                 }));
 
                 onApplicationSecretRegenerate(response.data);
@@ -455,17 +455,17 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.regenerateSecret.error.message")
+                        message: t("applications:notifications.regenerateSecret.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.regenerateSecret" +
+                    description: t("applications:notifications.regenerateSecret" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.regenerateSecret" +
+                    message: t("applications:notifications.regenerateSecret" +
                         ".genericError.message")
                 }));
             });
@@ -478,10 +478,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         revokeClientSecret(appId)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.revokeApplication.success" +
+                    description: t("applications:notifications.revokeApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.revokeApplication.success.message")
+                    message: t("applications:notifications.revokeApplication.success.message")
                 }));
                 onUpdate(appId);
             })
@@ -490,7 +490,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.revokeApplication.error" +
+                        message: t("applications:notifications.revokeApplication.error" +
                             ".message")
                     }));
 
@@ -498,10 +498,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.revokeApplication.success" +
+                    description: t("applications:notifications.revokeApplication.success" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.revokeApplication.success.message")
+                    message: t("applications:notifications.revokeApplication.success.message")
                 }));
             });
     };
@@ -677,13 +677,13 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
                 docLink = getLink("develop.applications.editApplication.standardBasedApplication" +
                     ".oauth2OIDC.protocol.learnMore");
-                i18nKey = "console:develop.features.applications.forms.inboundOIDC.documentation";
+                i18nKey = "applications:forms.inboundOIDC.documentation";
             }
 
             if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
                 docLink = getLink("develop.applications.editApplication.standardBasedApplication" +
                     ".saml.protocol.learnMore");
-                i18nKey = "console:develop.features.applications.forms.inboundSAML.documentation";
+                i18nKey = "applications:forms.inboundSAML.documentation";
             }
 
             if (!docLink) {
@@ -1172,7 +1172,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 <Header as="h6" color="grey" compact>
                     {
                         t(
-                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            "applications:forms.inboundOIDC.description",
                             {
                                 protocol: ApplicationManagementUtils
                                     .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OIDC)
@@ -1194,7 +1194,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 <Header as="h6" color="grey" compact>
                     {
                         t(
-                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            "applications:forms.inboundOIDC.description",
                             {
                                 protocol: ApplicationManagementUtils
                                     .resolveProtocolDisplayName(
@@ -1218,7 +1218,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         if (selectedProtocol === SupportedAuthProtocolTypes.SAML) {
             return(
                 <Header as="h6" color="grey" compact>
-                    { t("console:develop.features.applications.forms.inboundSAML.description") }
+                    { t("applications:forms.inboundSAML.description") }
                     <DocumentationLink
                         link={ getLink("develop.applications.editApplication.samlApplication.protocol.learnMore") }
                     >
@@ -1234,7 +1234,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 <Header as="h6" color="grey" compact>
                     {
                         t(
-                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            "applications:forms.inboundOIDC.description",
                             {
                                 protocol: ApplicationManagementUtils
                                     .resolveProtocolDisplayName(SupportedCustomAuthProtocolTypes.CAS)
@@ -1251,7 +1251,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 <Header as="h6" color="grey" compact>
                     {
                         t(
-                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            "applications:forms.inboundOIDC.description",
                             {
                                 protocol: ApplicationManagementUtils
                                     .resolveProtocolDisplayName(SupportedCustomAuthProtocolTypes.JWT_SSO)
@@ -1299,7 +1299,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             dispatch(addAlert({
                                 description: error.response.data.description,
                                 level: AlertLevels.ERROR,
-                                message: t("console:develop.features.applications.notifications.fetchProtocolMeta" +
+                                message: t("applications:notifications.fetchProtocolMeta" +
                                     ".error.message")
                             }));
 
@@ -1307,10 +1307,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         }
 
                         dispatch(addAlert({
-                            description: t("console:develop.features.applications.notifications.fetchProtocolMeta" +
+                            description: t("applications:notifications.fetchProtocolMeta" +
                                 ".genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: t("console:develop.features.applications.notifications.fetchProtocolMeta" +
+                            message: t("applications:notifications.fetchProtocolMeta" +
                                 ".genericError.message")
                         }));
                     });
@@ -1361,15 +1361,15 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 ref={ emphasizedSegmentRef }
                                             >
                                                 <EmptyPlaceholder
-                                                    title={ t("console:develop.features.applications.edit" +
+                                                    title={ t("applications:edit" +
                                                         ".sections.protocol.title") }
                                                     subtitle={ [
-                                                        t("console:develop.features.applications.edit" +
+                                                        t("applications:edit" +
                                                             ".sections.protocol.subtitle")
                                                     ] }
                                                     action={ (
                                                         <PrimaryButton onClick={ () => setShowWizard(true) }>
-                                                            { t("console:develop.features.applications.edit" +
+                                                            { t("applications:edit" +
                                                                 ".sections.protocol.button") }
                                                         </PrimaryButton>
                                                     ) }
@@ -1385,11 +1385,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 showWizard && (
                                     <ApplicationCreateWizard
                                         title={
-                                            t("console:develop.features.applications.edit.sections" +
+                                            t("applications:edit.sections" +
                                                 ".access.addProtocolWizard.heading")
                                         }
                                         subTitle={
-                                            t("console:develop.features.applications.edit.sections" +
+                                            t("applications:edit.sections" +
                                                 ".access.addProtocolWizard.subHeading",
                                             { appName: appName })
                                         }
@@ -1413,7 +1413,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             <p>
                                                 <Trans
                                                     i18nKey={
-                                                        "console:develop.features.applications.confirmations" +
+                                                        "applications:confirmations" +
                                                         ".deleteProtocol.assertionHint"
                                                     }
                                                     tOptions={ { name: protocolToDelete } }
@@ -1439,7 +1439,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             data-testid={ `${ componentId }-protocol-delete-confirmation-modal-header` }
                                         >
                                             {
-                                                t("console:develop.features.applications.confirmations" +
+                                                t("applications:confirmations" +
                                                     ".deleteProtocol.header")
                                             }
                                         </ConfirmationModal.Header>
@@ -1451,7 +1451,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             }
                                         >
                                             {
-                                                t("console:develop.features.applications.confirmations" +
+                                                t("applications:confirmations" +
                                                     ".deleteProtocol.message")
                                             }
                                         </ConfirmationModal.Message>
@@ -1461,7 +1461,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             }
                                         >
                                             {
-                                                t("console:develop.features.applications.confirmations" +
+                                                t("applications:confirmations" +
                                                     ".deleteProtocol.content")
                                             }
                                         </ConfirmationModal.Content>
@@ -1493,7 +1493,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         <ConfirmationModal.Header
                                             data-testid={ `${ componentId }-protocol-delete-confirmation-modal-header` }
                                         >
-                                            { t("console:develop.features.applications.confirmations." +
+                                            { t("applications:confirmations." +
                                             "changeProtocol.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
@@ -1503,7 +1503,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 `${ componentId }-protocol-delete-confirmation-modal-message`
                                             }
                                         >
-                                            { t("console:develop.features.applications.confirmations" +
+                                            { t("applications:confirmations" +
                                             ".changeProtocol.message",
                                             { name: selectedProtocol }) }
                                         </ConfirmationModal.Message>
@@ -1512,7 +1512,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 `${ componentId }-protocol-delete-confirmation-modal-content`
                                             }
                                         >
-                                            { t("console:develop.features.applications.confirmations." +
+                                            { t("applications:confirmations." +
                                             "changeProtocol.content") }
                                         </ConfirmationModal.Content>
                                     </ConfirmationModal>

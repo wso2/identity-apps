@@ -26,13 +26,13 @@ import {
     PageLayout,
     Text
 } from "@wso2is/react-components";
-import { updateValidationConfigData, useValidationConfigData } from "apps/console/src/features/validation/api";
+import { updateValidationConfigData, useValidationConfigData } from "../../../../features/validation/api";
 import {
     ValidationConfInterface,
     ValidationDataInterface,
     ValidationFormInterface,
     ValidationPropertyInterface
-} from "apps/console/src/features/validation/models";
+} from "../../../../features/validation/models";
 import { AxiosError } from "axios";
 import React, {
     FunctionComponent,
@@ -290,7 +290,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                 dispatch(addAlert({
                     description: t("extensions:manage.accountLogin.notifications.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.validation.notifications.success.message")
+                    message: t("validation:notifications.success.message")
                 }));
             })
             .catch((error: AxiosError) => {
@@ -337,7 +337,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                 onClick: handleBackButtonClick,
                 text: isApplicationRedirect ?
                     t("extensions:manage.accountLogin.goBackToApplication")
-                    : t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                    : t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }
@@ -572,6 +572,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                             listen={ (value: boolean) => setInitialFormValues(
                                                                 { ...currentValues, isAlphanumericOnly: value }
                                                             ) }
+                                                            readOnly={ true }
                                                             width={ 16 }
                                                             defaultValue={ initialFormValues }
                                                             data-componentid={ `${componentId}-is-alphanumeric-only` }

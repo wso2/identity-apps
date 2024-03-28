@@ -141,15 +141,15 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                         <Field
                             name="realm"
                             label={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.realm.label")
+                                t("applications:forms.inboundSTS.fields.realm.label")
                             }
                             required={ true }
                             requiredErrorMessage={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.realm.validations" +
+                                t("applications:forms.inboundSTS.fields.realm.validations" +
                                     ".empty")
                             }
                             placeholder={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.realm.placeholder")
+                                t("applications:forms.inboundSTS.fields.realm.placeholder")
                             }
                             type="text"
                             value={ initialValues?.realm }
@@ -157,7 +157,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             data-testid={ `${ testId }-realm-input` }
                         />
                         <Hint disabled={ !(isEmpty(initialValues?.realm)) }>
-                            { t("console:develop.features.applications.forms.inboundSTS.fields.realm.hint") }
+                            { t("applications:forms.inboundSTS.fields.realm.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -165,20 +165,20 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="replyTo"
-                            label={ t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.label") }
+                            label={ t("applications:forms.inboundSTS.fields.replyTo.label") }
                             required={ true }
                             requiredErrorMessage={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.validations" +
+                                t("applications:forms.inboundSTS.fields.replyTo.validations" +
                                     ".empty")
                             }
                             placeholder={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.placeholder")
+                                t("applications:forms.inboundSTS.fields.replyTo.placeholder")
                             }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:develop.features.applications.forms.inboundSTS.fields.replyTo" +
+                                        t("applications:forms.inboundSTS.fields.replyTo" +
                                             ".validations.invalid")
                                     );
                                 }
@@ -189,7 +189,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             data-testid={ `${ testId }-reply-to-url-input` }
                         />
                         <Hint>
-                            { t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.hint") }
+                            { t("applications:forms.inboundSTS.fields.replyTo.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -198,17 +198,17 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                         <Field
                             name="replyToLogout"
                             label={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.label")
+                                t("applications:forms.inboundSTS.fields.replyToLogout.label")
                             }
                             placeholder={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
+                                t("applications:forms.inboundSTS.fields.replyToLogout" +
                                     ".placeholder")
                             }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:develop.features.applications.forms.inboundSTS.fields." +
+                                        t("applications:forms.inboundSTS.fields." +
                                             "replyToLogout.validations.invalid")
                                     );
                                 }
@@ -219,7 +219,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             data-componentid={ `${ testId }-reply-to-logout-url-input` }
                         />
                         <Hint>
-                            { t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.hint") }
+                            { t("applications:forms.inboundSTS.fields.replyToLogout.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

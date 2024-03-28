@@ -107,13 +107,13 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -123,12 +123,12 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -153,7 +153,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         switch (connectorCategory.connectors[0].categoryId) {
             case ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID:
                 return (
-                    t("console:manage.features.governanceConnectors.connectorCategories.multiFactorAuthenticators." +
+                    t("governanceConnectors:connectorCategories.multiFactorAuthenticators." +
                     "friendlyName")
                 );
             default:
@@ -169,7 +169,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                 serverConfigurationConfig.showPageHeading && (connectorCategory?.description
                     ? connectorCategory.description
                     : connectorCategory?.name
-                    && t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                    && t("governanceConnectors:connectorSubHeading", {
                         name:
                         categoryId === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
                             ? connectorCategory.name.split(" ")[0]
@@ -179,7 +179,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
             }
             backButton={ {
                 onClick: () => onBackButtonClick(),
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             data-testid={ `${testId}-page-layout` }
         >
@@ -236,7 +236,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                             <>
                                                 <h5>
                                                     {
-                                                        t("console:manage.features.governanceConnectors.categories")
+                                                        t("governanceConnectors:categories")
                                                     }
                                                 </h5>
                                                 <Menu

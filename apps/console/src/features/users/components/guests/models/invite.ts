@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { InviteUserStatus } from "apps/console/src/extensions/components/users/models";
+import { InviteUserStatus } from "../../../../../extensions/components/users/models";
 import { ReactNode } from "react";
 import { GroupsInterface } from "../../../../groups";
 

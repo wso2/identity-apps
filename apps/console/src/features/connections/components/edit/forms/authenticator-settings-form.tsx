@@ -364,7 +364,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
                             && !isEmpty(extractScopes(formFields?.AdditionalQueryParameters?.value))) && (
                             <FormSection
                                 heading={
-                                    t("console:develop.features.authenticationProvider.forms" +
+                                    t("authenticationProvider:forms" +
                                         ".authenticatorSettings.google.scopes.heading")
                                 }
                             >
@@ -411,7 +411,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
                                 <Hint compact>
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.forms" +
+                                            "authenticationProvider:forms" +
                                             ".authenticatorSettings.google.scopes.hint"
                                         }
                                     >

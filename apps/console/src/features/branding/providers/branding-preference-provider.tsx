@@ -115,12 +115,14 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const {
         data: customText,
         error: customTextPreferenceFetchRequestError,
+        isLoading: isCustomTextPreferenceFetching,
         mutate: mutateCustomTextPreferenceFetchRequest
     } = useGetCustomTextPreferenceResolve(
         !!selectedScreen && !!selectedLocale,
         tenantDomain,
         selectedScreen,
-        selectedLocale);
+        selectedLocale
+    );
 
     const {
         data: customTextFallbackCommons
@@ -178,12 +180,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
         dispatch(
             addAlert<AlertInterface>({
-                description: t("console:brandingCustomText.notifications.getPreferenceError.description", {
+                description: t("branding:brandingCustomText.notifications.getPreferenceError.description", {
                     locale: selectedLocale,
                     screen: selectedScreen
                 }),
                 level: AlertLevels.ERROR,
-                message: t("console:brandingCustomText.notifications.getPreferenceError.message")
+                message: t("branding:brandingCustomText.notifications.getPreferenceError.message")
             })
         );
     }, [ customTextPreferenceFetchRequestError ]);
@@ -223,12 +225,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 () => {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("console:brandingCustomText.notifications.updateSuccess.description", {
+                            description: t("branding:brandingCustomText.notifications.updateSuccess.description", {
                                 locale: selectedLocale,
                                 screen: selectedScreen
                             }),
                             level: AlertLevels.SUCCESS,
-                            message: t("console:brandingCustomText.notifications.updateSuccess.message")
+                            message: t("branding:brandingCustomText.notifications.updateSuccess.message")
                         })
                     );
 
@@ -243,12 +245,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     return;
                 }
                 addAlert<AlertInterface>({
-                    description: t("console:brandingCustomText.notifications.updateError.description", {
+                    description: t("branding:brandingCustomText.notifications.updateError.description", {
                         locale: selectedLocale,
                         screen: selectedScreen
                     }),
                     level: AlertLevels.ERROR,
-                    message: t("console:brandingCustomText.notifications.updateError.message")
+                    message: t("branding:brandingCustomText.notifications.updateError.message")
                 });
             });
     };
@@ -263,12 +265,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         deleteCustomTextPreference(tenantDomain, screen, locale).then(() => {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("console:brandingCustomText.notifications.resetSuccess.description", {
+                    description: t("branding:brandingCustomText.notifications.resetSuccess.description", {
                         locale: selectedLocale,
                         screen: selectedScreen
                     }),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:brandingCustomText.notifications.resetSuccess.message")
+                    message: t("branding:brandingCustomText.notifications.resetSuccess.message")
                 })
             );
 
@@ -282,12 +284,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
             .catch(() => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("console:brandingCustomText.notifications.updateError.description", {
+                        description: t("branding:brandingCustomText.notifications.updateError.description", {
                             locale: selectedLocale,
                             screen: selectedScreen
                         }),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:brandingCustomText.notifications.updateError.message")
+                        message: t("branding:brandingCustomText.notifications.updateError.message")
                     })
                 );
             });
@@ -387,13 +389,14 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 },
                 i18n,
                 isCustomTextConfigured: customText && !isEqual(customText, customTextFallbacks),
+                isCustomTextPreferenceFetching: isCustomTextPreferenceFetching,
                 onSelectedLocaleChange: (locale: string): void => {
-                    setSelectedCustomTextLocale(locale);
                     setCustomTextFormSubscription(null);
+                    setSelectedCustomTextLocale(locale);
                 },
                 onSelectedPreviewScreenChange: (screen: PreviewScreenType): void => {
-                    setSelectedPreviewScreen(screen);
                     setCustomTextFormSubscription(null);
+                    setSelectedPreviewScreen(screen);
                 },
                 preference: brandingPreference,
                 resetAllCustomTextPreference: _deleteCustomTextPreference,

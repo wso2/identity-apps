@@ -132,7 +132,7 @@ FunctionComponent<TraditionalOIDCWebApplicationQuickStartPropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchApplications." +
+                        message: t("applications:notifications.fetchApplications." +
                             "error.message")
                     }));
 
@@ -140,10 +140,10 @@ FunctionComponent<TraditionalOIDCWebApplicationQuickStartPropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.fetchApplications" +
+                    description: t("applications:notifications.fetchApplications" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchApplications." +
+                    message: t("applications:notifications.fetchApplications." +
                         "genericError.message")
                 }));
             });

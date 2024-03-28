@@ -1,5 +1,149 @@
 # @wso2is/identity-apps-core
 
+## 2.1.49
+
+### Patch Changes
+
+- [#5835](https://github.com/wso2/identity-apps/pull/5835) [`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve audit log ux
+
+* [#5833](https://github.com/wso2/identity-apps/pull/5833) [`7eb9423030`](https://github.com/wso2/identity-apps/commit/7eb9423030df2edf0d95885a8a19fec7c23c667f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Removed unnecessary conversion of authList to an ArrayList in several jsps
+
+* Updated dependencies [[`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74)]:
+  - @wso2is/theme@2.0.71
+
+## 2.1.48
+
+### Patch Changes
+
+- [#5729](https://github.com/wso2/identity-apps/pull/5729) [`ac910bfad7`](https://github.com/wso2/identity-apps/commit/ac910bfad78e53384a0fe70a2248b9dd0f3696da) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Added support to validate MultiOptionURI
+
+## 2.1.47
+
+### Patch Changes
+
+- [#5827](https://github.com/wso2/identity-apps/pull/5827) [`3317f1eda7`](https://github.com/wso2/identity-apps/commit/3317f1eda786173a010c5a179df42e5cf8a36d03) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Improve logic to fix conflict on sp and spId params
+
+## 2.1.46
+
+### Patch Changes
+
+- [#5769](https://github.com/wso2/identity-apps/pull/5769) [`da1ee408ad`](https://github.com/wso2/identity-apps/commit/da1ee408adf64adf8bcbb79d3c947ff811f0a381) Thanks [@lashinijay](https://github.com/lashinijay)! - Update license headers in iproovlogin.jsp
+
+## 2.1.45
+
+### Patch Changes
+
+- [#5758](https://github.com/wso2/identity-apps/pull/5758) [`12e1dfa241`](https://github.com/wso2/identity-apps/commit/12e1dfa241b48900b03169cd970bcb22ea0c4584) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add changeset
+
+- Updated dependencies [[`12e1dfa241`](https://github.com/wso2/identity-apps/commit/12e1dfa241b48900b03169cd970bcb22ea0c4584)]:
+  - @wso2is/theme@2.0.70
+
+## 2.1.44
+
+### Patch Changes
+
+- [#5759](https://github.com/wso2/identity-apps/pull/5759) [`64ab95f637`](https://github.com/wso2/identity-apps/commit/64ab95f637be508639ca88316ad6cbde5d29a906) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove \ from self-registration email regex
+
+## 2.1.43
+
+### Patch Changes
+
+- [#5225](https://github.com/wso2/identity-apps/pull/5225) [`1f95aa54bd`](https://github.com/wso2/identity-apps/commit/1f95aa54bd2cdac214ad8d02767a0ff4c1966786) Thanks [@lashinijay](https://github.com/lashinijay)! - UI implementations required to onbaord iProov authenticator.
+
+- Updated dependencies [[`1f95aa54bd`](https://github.com/wso2/identity-apps/commit/1f95aa54bd2cdac214ad8d02767a0ff4c1966786)]:
+  - @wso2is/theme@2.0.69
+
+## 2.1.42
+
+### Patch Changes
+
+- [#5746](https://github.com/wso2/identity-apps/pull/5746) [`0e764a6de6`](https://github.com/wso2/identity-apps/commit/0e764a6de6c5be504f6fd6f7deb2102cc4ca4b51) Thanks [@brionmario](https://github.com/brionmario)! - Fix myaccount url to contain tenanted path
+
+## 2.1.41
+
+### Patch Changes
+
+- [#5740](https://github.com/wso2/identity-apps/pull/5740) [`a732ebab1e`](https://github.com/wso2/identity-apps/commit/a732ebab1e46ce32beb8f00454d1a6b6b2842d17) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with `poweredByLogoURL`
+
+## 2.1.40
+
+### Patch Changes
+
+- [#5674](https://github.com/wso2/identity-apps/pull/5674) [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unwanted assets from theme
+
+- Updated dependencies [[`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa)]:
+  - @wso2is/theme@2.0.68
+
+## 2.1.39
+
+### Patch Changes
+
+- [#5702](https://github.com/wso2/identity-apps/pull/5702) [`f39ad4b76a`](https://github.com/wso2/identity-apps/commit/f39ad4b76a185a76a7560d1d34b2178f1caebaa5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n for "Powered by" string in recovery portal
+
+* [#5711](https://github.com/wso2/identity-apps/pull/5711) [`7003abe454`](https://github.com/wso2/identity-apps/commit/7003abe4546e59b53e0df1e231ea7c09e545844f) Thanks [@Yoshani](https://github.com/Yoshani)! - set tenant-aware username in alor cookie
+
+## 2.1.38
+
+### Patch Changes
+
+- [#5693](https://github.com/wso2/identity-apps/pull/5693) [`307b964dcc`](https://github.com/wso2/identity-apps/commit/307b964dccc90f1a2f94c8ee38eed51c8a7ede6e) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Remove special characters from password validation"
+
+## 2.1.37
+
+### Patch Changes
+
+- [#5658](https://github.com/wso2/identity-apps/pull/5658) [`68b3389feb`](https://github.com/wso2/identity-apps/commit/68b3389feb98cdeab12ee658c2572a51efa2d400) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the logic to display the login idenfier input label
+
+## 2.1.36
+
+### Patch Changes
+
+- [#5652](https://github.com/wso2/identity-apps/pull/5652) [`1531929614`](https://github.com/wso2/identity-apps/commit/1531929614c0225d57e6266a1092e93dcd574784) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Change user selfregistration email regex pattern to allow special charactors
+
+## 2.1.35
+
+### Patch Changes
+
+- [#5634](https://github.com/wso2/identity-apps/pull/5634) [`04f4631064`](https://github.com/wso2/identity-apps/commit/04f463106429f4792f0f85304d6f917de2d39800) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Refactor the x509 certificate authentication portal
+
+## 2.1.34
+
+### Patch Changes
+
+- [#5613](https://github.com/wso2/identity-apps/pull/5613) [`c83cb57abe`](https://github.com/wso2/identity-apps/commit/c83cb57abef3d9069df4dcf0615a37a1b14318cc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the redundancy in the signup flow UI
+
+## 2.1.33
+
+### Patch Changes
+
+- [#5572](https://github.com/wso2/identity-apps/pull/5572) [`bb89a69bb6`](https://github.com/wso2/identity-apps/commit/bb89a69bb606bab596dfcabb3b8359b679d28084) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] The Continue button text change is affecting the Set Password section as well
+
+## 2.1.32
+
+### Patch Changes
+
+- [#5522](https://github.com/wso2/identity-apps/pull/5522) [`2d5cf5fb07`](https://github.com/wso2/identity-apps/commit/2d5cf5fb072bc53a3f7ebd09b2044c6eb430a705) Thanks [@Avarjana](https://github.com/Avarjana)! - Update layout resolving logic for external URL
+
+* [#5622](https://github.com/wso2/identity-apps/pull/5622) [`f8f0b2f577`](https://github.com/wso2/identity-apps/commit/f8f0b2f5777bd9ba8e0caeb3fd3be68ba92935bd) Thanks [@Avarjana](https://github.com/Avarjana)! - Add URL check for custom stylesheet.
+
+## 2.1.31
+
+### Patch Changes
+
+- [#5623](https://github.com/wso2/identity-apps/pull/5623) [`00a55c8c0e`](https://github.com/wso2/identity-apps/commit/00a55c8c0e9e4826b896ab42ba519f4b0b74c550) Thanks [@brionmario](https://github.com/brionmario)! - Remove redundant dependency
+
+## 2.1.30
+
+### Patch Changes
+
+- [#5569](https://github.com/wso2/identity-apps/pull/5569) [`73b1f0fea8`](https://github.com/wso2/identity-apps/commit/73b1f0fea84b60e39cbd356c3932bd78545ded3d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the Sign Up button issue of the consent only provisioning flow
+
+## 2.1.29
+
+### Patch Changes
+
+- [#5593](https://github.com/wso2/identity-apps/pull/5593) [`a7191dcbe7`](https://github.com/wso2/identity-apps/commit/a7191dcbe7df848f85b782830a9d18f280c56e99) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add fix for cleaning URLs
+
 ## 2.1.28
 
 ### Patch Changes

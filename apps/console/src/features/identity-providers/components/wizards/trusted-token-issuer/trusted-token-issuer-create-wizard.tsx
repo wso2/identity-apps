@@ -130,12 +130,12 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
     // Options list for the certificate type switcher.
     const certificateOptions: [SwitcherOptionProps, SwitcherOptionProps] = [
         {
-            label: t("console:develop.features.authenticationProvider." +
+            label: t("authenticationProvider:" +
                 "templates.trustedTokenIssuer.forms.jwksUrl.optionLabel"),
             value: CertificateType.JWKS
         },
         {
-            label: t("console:develop.features.authenticationProvider." +
+            label: t("authenticationProvider:" +
                 "templates.trustedTokenIssuer.forms.pem.optionLabel"),
             value: CertificateType.PEM
         }
@@ -184,13 +184,13 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
             content: wizardCommonFirstPage(),
             icon: getIdentityProviderWizardStepIcons().general,
             name: TrsutedTokenIssuerWizardStep.GENERAL_DETAILS,
-            title: t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer.forms.steps.general")
+            title: t("authenticationProvider:templates.trustedTokenIssuer.forms.steps.general")
         },
         {
             content: certificatesPage(),
             icon: getIdentityProviderWizardStepIcons().general,
             name: TrsutedTokenIssuerWizardStep.CERTIFICATES,
-            title: t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer.forms.steps." +
+            title: t("authenticationProvider:templates.trustedTokenIssuer.forms.steps." +
                 "certificate")
         }
     ];
@@ -212,7 +212,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
      */
     const isLoopBackCall = (value: string): string => {
         if (URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls) {
-            return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+            return t("idp:forms.common.internetResolvableErrorMessage");
         }
 
         return undefined;
@@ -262,10 +262,10 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 });
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications." +
+                    description: t("authenticationProvider:notifications." +
                         "addIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         "addIDP.success.message")
                 }));
 
@@ -295,11 +295,11 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
 
                 if (error?.response?.data?.description) {
                     setAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications." +
+                        description: t("authenticationProvider:notifications." +
                             "addIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider.notifications." +
+                        message: t("authenticationProvider:notifications." +
                             "addIDP.error.message")
                     });
 
@@ -307,10 +307,10 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 }
 
                 setAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    description: t("authenticationProvider:notifications.addIDP." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    message: t("authenticationProvider:notifications.addIDP." +
                         "genericError.message")
                 });
             })
@@ -333,9 +333,9 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 ariaLabel="name"
                 name="name"
                 inputType="resource_name"
-                placeholder={ t("console:develop.features.authenticationProvider." +
+                placeholder={ t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.name.placeholder") }
-                label= { t("console:develop.features.authenticationProvider." +
+                label= { t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.name.label") }
                 maxLength={ IdentityProviderConstants.IDP_NAME_MAX_LENGTH }
                 minLength={ IdentityProviderConstants.IDP_NAME_MIN_LENGTH }
@@ -346,12 +346,12 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                     let errorMsg: string;
 
                     if (isIdpNameAlreadyTaken(values)) {
-                        errorMsg = t("console:develop.features.authenticationProvider." +
+                        errorMsg = t("authenticationProvider:" +
                             "forms.generalDetails.name.validations.duplicate");
                     }
 
                     if (!FormValidation.isValidResourceName(values)) {
-                        errorMsg = t("console:develop.features.authenticationProvider." +
+                        errorMsg = t("authenticationProvider:" +
                             "templates.enterprise.validation.invalidName", { idpName: values });
                     }
 
@@ -366,11 +366,11 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 aria-label="issuer"
                 inputType="resource_name"
                 name="issuer"
-                placeholder={ t("console:develop.features.authenticationProvider." +
+                placeholder={ t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.issuer.placeholder") }
-                label={ t("console:develop.features.authenticationProvider." +
+                label={ t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.issuer.label") }
-                hint={ t("console:develop.features.authenticationProvider." +
+                hint={ t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.issuer.hint") }
                 maxLength={ IdentityProviderConstants.IDP_NAME_MAX_LENGTH }
                 minLength={ IdentityProviderConstants.IDP_NAME_MIN_LENGTH }
@@ -381,7 +381,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                     let errorMsg: string;
 
                     if (!FormValidation.resourceName(values)) {
-                        errorMsg = t("console:develop.features.authenticationProvider." +
+                        errorMsg = t("authenticationProvider:" +
                             "templates.trustedTokenIssuer.forms.issuer.validation.notValid", { issuer: values });
                     }
 
@@ -396,11 +396,11 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 aria-label="alias"
                 inputType="resource_name"
                 name="alias"
-                placeholder={ t("console:develop.features.authenticationProvider." +
+                placeholder={ t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.alias.placeholder") }
-                label={ t("console:develop.features.authenticationProvider." +
+                label={ t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.alias.label") }
-                hint={ t("console:develop.features.authenticationProvider." +
+                hint={ t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.alias.hint", { productName: config.ui.productName }) }
                 maxLength={ IdentityProviderConstants.IDP_NAME_MAX_LENGTH }
                 minLength={ IdentityProviderConstants.IDP_NAME_MIN_LENGTH }
@@ -410,7 +410,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                     let errorMsg: string;
 
                     if (!FormValidation.resourceName(values)) {
-                        errorMsg =  t("console:develop.features.authenticationProvider." +
+                        errorMsg =  t("authenticationProvider:" +
                         "templates.trustedTokenIssuer.forms.alias.validation.notValid", { alias: values });
                     }
 
@@ -433,13 +433,13 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 <Grid className="switcher-grid" container rowSpacing={ 2 }>
                     <Grid xs={ 12 }>
                         <Alert severity="info">
-                            { t("console:develop.features.authenticationProvider." +
+                            { t("authenticationProvider:" +
                                 "templates.trustedTokenIssuer.forms.certificateType.requiredCertificate") }
                         </Alert>
                     </Grid>
                     <Grid md={ 12 } lg={ 8 }>
                         <div className="required-certificate-label">
-                            { t("console:develop.features.authenticationProvider." +
+                            { t("authenticationProvider:" +
                                 "templates.trustedTokenIssuer.forms.certificateType.label") }
                         </div>
                         <Switcher
@@ -471,23 +471,23 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                             ariaLabel="JWKS endpoint URL"
                             inputType="url"
                             name="jwks_endpoint"
-                            label={ t("console:develop.features.authenticationProvider." +
+                            label={ t("authenticationProvider:" +
                                 "templates.trustedTokenIssuer.forms.jwksUrl.label") }
                             required
                             maxLength={ IdentityProviderConstants.JWKS_URL_MAX_LENGTH }
                             minLength={ IdentityProviderConstants.JWKS_URL_MIN_LENGTH }
                             width={ 15 }
                             initialValue={ "" }
-                            placeholder={ t("console:develop.features.authenticationProvider." +
+                            placeholder={ t("authenticationProvider:" +
                                 "templates.trustedTokenIssuer.forms.jwksUrl.placeholder") }
                             data-componentid={ `${ componentId }-form-wizard-oidc-jwks-endpoint-url` }
-                            hint={ t("console:develop.features.authenticationProvider." +
+                            hint={ t("authenticationProvider:" +
                                 "templates.trustedTokenIssuer.forms.jwksUrl.hint") }
                             validation={ (values: string) => {
                                 let errorMsg: string;
 
                                 if (!FormValidation.url(values)) {
-                                    errorMsg = t("console:develop.features.authenticationProvider." +
+                                    errorMsg = t("authenticationProvider:" +
                                         "templates.trustedTokenIssuer.forms.jwksUrl.validation.notValid");
                                 }
 
@@ -532,18 +532,18 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                                         !result.valid
                                     );
                                 } }
-                                uploadButtonText={ t("console:develop.features.authenticationProvider." +
+                                uploadButtonText={ t("authenticationProvider:" +
                                     "templates.trustedTokenIssuer.forms.pem.uploadCertificateButtonLabel") }
-                                dropzoneText={ t("console:develop.features.authenticationProvider." +
+                                dropzoneText={ t("authenticationProvider:" +
                                     "templates.trustedTokenIssuer.forms.pem.dropzoneText") }
-                                pasteAreaPlaceholderText={ t("console:develop.features.authenticationProvider." +
+                                pasteAreaPlaceholderText={ t("authenticationProvider:" +
                                     "templates.trustedTokenIssuer.forms.pem.pasteAreaPlaceholderText") }
                                 icon={ getCertificateIllustrations().uploadPlaceholder }
                                 placeholderIcon={ <Icon name="file alternate" size={ "huge" }/> }
                                 data-componentid={ `${ componentId }-form-wizard-pem-certificate` }
                             />
                             <Hint>
-                                { t("console:develop.features.authenticationProvider." +
+                                { t("authenticationProvider:" +
                                     "templates.trustedTokenIssuer.forms.pem.hint") }
                             </Hint>
                         </>
@@ -579,13 +579,13 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
             { openLimitReachedModal &&
                 (
                     <TierLimitReachErrorModal
-                        actionLabel={ t("console:develop.features.idp.notifications.tierLimitReachedError." +
+                        actionLabel={ t("idp:notifications.tierLimitReachedError." +
                             "emptyPlaceholder.action") }
                         handleModalClose={ handleLimitReachedModalClose }
-                        header={ t("console:develop.features.idp.notifications.tierLimitReachedError.heading") }
-                        description={ t("console:develop.features.idp.notifications.tierLimitReachedError." +
+                        header={ t("idp:notifications.tierLimitReachedError.heading") }
+                        description={ t("idp:notifications.tierLimitReachedError." +
                             "emptyPlaceholder.subtitles") }
-                        message={ t("console:develop.features.idp.notifications.tierLimitReachedError." +
+                        message={ t("idp:notifications.tierLimitReachedError." +
                             "emptyPlaceholder.title") }
                         openModal={ openLimitReachedModal }
                     />
@@ -686,7 +686,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                                     } }
                                     data-componentid={ `${ componentId }-modal-next-button` }
                                 >
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
+                                    { t("authenticationProvider:wizards.buttons.next") }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }
@@ -701,7 +701,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                                     data-componentid={ `${ componentId }-modal-finish-button` }
                                     loading={ isSubmitting }
                                 >
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                    { t("authenticationProvider:wizards.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
@@ -712,7 +712,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                                     data-componentid={ `${ componentId }-modal-previous-button` }
                                 >
                                     <Icon name="arrow left"/>
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                                    { t("authenticationProvider:wizards.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid>

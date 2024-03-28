@@ -110,14 +110,14 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
         addUserStore(userStore).then(() => {
             dispatch(addAlert({
-                description: t("console:manage.features.userstores.notifications.addUserstore.success.description"),
+                description: t("userstores:notifications.addUserstore.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:manage.features.userstores.notifications.addUserstore.success.message")
+                message: t("userstores:notifications.addUserstore.success.message")
             }));
             dispatch(addAlert({
-                description: t("console:manage.features.userstores.notifications.delay.description"),
+                description: t("userstores:notifications.delay.description"),
                 level: AlertLevels.WARNING,
-                message: t("console:manage.features.userstores.notifications.delay.message")
+                message: t("userstores:notifications.delay.message")
             }));
 
             onClose();
@@ -138,10 +138,10 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             }
 
             setAlert({
-                description: error?.description ?? t("console:manage.features.userstores.notifications.addUserstore" +
+                description: error?.description ?? t("userstores:notifications.addUserstore" +
                     ".genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message ?? t("console:manage.features.userstores.notifications.addUserstore" +
+                message: error?.message ?? t("userstores:notifications.addUserstore" +
                     ".genericError.message")
             });
         }).finally(() => {
@@ -265,7 +265,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 />
             ),
             icon: getAddUserstoreWizardStepIcons().general,
-            title: t("console:manage.features.userstores.wizard.steps.general")
+            title: t("userstores:wizard.steps.general")
         },
         {
             content: (
@@ -274,11 +274,12 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     onSubmit={ onSubmitUserDetails }
                     values={ userDetailsData }
                     properties={ properties?.user?.required }
+                    type={ type?.typeName }
                     data-testid={ `${ testId }-user-details` }
                 />
             ),
             icon: getAddUserstoreWizardStepIcons().general,
-            title: t("console:manage.features.userstores.wizard.steps.user")
+            title: t("userstores:wizard.steps.user")
         },
         {
             content: (
@@ -291,7 +292,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 />
             ),
             icon: getAddUserstoreWizardStepIcons().general,
-            title: t("console:manage.features.userstores.wizard.steps.group")
+            title: t("userstores:wizard.steps.group")
         },
         {
             content: (
@@ -306,7 +307,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 />
             ),
             icon: getAddUserstoreWizardStepIcons().general,
-            title: t("console:manage.features.userstores.wizard.steps.summary")
+            title: t("userstores:wizard.steps.summary")
         }
     ];
 
@@ -348,7 +349,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
-                { t("console:manage.features.userstores.wizard.header",
+                { t("userstores:wizard.header",
                     {
                         type: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                     })

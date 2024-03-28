@@ -99,7 +99,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                     <Grid.Column width={ 16 }>
                         <Heading as="h2" textAlign={ isMobileViewport ? "center" : "left" }>
                             { t(
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "applications:edit.sections.signOnMethod.sections." +
                                 "landing.flowBuilder.heading"
                             ) }
                         </Heading>
@@ -112,7 +112,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 <>
                                     <Heading as="h4">
                                         { t(
-                                            "console:develop.features.applications.edit." +
+                                            "applications:edit." +
                                             "sections.signOnMethod.sections." +
                                             "landing.flowBuilder.headings.default"
                                         ) }
@@ -123,11 +123,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         image={ getAuthenticatorIcons().basic }
                                         imageSize="mini"
                                         header={ t(
-                                            "console:develop.features.applications.edit.sections.signOnMethod." +
+                                            "applications:edit.sections.signOnMethod." +
                                             "sections.landing.flowBuilder.types.defaultConfig.heading"
                                         ) }
                                         description={ t(
-                                            "console:develop.features.applications.edit.sections.signOnMethod." +
+                                            "applications:edit.sections.signOnMethod." +
                                             "sections.landing.flowBuilder.types.defaultConfig.description"
                                         ) }
                                         onClick={ () => {
@@ -144,7 +144,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             <Heading as="h4">
                                 { t(
-                                    "console:develop.features.applications.edit." +
+                                    "applications:edit." +
                                     "sections.signOnMethod.sections." +
                                     "landing.flowBuilder.headings.multiFactorLogin"
                                 ) }
@@ -156,11 +156,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     image={ getAuthenticatorIcons().totp }
                                     imageSize="mini"
                                     header={ t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder.types.totp.heading"
                                     ) }
                                     description={ t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder.types.totp.description"
                                     ) }
                                     onClick={ () => {
@@ -181,11 +181,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     image={ getAuthenticatorIcons().emailOTP }
                                     imageSize="mini"
                                     header={ t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder.types.emailOTP.heading"
                                     ) }
                                     description={ t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder.types.emailOTP.description"
                                     ) }
                                     onClick={ () => {
@@ -208,11 +208,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         image={ getAuthenticatorIcons().smsOTP }
                                         imageSize="mini"
                                         header={ t(
-                                            "console:develop.features.applications.edit.sections" +
+                                            "applications:edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.heading"
                                         ) }
                                         description={ t(
-                                            "console:develop.features.applications.edit.sections" +
+                                            "applications:edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.description"
                                         ) }
                                         onClick={ () => {
@@ -233,7 +233,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                         <div className="pl-3">
                             <Heading as="h4">
                                 { t(
-                                    "console:develop.features.applications.edit." +
+                                    "applications:edit." +
                                     "sections.signOnMethod.sections." +
                                     "landing.flowBuilder.headings.passwordlessLogin"
                                 ) }
@@ -248,11 +248,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     image={ getAuthenticatorIcons().fido }
                                     imageSize="mini"
                                     header={ t(
-                                        "console:develop.features.applications.edit.sections.signOnMethod" +
+                                        "applications:edit.sections.signOnMethod" +
                                         ".sections.landing.flowBuilder.types.passkey.heading")
                                     }
                                     description={ t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.passkey.description"
                                     ) }
@@ -277,12 +277,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     image={ getAuthenticatorIcons().magicLink }
                                     imageSize="mini"
                                     header={ t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.magicLink.heading"
                                     ) }
                                     description={ t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.magicLink.description"
                                     ) }
@@ -307,12 +307,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     image={ getAuthenticatorIcons().emailOTP }
                                     imageSize="mini"
                                     header={ t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.emailOTPFirstFactor.heading"
                                     ) }
                                     description={ t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.emailOTPFirstFactor.description"
                                     ) }
@@ -327,6 +327,36 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     showCardAction={ false }
                                 />
                             ) }
+                            { !hiddenOptions?.includes(LoginFlowTypes.SMS_OTP) &&
+                                !hiddenAuthenticators?.includes(
+                                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
+                                ) && (
+                                <InfoCard
+                                    fluid
+                                    data-componentid="sms-otp-flow-card"
+                                    image={ getAuthenticatorIcons().smsOTP }
+                                    imageSize="mini"
+                                    header={ t(
+                                        "applications:edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.smsOTPFirstFactor.heading"
+                                    ) }
+                                    description={ t(
+                                        "applications:edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.smsOTPFirstFactor.description"
+                                    ) }
+                                    onClick={ () => {
+                                        eventPublisher.publish(
+                                            "application-begin-sign-in-sms-otp-password-less",
+                                            { "client-id": clientId }
+                                        );
+                                        onLoginFlowSelect(LoginFlowTypes.SMS_OTP);
+                                    } }
+                                    showSetupGuideButton={ false }
+                                    showCardAction={ false }
+                                />
+                            ) }
                             { (!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN) ||
@@ -335,7 +365,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 <>
                                     <Heading as="h4">
                                         { t(
-                                            "console:develop.features.applications.edit." +
+                                            "applications:edit." +
                                             "sections.signOnMethod.sections." +
                                             "landing.flowBuilder.headings.socialLogin"
                                         ) }
@@ -347,11 +377,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().google }
                                             header={ t(
-                                                "console:develop.features.applications.edit.sections" +
+                                                "applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.google.heading"
                                             ) }
                                             description={ t(
-                                                "console:develop.features.applications.edit.sections" +
+                                                "applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder." +
                                                 "types.google.description"
                                             ) }
@@ -374,11 +404,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().github }
                                             header={ t(
-                                                "console:develop.features.applications.edit.sections" +
+                                                "applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.github.heading"
                                             ) }
                                             description={ t(
-                                                "console:develop.features.applications.edit.sections" +
+                                                "applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder." +
                                                 "types.github.description"
                                             ) }
@@ -394,11 +424,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().facebook }
                                             header={ t(
-                                                "console:develop.features.applications.edit.sections" +
+                                                "applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.facebook.heading"
                                             ) }
                                             description={ t(
-                                                "console:develop.features.applications.edit.sections" +
+                                                "applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder." +
                                                 "types.facebook.description"
                                             ) }
@@ -414,11 +444,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().microsoft }
                                             header={ t(
-                                                "console:develop.features.applications.edit.sections" +
+                                                "applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.microsoft.heading"
                                             ) }
                                             description={ t(
-                                                "console:develop.features.applications.edit.sections" +
+                                                "applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder." +
                                                 "types.microsoft.description"
                                             ) }
@@ -440,11 +470,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().apple }
                                             header={
-                                                t("console:develop.features.applications.edit.sections" +
+                                                t("applications:edit.sections" +
                                                     ".signOnMethod.sections.landing.flowBuilder.types.apple.heading")
                                             }
                                             description={
-                                                t("console:develop.features.applications.edit.sections" +
+                                                t("applications:edit.sections" +
                                                     ".signOnMethod.sections.landing.flowBuilder." +
                                                     "types.apple.description")
                                             }

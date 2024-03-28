@@ -157,10 +157,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             .then(() => {
                 setIsDeletionInProgress(false);
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.deleteApplication.success" +
+                    description: t("applications:notifications.deleteApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.deleteApplication.success.message")
+                    message: t("applications:notifications.deleteApplication.success.message")
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -172,7 +172,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.deleteApplication.error" +
+                        message: t("applications:notifications.deleteApplication.error" +
                             ".message")
                     }));
 
@@ -180,10 +180,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.deleteApplication" +
+                    description: t("applications:notifications.deleteApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
+                    message: t("applications:notifications.deleteApplication.genericError" +
                         ".message")
                 }));
             });
@@ -200,10 +200,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         updateApplicationDetails(updatedDetails)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateApplication.success" +
+                    description: t("applications:notifications.updateApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateApplication.success.message")
+                    message: t("applications:notifications.updateApplication.success.message")
                 }));
 
                 onUpdate(appId);
@@ -213,7 +213,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateApplication.error" +
+                        message: t("applications:notifications.updateApplication.error" +
                             ".message")
                     }));
 
@@ -221,10 +221,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateApplication" +
+                    description: t("applications:notifications.updateApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
+                    message: t("applications:notifications.updateApplication.genericError" +
                         ".message")
                 }));
             })
@@ -258,18 +258,18 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     when={ AccessControlConstants.APPLICATION_DELETE }
                 >
                     <DangerZoneGroup
-                        sectionHeader={ t("console:develop.features.applications.dangerZoneGroup.header") }
+                        sectionHeader={ t("applications:dangerZoneGroup.header") }
                     >
                         <DangerZone
                             actionTitle={
-                                t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
+                                t("applications:dangerZoneGroup.deleteApplication" +
                                     ".actionTitle")
                             }
                             header={
-                                t("console:develop.features.applications.dangerZoneGroup.deleteApplication.header")
+                                t("applications:dangerZoneGroup.deleteApplication.header")
                             }
                             subheader={
-                                t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
+                                t("applications:dangerZoneGroup.deleteApplication" +
                                     ".subheader")
                             }
                             onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
@@ -319,7 +319,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
+                        assertionHint={ t("applications:confirmations.deleteApplication." +
                             "assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -340,7 +340,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                                 `${ componentId }-application-delete-confirmation-modal-header` 
                                             }
                                         >
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("applications:confirmations." + 
                                                 "deleteChoreoApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
@@ -350,7 +350,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                                 `${ componentId }-application-delete-confirmation-modal-message` 
                                             }
                                         >
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("applications:confirmations." + 
                                                 "deleteChoreoApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
@@ -359,7 +359,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                             }
                                         >
                                             <Trans 
-                                                i18nKey= { "console:develop.features.applications.confirmations." + 
+                                                i18nKey= { "applications:confirmations." + 
                                                 "deleteChoreoApplication.content" }>
                                                 Deleting this application will break the authentication flows and cause 
                                                 the associated Choreo application to be unusable with its credentials.
@@ -375,7 +375,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                                 `${ componentId }-application-delete-confirmation-modal-header` 
                                             }
                                         >
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("applications:confirmations." + 
                                                 "deleteApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
@@ -385,7 +385,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                                 `${ componentId }-application-delete-confirmation-modal-message` 
                                             }
                                         >
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("applications:confirmations." + 
                                                 "deleteApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
@@ -393,7 +393,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                                 `${ componentId }-application-delete-confirmation-modal-content` 
                                             }
                                         >
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("applications:confirmations." + 
                                                 "deleteApplication.content") }
                                         </ConfirmationModal.Content>
                                     </> 

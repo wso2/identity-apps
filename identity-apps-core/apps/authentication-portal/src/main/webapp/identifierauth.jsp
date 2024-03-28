@@ -43,6 +43,7 @@
 
 <%!
     private boolean isMultiAuthAvailable(String multiOptionURI) {
+
         boolean isMultiAuthAvailable = true;
         if (multiOptionURI == null || multiOptionURI.equals("null")) {
             isMultiAuthAvailable = false;
@@ -54,7 +55,7 @@
                 String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
                 int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
                 authenticators = authenticators.substring(0, authLastIndex);
-                List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
+                List<String> authList = Arrays.asList(authenticators.split("%3B"));
                 if (authList.size() < 2) {
                     isMultiAuthAvailable = false;
                 }
@@ -260,9 +261,31 @@
     <% } %>
 
     <div class="field">
-        <% if (isMultiAttributeLoginEnabledInTenant) { %>
+     <% if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)) { %>
+            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email")%></label>
+            <div class="ui fluid left icon input">
+                <input
+                    type="text"
+                    id="usernameUserInput"
+                    value=""
+                    name="usernameUserInput"
+                    maxlength="50"
+                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.email")%>"
+                    required />
+                <i aria-hidden="true" class="envelope outline icon"></i>
+            </div>
+            <div class="mt-1" id="usernameError" style="display: none;">
+                <i class="red exclamation circle fitted icon"></i>
+                <span class="validation-error-message" id="usernameErrorText">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "username.cannot.be.empty")%>
+                </span>
+            </div>
+            <input id="username" name="username" type="hidden" value="">
+            <input id="authType" name="authType" type="hidden" value="idf">
+        <% } else { 
+            if (isMultiAttributeLoginEnabledInTenant) { %>
             <label><%=usernameLabel %></label>
-        <% } else { %>
+            <% } else {%>
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%></label>
         <% } %>
         <div class="ui fluid left icon input">
@@ -287,6 +310,7 @@
         <input id="authType" name="authType" type="hidden" value="idf">
         <input id="multiOptionURI" type="hidden" name="multiOptionURI"
             value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
+    <% } %>
     </div>
     <%
         if (reCaptchaEnabled) {
@@ -324,7 +348,7 @@
     <div class="align-center">
         <%
             String multiOptionURI = Encode.forJava(request.getParameter("multiOptionURI"));
-            if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+            if (multiOptionURI != null && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
             isMultiAuthAvailable(multiOptionURI)) {
         %>
             <a class="ui primary basic button link-button" id="goBackLink"

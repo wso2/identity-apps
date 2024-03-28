@@ -89,14 +89,14 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
             { ...rest }
         >
             <ConfirmationModal.Header data-componentid={ `${componentId}-header` }>
-                { t("console:loginFlow.adaptiveLoginFlowSelectConfirmationModal.heading") }
+                { t("authenticationFlow:adaptiveLoginFlowSelectConfirmationModal.heading") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
                 data-componentid={ `${componentId}-message` }
             >
-                { t("console:loginFlow.adaptiveLoginFlowSelectConfirmationModal.message") }
+                { t("authenticationFlow:adaptiveLoginFlowSelectConfirmationModal.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
                 {
@@ -105,7 +105,7 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
                             <Text>
                                 <Trans
                                     i18nKey={
-                                        "console:manage.features.governanceConnectors.connectorCategories." +
+                                        "governanceConnectors:connectorCategories." +
                                         "otherSettings.connectors.elasticAnalyticsEngine.warningModal.configure"
                                     }
                                 >
@@ -121,7 +121,7 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
                             <Text>
                                 <Trans
                                     i18nKey={
-                                        "console:manage.features.governanceConnectors.connectorCategories." +
+                                        "governanceConnectors:connectorCategories." +
                                         "otherSettings.connectors.elasticAnalyticsEngine.warningModal.reassure"
                                     }
                                 >
@@ -133,7 +133,7 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
                 }
                 <Trans
                     i18nKey={
-                        "console:loginFlow.adaptiveLoginFlowSelectConfirmationModal.content"
+                        "authenticationFlow:adaptiveLoginFlowSelectConfirmationModal.content"
                     }
                 >
                     The selected template will replace the existing script in the editor as well

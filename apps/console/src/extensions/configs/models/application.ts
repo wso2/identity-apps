@@ -46,6 +46,7 @@ export interface ApplicationConfig {
     hiddenGrantTypes: string[],
     attributeSettings: {
         advancedAttributeSettings: {
+            isLinkedAccountsEnabled: (templateId: string) => boolean;
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;
@@ -117,7 +118,9 @@ export interface ApplicationConfig {
         showScopeValidators: boolean;
         showNativeClientSecretMessage: boolean;
         showIdTokenEncryption: boolean;
+        showIdTokenResponseSigningAlgorithm: boolean;
         showBackChannelLogout: boolean;
+        showRequestObjectConfigurations: boolean;
         showRequestObjectSignatureValidation: boolean;
         showCertificates: boolean;
         showReturnAuthenticatedIdPList: boolean;

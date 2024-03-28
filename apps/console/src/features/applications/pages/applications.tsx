@@ -56,6 +56,7 @@ import {
     PaginationProps
 } from "semantic-ui-react";
 import { applicationConfig } from "../../../extensions";
+import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -145,7 +146,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
     const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
 
-    const { organizationType } = useGetCurrentOrganizationType();
+    const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -209,7 +210,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             dispatch(addAlert({
                 description: applicationListFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications." +
+                message: t("applications:notifications." +
                     "fetchApplications.error.message")
             }));
 
@@ -217,10 +218,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.notifications.fetchApplications" +
+            description: t("applications:notifications.fetchApplications" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.notifications." +
+            message: t("applications:notifications." +
                 "fetchApplications.genericError.message")
         }));
     }, [ applicationListFetchRequestError ]);
@@ -238,7 +239,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             dispatch(addAlert({
                 description: myAccountApplicationDataFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications." +
+                message: t("applications:notifications." +
                     "fetchMyAccountApplication.error.message")
             }));
 
@@ -246,10 +247,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.notifications.fetchMyAccountApplication" +
+            description: t("applications:notifications.fetchMyAccountApplication" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.notifications." +
+            message: t("applications:notifications." +
                 "fetchMyAccountApplication.genericError.message")
         }));
     }, [ myAccountApplicationDataFetchRequestError ]);
@@ -271,19 +272,19 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             }
             dispatch(addAlert({
                 description: myAccountStatusFetchRequestError.response.data.description ??
-                    t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.description"),
+                    t("applications:myaccount.fetchMyAccountStatus.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.message")
+                message: t("applications:myaccount.fetchMyAccountStatus.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+            description: t("applications:myaccount.fetchMyAccountStatus" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+            message: t("applications:myaccount.fetchMyAccountStatus" +
                 ".genericError.message")
         }));
     }, [ myAccountStatusFetchRequestError ]);
@@ -422,8 +423,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @returns My Account link.
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
-        if (!applicationConfig.advancedConfigurations.showMyAccount ||
-            UIConfig?.legacyMode?.applicationListSystemApps) {
+        if (
+            !applicationConfig.advancedConfigurations.showMyAccount
+            || UIConfig?.legacyMode?.applicationListSystemApps
+            // Disable the myaccount navigation box for suborgs in legacyauthz runtime.
+            || (isLegacyAuthzRuntime() && isSubOrganization())
+        ) {
             return null;
         }
 
@@ -455,7 +460,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     data-componentid="application-consumer-account-link-title"
                                     className="my-account-title mb-1"
                                 >
-                                    { t("console:develop.features.applications.myaccount.title") }
+                                    { t("applications:myaccount.title") }
                                     {
                                         applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
                                             <Icon
@@ -469,7 +474,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 <List.Description
                                     data-componentid="application-consumer-account-link-description"
                                 >
-                                    { t("console:develop.features.applications.myaccount.description") }
+                                    { t("applications:myaccount.description") }
                                     <DocumentationLink
                                         link={ getLink("develop.applications.myaccount.learnMore") }
                                     >
@@ -491,7 +496,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                             />
                                         </Grid.Column>
                                     ) }
-                                    content={ t("console:develop.features.applications.myaccount.popup") }
+                                    content={ t("applications:myaccount.popup") }
                                     position="top center"
                                     size="mini"
                                     hideOnScroll
@@ -541,7 +546,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add" />
-                        { t("console:develop.features.applications.list.actions.add") }
+                        { t("applications:list.actions.add") }
                     </PrimaryButton>
                 </Show>
             ) }
@@ -603,18 +608,18 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("console:develop.features.applications.advancedSearch.form" +
+                            t("applications:advancedSearch.form" +
                                 ".inputs.filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:develop.features.applications.advancedSearch.form" +
+                            t("applications:advancedSearch.form" +
                                 ".inputs.filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
+                            t("applications:advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
-                        placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
+                        placeholder={ t("applications:advancedSearch.placeholder") }
                         style={ { minWidth: "425px" } }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
@@ -669,19 +674,19 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("console:develop.features.applications.advancedSearch." +
+                                t("applications:advancedSearch." +
                                     "form.inputs.filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("console:develop.features.applications.advancedSearch." +
+                                t("applications:advancedSearch." +
                                     "form.inputs.filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("console:develop.features.applications.advancedSearch." +
+                                t("applications:advancedSearch." +
                                     "form.inputs.filterValue.placeholder")
                             }
                             placeholder={
-                                t("console:develop.features.applications.advancedSearch.placeholder")
+                                t("applications:advancedSearch.placeholder")
                             }
                             style={ { minWidth: "425px" } }
                             defaultSearchAttribute="name"

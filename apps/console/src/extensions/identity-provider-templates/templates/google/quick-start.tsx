@@ -94,7 +94,7 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchApplications" +
+                        message: t("applications:notifications.fetchApplications" +
                             ".error.message")
                     }));
 
@@ -102,10 +102,10 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.fetchApplications" +
+                    description: t("applications:notifications.fetchApplications" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchApplications." +
+                    message: t("applications:notifications.fetchApplications." +
                         "genericError.message")
                 }));
             })
@@ -292,18 +292,18 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                                             }
                                         ] }
                                         filterAttributePlaceholder={
-                                            t("console:develop.features.applications.advancedSearch.form." +
+                                            t("applications:advancedSearch.form." +
                                                 "inputs.filterAttribute.placeholder")
                                         }
                                         filterConditionsPlaceholder={
-                                            t("console:develop.features.applications.advancedSearch.form." +
+                                            t("applications:advancedSearch.form." +
                                                 "inputs.filterCondition.placeholder")
                                         }
                                         filterValuePlaceholder={
-                                            t("console:develop.features.applications.advancedSearch.form." +
+                                            t("applications:advancedSearch.form." +
                                                 "inputs.filterValue.placeholder")
                                         }
-                                        placeholder={ t("console:develop.features.applications." +
+                                        placeholder={ t("applications:" +
                                             "advancedSearch.placeholder") }
                                         defaultSearchAttribute="name"
                                         defaultSearchOperator="co"

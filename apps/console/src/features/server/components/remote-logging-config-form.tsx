@@ -33,7 +33,7 @@ import {
 import { AxiosError } from "axios";
 import startCase from "lodash-es/startCase";
 import toLower from "lodash-es/toLower";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "modules/core/src/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -280,7 +280,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
             </EmphasizedSegment>
             <Divider hidden />
             <DangerZoneGroup
-                sectionHeader={ t("console:develop.features.applications.dangerZoneGroup.header") }
+                sectionHeader={ t("applications:dangerZoneGroup.header") }
             >
                 <DangerZone
                     isButtonDisabled={ !logConfig || Object.keys(logConfig).length === 0 }

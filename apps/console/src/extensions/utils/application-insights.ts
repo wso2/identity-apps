@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -43,7 +43,7 @@ export class AppInsights {
     private telemetryInitializer: (item: ITelemetryItem) => boolean | void;
 
     /**
-     * Private constructor to avoid object initialization from 
+     * Private constructor to avoid object initialization from
      * outside the class.
     */
     private constructor() {
@@ -58,7 +58,7 @@ export class AppInsights {
             ? window["AppUtils"].getConfig().analytics.metrics.dependencyTrackingEnabled
             : false;
 
-        this.userId = store.getState().profile.profileInfo.id;
+        this.userId = store.getState().profile.profileInfo.userId;
         this.tenantId = store.getState().auth.tenantDomain;
 
         const WSO2_USER_REGEX: RegExp = /.+ws[o|0]2\.com.*/;
@@ -75,7 +75,7 @@ export class AppInsights {
 
     /**
      * Returns an instance of the App Insights class.
-     * 
+     *
      * @returns App Insights instance
     */
     public static getInstance(): AppInsights {
@@ -89,7 +89,7 @@ export class AppInsights {
 
     /**
      * Initialize application insights and other needed common variables.
-     * 
+     *
      * @returns boolean - True if initialization successful. Else false.
     */
     public init(): boolean {
@@ -163,7 +163,7 @@ export class AppInsights {
             this.externalAppInsightsInstance.loadAppInsights();
 
             this.telemetryInitializer = (envelope: ITelemetryItem) => {
-                
+
                 envelope.data = {
                     ...envelope.data,
                     isWSO2User: this.isWSO2User,
@@ -171,8 +171,8 @@ export class AppInsights {
                 };
 
                 if (envelope.baseType === "ExceptionData") {
-                    const errMsg: any = envelope.baseData.properties?.message; 
-                
+                    const errMsg: any = envelope.baseData.properties?.message;
+
                     envelope.data = {
                         ...envelope.data,
                         exceptionType: errMsg.substring(0,errMsg.indexOf(":")),
@@ -207,7 +207,7 @@ export class AppInsights {
 
     /**
      * Function to perform app insights related computations.
-     * 
+     *
      * @param computation - Computation to perform.
     */
     public compute = (computation: () => void): void => {
@@ -221,7 +221,7 @@ export class AppInsights {
 
     /**
      * Send custom event data to insights server.
-     * 
+     *
      * @param eventId - Event identifier string.
      * @param customProperties - Any custom properties (optional).
     */
@@ -242,13 +242,13 @@ export class AppInsights {
 
         // If the user ID is not initialized, reinitialize
         if (!this.userId) {
-            this.userId = store.getState().profile.profileInfo.id;
+            this.userId = store.getState().profile.profileInfo.userId;
         }
 
         if (this.userId) {
             properties.UUID = this.userId;
         }
-        
+
         if (customProperties) {
             properties.data = customProperties;
         }
@@ -261,7 +261,7 @@ export class AppInsights {
 
     /**
      * Send dependency (network request) data to insights server.
-     * 
+     *
      * @param pathname - endpoint name
      * @param startTimeInMs - when the request started
      * @param duration - network request duration
@@ -270,7 +270,7 @@ export class AppInsights {
      * @param customProperties - any custom properties (optional)
     */
     public trackDependency(pathname: string, startTimeInMs: number, duration: number, responseCode: number,
-        isSuccess: boolean, 
+        isSuccess: boolean,
         customProperties?: { [key: string]: any }): void{
         if (!this.isEnabled) {
             return;
@@ -287,14 +287,14 @@ export class AppInsights {
         if (!this.isDependencyTrackingEnabled && isSuccess){
             return;
         }
-        
+
         if (startTimeInMs){
             properties.startTime = new Date(startTimeInMs);
         }
 
         // If the user ID is not initialized, reinitialize
         if (!this.userId) {
-            this.userId = store.getState().profile.profileInfo.id;
+            this.userId = store.getState().profile.profileInfo.userId;
         }
 
         if (this.userId) {

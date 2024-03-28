@@ -88,20 +88,20 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
             if (error?.response?.data?.description) {
                 dispatch(addAlert({
                     description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        ?? t("users:notifications.fetchUsers.error.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                        ?? t("users:notifications.fetchUsers.error.message")
                 }));
 
                 return;
             }
 
             dispatch(addAlert({
-                description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                description: t("users:notifications.fetchUsers.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                message: t("users:notifications.fetchUsers.genericError.message")
             }));
 
         })
@@ -142,8 +142,8 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
 
     return (
         <PageLayout
-            title={ t("console:manage.pages.invite.title") }
-            description={ t("console:manage.pages.invite.subTitle") }
+            title={ t("pages:invite.title") }
+            description={ t("pages:invite.subTitle") }
         >
             <Grid>
                 <Grid.Row>
@@ -160,7 +160,7 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
                                         className={ getRadioButtonClass(UserListOptions.ONBOARD) }
                                         checked={ selectedUserList === UserListOptions.ONBOARD }
                                     />
-                                    { t("console:manage.features.invite.subSelection.onBoard") }
+                                    { t("invite:subSelection.onBoard") }
                                 </Card.Content>
                             </Card>
                             <Card
@@ -174,7 +174,7 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
                                         className={ getRadioButtonClass(UserListOptions.INVITE) }
                                         checked={ selectedUserList === UserListOptions.INVITE }
                                     />
-                                    { t("console:manage.features.invite.subSelection.invitees") }
+                                    { t("invite:subSelection.invitees") }
                                 </Card.Content>
                             </Card>
                         </Card.Group>
@@ -194,7 +194,7 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
                                 floated="right"
                             >
                                 <Icon name="add"/>
-                                { t("console:manage.features.invite.inviteButton") }
+                                { t("invite:inviteButton") }
                             </PrimaryButton>
                         </Grid.Column>
                     )

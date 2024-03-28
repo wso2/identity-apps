@@ -19,7 +19,7 @@
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { applicationConfig } from "apps/console/src/extensions";
+import { applicationConfig } from "../../../extensions";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
@@ -56,6 +56,7 @@ import { OrganizationType } from "../../organizations/constants";
 import { LEGACY_EDITOR_FEATURE_ID, VISUAL_EDITOR_FEATURE_ID } from "../constants/editor-constants";
 import AuthenticationFlowContext from "../context/authentication-flow-context";
 import DefaultFlowConfigurationSequenceTemplate from "../data/flow-sequences/basic/default-sequence.json";
+import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 import { VisualEditorFlowNodeMetaInterface } from "../models/visual-editor";
 
 /**
@@ -160,13 +161,6 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             });
         }
     }, []);
-
-    /**
-     * When `application` state changes, update the `authenticationSequence`.
-     */
-    useEffect(() => {
-        setAuthenticationSequence(application?.authenticationSequence);
-    }, [ application ]);
 
     /**
      * Separates out the different authenticators to their relevant categories.
@@ -297,7 +291,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         authenticator: GenericAuthenticatorInterface,
         options: AuthenticatorInterface[]
     ): boolean => {
-        let isDuplicate: boolean = options.some((option: AuthenticatorInterface) => {
+        let isDuplicate: boolean = options?.some((option: AuthenticatorInterface) => {
             return option.authenticator === authenticator?.defaultAuthenticator?.name;
         });
 
@@ -308,7 +302,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         // If the added option is EIDP, even-though the authenticator is same,
         // we need to check if it's the same IDP. If it is, then mark as duplicate.
         if (isDuplicate && isEIDP) {
-            isDuplicate = options.some((option: AuthenticatorInterface) => {
+            isDuplicate = options?.some((option: AuthenticatorInterface) => {
                 return option.idp === authenticator?.idp;
             });
         }
@@ -317,12 +311,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.duplicateAuthenticationStep" +
+                        "applications:notifications.duplicateAuthenticationStep" +
                             ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.duplicateAuthenticationStep" +
+                        "applications:notifications.duplicateAuthenticationStep" +
                             ".genericError.message"
                     )
                 })
@@ -355,7 +349,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
 
         const steps: AuthenticationStepInterface[] = [ ...authenticationSequence?.steps ];
 
-        const isValid: boolean = validateStepAddition(authenticator, steps[stepIndex].options);
+        const isValid: boolean = validateStepAddition(authenticator, steps[stepIndex]?.options);
 
         if (ApplicationManagementConstants.HANDLER_AUTHENTICATORS.includes(authenticatorId)) {
             // TODO: setShowHandlerDisclaimerModal(true);
@@ -383,12 +377,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+                        "applications:notifications.secondFactorAuthenticatorToFirstStep" +
                             ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+                        "applications:notifications.secondFactorAuthenticatorToFirstStep" +
                             ".genericError.message"
                     )
                 })
@@ -417,7 +411,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 item.authenticatorId === authenticator.defaultAuthenticator.authenticatorId
         );
 
-        steps[stepIndex].options.push({
+        steps[stepIndex]?.options?.push({
             authenticator: defaultAuthenticator.name,
             idp: authenticator.idp
         });
@@ -438,12 +432,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.authenticationStepMin" +
+                        "applications:notifications.authenticationStepMin" +
                             ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.authenticationStepMin.genericError" +
+                        "applications:notifications.authenticationStepMin.genericError" +
                             ".message"
                     )
                 })
@@ -499,12 +493,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.applications.notifications." +
+                            "applications:notifications." +
                                 "authenticationStepDeleteErrorDueToSecondFactors.genericError.description"
                         ),
                         level: AlertLevels.WARNING,
                         message: t(
-                            "console:develop.features.applications.notifications." +
+                            "applications:notifications." +
                                 "authenticationStepDeleteErrorDueToSecondFactors.genericError.message"
                         )
                     })
@@ -699,12 +693,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         dispatch(
             addAlert({
                 description: t(
-                    "console:develop.features.applications.notifications." +
+                    "applications:notifications." +
                         "deleteOptionErrorDueToSecondFactorsOnRight.genericError.description"
                 ),
                 level: AlertLevels.WARNING,
                 message: t(
-                    "console:develop.features.applications.notifications." +
+                    "applications:notifications." +
                         "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
                 )
             })
@@ -750,6 +744,16 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         }));
     }, []);
 
+    /**
+     * Handles the change of the active flow mode.
+     *
+     * @param mode - Active flow mode.
+     */
+    const onActiveFlowModeChange = (_: AuthenticationFlowBuilderModes): void => {
+        // When the flow mode changes, assign any changes that happened to the authentication sequence from other modes.
+        setAuthenticationSequence(application?.authenticationSequence);
+    };
+
     return (
         <AuthenticationFlowContext.Provider
             value={ {
@@ -768,6 +772,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 isSystemApplication,
                 isValidAuthenticationFlow,
                 isVisualEditorEnabled,
+                onActiveFlowModeChange,
                 onConditionalAuthenticationToggle: (enabled: boolean) => setIsConditionalAuthenticationEnabled(enabled),
                 refetchApplication: () => onUpdate(application.id),
                 refetchAuthenticators: onAuthenticatorsRefetch,

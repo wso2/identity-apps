@@ -86,11 +86,19 @@ export class ConnectionManagementConstants {
     public static readonly CLAIM_CONFIG_FIELD_MAX_LENGTH: number  = 100;
     public static readonly CLAIM_CONFIG_FIELD_MIN_LENGTH: number  = 1;
     public static readonly CLAIM_USERNAME: string  = "http://wso2.org/claims/username";
+    public static readonly CLAIM_EMAIL: string  = "http://wso2.org/claims/emailaddress";
+    public static readonly CLAIM_MOBILE: string  = "http://wso2.org/claims/mobile";
     public static readonly CLAIM_ROLE: string  = "http://wso2.org/claims/role";
     public static readonly CLAIM_ROLES: string  = "http://wso2.org/claims/roles";
     public static readonly OIDC_ROLES_CLAIM: string  = "roles";
     public static readonly LOCAL_DIALECT_GROUP_CLAIM: string  = "http://wso2.org/claims/groups";
     public static readonly STANDARD_DIALECT_GROUP_CLAIM: string  = "groups";
+
+    public static readonly IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES: string[] = [
+        ConnectionManagementConstants.CLAIM_USERNAME,
+        ConnectionManagementConstants.CLAIM_EMAIL,
+        ConnectionManagementConstants.CLAIM_MOBILE
+    ];
 
     public static readonly TRUSTED_TOKEN_TEMPLATE_ID: string = "trusted-token-issuer";
     public static readonly EXPERT_MODE_TEMPLATE_ID: string = "expert-mode-idp";
@@ -156,8 +164,8 @@ export class ConnectionManagementConstants {
     **/
     public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
         "IDP-60035",
-        "console:develop.features.idp.notifications.apiLimitReachedError.error.description",
-        "console:develop.features.idp.notifications.apiLimitReachedError.error.message",
+        "idp:notifications.apiLimitReachedError.error.description",
+        "idp:notifications.apiLimitReachedError.error.message",
         "cec1f247-32fd-4624-9915-f469195a53ac"
     )
 

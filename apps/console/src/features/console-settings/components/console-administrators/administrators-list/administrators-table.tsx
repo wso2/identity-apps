@@ -35,7 +35,7 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import { UserManagementUtils } from "apps/console/src/extensions/components/users/utils/user-management-utils";
+import { UserManagementUtils } from "../../../../../extensions/components/users/utils/user-management-utils";
 import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -390,7 +390,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 setShowDeleteConfirmationModal(true);
                 setDeletingUser(user);
             },
-            popupText: (): string => t("console:manage.features.users.usersList.list.iconPopups.delete"),
+            popupText: (): string => t("users:usersList.list.iconPopups.delete"),
             renderer: "semantic-icon"
         });
 
@@ -427,16 +427,16 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                            { t("users:usersList.search.emptyResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                    title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
                             { query: searchQuery }),
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -465,30 +465,30 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                         filterAttributeOptions={ [
                             {
                                 key: 0,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.username"),
                                 value: "userName"
                             },
                             {
                                 key: 1,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.email"),
                                 value: "emails"
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs" +
+                            t("users:advancedSearch.form.inputs" +
                                             ".filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs" +
+                            t("users:advancedSearch.form.inputs" +
                                             ".filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                            t("users:advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
                         }
-                        placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                        placeholder={ t("users:advancedSearch.placeholder") }
                         defaultSearchAttribute="userName"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
@@ -522,7 +522,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal.assertionHint") }
+                        assertionHint={ t("user:deleteUser.confirmationModal.assertionHint") }
                         assertionType="checkbox"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
@@ -541,7 +541,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-componentid={ `${ componentId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                            { t("user:deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-componentid={ `${ componentId }-confirmation-modal-message` }

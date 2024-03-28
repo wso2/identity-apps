@@ -506,7 +506,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     >
                         <Icon name="arrow left"/>
                         {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            t("applications:edit.sections.signOnMethod.sections." +
                                 "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.goBackButton")
                         }
                     </div>
@@ -528,15 +528,15 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             image={ getEmptyPlaceholderIllustrations().newList }
                                             imageSize="tiny"
                                             title={
-                                                t("console:develop.features.authenticationProvider" +
-                                                    ".placeHolders.emptyConnectionTypeList.title")
+                                                t("authenticationProvider:" +
+                                                    "placeHolders.emptyConnectionTypeList.title")
                                             }
                                             subtitle={ [
-                                                t("console:develop.features.authenticationProvider" +
-                                                    ".placeHolders.emptyConnectionTypeList" +
+                                                t("authenticationProvider:" +
+                                                    "placeHolders.emptyConnectionTypeList" +
                                                     ".subtitles.0"),
-                                                t("console:develop.features.authenticationProvider" +
-                                                    ".placeHolders.emptyConnectionTypeList" +
+                                                t("authenticationProvider:" +
+                                                    "placeHolders.emptyConnectionTypeList" +
                                                     ".subtitles.1")
                                             ] }
                                             data-testid={ `${ testId }-empty-placeholder` }
@@ -633,7 +633,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     fluid
                     onChange={ handleAuthenticatorSearch }
                     placeholder={
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        t("applications:edit.sections.signOnMethod.sections." +
                             "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.search.placeholder")
                     }
                 />
@@ -704,7 +704,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                 />
                                                 <Text weight="500">
                                                     {
-                                                        t("console:develop.features.applications.edit.sections." +
+                                                        t("applications:edit.sections." +
                                                             "signOnMethod.sections.authenticationFlow.sections." +
                                                             "stepBased.addAuthenticatorModal.content." +
                                                             "addNewAuthenticatorCard.title")
@@ -721,7 +721,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                 <EmptyPlaceholder
                                     subtitle={
                                         [
-                                            t("console:develop.features.applications.placeholders" +
+                                            t("applications:placeholders" +
                                                 ".emptyAuthenticatorsList.subtitles")
                                         ]
                                     }
@@ -747,7 +747,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                     />
                                                     <Text weight="500">
                                                         {
-                                                            t("console:develop.features.applications.edit.sections." +
+                                                            t("applications:edit.sections." +
                                                                 "signOnMethod.sections.authenticationFlow.sections." +
                                                                 "stepBased.addAuthenticatorModal.content." +
                                                                 "addNewAuthenticatorCard.title")
@@ -790,14 +790,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     <>
                         <Heading as="h5">
                             {
-                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                t("applications:edit.sections.signOnMethod.sections." +
                                     "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
                                     "stepSelectDropdown.label")
                             }
                         </Heading>
                         <Hint>
                             {
-                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                t("applications:edit.sections.signOnMethod.sections." +
                                     "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
                                     "stepSelectDropdown.hint")
                             }
@@ -807,7 +807,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                 <Form.Select
                                     scrolling
                                     placeholder={
-                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                        t("applications:edit.sections.signOnMethod." +
                                             "sections.authenticationFlow.sections.stepBased." +
                                             "addAuthenticatorModal.content.stepSelectDropdown.placeholder")
                                     }

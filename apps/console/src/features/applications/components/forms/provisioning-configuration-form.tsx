@@ -122,13 +122,13 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
             <Field.CheckboxLegacy
                 ariaLabel="Proxy mode"
                 name="proxyMode"
-                label={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.label") }
+                label={ t("applications:forms.provisioningConfig.fields.proxyMode.label") }
                 required={ false }
                 value={ config?.inboundProvisioning?.proxyMode ? [ "modeOn" ] : [] }
                 listen={ (value: boolean) => setIsProxyModeOn(value) }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-proxy-mode-checkbox` }
-                hint={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.hint") }
+                hint={ t("applications:forms.provisioningConfig.fields.proxyMode.hint") }
             />
             {
                 readOnly ? (
@@ -139,7 +139,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                         minLength={ null }
                         maxLength={ null }
                         label={
-                            t("console:develop.features.applications.forms.provisioningConfig.fields" +
+                            t("applications:forms.provisioningConfig.fields" +
                                 ".userstoreDomain.label")
                         }
                         required={ false }
@@ -147,7 +147,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                         disabled={ isProxyModeOn }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-provisioning-userstore-domain-input` }
-                        hint={ t("console:develop.features.applications.forms.provisioningConfig.fields." +
+                        hint={ t("applications:forms.provisioningConfig.fields." +
                             "userstoreDomain.hint") }
                     />
                 ) : (
@@ -155,7 +155,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                         ariaLabel="Provisioning userstore domain"
                         name="provisioningUserstoreDomain"
                         label={
-                            t("console:develop.features.applications.forms.provisioningConfig.fields" +
+                            t("applications:forms.provisioningConfig.fields" +
                                 ".userstoreDomain.label")
                         }
                         required={ false }
@@ -165,7 +165,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                         disabled={ isProxyModeOn }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-provisioning-userstore-domain-dropdown` }
-                        hint={ t("console:develop.features.applications.forms.provisioningConfig.fields." +
+                        hint={ t("applications:forms.provisioningConfig.fields." +
                             "userstoreDomain.hint") }
                     />
                 )

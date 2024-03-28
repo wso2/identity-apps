@@ -131,6 +131,9 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
             ],
+            [ IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
+            ],
             [ IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.HANDLERS
             ]
@@ -157,20 +160,15 @@ export class AuthenticatorMeta {
     public static getAuthenticatorTypeDisplayName(type: AuthenticatorCategories): string {
 
         return get({
-            [ AuthenticatorCategories.ENTERPRISE ]: "console:develop.features." +
-                "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.ENTERPRISE ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.enterprise.heading",
-            [ AuthenticatorCategories.LOCAL ]: "console:develop.features." +
-                "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.LOCAL ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.basic.heading",
-            [ AuthenticatorCategories.SECOND_FACTOR ]: "console:develop.features." +
-                "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.SECOND_FACTOR ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.mfa.heading",
-            [ AuthenticatorCategories.SOCIAL ]: "console:develop.features." +
-                "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.SOCIAL ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.social.heading",
-            [ AuthenticatorCategories.RECOVERY ]: "console:develop.features." +
-                "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.RECOVERY ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.backupCodes.heading"
         }, type);
     }

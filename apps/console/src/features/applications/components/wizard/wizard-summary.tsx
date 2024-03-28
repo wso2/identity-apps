@@ -78,19 +78,19 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                         ) }
                         { summary?.advancedConfigurations?.discoverableByEndUsers && (
                             <Label className="info-label">
-                                { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                                { t("applications:addWizard.steps.summary.sections" +
                                     ".discoverable.heading") }
                             </Label>
                         ) }
                         { summary?.inboundProtocolConfiguration?.oidc?.publicClient && (
                             <Label className="info-label">
-                                { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                                { t("applications:addWizard.steps.summary.sections" +
                                     ".public.heading") }
                             </Label>
                         ) }
                         { summary?.inboundProtocolConfiguration?.oidc?.refreshToken?.renewRefreshToken && (
                             <Label className="info-label">
-                                { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                                { t("applications:addWizard.steps.summary.sections" +
                                     ".renewRefreshToken.heading") }
                             </Label>
                         ) }
@@ -104,7 +104,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                         <div className="label">
-                            { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                            { t("applications:addWizard.steps.summary.sections" +
                                 ".accessURL.heading") }
                         </div>
                     </Grid.Column>
@@ -117,7 +117,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                         <div className="label">
-                            { t("console:develop.features.applications.addWizard.steps.summary.sections.issuer" +
+                            { t("applications:addWizard.steps.summary.sections.issuer" +
                                 ".heading") }
                         </div>
                     </Grid.Column>
@@ -132,7 +132,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                         <div className="label">
-                            { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                            { t("applications:addWizard.steps.summary.sections" +
                                 ".applicationQualifier.heading") }
                         </div>
                     </Grid.Column>
@@ -151,7 +151,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                                 <div className="label">
-                                    { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                                    { t("applications:addWizard.steps.summary.sections" +
                                         ".grantType.heading") }
                                 </div>
                             </Grid.Column>
@@ -174,7 +174,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">
-                                { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                                { t("applications:addWizard.steps.summary.sections" +
                                     ".assertionURLs.heading") }
                             </div>
                         </Grid.Column>
@@ -194,7 +194,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">
-                                { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                                { t("applications:addWizard.steps.summary.sections" +
                                     ".callbackURLs.heading") }
                             </div>
                         </Grid.Column>
@@ -218,7 +218,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">
-                                { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                                { t("applications:addWizard.steps.summary.sections" +
                                     ".audience.heading") }
                             </div>
                         </Grid.Column>
@@ -234,7 +234,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">
-                                { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                                { t("applications:addWizard.steps.summary.sections" +
                                     ".certificateAlias.heading") }
                             </div>
                         </Grid.Column>
@@ -250,7 +250,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">
-                                { t("console:develop.features.applications.addWizard.steps.summary.sections" +
+                                { t("applications:addWizard.steps.summary.sections" +
                                     ".realm.heading") }
                             </div>
                         </Grid.Column>
@@ -265,7 +265,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">
-                                { t("console:develop.features.applications.addWizard.steps.summary.sections.audience" +
+                                { t("applications:addWizard.steps.summary.sections.audience" +
                                     ".heading") }
                             </div>
                         </Grid.Column>

@@ -150,7 +150,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         });
 
         const modifiedCustomProperties: any = !isEmpty(resolvedCustomProperties) ?
-            resolvedCustomProperties?.toString()?.split(",")?.map(
+            resolvedCustomProperties?.toString()?.split(", ")?.map(
                 (customProperty: string) => {
                     const keyValuePair: string[] = customProperty.split("=");
 
@@ -467,12 +467,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     return;
                 }
 
-                // Check whether the property already in dynamicValues?.properties.
-                if (dynamicValues?.properties?.find(
-                    (prop: CommonPluggableComponentPropertyInterface) => prop.key === property.key)) {
-                    return;
-                }
-
                 // Check whether the property is not in the metadata.
                 if (!metadata?.properties?.find(
                     (meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === property.key)) {
@@ -497,10 +491,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 name="customProperties"
-                                label={ t("console:develop.features.authenticationProvider.forms.common." +
+                                label={ t("authenticationProvider:forms.common." +
                                     "customProperties") }
                                 required={ false }
-                                requiredErrorMessage={ t("console:develop.features.authenticationProvider.forms." +
+                                requiredErrorMessage={ t("authenticationProvider:forms." +
                                     "common.requiredErrorMessage") }
                                 type="queryParams"
                                 value={ customProperties }

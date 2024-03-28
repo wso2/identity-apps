@@ -22,7 +22,6 @@ import { EmptyPlaceholder,
     LinkButton,
     Message,
     PrimaryButton } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "apps/console/src/features/core";
 import React, {
     MutableRefObject,
     ReactElement,
@@ -33,6 +32,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon, Label } from "semantic-ui-react";
+import { getEmptyPlaceholderIllustrations } from "../../../features/core";
 import InfiniteScrollContainer from "../logs/components/infinite-scroll-container";
 import TimeRangeSelector from "../logs/components/time-range-selector";
 import { LogsConstants } from "../logs/constants";
@@ -131,8 +131,10 @@ export const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactE
 
 
     useEffect (() => {
-        setDiagnosticLogList(list);
-    }, [ list ]);
+        if (!loading && list.length > 0) {
+            setDiagnosticLogList(list);
+        }
+    }, [ list, loading ]);
 
     /**
      * Handles the behaviour of the infinite scroller
@@ -150,6 +152,7 @@ export const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactE
                 setRequestPayload({
                     filter: searchQuery,
                     limit: LogsConstants.LOG_FETCH_COUNT,
+                    logType: TabIndex.DIAGNOSTIC_LOGS,
                     previousToken: previous
                 });
                 setIsPreviousEmpty(false);
@@ -166,6 +169,7 @@ export const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactE
                 setRequestPayload({
                     filter: searchQuery,
                     limit: LogsConstants.LOG_FETCH_COUNT,
+                    logType: TabIndex.DIAGNOSTIC_LOGS,
                     nextToken: next
                 });
                 setIsNextEmpty(false);

@@ -167,20 +167,20 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                            ?? t("users:notifications.fetchUsers.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                            ?? t("users:notifications.fetchUsers.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                    description: t("users:notifications.fetchUsers.genericError." +
                         "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                    message: t("users:notifications.fetchUsers.genericError.message")
                 }));
 
             })
@@ -279,7 +279,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                     <>
                         <Heading as="h5" className="mt-3">Add Users</Heading>
                         <Hint>
-                            { t("console:manage.features.roles.addRoleWizard.users.assignUserModal.hint") }
+                            { t("roles:addRoleWizard.users.assignUserModal.hint") }
                         </Hint>
                         <TransferComponent
                             compact
@@ -288,7 +288,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                             className="one-column-selection"
                             selectionComponent
                             searchPlaceholder={
-                                t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                                t("roles:addRoleWizard.users.assignUserModal.list" +
                                     ".searchPlaceholder")
                             }
                             isLoading={ isUsersFetchRequestLoading }
@@ -306,7 +306,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                                 emptyPlaceholderContent = { "We couldn't find any results for search. "+
                                     "Please try a different search term." }
                                 data-componentid={ `${ componentId }-unselected-transfer-list` }
-                                emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                emptyPlaceholderDefaultContent={ t("transferList:list."
                                     + "emptyPlaceholders.default") }
                             >
                                 {

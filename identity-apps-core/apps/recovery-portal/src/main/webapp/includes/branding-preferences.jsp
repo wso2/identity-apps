@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -65,7 +65,7 @@
         supportedLanguages.put("de", "DE");
         supportedLanguages.put("zh", "CN");
         supportedLanguages.put("ja", "JP");
-        
+
         List<String> languageSupportedCountries = new ArrayList<>();
         languageSupportedCountries.add("US");
         languageSupportedCountries.add("FR");
@@ -226,10 +226,11 @@
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
     String productURL = "https://wso2.com/identity-server";
-    String productLogoURL = "libs/themes/wso2is/assets/images/branding/logo.svg";
+    String productLogoURL = "libs/themes/wso2is/assets/images/branding/logo-full.svg";
     String productLogoAlt = "WSO2 Identity Server Logo";
-    String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-white.svg";
+    String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-full-inverted.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
+    String poweredByLogoURL = "";
     String[] screenNames = {"common", "sign-up", "password-recovery", "password-reset", "password-reset-success"};
 
     // Constants used to create full custom layout name
@@ -398,6 +399,7 @@
     String DEFAULT_RESOURCE_LOCALE = "en-US";
     String ORG_PREFERENCE_RESOURCE_TYPE = "ORG";
     String APP_PREFERENCE_RESOURCE_TYPE = "APP";
+    String RESOURCE_TYPE = "type";
     String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
     String tenantRequestingPreferences = tenantForTheming;
     String applicationRequestingPreferences = spAppId;
@@ -416,6 +418,7 @@
 
         if (brandingPreferenceResponse.has(PREFERENCE_KEY)) {
             brandingPreference = brandingPreferenceResponse.getJSONObject(PREFERENCE_KEY);
+            preferenceResourceType = brandingPreferenceResponse.getString(RESOURCE_TYPE);
         }
 
 %>
@@ -587,34 +590,47 @@
                 if (brandingPreference.has(URLS_KEY)) {
                     if (brandingPreference.getJSONObject(URLS_KEY).has(PRIVACY_POLICY_URL_KEY)) {
                         // Only assign the `privacyPolicyURL` from response if not empty. Else use the default value.
-                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(URLS_KEY).getString(PRIVACY_POLICY_URL_KEY))) {
-                            privacyPolicyURL = brandingPreference.getJSONObject(URLS_KEY).getString(PRIVACY_POLICY_URL_KEY);
+                        String privacyPolicyURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(PRIVACY_POLICY_URL_KEY);
+                        if (!StringUtils.isBlank(privacyPolicyURLInput) && !privacyPolicyURLInput.toLowerCase().contains("javascript:") &&
+                            !privacyPolicyURLInput.toLowerCase().contains("data:")) {
+                                privacyPolicyURL = privacyPolicyURLInput;
                         }
                     }
 
                     if (brandingPreference.getJSONObject(URLS_KEY).has(TERMS_OF_USE_URL_KEY)) {
                         // Only assign the `termsOfUseURL` from response if not empty. Else use the default value.
-                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(URLS_KEY).getString(TERMS_OF_USE_URL_KEY))) {
-                            termsOfUseURL = brandingPreference.getJSONObject(URLS_KEY).getString(TERMS_OF_USE_URL_KEY);
+                        String termsOfUseURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(TERMS_OF_USE_URL_KEY);
+                        if (!StringUtils.isBlank(termsOfUseURLInput) && !termsOfUseURLInput.toLowerCase().contains("javascript:") &&
+                            !termsOfUseURLInput.toLowerCase().contains("data:")) {
+                                termsOfUseURL = termsOfUseURLInput;
                         }
                     }
 
                     if (brandingPreference.getJSONObject(URLS_KEY).has(COOKIE_POLICY_URL_KEY)) {
                         // Only assign the `cookiePolicyURL` from response if not empty. Else use the default value.
-                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(URLS_KEY).getString(COOKIE_POLICY_URL_KEY))) {
-                            cookiePolicyURL = brandingPreference.getJSONObject(URLS_KEY).getString(COOKIE_POLICY_URL_KEY);
+                        String cookiePolicyURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(COOKIE_POLICY_URL_KEY);
+                        if (!StringUtils.isBlank(cookiePolicyURLInput) && !cookiePolicyURLInput.toLowerCase().contains("javascript:") &&
+                            !cookiePolicyURLInput.toLowerCase().contains("data:")) {
+                                cookiePolicyURLInput = cookiePolicyURLInput;
                         }
                     }
 
                     if (brandingPreference.getJSONObject(URLS_KEY).has(SELF_SIGN_UP_URL_KEY)) {
-                        selfSignUpOverrideURL = brandingPreference.getJSONObject(URLS_KEY).getString(SELF_SIGN_UP_URL_KEY);
+                        String selfSignUpURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(SELF_SIGN_UP_URL_KEY);
+                        if (!StringUtils.isBlank(selfSignUpURLInput) && !selfSignUpURLInput.toLowerCase().contains("javascript:") &&
+                            !selfSignUpURLInput.toLowerCase().contains("data:")) {
+                            selfSignUpOverrideURL = selfSignUpURLInput;
+                        }
                     }
 
                     if (brandingPreference.getJSONObject(URLS_KEY).has(PASSWORD_RECOVERY_URL_KEY)) {
-                        passwordRecoveryOverrideURL = brandingPreference.getJSONObject(URLS_KEY).getString(PASSWORD_RECOVERY_URL_KEY);
+                        String passwordRecoveryURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(PASSWORD_RECOVERY_URL_KEY);
+                        if (!StringUtils.isBlank(passwordRecoveryURLInput) && !passwordRecoveryURLInput.toLowerCase().contains("javascript:") &&
+                            !passwordRecoveryURLInput.toLowerCase().contains("data:")) {
+                            passwordRecoveryOverrideURL = passwordRecoveryURLInput;
+                        }
                     }
                 }
-
             }
         }
 
@@ -631,6 +647,17 @@
                 logoURL = productWhiteLogoURL;
             } else {
                 logoURL = productLogoURL;
+            }
+        }
+
+        // Set powered by logo URL.
+        if (StringUtils.isEmpty(poweredByLogoURL)) {
+            if (StringUtils.isEmpty(activeThemeName)) {
+                poweredByLogoURL = productLogoURL;
+            } else if (StringUtils.equalsIgnoreCase(activeThemeName, "DARK")) {
+                poweredByLogoURL = productWhiteLogoURL;
+            } else {
+                poweredByLogoURL = productLogoURL;
             }
         }
 

@@ -203,9 +203,9 @@ const UserEditPage = (): ReactElement => {
 
     const getBackButtonText = (): string => {
         if (window.location.href.includes(AppConstants.getPaths().get("ADMINISTRATORS"))) {
-            return t("console:manage.pages.usersEdit.backButton", { type: "Administrators" });
+            return t("pages:usersEdit.backButton", { type: "Administrators" });
         } else {
-            return t("console:manage.pages.usersEdit.backButton", { type: "Users" });
+            return t("pages:usersEdit.backButton", { type: "Users" });
         }
     };
 
@@ -242,11 +242,11 @@ const UserEditPage = (): ReactElement => {
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
+                        "user:profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
+                        "user:profile.notifications.updateProfileInfo.success.message"
                     )
                 }));
 
@@ -261,7 +261,7 @@ const UserEditPage = (): ReactElement => {
                         description: error.response.data.description || error.response.data.detail,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.user.profile.notifications.updateProfileInfo.error.message"
+                            "user:profile.notifications.updateProfileInfo.error.message"
                         )
                     }));
 
@@ -270,11 +270,11 @@ const UserEditPage = (): ReactElement => {
 
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.description"
+                        "user:profile.notifications.updateProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.message"
+                        "user:profile.notifications.updateProfileInfo.genericError.message"
                     )
                 }));
             })
@@ -326,11 +326,11 @@ const UserEditPage = (): ReactElement => {
                 <EmptyPlaceholder
                     action={ (
                         <Button variant="text" onClick={ handleBackButtonClick }>
-                            { t("console:manage.features.users.editUser.placeholders.undefinedUser.action") }
+                            { t("users:editUser.placeholders.undefinedUser.action") }
                         </Button>
                     ) }
-                    subtitle={ [ t("console:manage.features.users.editUser.placeholders.undefinedUser.subtitles") ] }
-                    title={ t("console:manage.features.users.editUser.placeholders.undefinedUser.title") }
+                    subtitle={ [ t("users:editUser.placeholders.undefinedUser.subtitles") ] }
+                    title={ t("users:editUser.placeholders.undefinedUser.title") }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                 />

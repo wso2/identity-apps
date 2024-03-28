@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,15 +35,15 @@ export const validateIDVPName = (
 ): string => {
 
     if (!value) {
-        return I18n.instance.t("console:develop.features.idvp.forms.generalDetails.name.validations.required");
+        return I18n.instance.t("idvp:forms.generalDetails.name.validations.required");
     }
     if (!FormValidation.isValidResourceName(value)) {
-        return I18n.instance.t("console:develop.features.idvp.forms.generalDetails.name.validations.invalid",
+        return I18n.instance.t("idvp:forms.generalDetails.name.validations.invalid",
             { idpName: value });
     }
 
     if (isIDVPNameAlreadyTaken(value, idvpList, currentIDVP)) {
-        return I18n.instance.t("console:develop.features.idvp.forms.generalDetails.name.validations.duplicate");
+        return I18n.instance.t("idvp:forms.generalDetails.name.validations.duplicate");
     }
 
     return;

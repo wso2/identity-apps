@@ -50,7 +50,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column>
-                        <h2>{ t("extensions:develop.smsProviders.form.custom.subHeading") }</h2>
+                        <h2>{ t("smsProviders:form.custom.subHeading") }</h2>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
@@ -67,11 +67,12 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-providerURL` }
                             name="providerURL"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.providerUrl.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.providerUrl.placeholder") }
+                            label={ t("smsProviders:form.custom.providerUrl.label") }
+                            placeholder={ t("smsProviders:form.custom." +
+                                "providerUrl.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.providerUrl.hint") }
+                                    { t("smsProviders:form.custom.providerUrl.hint") }
                                 </Hint>
                             ) }
 
@@ -97,11 +98,12 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-contentType` }
                             name="contentType"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.contentType.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.contentType.placeholder") }
+                            label={ t("smsProviders:form.custom.contentType.label") }
+                            placeholder={ t("smsProviders:form.custom." +
+                                "contentType.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.contentType.hint") }
+                                    { t("smsProviders:form.custom.contentType.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -130,11 +132,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-httpMethod` }
                             name="httpMethod"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.httpMethod.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.httpMethod.placeholder") }
+                            label={ t("smsProviders:form.custom.httpMethod.label") }
+                            placeholder={ t("smsProviders:form.custom.httpMethod.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.httpMethod.hint") }
+                                    { t("smsProviders:form.custom.httpMethod.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -160,11 +162,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-headers` }
                             name="headers"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.headers.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.headers.placeholder") }
+                            label={ t("smsProviders:form.custom.headers.label") }
+                            placeholder={ t("smsProviders:form.custom.headers.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.headers.hint") }
+                                    { t("smsProviders:form.custom.headers.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -192,11 +194,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-payload` }
                             name="payload"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.payload.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.payload.placeholder") }
+                            label={ t("smsProviders:form.custom.payload.label") }
+                            placeholder={ t("smsProviders:form.custom.payload.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.payload.hint") }
+                                    { t("smsProviders:form.custom.payload.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }

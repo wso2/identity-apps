@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, RouteInterface } from "@wso2is/core/models";
 import { FeatureConfigInterface } from "../../../features/core/models";
 
 export interface CommonConfig {
@@ -56,6 +56,7 @@ export interface CommonConfig {
         isGuestUser: boolean;
         showEmail: boolean;
     };
+    extendedRoutes: RouteInterface[]
 }
 
 /**

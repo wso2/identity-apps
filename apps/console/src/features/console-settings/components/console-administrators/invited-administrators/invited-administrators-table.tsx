@@ -263,7 +263,7 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                     setShowDeleteConfirmationModal(true);
                     setDeletingUser(user);
                 },
-                popupText: (): string => t("console:manage.features.users.usersList.list.iconPopups.delete"),
+                popupText: (): string => t("users:usersList.list.iconPopups.delete"),
                 renderer: "semantic-icon"
             }
         ];
@@ -281,16 +281,16 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                            { t("users:usersList.search.emptyResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                    title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
                             { query: searchQuery }),
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -319,30 +319,30 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                         filterAttributeOptions={ [
                             {
                                 key: 0,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.username"),
                                 value: "userName"
                             },
                             {
                                 key: 1,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.email"),
                                 value: "emails"
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs" +
+                            t("users:advancedSearch.form.inputs" +
                                             ".filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs" +
+                            t("users:advancedSearch.form.inputs" +
                                             ".filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                            t("users:advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
                         }
-                        placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                        placeholder={ t("users:advancedSearch.placeholder") }
                         defaultSearchAttribute="userName"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
@@ -375,7 +375,7 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                         type="negative"
                         open={ showDeleteConfirmationModal }
                         assertionHint={
-                            t("console:manage.features.invite.confirmationModal.deleteInvite.assertionHint")
+                            t("invite:confirmationModal.deleteInvite.assertionHint")
                         }
                         assertionType="checkbox"
                         primaryAction="Confirm"
@@ -395,17 +395,17 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.header") }
+                            { t("invite:confirmationModal.deleteInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-componentid={ `${componentId}-confirmation-modal-message` }
                             attached
                             negative
                         >
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.message") }
+                            { t("invite:confirmationModal.deleteInvite.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-componentid={ `${componentId}-confirmation-modal-content` }>
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.content") }
+                            { t("invite:confirmationModal.deleteInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

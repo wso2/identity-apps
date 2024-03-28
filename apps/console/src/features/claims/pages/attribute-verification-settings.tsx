@@ -21,7 +21,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { ContentLoader, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
-import { ServerConfigurationsConstants } from "apps/console/src/features/server-configurations/constants";
+import { ServerConfigurationsConstants } from "../../server-configurations/constants";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
@@ -143,13 +143,13 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -159,12 +159,12 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -253,7 +253,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "console:manage.features.governanceConnectors.notifications." + "updateConnector.success.message"
+                    "governanceConnectors:notifications." + "updateConnector.success.message"
                 )
             })
         );
@@ -273,7 +273,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications.updateConnector.error.message"
+                        "governanceConnectors:notifications.updateConnector.error.message"
                     )
                 })
             );
@@ -282,12 +282,12 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.message"
                     )
                 })
@@ -504,17 +504,17 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     return (
         <PageLayout
             title={ t(
-                "console:manage.features.governanceConnectors.connectorCategories.otherSettings.connectors." +
+                "governanceConnectors:connectorCategories.otherSettings.connectors." +
                 "userClaimUpdate.friendlyName"
             ) }
             pageTitle={ t(
-                "console:manage.features.governanceConnectors.connectorCategories.otherSettings.connectors." +
+                "governanceConnectors:connectorCategories.otherSettings.connectors." +
                 "userClaimUpdate.friendlyName"
             ) }
             description={ t(
-                "console:manage.features.governanceConnectors.connectorSubHeading",
+                "governanceConnectors:connectorSubHeading",
                 { name: t(
-                    "console:manage.features.governanceConnectors.connectorCategories.otherSettings.connectors." +
+                    "governanceConnectors:connectorCategories.otherSettings.connectors." +
                     "userClaimUpdate.friendlyName"
                 ) }
             ) }
@@ -523,7 +523,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
                 },
-                text: t("console:manage.features.claims.local.pageLayout.local.back")
+                text: t("claims:local.pageLayout.local.back")
             } }
         >
             <EmphasizedSegment className="very padded">

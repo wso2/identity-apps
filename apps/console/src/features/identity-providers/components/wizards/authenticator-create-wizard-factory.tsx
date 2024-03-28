@@ -416,7 +416,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <ExpertModeAuthenticationProviderCreateWizard
-                        title={ 
+                        title={
                             selectedTemplateWithUniqueName?.name === "Expert Mode"
                                 ? "Custom Connector"
                                 : selectedTemplateWithUniqueName?.name
@@ -456,9 +456,9 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return showWizard && !isEmpty(selectedTemplateWithUniqueName)
                 ? (
                     <TrustedTokenIssuerCreateWizard
-                        title= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
+                        title= { t("authenticationProvider:templates.trustedTokenIssuer." +
                             "addWizard.title") }
-                        subTitle= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
+                        subTitle= { t("authenticationProvider:templates.trustedTokenIssuer." +
                             "addWizard.subtitle") }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
@@ -489,9 +489,9 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                 })
                     ?? (
                         <EnterpriseIDPCreateWizard
-                            title= { t("console:develop.features.authenticationProvider.templates.enterprise." +
+                            title= { t("authenticationProvider:templates.enterprise." +
                                 "addWizard.title") }
-                            subTitle= { t("console:develop.features.authenticationProvider.templates.enterprise." +
+                            subTitle= { t("authenticationProvider:templates.enterprise." +
                                 "addWizard.subtitle") }
                             onWizardClose={ () => {
                                 setSelectedTemplateWithUniqueName(undefined);

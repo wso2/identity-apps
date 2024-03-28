@@ -333,12 +333,12 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         >
             <Modal.Header>
                 {
-                    t("console:manage.features.roles.addRoleWizard.users.assignUserModal.heading",
+                    t("roles:addRoleWizard.users.assignUserModal.heading",
                         { type: "Group" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
+                        t("roles:addRoleWizard.users.assignUserModal.subHeading",
                             { type: "group" })
                     }
                 </Heading>
@@ -346,7 +346,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
             <Modal.Content image>
                 <TransferComponent
                     data-testid={ `${ testId }-user-list-transfer` }
-                    searchPlaceholder={ t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list." +
+                    searchPlaceholder={ t("roles:addRoleWizard.users.assignUserModal.list." +
                         "searchPlaceholder") }
                     addItems={ addUser }
                     removeItems={ removeUser }
@@ -358,15 +358,15 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         isListEmpty={ !(usersList?.length > 0) }
                         listType="unselected"
                         listHeaders={ [
-                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                            t("roles:addRoleWizard.users.assignUserModal.list.listHeader")
                         ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                        emptyPlaceholderContent={ t("transferList:list." +
                             "emptyPlaceholders.groups.unselected", { type: "users" }) }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features." + 
-                            "transferList.list.emptyPlaceholders.default") }
+                        emptyPlaceholderDefaultContent={ t(
+                            "transferList:list.emptyPlaceholders.default") }
                     >
                         {
                             usersList?.map((user: UserBasicInterface, index: number)=> {
@@ -391,15 +391,15 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         isListEmpty={ !(tempUserList?.length > 0) }
                         listType="selected"
                         listHeaders={ [
-                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                            t("roles:addRoleWizard.users.assignUserModal.list.listHeader")
                         ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                        emptyPlaceholderContent={ t("transferList:list." +
                             "emptyPlaceholders.groups.selected", { type: "users" }) }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features." + 
-                            "transferList.list.emptyPlaceholders.default") }
+                        emptyPlaceholderDefaultContent={ t(
+                            "transferList:list.emptyPlaceholders.default") }
                     >
                         {
                             tempUserList?.map((user: UserBasicInterface, index: number)=> {
@@ -459,7 +459,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                             icon={ <Icon name="search"/> }
                                                             onChange={ handleAssignedUserListSearch }
                                                             placeholder={ 
-                                                                t("console:manage.features.roles.addRoleWizard" + 
+                                                                t("roles:addRoleWizard" + 
                                                                 ".users.assignUserModal.list.searchPlaceholder") }
                                                             floated="left"
                                                             size="small"
@@ -479,7 +479,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                             <Table.Row>
                                                                 <Table.HeaderCell/>
                                                                 <Table.HeaderCell>
-                                                                    { t("console:manage.features.roles.edit.users." +
+                                                                    { t("roles:edit.users." +
                                                                         "list.header") }
                                                                 </Table.HeaderCell>
                                                             </Table.Row>
@@ -514,10 +514,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                         ) : (
                                             <EmphasizedSegment>
                                                 <EmptyPlaceholder
-                                                    title={ t("console:manage.features.roles.edit.users.list." +
+                                                    title={ t("roles:edit.users.list." +
                                                         "emptyPlaceholder.title") }
                                                     subtitle={ [
-                                                        t("console:manage.features.roles.edit.users.list." +
+                                                        t("roles:edit.users.list." +
                                                             "emptyPlaceholder.subtitles", { type: "group" })
                                                     ] }
                                                     action={
@@ -527,7 +527,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                             onClick={ handleOpenAddNewGroupModal }
                                                             icon="plus"
                                                         >
-                                                            { t("console:manage.features.roles.edit.users.list." +
+                                                            { t("roles:edit.users.list." +
                                                                 "emptyPlaceholder.action") }
                                                         </PrimaryButton>)
                                                     }
@@ -552,7 +552,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                             <Grid.Row columns={ 2 }>
                                 <TransferComponent
                                     data-testid={ `${ testId }-update-user-list-transfer` }
-                                    searchPlaceholder={ t("console:manage.features.roles.addRoleWizard.users." +
+                                    searchPlaceholder={ t("roles:addRoleWizard.users." +
                                         "assignUserModal.list.searchPlaceholder") }
                                     addItems={ addUser }
                                     removeItems={ removeUser }
@@ -564,16 +564,16 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                         isListEmpty={ !(usersList?.length > 0) }
                                         listType="unselected"
                                         listHeaders={ [
-                                            t("console:manage.features.roles.addRoleWizard.users." +
+                                            t("roles:addRoleWizard.users." +
                                                 "assignUserModal.list.listHeader")
                                         ] }
                                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                                         data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
-                                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                        emptyPlaceholderContent={ t("transferList:list." +
                                             "emptyPlaceholders.groups.unselected", { type: "users" }) }
-                                        emptyPlaceholderDefaultContent={ t("console:manage.features." + 
-                                            "transferList.list.emptyPlaceholders.default") }
+                                        emptyPlaceholderDefaultContent={ t(
+                                            "transferList:list.emptyPlaceholders.default") }
                                     >
                                         {
                                             usersList?.map((user: UserBasicInterface, index: number)=> {
@@ -598,16 +598,16 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                         isListEmpty={ !(tempUserList?.length > 0) }
                                         listType="selected"
                                         listHeaders={ [
-                                            t("console:manage.features.roles.addRoleWizard.users." +
+                                            t("roles:addRoleWizard.users." +
                                                 "assignUserModal.list.listHeader")
                                         ] }
                                         handleHeaderCheckboxChange={ selectAllAssignedList }
                                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                                         data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
-                                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                        emptyPlaceholderContent={ t("transferList:list." +
                                             "emptyPlaceholders.groups.selected", { type: "users" }) }
-                                        emptyPlaceholderDefaultContent={ t("console:manage.features." + 
-                                            "transferList.list.emptyPlaceholders.default") }
+                                        emptyPlaceholderDefaultContent={ t(
+                                            "transferList:list.emptyPlaceholders.default") }
                                     >
                                         {
                                             tempUserList?.map((user: UserBasicInterface, index: number)=> {

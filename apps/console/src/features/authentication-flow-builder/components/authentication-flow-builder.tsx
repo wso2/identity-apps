@@ -43,10 +43,15 @@ import {
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
-    AuthenticationSequenceType
+    AuthenticationSequenceType,
+    AuthenticationStepInterface,
+    AuthenticatorInterface
 } from "../../applications/models/application";
 import { AdaptiveScriptUtils } from "../../applications/utils/adaptive-script-utils";
 import { AppState } from "../../core/store";
+import {
+    IdentityProviderManagementConstants
+} from "../../identity-providers/constants/identity-provider-management-constants";
 import { OrganizationType } from "../../organizations/constants/organization-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
@@ -102,25 +107,26 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         setPreferredAuthenticationFlowBuilderMode,
         isConditionalAuthenticationEnabled,
         updateAuthenticationSequence,
-        isSystemApplication
+        isSystemApplication,
+        onActiveFlowModeChange
     } = useAuthenticationFlow();
 
     const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
         {
             id: 0,
-            label: t("console:loginFlow.modes.legacy.label"),
+            label: t("authenticationFlow:modes.legacy.label"),
             mode: AuthenticationFlowBuilderModes.Classic
         }
     ] : [
         {
             id: 0,
-            label: t("console:loginFlow.modes.legacy.label"),
+            label: t("authenticationFlow:modes.legacy.label"),
             mode: AuthenticationFlowBuilderModes.Classic
         },
         {
             extra: <Chip size="small" label="Beta" className="oxygen-chip-beta" />,
             id: 1,
-            label: t("console:loginFlow.modes.visual.label"),
+            label: t("authenticationFlow:modes.visual.label"),
             mode: AuthenticationFlowBuilderModes.Visual
         }
     ];
@@ -146,8 +152,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         if (isVisualEditorEnabled && !readOnly) {
             setActiveFlowMode(FlowModes[1]);
+            onActiveFlowModeChange(FlowModes[1]?.mode);
         } else {
             setActiveFlowMode(FlowModes[0]);
+            onActiveFlowModeChange(FlowModes[0]?.mode);
         }
     }, [ isVisualEditorEnabled, isLegacyEditorEnabled ]);
 
@@ -164,6 +172,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         );
 
         setActiveFlowMode(activeMode);
+        onActiveFlowModeChange(activeMode?.mode);
     }, [ preferredAuthenticationFlowBuilderMode ]);
 
     /**
@@ -228,17 +237,23 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             };
         }
 
+        const isValid: boolean = validateSteps(newSequence?.steps);
+
+        if (!isValid) {
+            return;
+        }
+
         updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
             .then(() => {
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                            "applications:notifications.updateAuthenticationFlow" +
                                 ".success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                            "applications:notifications.updateAuthenticationFlow" +
                                 ".success.message"
                         )
                     })
@@ -246,6 +261,74 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             })
             .finally(() => refetchApplication());
     };
+
+    /**
+     * Validate the authentication steps.
+     *
+     * @param steps - Authenticator steps.
+     * @returns True or false - Is steps are valid or not.
+     */
+    const validateSteps = (steps: AuthenticationStepInterface[]): boolean => {
+
+        // Don't allow identifier first being the only authenticator in the flow.
+        if ( steps.length === 1
+            && steps[ 0 ].options.length === 1
+            && steps[ 0 ].options[ 0 ].authenticator
+                === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "applications:notifications.updateOnlyIdentifierFirstError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "applications:notifications.updateOnlyIdentifierFirstError" +
+                        ".message"
+                    )
+                })
+            );
+
+            return false;
+        }
+
+        // Don't allow identifier first being with another authenticator in the 1FA flow.
+        if (
+            steps.length === 1
+            && steps[0].options.length > 1
+            && handleIdentifierFirstInStep(steps[0].options)
+        ) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
+                        ".message"
+                    )
+                })
+            );
+
+            return false;
+        }
+
+        return true;
+    };
+
+    /**
+     * Check if the options include the Identifier First as an authenticator.
+     *
+     * @param options - Authenticator options.
+     * @returns true or false - Options include Identifier First or not.
+     */
+    const handleIdentifierFirstInStep = (options: AuthenticatorInterface[]): boolean =>
+        options.some(
+            (option: AuthenticatorInterface) =>
+                option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+        );
 
     return (
         <Box className="sign-in-method-split-view">
@@ -255,7 +338,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                     classNames("predefined-side-panel-drawer", { hidden: activeFlowMode.id === FlowModes[0].id })
                 }
                 panel={ <PredefinedFlowsSidePanel showAdaptiveLoginTemplates={ isAdaptiveAuthAvailable } /> }
-                panelControlsLabel={ t("console:loginFlow.predefinedFlows.panelHeader") }
+                panelControlsLabel={ t("authenticationFlow:predefinedFlows.panelHeader") }
             >
                 <div id="drawer-container" style={ { position: "relative" } }>
                     <Box>
@@ -317,7 +400,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                         data-componentid={ `${componentId}-update-button` }
                                         onClick={ () => handleOnUpdate(authenticationSequence) }
                                     >
-                                        { t("console:loginFlow.visualEditor.actions.update.label") }
+                                        { t("authenticationFlow:visualEditor.actions.update.label") }
                                     </PrimaryButton>
                                 </div>
                             ) }

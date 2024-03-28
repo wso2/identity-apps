@@ -48,7 +48,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column>
-                        <h2>{ t("extensions:develop.smsProviders.form.twilio.subHeading") }</h2>
+                        <h2>{ t("smsProviders:form.twilio.subHeading") }</h2>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
@@ -65,11 +65,11 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-twilio-key` }
                             name="twilioKey"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.twilio.accountSID.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.twilio.accountSID.placeholder") }
+                            label={ t("smsProviders:form.twilio.accountSID.label") }
+                            placeholder={ t("smsProviders:form.twilio.accountSID.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.twilio.accountSID.hint") }
+                                    { t("smsProviders:form.twilio.accountSID.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -91,11 +91,11 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-twilio-secret` }
                             name="twilioSecret"
                             type="password"
-                            label={ t("extensions:develop.smsProviders.form.twilio.authToken.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.twilio.authToken.placeholder") }
+                            label={ t("smsProviders:form.twilio.authToken.label") }
+                            placeholder={ t("smsProviders:form.twilio.authToken.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.twilio.authToken.hint") }
+                                    { t("smsProviders:form.twilio.authToken.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -119,11 +119,11 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-twilio-sender` }
                             name="twilioSender"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.twilio.sender.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.twilio.sender.placeholder") }
+                            label={ t("smsProviders:form.twilio.sender.label") }
+                            placeholder={ t("smsProviders:form.twilio.sender.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.twilio.sender.hint") }
+                                    { t("smsProviders:form.twilio.sender.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }

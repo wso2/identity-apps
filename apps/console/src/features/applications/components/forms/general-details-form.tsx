@@ -210,7 +210,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         };
 
         if (isDiscoverable && !values.accessUrl) {
-            errors.accessUrl = t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
+            errors.accessUrl = t("applications:forms.generalDetails.fields.accessUrl" +
                 ".validations.empty");
         }
 
@@ -308,7 +308,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     type="info"
                     content={ (
                         <>
-                            { t("console:develop.features.applications.forms.generalDetails.managementAppBanner") }
+                            { t("applications:forms.generalDetails.managementAppBanner") }
                             <DocumentationLink
                                 link={ getLink("develop.applications.managementApplication.learnMore") }>
                                 {
@@ -325,12 +325,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     inputType="name"
                     name="name"
                     label={
-                        t("console:develop.features.applications.forms.generalDetails.fields.name" +
+                        t("applications:forms.generalDetails.fields.name" +
                             ".label")
                     }
                     required={ true }
                     placeholder={
-                        t("console:develop.features.applications.forms.generalDetails.fields.name" +
+                        t("applications:forms.generalDetails.fields.name" +
                             ".placeholder")
                     }
                     value={ name }
@@ -348,12 +348,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ariaLabel="Application description"
                         name="description"
                         label={
-                            t("console:develop.features.applications.forms.generalDetails.fields.description" +
+                            t("applications:forms.generalDetails.fields.description" +
                                 ".label")
                         }
                         required={ false }
                         placeholder={
-                            t("console:develop.features.applications.forms.generalDetails.fields.description" +
+                            t("applications:forms.generalDetails.fields.description" +
                                 ".placeholder")
                         }
                         value={ description }
@@ -372,12 +372,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     inputType="url"
                     name="imageUrl"
                     label={
-                        t("console:develop.features.applications.forms.generalDetails" +
+                        t("applications:forms.generalDetails" +
                             ".fields.imageUrl.label")
                     }
                     required={ false }
                     placeholder={
-                        t("console:develop.features.applications.forms.generalDetails" +
+                        t("applications:forms.generalDetails" +
                             ".fields.imageUrl.placeholder")
                     }
                     value={ imageUrl }
@@ -386,7 +386,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     maxLength={ 200 }
                     minLength={ 3 }
                     hint={
-                        t("console:develop.features.applications.forms.generalDetails" +
+                        t("applications:forms.generalDetails" +
                             ".fields.imageUrl.hint")
                     }
                     width={ 16 }
@@ -404,7 +404,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ariaLabel="Make application discoverable by end users"
                         name="discoverableByEndUsers"
                         required={ false }
-                        label={ t("console:develop.features.applications.forms.generalDetails.fields" +
+                        label={ t("applications:forms.generalDetails.fields" +
                             ".discoverable.label") }
                         initialValue={ isDiscoverable }
                         readOnly={ readOnly }
@@ -414,9 +414,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             <Trans
                                 i18nKey={
                                     application.templateId === ApplicationManagementConstants.MOBILE
-                                        ? "console:develop.features.applications.forms.inboundOIDC.mobileApp" +
+                                        ? "applications:forms.inboundOIDC.mobileApp" +
                                             ".discoverableHint"
-                                        : "console:develop.features.applications.forms.generalDetails.fields." +
+                                        : "applications:forms.generalDetails.fields." +
                                             "discoverable.hint"
                                 }
                                 tOptions={ { myAccount: "My Account" } }
@@ -450,16 +450,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 !isM2MApplication && (
                     <Field.Input
                         ariaLabel={
-                            t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.ariaLabel")
+                            t("applications:forms.generalDetails.fields.accessUrl.ariaLabel")
                         }
                         inputType="url"
                         name="accessUrl"
                         label={
-                            t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.label")
+                            t("applications:forms.generalDetails.fields.accessUrl.label")
                         }
                         required={ isDiscoverable }
                         placeholder={
-                            t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
+                            t("applications:forms.generalDetails.fields.accessUrl" +
                                 ".placeholder")
                         }
                         value={ accessUrl }
@@ -474,7 +474,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MAX_LENGTH }
                         minLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MIN_LENGTH }
                         data-testid={ `${ testId }-application-access-url-input` }
-                        hint={ t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
+                        hint={ t("applications:forms.generalDetails.fields.accessUrl.hint") }
                         width={ 16 }
                     />)
             }

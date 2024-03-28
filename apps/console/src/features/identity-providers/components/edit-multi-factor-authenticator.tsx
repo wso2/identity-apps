@@ -20,7 +20,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
-import { authenticatorConfig } from "apps/console/src/extensions/configs/authenticator";
+import { authenticatorConfig } from "../../../extensions/configs/authenticator";
 import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -131,10 +131,10 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         updateMultiFactorAuthenticatorDetails(authenticator.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider" +
-                        ".notifications." + i18nKeyForMFAAuthenticator + ".success.description"),
+                    description: t("authenticationProvider:" +
+                        "notifications." + i18nKeyForMFAAuthenticator + ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         i18nKeyForMFAAuthenticator + ".success.message")
                 }));
 
@@ -143,22 +143,22 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: t("console:develop.features.authenticationProvider" +
-                            ".notifications." + i18nKeyForMFAAuthenticator + ".error.description",
+                        description: t("authenticationProvider:" +
+                            "notifications." + i18nKeyForMFAAuthenticator + ".error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider" +
-                            ".notifications." + i18nKeyForMFAAuthenticator + ".error.message")
+                        message: t("authenticationProvider:" +
+                            "notifications." + i18nKeyForMFAAuthenticator + ".error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications." +
+                    description: t("authenticationProvider:notifications." +
                         i18nKeyForMFAAuthenticator + ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         i18nKeyForMFAAuthenticator + ".genericError.message")
                 }));
             })
@@ -254,7 +254,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             ].includes(authenticator.id)
         ) {
             panes.push({
-                menuItem: t("console:develop.features.authenticationProvider.edit.common.settings.tabName"),
+                menuItem: t("authenticationProvider:edit.common.settings.tabName"),
                 render: AuthenticatorSettingsTabPane
             });
         }

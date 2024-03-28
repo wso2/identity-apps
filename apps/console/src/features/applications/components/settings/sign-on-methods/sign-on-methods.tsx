@@ -39,6 +39,7 @@ import PasskeyLoginSequenceTemplate from "./templates/passkey-login-sequence.jso
 import SecondFactorEMAILOTPSequenceTemplate from "./templates/second-factor-email-otp-sequence.json";
 import SecondFactorSMSOTPSequenceTemplate from "./templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
+import SmsOTPSequenceTemplate from "./templates/sms-otp-sequence.json";
 import AuthenticationFlowBuilder from "../../../../authentication-flow-builder/components/authentication-flow-builder";
 import AuthenticationFlowProvider from "../../../../authentication-flow-builder/providers/authentication-flow-provider";
 import { ConnectionsManagementUtils } from "../../../../connections/utils/connection-utils";
@@ -542,6 +543,16 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(EmailOTPSequenceTemplate)
             });
+        } else if (loginFlow === LoginFlowTypes.SMS_OTP) {
+            eventPublisher.publish(
+                "application-sign-in-method-click-add",
+                { type: "sms-otp-login" }
+            );
+
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...cloneDeep(SmsOTPSequenceTemplate)
+            });
         }
 
         setLoginFlow(loginFlow);
@@ -619,11 +630,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 onClose={ () => setShowMissingSocialAuthenticatorModal(false) }
                 open={ showMissingSocialAuthenticatorModal }
                 primaryAction={
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    t("applications:edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.addMissingSocialAuthenticatorModal.primaryButton")
                 }
                 secondaryAction={
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    t("applications:edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.addMissingSocialAuthenticatorModal.secondaryButton")
                 }
                 onSecondaryActionClick={ () => setShowMissingSocialAuthenticatorModal(false) }
@@ -641,14 +652,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             >
                 <ConfirmationModal.Header>
                     {
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        t("applications:edit.sections.signOnMethod.sections.landing." +
                             "flowBuilder.addMissingSocialAuthenticatorModal.heading",
                         { authenticator: authenticatorName })
                     }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message attached info>
                     {
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        t("applications:edit.sections.signOnMethod.sections.landing." +
                             "flowBuilder.addMissingSocialAuthenticatorModal.content.message",
                         { authenticator: authenticatorName })
                     }
@@ -656,7 +667,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 <ConfirmationModal.Content>
                     <Trans
                         i18nKey={
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                            "applications:edit.sections.signOnMethod.sections.landing." +
                             "flowBuilder.addMissingSocialAuthenticatorModal.content.body"
                         }
                         tOptions={ { authenticator: authenticatorName } }
@@ -712,11 +723,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 onClose={ () => setShowDuplicateSocialAuthenticatorSelectionModal(false) }
                 open={ showDuplicateSocialAuthenticatorSelectionModal }
                 primaryAction={
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    t("applications:edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.duplicateSocialAuthenticatorSelectionModal.primaryButton")
                 }
                 secondaryAction={
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    t("applications:edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.duplicateSocialAuthenticatorSelectionModal.secondaryButton")
                 }
                 onSecondaryActionClick={ () => setShowDuplicateSocialAuthenticatorSelectionModal(false) }
@@ -737,14 +748,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             >
                 <ConfirmationModal.Header>
                     {
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        t("applications:edit.sections.signOnMethod.sections.landing." +
                             "flowBuilder.duplicateSocialAuthenticatorSelectionModal.heading",
                         { authenticator: authenticatorName })
                     }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message attached warning>
                     {
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        t("applications:edit.sections.signOnMethod.sections.landing." +
                             "flowBuilder.duplicateSocialAuthenticatorSelectionModal.content.message",
                         { authenticator: authenticatorName })
                     }
@@ -753,7 +764,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     <Text>
                         <Trans
                             i18nKey={
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                                "applications:edit.sections.signOnMethod.sections.landing." +
                                 "flowBuilder.duplicateSocialAuthenticatorSelectionModal.content.body"
                             }
                             tOptions={ { authenticator: authenticatorName } }

@@ -48,27 +48,27 @@ const AuthenticationFlowRevertDisclaimerModal: FunctionComponent<
             onClose={ onClose }
             type="warning"
             closeOnDimmerClick={ false }
-            assertionHint={ t("console:loginFlow.revertConfirmationModal.assertionHint") }
+            assertionHint={ t("authenticationFlow:revertConfirmationModal.assertionHint") }
             assertionType="checkbox"
-            primaryAction={ t("console:loginFlow.revertConfirmationModal.primaryActionButtonText") }
-            secondaryAction={ t("console:loginFlow.revertConfirmationModal.secondaryActionButtonText") }
+            primaryAction={ t("authenticationFlow:revertConfirmationModal.primaryActionButtonText") }
+            secondaryAction={ t("authenticationFlow:revertConfirmationModal.secondaryActionButtonText") }
             data-componentid={ componentId }
             onPrimaryActionClick={ () => onClose(null, null) }
             onSecondaryActionClick={ (event: MouseEvent<HTMLElement>) => onClose(event, null) }
             { ...rest }
         >
             <ConfirmationModal.Header data-componentid={ `${componentId}-header` }>
-                { t("console:loginFlow.revertConfirmationModal.title") }
+                { t("authenticationFlow:revertConfirmationModal.title") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
                 data-componentid={ `${componentId}-message` }
             >
-                { t("console:loginFlow.revertConfirmationModal.warningMessage") }
+                { t("authenticationFlow:revertConfirmationModal.warningMessage") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
-                { t("console:loginFlow.revertConfirmationModal.content") }
+                { t("authenticationFlow:revertConfirmationModal.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );

@@ -257,7 +257,7 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
                                         size="small"
                                         className="form-button"
                                     >
-                                        { t("console:manage.features.roles.addRoleWizard.permissions.buttons.update") }
+                                        { t("roles:addRoleWizard.permissions.buttons.update") }
                                     </Button>
                                 </Grid.Column>
                             </Grid.Row>

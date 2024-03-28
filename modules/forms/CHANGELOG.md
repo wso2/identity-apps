@@ -1,5 +1,26 @@
 # @wso2is/forms
 
+## 2.0.27
+
+### Patch Changes
+
+- [#5758](https://github.com/wso2/identity-apps/pull/5758) [`2381bd93b8`](https://github.com/wso2/identity-apps/commit/2381bd93b883b2e491419d298796fbc35d4e7990) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix the responsiveness issues in the info card
+
+## 2.0.26
+
+### Patch Changes
+
+- [#5626](https://github.com/wso2/identity-apps/pull/5626) [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with bot detection and firefox browsers
+
+## 2.0.25
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/core@2.0.37
+
 ## 2.0.24
 
 ### Patch Changes

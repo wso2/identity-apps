@@ -76,7 +76,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 value={ initialValue?.value }
                                 required={ config?.required }
                                 requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.dropdown" +
+                                    t("applications:forms.inboundCustom.fields.dropdown" +
                                         ".validations.empty", { name: config?.displayName })
                                 }
                                 default={ config?.defaultValue }
@@ -98,12 +98,12 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 value={ initialValue?.value }
                                 required={ config?.required }
                                 requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.password" +
+                                    t("applications:forms.inboundCustom.fields.password" +
                                         ".validations.empty",
                                     { name: config?.displayName })
                                 }
                                 placeholder={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.password" +
+                                    t("applications:forms.inboundCustom.fields.password" +
                                         ".placeholder",
                                     { name: config?.displayName })
                                 }
@@ -123,7 +123,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 label=""
                                 required={ config?.required }
                                 requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.checkbox" +
+                                    t("applications:forms.inboundCustom.fields.checkbox" +
                                         ".validations.empty",
                                     { user: config?.displayName })
                                 }
@@ -150,12 +150,12 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 required={ config?.required }
                                 value={ initialValue?.value }
                                 requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
+                                    t("applications:forms.inboundCustom.fields.generic" +
                                         ".validations.empty",
                                     { name: config?.displayName })
                                 }
                                 placeholder={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
+                                    t("applications:forms.inboundCustom.fields.generic" +
                                         ".placeholder",
                                     { name: config?.displayName })
                                 }

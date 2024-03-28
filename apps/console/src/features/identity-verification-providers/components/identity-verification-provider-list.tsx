@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
@@ -29,7 +30,6 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import { hasRequiredScopes } from "modules/core/helpers";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -185,14 +185,14 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                                 onClick={ onEmptyListPlaceholderActionClick }
                             >
                                 <Icon name="add"/>
-                                { t("console:develop.features.idvp.buttons.addIDVP") }
+                                { t("idvp:buttons.addIDVP") }
                             </PrimaryButton>
                         </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("console:develop.features.idvp.placeholders.emptyIDVPList.subtitles.0")
+                        t("idvp:placeholders.emptyIDVPList.subtitles.0")
                     ] }
                     data-testid={ `${ componentId }-empty-placeholder` }
                 />
@@ -261,7 +261,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                         </Header>
                     );
                 },
-                title: t("console:develop.features.idvp.list.name")
+                title: t("idvp:list.name")
             },
             {
                 allowToggleVisibility: false,
@@ -269,7 +269,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.idvp.list.actions")
+                title: t("idvp:list.actions")
             }
         ];
     };
@@ -343,7 +343,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 type="negative"
                 open={ showDeleteConfirmationModal }
                 assertion={ selectedIdvpToBeDeleted?.Name }
-                assertionHint={ t("console:develop.features.idvp.confirmations.deleteIDVP.assertionHint") }
+                assertionHint={ t("idvp:confirmations.deleteIDVP.assertionHint") }
                 assertionType="checkbox"
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
@@ -353,17 +353,17 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header data-componentid={ `${ componentId }-delete-confirmation-modal-header` }>
-                    { t("console:develop.features.idvp.confirmations.deleteIDVP.header") }
+                    { t("idvp:confirmations.deleteIDVP.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     negative
                     data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
                 >
-                    { t("console:develop.features.idvp.confirmations.deleteIDVP.message") }
+                    { t("idvp:confirmations.deleteIDVP.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-componentid={ `${ componentId }-delete-confirmation-modal-content` }>
-                    { t("console:develop.features.idvp.confirmations.deleteIDVP.content") }
+                    { t("idvp:confirmations.deleteIDVP.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );

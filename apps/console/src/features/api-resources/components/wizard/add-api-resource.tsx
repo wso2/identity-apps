@@ -70,7 +70,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    //External trigger to submit the authorization step. 
+    //External trigger to submit the authorization step.
     let submitAuthorization: () => void;
 
     const [ submitBasicDetails, setSubmitBasicDetails ] = useTrigger();
@@ -208,7 +208,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                 />
             ),
             icon: getAPIResourceWizardStepIcons().permissions,
-            title: t("console:apiResources.wizard.addApiResource.steps.scopes.stepTitle")
+            title: t("apiResources:wizard.addApiResource.steps.scopes.stepTitle")
         },
         {
             addAPIResourceWizardStepsFormType: AddAPIResourceWizardStepsFormTypes.AUTHORIZATION,

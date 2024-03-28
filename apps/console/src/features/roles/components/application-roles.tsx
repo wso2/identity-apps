@@ -236,10 +236,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         updateApplicationDetails(updatedApplication)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateApplication.success" +
+                    description: t("applications:notifications.updateApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateApplication.success.message")
+                    message: t("applications:notifications.updateApplication.success.message")
                 }));
 
                 onUpdate(appId);
@@ -249,7 +249,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateApplication.error" +
+                        message: t("applications:notifications.updateApplication.error" +
                             ".message")
                     }));
 
@@ -257,10 +257,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateApplication" +
+                    description: t("applications:notifications.updateApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
+                    message: t("applications:notifications.updateApplication.genericError" +
                         ".message")
                 }));
             })
@@ -349,7 +349,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                         >
                                                             <Icon name="plus"/>
                                                             {
-                                                                t("console:develop.features.applications.edit." +
+                                                                t("applications:edit." +
                                                                 "sections.roles.createApplicationRoleWizard.button")
                                                             }
                                                         </LinkButton>

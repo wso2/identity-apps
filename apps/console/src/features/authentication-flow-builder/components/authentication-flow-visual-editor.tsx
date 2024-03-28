@@ -19,9 +19,10 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
+import { AppConstants } from "@wso2is/common";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink, Link, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, {
@@ -62,8 +63,10 @@ import {
 } from "../../applications/models/application";
 import { AuthenticatorManagementConstants } from "../../connections";
 import useMultiFactorAuthenticatorDetails from "../../connections/api/use-multi-factor-authentication-details";
+import { history } from "../../core";
 import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { ConnectorPropertyInterface } from "../../server-configurations";
+import { FIDO_AUTHENTICATOR_ID } from "../constants/template-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import "reactflow/dist/style.css";
 import "./authentication-flow-visual-editor.scss";
@@ -332,11 +335,11 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         if (FIDOAuthenticatorDetailsFetchError) {
             if (FIDOAuthenticatorDetailsFetchError?.response?.data?.description) {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider." +
+                    description: t("authenticationProvider:" +
                         "notifications.getConnectionDetails.error.description",
                     { description: FIDOAuthenticatorDetailsFetchError?.response?.data?.description }),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider." +
+                    message: t("authenticationProvider:" +
                         "notifications.getConnectionDetails.error.message")
                 }));
 
@@ -344,10 +347,10 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
             }
 
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider." +
+                description: t("authenticationProvider:" +
                     "notifications.getConnectionDetails.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.authenticationProvider." +
+                message: t("authenticationProvider:" +
                     "notifications.getConnectionDetails.genericError.message")
             }));
 
@@ -390,14 +393,14 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         <>
                             <AlertTitle>
                                 {
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder." +
                                     "types.passkey.info.progressiveEnrollmentEnabled")
                                 }
                             </AlertTitle>
                             <Trans
                                 i18nKey={
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                     "info.passkeyAsFirstStepWhenprogressiveEnrollmentEnabled")
                                 }
@@ -422,14 +425,14 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         <>
                             <AlertTitle>
                                 {
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder." +
                                     "types.passkey.info.progressiveEnrollmentEnabled")
                                 }
                             </AlertTitle>
                             <Trans
                                 i18nKey={
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                     "info.passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled")
                                 }
@@ -451,13 +454,24 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                     <>
                         <Trans
                             i18nKey={
-                                t("console:develop.features.applications.edit.sections" +
+                                t("applications:edit.sections" +
                                 ".signOnMethod.sections.landing.flowBuilder." +
                                 "types.passkey.info.progressiveEnrollmentDisabled")
                             }
                         >
-                        Passkey progressive enrollment is disabled. Users must enroll
-                        their passkeys through <strong>My Account</strong> to use passwordless sign-in.
+                            <Link
+                                external={ false }
+                                onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths().get("IDP_EDIT")
+                                            .replace(":id", FIDO_AUTHENTICATOR_ID)
+                                    );
+                                } }
+                            >
+                                Passkey progressive enrollment
+                            </Link>
+                                &nbsp; is disabled. Users must enroll
+                                their passkeys through <strong>My Account</strong> to use passwordless sign-in.
                         </Trans>
                         <DocumentationLink
                             link={ getLink("develop.applications.editApplication.signInMethod.fido") }
@@ -519,7 +533,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                     style={ { marginTop: `${infoAlertBoxHeight + 15}px` } }
                 >
                     <ArrowRotateLeft />
-                    { t("console:loginFlow.visualEditor.actions.revert.label") }
+                    { t("authenticationFlow:visualEditor.actions.revert.label") }
                 </Button>
                 <ReactFlow
                     fitView
@@ -540,7 +554,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                             disabled={ !isValidAuthenticationFlow }
                             data-componentid={ `${componentId}-update-button` }
                         >
-                            { t("console:loginFlow.visualEditor.actions.update.label") }
+                            { t("authenticationFlow:visualEditor.actions.update.label") }
                         </Button>
                     ) }
                 </ReactFlow>

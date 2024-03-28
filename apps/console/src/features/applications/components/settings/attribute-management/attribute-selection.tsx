@@ -655,7 +655,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 <ConfirmationModal.Header
                     data-testid={ `${ testId }-delete-confirmation-modal-header` }
                 >
-                    { t("console:develop.features.applications.confirmations.removeApplicationUserAttribute" +
+                    { t("applications:confirmations.removeApplicationUserAttribute" +
                         ".header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
@@ -663,14 +663,14 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     negative
                     data-testid={ `${ testId }-delete-confirmation-modal-message` }
                 >
-                    { t("console:develop.features.applications.confirmations.removeApplicationUserAttribute." +
+                    { t("applications:confirmations.removeApplicationUserAttribute." +
                         "subHeader") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
                     data-testid={ `${ testId }-delete-confirmation-modal-content` }
                 >
                     <Trans
-                        i18nKey={ "console:develop.features.applications.confirmations." +
+                        i18nKey={ "applications:confirmations." +
                             "removeApplicationUserAttribute.content" }
                         i18nOptions={ { default: defaultSubjectClaim?.displayName } }
                     >
@@ -733,12 +733,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 } >
                             <Heading as="h4">
                                 {
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                         ".attributes.selection.heading")
                                 }
                             </Heading>
                             <Heading as="h6" color="grey">
-                                { t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                { t("applications:edit.sections.attributes.selection" +
                                 ".description") }
                                 { resolveClaimDocumentationLink() }
                             </Heading>
@@ -759,7 +759,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                 iconPosition="left"
                                                                 onChange={ handleChange }
                                                                 placeholder={
-                                                                    t("console:develop.features.applications.edit" +
+                                                                    t("applications:edit" +
                                                                     ".sections.attributes.selection.mappingTable" +
                                                                     ".searchPlaceholder")
                                                                 }
@@ -784,8 +784,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                         }
                                                                     } }
                                                                     label={
-                                                                        t("console:develop.features.applications" +
-                                                                            ".edit.sections.attributes.selection" +
+                                                                        t("applications:" +
+                                                                            "edit.sections.attributes.selection" +
                                                                             ".mappingTable.actions.enable")
                                                                     }
                                                                     readOnly={ readOnly }
@@ -815,7 +815,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                             <Message
                                                 type="error"
                                                 content={
-                                                    t("console:develop.features.applications.notifications." +
+                                                    t("applications:notifications." +
                                                     "updateClaimConfig.error.description")
                                                 }
                                             />)
@@ -837,8 +837,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             <Table.HeaderCell width="8">
                                                                                 <strong>
                                                                                     {
-                                                                                        t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
+                                                                                        t("applications:edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mappingTable.columns" +
                                                                                         ".attribute")
@@ -848,8 +847,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             <Table.HeaderCell width="8">
                                                                                 <strong>
                                                                                     {
-                                                                                        t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
+                                                                                        t("applications:edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mappingTable.columns" +
                                                                                         ".appAttribute")
@@ -857,8 +855,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 </strong>
                                                                                 <Hint icon="info circle" popup>
                                                                                     {
-                                                                                        t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
+                                                                                        t("applications:edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mappingTable." +
                                                                                         "mappedAtributeHint")
@@ -871,8 +868,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             >
                                                                                 <strong>
                                                                                     {
-                                                                                        t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
+                                                                                        t("applications:edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mappingTable.columns" +
                                                                                         ".mandatory")
@@ -880,8 +876,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 </strong>
                                                                                 <Hint icon="info circle" popup>
                                                                                     {
-                                                                                        t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
+                                                                                        t("applications:edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mandatoryAttributeHint",
                                                                                         { productName:
@@ -899,8 +894,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             <Table.HeaderCell width="10">
                                                                                 <strong>
                                                                                     {
-                                                                                        t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
+                                                                                        t("applications:edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mappingTable.columns" +
                                                                                         ".attribute")
@@ -913,8 +907,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             >
                                                                                 <strong>
                                                                                     {
-                                                                                        t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
+                                                                                        t("applications:edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mappingTable.columns" +
                                                                                         ".mandatory")
@@ -922,8 +915,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 </strong>
                                                                                 <Hint icon="info circle" popup>
                                                                                     {
-                                                                                        t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
+                                                                                        t("applications:edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mandatoryAttributeHint",
                                                                                         { productName:
@@ -1008,8 +1000,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                     <Table.HeaderCell width="10">
                                                                         <strong>
                                                                             {
-                                                                                t("console:develop.features" +
-                                                                                ".applications.edit.sections" +
+                                                                                t("applications:edit.sections" +
                                                                                 ".attributes.selection" +
                                                                                 ".mappingTable.columns" +
                                                                                 ".attribute")
@@ -1019,8 +1010,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                     <Table.HeaderCell textAlign="center" width="8">
                                                                         <strong>
                                                                             {
-                                                                                t("console:develop.features" +
-                                                                                ".applications.edit.sections" +
+                                                                                t("applications:edit.sections" +
                                                                                 ".attributes.selection" +
                                                                                 ".mappingTable.columns" +
                                                                                 ".mandatory")
@@ -1028,8 +1018,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                         </strong>
                                                                         <Hint icon="info circle" popup>
                                                                             {
-                                                                                t("console:develop.features" +
-                                                                                ".applications.edit.sections" +
+                                                                                t("applications:edit.sections" +
                                                                                 ".attributes.selection" +
                                                                                 ".mandatoryAttributeHint",
                                                                                 { productName:
@@ -1106,18 +1095,18 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                             title={
                                                 applicationConfig.attributeSettings
                                                     .attributeSelection.showAttributePlaceholderTitle &&
-                                                t("console:develop.features.applications.placeholders." +
+                                                t("applications:placeholders." +
                                                     "emptyAttributesList.title")
                                             }
                                             subtitle={ [
-                                                t("console:develop.features.applications.placeholders." +
+                                                t("applications:placeholders." +
                                                     "emptyAttributesList.subtitles")
                                             ] }
                                             action={
                                                 !readOnly && (
                                                     <PrimaryButton basic onClick={ handleOpenSelectionModal }>
                                                         <Icon name="plus" />
-                                                        { t("console:develop.features.applications.placeholders" +
+                                                        { t("applications:placeholders" +
                                                             ".emptyAttributesList.action") }
                                                     </PrimaryButton>
                                                 )
@@ -1135,7 +1124,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     <Hint>
                                         <Trans
                                             i18nKey={
-                                                "console:develop.features.applications.edit.sections." +
+                                                "applications:edit.sections." +
                                                 "attributes.selection.attributeComponentHint"
                                             }
                                         >
@@ -1168,7 +1157,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     <Hint>
                                         <Trans
                                             i18nKey={
-                                                "console:develop.features.applications.edit.sections.attributes." +
+                                                "applications:edit.sections.attributes." +
                                                 "selection.attributeComponentHintAlt"
                                             }
                                         >

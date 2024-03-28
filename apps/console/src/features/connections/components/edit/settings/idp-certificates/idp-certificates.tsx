@@ -34,7 +34,7 @@ import {
     SwitcherOptionProps
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { IdentityProviderManagementConstants } from "apps/console/src/features/identity-providers/constants";
+import { IdentityProviderManagementConstants } from "../../../../../identity-providers/constants";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -199,7 +199,9 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      */
     const onJWKSFormSubmit = (values: Record<string, any>) => {
 
-        const operation: string = editingIDP?.certificate?.jwksUri ? "REPLACE" : "ADD";
+        const operation: string = editingIDP?.certificate?.jwksUri
+            ? jwksValue ? "REPLACE" : "REMOVE"
+            : "ADD";
 
         const PATCH_OBJECT: CertificatePatchRequestInterface[] = [
             {
@@ -213,11 +215,11 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
         const doOnSuccess = () => {
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider.notifications." +
+                description: t("authenticationProvider:notifications." +
                     "updateIDPCertificate.success" +
                     ".description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.authenticationProvider.notifications." +
+                message: t("authenticationProvider:notifications." +
                     "updateIDPCertificate.success.message")
             }));
             onUpdate(editingIDP.id);
@@ -228,18 +230,18 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 dispatch(addAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         "updateIDPCertificate.error.message")
                 }));
 
                 return;
             }
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider.notifications." +
+                description: t("authenticationProvider:notifications." +
                     "updateIDPCertificate.genericError" +
                     ".description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.authenticationProvider.notifications." +
+                message: t("authenticationProvider:notifications." +
                     "updateIDPCertificate.genericError.message")
             }));
         };
@@ -261,7 +263,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             onSubmit={ onJWKSFormSubmit }
         >
             <Field.Input
-                required
                 hint={ (
                     <React.Fragment>
                         A JSON Web Key (JWK) Set is a JSON object that represents a set of JWKs. The JSON
@@ -274,16 +275,16 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 inputType="url"
                 width={ 16 }
                 validation={ (value: string) => {
-                    if (!value || !FormValidation.url(value)) {
+                    if (value && !FormValidation.url(value)) {
                         setIsJwksValueValid(false);
 
-                        return t("console:develop.features.applications.forms.inboundSAML" +
+                        return t("applications:forms.inboundSAML" +
                             ".fields.metaURL.validations.invalid");
                     }
                     if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
                         setIsJwksValueValid(false);
 
-                        return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+                        return t("idp:forms.common.internetResolvableErrorMessage");
                     }
                     setIsJwksValueValid(true);
 
@@ -309,7 +310,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     label={ t("common:update") }
                     disabled={
                         (
-                            !jwksValue ||
                             !isJwksValueValid ||
                             jwksValue === editingIDP?.certificate?.jwksUri
                         ) ||
@@ -340,8 +340,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                                         data-testid={ `${ testId }-add-certificate-button` }
                                     >
                                         <Icon name="add" />
-                                        { t("console:develop.features.authenticationProvider" +
-                                            ".buttons.addCertificate") }
+                                        { t("authenticationProvider:" +
+                                            "buttons.addCertificate") }
                                     </PrimaryButton>
                                 </Show>
                             </Grid>
@@ -388,7 +388,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     shouldShowNoCertificatesAlert() && (
                         <Grid xs={ 12 }>
                             <Alert severity="error">
-                                { t("console:develop.features.authenticationProvider.forms.certificateSection." +
+                                { t("authenticationProvider:forms.certificateSection." +
                                     "noCertificateAlert", { productName: config.ui.productName } ) }
                             </Alert>
                         </Grid>
@@ -405,12 +405,12 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                                 onChange={ onSelectionChange }
                                 options={ [
                                     {
-                                        label: t("console:develop.features.authenticationProvider.forms." +
+                                        label: t("authenticationProvider:forms." +
                                             "certificateSection.certificateEditSwitch.jwks"),
                                         value: ("jwks" as CertificateConfigurationMode)
                                     },
                                     {
-                                        label: t("console:develop.features.authenticationProvider.forms." +
+                                        label: t("authenticationProvider:forms." +
                                             "certificateSection.certificateEditSwitch.pem"),
                                         value: ("certificates" as CertificateConfigurationMode)
                                     }

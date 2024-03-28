@@ -235,7 +235,7 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
                         ? (
                             <TransferComponent
                                 selectionComponent
-                                searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
+                                searchPlaceholder={ t("transferList:searchPlaceholder",
                                     { type: "Groups" }) }
                                 handleUnelectedListSearch={ handleUnselectedListSearch }
                                 data-componentid="application-role-assign-group-modal"
@@ -245,15 +245,15 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
                                     isListEmpty={ !(groupList?.length > 0) }
                                     listType="unselected"
                                     listHeaders={ [
-                                        t("console:manage.features.transferList.list.headers.0"),
-                                        t("console:manage.features.transferList.list.headers.1"), ""
+                                        t("transferList:list.headers.0"),
+                                        t("transferList:list.headers.1"), ""
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
-                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                    emptyPlaceholderContent={ t("transferList:list." +
                                         "emptyPlaceholders.users.roles.unselected", { type: "groups" }) }
                                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
-                                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                    emptyPlaceholderDefaultContent={ t("transferList:list."
                                         + "emptyPlaceholders.default") }
                                 >
                                     {

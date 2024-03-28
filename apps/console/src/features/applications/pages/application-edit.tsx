@@ -141,17 +141,17 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             dispatch(addAlert({
                 description: applicationGetRequestError.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications.fetchApplication.error.message")
+                message: t("applications:notifications.fetchApplication.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.notifications.fetchApplication" +
+            description: t("applications:notifications.fetchApplication" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.notifications.fetchApplication.genericError." +
+            message: t("applications:notifications.fetchApplication.genericError." +
                 "message")
         }));
     }, [ applicationGetRequestError ]);
@@ -324,8 +324,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          * {@link ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC} to it.
          * Additionally @see InboundFormFactory.
          */
-        if (!application?.templateId) {
+        if (!application?.advancedConfigurations?.fragment && !application?.templateId) {
             if (application?.inboundProtocols?.length > 0) {
+                // FIXME: `application` object is directly mutated here causing unpredictable side effects.
+                // Tracker: https://github.com/wso2/product-is/issues/20016
                 application.templateId = InboundProtocolDefaultFallbackTemplates.get(
                     application.inboundProtocols[ 0 /*We pick the first*/ ].type
                 ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
@@ -442,8 +444,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
             return (
                 <LabelWithPopup
-                    popupHeader={ t("console:develop.features.applications.popups.appStatus.notConfigured.header") }
-                    popupSubHeader={ t("console:develop.features.applications.popups.appStatus.notConfigured.content") }
+                    popupHeader={ t("applications:popups.appStatus.notConfigured.header") }
+                    popupSubHeader={ t("applications:popups.appStatus.notConfigured.content") }
                     labelColor="yellow"
                 />
             );
@@ -458,8 +460,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
                 return (
                     <LabelWithPopup
-                        popupHeader={ t("console:develop.features.applications.popups.appStatus.revoked.header") }
-                        popupSubHeader={ t("console:develop.features.applications.popups.appStatus.revoked.content") }
+                        popupHeader={ t("applications:popups.appStatus.revoked.header") }
+                        popupSubHeader={ t("applications:popups.appStatus.revoked.content") }
                         labelColor="grey"
                     />
                 );
@@ -468,8 +470,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         return (
             <LabelWithPopup
-                popupHeader={ t("console:develop.features.applications.popups.appStatus.active.header") }
-                popupSubHeader={ t("console:develop.features.applications.popups.appStatus.active.content") }
+                popupHeader={ t("applications:popups.appStatus.active.header") }
+                popupSubHeader={ t("applications:popups.appStatus.active.content") }
                 labelColor="green"
             />
         );
@@ -489,6 +491,27 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 allowedScopes);
     };
 
+    /**
+     * Resolves the application template label.
+     *
+     * @returns Template label.
+     */
+    const resolveTemplateLabel = (): ReactElement => {
+        if (application?.advancedConfigurations?.fragment) {
+            return (
+                <Label size="small">
+                    { t("applications:list.labels.fragment") }
+                </Label>
+            );
+        }
+
+        if (applicationTemplate?.name) {
+            return <Label size="small">{ applicationTemplate.name }</Label>;
+        }
+
+        return null;
+    };
+
     return (
         <TabPageLayout
             pageTitle="Edit Application"
@@ -506,9 +529,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     tenantDomain, applicationTemplate?.name)
                     ?? (
                         <div className="with-label ellipsis" ref={ appDescElement }>
-                            { applicationTemplate?.name && (
-                                <Label size="small">{ applicationTemplate.name }</Label>
-                            ) }
+                            { resolveTemplateLabel() }
                             {
                                 ApplicationManagementUtils.isChoreoApplication(application)
                                     && (<Label
@@ -557,7 +578,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: isConnectedAppsRedirect ? t("console:develop.features.idp.connectedApps.applicationEdit.back",
+                text: isConnectedAppsRedirect ? t("idp:connectedApps.applicationEdit.back",
                     { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
             } }
             titleTextAlign="left"

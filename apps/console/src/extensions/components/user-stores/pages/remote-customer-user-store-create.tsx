@@ -133,10 +133,10 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                        || t("claims:local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                        || t("claims:local.notifications.getClaims.genericError.message")
                 }
             ));
         }).finally(() => {
@@ -196,14 +196,14 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
         addUserStore(data)
             .then((response: UserStore) => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.userstores.notifications.addUserstore.success.description"),
+                    description: t("userstores:notifications.addUserstore.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.userstores.notifications.addUserstore.success.message")
+                    message: t("userstores:notifications.addUserstore.success.message")
                 }));
                 dispatch(addAlert({
-                    description: t("console:manage.features.userstores.notifications.delay.description"),
+                    description: t("userstores:notifications.delay.description"),
                     level: AlertLevels.WARNING,
-                    message: t("console:manage.features.userstores.notifications.delay.message")
+                    message: t("userstores:notifications.delay.message")
                 }));
 
                 history.push({
@@ -226,10 +226,10 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.userstores.notifications." +
+                    description: t("userstores:notifications." +
                         "addUserstore.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message ?? t("console:manage.features.userstores.notifications.addUserstore" +
+                    message: error?.message ?? t("userstores:notifications.addUserstore" +
                         ".genericError.message")
                 }));
             });
@@ -316,7 +316,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("USERSTORES"));
                 },
-                text: t("console:manage.features.userstores.pageLayout.edit.back")
+                text: t("userstores:pageLayout.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

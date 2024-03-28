@@ -30,7 +30,7 @@ import {
     TableColumnInterface,
     TableDataInterface
 } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -165,14 +165,14 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.oidcScopes.notifications.updateOIDCScope.success"
+                            "oidcScopes:notifications.updateOIDCScope.success"
                             + ".description", {
                                 scope: scope.name
                             }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.oidcScopes.notifications.updateOIDCScope.success" + ".message"
+                            "oidcScopes:notifications.updateOIDCScope.success" + ".message"
                         )
                     })
                 );
@@ -185,7 +185,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.oidcScopes.notifications.updateOIDCScope.error" + ".message"
+                                "oidcScopes:notifications.updateOIDCScope.error" + ".message"
                             )
                         })
                     );
@@ -196,12 +196,12 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.oidcScopes.notifications.updateOIDCScope" +
+                            "oidcScopes:notifications.updateOIDCScope" +
                             ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.oidcScopes.notifications.updateOIDCScope" + ".genericError.message"
+                            "oidcScopes:notifications.updateOIDCScope" + ".genericError.message"
                         )
                     })
                 );
@@ -256,7 +256,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                         </Header.Content>
                     </Header>
                 ),
-                title: t("console:manage.features.oidcScopes.list.columns.name")
+                title: t("oidcScopes:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -264,7 +264,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.oidcScopes.list.columns.actions")
+                title: t("oidcScopes:list.columns.actions")
             }
         ];
     };
@@ -300,7 +300,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         return selectedAttributes?.length === 0 ? (
             <EmptyPlaceholder
                 data-testid="scope-mgt-empty-actual-claims-list"
-                subtitle={ [ t("console:manage.features.oidcScopes.editScope." +
+                subtitle={ [ t("oidcScopes:editScope." +
                     "claimList.emptyPlaceholder.subtitles.0") ] }
                 action={
                     (<Show when={ AccessControlConstants.SCOPE_WRITE }>
@@ -314,7 +314,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                             } }
                         >
                             <Icon name="add" />
-                            { t("console:manage.features.oidcScopes.editScope.claimList.addClaim") }
+                            { t("oidcScopes:editScope.claimList.addClaim") }
                         </PrimaryButton>
                     </Show>)
                 }
@@ -324,14 +324,14 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         ) : tempSelectedAttributes?.length === 0 ? (
             <EmptyPlaceholder
                 data-testid="scope-mgt-empty-claims-list"
-                title={ t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.title") }
+                title={ t("oidcScopes:editScope.claimList.emptySearch.title") }
                 subtitle={ [
-                    t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.0"),
-                    t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.1")
+                    t("oidcScopes:editScope.claimList.emptySearch.subtitles.0"),
+                    t("oidcScopes:editScope.claimList.emptySearch.subtitles.1")
                 ] }
                 action={
                     (<LinkButton onClick={ clearSearchedAttributes }>
-                        { t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.action") }
+                        { t("oidcScopes:editScope.claimList.emptySearch.action") }
                     </LinkButton>)
                 }
                 image={ getEmptyPlaceholderIllustrations().emptySearch }
@@ -361,7 +361,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
             {
                 !isReadOnly && (
                     <PrimaryButton onClick={ updateOIDCScope }>
-                        { t("console:manage.features.claims.scopeMappings.saveChangesButton") }
+                        { t("claims:scopeMappings.saveChangesButton") }
                     </PrimaryButton>
                 )
             }
@@ -372,7 +372,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:manage.features.claims.scopeMappings." +
+                        assertionHint={ t("claims:scopeMappings." +
                             "deletionConfirmationModal.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -382,17 +382,17 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.claims.scopeMappings.deletionConfirmationModal.header") }
+                            { t("claims:scopeMappings.deletionConfirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             negative
                         >
-                            { t("console:manage.features.claims.scopeMappings.deletionConfirmationModal.message") }
+                            { t("claims:scopeMappings.deletionConfirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.claims.scopeMappings.deletionConfirmationModal.content") }
+                            { t("claims:scopeMappings.deletionConfirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

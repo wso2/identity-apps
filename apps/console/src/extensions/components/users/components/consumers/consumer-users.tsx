@@ -176,11 +176,11 @@ const ConsumerUsersPage: FunctionComponent<ConsumerUsersPageInterface> = (
             .then(() => {
                 handleAlerts({
                     description: t(
-                        "console:manage.features.users.notifications.deleteUser.success.description"
+                        "users:notifications.deleteUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.users.notifications.deleteUser.success.message"
+                        "users:notifications.deleteUser.success.message"
                     )
                 });
                 getUsersList(listItemLimit, listOffset, null, null, CONSUMER_USERSTORE);
@@ -241,29 +241,29 @@ const ConsumerUsersPage: FunctionComponent<ConsumerUsersPageInterface> = (
                         filterAttributeOptions={ [
                             {
                                 key: 0,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.username"),
                                 value: "userName"
                             },
                             {
                                 key: 1,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.email"),
                                 value: "emails"
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute.placeholder")
+                            t("users:advancedSearch.form.inputs.filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                            t("users:advancedSearch.form.inputs.filterCondition" +
                                 ".placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                            t("users:advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
-                        placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                        placeholder={ t("users:advancedSearch.placeholder") }
                         defaultSearchAttribute="userName"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
@@ -299,7 +299,7 @@ const ConsumerUsersPage: FunctionComponent<ConsumerUsersPageInterface> = (
                 //                         basic
                 //                     >
                 //                         <Icon name="columns"/>
-                //                         { t("console:manage.features.users.buttons.metaColumnBtn") }
+                //                         { t("users:buttons.metaColumnBtn") }
                 //                     </Button>
                 //                 }
                 //             />
@@ -321,9 +321,9 @@ const ConsumerUsersPage: FunctionComponent<ConsumerUsersPageInterface> = (
                 { userStoreError
                     ? (
                         <EmptyPlaceholder
-                            subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
-                                t("console:manage.features.users.placeholders.userstoreError.subtitles.1")     ] }
-                            title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                            subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
+                                t("users:placeholders.userstoreError.subtitles.1")     ] }
+                            title={ t("users:placeholders.userstoreError.title") }
                             image={ getEmptyPlaceholderIllustrations().genericError }
                             imageSize="tiny"
                         />
@@ -336,13 +336,13 @@ const ConsumerUsersPage: FunctionComponent<ConsumerUsersPageInterface> = (
                                     filterAttributeOptions={ [
                                         {
                                             key: 0,
-                                            text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                            text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.username"),
                                             value: "userName"
                                         },
                                         {
                                             key: 1,
-                                            text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                            text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.email"),
                                             value: "emails"
                                         },
@@ -358,18 +358,18 @@ const ConsumerUsersPage: FunctionComponent<ConsumerUsersPageInterface> = (
                                         }
                                     ] }
                                     filterAttributePlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
+                                        t("users:advancedSearch.form.inputs.filterAttribute" +
                                             ".placeholder")
                                     }
                                     filterConditionsPlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                                        t("users:advancedSearch.form.inputs.filterCondition" +
                                             ".placeholder")
                                     }
                                     filterValuePlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                                        t("users:advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
                                     }
-                                    placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                                    placeholder={ t("users:advancedSearch.placeholder") }
                                     defaultSearchAttribute="userName"
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }

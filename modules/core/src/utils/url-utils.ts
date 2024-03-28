@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,7 +29,6 @@ export class URLUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -37,9 +36,9 @@ export class URLUtils {
     /**
      * Checks if the passed in url is a valid Http URL.
      *
-     * @param {string} url - URL to evaluate.
+     * @param url - URL to evaluate.
      *
-     * @return {boolean} True if the url is a http url.
+     * @returns True if the url is a http url.
      */
     public static isHttpUrl(url: string): boolean {
         return !!url.trim().match(PatternConstants.HTTP_URL_REGEX_PATTERN);
@@ -48,9 +47,9 @@ export class URLUtils {
     /**
      * Checks if the passed in url is a valid Https URL.
      *
-     * @param {string} url - URL to evaluate.
+     * @param url - URL to evaluate.
      *
-     * @return {boolean} True if the url is a https url.
+     * @returns True if the url is a https url.
      */
     public static isHttpsUrl(url: string): boolean {
         return !!url.trim().match(PatternConstants.HTTPS_URL_REGEX_PATTERN);
@@ -59,9 +58,9 @@ export class URLUtils {
     /**
      * Checks if the passed in url starts with HTTP/HTTPS.
      *
-     * @param {string} url - URL to evaluate.
+     * @param url - URL to evaluate.
      *
-     * @return {boolean} True if the url is a https/http url.
+     * @returns True if the url is a https/http url.
      */
     public static isHttpsOrHttpUrl(url: string): boolean {
         return !!url.trim().match(PatternConstants.HTTPS_OR_HTTP_REGEX_PATTERN);
@@ -70,9 +69,9 @@ export class URLUtils {
     /**
      * Checks if the passed in url is a valid data URL.
      *
-     * @param {string} url - URL to evaluate.
+     * @param url - URL to evaluate.
      *
-     * @return {boolean} True if the url is a data url.
+     * @returns True if the url is a data url.
      */
     public static isDataUrl(url: string): boolean {
         return !!url.trim().match(PatternConstants.DATA_URL_REGEX_PATTERN);
@@ -81,9 +80,9 @@ export class URLUtils {
     /**
      * Checks if the the provided URL is a valid mobile deep link.
      *
-     * @param {string} url - The URL to evaluate.
+     * @param url - The URL to evaluate.
      *
-     * @return {boolean} True if the URL is a mobile deep link.
+     * @returns True if the URL is a mobile deep link.
      */
     public static isMobileDeepLink(url: string): boolean{
         return !!url.trim().match(PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN);
@@ -92,9 +91,9 @@ export class URLUtils {
     /**
      * Checks if the the provided URL is a loop back call.
      *
-     * @param {string} url - The URL to evaluate.
+     * @param url - The URL to evaluate.
      *
-     * @return {boolean} True if the URL is a loop back call.
+     * @returns True if the URL is a loop back call.
      */
     public static isLoopBackCall(url: string): boolean{
         return !!url.trim().match(PatternConstants.LOOP_BACK_CALL_REGEX_PATTERN);
@@ -108,21 +107,22 @@ export class URLUtils {
      * Please refer specification for other part implementations of the url:
      * https://www.ietf.org/rfc/rfc2396.txt
      *
-     * @param url {string} a valid url string.
+     * @param url - a valid url string.
      * @returns URLComponentsInterface
      * @throws Invalid URL | undefined
      */
     public static urlComponents(url: string): URLComponentsInterface {
         try {
-            const details = new URL(url.trim());
-            const protocol = details.protocol.replace(":", "");
+            const details:URL = new URL(url.trim());
+            const protocol:string = details.protocol.replace(":", "");
+
             return {
-                protocol, // https|http
-                host: details.host, // localhost:9443
-                origin: details.origin, // https://localhost:9443
-                href: details.href, // https://localhost:9443/some/long/url
                 _url: details, // URL Instance
+                host: details.host, // localhost:9443
+                href: details.href, // https://localhost:9443/some/long/url
+                origin: details.origin, // https://localhost:9443
                 pathWithoutProtocol: details.href.split("://")[ 1 ],
+                protocol // https|http
             } as URLComponentsInterface;
         } catch (error) {
             return null;
@@ -130,7 +130,6 @@ export class URLUtils {
     }
 
     public static isURLValid(url: string, checkForSanity?: boolean): boolean {
-
         // Check if the URL is valid and doesn't contain probable XSS attacks.
         if (checkForSanity) {
             const sanitizedURL: string = sanitizeUrl(url);
@@ -143,7 +142,8 @@ export class URLUtils {
         }
 
         try {
-            const _ = new URL(url.trim());
+            const _:URL = new URL(url.trim());
+
             return true;
         } catch (error) {
             return false;
@@ -152,7 +152,7 @@ export class URLUtils {
 
     /**
      * Checks whether a given url is a SSL enabled protocol or not.
-     * @param url {string}
+     * @param url - any url
      */
     public static isHTTPS(url: string): boolean {
         try {
@@ -171,13 +171,14 @@ export class URLUtils {
      * It checks whether theres any pathname, search, or
      * search parameters are present.
      *
-     * Will return {@code true} if matches the schema <proto>://<host>
+     * Will return `true` if matches the schema <proto>://<host>
      *
-     * @param url {string} any url
+     * @param url - any url
      */
     public static isAValidOriginUrl(url: string): boolean {
         try {
             const { _url } = this.urlComponents(url);
+
             return (!_url.pathname || _url.pathname === "/") &&
                 !_url.search &&
                 !Array.from(_url.searchParams).length;

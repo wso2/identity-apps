@@ -16,27 +16,6 @@
  * under the License.
  */
 
-import {
-    AppSwitchItemInterface,
-    Confirmation,
-    DangerZone,
-    EditPage,
-    FormAttributes,
-    FormField,
-    HelpPanelActionsInterface,
-    HelpPanelInterface,
-    InfoModal,
-    Message,
-    ModalInterface,
-    Notification,
-    NotificationItem,
-    Page,
-    Placeholder,
-    Popup,
-    TransferList,
-    ValidationInterface
-} from "../common";
-
 /**
  * Model for the Console namespace
  */
@@ -93,8 +72,14 @@ export interface ConsoleNS {
         };
         header: {
             appSwitch: {
-                console: AppSwitchItemInterface;
-                myAccount: AppSwitchItemInterface;
+                console: {
+                    name: string;
+                    description: string;
+                };
+                myAccount: {
+                    name: string;
+                    description: string;
+                };
                 tooltip: string;
             };
             featureAnnouncements: {
@@ -108,15 +93,23 @@ export interface ConsoleNS {
             organizationSwitch: {
                 emptyOrgListMessage: string;
                 orgSearchPlaceholder: string;
-                breadcrumbError: NotificationItem;
+                breadcrumbError: {
+                    message: string;
+                    description: string;
+                };
             };
-        },
+        };
         modals: {
-            editAvatarModal: ModalInterface;
+            editAvatarModal: {
+                description: string;
+                heading: string;
+                content: Record<string, unknown>;
+                primaryButton: string;
+                secondaryButton: string;
+            };
             sessionTimeoutModal: {
                 description: string;
                 heading: string;
-                content?: Record<string, unknown>;
                 primaryButton: string;
                 secondaryButton: string;
                 loginAgainButton: string;
@@ -124,18 +117,70 @@ export interface ConsoleNS {
                 sessionTimedOutDescription: string;
             };
         };
-        notifications: {
-            invalidPEMFile: Notification;
-        };
         placeholders: {
-            404: Placeholder;
-            accessDenied: Placeholder;
-            brokenPage: Placeholder;
-            consentDenied: Placeholder;
-            genericError: Placeholder;
-            loginError: Placeholder;
-            sessionStorageDisabled: Placeholder;
-            unauthorized: Placeholder;
+            404: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            accessDenied: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            brokenPage: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            consentDenied: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            genericError: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            loginError: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            sessionStorageDisabled: {
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            unauthorized: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
         };
         privacy: {
             about: {
@@ -289,399 +334,29 @@ export interface ConsoleNS {
             };
         };
         validations: {
-            inSecureURL: ValidationInterface;
-            unrecognizedURL: ValidationInterface;
+            inSecureURL: {
+                heading: string;
+                description: string;
+            };
+            unrecognizedURL: {
+                heading: string;
+                description: string;
+            };
         };
         sidePanel: {
             privacy: string;
             loginAndRegistration: {
-                label: string,
-                description: string,
-            },
-            userAttributesAndStores: string,
-            userManagement: string,
-            branding: string
-        };
-    };
-    apiResources: {
-        confirmations: {
-            deleteAPIResource: {
-                assertionHint: string;
-                content: string;
-                header: string;
-                message: string;
-            };
-            deleteAPIResourcePermission: {
-                assertionHint: string;
-                content: string;
-                header: string;
-                message: string;
-            };
-        };
-        tabs: {
-            scopes: {
-                button: string;
                 label: string;
-                title: string;
-                subTitle: string;
-                learnMore: string;
-                search: string;
-                empty: {
-                    title: string;
-                    subTitle: string;
-                };
-                emptySearch: {
-                    title: string;
-                    subTitle: {
-                        0: string;
-                        1: string;
-                    },
-                    viewAll: string;
-                };
-                copyPopupText: string;
-                copiedPopupText: string;
-                removeScopePopupText: string;
-                form: {
-                    button: string;
-                    cancelButton: string;
-                    submitButton: string;
-                    title: string;
-                    subTitle: string;
-                    fields: {
-                        displayName: {
-                            emptyValidate: string;
-                            label: string;
-                            placeholder: string;
-                        };
-                        scope: {
-                            emptyValidate: string;
-                            label: string;
-                            placeholder: string;
-                        };
-                        description: {
-                            label: string;
-                            placeholder: string;
-                        };
-                    };
-                };
-            };
-        };
-        wizard: {
-            addApiResource: {
-                steps: {
-                    scopes: {
-                        empty: {
-                            title: string;
-                            subTitle: string;
-                        };
-                        stepTitle: string;
-                        form: {
-                            button: string;
-                            fields: {
-                                displayName: {
-                                    emptyValidate: string;
-                                    label: string;
-                                    placeholder: string;
-                                    hint: string;
-                                };
-                                permission: {
-                                    emptyValidate: string;
-                                    uniqueValidate: string;
-                                    invalid: string;
-                                    label: string;
-                                    placeholder: string;
-                                    hint: string;
-                                };
-                                permissionList: {
-                                    label: string;
-                                }
-                                description: {
-                                    label: string;
-                                    placeholder: string;
-                                    hint: string;
-                                };
-                            };
-                        };
-                        removeScopePopupText: string;
-                    };
-                };
-            };
-        };
-    };
-    branding: {
-        form: {
-            actions: {
-                save: string;
-                resetAll: string;
-            }
-        };
-        tabs: {
-            text: {
-                label: string;
-            };
-            preview: {
-                label: string;
-            }
-        };
-        screens: {
-            common: string;
-            login: string;
-            "sms-otp": string;
-            "email-otp": string;
-            "email-template": string;
-            "sign-up": string;
-            "totp": string;
-            myaccount: string;
-            "password-recovery": string;
-            "password-reset": string;
-            "password-reset-success": string;
-        }
-    };
-    brandingCustomText: {
-        revertScreenConfirmationModal: {
-            content: string;
-            heading: string;
-            message: string;
-        };
-        revertUnsavedConfirmationModal: {
-            content: string;
-            heading: string;
-            message: string;
-        };
-        form: {
-            genericFieldResetTooltip: string;
-            genericFieldPlaceholder: string;
-            fields: {
-                copyright: {
-                    hint: string;
-                };
-                "privacy.policy": {
-                    hint: string;
-                };
-                "site.title": {
-                    hint: string;
-                };
-                "terms.of.service": {
-                    hint: string;
-                };
-                "login.button": {
-                    hint: string;
-                };
-                "login.heading": {
-                    hint: string;
-                };
-                "sms.otp.heading": {
-                    hint: string;
-                };
-                "email.otp.heading": {
-                    hint: string;
-                };
-                "totp.heading": {
-                    hint: string;
-                };
-                "sign.up.button": {
-                    hint: string;
-                };
-                "sign.up.heading": {
-                    hint: string;
-                };
-                "password.recovery.body": {
-                    hint: string;
-                };
-                "password.recovery.button": {
-                    hint: string;
-                };
-                "password.recovery.heading": {
-                    hint: string;
-                };
-                "password.reset.button": {
-                    hint: string;
-                };
-                "password.reset.heading": {
-                    hint: string;
-                };
-                "password.reset.success.action": {
-                    hint: string;
-                };
-                "password.reset.success.body": {
-                    hint: string;
-                };
-                "password.reset.success.heading": {
-                    hint: string;
-                };
-            }
-        };
-        localeSelectDropdown: {
-            label: string;
-            placeholder: string;
-        };
-        modes: {
-            text: {
-                label: string;
-            };
-            json: {
-                label: string;
-            }
-        };
-        notifications: {
-            getPreferenceError: {
                 description: string;
-                message: string;
             };
-            revertError: {
-                description: string;
-                message: string;
-            };
-            resetSuccess: {
-                description: string;
-                message: string;
-            };
-            updateError: {
-                description: string;
-                message: string;
-            };
-            updateSuccess: {
-                description: string;
-                message: string;
-            };
+            userAttributesAndStores: string;
+            userManagement: string;
+            branding: string;
         };
-        screenSelectDropdown: {
-            label: string;
-            placeholder: string;
-        };
-    };
-    consoleSettings: {
-        administrators: {
-            add: {
-                action: string;
-                options: {
-                    addExistingUser: string;
-                    inviteNewUser: string;
-                }
-            },
-            edit: {
-                backButton: string;
-            };
-            tabLabel: string;
-        };
-        loginFlow: {
-            tabLabel: string;
-        };
-        protocol: {
-            tabLabel: string;
-        };
-        roles: {
-            add: {
-                organizationPermissions: {
-                    label: string;
-                };
-                tenantPermissions: {
-                    label: string;
-                };
-            };
-            tabLabel: string;
-            permissionLevels: {
-                edit: string;
-                view: string;
-            };
-        };
-    };
-    featureGate: {
-        enabledFeatures: {
-            tags: {
-                premium: {
-                    warning: string
-                }
-            }
-        }
     };
     develop: {
         features: {
-            URLInput: {
-                withLabel: {
-                    positive: {
-                        header: string;
-                        content: string;
-                        detailedContent: {
-                            0: string;
-                            1: string;
-                        };
-                    };
-                    negative: {
-                        header: string;
-                        content: string;
-                        detailedContent: {
-                            0: string;
-                            1: string;
-                        };
-                        leftAction: string;
-                    };
-                };
-            };
-            applications: {
-                addWizard: {
-                    steps: {
-                        generalSettings: {
-                            heading: string;
-                        };
-                        protocolConfig: {
-                            heading: string;
-                        };
-                        protocolSelection: {
-                            heading: string;
-                        };
-                        summary: {
-                            heading: string;
-                            sections: {
-                                accessURL: {
-                                    heading: string;
-                                };
-                                applicationQualifier: {
-                                    heading: string;
-                                };
-                                assertionURLs: {
-                                    heading: string;
-                                };
-                                audience: {
-                                    heading: string;
-                                };
-                                callbackURLs: {
-                                    heading: string;
-                                };
-                                certificateAlias: {
-                                    heading: string;
-                                };
-                                discoverable: {
-                                    heading: string;
-                                };
-                                grantType: {
-                                    heading: string;
-                                };
-                                issuer: {
-                                    heading: string;
-                                };
-                                metaFile: {
-                                    heading: string;
-                                };
-                                metadataURL: {
-                                    heading: string;
-                                };
-                                public: {
-                                    heading: string;
-                                };
-                                realm: {
-                                    heading: string;
-                                };
-                                renewRefreshToken: {
-                                    heading: string;
-                                };
-                                replyTo: {
-                                    heading: string;
-                                };
-                            };
-                        };
-                    };
-                };
+            authenticationProvider: {
                 advancedSearch: {
                     form: {
                         inputs: {
@@ -698,995 +373,60 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
-                confirmations: {
-                    addSocialLogin: Popup;
-                    changeProtocol: Confirmation;
-                    deleteApplication: Confirmation;
-                    deleteChoreoApplication: Confirmation;
-                    deleteOutboundProvisioningIDP: Confirmation;
-                    deleteProtocol: Confirmation;
-                    handlerAuthenticatorAddition: Confirmation;
-                    backupCodeAuthenticatorDelete: Confirmation;
-                    lowOIDCExpiryTimes: Confirmation;
-                    regenerateSecret: Confirmation;
-                    reactivateSPA: Confirmation;
-                    reactivateOIDC: Confirmation;
-                    removeApplicationUserAttribute: Popup;
-                    removeApplicationUserAttributeMapping: Popup;
-                    revokeApplication: Confirmation;
-                    clientSecretHashDisclaimer: {
-                        modal: Confirmation;
-                        forms: {
-                           clientIdSecretForm: {
-                               clientId: FormAttributes;
-                               clientSecret: FormAttributes;
-                           };
-                        };
-                    };
-                    certificateDelete: Confirmation & Record<string, string>;
-                };
-                dangerZoneGroup: {
-                    header: string;
-                    deleteApplication: DangerZone;
-                };
-                edit: {
-                    sections: {
-                        access: {
-                            addProtocolWizard: {
-                                heading: string;
-                                subHeading: string;
-                                steps: {
-                                    protocolSelection: {
-                                        manualSetup: {
-                                            emptyPlaceholder: Placeholder;
-                                            heading: string;
-                                            subHeading: string;
-                                        };
-                                        quickSetup: {
-                                            emptyPlaceholder: Placeholder;
-                                            heading: string;
-                                            subHeading: string;
-                                        };
-                                    };
-                                };
-                            };
-                            tabName: string;
-                            protocolLanding: {
-                                heading: string;
-                                subHeading: string;
-                            }
-                        };
-                        advanced: {
-                            tabName: string;
-                        };
-                        attributes: {
-                            forms: {
-                                fields: {
-                                    dynamic: {
-                                        localRole: FormAttributes;
-                                        applicationRole: FormAttributes;
-                                    };
-                                };
-                            };
-                            selection: {
-                                addWizard: {
-                                    header: string;
-                                    subHeading: string;
-                                    steps: {
-                                        select: {
-                                            transfer: TransferList;
-                                        };
-                                    };
-                                };
-                                heading: string;
-                                scopelessAttributes: {
-                                    description: string;
-                                    displayName: string;
-                                    name: string;
-                                    hint: string;
-                                },
-                                selectedScopesComponentHint: string;
-                                howToUseScopesHint: string;
-                                attributeComponentHint: string;
-                                attributeComponentHintAlt: string;
-                                description: string;
-                                mandatoryAttributeHint: string;
-                                mappingTable: {
-                                    actions: {
-                                        enable: string;
-                                    };
-                                    columns: {
-                                        appAttribute: string;
-                                        attribute: string;
-                                        mandatory: string;
-                                        requested: string;
-                                    };
-                                    mappedAtributeHint: string;
-                                    mappingRevert: {
-                                        confirmationHeading: string;
-                                        confirmationMessage: string;
-                                        confirmationContent: string;
-                                        confirmPrimaryAction: string;
-                                        confirmSecondaryAction: string;
-                                    };
-                                    listItem: {
-                                        actions: {
-                                            makeMandatory: string;
-                                            makeRequested: string;
-                                            makeScopeRequested: string;
-                                            removeMandatory: string;
-                                            removeRequested: string;
-                                            removeScopeRequested: string;
-                                            subjectDisabledSelection: string;
-                                        };
-                                        faultyAttributeMapping: string;
-                                        faultyAttributeMappingHint: string;
-                                        fields: {
-                                            claim: FormAttributes;
-                                        };
-                                    };
-                                    searchPlaceholder: string;
-                                };
-                                selectAll: string;
-                            };
-                            attributeMappingChange: Notification;
-                            emptySearchResults: {
-                                subtitles: {
-                                    0: string,
-                                    1: string
-                                },
-                                title: string;
-                            },
-                            roleMapping: {
-                                heading: string;
-                            };
-                            tabName: string;
-                        };
-                        info: {
-                            oidcHeading: string;
-                            oidcSubHeading: string;
-                            samlHeading: string;
-                            samlSubHeading: string;
-                            wsFedHeading: string;
-                            wsFedSubHeading: string;
-                            tabName: string;
-                        };
-                        general: {
-                            tabName: string;
-                        };
-                        protocol: {
-                            title: string;
-                            subtitle: string;
-                            button: string;
-                        };
-                        provisioning: {
-                            tabName: string;
-                            inbound: {
-                                heading: string;
-                                subHeading: string;
-                            };
-                            outbound: {
-                                actions: {
-                                    addIdp: string;
-                                };
-                                addIdpWizard: {
-                                    heading: string;
-                                    subHeading: string;
-                                    steps: {
-                                        details: string;
-                                    };
-                                    errors: {
-                                        noProvisioningConnector: string;
-                                    };
-                                };
-                                heading: string;
-                                subHeading: string;
-                            };
-                        };
-                        signOnMethod: {
-                            tabName: string;
-                            sections: {
-                                authenticationFlow: {
-                                    heading: string;
-                                    sections: {
-                                        scriptBased: {
-                                            accordion: {
-                                                title: {
-                                                    description: string;
-                                                    heading: string;
-                                                };
-                                            };
-                                            conditionalAuthTour: {
-                                                steps: {
-                                                    0: {
-                                                        heading: string;
-                                                        content: {
-                                                            0: string;
-                                                            1: string;
-                                                        };
-                                                    };
-                                                    1: {
-                                                        heading: string;
-                                                        content: {
-                                                            0: string;
-                                                        };
-                                                    };
-                                                    2: {
-                                                        heading: string;
-                                                        content: {
-                                                            0: string;
-                                                        };
-                                                    };
-                                                };
-                                            },
-                                            heading: string;
-                                            hint: string;
-                                            editor: {
-                                                apiDocumentation: string;
-                                                changeConfirmation: {
-                                                    content: string;
-                                                    heading: string;
-                                                    message: string;
-                                                };
-                                                goToApiDocumentation: string;
-                                                resetConfirmation: {
-                                                    content: string;
-                                                    heading: string;
-                                                    message: string;
-                                                };
-                                                templates: {
-                                                    heading: string;
-                                                    darkMode: string;
-                                                };
-                                            };
-                                            secretsList: {
-                                                create: string;
-                                                emptyPlaceholder: string;
-                                                search: string;
-                                                tooltips: {
-                                                    keyIcon: string;
-                                                    plusIcon: string;
-                                                }
-                                            }
-                                        };
-                                        stepBased: {
-                                            actions: {
-                                                addAuthentication: string;
-                                                addNewStep: string;
-                                                addStep: string;
-                                                selectAuthenticator: string;
-                                            };
-                                            addAuthenticatorModal: ModalInterface;
-                                            heading: string;
-                                            hint: string;
-                                            forms: {
-                                                fields: {
-                                                    attributesFrom: FormAttributes;
-                                                    subjectIdentifierFrom: FormAttributes;
-                                                    enableBackupCodes: FormAttributes;
-                                                };
-                                            };
-                                            secondFactorDisabled: string;
-                                            secondFactorDisabledDueToProxyMode: string;
-                                            secondFactorDisabledInFirstStep: string;
-                                            backupCodesDisabled: string;
-                                            backupCodesDisabledInFirstStep: string;
-                                            authenticatorDisabled: string;
-                                            firstFactorDisabled: string;
-                                            federatedSMSOTPConflictNote: {
-                                                multipleIdps: string;
-                                                singleIdp: string;
-                                            };
-                                            sessionExecutorDisabledInFirstStep: string;
-                                            sessionExecutorDisabledInMultiOptionStep: string;
-                                        };
-                                    };
-                                };
-                                customization: {
-                                    heading: string;
-                                    revertToDefaultButton: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                };
-                                landing: {
-                                    defaultConfig: {
-                                        description: {
-                                            0: string;
-                                            1: string;
-                                        },
-                                        heading: string;
-                                    },
-                                    flowBuilder: {
-                                        addMissingSocialAuthenticatorModal: ModalInterface;
-                                        duplicateSocialAuthenticatorSelectionModal: ModalInterface;
-                                        heading: string;
-                                        headings: {
-                                            default: string;
-                                            socialLogin: string;
-                                            multiFactorLogin: string;
-                                            passwordlessLogin: string;
-                                        }
-                                        types: {
-                                            apple: {
-                                                description: string;
-                                                heading: string;
-                                            },
-                                            defaultConfig: {
-                                                description: string;
-                                                heading: string;
-                                            },
-                                            facebook: {
-                                                description: string;
-                                                heading: string;
-                                            },
-                                            github: {
-                                                description: string;
-                                                heading: string;
-                                            },
-                                            google: {
-                                                description: string;
-                                                heading: string;
-                                            },
-                                            idf: {
-                                                tooltipText: string;
-                                            },
-                                            totp: {
-                                                description: string;
-                                                heading: string;
-                                            },
-                                            usernameless: {
-                                                description: string;
-                                                heading: string;
-                                                info: string;
-                                            },
-                                            passkey: {
-                                                description: string;
-                                                heading: string;
-                                                info: {
-                                                    progressiveEnrollmentEnabled: string;
-                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: string;
-                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: string;
-                                                    progressiveEnrollmentEnabledCheckbox: string;
-                                                    progressiveEnrollmentDisabled: string;
-                                                }
-                                            }
-                                            magicLink: {
-                                                description: string;
-                                                heading: string;
-                                            },
-                                            microsoft: {
-                                                description: string;
-                                                heading: string;
-                                            },
-                                            emailOTP: {
-                                                description: string,
-                                                heading: string,
-                                            },
-                                            smsOTP: {
-                                                description: string;
-                                                heading: string;
-                                            },
-                                            emailOTPFirstFactor: {
-                                                description: string;
-                                                heading: string;
-                                            }
-                                        }
-                                    }
-                                },
-                                requestPathAuthenticators: {
-                                    title: string;
-                                    subTitle: string;
-                                    notifications: {
-                                        getRequestPathAuthenticators: Notification;
-                                    };
-                                };
-                                templateDescription: {
-                                    popupContent: string;
-                                    description: {
-                                        prerequisites: string;
-                                        parameters: string;
-                                        description: string;
-                                        defaultSteps: string;
-                                        helpReference: string;
-                                        code: string;
-                                    };
-                                };
-                            };
-                        };
-                        sharedAccess: {
-                            subTitle: string;
-                            tabName: string;
-                        };
-                        shareApplication: {
-                            heading: string;
-                            shareApplication: string;
-                            addSharingNotification: Notification;
-                            stopSharingNotification: Notification;
-                            getSharedOrganizations: Notification;
-                            stopAllSharingNotification: Notification;
-                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
-                        };
-                        apiAuthorization: {
-                            m2mPolicyMessage: string;
-                        };
-                        roles: {
-                            createApplicationRoleWizard: {
-                                title: string;
-                                subTitle: string;
-                                button: string;
-                            };
-                        }
-                    };
-                };
-                forms: {
-                    advancedAttributeSettings: {
-                        sections: {
-                            linkedAccounts: {
-                                errorAlert: {
-                                    message: string;
-                                    description: string;
-                                }
-                                heading: string;
-                                fields: {
-                                    validateLocalAccount: FormAttributes;
-                                    mandateLocalAccount: FormAttributes;
-                                }
-                            }
-                            subject: {
-                                fields: {
-                                    alternateSubjectAttribute: FormAttributes;
-                                    subjectAttribute: FormAttributes;
-                                    subjectIncludeTenantDomain: FormAttributes;
-                                    subjectIncludeUserDomain: FormAttributes;
-                                    subjectUseMappedLocalSubject: FormAttributes;
-                                    subjectType: FormAttributes;
-                                    sectorIdentifierURI: FormAttributes;
-                                };
-                                heading: string;
-                            };
-                            role: {
-                                heading: string;
-                                fields: {
-                                    roleAttribute: FormAttributes;
-                                    role: FormAttributes;
-                                };
-                            };
-                        };
-                    };
-                    advancedConfig: {
-                        fields: {
-                            enableAuthorization: FormAttributes;
-                            returnAuthenticatedIdpList: FormAttributes;
-                            saas: FormAttributes;
-                            skipConsentLogin: FormAttributes;
-                            skipConsentLogout: FormAttributes;
-                        };
-                        sections: {
-                            applicationNativeAuthentication: {
-                                heading: string;
-                                alerts: {
-                                    clientAttestation: string;
-                                },
-                                fields: {
-                                    enableAPIBasedAuthentication: FormAttributes;
-                                    enableClientAttestation: FormAttributes;
-                                    android: {
-                                        heading: string;
-                                        fields: {
-                                            androidPackageName: FormAttributes;
-                                            androidAttestationServiceCredentials: FormAttributes;
-                                        }
-                                    },
-                                    apple: {
-                                        heading: string;
-                                        fields: {
-                                            appleAppId: FormAttributes;
-                                        }
-                                    }
-                                }
-                            },
-                            certificate: {
-                                heading: string;
-                                hint?: {
-                                    customOidc: string;
-                                    customPassiveSTS: string;
-                                    customSaml: string;
-                                };
-                                fields: {
-                                    jwksValue: FormAttributes;
-                                    pemValue: FormAttributes;
-                                    type: FormAttributes;
-                                };
-                                invalidOperationModal?: {
-                                    header: string;
-                                    message: string;
-                                };
-                            };
-                        };
-                    };
-                    generalDetails: {
-                        fields: {
-                            name: FormAttributes;
-                            description: FormAttributes;
-                            imageUrl: FormAttributes;
-                            discoverable: FormAttributes;
-                            accessUrl: FormAttributes;
-                            isSharingEnabled: FormAttributes;
-                            isManagementApp: FormAttributes;
-                            isFapiApp: FormAttributes;
-                        };
-                        managementAppBanner: string;
-
-                    };
-                    inboundCustom: {
-                        fields: {
-                            checkbox: FormAttributes;
-                            dropdown: FormAttributes;
-                            generic: FormAttributes;
-                            password: FormAttributes;
-                        };
-                    };
-                    inboundOIDC: {
-                        description: string;
-                        documentation: string;
-                        fields: {
-                            allowedOrigins: FormAttributes;
-                            callBackUrls: FormAttributes;
-                            clientID: FormAttributes;
-                            clientSecret: FormAttributes;
-                            grant: FormAttributes;
-                            public: FormAttributes;
-                        };
-                        mobileApp: {
-                            discoverableHint: string;
-                            mobileAppPlaceholder: string;
-                        },
-                        dropdowns: {
-                            selectOption: string;
-                        },
-                        sections: {
-                            accessToken: {
-                                heading: string;
-                                hint: string;
-                                fields: {
-                                    bindingType: FormAttributes;
-                                    expiry: FormAttributes;
-                                    applicationTokenExpiry: FormAttributes;
-                                    type: FormAttributes;
-                                    revokeToken: FormAttributes;
-                                    validateBinding: FormAttributes;
-                                    audience: FormAttributes;
-                                };
-                            };
-                            idToken: {
-                                heading: string;
-                                fields: {
-                                    expiry: FormAttributes;
-                                    algorithm: FormAttributes;
-                                    audience: FormAttributes;
-                                    encryption: FormAttributes;
-                                    signing: FormAttributes;
-                                    method: FormAttributes;
-                                };
-                            };
-                            logoutURLs: {
-                                heading: string;
-                                fields: {
-                                    back: FormAttributes;
-                                    front: FormAttributes;
-                                };
-                            };
-                            pkce: {
-                                description: string;
-                                heading: string;
-                                hint: string;
-                                fields: {
-                                    pkce: FormAttributes;
-                                };
-                            };
-                            clientAuthentication: {
-                                heading: string;
-                                fields: {
-                                    authenticationMethod: FormAttributes;
-                                    signingAlgorithm: FormAttributes;
-                                    subjectDN: FormAttributes;
-                                };
-                            };
-                            pushedAuthorization: {
-                                heading: string;
-                                fields: {
-                                    requirePushAuthorizationRequest: FormAttributes;
-                                };
-                            };
-                            requestObject: {
-                                heading: string;
-                                fields: {
-                                    requestObjectSigningAlg: FormAttributes;
-                                    requestObjectEncryptionAlgorithm: FormAttributes;
-                                    requestObjectEncryptionMethod: FormAttributes;
-                                };
-                            };
-                            refreshToken: {
-                                heading: string;
-                                fields: {
-                                    expiry: FormAttributes;
-                                    renew: FormAttributes;
-                                };
-                            };
-                            requestObjectSignature: {
-                                heading: string;
-                                description: string;
-                                fields: {
-                                    signatureValidation: FormAttributes;
-                                };
-                            };
-                            scopeValidators: {
-                                heading: string;
-                                fields: {
-                                    validator: FormAttributes;
-                                };
-                            };
-                            certificates: {
-                                disabledPopup: string;
-                            }
-                        };
-                        messages: {
-                            revokeDisclaimer: Message;
-                            customInvalidMessage: string;
-                        };
-                    };
-                    inboundSAML: {
-                        description: string;
-                        documentation: string;
-                        fields: {
-                            assertionURLs: FormAttributes;
-                            defaultAssertionURL: FormAttributes;
-                            idpEntityIdAlias: FormAttributes;
-                            issuer: FormAttributes;
-                            metaURL: FormAttributes;
-                            mode: FormAttributes;
-                            qualifier: FormAttributes;
-                        };
-                        sections: {
-                            assertion: {
-                                heading: string;
-                                fields: {
-                                    audience: FormAttributes;
-                                    nameIdFormat: FormAttributes;
-                                    recipients: FormAttributes;
-                                };
-                            };
-                            attributeProfile: {
-                                heading: string;
-                                fields: {
-                                    enable: FormAttributes;
-                                    includeAttributesInResponse: FormAttributes;
-                                    serviceIndex: FormAttributes;
-                                };
-                            };
-                            encryption: {
-                                heading: string;
-                                fields: {
-                                    assertionEncryption: FormAttributes;
-                                    assertionEncryptionAlgorithm: FormAttributes;
-                                    keyEncryptionAlgorithm: FormAttributes;
-                                };
-                            };
-                            idpInitiatedSLO: {
-                                heading: string;
-                                fields: {
-                                    enable: FormAttributes;
-                                    returnToURLs: FormAttributes;
-                                };
-                            };
-                            responseSigning: {
-                                heading: string;
-                                fields: {
-                                    digestAlgorithm: FormAttributes;
-                                    responseSigning: FormAttributes;
-                                    signingAlgorithm: FormAttributes;
-                                };
-                            };
-                            requestProfile: {
-                                heading: string;
-                                fields: {
-                                    enable: FormAttributes;
-                                };
-                            };
-                            requestValidation: {
-                                heading: string;
-                                fields: {
-                                    signatureValidation: FormAttributes;
-                                    signatureValidationCertAlias: FormAttributes;
-                                };
-                            };
-                            sloProfile: {
-                                heading: string;
-                                fields: {
-                                    enable: FormAttributes;
-                                    logoutMethod: FormAttributes;
-                                    requestURL: FormAttributes;
-                                    responseURL: FormAttributes;
-                                };
-                            };
-                            ssoProfile: {
-                                heading: string;
-                                fields: {
-                                    artifactBinding: FormAttributes;
-                                    bindings: FormAttributes;
-                                    idpInitiatedSSO: FormAttributes;
-                                };
-                            };
-                            certificates: {
-                                disabledPopup: string;
-                                certificateRemoveConfirmation: {
-                                    header: string;
-                                    content: string;
-                                }
-                            }
-                        };
-                    };
-                    inboundSTS: {
-                        fields: {
-                            realm: FormAttributes;
-                            replyTo: FormAttributes;
-                            replyToLogout: FormAttributes;
-                        };
-                    };
-                    inboundWSTrust: {
-                        fields: {
-                            audience: FormAttributes;
-                            certificateAlias: FormAttributes;
-                        };
-                    };
-                    outboundProvisioning: {
-                        fields: {
-                            blocking: FormAttributes;
-                            connector: FormAttributes;
-                            idp: FormAttributes;
-                            jit: FormAttributes;
-                            rules: FormAttributes;
-                        };
-                    };
-                    provisioningConfig: {
-                        fields: {
-                            proxyMode: FormAttributes;
-                            userstoreDomain: FormAttributes;
-                        };
-                    };
-                    spaProtocolSettingsWizard: {
-                        fields: {
-                            callBackUrls: FormAttributes;
-                            name: FormAttributes;
-                            urlDeepLinkError: string;
-                        };
-                    };
-                };
-                helpPanel: HelpPanelInterface;
-                list: {
-                    columns: {
-                        actions: string;
-                        name: string;
-                        inboundKey: string;
-                    };
-                    actions: {
-                        add: string;
-                        predefined: string;
-                        custom: string;
-                    };
-                    labels: {
-                        fragment: string;
-                    }
-                };
-                myaccount: {
-                    title: string;
-                    description: string;
-                    popup: string;
-                    enable: {
-                        0: string;
-                        1: string;
-                    };
-                    Confirmation: {
-                        enableConfirmation: {
-                            content: string;
-                            heading: string;
-                            message: string;
-                        };
-                        disableConfirmation: {
-                            content: string;
-                            heading: string;
-                            message: string;
-                        };
-                    };
-                    notifications: {
-                        error: {
-                            description: string;
-                            message: string;
-                        };
-                        genericError: {
-                            description: string;
-                            message: string;
-                        };
-                        success: {
-                            description: string;
-                            message: string;
-                        };
-                    };
-                    fetchMyAccountStatus: {
-                        error: {
-                            description: string;
-                            message: string;
-                        },
-                        genericError: {
-                            description: string;
-                            message: string;
-                        },
-                    }
-                };
-                notifications: {
-                    addApplication: Notification;
-                    apiLimitReachedError: Notification;
-                    authenticationStepMin: Notification;
-                    authenticationStepDeleteErrorDueToSecondFactors: Notification;
-                    authenticationStepDeleteErrorDueToAppShared: Notification;
-                    deleteApplication: Notification;
-                    deleteOptionErrorDueToSecondFactorsOnRight: Notification;
-                    deleteProtocolConfig: Notification;
-                    duplicateAuthenticationStep: Notification;
-                    emptyAuthenticationStep: Notification;
-                    fetchAllowedCORSOrigins: Notification;
-                    fetchApplication: Notification;
-                    fetchMyAccountApplication: Notification;
-                    fetchApplications: Notification;
-                    fetchCustomInboundProtocols: Notification;
-                    fetchInboundProtocols: Notification;
-                    fetchProtocolMeta: Notification;
-                    fetchSAMLIDPConfigs: Notification;
-                    fetchOIDCIDPConfigs: Notification;
-                    fetchTemplate: Notification;
-                    fetchTemplates: Notification;
-                    getInboundProtocolConfig: Notification;
-                    regenerateSecret: Notification;
-                    revokeApplication: Notification;
-                    tierLimitReachedError: {
-                        emptyPlaceholder: Placeholder;
-                        heading: string;
-                    };
-                    updateAdvancedConfig: Notification;
-                    updateApplication: Notification;
-                    updateAuthenticationFlow: Notification;
-                    updateClaimConfig: Notification;
-                    updateInboundProtocolConfig: Notification;
-                    updateInboundProvisioningConfig: Notification;
-                    updateOutboundProvisioning: Notification;
-                    updateProtocol: Notification;
-                    fetchOIDCServiceEndpoints: Notification;
-                    secondFactorAuthenticatorToFirstStep: Notification;
-                    firstFactorAuthenticatorToSecondStep: Notification;
-                    conditionalScriptLoopingError: NotificationItem;
-                    deleteCertificateSuccess: NotificationItem;
-                    deleteCertificateGenericError: NotificationItem;
-                    updateOnlyIdentifierFirstError: NotificationItem;
-                    updateIdentifierFirstInFirstStepError: NotificationItem;
-                };
-                popups: {
-                    appStatus: {
-                        active: Popup;
-                        notConfigured: Popup;
-                        revoked: Popup;
-                    };
-                };
-                placeholders: {
-                    emptyAttributesList: Placeholder;
-                    emptyAuthenticatorStep: Placeholder;
-                    emptyAuthenticatorsList: Placeholder;
-                    emptyOutboundProvisioningIDPs: Placeholder;
-                    emptyList: Placeholder;
-                    emptyProtocolList: Placeholder;
-                };
-                resident: {
-                    provisioning: {
-                        outbound: {
-                            actions: {
-                                addIdp: string;
-                            };
-                            addIdpWizard: {
-                                heading: string;
-                                subHeading: string;
-                                steps: {
-                                    details: string;
-                                };
-                            };
-                            emptyPlaceholder: Placeholder;
-                            form: {
-                                fields: {
-                                    connection: {
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
-                            };
-                            heading: string;
-                            subHeading: string;
-                            notifications: {
-                                create: Notification;
-                                delete: Notification;
-                                fetch: Notification;
-                                update: Notification;
-                            }
-                        };
-                    };
-                }
-                templates: {
-                    manualSetup: {
-                        heading: string;
-                        subHeading: string;
-                    };
-                    quickSetup: {
-                        heading: string;
-                        subHeading: string;
-                    };
-                };
-                wizards: {
-                    minimalAppCreationWizard: {
-                        help: {
-                            heading: string;
-                            subHeading: string;
-                            template : FormAttributes;
-                        };
-                    };
-                    applicationCertificateWizard: {
-                        heading: string;
-                        subHeading: string;
-                        emptyPlaceHolder: {
-                            title: string;
-                            description1: string;
-                            description2: string;
-                        }
-                    }
-                };
-            }
-            authenticationProvider?: {
-                advancedSearch?: {
-                    form: {
-                        inputs: {
-                            filterAttribute: {
-                                placeholder: string;
-                            };
-                            filterCondition: {
-                                placeholder: string;
-                            };
-                            filterValue: {
-                                placeholder: string;
-                            };
-                        };
-                    };
-                    placeholder: string;
-                };
-                buttons?: {
+                buttons: {
                     addIDP: string;
                     addAuthenticator: string;
                     addConnector: string;
                     addAttribute: string;
                     addCertificate: string;
                 };
-                confirmations?: {
-                    deleteIDP: Confirmation;
-                    deleteIDPWithConnectedApps: Confirmation;
-                    deleteAuthenticator: Confirmation;
-                    deleteConnector: Confirmation;
-                    deleteCertificate: Confirmation;
+                confirmations: {
+                    deleteIDP: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteIDPWithConnectedApps: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteAuthenticator: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteConnector: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteCertificate: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
                 };
-                dangerZoneGroup?: {
+                dangerZoneGroup: {
                     header: string;
-                    disableIDP: DangerZone;
-                    deleteIDP: DangerZone;
+                    disableIDP: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                        subheader2: string;
+                    };
+                    deleteIDP: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                 };
-                edit?: {
+                edit: {
                     common: {
                         settings: {
                             tabName: string;
@@ -1703,19 +443,43 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                forms?: {
-                    advancedConfigs?: {
-                        federationHub: FormAttributes;
-                        homeRealmIdentifier: FormAttributes;
-                        alias: FormAttributes;
+                forms: {
+                    advancedConfigs: {
+                        federationHub: {
+                            hint: string;
+                            label: string;
+                        };
+                        homeRealmIdentifier: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        alias: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
                         certificateType: {
                             label: string;
                             hint: string;
-                            certificatePEM: FormAttributes;
-                            certificateJWKS: FormAttributes;
+                            certificatePEM: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            certificateJWKS: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
                         };
                     };
-                    attributeSettings?: {
+                    attributeSettings: {
                         attributeMapping: {
                             attributeColumnHeader: string;
                             attributeMapColumnHeader: string;
@@ -1744,7 +508,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    authenticatorAccordion?: {
+                    authenticatorAccordion: {
                         default: {
                             0: string;
                             1: string;
@@ -1754,14 +518,57 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    authenticatorSettings?: {
+                    authenticatorSettings: {
                         apple: {
-                            additionalQueryParameters: FormAttributes;
-                            callbackUrl: FormAttributes;
-                            clientId: FormAttributes;
-                            keyId: FormAttributes;
-                            privateKey: FormAttributes;
-                            secretValidityPeriod: FormAttributes;
+                            additionalQueryParameters: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            callbackUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            keyId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            privateKey: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            secretValidityPeriod: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
                             scopes: {
                                 heading: string;
                                 hint: string;
@@ -1774,7 +581,14 @@ export interface ConsoleNS {
                                     };
                                 };
                             };
-                            teamId: FormAttributes;
+                            teamId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
                         };
                         emailOTP: {
                             enableBackupCodes: {
@@ -1801,7 +615,7 @@ export interface ConsoleNS {
                                 unit: {
                                     digits: string;
                                     characters: string;
-                                },
+                                };
                                 placeholder: string;
                                 validations: {
                                     invalid: string;
@@ -1848,7 +662,7 @@ export interface ConsoleNS {
                                 unit: {
                                     digits: string;
                                     characters: string;
-                                }
+                                };
                             };
                             useNumericChars: {
                                 hint: string;
@@ -1879,20 +693,41 @@ export interface ConsoleNS {
                             };
                         };
                         facebook: {
-                            callbackUrl: FormAttributes;
-                            clientId: FormAttributes;
-                            clientSecret: FormAttributes;
+                            callbackUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
                             scopes: {
                                 heading: string;
                                 hint: string;
                                 list: {
                                     email: {
                                         description: string;
-                                    },
+                                    };
                                     profile: {
                                         description: string;
-                                    }
-                                }
+                                    };
+                                };
                             };
                             userInfo: {
                                 heading: string;
@@ -1901,135 +736,418 @@ export interface ConsoleNS {
                                 list: {
                                     ageRange: {
                                         description: string;
-                                    },
+                                    };
                                     email: {
                                         description: string;
-                                    },
+                                    };
                                     firstName: {
                                         description: string;
-                                    },
+                                    };
                                     gender: {
                                         description: string;
-                                    }
+                                    };
                                     id: {
                                         description: string;
-                                    },
+                                    };
                                     lastName: {
                                         description: string;
-                                    },
+                                    };
                                     link: {
                                         description: string;
-                                    },
+                                    };
                                     name: {
                                         description: string;
-                                    }
-                                }
+                                    };
+                                };
                             };
                         };
                         github: {
-                            callbackUrl: FormAttributes;
-                            clientId: FormAttributes;
-                            clientSecret: FormAttributes;
+                            callbackUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
                             scopes: {
                                 heading: string;
                                 hint: string;
                                 list: {
                                     email: {
                                         description: string;
-                                    },
+                                    };
                                     profile: {
                                         description: string;
-                                    }
-                                }
+                                    };
+                                };
                             };
                         };
                         google: {
-                            callbackUrl: FormAttributes;
-                            clientId: FormAttributes;
-                            clientSecret: FormAttributes;
-                            enableGoogleOneTap: FormAttributes;
-                            AdditionalQueryParameters: FormAttributes;
+                            callbackUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            enableGoogleOneTap: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                            };
+                            AdditionalQueryParameters: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
                             scopes: {
                                 heading: string;
                                 hint: string;
                                 list: {
                                     email: {
                                         description: string;
-                                    },
+                                    };
                                     openid: {
                                         description: string;
-                                    },
+                                    };
                                     profile: {
                                         description: string;
-                                    }
-                                }
+                                    };
+                                };
                             };
                         };
                         microsoft: {
-                            callbackUrl: FormAttributes;
-                            clientId: FormAttributes;
-                            clientSecret: FormAttributes;
-                            commonAuthQueryParams: FormAttributes;
+                            callbackUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            commonAuthQueryParams: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
                             scopes: {
-                                ariaLabel: string,
+                                ariaLabel: string;
                                 heading: string;
                                 hint: string;
                                 label: string;
                                 list: {
                                     email: {
                                         description: string;
-                                    },
+                                    };
                                     openid: {
                                         description: string;
-                                    },
+                                    };
                                     profile: {
                                         description: string;
-                                    }
-                                }
+                                    };
+                                };
                                 placeholder: string;
                             };
                         };
                         hypr: {
-                            appId: FormAttributes;
-                            apiToken: FormAttributes;
-                            baseUrl: FormAttributes;
+                            appId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            apiToken: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            baseUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                        };
+                        iproov: {
+                            apiKey: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            apiSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            oauthUsername: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            oauthPassword: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            baseUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            enableProgressiveEnrollment: {
+                                hint: string;
+                                label: string;
+                            };
                         };
                         saml: {
-                            AuthRedirectUrl: FormAttributes;
-                            SPEntityId: FormAttributes;
-                            SSOUrl: FormAttributes;
-                            IdPEntityId: FormAttributes;
-                            NameIDType: FormAttributes;
-                            RequestMethod: FormAttributes;
-                            IsSLORequestAccepted: FormAttributes;
-                            IsLogoutEnabled: FormAttributes;
-                            LogoutReqUrl: FormAttributes;
-                            IsAuthnRespSigned: FormAttributes;
-                            IsLogoutReqSigned: FormAttributes;
-                            ISAuthnReqSigned: FormAttributes;
-                            SignatureAlgorithm: FormAttributes;
-                            DigestAlgorithm: FormAttributes;
-                            IncludeProtocolBinding: FormAttributes;
-                            IsUserIdInClaims: FormAttributes;
-                            commonAuthQueryParams: FormAttributes;
+                            AuthRedirectUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            SPEntityId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            SSOUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            IdPEntityId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            NameIDType: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            RequestMethod: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            IsSLORequestAccepted: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            IsLogoutEnabled: {
+                                hint: string;
+                                label: string;
 
-                            isAssertionSigned: FormAttributes;
-                            includeCert: FormAttributes;
-                            includeNameIDPolicy: FormAttributes;
-                            isEnableAssertionEncryption: FormAttributes;
+                                ariaLabel: string;
+                            };
+                            LogoutReqUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            IsAuthnRespSigned: {
+                                hint: string;
+                                label: string;
 
-                            authenticationContextClass: FormAttributes;
-                            customAuthenticationContextClass: FormAttributes;
-                            attributeConsumingServiceIndex: FormAttributes;
+                                ariaLabel: string;
+                            };
+                            IsLogoutReqSigned: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            ISAuthnReqSigned: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            SignatureAlgorithm: {
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            DigestAlgorithm: {
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            IncludeProtocolBinding: {
+                                hint: string;
+                                label: string;
 
-                            isArtifactBindingEnabled: FormAttributes;
-                            artifactResolveEndpointUrl: FormAttributes;
-                            isArtifactResolveReqSigned: FormAttributes;
-                            isArtifactResponseSigned: FormAttributes;
-                            authContextComparisonLevel: FormAttributes;
-                        }
-                    },
-                    outboundConnectorAccordion?: {
+                                ariaLabel: string;
+                            };
+                            IsUserIdInClaims: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            commonAuthQueryParams: {
+                                label: string;
+                                ariaLabel: string;
+                            };
+
+                            isAssertionSigned: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            includeCert: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            includeNameIDPolicy: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            isEnableAssertionEncryption: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+
+                            authenticationContextClass: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            customAuthenticationContextClass: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            attributeConsumingServiceIndex: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+
+                            isArtifactBindingEnabled: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            artifactResolveEndpointUrl: {
+                                placeholder: string;
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            isArtifactResolveReqSigned: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            isArtifactResponseSigned: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            authContextComparisonLevel: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                        };
+                    };
+                    outboundConnectorAccordion: {
                         default: {
                             0: string;
                             1: string;
@@ -2039,23 +1157,57 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    common?: {
+                    common: {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
                         invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
-                    generalDetails?: {
-                        name: FormAttributes;
-                        issuer: FormAttributes;
-                        alias: FormAttributes;
-                        description: FormAttributes;
-                        image: FormAttributes;
+                    generalDetails: {
+                        name: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                duplicate: string;
+                                required: string;
+                                maxLengthReached: string;
+                            };
+                        };
+                        issuer: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        alias: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        description: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        image: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
                     };
-                    jitProvisioning?: {
-                        enableJITProvisioning: FormAttributes;
-                        provisioningUserStoreDomain: FormAttributes;
+                    jitProvisioning: {
+                        enableJITProvisioning: {
+                            hint: string;
+                            label: string;
+                            disabledMessageContent: string;
+                            disabledMessageHeader: string;
+                        };
+                        provisioningUserStoreDomain: {
+                            hint: string;
+                            label: string;
+                        };
                         provisioningScheme: {
                             hint: string;
                             label: string;
@@ -2066,9 +1218,12 @@ export interface ConsoleNS {
                                 3: string;
                             };
                         };
-                        associateLocalUser: FormAttributes;
+                        associateLocalUser: {
+                            hint: string;
+                            label: string;
+                        };
                     };
-                    roleMapping?: {
+                    roleMapping: {
                         heading: string;
                         keyName: string;
                         valueName: string;
@@ -2079,7 +1234,7 @@ export interface ConsoleNS {
                         };
                         hint: string;
                     };
-                    uriAttributeSettings?: {
+                    uriAttributeSettings: {
                         subject: {
                             heading: string;
                             hint: string;
@@ -2104,7 +1259,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    outboundProvisioningRoles?: {
+                    outboundProvisioningRoles: {
                         heading: string;
                         hint: string;
                         placeHolder: string;
@@ -2113,21 +1268,34 @@ export interface ConsoleNS {
                             content: string;
                         };
                     };
-                    certificateSection?: {
+                    certificateSection: {
                         certificateEditSwitch: {
                             jwks: string;
                             pem: string;
                         };
                         noCertificateAlert: string;
-                    }
+                    };
                 };
-                helpPanel?: HelpPanelInterface;
-                templates?: {
-                    manualSetup?: {
+                helpPanel: {
+                    tabs: {
+                        samples: {
+                            content: {
+                                docs: {
+                                    goBack: string;
+                                    hint: string;
+                                    title: string;
+                                };
+                            };
+                            heading: string;
+                        };
+                    };
+                };
+                templates: {
+                    manualSetup: {
                         heading: string;
                         subHeading: string;
                     };
-                    quickSetup?: {
+                    quickSetup: {
                         heading: string;
                         subHeading: string;
                     };
@@ -2181,59 +1349,59 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                     };
-                    facebook?: {
+                    facebook: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
                                 heading: string;
-                            },
+                            };
                             clientSecret: {
                                 description: string;
                                 heading: string;
-                            },
+                            };
                             heading: string;
                             name: {
                                 idpDescription: string;
                                 connectionDescription: string;
                                 heading: string;
-                            },
+                            };
                             preRequisites: {
                                 configureOAuthApps: string;
                                 configureRedirectURL: string;
                                 configureSiteURL: string;
                                 getCredentials: string;
                                 heading: string;
-                            },
+                            };
                             subHeading: string;
-                        }
-                    },
-                    github?: {
+                        };
+                    };
+                    github: {
                         wizardHelp: {
                             heading: string;
                             subHeading: string;
                             clientId: {
                                 description: string;
                                 heading: string;
-                            },
+                            };
                             clientSecret: {
                                 description: string;
                                 heading: string;
-                            },
+                            };
                             name: {
                                 idpDescription: string;
                                 connectionDescription: string;
                                 heading: string;
-                            },
+                            };
                             preRequisites: {
                                 configureOAuthApps: string;
                                 configureHomePageURL: string;
                                 configureRedirectURL: string;
                                 heading: string;
                                 getCredentials: string;
-                            }
-                        }
+                            };
+                        };
                     };
-                    google?: {
+                    google: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -2254,11 +1422,11 @@ export interface ConsoleNS {
                                 configureRedirectURL: string;
                                 getCredentials: string;
                                 heading: string;
-                            },
+                            };
                             subHeading: string;
-                        }
+                        };
                     };
-                    organizationIDP?: {
+                    organizationIDP: {
                         wizardHelp: {
                             name: {
                                 description: string;
@@ -2269,9 +1437,9 @@ export interface ConsoleNS {
                                 heading: string;
                                 example: string;
                             };
-                        }
-                    },
-                    microsoft?: {
+                        };
+                    };
+                    microsoft: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -2292,11 +1460,11 @@ export interface ConsoleNS {
                                 configureRedirectURL: string;
                                 getCredentials: string;
                                 heading: string;
-                            },
+                            };
                             subHeading: string;
-                        }
+                        };
                     };
-                    hypr?: {
+                    hypr: {
                         wizardHelp: {
                             apiToken: {
                                 description: string;
@@ -2321,14 +1489,52 @@ export interface ConsoleNS {
                                 tokenDescription: string;
                                 heading: string;
                             };
+                        };
+                    };
+                    iproov: {
+                        wizardHelp: {
+                            baseUrl: {
+                                description: string;
+                                heading: string;
+                            };
+                            oauthUsername: {
+                                description: string;
+                                heading: string;
+                            };
+                            oauthPassword: {
+                                description: string;
+                                heading: string;
+                            };
+                            apiKey: {
+                                description: string;
+                                heading: string;
+                            };
+                            apiSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            enableProgressiveEnrollment: {
+                                description: string;
+                                heading: string;
+                            }
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                appDescription: string;
+                                heading: string;
+                            };
                         }
                     };
-                    enterprise?: {
-                        addWizard?: {
+                    enterprise: {
+                        addWizard: {
                             title: string;
                             subtitle: string;
                         };
-                        saml?: {
+                        saml: {
                             preRequisites: {
                                 configureIdp: string;
                                 configureRedirectURL: string;
@@ -2341,501 +1547,57 @@ export interface ConsoleNS {
                             invalidName: string;
                         };
                     };
-                    trustedTokenIssuer?: {
-                        addWizard?: {
+                    trustedTokenIssuer: {
+                        addWizard: {
                             title: string;
                             subtitle: string;
                         };
-                        forms?: {
-                            steps?: {
-                                general?: string;
-                                certificate?: string;
-                            }
-                            name?: {
-                                label?: string;
-                                placeholder?: string;
+                        forms: {
+                            steps: {
+                                general: string;
+                                certificate: string;
                             };
-                            issuer?: {
-                                label?: string;
-                                placeholder?: string;
-                                hint?: string;
-                                validation?: {
-                                    notValid: string;
-                                }
-                            };
-                            alias?: {
-                                label?: string;
-                                placeholder?: string;
-                                hint?: string;
-                                validation?: {
-                                    notValid: string;
-                                }
-                            };
-                            certificateType?: {
-                                label?: string;
-                                requiredCertificate?: string;
-                            };
-                            jwksUrl?: {
-                                optionLabel?: string;
-                                placeholder?: string;
-                                label?: string;
-                                hint?: string;
-                                validation?: {
-                                    notValid: string;
-                                }
-                            };
-                            pem?: {
-                                optionLabel?: string;
-                                hint?: string;
-                                uploadCertificateButtonLabel?: string;
-                                dropzoneText?: string;
-                                pasteAreaPlaceholderText?: string;
-                            };
-                        };
-                    };
-                };
-                list?: {
-                    actions: string;
-                    name: string;
-                };
-                modals?: {
-                    addAuthenticator: {
-                        title: string;
-                        subTitle: string;
-                    };
-                    addCertificate: {
-                        title: string;
-                        subTitle: string;
-                    };
-                    addProvisioningConnector: {
-                        title: string;
-                        subTitle: string;
-                    };
-                    attributeSelection: {
-                        title: string;
-                        subTitle: string;
-                        content: {
-                            searchPlaceholder: string;
-                        };
-                    };
-                };
-                notifications?: {
-                    addFederatedAuthenticator: Notification;
-                    addIDP: Notification;
-                    changeCertType: {
-                        pem: {
-                            description: string;
-                            message: string;
-                        };
-                        jwks: {
-                            description: string;
-                            message: string;
-                        };
-                    };
-                    deleteCertificate: Notification;
-                    deleteIDP: Notification;
-                    deleteIDPWithConnectedApps: Notification;
-                    deleteConnection: Notification;
-                    disableAuthenticator: Notification;
-                    disableIDPWithConnectedApps: Notification;
-                    disableOutboundProvisioningConnector: Notification;
-                    duplicateCertificateUpload: Notification;
-                    getIDP: Notification;
-                    getIDPList: Notification;
-                    getIDPTemplate: Notification;
-                    getIDPTemplateList: Notification;
-                    getFederatedAuthenticator: Notification;
-                    getFederatedAuthenticatorsList: Notification;
-                    getFederatedAuthenticatorMetadata: Notification;
-                    getConnectionDetails: Notification;
-                    getOutboundProvisioningConnector: Notification;
-                    getOutboundProvisioningConnectorsList: Notification;
-                    getOutboundProvisioningConnectorMetadata: Notification;
-                    getAllLocalClaims: Notification;
-                    getRolesList: Notification;
-                    submitAttributeSettings: Notification;
-                    deleteDefaultAuthenticator: Notification;
-                    deleteDefaultConnector: Notification;
-                    updateAttributes: Notification;
-                    updateClaimsConfigs: Notification;
-                    updateFederatedAuthenticator: Notification;
-                    updateFederatedAuthenticators: Notification;
-                    updateEmailOTPAuthenticator: Notification;
-                    updateSMSOTPAuthenticator: Notification;
-                    updateGenericAuthenticator: Notification;
-                    updateIDP: Notification;
-                    updateIDPCertificate: Notification;
-                    updateIDPRoleMappings: Notification;
-                    updateJITProvisioning: Notification;
-                    updateOutboundProvisioningConnectors: Notification;
-                    updateOutboundProvisioningConnector: Notification;
-                    apiLimitReachedError: {
-                        error: {
-                            description: string;
-                            message: string;
-                        }
-                    }
-                };
-                popups?: {
-                    appStatus: {
-                        enabled: Popup;
-                        disabled: Popup;
-                    };
-                };
-                placeHolders?: {
-                    emptyCertificateList: Placeholder;
-                    emptyIDPList: Placeholder;
-                    emptyIDPSearchResults: Placeholder;
-                    emptyAuthenticatorList: Placeholder;
-                    emptyConnectionTypeList: {
-                        subtitles: {
-                            0: string;
-                            1: string;
-                        },
-                        title: string;
-                    };
-                    emptyConnectorList: Placeholder;
-                    noAttributes: Placeholder;
-                };
-                wizards?: {
-                    addAuthenticator: {
-                        header: string;
-                        steps: {
-                            authenticatorSelection: {
-                                title: string;
-                                quickSetup: {
-                                    title: string;
-                                    subTitle: string;
-                                };
-                                manualSetup: {
-                                    title: string;
-                                    subTitle: string;
-                                };
-                            };
-                            authenticatorConfiguration: {
-                                title: string;
-                            };
-                            authenticatorSettings: {
-                                emptyPlaceholder: {
-                                    subtitles: [
-                                        string,
-                                        string
-                                    ];
-                                    title: string;
-                                };
-                            };
-                            summary: {
-                                title: string;
-                            };
-                        };
-                    };
-                    addIDP: {
-                        header: string;
-                        steps: {
-                            generalSettings: {
-                                title: string;
-                            };
-                            authenticatorConfiguration: {
-                                title: string;
-                            };
-                            provisioningConfiguration: {
-                                title: string;
-                            };
-                            summary: {
-                                title: string;
-                            };
-                        };
-                    };
-                    addProvisioningConnector: {
-                        header: string;
-                        steps: {
-                            connectorSelection: {
-                                title: string;
-                                defaultSetup: {
-                                    title: string;
-                                    subTitle: string;
-                                };
-                            };
-                            connectorConfiguration: {
-                                title: string;
-                            };
-                            summary: {
-                                title: string;
-                            };
-                        };
-                    };
-                    buttons: {
-                        next: string;
-                        finish: string;
-                        previous: string;
-
-                    };
-                };
-            };
-            suborganizations: {
-                notifications: {
-                    tierLimitReachedError: {
-                        emptyPlaceholder: Placeholder;
-                        heading: string;
-                    };
-                    subOrgLevelsLimitReachedError: {
-                        emptyPlaceholder: Placeholder;
-                        heading: string;
-                    };
-                    duplicateOrgError: {
-                        message: string;
-                        description: string;
-                    };
-                }
-            },
-            footer: {
-                copyright: string;
-            };
-            header: {
-                links: {
-                    adminPortalNav: string;
-                    userPortalNav: string;
-                };
-            };
-            helpPanel: {
-                actions: HelpPanelActionsInterface;
-                notifications: {
-                    pin: Notification;
-                };
-            };
-            idp: {
-                advancedSearch: {
-                    form: {
-                        inputs: {
-                            filterAttribute: {
-                                placeholder: string;
-                            };
-                            filterCondition: {
-                                placeholder: string;
-                            };
-                            filterValue: {
-                                placeholder: string;
-                            };
-                        };
-                    };
-                    placeholder: string;
-                };
-                buttons: {
-                    addIDP: string;
-                    addAuthenticator: string;
-                    addConnector: string;
-                    addAttribute: string;
-                    addCertificate: string;
-                };
-                confirmations: {
-                    deleteIDP: Confirmation;
-                    deleteIDPWithConnectedApps: Confirmation;
-                    deleteAuthenticator: Confirmation;
-                    deleteConnector: Confirmation;
-                };
-                connectedApps: {
-                    action: string;
-                    header: string;
-                    subHeader: string;
-                    placeholders: {
-                        search: string;
-                        emptyList: string;
-                    };
-                    applicationEdit: {
-                        back: string;
-                    };
-                    genericError: {
-                        description: string;
-                        message: string;
-                    }
-                };
-                dangerZoneGroup: {
-                    header: string;
-                    disableIDP: DangerZone;
-                    deleteIDP: DangerZone;
-                };
-                forms: {
-                    advancedConfigs: {
-                        federationHub: FormAttributes;
-                        homeRealmIdentifier: FormAttributes;
-                        alias: FormAttributes;
-                        certificateType: {
-                            label: string;
-                            hint: string;
-                            certificatePEM: FormAttributes;
-                            certificateJWKS: FormAttributes;
-                        };
-                        implicitAssociation: {
-                            enable: {
+                            name: {
                                 label: string;
-                                hint: string;
+                                placeholder: string;
                             };
-                            attributes: {
+                            issuer: {
                                 label: string;
                                 placeholder: string;
                                 hint: string;
+                                validation: {
+                                    notValid: string;
+                                };
                             };
-                            warning: string;
-                        };
-                    };
-                    attributeSettings: {
-                        attributeMapping: {
-                            attributeColumnHeader: string;
-                            attributeMapColumnHeader: string;
-                            attributeMapInputPlaceholderPrefix: string;
-                            componentHeading: string;
-                            hint: string;
-                            placeHolder: {
-                                title: string;
-                                subtitle: string;
-                                action: string;
-                            };
-                            attributeMapTable: {
-                                mappedAttributeColumnHeader: string;
-                                externalAttributeColumnHeader: string;
-                            };
-                            heading: string;
-                            subheading: string;
-                            search: {
-                                placeHolder: string;
-                            };
-                            attributeDropdown: {
+                            alias: {
                                 label: string;
-                                placeHolder: string;
-                                noResultsMessage: string;
+                                placeholder: string;
+                                hint: string;
+                                validation: {
+                                    notValid: string;
+                                };
                             };
-                            externalAttributeInput: {
+                            certificateType: {
                                 label: string;
-                                placeHolder: string;
-                                existingErrorMessage: string;
+                                requiredCertificate: string;
                             };
-                            addAttributeButtonLabel: string;
-                            modal: {
-                                header: string;
-                                placeholder: {
-                                    title: string;
-                                    subtitle: string
-                                }
-                            }
-                        };
-                        attributeProvisioning: {
-                            attributeColumnHeader: {
-                                0: string;
-                                1: string;
+                            jwksUrl: {
+                                optionLabel: string;
+                                placeholder: string;
+                                label: string;
+                                hint: string;
+                                validation: {
+                                    notValid: string;
+                                };
                             };
-                            attributeMapColumnHeader: string;
-                            attributeMapInputPlaceholderPrefix: string;
-                            componentHeading: string;
-                            hint: string;
-                        };
-                        attributeListItem: {
-                            validation: {
-                                empty: string;
+                            pem: {
+                                optionLabel: string;
+                                hint: string;
+                                uploadCertificateButtonLabel: string;
+                                dropzoneText: string;
+                                pasteAreaPlaceholderText: string;
                             };
                         };
-                        attributeSelection: {
-                            searchAttributes: {
-                                placeHolder: string;
-                            };
-                        };
-                    };
-                    authenticatorAccordion: {
-                        default: {
-                            0: string;
-                            1: string;
-                        };
-                        enable: {
-                            0: string;
-                            1: string;
-                        };
-                    };
-                    outboundConnectorAccordion: {
-                        default: {
-                            0: string;
-                            1: string;
-                        };
-                        enable: {
-                            0: string;
-                            1: string;
-                        };
-                    };
-                    common: {
-                        requiredErrorMessage: string;
-                        invalidURLErrorMessage: string;
-                        invalidQueryParamErrorMessage: string;
-                        customProperties: string;
-                        internetResolvableErrorMessage: string;
-                    };
-                    generalDetails: {
-                        name: FormAttributes;
-                        description: FormAttributes;
-                        image: FormAttributes;
-                    };
-                    jitProvisioning: {
-                        enableJITProvisioning: FormAttributes;
-                        provisioningUserStoreDomain: FormAttributes;
-                        provisioningScheme: {
-                            hint: string;
-                            label: string;
-                            children: {
-                                0: string;
-                                1: string;
-                                2: string;
-                                3: string;
-                            };
-                        };
-                    };
-                    roleMapping: {
-                        heading: string;
-                        keyName: string;
-                        valueName: string;
-                        validation: {
-                            keyRequiredMessage: string;
-                            valueRequiredErrorMessage: string;
-                            duplicateKeyErrorMsg: string;
-                        };
-                        hint: string;
-                    };
-                    uriAttributeSettings: {
-                        subject: {
-                            heading: string;
-                            hint: string;
-                            placeHolder: string;
-                            label: string;
-                            validation: {
-                                empty: string;
-                            };
-                        };
-                        role: {
-                            heading: string;
-                            hint: string;
-                            placeHolder: string;
-                            label: string;
-                            validation: {
-                                empty: string;
-                            };
-                        };
-                    };
-                    outboundProvisioningRoles: {
-                        heading: string;
-                        hint: string;
-                        placeHolder: string;
-                        label: string;
-                        popup: {
-                            content: string;
-                        };
-                    };
-                    outboundProvisioningTitle: string;
-                };
-                helpPanel: HelpPanelInterface;
-                templates: {
-                    manualSetup: {
-                        heading: string;
-                        subHeading: string;
-                    };
-                    quickSetup: {
-                        heading: string;
-                        subHeading: string;
                     };
                 };
                 list: {
@@ -2864,60 +1626,622 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    addFederatedAuthenticator: Notification;
-                    addIDP: Notification;
-                    apiLimitReachedError: Notification;
+                    addFederatedAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     changeCertType: {
                         pem: {
-                           description: string;
-                           message: string;
+                            description: string;
+                            message: string;
                         };
                         jwks: {
                             description: string;
                             message: string;
                         };
                     };
-                    deleteCertificate: Notification;
-                    deleteIDP: Notification;
-                    disableAuthenticator: Notification;
-                    disableOutboundProvisioningConnector: Notification;
-                    duplicateCertificateUpload: Notification;
-                    getIDP: Notification;
-                    getIDPList: Notification;
-                    getIDPTemplate: Notification;
-                    getIDPTemplateList: Notification;
-                    getFederatedAuthenticator: Notification;
-                    getFederatedAuthenticatorsList: Notification;
-                    getFederatedAuthenticatorMetadata: Notification;
-                    getOutboundProvisioningConnector: Notification;
-                    getOutboundProvisioningConnectorsList: Notification;
-                    getOutboundProvisioningConnectorMetadata: Notification;
-                    getAllLocalClaims: Notification;
-                    getRolesList: Notification;
-                    submitAttributeSettings: Notification;
-                    tierLimitReachedError: {
-                        emptyPlaceholder: Placeholder;
-                        heading: string;
+                    deleteCertificate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
                     };
-                    deleteDefaultAuthenticator: Notification;
-                    deleteDefaultConnector: Notification;
-                    updateClaimsConfigs: Notification;
-                    updateFederatedAuthenticator: Notification;
-                    updateFederatedAuthenticators: Notification;
-                    updateIDP: Notification;
-                    updateIDPCertificate: Notification;
-                    updateIDPRoleMappings: Notification;
-                    updateJITProvisioning: Notification;
-                    updateOutboundProvisioningConnectors: Notification;
-                    updateOutboundProvisioningConnector: Notification;
+                    deleteIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteIDPWithConnectedApps: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteConnection: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableIDPWithConnectedApps: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableOutboundProvisioningConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    duplicateCertificateUpload: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDPList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDPTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDPTemplateList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getFederatedAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getFederatedAuthenticatorsList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getFederatedAuthenticatorMetadata: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getConnectionDetails: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOutboundProvisioningConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOutboundProvisioningConnectorsList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOutboundProvisioningConnectorMetadata: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getAllLocalClaims: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getRolesList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    submitAttributeSettings: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteDefaultAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                    };
+                    deleteDefaultConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                    };
+                    updateAttributes: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateClaimsConfigs: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateFederatedAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateFederatedAuthenticators: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateEmailOTPAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateSMSOTPAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateGenericAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateIDPCertificate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateIDPRoleMappings: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateJITProvisioning: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOutboundProvisioningConnectors: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOutboundProvisioningConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    apiLimitReachedError: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                };
+                popups: {
+                    appStatus: {
+                        enabled: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
+                        disabled: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
+                    };
                 };
                 placeHolders: {
-                    emptyCertificateList: Placeholder;
-                    emptyIDPList: Placeholder;
-                    emptyIDPSearchResults: Placeholder;
-                    emptyAuthenticatorList: Placeholder;
-                    emptyConnectorList: Placeholder;
-                    noAttributes: Placeholder;
+                    emptyCertificateList: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                    };
+                    emptyIDPList: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
+                    emptyIDPSearchResults: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                    };
+                    emptyAuthenticatorList: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
+                    emptyConnectionTypeList: {
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                        title: string;
+                    };
+                    emptyConnectorList: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                    };
+                    noAttributes: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                        };
+                    };
                 };
                 wizards: {
                     addAuthenticator: {
@@ -2937,6 +2261,12 @@ export interface ConsoleNS {
                             authenticatorConfiguration: {
                                 title: string;
                             };
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [string, string];
+                                    title: string;
+                                };
+                            };
                             summary: {
                                 title: string;
                             };
@@ -2981,91 +2311,40 @@ export interface ConsoleNS {
                         next: string;
                         finish: string;
                         previous: string;
-
                     };
                 };
             };
-            idvp: {
-                advancedSearch: {
-                    form: {
-                        inputs: {
-                            filterValue: {
-                                placeholder: string;
-                            };
-                        };
-                    };
-                    placeholder: string;
-                };
-                buttons: {
-                    addIDVP: string;
-                };
-                placeholders: {
-                    emptyIDVPList: Placeholder;
-                    emptyIDVPTypeList: Placeholder;
-                };
-                confirmations: {
-                    deleteIDVP: Confirmation;
-                };
+            suborganizations: {
                 notifications: {
-                  getIDVPList: Notification;
-                  deleteIDVP: Notification;
-                  updateIDVP: Notification;
-                  addIDVP: Notification;
-                  submitAttributeSettings: Notification;
-                  getAllLocalClaims: Notification;
-                  getIDVP: Notification;
-                  getUIMetadata: Notification;
-                  getIDVPTemplateTypes: Notification;
-                  getIDVPTemplateType: Notification;
-                  getIDVPTemplate: Notification;
-                };
-                forms: {
-                    attributeSettings: {
-                        attributeMapping: {
-                            heading: string;
-                            hint: string;
-                            addButton: string;
-                            emptyPlaceholderEdit: {
-                                title: string;
-                                subtitle: string;
-                            };
-                            emptyPlaceholderCreate: {
-                                title: string;
-                                subtitle: string;
-                            };
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles: string;
                         };
-                        attributeMappingListItem: {
-                            validation: {
-                                duplicate: string;
-                                required: string;
-                                invalid: string;
-                            };
-                            placeholders: {
-                                mappedValue: string;
-                                localClaim: string;
-                            };
-                            labels: {
-                                mappedValue: string;
-                                localClaim: string;
-                            }
-                        };
-                        attributeSelectionModal: {
-                            header: string;
-                        };
+                        heading: string;
                     };
-                    generalDetails: {
-                        name: FormAttributes;
-                        description: FormAttributes;
+                    subOrgLevelsLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles: string;
+                        };
+                        heading: string;
+                    };
+                    duplicateOrgError: {
+                        message: string;
+                        description: string;
                     };
                 };
-                dangerZoneGroup?: {
-                    header: string;
-                    disableIDVP: DangerZone;
-                    deleteIDVP: DangerZone;
-                };
-                list: {
-                    actions: string;
-                    name: string;
+            };
+            footer: {
+                copyright: string;
+            };
+            header: {
+                links: {
+                    adminPortalNav: string;
+                    userPortalNav: string;
                 };
             };
             overview: {
@@ -3084,7 +2363,7 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
-                        authenticationProviders?: {
+                        authenticationProviders: {
                             heading: string;
                             subHeading: string;
                         };
@@ -3103,7 +2382,7 @@ export interface ConsoleNS {
                     application: string;
                     gettingStarted: string;
                     identityProviders: string;
-                    authenticationProviders?: string;
+                    authenticationProviders: string;
                     general: string;
                     identityVerificationProviders: string;
                 };
@@ -3111,153 +2390,80 @@ export interface ConsoleNS {
                 identityProviderEdit: string;
                 identityProviderTemplates: string;
                 identityProviders: string;
-                authenticationProviderEdit?: string;
-                authenticationProviderTemplates?: string;
-                authenticationProviders?: string;
+                authenticationProviderEdit: string;
+                authenticationProviderTemplates: string;
+                authenticationProviders: string;
                 oidcScopes: string;
                 oidcScopesEdit: string;
                 overview: string;
                 remoteRepo: string;
                 remoteRepoEdit: string;
             };
-            templates: {
-                emptyPlaceholder: Placeholder;
-            };
-            secrets?: {
-                advancedSearch: {
-                    form: {
-                        inputs: {
-                            filterAttribute: {
-                                placeholder: string;
-                            };
-                            filterCondition: {
-                                placeholder: string;
-                            };
-                            filterValue: {
-                                placeholder: string;
-                            };
-                        };
-                    };
-                    placeholder: string;
-                };
-                page?: {
-                    title: string;
-                    description: string;
-                    primaryActionButtonText: string;
-                    subFeatureBackButton: string;
-                };
-                errors?: {
-                    generic: {
-                        message: string;
-                        description: string;
-                    }
-                },
-                routes?: {
-                    name: string;
-                    category: string;
-                    sidePanelChildrenNames: string[];
-                },
-                alerts?: {
-                    createdSecret?: {
-                        description: string;
-                        message: string;
-                    },
-                    updatedSecret?: {
-                        description: string;
-                        message: string;
-                    },
-                    deleteSecret?: {
-                        description: string;
-                        message: string;
-                    }
-                },
-                modals: {
-                    deleteSecret: {
-                        assertionHint: string;
-                        primaryActionButtonText: string;
-                        secondaryActionButtonText: string;
-                        title: string;
-                        content: string;
-                        warningMessage: string;
-                    }
-                },
-                wizards?: {
-                    addSecret?: {
-                        heading?: string;
-                        subheading?: string;
-                        form?: {
-                            secretTypeField: Record<string, string>;
-                            secretNameField: Record<string, string>;
-                            secretValueField: Record<string, string>;
-                            secretDescriptionField: Record<string, string>;
-                        }
-                    },
-                    actions: {
-                        createButton: {
-                            label: string;
-                            ariaLabel: string;
-                        };
-                        cancelButton: {
-                            label: string;
-                            ariaLabel: string;
-                        };
-                    }
-                },
-                banners?: {
-                    secretIsHidden: {
-                        title: string;
-                        content: string;
-                    },
-                    adaptiveAuthSecretType: {
-                        title: string;
-                        content: string;
-                    }
-                },
-                forms?: {
-                    editSecret?: {
-                        page: {
-                            description: string;
-                        },
-                        secretValueField: Record<string, string>;
-                        secretDescriptionField: Record<string, string>;
-                    },
-                    actions?: {
-                        submitButton: {
-                            label: string;
-                            ariaLabel: string;
-                        }
-                    }
-                },
-                emptyPlaceholders?: {
-                    resourceNotFound: {
-                        messages: string[];
-                    },
-                    emptyListOfSecrets: {
-                        messages: string[];
-                    },
-                    buttons?: {
-                        backToSecrets: {
-                            label: string;
-                            ariaLabel: string;
-                        },
-                        addSecret: {
-                            label: string;
-                            ariaLabel: string;
-                        }
-                    }
-                }
-            }
         };
         notifications: {
-            endSession: Notification;
-            getProfileInfo: Notification;
-            getProfileSchema: Notification;
+            endSession: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
+            getProfileInfo: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
+            getProfileSchema: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
         };
         pages: {
-            applicationTemplate: EditPage;
-            applications: Page;
-            applicationsEdit: EditPage;
-            authenticationProvider?: Page;
+            applicationTemplate: {
+                backButton: string;
+                title: string;
+                subTitle: string;
+            };
+            applications: {
+                title: string;
+                subTitle: string;
+                alternateSubTitle: string;
+            };
+            applicationsEdit: {
+                backButton: string;
+                title: string;
+                subTitle: string;
+            };
+            authenticationProvider: {
+                title: string;
+                subTitle: string;
+            };
             authenticationProviderTemplate: {
                 title: string;
                 subTitle: string;
@@ -3273,7 +2479,10 @@ export interface ConsoleNS {
                     provisioningDisplayName: string;
                 };
             };
-            idp: Page;
+            idp: {
+                title: string;
+                subTitle: string;
+            };
             idpTemplate: {
                 title: string;
                 subTitle: string;
@@ -3283,7 +2492,10 @@ export interface ConsoleNS {
                     provisioningDisplayName: string;
                 };
             };
-            idvp: Page;
+            idvp: {
+                title: string;
+                subTitle: string;
+            };
             idvpTemplate: {
                 title: string;
                 subTitle: string;
@@ -3292,7 +2504,10 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
             };
-            overview: Page;
+            overview: {
+                title: string;
+                subTitle: string;
+            };
         };
         componentExtensions: {
             component: {
@@ -3304,8 +2519,22 @@ export interface ConsoleNS {
             };
         };
         placeholders: {
-            emptySearchResult: Placeholder;
-            underConstruction: Placeholder;
+            emptySearchResult: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            underConstruction: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
         };
         technologies: {
             android: string;
@@ -3317,270 +2546,19 @@ export interface ConsoleNS {
             windows: string;
         };
     };
-    loginFlow: {
-        adaptiveLoginFlowSelectConfirmationModal: {
-            content: string;
-            heading: string;
-            message: string;
-        };
-        basicLoginFlowSelectConfirmationModal: {
-            content: string;
-            heading: string;
-            message: string;
-        };
-        options: {
-            controls: {
-                remove: string;
-            };
-            displayName: string;
-            divider: string;
-        };
-        modes: {
-            legacy: {
-                label: string;
-            };
-            visual: {
-                label: string;
-            };
-            switchConfirmationModal: {
-                assertionHint: string;
-                content: string;
-                primaryActionButtonText: string;
-                secondaryActionButtonText: string;
-                title: string;
-                warningMessage: string;
-            };
-        };
-        nodes: {
-            controls: {
-                attributeSelector: {
-                    label: string;
-                };
-                enableBackupCodes: {
-                    label: string;
-                };
-                userAttributeSelector: {
-                    label: string;
-                };
-            };
-            emailOTP: {
-                controls: {
-                    optionRemoveTooltipContent: string;
-                };
-                form: {
-                    actions: {
-                        primary: string;
-                        secondary: string;
-                    };
-                    fields: {
-                        code: {
-                            label: string;
-                            placeholder: string;
-                        };
-                    };
-                };
-                header: string;
-            };
-            identifierFirst: {
-                controls: {
-                    optionRemoveTooltipContent: string;
-                    optionSwitchTooltipContent: string;
-                };
-                form: {
-                    actions: {
-                        primary: string;
-                    };
-                    fields: {
-                        rememberMe: {
-                            label: string;
-                        };
-                        username: {
-                            label: string;
-                            placeholder: string;
-                        };
-                    };
-                };
-                header: string;
-            };
-            signIn: {
-                controls: {
-                    optionRemoveTooltipContent: string;
-                    optionSwitchTooltipContent: string;
-                };
-                form: {
-                    actions: {
-                        primary: string;
-                    };
-                    fields: {
-                        password: {
-                            label: string;
-                            placeholder: string;
-                        };
-                        rememberMe: {
-                            label: string;
-                        };
-                        username: {
-                            label: string;
-                            placeholder: string;
-                        };
-                    };
-                };
-                header: string;
-            };
-            smsOTP: {
-                controls: {
-                    optionRemoveTooltipContent: string;
-                };
-                form: {
-                    actions: {
-                        primary: string;
-                        secondary: string;
-                    };
-                    fields: {
-                        code: {
-                            label: string;
-                            placeholder: string;
-                        };
-                    };
-                };
-                header: string;
-            };
-            totp: {
-                controls: {
-                    optionRemoveTooltipContent: string;
-                };
-                form: {
-                    actions: {
-                        primary: string;
-                    };
-                    fields: {
-                        code: {
-                            label: string;
-                            placeholder: string;
-                        };
-                    };
-                    help: string;
-                };
-                header: string;
-            };
-            activeSessionsLimit: {
-                controls: {
-                    optionRemoveTooltipContent: string;
-                };
-                form: {
-                    sessions: {
-                        browserLabel: string;
-                        lastAccessedLabel: string;
-                    };
-                    help: string;
-                };
-                header: string;
-            };
-        };
-        revertConfirmationModal: {
-            assertionHint: string;
-            content: string;
-            primaryActionButtonText: string;
-            secondaryActionButtonText: string;
-            title: string;
-            warningMessage: string;
-        };
-        steps: {
-            controls: {
-                addOption: string;
-                remove: string;
-                signUp: {
-                    hint: string;
-                    label: string;
-                };
-            };
-        };
-        predefinedFlows: {
-            adaptive: {
-                actions: {
-                    add: string;
-                };
-                header: string;
-            };
-            authenticators: {
-                apple: {
-                    displayName: string;
-                };
-                facebook: {
-                    displayName: string;
-                };
-                github: {
-                    displayName: string;
-                };
-                google: {
-                    displayName: string;
-                };
-                microsoft: {
-                    displayName: string;
-                };
-            };
-            basic: {
-                header: string;
-            };
-            categories: {
-                basic: {
-                    label: string;
-                };
-                mfa: {
-                    label: string;
-                };
-                passwordless: {
-                    label: string;
-                };
-                social: {
-                    label: string;
-                };
-            };
-            header: string;
-            panelHeader: string;
-        };
-        scriptEditor: {
-            panelHeader: string;
-            secretSelector: {
-                actions: {
-                    create: {
-                        label: string;
-                    }
-                };
-                emptyPlaceholder: {
-                    header: string;
-                    description: string;
-                };
-                label: string;
-            };
-            themes: {
-                dark: {
-                    label: string;
-                };
-                highContrast: {
-                    label: string;
-                };
-                light: {
-                    label: string;
-                };
-            };
-        };
-        visualEditor: {
-            actions: {
-                revert: {
-                    label: string;
-                };
-                update: {
-                    label: string;
-                };
-            };
-        };
-    };
     manage: {
         features: {
             businessGroups: {
                 fields: {
-                    groupName: FormAttributes;
+                    groupName: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                            duplicate: string;
+                            invalid: string;
+                        };
+                    };
                 };
             };
             organizationDiscovery: {
@@ -3611,36 +2589,36 @@ export interface ConsoleNS {
                     form: {
                         fields: {
                             emailDomains: {
-                                label : string;
+                                label: string;
                                 placeholder: string;
                                 hint: string;
                                 validations: {
                                     invalid: {
                                         0: string;
                                         1: string;
-                                    }
-                                }
-                            },
+                                    };
+                                };
+                            };
                             organizationName: {
                                 label: string;
                                 placeholder: string;
                                 emptyPlaceholder: {
                                     0: string;
                                     1: string;
-                                }
+                                };
                                 hint: string;
-                            }
-                        }
-                    },
+                            };
+                        };
+                    };
                     buttons: {
                         assign: string;
-                    }
-                },
+                    };
+                };
                 emailDomains: {
                     actions: {
                         assign: string;
                         enable: string;
-                    }
+                    };
                 };
                 edit: {
                     back: string;
@@ -3648,15 +2626,15 @@ export interface ConsoleNS {
                     form: {
                         fields: {
                             emailDomains: {
-                                label : string;
+                                label: string;
                                 placeholder: string;
                                 hint: string;
                                 validations: {
                                     invalid: {
                                         0: string;
                                         1: string;
-                                    }
-                                }
+                                    };
+                                };
                             };
                             organizationName: {
                                 label: string;
@@ -3732,9 +2710,13 @@ export interface ConsoleNS {
                             message: string;
                         };
                     };
-                },
+                };
                 placeholders: {
-                    emptyList: Placeholder;
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
                 };
                 title: string;
             };
@@ -3765,18 +2747,117 @@ export interface ConsoleNS {
                     };
                 };
                 title: string;
-                subTitle?: string;
                 notifications: {
-                    fetchOrganization: Notification;
-                    deleteOrganization: Notification;
+                    fetchOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     deleteOrganizationWithSubOrganizationError: string;
-                    disableOrganization: Notification;
+                    disableOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     disableOrganizationWithSubOrganizationError: string;
-                    enableOrganization: Notification;
-                    updateOrganization: Notification;
-                    updateOrganizationAttributes: Notification;
-                    addOrganization: Notification;
-                    getOrganizationList: Notification;
+                    enableOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOrganizationAttributes: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOrganizationList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 confirmations: {
                     deleteOrganization: {
@@ -3787,7 +2868,16 @@ export interface ConsoleNS {
                     };
                 };
                 placeholders: {
-                    emptyList: Placeholder;
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                            3: string;
+                        };
+                    };
                 };
                 edit: {
                     description: string;
@@ -3795,16 +2885,39 @@ export interface ConsoleNS {
                     tabTitles: {
                         overview: string;
                         attributes: string;
-                    },
+                    };
                     fields: {
-                        id: FormAttributes;
-                        name: FormAttributes;
-                        description: FormAttributes;
-                        domain: FormAttributes;
-                        type: FormAttributes;
-                        created: FormAttributes;
-                        lastModified: FormAttributes;
-                    },
+                        id: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                        name: {
+                            label: string;
+                            placeholder: string;
+                            ariaLabel: string;
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                            ariaLabel: string;
+                        };
+                        domain: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                        type: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                        created: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                        lastModified: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                    };
                     dangerZone: {
                         title: string;
                         subHeader: string;
@@ -3812,15 +2925,15 @@ export interface ConsoleNS {
                             enableActionTitle: string;
                             disableActionTitle: string;
                             subheader: string;
-                        }
-                    },
+                        };
+                    };
                     attributes: {
                         hint: string;
                         key: string;
                         value: string;
                         keyRequiredErrorMessage: string;
                         valueRequiredErrorMessage: string;
-                    }
+                    };
                 };
                 modals: {
                     addOrganization: {
@@ -3831,9 +2944,26 @@ export interface ConsoleNS {
                 };
                 forms: {
                     addOrganization: {
-                        name: FormAttributes;
-                        description: FormAttributes;
-                        domainName: FormAttributes;
+                        name: {
+                            validation: {
+                                duplicate: string;
+                                empty: string;
+                            };
+                            label: string;
+                            placeholder: string;
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                        };
+                        domainName: {
+                            validation: {
+                                duplicate: string;
+                                empty: string;
+                            };
+                            label: string;
+                            placeholder: string;
+                        };
                         type: string;
                         structural: string;
                         tenant: string;
@@ -3859,37 +2989,42 @@ export interface ConsoleNS {
                     switchLabel: string;
                     switchButton: string;
                     notifications: {
-                        switchOrganization: Notification;
-                    }
-                }
+                        switchOrganization: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                    };
+                };
                 view: {
                     description: string;
-                }
+                };
             };
             users: {
                 addUserType: {
                     createUser: {
                         title: string;
-                        description: string
+                        description: string;
                     };
                     inviteParentUser: {
                         title: string;
-                        description: string
+                        description: string;
                     };
                 };
                 consumerUsers: {
                     fields: {
-                       username: {
-                           label: string;
-                           placeholder: string;
-                           validations: {
-                               empty: string;
-                               invalid: string;
-                               invalidCharacters: string;
-                               regExViolation: string;
-                           };
-                       }
-                    }
+                        username: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                                invalidCharacters: string;
+                                regExViolation: string;
+                            };
+                        };
+                    };
                 };
                 guestUsers: {
                     fields: {
@@ -3902,13 +3037,28 @@ export interface ConsoleNS {
                                 invalidCharacters: string;
                                 regExViolation: string;
                             };
-                        }
-                    }
+                        };
+                    };
                 };
                 confirmations: {
-                    terminateAllSessions: Confirmation;
-                    terminateSession: Confirmation;
-                    addMultipleUser: Confirmation
+                    terminateAllSessions: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                    terminateSession: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                    addMultipleUser: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 editUser: {
                     tab: {
@@ -3920,7 +3070,11 @@ export interface ConsoleNS {
                         };
                     };
                     placeholders: {
-                        undefinedUser: Placeholder;
+                        undefinedUser: {
+                            action: string;
+                            title: string;
+                            subtitles: string;
+                        };
                     };
                 };
                 userSessions: {
@@ -3944,16 +3098,71 @@ export interface ConsoleNS {
                         };
                     };
                     dangerZones: {
-                        terminate: DangerZone;
+                        terminate: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                        };
                     };
                     notifications: {
-                        getUserSessions: Notification;
-                        terminateAllUserSessions: Notification;
-                        terminateUserSession: Notification;
-                        getAdminUser: Notification;
+                        getUserSessions: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        terminateAllUserSessions: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        terminateUserSession: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getAdminUser: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
                     };
                     placeholders: {
-                        emptyListPlaceholder: Placeholder;
+                        emptyListPlaceholder: {
+                            title: string;
+                            subtitles: string;
+                        };
                     };
                 };
                 advancedSearch: {
@@ -3990,7 +3199,7 @@ export interface ConsoleNS {
                 addUserDropDown: {
                     addNewUser: string;
                     bulkImport: string;
-                }
+                };
                 forms: {
                     validation: {
                         formatError: string;
@@ -4006,32 +3215,169 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    addUser: Notification;
-                    addUserPendingApproval: Notification;
+                    addUser: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addUserPendingApproval: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     bulkImportUser: {
                         validation: {
-                            emptyRowError: NotificationItem;
-                            columnMismatchError: NotificationItem;
-                            emptyHeaderError: NotificationItem;
-                            missingRequiredHeaderError: NotificationItem;
-                            blockedHeaderError: NotificationItem;
-                            duplicateHeaderError: NotificationItem;
-                            invalidHeaderError: NotificationItem;
-                            emptyDataField: NotificationItem;
-                            invalidRole: NotificationItem;
-                            invalidGroup: NotificationItem;
-                        },
-                        submit: Notification;
-                        timeOut: NotificationItem;
-                    }
-                    deleteUser: Notification;
-                    fetchUsers: Notification;
-                    getAdminRole: Notification;
-                    revokeAdmin: Notification;
+                            emptyRowError: {
+                                message: string;
+                                description: string;
+                            };
+                            columnMismatchError: {
+                                message: string;
+                                description: string;
+                            };
+                            emptyHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            missingRequiredHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            blockedHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            duplicateHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            invalidHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            emptyDataField: {
+                                message: string;
+                                description: string;
+                            };
+                            invalidRole: {
+                                message: string;
+                                description: string;
+                            };
+                            invalidGroup: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        submit: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        timeOut: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteUser: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchUsers: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getAdminRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    revokeAdmin: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 placeholders: {
-                    emptyList: Placeholder;
-                    userstoreError: Placeholder;
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                    };
+                    userstoreError: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                    };
                 };
                 usersList: {
                     list: {
@@ -4087,26 +3433,89 @@ export interface ConsoleNS {
                 };
                 modals: {
                     approvalProperties: {
-                        "Claims": string,
-                        "REQUEST ID": string,
-                        "Roles": string,
-                        "User Store Domain": string,
-                        "Username": string,
-                    },
+                        Claims: string;
+                        "REQUEST ID": string;
+                        Roles: string;
+                        "User Store Domain": string;
+                        Username: string;
+                    };
                     taskDetails: {
                         header: string;
                         description: string;
                     };
                 };
                 notifications: {
-                    fetchApprovalDetails: Notification;
-                    fetchPendingApprovals: Notification;
-                    updatePendingApprovals: Notification;
+                    fetchApprovalDetails: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchPendingApprovals: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updatePendingApprovals: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 placeholders: {
-                    emptyApprovalList: Placeholder;
-                    emptyApprovalFilter: Placeholder;
-                    emptySearchResults: Placeholder;
+                    emptyApprovalList: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
+                    emptyApprovalFilter: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
+                    emptySearchResults: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
                 };
             };
             certificates: {
@@ -4138,13 +3547,56 @@ export interface ConsoleNS {
                         };
                     };
                     notifications: {
-                        addCertificate: Notification;
-                        getCertificates: Notification;
-                        getAlias: Notification;
-                        getPublicCertificate: Notification;
-                        getCertificate: Notification;
-                        deleteCertificate: Notification;
-                        download: Notification;
+                        addCertificate: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getCertificates: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getAlias: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getPublicCertificate: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getCertificate: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        deleteCertificate: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        download: {
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
                     };
                     certificateModalHeader: string;
                     placeholders: {
@@ -4197,7 +3649,11 @@ export interface ConsoleNS {
                         pastePlaceholder: string;
                     };
                     forms: {
-                        alias: FormField;
+                        alias: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                     };
                     errorEmpty: string;
                     errorCertificate: string;
@@ -4226,11 +3682,11 @@ export interface ConsoleNS {
                     axschema: {
                         heading: string;
                         description: string;
-                    },
+                    };
                     eidas: {
                         heading: string;
                         description: string;
-                    },
+                    };
                     oidc: {
                         heading: string;
                         description: string;
@@ -4266,13 +3722,72 @@ export interface ConsoleNS {
                         dialectURI: string;
                     };
                     notifications: {
-                        fetchDialects: Notification;
-                        fetchADialect: Notification;
-                        fetchExternalClaims: Notification;
-                        deleteDialect: Notification;
-                        addDialect: Notification;
-                        updateDialect: Notification;
-                        fetchSCIMResource: Notification;
+                        fetchDialects: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        fetchADialect: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        fetchExternalClaims: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        deleteDialect: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        addDialect: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        updateDialect: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        fetchSCIMResource: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
                     };
                     pageLayout: {
                         list: {
@@ -4288,7 +3803,11 @@ export interface ConsoleNS {
                             updateExternalAttributes: string;
                         };
                     };
-                    dangerZone: DangerZone;
+                    dangerZone: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                     sections: {
                         manageAttributes: {
                             heading: string;
@@ -4344,7 +3863,11 @@ export interface ConsoleNS {
                                 };
                             };
                         };
-                        dialectURI: FormField;
+                        dialectURI: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                         submit: string;
                     };
                 };
@@ -4371,15 +3894,73 @@ export interface ConsoleNS {
                         mappedClaim: string;
                     };
                     notifications: {
-                        addExternalAttribute: Notification;
-                        fetchExternalClaims: Notification;
-                        getExternalAttribute: Notification;
-                        updateExternalAttribute: Notification;
-                        deleteExternalClaim: Notification;
+                        addExternalAttribute: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        fetchExternalClaims: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getExternalAttribute: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        updateExternalAttribute: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        deleteExternalClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
                     };
                     forms: {
-                        attributeURI: FormField;
-                        localAttribute: FormField;
+                        attributeURI: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                            validationErrorMessages: {
+                                duplicateName: string;
+                                invalidName: string;
+                                scimInvalidName: string;
+                            };
+                        };
+                        localAttribute: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                         submit: string;
                         warningMessage: string;
                         emptyMessage: string;
@@ -4419,13 +4000,68 @@ export interface ConsoleNS {
                         attributeURI: string;
                     };
                     notifications: {
-                        fetchLocalClaims: Notification;
-                        getAClaim: Notification;
-                        getClaims: Notification;
-                        getLocalDialect: Notification;
-                        addLocalClaim: Notification;
-                        updateClaim: Notification;
-                        deleteClaim: Notification;
+                        fetchLocalClaims: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getAClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getClaims: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getLocalDialect: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        addLocalClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        updateClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        deleteClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
                     };
                     pageLayout: {
                         edit: {
@@ -4477,29 +4113,63 @@ export interface ConsoleNS {
                         content: string;
                     };
                     forms: {
-                        attributeID: FormField;
+                        attributeID: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                         attributeHint: string;
-                        name: FormField;
+                        name: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                            validationErrorMessages: {
+                                invalidName: string;
+                            };
+                        };
                         nameHint: string;
-                        description: FormField;
+                        description: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                         descriptionHint: string;
-                        regEx: FormField;
+                        regEx: {
+                            label: string;
+                            placeholder: string;
+                        };
                         regExHint: string;
-                        supportedByDefault: FormField;
-                        displayOrder: FormField;
+                        supportedByDefault: {
+                            label: string;
+                        };
+                        displayOrder: {
+                            label: string;
+                            placeholder: string;
+                        };
                         displayOrderHint: string;
-                        required: FormField;
+                        required: {
+                            label: string;
+                        };
                         requiredHint: string;
                         requiredWarning: string;
-                        readOnly: FormField;
+                        readOnly: {
+                            label: string;
+                        };
                         readOnlyHint: string;
-                        attribute: FormField;
-                        infoMessages?: {
+                        attribute: {
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
+                        infoMessages: {
                             disabledConfigInfo: string;
                             configApplicabilityInfo: string;
-                        }
+                        };
                     };
-                    dangerZone: DangerZone;
+                    dangerZone: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                     mappedAttributes: {
                         hint: string;
                     };
@@ -4558,7 +4228,7 @@ export interface ConsoleNS {
                         content: string;
                         header: string;
                         message: string;
-                    },
+                    };
                     saveChangesButton: string;
                 };
             };
@@ -4570,10 +4240,32 @@ export interface ConsoleNS {
                 forms: {
                     addLocale: {
                         fields: {
-                            bodyEditor: FormAttributes;
-                            locale: FormAttributes;
-                            signatureEditor: FormAttributes;
-                            subject: FormAttributes;
+                            bodyEditor: {
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            locale: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            signatureEditor: {
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            subject: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                     };
                 };
@@ -4603,12 +4295,23 @@ export interface ConsoleNS {
                     newType: string;
                 };
                 confirmations: {
-                    deleteTemplateType: Confirmation;
+                    deleteTemplateType: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 forms: {
                     addTemplateType: {
                         fields: {
-                            type: FormAttributes;
+                            type: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                     };
                 };
@@ -4617,14 +4320,78 @@ export interface ConsoleNS {
                     name: string;
                 };
                 notifications: {
-                    deleteTemplateType: Notification;
-                    getTemplateTypes: Notification;
-                    updateTemplateType: Notification;
-                    createTemplateType: Notification;
+                    deleteTemplateType: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getTemplateTypes: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateTemplateType: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createTemplateType: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 placeholders: {
-                    emptySearch: Placeholder;
-                    emptyList: Placeholder;
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
                 };
                 wizards: {
                     addTemplateType: {
@@ -4633,7 +4400,7 @@ export interface ConsoleNS {
                         steps: {
                             templateType: {
                                 heading: string;
-                            }
+                            };
                         };
                     };
                 };
@@ -4646,7 +4413,12 @@ export interface ConsoleNS {
                     viewTemplate: string;
                 };
                 confirmations: {
-                    deleteTemplate: Confirmation;
+                    deleteTemplate: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 editor: {
                     tabs: {
@@ -4663,15 +4435,93 @@ export interface ConsoleNS {
                     name: string;
                 };
                 notifications: {
-                    deleteTemplate: Notification;
-                    createTemplate: Notification;
-                    getTemplateDetails: Notification;
-                    getTemplates: Notification;
-                    iframeUnsupported: Notification;
-                    updateTemplate: Notification;
+                    deleteTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getTemplateDetails: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getTemplates: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    iframeUnsupported: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 placeholders: {
-                    emptyList: Placeholder;
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
                 };
                 viewTemplate: {
                     heading: string;
@@ -4715,7 +4565,10 @@ export interface ConsoleNS {
                         heading: string;
                         subHeading: string;
                         placeHolders: {
-                            emptyListPlaceholder: Placeholder;
+                            emptyListPlaceholder: {
+                                title: string;
+                                subtitles: string;
+                            };
                         };
                     };
                 };
@@ -4729,14 +4582,74 @@ export interface ConsoleNS {
                     storeOptions: string;
                 };
                 notifications: {
-                    deleteGroup: Notification;
-                    updateGroup: Notification;
-                    createGroup: Notification;
-                    createPermission: Notification;
-                    fetchGroups: Notification;
+                    deleteGroup: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateGroup: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createGroup: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createPermission: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchGroups: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 placeholders: {
-                    groupsError: Placeholder;
+                    groupsError: {
+                        title: string;
+                        subtitles: string[];
+                    };
                 };
             };
             header: {
@@ -4747,9 +4660,48 @@ export interface ConsoleNS {
             };
             governanceConnectors: {
                 notifications: {
-                    getConnectorCategories: Notification;
-                    getConnector: Notification;
-                    updateConnector: Notification;
+                    getConnectorCategories: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 form: {
                     errors: {
@@ -4763,9 +4715,9 @@ export interface ConsoleNS {
                 categories: string;
                 pageSubHeading: string;
                 connectorSubHeading: string;
-                genericDescription?: string;
+                genericDescription: string;
                 connectorCategories: {
-                    passwordPolicies : {
+                    passwordPolicies: {
                         name: string;
                         description: string;
                         connectors: {
@@ -4812,13 +4764,13 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    userOnboarding : {
+                    userOnboarding: {
                         name: string;
                         description: string;
                         connectors: {
                             askPassword: {
                                 friendlyName: string;
-                            },
+                            };
                             selfSignUp: {
                                 friendlyName: string;
                                 properties: {
@@ -4857,7 +4809,7 @@ export interface ConsoleNS {
                                     selfRegistrationCallbackRegex: {
                                         hint: string;
                                         label: string;
-                                    },
+                                    };
                                     urlListPurposeSelfSignUp: {
                                         hint: string;
                                         label: string;
@@ -4956,7 +4908,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    loginAttemptsSecurity : {
+                    loginAttemptsSecurity: {
                         name: string;
                         description: string;
                         connectors: {
@@ -5008,7 +4960,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    accountManagement : {
+                    accountManagement: {
                         name: string;
                         description: string;
                         connectors: {
@@ -5153,7 +5105,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    otherSettings : {
+                    otherSettings: {
                         name: string;
                         description: string;
                         connectors: {
@@ -5256,9 +5208,9 @@ export interface ConsoleNS {
                             elasticAnalyticsEngine: {
                                 friendlyName: string;
                                 warningModal: {
-                                    configure: string,
-                                    reassure: string
-                                },
+                                    configure: string;
+                                    reassure: string;
+                                };
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: string;
@@ -5325,7 +5277,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    multiFactorAuthenticators : {
+                    multiFactorAuthenticators: {
                         name: string;
                         friendlyName: string;
                         description: string;
@@ -5358,7 +5310,12 @@ export interface ConsoleNS {
             };
             helpPanel: {
                 notifications: {
-                    pin: Notification;
+                    pin: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
             };
             oidcScopes: {
@@ -5369,16 +5326,40 @@ export interface ConsoleNS {
                     addScope: string;
                 };
                 confirmationModals: {
-                    deleteScope: Confirmation;
-                    deleteClaim: Confirmation;
+                    deleteScope: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                    deleteClaim: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 addAttributes: {
                     description: string;
                 };
                 editScope: {
                     claimList: {
-                        emptyPlaceholder: Placeholder;
-                        emptySearch: Placeholder;
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles: {
+                                0: string;
+                                1: string;
+                            };
+                        };
+                        emptySearch: {
+                            action: string;
+                            title: string;
+                            subtitles: {
+                                0: string;
+                                1: string;
+                            };
+                        };
                         title: string;
                         subTitle: string;
                         addClaim: string;
@@ -5417,7 +5398,14 @@ export interface ConsoleNS {
                         actions: string;
                         name: string;
                     };
-                    empty: Placeholder;
+                    empty: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                    };
                     searchPlaceholder: string;
                 };
                 wizards: {
@@ -5445,15 +5433,124 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    addOIDCScope: Notification;
-                    addOIDCClaim: Notification;
-                    fetchOIDCScopes: Notification;
-                    fetchOIDCScope: Notification;
-                    fetchOIDClaims: Notification;
-                    deleteOIDCScope: Notification;
-                    deleteOIDClaim: Notification;
-                    updateOIDCScope: Notification;
-                    claimsMandatory: Notification;
+                    addOIDCScope: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addOIDCClaim: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchOIDCScopes: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchOIDCScope: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchOIDClaims: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteOIDCScope: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteOIDClaim: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOIDCScope: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    claimsMandatory: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 placeholders: {
                     emptyList: {
@@ -5465,7 +5562,14 @@ export interface ConsoleNS {
                         };
                         title: string;
                     };
-                    emptySearch: Placeholder;
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                    };
                 };
             };
             overview: {
@@ -5533,7 +5637,11 @@ export interface ConsoleNS {
                         details: string;
                         header: string;
                         hint: string;
-                        linkPopup: Popup;
+                        linkPopup: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
                         refetch: string;
                     };
                 };
@@ -5544,15 +5652,51 @@ export interface ConsoleNS {
                             save: string;
                         };
                         fields: {
-                            accessToken: FormAttributes;
-                            enable: FormAttributes;
-                            connectivity: FormAttributes;
-                            gitBranch: FormAttributes;
-                            gitFolder: FormAttributes;
-                            gitURL: FormAttributes;
-                            pollingFrequency: FormAttributes;
-                            sharedKey: FormAttributes;
-                            username: FormAttributes;
+                            accessToken: {
+                                label: string;
+                                placeholder: string;
+                            };
+                            enable: {
+                                hint: string;
+                                label: string;
+                            };
+                            connectivity: {
+                                [key: string]: any;
+                                label: string;
+                            };
+                            gitBranch: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            gitFolder: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            gitURL: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            pollingFrequency: {
+                                label: string;
+                            };
+                            sharedKey: {
+                                label: string;
+                            };
+                            username: {
+                                label: string;
+                                placeholder: string;
+                            };
                         };
                         heading: {
                             subTitle: string;
@@ -5561,21 +5705,111 @@ export interface ConsoleNS {
                     };
                 };
                 modal: {
-                    appStatusModal: ModalInterface;
+                    appStatusModal: {
+                        description: string;
+                        heading: string;
+                        primaryButton: string;
+                        secondaryButton: string;
+                    };
                 };
                 notifications: {
-                    createRepoConfig: Notification;
-                    deleteRepoConfig: Notification;
-                    getConfigDeploymentDetails: Notification;
-                    getConfigList: Notification;
-                    getRemoteRepoConfig: Notification;
-                    triggerConfigDeployment: Notification;
+                    createRepoConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteRepoConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getConfigDeploymentDetails: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getConfigList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getRemoteRepoConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    triggerConfigDeployment: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 pages: {
-                    listing: Page;
+                    listing: {
+                        title: string;
+                        subTitle: string;
+                    };
                 };
                 placeholders: {
-                    emptyListPlaceholder: Placeholder;
+                    emptyListPlaceholder: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
                 };
             };
             roles: {
@@ -5609,15 +5843,35 @@ export interface ConsoleNS {
                                     duplicateInAudience: string;
                                     empty: string;
                                     invalid: string;
-                                }
+                                };
                             };
-                            roleAudience: FormAttributes;
-                            assignedApplication: FormAttributes;
+                            roleAudience: {
+                                values: {
+                                    organization: string;
+                                    application: string;
+                                };
+                                hint: string;
+                                label: string;
+                            };
+                            assignedApplication: {
+                                applicationSubTitle: {
+                                    application: string;
+                                    organization: string;
+                                    changeAudience: string;
+                                };
+                                note: string;
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                             notes: {
-                                orgNote: string,
-                                appNote: string,
-                                cannotCreateRole: string
-                            }
+                                orgNote: string;
+                                appNote: string;
+                                cannotCreateRole: string;
+                            };
                         };
                         rolePermission: {
                             apiResource: {
@@ -5625,7 +5879,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                                 hint: {
                                     empty: string;
-                                }
+                                };
                             };
                             permissions: {
                                 label: string;
@@ -5634,7 +5888,7 @@ export interface ConsoleNS {
                                     noScopes: string;
                                     selectAllScopes: string;
                                     removeAPIResource: string;
-                                },
+                                };
                                 validation: {
                                     empty: string;
                                 };
@@ -5644,7 +5898,12 @@ export interface ConsoleNS {
                                 applicationRoles: string;
                             };
                             notifications: {
-                                fetchAPIResourceError: Notification;
+                                fetchAPIResourceError: {
+                                    error: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                };
                             };
                         };
                     };
@@ -5710,14 +5969,31 @@ export interface ConsoleNS {
                 };
                 edit: {
                     placeholders: {
-                        errorPlaceHolder: Placeholder;
+                        errorPlaceHolder: {
+                            action: string;
+                            title: string;
+                            subtitles: {
+                                0: string;
+                                1: string;
+                            };
+                        };
                     };
                     basics: {
                         buttons: {
                             update: string;
                         };
-                        confirmation: Confirmation;
-                        dangerZone: DangerZone;
+                        confirmation: {
+                            assertionHint: string;
+                            header: string;
+                            message: string;
+                            content: string;
+                        };
+                        dangerZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                            buttonDisableHint: string;
+                        };
                         fields: {
                             roleName: {
                                 name: string;
@@ -5732,14 +6008,39 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                         placeholders: {
-                            emptyPlaceholder: Placeholder;
-                            errorPlaceholder: Placeholder;
+                            emptyPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: {
+                                    0: string;
+                                };
+                            };
+                            errorPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: {
+                                    0: string;
+                                    1: string;
+                                };
+                            };
                         };
                         notifications: {
-                            error: NotificationItem;
-                            success: NotificationItem;
-                            genericError: NotificationItem;
-                            fetchError: NotificationItem;
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            fetchError: {
+                                message: string;
+                                description: string;
+                            };
                         };
                         heading: string;
                         localGroupsHeading: string;
@@ -5748,14 +6049,14 @@ export interface ConsoleNS {
                         actions: {
                             search: {
                                 placeholder: string;
-                            },
+                            };
                             assign: {
                                 placeholder: string;
-                            },
+                            };
                             remove: {
                                 label: string;
                                 placeholder: string;
-                            }
+                            };
                         };
                     };
                     menuItems: {
@@ -5770,31 +6071,60 @@ export interface ConsoleNS {
                         heading: string;
                         subHeading: string;
                         placeholders: {
-                            emptyPlaceholder: Placeholder;
-                            errorPlaceholder: Placeholder;
+                            emptyPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: {
+                                    0: string;
+                                };
+                            };
+                            errorPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: {
+                                    0: string;
+                                    1: string;
+                                };
+                            };
                         };
                         notifications: {
-                            error: NotificationItem;
-                            success: NotificationItem;
-                            genericError: NotificationItem;
-                            fetchError: NotificationItem;
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            fetchError: {
+                                message: string;
+                                description: string;
+                            };
                         };
                         list: {
-                            emptyPlaceholder: Placeholder;
+                            emptyPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: string;
+                            };
                             user: string;
                             organization: string;
                         };
                         actions: {
                             search: {
                                 placeholder: string;
-                            },
+                            };
                             assign: {
                                 placeholder: string;
-                            },
+                            };
                             remove: {
                                 label: string;
                                 placeholder: string;
-                            }
+                            };
                         };
                     };
                     permissions: {
@@ -5824,13 +6154,37 @@ export interface ConsoleNS {
                         audience: string;
                     };
                     confirmations: {
-                        deleteItem: Confirmation;
-                        deleteItemError: InfoModal;
+                        deleteItem: {
+                            assertionHint: string;
+                            header: string;
+                            message: string;
+                            content: string;
+                        };
+                        deleteItemError: {
+                            header: string;
+                            message: string;
+                            content: string;
+                        };
                     };
                     emptyPlaceholders: {
-                        search: Placeholder;
-                        emptyRoleList: Placeholder & {
-                            emptyRoles: string
+                        search: {
+                            action: string;
+                            title: string;
+                            subtitles: {
+                                0: string;
+                                1: string;
+                            };
+                        };
+                        emptyRoleList: {
+                            action: string;
+                            title: string;
+                            subtitles: {
+                                0: string;
+                                1: string;
+                                2: string;
+                            };
+                        } & {
+                            emptyRoles: string;
                         };
                     };
                     popups: {
@@ -5849,16 +6203,86 @@ export interface ConsoleNS {
                 };
                 readOnlyList: {
                     emptyPlaceholders: {
-                        searchAndFilter: Placeholder;
-                    }
-                }
+                        searchAndFilter: {
+                            title: string;
+                            subtitles:
+                                | string
+                                | {
+                                      0: string;
+                                      1: string;
+                                  };
+                        };
+                    };
+                };
                 notifications: {
-                    deleteRole: Notification;
-                    fetchRoles: Notification;
-                    fetchRole: Notification;
-                    updateRole: Notification;
-                    createRole: Notification;
-                    createPermission: Notification;
+                    deleteRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchRoles: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchRole: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createPermission: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
             };
             serverConfigs: {
@@ -5886,10 +6310,62 @@ export interface ConsoleNS {
                         heading: string;
                     };
                     notifications: {
-                        disbleAdminAdvisoryBanner: Notification;
-                        enableAdminAdvisoryBanner: Notification;
-                        getConfigurations: Notification;
-                        updateConfigurations: Notification;
+                        disbleAdminAdvisoryBanner: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        enableAdminAdvisoryBanner: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        getConfigurations: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        updateConfigurations: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
                     };
                     pageHeading: string;
                     pageSubheading: string;
@@ -5909,47 +6385,47 @@ export interface ConsoleNS {
                                 carbonLogs: string;
                                 auditLogs: string;
                                 allLogs: string;
-                            }
-                        },
+                            };
+                        };
                         remoteURL: {
                             label: string;
-                        },
+                        };
                         advanced: {
-                            title: string,
+                            title: string;
                             connectionTimeout: {
                                 label: string;
-                            },
+                            };
                             verifyHostname: {
                                 label: string;
-                            },
+                            };
                             basicAuthConfig: {
                                 title: string;
                                 serverUsername: {
                                     label: string;
-                                },
+                                };
                                 serverPassword: {
                                     label: string;
-                                }
-                            },
+                                };
+                            };
                             sslConfig: {
                                 title: string;
                                 keystorePath: {
                                     label: string;
-                                },
+                                };
                                 keystorePassword: {
                                     label: string;
-                                },
+                                };
                                 truststorePath: {
                                     label: string;
-                                },
+                                };
                                 truststorePassword: {
                                     label: string;
-                                },
-                            }
-                        }
+                                };
+                            };
+                        };
                     };
                     dangerZone: {
-                        button: string,
+                        button: string;
                         title: string;
                         header: string;
                         subheader: string;
@@ -5958,7 +6434,7 @@ export interface ConsoleNS {
                             header: string;
                             message: string;
                             content: string;
-                        }
+                        };
                     };
                     notification: {
                         success: {
@@ -5974,8 +6450,8 @@ export interface ConsoleNS {
                                 description: string;
                                 message: string;
                             };
-                        }
-                    }
+                        };
+                    };
                 };
                 realmConfiguration: {
                     actionTitles: {
@@ -5988,14 +6464,63 @@ export interface ConsoleNS {
                         message: string;
                     };
                     notifications: {
-                        getConfigurations: Notification;
-                        updateConfigurations: Notification;
-                        emptyHomeRealmIdentifiers: Notification;
+                        getConfigurations: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        updateConfigurations: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        emptyHomeRealmIdentifiers: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
                     };
                     form: {
-                        homeRealmIdentifiers: FormAttributes;
-                        idleSessionTimeoutPeriod: FormAttributes;
-                        rememberMePeriod: FormAttributes;
+                        homeRealmIdentifiers: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        idleSessionTimeoutPeriod: {
+                            hint: string;
+                            label: string;
+                        };
+                        rememberMePeriod: {
+                            hint: string;
+                            label: string;
+                        };
                     };
                 };
             };
@@ -6035,7 +6560,7 @@ export interface ConsoleNS {
                 otherSettings: string;
                 overview: string;
                 passwordPolicies: string;
-                remoteFetchConfig: string
+                remoteFetchConfig: string;
                 roles: string;
                 userOnboarding: string;
                 users: string;
@@ -6055,6 +6580,7 @@ export interface ConsoleNS {
                         groups: {
                             unselected: string;
                             selected: string;
+                            common: string;
                         };
                         roles: {
                             unselected: string;
@@ -6074,31 +6600,68 @@ export interface ConsoleNS {
                 deleteJITUser: {
                     confirmationModal: {
                         content: string;
-                    }
+                    };
                 };
                 deleteUser: {
-                    confirmationModal: Confirmation;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 revokeAdmin: {
-                    confirmationModal: Confirmation;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 disableUser: {
-                    confirmationModal: Confirmation;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 editUser: {
                     dangerZoneGroup: {
                         header: string;
-                        deleteUserZone: DangerZone;
-                        disableUserZone: DangerZone;
-                        lockUserZone: DangerZone;
-                        passwordResetZone: DangerZone;
-                        deleteAdminPriviledgeZone: DangerZone;
+                        deleteUserZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                            buttonDisableHint: string;
+                        };
+                        disableUserZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                        };
+                        lockUserZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                        };
+                        passwordResetZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                            buttonHint: string;
+                        };
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                        };
                     };
                     dateOfBirth: {
                         placeholder: {
                             part1: string;
                             part2: string;
-                        }
+                        };
                     };
                 };
                 forms: {
@@ -6190,7 +6753,12 @@ export interface ConsoleNS {
                     };
                 };
                 lockUser: {
-                    confirmationModal: Confirmation;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 modals: {
                     addUserWarnModal: {
@@ -6247,7 +6815,7 @@ export interface ConsoleNS {
                                 username: string;
                                 status: string;
                                 message: string;
-                            }
+                            };
                             tableMessages: {
                                 userCreatedMessage: string;
                                 invalidDataMessage: string;
@@ -6265,12 +6833,15 @@ export interface ConsoleNS {
                                 failed: string;
                             };
                             alerts: {
-                                importSuccess: NotificationItem;
+                                importSuccess: {
+                                    message: string;
+                                    description: string;
+                                };
                                 importFailed: {
                                     message: string;
                                     userCreation: string;
                                     groupAssignment: string;
-                                }
+                                };
                             };
                             advanceSearch: {
                                 searchByUsername: string;
@@ -6279,7 +6850,10 @@ export interface ConsoleNS {
                             };
                             manualCreation: {
                                 alerts: {
-                                    creationSuccess: NotificationItem;
+                                    creationSuccess: {
+                                        message: string;
+                                        description: string;
+                                    };
                                 };
                                 hint: string;
                                 emailsLabel: string;
@@ -6305,26 +6879,32 @@ export interface ConsoleNS {
                         };
                         buttons: {
                             import: string;
-                        },
+                        };
                         sidePanel: {
                             manual: string;
                             fileBased: string;
                             fileFormatTitle: string;
                             fileFormatContent: string;
                             fileFormatSampleHeading: string;
-                        }
+                        };
                     };
                     inviteParentUserWizard: {
                         totalInvitations: string;
-                        successAlert: NotificationItem;
-                        errorAlert: NotificationItem;
+                        successAlert: {
+                            message: string;
+                            description: string;
+                        };
+                        errorAlert: {
+                            message: string;
+                            description: string;
+                        };
                         tableMessages: {
                             userNotFound: string;
                             activeInvitationExists: string;
                             userEmailNotFound: string;
                             userAlreadyExist: string;
-                        }
-                    }
+                        };
+                    };
                     changePasswordModal: {
                         header: string;
                         message: string;
@@ -6424,23 +7004,143 @@ export interface ConsoleNS {
                         };
                     };
                     notifications: {
-                        getProfileInfo: Notification;
-                        updateProfileInfo: Notification;
-                        lockUserAccount: Notification;
-                        unlockUserAccount: Notification;
-                        disableUserAccount: Notification;
-                        enableUserAccount: Notification;
-                        changeUserPassword: Notification;
-                        forcePasswordReset: Notification;
-                        noPasswordResetOptions: Notification;
+                        getProfileInfo: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        updateProfileInfo: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        lockUserAccount: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                                genericMessage: string;
+                            };
+                        };
+                        unlockUserAccount: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                                genericMessage: string;
+                            };
+                        };
+                        disableUserAccount: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                                genericMessage: string;
+                            };
+                        };
+                        enableUserAccount: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                                genericMessage: string;
+                            };
+                        };
+                        changeUserPassword: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        forcePasswordReset: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        noPasswordResetOptions: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                        };
                     };
                     placeholders: {
                         SCIMDisabled: {
                             heading: string;
                         };
                         userProfile: {
-                            emptyListPlaceholder: Placeholder;
-                        }
+                            emptyListPlaceholder: {
+                                title: string;
+                                subtitles:
+                                    | string
+                                    | {
+                                          [key: number]: string;
+                                      };
+                            };
+                        };
                     };
                 };
                 updateUser: {
@@ -6472,10 +7172,62 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                         notifications: {
-                            addUserGroups: Notification;
-                            fetchUserGroups: Notification;
-                            removeUserGroups: Notification;
-                            updateUserGroups: Notification;
+                            addUserGroups: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            fetchUserGroups: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            removeUserGroups: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            updateUserGroups: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
                         };
                     };
                     roles: {
@@ -6484,7 +7236,12 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                         editRoles: {
-                            confirmationModal: Confirmation;
+                            confirmationModal: {
+                                assertionHint: string;
+                                header: string;
+                                message: string;
+                                content: string;
+                            };
                             infoMessage: string;
                             roleList: {
                                 emptyListPlaceholder: {
@@ -6501,7 +7258,10 @@ export interface ConsoleNS {
                                 };
                             };
                             placeholders: {
-                                emptyPlaceholder: Placeholder;
+                                emptyPlaceholder: {
+                                    title: string;
+                                    subtitles: string;
+                                };
                             };
                             heading: string;
                             popups: {
@@ -6511,10 +7271,62 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                         notifications: {
-                            addUserRoles: Notification;
-                            fetchUserRoles: Notification;
-                            removeUserRoles: Notification;
-                            updateUserRoles: Notification;
+                            addUserRoles: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            fetchUserRoles: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            removeUserRoles: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            updateUserRoles: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
                         };
                         viewPermissionModal: {
                             backButton: string;
@@ -6543,17 +7355,84 @@ export interface ConsoleNS {
                     error: string;
                 };
                 notifications: {
-                    fetchUserstores: Notification;
-                    fetchUserstoreTemplates: Notification;
-                    fetchUserstoreTypes: Notification;
-                    fetchUserstoreMetadata: Notification;
-                    deleteUserstore: Notification;
-                    delay: NotificationItem;
-                    updateUserstore: Notification;
-                    testConnection: Notification;
-                    addUserstore: Notification;
-                    apiLimitReachedError: Notification;
-                    updateDelay: NotificationItem;
+                    fetchUserstores: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchUserstoreTemplates: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchUserstoreTypes: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchUserstoreMetadata: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteUserstore: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    delay: {
+                        message: string;
+                        description: string;
+                    };
+                    updateUserstore: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    testConnection: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addUserstore: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    apiLimitReachedError: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateDelay: {
+                        message: string;
+                        description: string;
+                    };
                 };
                 confirmation: {
                     hint: string;
@@ -6588,20 +7467,47 @@ export interface ConsoleNS {
                 };
                 forms: {
                     general: {
-                        name: FormField;
-                        type: FormField;
-                        description: FormField;
+                        name: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                            validationErrorMessages: {
+                                [key: string]: string;
+                            };
+                        };
+                        type: {
+                            label: string;
+                            requiredErrorMessage: string;
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: string;
+                            };
+                        };
                     };
                     connection: {
                         updatePassword: string;
                         testButton: string;
                         connectionErrorMessage: string;
                     };
-                    custom: FormField;
+                    custom: {
+                        placeholder: string;
+                        requiredErrorMessage: string;
+                    };
                 };
                 dangerZone: {
-                    delete: DangerZone;
-                    disable: DangerZone;
+                    delete: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
+                    disable: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                 };
                 wizard: {
                     steps: {
@@ -6613,9 +7519,20 @@ export interface ConsoleNS {
                     header: string;
                 };
                 placeholders: {
-                    emptySearch: Placeholder;
-                    emptyList: Placeholder;
-                    emptyListReadOnly: Placeholder;
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyListReadOnly: {
+                        title: string;
+                        subtitles: string;
+                    };
                 };
                 sqlEditor: {
                     reset: string;
@@ -6627,23 +7544,85 @@ export interface ConsoleNS {
                     darkMode: string;
                 };
             };
-            invite?: {
-                inviteButton?: string;
-                subSelection?: {
-                    onBoard?: string;
-                    invitees?: string;
+            invite: {
+                inviteButton: string;
+                subSelection: {
+                    onBoard: string;
+                    invitees: string;
                 };
-                notifications?: {
-                    deleteInvite?: Notification;
-                    resendInvite?: Notification;
-                    sendInvite?: Notification;
-                    updateInvite: Notification;
+                notifications: {
+                    deleteInvite: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    resendInvite: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    sendInvite: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateInvite: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
-                confirmationModal?: {
-                    deleteInvite?: Confirmation;
-                    resendInvite?: Confirmation;
+                confirmationModal: {
+                    deleteInvite: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                    resendInvite: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
-                placeholder?: {
+                placeholder: {
                     emptySearchResultPlaceholder: {
                         clearButton: string;
                         subTitle: {
@@ -6662,7 +7641,7 @@ export interface ConsoleNS {
                         title: string;
                     };
                 };
-                advancedSearch?: {
+                advancedSearch: {
                     form: {
                         dropdown: {
                             filterAttributeOptions: {
@@ -6684,13 +7663,13 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
-                form?: {
-                    sendmail?: {
+                form: {
+                    sendmail: {
                         title: string;
                         subTitle: string;
                     };
                 };
-                rolesUpdateModal?: {
+                rolesUpdateModal: {
                     header: string;
                     subHeader: string;
                     searchPlaceholder: string;
@@ -6707,20 +7686,20 @@ export interface ConsoleNS {
                         hint: string;
                         validations: {
                             required: string;
-                        }
-                    },
+                        };
+                    };
                     groups: {
                         label: string;
                         placeholder: string;
                         hint: string;
                         validations: {
                             required: string;
-                        }
-                    },
+                        };
+                    };
                     inviteButton: string;
                 };
                 tab: {
-                    usersTab: string
+                    usersTab: string;
                     invitationsTab: string;
                 };
                 searchPlaceholder: string;
@@ -6741,12 +7720,30 @@ export interface ConsoleNS {
                 };
                 invitedUserLabel: string;
             };
-            onboarded?: {
-                notifications?: {
-                    removeUser?: Notification;
+            onboarded: {
+                notifications: {
+                    removeUser: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
-                confirmationModal?: {
-                    removeUser?: Confirmation;
+                confirmationModal: {
+                    removeUser: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
             };
             validation: {
@@ -6754,12 +7751,12 @@ export interface ConsoleNS {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
-                },
+                    };
+                };
                 validationError: {
                     minMaxMismatch: string;
                     uniqueChrMismatch: string;
@@ -6768,21 +7765,21 @@ export interface ConsoleNS {
                     minLimitError: string;
                     maxLimitError: string;
                     wrongCombination: string;
-                }
+                };
                 notifications: {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
+                    };
                     success: {
                         description: string;
                         message: string;
-                    }
-                },
+                    };
+                };
                 pageTitle: string;
                 description: string;
                 goBackToApplication: string;
@@ -6793,26 +7790,26 @@ export interface ConsoleNS {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
-                },
+                    };
+                };
                 notifications: {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
+                    };
                     success: {
                         description: string;
                         message: string;
-                    }
-                },
+                    };
+                };
                 pageTitle: string;
                 description: string;
                 goBackToApplication: string;
@@ -6830,15 +7827,15 @@ export interface ConsoleNS {
                 lastFetchedMessage: {
                     label: string;
                     tooltipText: string;
-                },
+                };
                 advancedFilter: {
                     filterAttribute: string;
                     filterCondition: string;
                     filterValue: string;
-                },
+                };
                 commonFilters: {
                     userId: string;
-                },
+                };
                 activityType: {
                     login: {
                         filters: {
@@ -6863,6 +7860,7 @@ export interface ConsoleNS {
                                     oidc: string;
                                     saml: string;
                                     hypr: string;
+                                    iproov: string;
                                     organizationLogin: string;
                                 };
                             };
@@ -6878,9 +7876,9 @@ export interface ConsoleNS {
                                     selfSignUp: string;
                                 };
                             };
-                        }
-                    }
-                },
+                        };
+                    };
+                };
                 graphs: {
                     activeUsers: {
                         title: string;
@@ -6889,119 +7887,332 @@ export interface ConsoleNS {
                     successLogins: {
                         title: string;
                         titleHint: string;
-                    },
+                    };
                     failedLogins: {
                         title: string;
-                    },
+                    };
                     signups: {
                         title: string;
                         titleHint: string;
-                    }
-                },
+                    };
+                };
                 notifications: {
                     fetchInsights: {
                         genericError: {
                             description: string;
                             message: string;
-                        }
-                    }
+                        };
+                    };
                 };
                 compareToLastPeriodMessage: string;
             };
+            smsProviders: {
+                heading: string;
+                subHeading: string;
+                description: string;
+                info: string;
+                updateButton: string;
+                sendTestSMSButton: string;
+                goBack: string;
+                confirmationModal: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
+                };
+                dangerZoneGroup: {
+                    header: string;
+                    revertConfig: {
+                        heading: string;
+                        subHeading: string;
+                        actionTitle: string;
+                    };
+                };
+                form: {
+                    twilio: {
+                        subHeading: string;
+                        accountSID: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        authToken: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        sender: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        validations: {
+                            required: string;
+                        };
+                    };
+                    vonage: {
+                        subHeading: string;
+                        accountSID: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        authToken: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        sender: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        validations: {
+                            required: string;
+                        };
+                    };
+                    custom: {
+                        subHeading: string;
+                        providerName: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        providerUrl: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        httpMethod: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        contentType: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        headers: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        payload: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        key: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        secret: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        sender: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        validations: {
+                            required: string;
+                            methodInvalid: string;
+                            contentTypeInvalid: string;
+                        };
+                    };
+                };
+                notifications: {
+                    getConfiguration: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    deleteConfiguration: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateConfiguration: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                };
+            };
         };
         notifications: {
-            endSession: Notification;
-            getProfileInfo: Notification;
-            getProfileSchema: Notification;
+            endSession: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
+            getProfileInfo: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
+            getProfileSchema: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
         };
         pages: {
-            addEmailTemplate: EditPage;
-            approvalsPage: Page;
-            editTemplate: EditPage;
-            emailDomainDiscovery: Page;
-            emailLocaleAdd: EditPage;
-            emailLocaleAddWithDisplayName: EditPage;
-            emailTemplateTypes: Page;
-            emailTemplates: EditPage;
-            emailTemplatesWithDisplayName: EditPage;
-            groups: Page;
-            organizations: Page;
-            overview: Page;
-            oidcScopes: Page;
-            oidcScopesEdit: EditPage;
-            roles: Page;
-            rolesEdit: EditPage;
-            groupsEdit: EditPage;
-            serverConfigurations: Page;
-            users: Page;
-            usersEdit: EditPage;
-            invite?: Page;
+            addEmailTemplate: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            approvalsPage: {
+                title: string;
+                subTitle: string;
+            };
+            editTemplate: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            emailDomainDiscovery: {
+                title: string;
+                subTitle: string;
+            };
+            emailLocaleAdd: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            emailLocaleAddWithDisplayName: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            emailTemplateTypes: {
+                title: string;
+                subTitle: string;
+            };
+            emailTemplates: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            emailTemplatesWithDisplayName: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            groups: {
+                title: string;
+                subTitle: string;
+            };
+            organizations: {
+                title: string;
+                subTitle: string;
+            };
+            overview: {
+                title: string;
+                subTitle: string;
+            };
+            oidcScopes: {
+                title: string;
+                subTitle: string;
+            };
+            oidcScopesEdit: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            roles: {
+                title: string;
+                subTitle: string;
+                alternateSubTitle: string;
+            };
+            rolesEdit: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            groupsEdit: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            serverConfigurations: {
+                title: string;
+                subTitle: string;
+            };
+            users: {
+                title: string;
+                subTitle: string;
+            };
+            usersEdit: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            invite: {
+                title: string;
+                subTitle: string;
+            };
         };
         placeholders: {
-            emptySearchResult: Placeholder;
-            underConstruction: Placeholder;
-        };
-    };
-    saml2Config: {
-        title: string;
-        description: string;
-        form: {
-            metadataValidityPeriod: {
-                hint: string;
-                label: string;
+            emptySearchResult: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
             };
-            destinationUrl: {
-                hint: string;
-                label: string;
+            underConstruction: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
             };
-            enableMetadataSigning: {
-                label: string;
-            };
-            validation: {
-                metadataValidityPeriod: string;
-                destinationURLs: string;
-            };
-        };
-        notifications: {
-            updateConfiguration: Notification;
-            getConfiguration: Notification;
-        };
-    };
-    sessionManagement: {
-        title: string;
-        description: string;
-        form: {
-            idleSessionTimeout: {
-                hint: string;
-                label: string;
-                placeholder: string;
-            };
-            rememberMePeriod: {
-                hint: string;
-                label: string;
-                placeholder: string;
-            };
-            validation: {
-                rememberMePeriod: string;
-                idleSessionTimeout: string;
-            };
-        };
-        notifications: {
-            updateConfiguration: Notification;
-            getConfiguration: Notification;
-        };
-    };
-    wsFederationConfig: {
-        title: string;
-        description: string;
-        form: {
-            enableRequestSigning: {
-                label: string;
-            };
-        };
-        notifications: {
-            updateConfiguration: Notification;
-            getConfiguration: Notification;
         };
     };
 }

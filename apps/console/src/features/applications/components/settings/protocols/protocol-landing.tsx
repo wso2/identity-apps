@@ -148,11 +148,11 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
                 <Grid.Column width={ 16 }>
                     <div data-testid={ testId }>
                         <Heading as="h2" className="mb-1" compact>
-                            { t("console:develop.features.applications.edit.sections.access.protocolLanding.heading") }
+                            { t("applications:edit.sections.access.protocolLanding.heading") }
                         </Heading>
                         <Text muted>
                             {
-                                t("console:develop.features.applications.edit.sections.access" +
+                                t("applications:edit.sections.access" +
                                     ".protocolLanding.subHeading")
                             }
                         </Text>

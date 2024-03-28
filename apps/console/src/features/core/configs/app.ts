@@ -191,9 +191,47 @@ export class Config {
             ns: [
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
-                I18nConstants.EXTENSIONS_NAMESPACE
+                I18nConstants.EXTENSIONS_NAMESPACE,
+                I18nConstants.USERSTORES_NAMESPACE,
+                I18nConstants.VALIDATION_NAMESPACE,
+                I18nConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE,
+                I18nConstants.TRANSFER_LIST_NAMESPACE,
+                I18nConstants.USER_NAMESPACE,
+                I18nConstants.USERS_NAMESPACE,
+                I18nConstants.PAGES_NAMESPACE,
+                I18nConstants.IDVP_NAMESPACE,
+                I18nConstants.INVITE_NAMESPACE,
+                I18nConstants.PARENT_ORG_INVITATIONS_NAMESPACE,
+                I18nConstants.OIDC_SCOPES_NAMESPACE,
+                I18nConstants.ONBOARDED_NAMESPACE,
+                I18nConstants.ORGANIZATION_DISCOVERY_NAMESPACE,
+                I18nConstants.ORGANIZATIONS_NAMESPACE,
+                I18nConstants.AUTHENTICATION_FLOW_NAMESPACE,
+                I18nConstants.REMOTE_FETCH_NAMESPACE,
+                I18nConstants.ROLES_NAMESPACE,
+                I18nConstants.SERVER_CONFIGS_NAMESPACE,
+                I18nConstants.SAML2_CONFIG_NAMESPACE,
+                I18nConstants.SESSION_MANAGEMENT_NAMESPACE,
+                I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE,
+                I18nConstants.INSIGHTS_NAMESPACE,
+                I18nConstants.SMS_PROVIDERS_NAMESPACE,
+                I18nConstants.CLAIMS_NAMESPACE,
+                I18nConstants.EMAIL_LOCALE_NAMESPACE,
+                I18nConstants.HELP_PANEL_NAMESPACE,
+                I18nConstants.SUBORGANIZATIONS_NAMESPACE,
+                I18nConstants.CONSOLE_SETTINGS_NAMESPACE,
+                I18nConstants.SECRETS_NAMESPACE,
+                I18nConstants.BRANDING_NAMESPACE,
+                I18nConstants.EMAIL_TEMPLATES_NAMESPACE,
+                I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE,
+                I18nConstants.CERTIFICATES_NAMESPACE,
+                I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE,
+                I18nConstants.GROUPS_NAMESPACE,
+                I18nConstants.APPLICATIONS_NAMESPACE,
+                I18nConstants.IDP_NAMESPACE,
+                I18nConstants.API_RESOURCES_NAMESPACE
             ],
-            preload: [ "si-LK", "fr-FR" ]
+            preload: []
         };
     }
 
@@ -269,6 +307,12 @@ export class Config {
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
+            appLogo: {
+                defaultLogoPath: window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultLogoPath
+                    ?? window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath,
+                defaultWhiteLogoPath: window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultWhiteLogoPath
+                    ?? window[ "AppUtils" ]?.getConfig()?.ui?.defaultWhiteLogoPath
+            },
             appName: window[ "AppUtils" ]?.getConfig()?.ui?.appName,
             appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,
             applicationTemplateLoadingStrategy:
@@ -284,6 +328,7 @@ export class Config {
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
+            governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
             hiddenAuthenticators: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenAuthenticators,
             hiddenConnectionTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenConnectionTemplates,

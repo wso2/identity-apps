@@ -417,7 +417,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
     const isEmailAvailable = (): boolean => {
         return profileInfo.get("emails") !== undefined;
     };
-    
+
     /**
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
      */
@@ -451,11 +451,11 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "console:manage.features.users.notifications.deleteUser.success.description"
+                        "users:notifications.deleteUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.users.notifications.deleteUser.success.message"
+                        "users:notifications.deleteUser.success.message"
                     )
                 });
                 history.push(UsersConstants.getPaths().get("USERS_PATH"));
@@ -465,16 +465,16 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                     onAlertFired({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.deleteUser.error.message")
+                        message: t("users:notifications.deleteUser.error.message")
                     });
 
                     return;
                 }
 
                 onAlertFired({
-                    description: t("console:manage.features.users.notifications.deleteUser.genericError.description"),
+                    description: t("users:notifications.deleteUser.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.deleteUser.genericError" +
+                    message: t("users:notifications.deleteUser.genericError" +
                         ".message")
                 });
             });
@@ -696,11 +696,11 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
+                        "user:profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
+                        "user:profile.notifications.updateProfileInfo.success.message"
                     )
                 });
 
@@ -712,7 +712,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.user.profile.notifications.updateProfileInfo." +
+                        message: t("user:profile.notifications.updateProfileInfo." +
                             "error.message")
                     }));
 
@@ -720,10 +720,10 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.user.profile.notifications.updateProfileInfo." +
+                    description: t("user:profile.notifications.updateProfileInfo." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.user.profile.notifications.updateProfileInfo." +
+                    message: t("user:profile.notifications.updateProfileInfo." +
                         "genericError.message")
                 }));
             });
@@ -788,15 +788,15 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         attributeName === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED")
                             ? (
                                 attributeValue
-                                    ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
+                                    ? t("user:profile.notifications.lockUserAccount." +
                                     "success.description")
-                                    : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
+                                    : t("user:profile.notifications.unlockUserAccount." +
                                     "success.description")
                             ) : (
                                 attributeValue
-                                    ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
+                                    ? t("user:profile.notifications.disableUserAccount." +
                                     "success.description")
-                                    : t("console:manage.features.user.profile.notifications.enableUserAccount." +
+                                    : t("user:profile.notifications.enableUserAccount." +
                                     "success.description")
                             ),
                     level: AlertLevels.SUCCESS,
@@ -805,26 +805,26 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                             ? (
                                 attributeValue
                                     ? isEmpty(resolveAccountName(user))
-                                        ?  t("console:manage.features.user.profile.notifications.lockUserAccount." +
+                                        ?  t("user:profile.notifications.lockUserAccount." +
                                         "success.genericMessage")
-                                        : t("console:manage.features.user.profile.notifications.lockUserAccount." +
+                                        : t("user:profile.notifications.lockUserAccount." +
                                         "success.message", { name: resolveAccountName(user) })
-                                    : isEmpty(resolveAccountName(user)) 
-                                        ? t("console:manage.features.user.profile.notifications.unlockUserAccount." +
+                                    : isEmpty(resolveAccountName(user))
+                                        ? t("user:profile.notifications.unlockUserAccount." +
                                         "success.genericMessage")
-                                        : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
+                                        : t("user:profile.notifications.unlockUserAccount." +
                                         "success.message", { name: resolveAccountName(user) })
                             ) : (
                                 attributeValue
                                     ? isEmpty(resolveAccountName(user))
-                                        ?  t("console:manage.features.user.profile.notifications.disableUserAccount." +
+                                        ?  t("user:profile.notifications.disableUserAccount." +
                                         "success.genericMessage")
-                                        : t("console:manage.features.user.profile.notifications.disableUserAccount." +
+                                        : t("user:profile.notifications.disableUserAccount." +
                                         "success.message", { name: resolveAccountName(user) })
-                                    : isEmpty(resolveAccountName(user)) 
-                                        ? t("console:manage.features.user.profile.notifications.enableUserAccount." +
+                                    : isEmpty(resolveAccountName(user))
+                                        ? t("user:profile.notifications.enableUserAccount." +
                                         "success.genericMessage")
-                                        : t("console:manage.features.user.profile.notifications.enableUserAccount." +
+                                        : t("user:profile.notifications.enableUserAccount." +
                                         "success.message", { name: resolveAccountName(user) })
                             )
                 });
@@ -837,9 +837,9 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         level: AlertLevels.ERROR,
                         message:
                             attributeName === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED")
-                                ? t("console:manage.features.user.profile.notifications.lockUserAccount.error." +
+                                ? t("user:profile.notifications.lockUserAccount.error." +
                                 "message")
-                                : t("console:manage.features.user.profile.notifications.disableUserAccount.error." +
+                                : t("user:profile.notifications.disableUserAccount.error." +
                                 "message")
                     });
 
@@ -850,17 +850,17 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                     description:
                         editingAttribute?.name
                         === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED")
-                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
+                            ? t("user:profile.notifications.lockUserAccount.genericError." +
                             "description")
-                            : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
+                            : t("user:profile.notifications.disableUserAccount.genericError." +
                             "description"),
                     level: AlertLevels.ERROR,
                     message:
                         editingAttribute?.name
                         === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED")
-                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
+                            ? t("user:profile.notifications.lockUserAccount.genericError." +
                             "message")
-                            : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
+                            : t("user:profile.notifications.disableUserAccount.genericError." +
                             "message")
                 });
             });
@@ -875,7 +875,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
             <Show when={ AccessControlConstants.USER_EDIT }>
                 <DangerZone
                     data-testid={ `${ testId }-danger-zone` }
-                    actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                    actionTitle={ t("user:editUser.dangerZoneGroup." +
                     "lockUserZone.actionTitle") }
                     header={ t("extensions:manage.users.editUserProfile.accountLock.title") }
                     subheader={ t("extensions:manage.users.editUserProfile.accountLock.description") }
@@ -902,17 +902,17 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
         return (
             <Show when={ AccessControlConstants.USER_DELETE || AccessControlConstants.USER_EDIT }>
                 <DangerZoneGroup
-                    sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
+                    sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
                 >
                     {
                         (!isReadOnly && !isReadOnlyUserStore && user.userName !== ADMIN_USER_NAME) && (
                             <DangerZone
                                 data-testid={ `${ testId }-change-password` }
-                                actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                actionTitle={ t("user:editUser.dangerZoneGroup." +
                                 "passwordResetZone.actionTitle") }
-                                header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                header={ t("user:editUser.dangerZoneGroup." +
                                 "passwordResetZone.header") }
-                                subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                subheader={ t("user:editUser.dangerZoneGroup." +
                                 "passwordResetZone.subheader") }
                                 onActionClick={ (): void => {
                                     setOpenChangePasswordModal(true);
@@ -920,7 +920,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                 isButtonDisabled={ accountLock
                                     ? accountLock === "true"
                                     : user[ ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]?.accountLocked === "true" }
-                                buttonDisableHint={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                buttonDisableHint={ t("user:editUser.dangerZoneGroup." +
                                 "passwordResetZone.buttonHint") }
                             />
                         )
@@ -935,11 +935,11 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                         <Show when={ AccessControlConstants.USER_EDIT }>
                                             <DangerZone
                                                 data-testid={ `${ testId }-danger-zone` }
-                                                actionTitle={ t("console:manage.features.user.editUser." +
+                                                actionTitle={ t("user:editUser." +
                                                     "dangerZoneGroup.disableUserZone.actionTitle") }
-                                                header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                header={ t("user:editUser.dangerZoneGroup." +
                                             "disableUserZone.header") }
-                                                subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                subheader={ t("user:editUser.dangerZoneGroup." +
                                             "disableUserZone.subheader") }
                                                 onActionClick={ undefined }
                                                 toggle={ {
@@ -960,18 +960,18 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                     <Show when={ AccessControlConstants.USER_DELETE }>
                                         <DangerZone
                                             data-testid={ `${ testId }-danger-zone` }
-                                            actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            actionTitle={ t("user:editUser.dangerZoneGroup." +
                                             "deleteUserZone.actionTitle") }
-                                            header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            header={ t("user:editUser.dangerZoneGroup." +
                                             "deleteUserZone.header") }
-                                            subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            subheader={ t("user:editUser.dangerZoneGroup." +
                                             "deleteUserZone.subheader") }
                                             onActionClick={ (): void => {
                                                 setShowDeleteConfirmationModal(true);
                                                 setDeletingUser(user);
                                             } }
                                             isButtonDisabled={ isReadOnlyUserStore }
-                                            buttonDisableHint={ t("console:manage.features.user.editUser." +
+                                            buttonDisableHint={ t("user:editUser." +
                                             "dangerZoneGroup.deleteUserZone.buttonDisableHint") }
                                         />
                                     </Show>
@@ -1049,8 +1049,8 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                 />
             );
         } else if (schema.name === "dateOfBirth") {
-            const placeholder: string = `${t("console:manage.features.user.editUser.dateOfBirth." +
-                "placeholder.part1")} ${ fieldName } ${ t("console:manage.features.user.editUser.dateOfBirth." +
+            const placeholder: string = `${t("user:editUser.dateOfBirth." +
+                "placeholder.part1")} ${ fieldName } ${ t("user:editUser.dateOfBirth." +
                 "placeholder.part2") }`;
 
             return (
@@ -1070,14 +1070,14 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         if (!moment(value, "YYYY-MM-DD",true).isValid()) {
                             validation.isValid = false;
                             validation.errorMessages
-                                .push(t("console:manage.features.users.forms.validation.dateFormatError", {
+                                .push(t("users:forms.validation.dateFormatError", {
                                     field: fieldName
                                 }));
                         } else {
                             if (moment().isBefore(value)) {
                                 validation.isValid = false;
                                 validation.errorMessages.push(
-                                    t("console:manage.features.users.forms.validation.futureDateError", {
+                                    t("users:forms.validation.futureDateError", {
                                         field: fieldName
                                     })
                                 );
@@ -1116,12 +1116,12 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                             validation.isValid = false;
                             if (schema.name === "phoneNumbers.mobile") {
                                 validation.errorMessages
-                                    .push(t("console:manage.features.users.forms.validation.mobileFormatError", {
+                                    .push(t("users:forms.validation.mobileFormatError", {
                                         field: fieldName
                                     }));
                             } else {
                                 validation.errorMessages
-                                    .push(t("console:manage.features.users.forms.validation.formatError", {
+                                    .push(t("users:forms.validation.formatError", {
                                         field: fieldName
                                     }));
                             }
@@ -1239,7 +1239,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
             return;
         }
 
-        const fieldName: string = t("console:manage.features.user.profile.fields." +
+        const fieldName: string = t("user:profile.fields." +
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
 
@@ -1300,7 +1300,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
             {
                 !isUserProfileLoading
                     ? (
-                        !isEmpty(profileInfo) && !isUserProfileEmpty
+                        !isEmpty(profileInfo)
                             ? (
                                 <EmphasizedSegment padded="very">
                                     <Forms
@@ -1348,7 +1348,8 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                                 )
                                             }
                                             {
-                                                profileSchema
+                                                !isUserProfileEmpty
+                                                && profileSchema
                                                 && profileSchema.map(
                                                     (schema: ProfileSchemaInterface, index: number) => {
                                                         if (!(schema.name === ProfileConstants?.
@@ -1385,7 +1386,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                                             <Form.Field>
                                                                 <label>
-                                                                    { t("console:manage.features.user.profile.fields."+
+                                                                    { t("user:profile.fields."+
                                                                     "createdDate") }
                                                                 </label>
                                                                 <Input
@@ -1406,7 +1407,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                                             <Form.Field>
                                                                 <label>
-                                                                    { t("console:manage.features.user.profile.fields."+
+                                                                    { t("user:profile.fields."+
                                                                     "modifiedDate") }
                                                                 </label>
                                                                 <Input
@@ -1429,7 +1430,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                                                 data-testid={ `${ testId }
                                                                     -profile-form-one-time-pw -input` }
                                                                 name="oneTimePassword"
-                                                                label={ t("console:manage.features.user." +
+                                                                label={ t("user:" +
                                                                     "profile.fields.oneTimePassword") }
                                                                 required={ false }
                                                                 requiredErrorMessage=""
@@ -1467,10 +1468,10 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                 <EmphasizedSegment padded={ false }>
                                     <EmptyPlaceholder
                                         data-testid={ `${ testId }-empty-list-empty-placeholder` }
-                                        title={ t("console:manage.features.user.profile.placeholders.userProfile." +
+                                        title={ t("user:profile.placeholders.userProfile." +
                                             "emptyListPlaceholder.title") }
                                         subtitle={ [
-                                            t("console:manage.features.user.profile.placeholders.userProfile." +
+                                            t("user:profile.placeholders.userProfile." +
                                                 "emptyListPlaceholder.subtitles")
                                         ] }
                                     />
@@ -1489,7 +1490,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal.assertionHint") }
+                        assertionHint={ t("user:deleteUser.confirmationModal.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
@@ -1504,17 +1505,17 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                            { t("user:deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             negative
                         >
-                            { t("console:manage.features.user.deleteUser.confirmationModal.message") }
+                            { t("user:deleteUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.content") }
+                            { t("user:deleteUser.confirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -1534,7 +1535,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         assertionHint={ (
                             <p>
                                 <Trans
-                                    i18nKey={ "console:manage.features.user.disableUser.confirmationModal." +
+                                    i18nKey={ "user:disableUser.confirmationModal." +
                                     "assertionHint" }
                                     tOptions={ { userName: user?.userName?.split("/")[1] } }
                                 >
@@ -1564,17 +1565,17 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.disableUser.confirmationModal.header") }
+                            { t("user:disableUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-disable-confirmation-modal-message` }
                             attached
                             negative
                         >
-                            { t("console:manage.features.user.disableUser.confirmationModal.message") }
+                            { t("user:disableUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.user.disableUser.confirmationModal.content") }
+                            { t("user:disableUser.confirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -1591,7 +1592,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         type="negative"
                         open={ showLockConfirmationModal }
                         assertion={ user?.userName?.split("/")[1] }
-                        assertionHint={ t("console:manage.features.user.lockUser.confirmationModal.assertionHint") }
+                        assertionHint={ t("user:lockUser.confirmationModal.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
@@ -1614,17 +1615,17 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-lock-confirmation-modal-header` }>
-                            { t("console:manage.features.user.lockUser.confirmationModal.header") }
+                            { t("user:lockUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             negative
                         >
-                            { t("console:manage.features.user.lockUser.confirmationModal.message") }
+                            { t("user:lockUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.user.lockUser.confirmationModal.content") }
+                            { t("user:lockUser.confirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

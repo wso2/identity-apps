@@ -21,7 +21,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,10 +91,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
             .then(() => {
                 setIsDeletionInProgress(false);
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.deleteApplication.success" +
+                    description: t("applications:notifications.deleteApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.deleteApplication.success.message")
+                    message: t("applications:notifications.deleteApplication.success.message")
                 }));
  
                 setShowDeleteConfirmationModal(false);
@@ -111,7 +111,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.deleteApplication.error" +
+                        message: t("applications:notifications.deleteApplication.error" +
                             ".message")
                     }));
  
@@ -119,10 +119,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 }
  
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.deleteApplication" +
+                    description: t("applications:notifications.deleteApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
+                    message: t("applications:notifications.deleteApplication.genericError" +
                         ".message")
                 }));
                 eventPublisher.publish(
@@ -159,19 +159,19 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 when={ AccessControlConstants.APPLICATION_DELETE }
             >
                 <DangerZoneGroup
-                    sectionHeader={ t("console:develop.features.applications.dangerZoneGroup.header") }
+                    sectionHeader={ t("applications:dangerZoneGroup.header") }
                 >
                     <DangerZone
                         actionTitle={
-                            t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
+                            t("applications:dangerZoneGroup.deleteApplication" +
                                 ".actionTitle")
                         }
                         header={
-                            t("console:develop.features.applications.dangerZoneGroup.deleteApplication.header")
+                            t("applications:dangerZoneGroup.deleteApplication.header")
                         }
                         subheader={
                             !content ?
-                                t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
+                                t("applications:dangerZoneGroup.deleteApplication" +
                                 ".subheader")
                                 : content
                         }
@@ -190,7 +190,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 onClose={ (): void => setShowDeleteConfirmationModal(false) }
                 type="negative"
                 open={ showDeleteConfirmationModal }
-                assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
+                assertionHint={ t("applications:confirmations.deleteApplication." +
                              "assertionHint") }
                 assertionType="checkbox"
                 primaryAction={ t("common:confirm") }
@@ -204,19 +204,19 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 <ConfirmationModal.Header
                     data-componentid={ `${ componentId }-application-delete-confirmation-modal-header` }
                 >
-                    { t("console:develop.features.applications.confirmations.deleteApplication.header") }
+                    { t("applications:confirmations.deleteApplication.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     negative
                     data-componentid={ `${ componentId }-application-delete-confirmation-modal-message` }
                 >
-                    { t("console:develop.features.applications.confirmations.deleteApplication.message") }
+                    { t("applications:confirmations.deleteApplication.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
                     data-componentid={ `${ componentId }-application-delete-confirmation-modal-content` }
                 >   
-                    { t("console:develop.features.applications.confirmations.deleteApplication.content") }
+                    { t("applications:confirmations.deleteApplication.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>

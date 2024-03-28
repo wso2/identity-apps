@@ -17,7 +17,7 @@
  */
 
 import { AnimatedAvatar, AppAvatar, EmptyPlaceholder, GenericIcon } from "@wso2is/react-components";
-import { IdentifiableComponentInterface } from "modules/core/src/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -223,11 +223,11 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
                         title={
-                            t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
+                            t("applications:edit.sections.access.addProtocolWizard" +
                                 ".steps.protocolSelection.quickSetup.emptyPlaceholder.title")
                         }
                         subtitle={
-                            t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
+                            t("applications:edit.sections.access.addProtocolWizard" +
                                 ".steps.protocolSelection.quickSetup.emptyPlaceholder.subtitles")
                         }
                     />

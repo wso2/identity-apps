@@ -294,14 +294,14 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             onClick={ () => setShowWizard(true) }
                         >
                             <Icon name="add"/>
-                            { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
+                            { t("roles:list.buttons.addButton", { type: "Group" }) }
                         </PrimaryButton>
                     </Show>
                 )
             }
-            title={ t("console:manage.pages.groups.title") }
-            pageTitle={ t("console:manage.pages.groups.title") }
-            description={ t("console:manage.pages.groups.subTitle") }
+            title={ t("pages:groups.title") }
+            pageTitle={ t("pages:groups.title") }
+            description={ t("pages:groups.subTitle") }
         >
             <ListLayout
                 advancedSearch={ (

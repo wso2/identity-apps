@@ -165,7 +165,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
             if (role[0] == "application") {
                 return {
                     labelColor: null,
-                    labelText: t("console:manage.features.roles.addRoleWizard." +
+                    labelText: t("roles:addRoleWizard." +
                         "forms.roleBasicDetails.roleAudience.values.application"),
                     name: "audience-label",
                     subLabel: application
@@ -173,7 +173,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
             } else {
                 return {
                     labelColor: null,
-                    labelText: t("console:manage.features.roles.addRoleWizard." +
+                    labelText: t("roles:addRoleWizard." +
                         "forms.roleBasicDetails.roleAudience.values.organization"),
                     name: "audience-label"
                 };
@@ -191,7 +191,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
             >
                 <TransferComponent
                     selectionComponent
-                    searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
+                    searchPlaceholder={ t("transferList:searchPlaceholder",
                         { type: "Roles" }) }
                     handleUnelectedListSearch={ handleRoleListSearch }
                     data-testid="user-mgt-add-user-wizard-modal"
@@ -200,17 +200,17 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                         isListEmpty={ !(filteredRoleList?.length > 0) }
                         listType="unselected"
                         listHeaders={ legacyAuthzRuntime ? [
-                            t("console:manage.features.transferList.list.headers.1"),""
+                            t("transferList:list.headers.1"),""
                         ] : [
-                            t("console:manage.features.transferList.list.headers.1"),
-                            t("console:manage.features.transferList.list.headers.2"),""
+                            t("transferList:list.headers.1"),
+                            t("transferList:list.headers.2"),""
                         ] }
                         handleHeaderCheckboxChange={ handleSelectAllCheckboxChange }
                         isHeaderCheckboxChecked={ isSelectAllChecked }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
+                        emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders." +
                             "groups.unselected", { type: "roles" }) }
                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles-select-all-checkbox"
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {
