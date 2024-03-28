@@ -591,7 +591,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../email-providers" + "/pages/email-providers")
+                            import("../../admin-email-providers-v1" + "/pages/email-providers")
                         ),
                         exact: true,
                         icon: {
