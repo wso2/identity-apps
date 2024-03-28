@@ -46,7 +46,7 @@ import {
 } from "../../../admin-core-v1";
 import { GroupConstants } from "../../../admin-groups-v1/constants";
 import { GroupsInterface } from "../../../admin-groups-v1/models";
-import { CONSUMER_USERSTORE } from "../../../features/userstores/constants";
+import { CONSUMER_USERSTORE } from "../../../admin-users-v1tores/constants";
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface {

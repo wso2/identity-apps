@@ -31,8 +31,8 @@ import {
     UIConstants,
     UserListInterface
 } from "../../../../../admin-core-v1";
-import { PRIMARY_USERSTORE } from "../../../../../features/userstores/constants/user-store-constants";
-import { InvitationStatus, UserInviteInterface } from "../../../../../features/users/models";
+import { PRIMARY_USERSTORE } from "../../../../../admin-users-v1tores/constants/user-store-constants";
+import { InvitationStatus, UserInviteInterface } from "../../../../../admin-users-v1/models";
 import { AdministratorConstants } from "../../constants";
 
 /**

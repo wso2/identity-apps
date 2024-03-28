@@ -29,7 +29,7 @@ import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface
 } from "../../../../admin-identity-providers-v1/models/identity-provider";
-import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
 
 interface SmsOTPAuthenticatorInterface extends IdentifiableComponentInterface {
     /**

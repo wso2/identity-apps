@@ -36,14 +36,14 @@ import {
     AddAdminUserBasic
 } from "./steps/admin-user-basic";
 import { UserBasicInterface } from "../../../../admin-core-v1";
-import { updateRoleDetails } from "../../../../features/roles/api/roles";
-import { PatchRoleDataInterface } from "../../../../features/roles/models/roles";
-import { getUserWizardStepIcons } from "../../../../features/users/configs/ui";
+import { updateRoleDetails } from "../../../../admin-roles-v2/api/roles";
+import { PatchRoleDataInterface } from "../../../../admin-roles-v2/models/roles";
+import { getUserWizardStepIcons } from "../../../../admin-users-v1/configs/ui";
 import { AdminAccountTypes } from "../constants";
 import { InternalAdminFormDataInterface } from "../models";
-import { UserInviteInterface } from "../../../../features/users/models";
-import { sendInvite } from "../../../../features/users/api";
-import { UserManagementConstants } from "../../../../features/users/constants";
+import { UserInviteInterface } from "../../../../admin-users-v1/models";
+import { sendInvite } from "../../../../admin-users-v1/api";
+import { UserManagementConstants } from "../../../../admin-users-v1/constants";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     closeWizard: () => void;

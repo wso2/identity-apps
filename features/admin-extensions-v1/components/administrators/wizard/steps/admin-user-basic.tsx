@@ -45,9 +45,9 @@ import {
     getUsersList
 } from "../../../../../admin-core-v1";
 import { EventPublisher } from "../../../../../admin-core-v1/utils";
-import { getRolesList } from "../../../../../features/roles/api";
-import { UserInviteInterface, UserListInterface } from "../../../../../features/users/models/user";
-import { UserManagementUtils } from "../../../../../features/users/utils";
+import { getRolesList } from "../../../../../admin-roles-v2/api";
+import { UserInviteInterface, UserListInterface } from "../../../../../admin-users-v1/models/user";
+import { UserManagementUtils } from "../../../../../admin-users-v1/utils";
 import { administratorConfig } from "../../../../configs/administrator";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { AdminAccountTypes } from "../../constants";

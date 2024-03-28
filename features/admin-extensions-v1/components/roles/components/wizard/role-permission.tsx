@@ -24,10 +24,10 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AppConstants, store } from "../../../../../admin-core-v1";
-import { RoleConstants } from "../../../../../features/roles/constants";
-import { TreeNode } from "../../../../../features/roles/models";
-import { RoleManagementUtils } from "../../../../../features/roles/utils";
-import { ServerConfigurationsInterface, getServerConfigs } from "../../../../../features/server-configurations";
+import { RoleConstants } from "../../../../../admin-roles-v2/constants";
+import { TreeNode } from "../../../../../admin-roles-v2/models";
+import { RoleManagementUtils } from "../../../../../admin-roles-v2/utils";
+import { ServerConfigurationsInterface, getServerConfigs } from "../../../../../admin-server-configurations-v1";
 import { hiddenPermissions } from "../../meta";
 
 /**

@@ -64,13 +64,13 @@ import {
     history,
     store
 } from "../../../../admin-core-v1";
-import { getRoleById, searchRoleList } from "../../../../features/roles/api/roles";
-import { SearchRoleInterface } from "../../../../features/roles/models/roles";
-import { useServerConfigs } from "../../../../features/server-configurations";
-import { useInvitedUsersList, useUsersList } from "../../../../features/users/api";
-import { AddUserWizard } from "../../../../features/users/components/wizard/add-user-wizard";
-import { InternalAdminUserListInterface, InvitationStatus, UserInviteInterface, UserListInterface } from "../../../../features/users/models";
-import { UserManagementUtils } from "../../../../features/users/utils";
+import { getRoleById, searchRoleList } from "../../../../admin-roles-v2/api/roles";
+import { SearchRoleInterface } from "../../../../admin-roles-v2/models/roles";
+import { useServerConfigs } from "../../../../admin-server-configurations-v1";
+import { useInvitedUsersList, useUsersList } from "../../../../admin-users-v1/api";
+import { AddUserWizard } from "../../../../admin-users-v1/components/wizard/add-user-wizard";
+import { InternalAdminUserListInterface, InvitationStatus, UserInviteInterface, UserListInterface } from "../../../../admin-users-v1/models";
+import { UserManagementUtils } from "../../../../admin-users-v1/utils";
 import { administratorConfig } from "../../../configs/administrator";
 import { SCIMConfigs } from "../../../configs/scim";
 import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
@@ -87,9 +87,9 @@ import {
     UserAccountTypes
 } from "../constants";
 import { AddAdministratorWizard } from "../wizard";
-import { getUserStores } from "../../../../features/userstores/api";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../../features/userstores/constants";
-import { UserManagementConstants } from "apps/console/src/features/users/constants";
+import { getUserStores } from "../../../../admin-users-v1tores/api";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../../admin-users-v1tores/constants";
+import { UserManagementConstants } from "apps/console/src/admin-users-v1/constants";
 
 /**
  * Props for the Users page.

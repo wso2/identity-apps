@@ -21,7 +21,7 @@ import { I18n } from "@wso2is/i18n";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { ElementType, FunctionComponent, ReactElement, SVGProps, lazy } from "react";
 import { IdentityProviderConfig } from "./models";
-import { ConnectionTabTypes } from "../../features/connections";
+import { ConnectionTabTypes } from "../../admin-connections-v1";
 import { IdentityProviderManagementConstants } from "../../admin-identity-providers-v1/constants";
 import {
     AuthenticatorLabels,

@@ -19,8 +19,8 @@
 import { AxiosResponse } from "axios";
 import { getAUserStore } from "../../admin-core-v1/api";
 import { SharedUserStoreConstants } from "../../admin-core-v1/constants";
-import { getUserStoreList } from "../../features/userstores/api";
-import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../features/userstores/models";
+import { getUserStoreList } from "../../admin-users-v1tores/api";
+import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../admin-users-v1tores/models";
 
 /**
  * Utility class for common user store operations.

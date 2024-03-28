@@ -19,8 +19,8 @@
 import { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
 import { RequestErrorInterface, RequestResultInterface } from "../../../admin-core-v1/hooks/use-request";
-import { GovernanceConnectorInterface } from "../../../features/server-configurations";
-import { ValidationFormInterface } from "../../../features/validation/models";
+import { GovernanceConnectorInterface } from "../../../admin-server-configurations-v1";
+import { ValidationFormInterface } from "../../../admin-validation-v1/models";
 
 export interface ServerConfigurationConfig {
     autoEnableConnectorToggleProperty: boolean;

@@ -23,7 +23,7 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../../../admin-core-v1";
 import {
     UpdateMultipleGovernanceConnectorsInterface
-} from "../../../../features/server-configurations";
+} from "../../../../admin-server-configurations-v1";
 
 /**
  * Initialize an axios Http client.

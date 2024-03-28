@@ -51,10 +51,10 @@ import {
     getHelpPanelActionIcons,
     toggleHelpPanelVisibility
 } from "../../../../admin-core-v1";
-import { deleteRoleById, getRolesList, searchRoleList } from "../../../../features/roles/api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../features/roles/constants";
-import { SearchRoleInterface } from "../../../../features/roles/models";
-import { getUserStoreList } from "../../../../features/userstores/api";
+import { deleteRoleById, getRolesList, searchRoleList } from "../../../../admin-roles-v2/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../admin-roles-v2/constants";
+import { SearchRoleInterface } from "../../../../admin-roles-v2/models";
+import { getUserStoreList } from "../../../../admin-users-v1tores/api";
 import { CreateRoleWizard, RoleList } from "../components";
 import helpDoc from "../data/role.md";
 

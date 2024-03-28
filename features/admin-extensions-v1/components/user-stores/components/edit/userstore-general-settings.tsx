@@ -43,15 +43,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, Grid, Icon, List, Segment } from "semantic-ui-react";
 import { AppConstants, AppState, history } from "../../../../../admin-core-v1";
-import { deleteUserStore, patchUserStore } from "../../../../../features/userstores/api/user-stores";
-import { DISABLED } from "../../../../../features/userstores/constants/user-store-constants";
+import { deleteUserStore, patchUserStore } from "../../../../../admin-users-v1tores/api/user-stores";
+import { DISABLED } from "../../../../../admin-users-v1tores/constants/user-store-constants";
 import {
     CategorizedProperties,
     PatchData,
     TypeProperty,
     UserStore,
     UserStoreProperty
-} from "../../../../../features/userstores/models/user-stores";
+} from "../../../../../admin-users-v1tores/models/user-stores";
 import { disconnectAgentConnection, generateToken, getAgentConnections, regenerateToken } from "../../api";
 import { AgentConnectionInterface, RegenerateTokenInterface } from "../../models";
 

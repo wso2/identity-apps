@@ -70,17 +70,17 @@ import {
 import {
     getConnectorDetails,
     updateGovernanceConnector
-} from "../../../../features/server-configurations/api";
+} from "../../../../admin-server-configurations-v1/api";
 import {
     ServerConfigurationsConstants
-} from "../../../../features/server-configurations/constants";
+} from "../../../../admin-server-configurations-v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../../../features/server-configurations/models";
-import { getUsernameConfiguration } from "../../../../features/users/utils/user-management-utils";
-import { useValidationConfigData } from "../../../../features/validation/api";
+} from "../../../../admin-server-configurations-v1/models";
+import { getUsernameConfiguration } from "../../../../admin-users-v1/utils/user-management-utils";
+import { useValidationConfigData } from "../../../../admin-validation-v1/api";
 import {
     AlternativeLoginIdentifierFormInterface
 } from "../models";

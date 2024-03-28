@@ -28,10 +28,10 @@ import { SharedUserStoreConstants } from "../../../../../admin-core-v1/constants
 import { ConfigReducerStateInterface } from "../../../../../admin-core-v1/models";
 import { AppState } from "../../../../../admin-core-v1/store";
 import { SharedUserStoreUtils } from "../../../../../admin-core-v1/utils";
-import { searchRoleList } from "../../../../../features/roles/api";
-import { CreateRoleFormData, SearchRoleInterface, TreeNode } from "../../../../../features/roles/models";
-import { getUserStoreList } from "../../../../../features/userstores/api";
-import { CONSUMER_USERSTORE } from "../../../../../features/userstores/constants";
+import { searchRoleList } from "../../../../../admin-roles-v2/api";
+import { CreateRoleFormData, SearchRoleInterface, TreeNode } from "../../../../../admin-roles-v2/models";
+import { getUserStoreList } from "../../../../../admin-users-v1tores/api";
+import { CONSUMER_USERSTORE } from "../../../../../admin-users-v1tores/constants";
 
 /**
  * Interface to capture role basics props.
