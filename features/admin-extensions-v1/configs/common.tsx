@@ -222,7 +222,7 @@ export const commonConfig: CommonConfig = {
             category: "extensions:manage.sidePanel.categories.userManagement",
             children: [
                 {
-                    component: lazy(() => import("../../admin-users-v1tores/pages/user-stores-edit")),
+                    component: lazy(() => import("../../admin-userstores-v1/pages/user-stores-edit")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -235,7 +235,7 @@ export const commonConfig: CommonConfig = {
                 },
                 {
                     component: lazy(() =>
-                        import("../../admin-users-v1tores/pages/userstores-templates")
+                        import("../../admin-userstores-v1/pages/userstores-templates")
                     ),
                     exact: true,
                     icon: {
@@ -248,7 +248,7 @@ export const commonConfig: CommonConfig = {
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => import("../../admin-users-v1tores/pages/user-stores")),
+            component: lazy(() => import("../../admin-userstores-v1/pages/user-stores")),
             exact: true,
             icon: {
                 icon: getSidePanelIcons().userStore

@@ -31,16 +31,16 @@ import { Dispatch } from "redux";
 import { Icon, TabProps } from "semantic-ui-react";
 import { URLFragmentTypes } from "../../../../admin-applications-v1/models";
 import { AppConstants, history } from "../../../../admin-core-v1";
-import { getAType, getAUserStore } from "../../../../admin-users-v1tores/api/user-stores";
-import { getDatabaseAvatarGraphic } from "../../../../admin-users-v1tores/configs/ui";
-import { DISABLED } from "../../../../admin-users-v1tores/constants/user-store-constants";
+import { getAType, getAUserStore } from "../../../../admin-userstores-v1/api/user-stores";
+import { getDatabaseAvatarGraphic } from "../../../../admin-userstores-v1/configs/ui";
+import { DISABLED } from "../../../../admin-userstores-v1/constants/user-store-constants";
 import {
     CategorizedProperties,
     UserStore,
     UserStoreProperty,
     UserstoreType
-} from "../../../../admin-users-v1tores/models/user-stores";
-import { reOrganizeProperties } from "../../../../admin-users-v1tores/utils/userstore-utils";
+} from "../../../../admin-userstores-v1/models/user-stores";
+import { reOrganizeProperties } from "../../../../admin-userstores-v1/utils/userstore-utils";
 import { getAgentConnections } from "../api";
 import { AttributeMappings, SetupGuideTab, UserStoreGeneralSettings } from "../components";
 import { RemoteUserStoreConstants } from "../constants";
