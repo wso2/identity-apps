@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Grid from "@oxygen-ui/react/Grid";
+import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
@@ -215,7 +215,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 )
                             }
                             {
-                                <Grid container justifyContent="space-between">
+                                <Box className="justify-label">
                                     <Item>
                                         { image && (
                                             <GenericIcon
@@ -240,7 +240,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                             { featureStatus }
                                         </Item>
                                     ) }
-                                </Grid>
+                                </Box>
                             }
 
                             <div className="card-header-section">

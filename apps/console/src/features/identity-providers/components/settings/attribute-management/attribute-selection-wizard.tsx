@@ -246,14 +246,14 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="small" className="user-attributes" data-testid={ `${ testId }-modal` }>
             <Modal.Header data-testid={ `${ testId }-modal-header` }>
-                { t("console:develop.features.authenticationProvider.modals.attributeSelection.title") }
+                { t("authenticationProvider:modals.attributeSelection.title") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:develop.features.authenticationProvider.modals.attributeSelection.subTitle") }
+                    { t("authenticationProvider:modals.attributeSelection.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image data-testid={ `${ testId }-modal-content` }>
                 <TransferComponent
-                    searchPlaceholder={ t("console:develop.features.authenticationProvider.modals.attributeSelection." +
+                    searchPlaceholder={ t("authenticationProvider:modals.attributeSelection." +
                         "content.searchPlaceholder") }
                     addItems={ addAttributes }
                     removeItems={ removeAttributes }
@@ -268,7 +268,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
                         data-testid={ `${ testId }-modal-content-unselected-list` }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {
@@ -297,7 +297,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                         data-testid={ `${ testId }-modal-content-selected-list` }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {

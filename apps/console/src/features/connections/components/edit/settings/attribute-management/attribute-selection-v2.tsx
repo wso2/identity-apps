@@ -99,17 +99,17 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
             <Segment component data-testid={ testId }>
                 <EmptyPlaceholder
                     title={
-                        t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                        t("idp:forms.attributeSettings.attributeMapping." +
                             "placeHolder.title")
                     }
                     subtitle={ [
-                        t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                        t("idp:forms.attributeSettings.attributeMapping." +
                             "placeHolder.subtitle")
                     ] }
                     action={ !isReadOnly &&
                         (<PrimaryButton onClick={ () => setShowAddModal(true) }>
                             <Icon name="plus" />
-                            { t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                            { t("idp:forms.attributeSettings.attributeMapping." +
                             "placeHolder.action") }
                         </PrimaryButton>)
                     }
@@ -167,11 +167,11 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
             <Grid.Row>
                 <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 16 } widescreen={ 16 }>
                     <Heading as="h4">
-                        { t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                        { t("idp:forms.attributeSettings.attributeMapping." +
                             "heading") }
                     </Heading>
                     <Heading as="h6" color="grey">
-                        { t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                        { t("idp:forms.attributeSettings.attributeMapping." +
                             "subheading") }
                     </Heading>
                     { hasMappedAttributes() ? (
@@ -199,7 +199,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                                         minLength={ 1 }
                                                         width={ 16 }
                                                         placeholder={
-                                                            t("console:develop.features.idp.forms.attributeSettings." +
+                                                            t("idp:forms.attributeSettings." +
                                                                 "attributeMapping.search.placeHolder")
                                                         }
                                                         listen={ (query: string) => setSearchQuery(query) }
@@ -215,7 +215,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                                             data-testid={ `${ testId }-list-layout-add-button` }
                                                         >
                                                             <Icon name="plus" />
-                                                            { t("console:develop.features.idp.forms." +
+                                                            { t("idp:forms." +
                                                                     "attributeSettings.attributeMapping.placeHolder" +
                                                                     ".action") }
                                                         </PrimaryButton>
@@ -239,7 +239,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                                 <Table.HeaderCell width="10">
                                                     <strong>
                                                         {
-                                                            t("console:develop.features.idp.forms.attributeSettings." +
+                                                            t("idp:forms.attributeSettings." +
                                                                 "attributeMapping.attributeMapTable." +
                                                                 "externalAttributeColumnHeader")
                                                         }
@@ -248,7 +248,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                                 <Table.HeaderCell width="10">
                                                     <strong>
                                                         {
-                                                            t("console:develop.features.idp.forms.attributeSettings." +
+                                                            t("idp:forms.attributeSettings." +
                                                                 "attributeMapping.attributeMapTable." +
                                                                 "mappedAttributeColumnHeader")
                                                         }

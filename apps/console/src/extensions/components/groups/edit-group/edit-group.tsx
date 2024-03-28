@@ -197,7 +197,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     </ResourceTab.Pane>
                 )
             },{
-                menuItem: t("console:manage.features.roles.edit.menuItems.users"),
+                menuItem: t("roles:edit.menuItems.users"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <GroupUsersList

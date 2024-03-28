@@ -45,15 +45,15 @@ const CustomApplicationCreateWizardHelp: FunctionComponent<CustomApplicationCrea
     return (
         <div data-testid={ testId }>
             <Heading as="h5">
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.title") }
             </Heading>
             <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.subTitle") }
             </p>
             <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.example") }
             </p>
         </div>

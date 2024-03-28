@@ -262,25 +262,25 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     "assertionHint")
             }
             assertionType="checkbox"
-            primaryAction={ t("console:manage.features.userstores.confirmation.confirm") }
+            primaryAction={ t("userstores:confirmation.confirm") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
             onPrimaryActionClick={ (): void => {
                 deleteUserStore(userStoreId)
                     .then(() => {
                         dispatch(addAlert({
-                            description: t("console:manage.features.userstores.notifications." +
+                            description: t("userstores:notifications." +
                                 "deleteUserstore.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("console:manage.features.userstores.notifications." +
+                            message: t("userstores:notifications." +
                                 "deleteUserstore.success.message")
 
                         }));
                         dispatch(addAlert({
-                            description: t("console:manage.features.userstores.notifications." +
+                            description: t("userstores:notifications." +
                                 "delay.description"),
                             level: AlertLevels.WARNING,
-                            message: t("console:manage.features.userstores.notifications." +
+                            message: t("userstores:notifications." +
                                 "delay.message")
                         }));
 
@@ -289,10 +289,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     .catch((error: { description: string, message: string}) => {
                         dispatch(addAlert({
                             description: error?.description
-                                ?? t("console:manage.features.userstores.notifications." +
+                                ?? t("userstores:notifications." +
                                     "deleteUserstore.genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: error?.message ?? t("console:manage.features.userstores.notifications." +
+                            message: error?.message ?? t("userstores:notifications." +
                                 "deleteUserstore.genericError.message")
                         }));
                     }).finally(() => {
@@ -305,19 +305,19 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }
             >
-                { t("console:manage.features.userstores.confirmation.header") }
+                { t("userstores:confirmation.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
-                { t("console:manage.features.userstores.confirmation.message") }
+                { t("userstores:confirmation.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-delete-confirmation-modal-content` }
             >
-                { t("console:manage.features.userstores.confirmation.content") }
+                { t("userstores:confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -470,10 +470,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 handleUserStoreDisabled(data.checked.toString());
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications." +
+                    description: t("userstores:notifications." +
                         "updateUserstore.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.userstores.notifications." +
+                    message: t("userstores:notifications." +
                         "updateUserstore.success.message")
                 }));
 
@@ -482,9 +482,9 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification once backend is fixed.
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications.updateDelay.description"),
+                    description: t("userstores:notifications.updateDelay.description"),
                     level: AlertLevels.WARNING,
-                    message: t("console:manage.features.userstores.notifications.updateDelay.message")
+                    message: t("userstores:notifications.updateDelay.message")
                 }));
 
                 // Re-fetch the user store details
@@ -492,10 +492,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             .catch((error: { description: string, message: string; }) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error?.description
-                        || t("console:manage.features.userstores.notifications." +
+                        || t("userstores:notifications." +
                             "updateUserstore.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || t("console:manage.features.userstores.notifications." +
+                    message: error?.message || t("userstores:notifications." +
                         "updateUserstore.genericError.message")
                 }));
             });
@@ -516,10 +516,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
         patchUserStore(userStoreId, [ patchData ])
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications." +
+                    description: t("userstores:notifications." +
                         "updateUserstore.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.userstores.notifications." +
+                    message: t("userstores:notifications." +
                         "updateUserstore.success.message")
                 }));
 
@@ -528,9 +528,9 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification once backend is fixed.
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications.updateDelay.description"),
+                    description: t("userstores:notifications.updateDelay.description"),
                     level: AlertLevels.WARNING,
-                    message: t("console:manage.features.userstores.notifications.updateDelay.message")
+                    message: t("userstores:notifications.updateDelay.message")
                 }));
 
                 // Re-fetch the user store details
@@ -538,10 +538,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             .catch((error: { description: string, message: string }) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error?.description
-                        || t("console:manage.features.userstores.notifications." +
+                        || t("userstores:notifications." +
                             "updateUserstore.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || t("console:manage.features.userstores.notifications." +
+                    message: error?.message || t("userstores:notifications." +
                         "updateUserstore.genericError.message")
                 }));
             });
@@ -724,7 +724,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         onClose={ (): void => setShowDisconnectConfirmationModal(false) }
                         type="warning"
                         open={ showDisconnectConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                        assertionHint={ t("user:deleteUser.confirmationModal." +
                             "assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -737,7 +737,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                            { t("user:deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
@@ -761,7 +761,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         onClose={ (): void => setShowRegenerateConfirmationModal(false) }
                         type="warning"
                         open={ showRegenerateConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                        assertionHint={ t("user:deleteUser.confirmationModal." +
                             "assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -776,7 +776,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                            { t("user:deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
@@ -801,9 +801,9 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         ata-testid={ `${ testId }-danger-zone-group` }
                     >
                         <DangerZone
-                            actionTitle={ t("console:manage.features.userstores.dangerZone.disable.actionTitle") }
+                            actionTitle={ t("userstores:dangerZone.disable.actionTitle") }
                             header="Disable User Store"
-                            subheader={ t("console:manage.features.userstores.dangerZone.disable.subheader") }
+                            subheader={ t("userstores:dangerZone.disable.subheader") }
                             onActionClick={ undefined }
                             data-testid={ `${ testId }-delete-danger-zone` }
                             toggle={ {
@@ -816,9 +816,9 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                             } }
                         />
                         <DangerZone
-                            actionTitle={ t("console:manage.features.userstores.dangerZone.delete.actionTitle") }
-                            header={ t("console:manage.features.userstores.dangerZone.delete.header") }
-                            subheader={ t("console:manage.features.userstores.dangerZone.delete.subheader") }
+                            actionTitle={ t("userstores:dangerZone.delete.actionTitle") }
+                            header={ t("userstores:dangerZone.delete.header") }
+                            subheader={ t("userstores:dangerZone.delete.subheader") }
                             onActionClick={ () => setShowDeleteConfirmationModal(true) }
                             data-testid={ `${ testId }-delete-danger-zone` }
                         />

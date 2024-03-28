@@ -84,12 +84,12 @@ const OrganizationRolesEdit: FunctionComponent = (): ReactElement => {
             pageTitle={
                 roleObject && roleObject?.displayName ?
                     roleObject?.displayName :
-                    t("console:manage.pages.rolesEdit.title")
+                    t("pages:rolesEdit.title")
             }
             title="Edit Organization Role"
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.rolesEdit.backButton", { type: "roles" })
+                text: t("pages:rolesEdit.backButton", { type: "roles" })
             } }
             titleTextAlign="left"
             bottomMargin={ false }

@@ -274,7 +274,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                     <>
                         <Heading as="h5" className="mt-3">Add Users</Heading>
                         <Hint>
-                            { t("console:manage.features.roles.addRoleWizard.users.assignUserModal.hint") }
+                            { t("roles:addRoleWizard.users.assignUserModal.hint") }
                         </Hint>
                         <TransferComponent
                             compact
@@ -283,7 +283,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                             className="one-column-selection"
                             selectionComponent
                             searchPlaceholder={
-                                t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                                t("roles:addRoleWizard.users.assignUserModal.list" +
                                     ".searchPlaceholder")
                             }
                             isLoading={ isUsersFetchRequestLoading }
@@ -301,7 +301,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                 emptyPlaceholderContent = { "We couldn't find any results for search. "+
                                     "Please try a different search term." }
                                 data-testid={ `${ testId }-unselected-transfer-list` }
-                                emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                emptyPlaceholderDefaultContent={ t("transferList:list."
                                     + "emptyPlaceholders.default") }
                             >
                                 {

@@ -187,11 +187,11 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
     const passwordResetOptions: RadioChild[] = [
         {
-            label: t("console:manage.features.user.modals.changePasswordModal.passwordOptions.setPassword"),
+            label: t("user:modals.changePasswordModal.passwordOptions.setPassword"),
             value: "setPassword"
         },
         {
-            label: t("console:manage.features.user.modals.changePasswordModal.passwordOptions.forceReset"),
+            label: t("user:modals.changePasswordModal.passwordOptions.forceReset"),
             value: "forceReset"
         }
     ];
@@ -203,11 +203,11 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         if (forcePasswordReset === "false") {
             onAlertFired({
                 description: t(
-                    "console:manage.features.user.profile.notifications.noPasswordResetOptions.error.description"
+                    "user:profile.notifications.noPasswordResetOptions.error.description"
                 ),
                 level: AlertLevels.WARNING,
                 message: t(
-                    "console:manage.features.user.profile.notifications.noPasswordResetOptions.error.message"
+                    "user:profile.notifications.noPasswordResetOptions.error.message"
                 )
             });
 
@@ -233,11 +233,11 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         updateUserInfo(user.id, data).then(() => {
             onAlertFired({
                 description: t(
-                    "console:manage.features.user.profile.notifications.forcePasswordReset.success.description"
+                    "user:profile.notifications.forcePasswordReset.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "console:manage.features.user.profile.notifications.forcePasswordReset.success.message"
+                    "user:profile.notifications.forcePasswordReset.success.message"
                 )
             });
             handleForcePasswordResetTrigger && handleForcePasswordResetTrigger();
@@ -250,7 +250,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     onAlertFired({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.user.profile.notifications.forcePasswordReset.error." +
+                        message: t("user:profile.notifications.forcePasswordReset.error." +
                             "message")
                     });
 
@@ -258,10 +258,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 }
 
                 onAlertFired({
-                    description: t("console:manage.features.user.profile.notifications.forcePasswordReset." +
+                    description: t("user:profile.notifications.forcePasswordReset." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.user.profile.notifications.forcePasswordReset.genericError." +
+                    message: t("user:profile.notifications.forcePasswordReset.genericError." +
                         "message")
                 });
                 handleModalClose();
@@ -408,16 +408,16 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             className="addon-field-wrapper"
                             hidePassword={ t("common:hidePassword") }
                             label={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
+                                "user:forms.addUserForm.inputs.newPassword.label"
                             ) }
                             name="newPassword"
                             placeholder={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs." +
+                                "user:forms.addUserForm.inputs." +
                                 "newPassword.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm." +
+                                "user:forms.addUserForm." +
                                 "inputs.newPassword.validations.empty"
                             ) }
                             showPassword={ t("common:showPassword") }
@@ -486,16 +486,16 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             className="addon-field-wrapper"
                             hidePassword={ t("common:hidePassword") }
                             label={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
+                                "user:forms.addUserForm.inputs.confirmPassword.label"
                             ) }
                             name="confirmPassword"
                             placeholder={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs." +
+                                "user:forms.addUserForm.inputs." +
                                 "confirmPassword.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm." +
+                                "user:forms.addUserForm." +
                                 "inputs.confirmPassword.validations.empty"
                             ) }
                             showPassword={ t("common:showPassword") }
@@ -519,7 +519,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                         validation.isValid = false;
                                         setIsConfirmPasswordMatch(false);
                                         validation?.errorMessages?.push(
-                                            t("console:manage.features.user.forms.addUserForm.inputs" +
+                                            t("user:forms.addUserForm.inputs" +
                                             ".confirmPassword.validations.mismatch"));
                                     }
                                 }
@@ -582,11 +582,11 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         updateUserInfo(user.id, data).then(() => {
             onAlertFired({
                 description: t(
-                    "console:manage.features.user.profile.notifications.changeUserPassword.success.description"
+                    "user:profile.notifications.changeUserPassword.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "console:manage.features.user.profile.notifications.changeUserPassword.success.message"
+                    "user:profile.notifications.changeUserPassword.success.message"
                 )
             });
             handleCloseChangePasswordModal();
@@ -598,7 +598,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     onAlertFired({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.user.profile.notifications.changeUserPassword.error." +
+                        message: t("user:profile.notifications.changeUserPassword.error." +
                         "message")
                     });
 
@@ -606,10 +606,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 }
 
                 onAlertFired({
-                    description: t("console:manage.features.user.profile.notifications.changeUserPassword" +
+                    description: t("user:profile.notifications.changeUserPassword" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.user.profile.notifications.changeUserPassword.genericError." +
+                    message: t("user:profile.notifications.changeUserPassword.genericError." +
                         "message")
                 });
                 handleCloseChangePasswordModal();
@@ -633,7 +633,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             <Field
                                 data-testid="user-mgt-add-user-form-passwordOption-radio-button"
                                 type="radio"
-                                label={ t("console:manage.features.user.forms.addUserForm.buttons." +
+                                label={ t("user:forms.addUserForm.buttons." +
                                     "radioButton.label") }
                                 name="passwordOption"
                                 default="setPassword"
@@ -653,7 +653,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Message
                                 type="warning"
-                                content={ t("console:manage.features.user.modals.changePasswordModal.message") }
+                                content={ t("user:modals.changePasswordModal.message") }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -667,7 +667,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Message
                                 type="warning"
-                                content={ t("console:manage.features.user.modals.changePasswordModal.message") }
+                                content={ t("user:modals.changePasswordModal.message") }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -683,7 +683,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             size="tiny"
         >
             <Modal.Header>
-                { t("console:manage.features.user.modals.changePasswordModal.header") }
+                { t("user:modals.changePasswordModal.header") }
             </Modal.Header>
             <Modal.Content>
                 <Forms
@@ -713,7 +713,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 disabled={ isSubmitting }
                                 onClick={ () => setTriggerSubmit() }
                             >
-                                { t("console:manage.features.user.modals.changePasswordModal.button") }
+                                { t("user:modals.changePasswordModal.button") }
                             </PrimaryButton>
                             <LinkButton
                                 data-testid={ `${ testId }-cancel-button` }

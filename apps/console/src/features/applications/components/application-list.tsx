@@ -251,10 +251,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         deleteApplication(appId)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.deleteApplication.success" +
+                    description: t("applications:notifications.deleteApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.deleteApplication.success.message")
+                    message: t("applications:notifications.deleteApplication.success.message")
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -265,7 +265,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     dispatch(setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.deleteApplication.error" +
+                        message: t("applications:notifications.deleteApplication.error" +
                             ".message")
                     }));
 
@@ -273,10 +273,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 }
 
                 dispatch(setAlert({
-                    description: t("console:develop.features.applications.notifications.deleteApplication" +
+                    description: t("applications:notifications.deleteApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
+                    message: t("applications:notifications.deleteApplication.genericError" +
                         ".message")
                 }));
             })
@@ -388,7 +388,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 {
                                     app.advancedConfigurations?.fragment && (
                                         <Label size="mini">
-                                            { t("console:develop.features.applications.list.labels.fragment") }
+                                            { t("applications:list.labels.fragment") }
                                         </Label>
                                     )
                                 }
@@ -423,7 +423,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         </Header>
                     );
                 },
-                title: t("console:develop.features.applications.list.columns.name")
+                title: t("applications:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -470,7 +470,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         </Header>
                     );
                 },
-                title: t("console:develop.features.applications.list.columns.inboundKey")
+                title: t("applications:list.columns.inboundKey")
             },
             {
                 allowToggleVisibility: false,
@@ -478,7 +478,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.applications.list.columns.actions")
+                title: t("applications:list.columns.actions")
             }
         ];
     };
@@ -583,7 +583,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         onEmptyListPlaceholderActionClick();
                                     } }>
                                     <Icon name="add" />
-                                    { t("console:develop.features.applications.placeholders.emptyList.action") }
+                                    { t("applications:placeholders.emptyList.action") }
                                 </PrimaryButton>
                             </Show>
                         )
@@ -591,7 +591,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("console:develop.features.applications.placeholders.emptyList.subtitles.0")
+                        t("applications:placeholders.emptyList.subtitles.0")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -627,7 +627,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
+                        assertionHint={ t("applications:confirmations.deleteApplication." +
                             "assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -647,7 +647,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                                         >
-                                            { t("console:develop.features.applications.confirmations." +
+                                            { t("applications:confirmations." +
                                                 "deleteChoreoApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
@@ -655,7 +655,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             negative
                                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                                         >
-                                            { t("console:develop.features.applications.confirmations." +
+                                            { t("applications:confirmations." +
                                                 "deleteChoreoApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
@@ -663,7 +663,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         >
                                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                                             <Trans
-                                                i18nKey= { "console:develop.features.applications.confirmations." +
+                                                i18nKey= { "applications:confirmations." +
                                                 "deleteChoreoApplication.content" }>
                                                 Deleting this application will break the authentication flows and cause
                                                 the associated Choreo application to be unusable with its credentials.
@@ -677,7 +677,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                                         >
-                                            { t("console:develop.features.applications.confirmations." +
+                                            { t("applications:confirmations." +
                                                 "deleteApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
@@ -685,14 +685,14 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             negative
                                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                                         >
-                                            { t("console:develop.features.applications.confirmations." +
+                                            { t("applications:confirmations." +
                                                 "deleteApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
                                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                                         >
                                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                                            { t("console:develop.features.applications.confirmations." +
+                                            { t("applications:confirmations." +
                                                 "deleteApplication.content") }
                                         </ConfirmationModal.Content>
                                     </>

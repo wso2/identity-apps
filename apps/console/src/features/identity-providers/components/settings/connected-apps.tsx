@@ -179,10 +179,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
                             dispatch(addAlert({
                                 description: error?.description
-                                    || t("console:develop.features.idp.connectedApps.genericError.description"),
+                                    || t("idp:connectedApps.genericError.description"),
                                 level: AlertLevels.ERROR,
                                 message: error?.message 
-                                    || t("console:develop.features.idp.connectedApps.genericError.message")
+                                    || t("idp:connectedApps.genericError.message")
                             }));
                         }))
                     );
@@ -194,9 +194,9 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
-                        || t("console:develop.features.idp.connectedApps.genericError.description"),
+                        || t("idp:connectedApps.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || t("console:develop.features.idp.connectedApps.genericError.message")
+                    message: error?.message || t("idp:connectedApps.genericError.message")
                 }));
             })
             .finally(() => {
@@ -218,10 +218,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
-                    || t("console:develop.features.applications.notifications.fetchTemplates.genericError.description"),
+                    || t("applications:notifications.fetchTemplates.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message 
-                    || t("console:develop.features.applications.notifications.fetchTemplates.genericError.message")
+                    || t("applications:notifications.fetchTemplates.genericError.message")
                 }));
             })
             .finally(() => {
@@ -325,7 +325,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                 {
                                     app.advancedConfigurations?.fragment && (
                                         <Label size="mini">
-                                            { t("console:develop.features.applications.list.labels.fragment") }
+                                            { t("applications:list.labels.fragment") }
                                         </Label>
                                     )
                                 }
@@ -338,7 +338,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         </Header>
                     );
                 },
-                title: t("console:develop.features.applications.list.columns.name")
+                title: t("applications:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -346,7 +346,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.applications.list.columns.actions")
+                title: t("applications:list.columns.actions")
             }
         ];
     };
@@ -412,7 +412,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("console:develop.features.idp.connectedApps.placeholders.emptyList", 
+                        t("idp:connectedApps.placeholders.emptyList", 
                             { idpName: editingIDP.name })
                     ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }
@@ -445,7 +445,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     handleApplicationEdit(app.id, app.access, "#tab=" +
                         ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG),
                 popupText: (): string => {
-                    return t("console:develop.features.idp.connectedApps.action");
+                    return t("idp:connectedApps.action");
                 },
                 renderer: "semantic-icon"
             }
@@ -487,7 +487,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
     return (
         <EmphasizedSegment padded="very">
-            <Heading as="h4">{ t("console:develop.features.idp.connectedApps.header", 
+            <Heading as="h4">{ t("idp:connectedApps.header", 
                 { idpName: editingIDP.name }) }</Heading>
             <Divider hidden />
             { connectedApps && (
@@ -495,7 +495,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     icon={ <Icon name="search" /> }
                     iconPosition="left"
                     onChange={ handleChange }
-                    placeholder = { t("console:develop.features.idp.connectedApps.placeholders.search") }
+                    placeholder = { t("idp:connectedApps.placeholders.search") }
                     floated="left"
                     size="small"
                     style={ { width: "250px" } }

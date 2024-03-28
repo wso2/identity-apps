@@ -327,10 +327,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         } else {
             dispatch(addAlert(
                 {
-                    description: t("console:develop.features.idp.notifications." +
+                    description: t("idp:notifications." +
                         "submitAttributeSettings.error.description"),
                     level: AlertLevels.WARNING,
-                    message: t("console:develop.features.idp.notifications.submitAttributeSettings.error.message")
+                    message: t("idp:notifications.submitAttributeSettings.error.message")
                 }
             ));
         }
@@ -407,21 +407,20 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
                         uiProps={ {
                             attributeColumnHeader: isEmpty(selectedClaimsWithMapping) ?
-                                t("console:develop.features.authenticationProvider.forms.attributeSettings." +
+                                t("authenticationProvider:forms.attributeSettings." +
                                     "attributeProvisioning.attributeColumnHeader.0") :
-                                t("console:develop.features.authenticationProvider.forms.attributeSettings." +
+                                t("authenticationProvider:forms.attributeSettings." +
                                     "attributeProvisioning.attributeColumnHeader.1"),
-                            attributeMapColumnHeader: t("console:develop.features.authenticationProvider." +
+                            attributeMapColumnHeader: t("authenticationProvider:" +
                                 "forms.attributeSettings." +
                                 "attributeProvisioning.attributeMapColumnHeader"),
-                            attributeMapInputPlaceholderPrefix: t("console:develop.features." +
-                                "authenticationProvider.forms" +
+                            attributeMapInputPlaceholderPrefix: t("authenticationProvider:forms" +
                                 ".attributeSettings.attributeProvisioning.attributeMapInputPlaceholderPrefix"),
-                            componentHeading: t("console:develop.features.authenticationProvider." +
+                            componentHeading: t("authenticationProvider:" +
                                 "forms.attributeSettings." +
                                 "attributeProvisioning.componentHeading"),
                             enablePrecedingDivider: false,
-                            hint: t("console:develop.features.authenticationProvider.forms.attributeSettings." +
+                            hint: t("authenticationProvider:forms.attributeSettings." +
                                 "attributeProvisioning.hint")
                         } }
                         data-testid={ `${ testId }-provisioning-attribute-selection` }

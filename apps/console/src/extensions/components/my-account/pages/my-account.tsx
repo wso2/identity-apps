@@ -74,19 +74,19 @@ export const MyAccountSettingsPage: FunctionComponent<MyAccountSettingsPageInter
             }
             dispatch(addAlert({
                 description: myAccountStatusFetchRequestError.response.data.description ??
-                    t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.description"),
+                    t("applications:myaccount.fetchMyAccountStatus.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.message")
+                message: t("applications:myaccount.fetchMyAccountStatus.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+            description: t("applications:myaccount.fetchMyAccountStatus" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+            message: t("applications:myaccount.fetchMyAccountStatus" +
                 ".genericError.message")
         }));
     }, [ myAccountStatusFetchRequestError ]);

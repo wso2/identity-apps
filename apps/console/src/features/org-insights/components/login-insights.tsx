@@ -33,10 +33,10 @@ export const LoginInsights: FunctionComponent = () => {
                 <InsightsGraph
                     hint={ (
                         <Hint icon="question circle" popup inline className="org-insights-mau-tooltip">
-                            { t("console:manage.features.insights.graphs.activeUsers.titleHint") }
+                            { t("insights:graphs.activeUsers.titleHint") }
                         </Hint>) 
                     }
-                    graphTitle={ t("console:manage.features.insights.graphs.activeUsers.title") }
+                    graphTitle={ t("insights:graphs.activeUsers.title") }
                     resourceType={ ResourceType.MONTHLY_ACTIVE_USERS }
                     data-componentid="org-insights-mau-graph"
                 />
@@ -45,17 +45,17 @@ export const LoginInsights: FunctionComponent = () => {
                 <InsightsGraph
                     hint={ (
                         <Hint icon="question circle" popup inline className="org-insights-mau-tooltip">
-                            { t("console:manage.features.insights.graphs.successLogins.titleHint") }
+                            { t("insights:graphs.successLogins.titleHint") }
                         </Hint>) 
                     }
-                    graphTitle={ t("console:manage.features.insights.graphs.successLogins.title") }
+                    graphTitle={ t("insights:graphs.successLogins.title") }
                     data-componentid="org-insights-success-logins-graph"
                     resourceType={ ResourceType.LOGIN_SUCCESS }
                 />
             </Grid>
             <Grid xs={ 6 }>
                 <InsightsGraph
-                    graphTitle={ t("console:manage.features.insights.graphs.failedLogins.title") }
+                    graphTitle={ t("insights:graphs.failedLogins.title") }
                     data-componentid="org-insights-failed-logins-graph"
                     resourceType={ ResourceType.LOGIN_FAILURE }
                     primaryGraphColor={ OrgInsightsConstants.FAILED_LOGIN_GRAPH_COLOR }

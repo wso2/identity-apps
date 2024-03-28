@@ -118,7 +118,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     icon={ <Icon name="search"/> }
                                     onChange={ handleSearch }
                                     placeholder={
-                                        t("console:develop.features.authenticationProvider.forms." +
+                                        t("authenticationProvider:forms." +
                                             "attributeSettings.attributeSelection." +
                                             "searchAttributes.placeHolder")
                                     }
@@ -220,18 +220,18 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     : (
                                         <Segment data-testid={ testId }>
                                             <EmptyPlaceholder
-                                                title={ t("console:develop.features.authenticationProvider." +
+                                                title={ t("authenticationProvider:" +
                                                     "placeHolders.noAttributes." +
                                                     "title") }
                                                 subtitle={ [
-                                                    t("console:develop.features.authenticationProvider." +
+                                                    t("authenticationProvider:" +
                                                         "placeHolders.noAttributes." +
                                                         "subtitles.0")
                                                 ] }
                                                 action={ (
                                                     <Show when={ AccessControlConstants.IDP_EDIT }>
                                                         <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
-                                                            { t("console:develop.features.authenticationProvider." +
+                                                            { t("authenticationProvider:" +
                                                                 "buttons.addAttribute") }
                                                         </PrimaryButton>
                                                     </Show>

@@ -48,7 +48,7 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
     const {
         [ "data-componentid" ]: componentId
     } = props;
-    
+
     const { t } = useTranslation();
     const dispatch : Dispatch<any> = useDispatch();
 
@@ -59,10 +59,10 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
         data: originalWSFederationConfig,
         isLoading: isWSFederationFetchRequestLoading,
         error: wsFederationConfigFetchRequestError
-    } = useWSFederationConfig();  
+    } = useWSFederationConfig();
 
     useEffect(() => {
-        if (originalWSFederationConfig instanceof IdentityAppsApiException 
+        if (originalWSFederationConfig instanceof IdentityAppsApiException
             || wsFederationConfigFetchRequestError) {
             handleRetrieveError();
 
@@ -75,19 +75,19 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
 
         setWSFedConfigurations({
             passiveStsUrl: originalWSFederationConfig.passiveSTSUrl
-        });      
+        });
     }, [ originalWSFederationConfig ]);
-    
+
     /**
      * Displays the error banner when unable to fetch WSFederation configuration.
      */
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("console:wsFederationConfig.notifications." +
+                description: t("wsFederationConfig:notifications." +
                 "getConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:wsFederationConfig.notifications." +
+                message: t("wsFederationConfig:notifications." +
                 "getConfiguration.error.message")
             })
         );
@@ -110,7 +110,7 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
                                 spaced="right"
                             />
                             <label data-componentid={ `${ componentId }-issuer-label` }>
-                                { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                { t("applications:helpPanel.tabs.start.content." +
                                     "wsFedConfigurations.labels.passiveSTSUrl") }
                             </label>
                         </Grid.Column>

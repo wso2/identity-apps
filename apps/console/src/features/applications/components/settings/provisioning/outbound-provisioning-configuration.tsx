@@ -125,10 +125,10 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
         updateApplicationConfigurations(id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateApplication.success" +
+                    description: t("applications:notifications.updateApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateApplication.success.message")
+                    message: t("applications:notifications.updateApplication.success.message")
                 }));
 
                 onUpdate(application.id);
@@ -138,7 +138,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications" +
+                        message: t("applications:notifications" +
                             ".updateApplication.error.message")
                     }));
 
@@ -146,10 +146,10 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateApplication" +
+                    description: t("applications:notifications.updateApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
+                    message: t("applications:notifications.updateApplication.genericError" +
                         ".message")
                 }));
             })
@@ -226,10 +226,10 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
         updateApplicationConfigurations(application.id, newConfig)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateApplication.success" +
+                    description: t("applications:notifications.updateApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateApplication.success.message")
+                    message: t("applications:notifications.updateApplication.success.message")
                 }));
                 onUpdate(application.id);
                 setShowDeleteConfirmationModal(false);
@@ -240,17 +240,17 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                     dispatch(setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications." +
+                        message: t("applications:" +
                             "notifications.updateApplication.error.message")
                     }));
 
                     return;
                 }
                 dispatch(setAlert({
-                    description: t("console:develop.features.applications.notifications.updateApplication" +
+                    description: t("applications:notifications.updateApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
+                    message: t("applications:notifications.updateApplication.genericError" +
                         ".message")
                 }));
             });
@@ -259,10 +259,10 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
     return (
         <>
             <Heading as="h4">
-                { t("console:develop.features.applications.edit.sections.provisioning.outbound.heading") }
+                { t("applications:edit.sections.provisioning.outbound.heading") }
             </Heading>
             <Heading subHeading as="h6">
-                { t("console:develop.features.applications.edit.sections.provisioning.outbound.subHeading") }
+                { t("applications:edit.sections.provisioning.outbound.subHeading") }
             </Heading>
             <Divider hidden/>
             {
@@ -279,7 +279,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                         >
                                             <Icon name="add"/>
                                             {
-                                                t("console:develop.features.applications.edit.sections." +
+                                                t("applications:edit.sections." +
                                                     "provisioning.outbound.actions.addIdp")
                                             }
                                         </PrimaryButton>
@@ -347,12 +347,12 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                 <Segment>
                                     <EmptyPlaceholder
                                         title={
-                                            t("console:develop.features.applications.placeholders" +
+                                            t("applications:placeholders" +
                                                 ".emptyOutboundProvisioningIDPs.title")
                                         }
                                         image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
-                                            t("console:develop.features.applications.placeholders" +
+                                            t("applications:placeholders" +
                                                 ".emptyOutboundProvisioningIDPs.subtitles")
                                         ] }
                                         imageSize="tiny"
@@ -360,7 +360,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                             !readOnly && (
                                                 <PrimaryButton onClick={ () => setShowWizard(true) }>
                                                     <Icon name="add"/>
-                                                    { t("console:develop.features.applications.placeholders" +
+                                                    { t("applications:placeholders" +
                                                         ".emptyOutboundProvisioningIDPs.action") }
                                                 </PrimaryButton>
                                             )
@@ -383,7 +383,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                             <p>
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.applications.confirmations" +
+                                        "applications:confirmations" +
                                         ".deleteOutboundProvisioningIDP.assertionHint"
                                     }
                                     tOptions={ { name: deletingIdp?.idp } }
@@ -408,7 +408,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-header` }
                         >
-                            { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP" +
+                            { t("applications:confirmations.deleteOutboundProvisioningIDP" +
                                 ".header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
@@ -416,14 +416,14 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                             negative
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-message` }
                         >
-                            { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP" +
+                            { t("applications:confirmations.deleteOutboundProvisioningIDP" +
                                 ".message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-content` }
                         >
                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP" +
+                            { t("applications:confirmations.deleteOutboundProvisioningIDP" +
                                 ".content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

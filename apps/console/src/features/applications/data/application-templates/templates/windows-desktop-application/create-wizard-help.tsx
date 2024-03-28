@@ -48,15 +48,15 @@ const WindowsDesktopApplicationCreateWizardHelp: FunctionComponent<
         return (
             <div data-testid={ testId }>
                 <Heading as="h5">
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.title") }
                 </Heading>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.subTitle") }
                 </p>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                 ".heading.example") }
                 </p>
 
@@ -65,19 +65,19 @@ const WindowsDesktopApplicationCreateWizardHelp: FunctionComponent<
                 <React.Fragment>
                     <Heading as="h5">
                         {
-                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                            t("applications:wizards.minimalAppCreationWizard" +
                                 ".help.template.common.authorizedRedirectURLs.title")
                         }
                     </Heading>
                     <p>
                         {
-                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                            t("applications:wizards.minimalAppCreationWizard" +
                                 ".help.template.common.authorizedRedirectURLs.subTitle")
                         }
                     </p>
                     <p>
                         {
-                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                            t("applications:wizards.minimalAppCreationWizard" +
                                 ".help.template.common.authorizedRedirectURLs.example")
                         }
                     </p>

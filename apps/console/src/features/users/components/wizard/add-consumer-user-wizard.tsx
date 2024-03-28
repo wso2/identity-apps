@@ -302,34 +302,34 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(
-                                    "console:manage.features.users.notifications.addUser.error.description"
+                                    "users:notifications.addUser.error.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.users.notifications.addUser.error.message"
+                                    "users:notifications.addUser.error.message"
                                 )
                             });
                         } else if (error.response && error.response.data && error.response.data.detail) {
 
                             setAlert({
                                 description: t(
-                                    "console:manage.features.users.notifications.addUser.error.description",
+                                    "users:notifications.addUser.error.description",
                                     { description: error.response.data.detail }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.users.notifications.addUser.error.message"
+                                    "users:notifications.addUser.error.message"
                                 )
                             });
                         } else {
                             // Generic error message
                             setAlert({
                                 description: t(
-                                    "console:manage.features.users.notifications.addUser.genericError.description"
+                                    "users:notifications.addUser.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.users.notifications.addUser.genericError.message"
+                                    "users:notifications.addUser.genericError.message"
                                 )
                             });
                         }
@@ -401,11 +401,11 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
             .then((response: AxiosResponse) => {
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.users.notifications.addUser.success.description"
+                        "users:notifications.addUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.users.notifications.addUser.success.message"
+                        "users:notifications.addUser.success.message"
                     )
                 }));
 
@@ -425,23 +425,23 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
 
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.users.notifications.addUser.error.description"
+                            "users:notifications.addUser.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.users.notifications.addUser.error.message"
+                            "users:notifications.addUser.error.message"
                         )
                     }));
                 } else if (error.response && error.response.data && error.response.data.detail) {
 
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.users.notifications.addUser.error.description",
+                            "users:notifications.addUser.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.users.notifications.addUser.error.message"
+                            "users:notifications.addUser.error.message"
                         )
                     }));
                 } else {
@@ -449,11 +449,11 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
                     // Generic error message
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.users.notifications.addUser.genericError.description"
+                            "users:notifications.addUser.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.users.notifications.addUser.genericError.message"
+                            "users:notifications.addUser.genericError.message"
                         )
                     }));
                 }
@@ -593,7 +593,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
             ),
             icon: getUserWizardStepIcons().general,
             name: WizardStepsFormTypes.BASIC_DETAILS,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
+            title: t("user:modals.addUserWizard.steps.basicDetails")
         };
     };
 
@@ -627,7 +627,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
             ),
             icon: getUserWizardStepIcons().groups,
             name: WizardStepsFormTypes.GROUP_LIST,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
+            title: t("user:modals.addUserWizard.steps.groups")
         };
     };
 
@@ -648,7 +648,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
             ),
             icon: getUserWizardStepIcons().summary,
             name: WizardStepsFormTypes.SUMMARY,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.invitation")
+            title: t("user:modals.addUserWizard.steps.invitation")
         };
     };
 
@@ -728,7 +728,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
                                         floated="right"
                                         onClick={ navigateToNext }
                                     >
-                                        { t("console:manage.features.user.modals.addUserWizard.buttons.next") }
+                                        { t("user:modals.addUserWizard.buttons.next") }
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 ) }
@@ -750,7 +750,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
                                         onClick={ navigateToPrevious }
                                     >
                                         <Icon name="arrow left"/>
-                                        { t("console:manage.features.user.modals.addUserWizard.buttons.previous") }
+                                        { t("user:modals.addUserWizard.buttons.previous") }
                                     </LinkButton>
                                 ) }
                             </Grid.Column>

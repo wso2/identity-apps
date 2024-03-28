@@ -102,17 +102,17 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchApplication.error.message")
+                        message: t("applications:notifications.fetchApplication.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.fetchApplication" +
+                    description: t("applications:notifications.fetchApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchApplication.genericError." +
+                    message: t("applications:notifications.fetchApplication.genericError." +
                         "message")
                 }));
             })
@@ -142,13 +142,13 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:develop.features.authenticationProvider.notifications" +
+                                "authenticationProvider:notifications" +
                                 ".getIDPList.error.message",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:develop.features.authenticationProvider.notifications.getIDPList.error.message"
+                                "authenticationProvider:notifications.getIDPList.error.message"
                             )
                         })
                     );
@@ -158,12 +158,12 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.authenticationProvider.notifications" +
+                            "authenticationProvider:notifications" +
                             ".getIDPList.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:develop.features.authenticationProvider.notifications" +
+                            "authenticationProvider:notifications" +
                             ".getIDPList.genericError.message"
                         )
                     })

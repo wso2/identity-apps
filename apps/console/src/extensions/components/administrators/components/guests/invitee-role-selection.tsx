@@ -141,9 +141,9 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
             dimmer="blurring"
         >
             <Modal.Header>
-                { t("console:manage.features.invite.rolesUpdateModal.header") }
+                { t("invite:rolesUpdateModal.header") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.invite.rolesUpdateModal.subHeader") }
+                    { t("invite:rolesUpdateModal.subHeader") }
                     <DocumentationLink
                         link={ getLink("manage.users.collaboratorAccounts.roles.learnMore") }
                     >

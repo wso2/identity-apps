@@ -92,12 +92,12 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         }[] = [
             {
                 key: 0,
-                text: t("console:manage.features.claims.external.attributes.attributeURI", { type: "OIDC" }),
+                text: t("claims:external.attributes.attributeURI", { type: "OIDC" }),
                 value: "localClaimDisplayName"
             },
             {
                 key: 1,
-                text: t("console:manage.features.claims.local.attributes.attributeURI"),
+                text: t("claims:local.attributes.attributeURI"),
                 value: "mappedLocalClaimURI"
             }
         ];
@@ -148,12 +148,12 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         addAlert({
                             description:
                                 error?.response?.data?.description ||
-                                t("console:manage.features.claims.local.notifications." +
+                                t("claims:local.notifications." +
                                     "getClaims.genericError.description"),
                             level: AlertLevels.ERROR,
                             message:
                                 error?.response?.data?.message ||
-                                t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                                t("claims:local.notifications.getClaims.genericError.message")
                         })
                     );
                 });
@@ -233,7 +233,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                 description: error.response.data.description,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.oidcScopes.notifications.fetchOIDClaims.error"
+                                    "oidcScopes:notifications.fetchOIDClaims.error"
                                     + ".message"
                                 )
                             })
@@ -245,12 +245,12 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.oidcScopes.notifications.fetchOIDClaims" +
+                                "oidcScopes:notifications.fetchOIDClaims" +
                                 ".genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.oidcScopes.notifications.fetchOIDClaims"
+                                "oidcScopes:notifications.fetchOIDClaims"
                                 + ".genericError.message"
                             )
                         })
@@ -296,7 +296,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                 description: error.response.data.description,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.oidcScopes.notifications."
+                                    "oidcScopes:notifications."
                                     + "fetchOIDCScope.error.message"
                                 )
                             })
@@ -308,12 +308,12 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.oidcScopes.notifications.fetchOIDCScope" +
+                                "oidcScopes:notifications.fetchOIDCScope" +
                                 ".genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.oidcScopes.notifications.fetchOIDCScope.genericError."
+                                "oidcScopes:notifications.fetchOIDCScope.genericError."
                                 + "message"
                             )
                         })
@@ -379,14 +379,14 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.oidcScopes.notifications." +
+                                "oidcScopes:notifications." +
                                 "updateOIDCScope.success.description", {
                                     scope: displayName
                                 }
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
-                                "console:manage.features.oidcScopes." +
+                                "oidcScopes:" +
                                 "notifications.updateOIDCScope.success.message"
                             )
                         })
@@ -399,7 +399,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                             description:
                                 error?.response?.data?.description ??
                                 t(
-                                    "console:manage.features.oidcScopes." +
+                                    "oidcScopes:" +
                                     "notifications.updateOIDCScope.genericError." +
                                     "description"
                                 ),
@@ -407,7 +407,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                             message:
                                 error?.response?.data?.message ??
                                 t(
-                                    "console:manage.features.oidcScopes." +
+                                    "oidcScopes:" +
                                     "notifications.updateOIDCScope.genericError." +
                                     "message"
                                 )
@@ -431,13 +431,13 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         <Label className="no-margin-left">
                             <code>{ scope.name }</code>
                         </Label>
-                        { " " + (scope.description || t("console:manage.pages.oidcScopesEdit.subTitle")) }
+                        { " " + (scope.description || t("pages:oidcScopesEdit.subTitle")) }
                     </>)
                 }
                 image={ <AnimatedAvatar name={ scope.name } size="tiny" floated="left" /> }
                 backButton={ {
                     onClick: handleBackButtonClick,
-                    text: t("console:manage.pages.oidcScopesEdit.backButton")
+                    text: t("pages:oidcScopesEdit.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
@@ -462,18 +462,18 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             inputType="name"
                                             name="displayName"
                                             label={ t(
-                                                "console:manage.features.oidcScopes.forms.addScopeForm." +
+                                                "oidcScopes:forms.addScopeForm." +
                                                 "inputs.displayName.label"
                                             ) }
                                             placeholder={ t(
-                                                "console:manage.features.oidcScopes.forms." +
+                                                "oidcScopes:forms." +
                                                 "addScopeForm.inputs." +
                                                 "displayName.placeholder"
                                             ) }
                                             value={ scope.displayName }
                                             required={ true }
                                             message={ t(
-                                                "console:manage.features.oidcScopes.forms." +
+                                                "oidcScopes:forms." +
                                                 "addScopeForm.inputs.displayName.validations.empty"
                                             ) }
                                             maxLength={ 40 }
@@ -485,12 +485,11 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             inputType="description"
                                             name="description"
                                             label={ t(
-                                                "console:manage.features.oidcScopes.forms.addScopeForm." +
+                                                "oidcScopes:forms.addScopeForm." +
                                                 "inputs.description.label"
                                             ) }
                                             placeholder={ t(
-                                                "console:manage.features." +
-                                                "oidcScopes.forms.addScopeForm.inputs." +
+                                                "oidcScopes:forms.addScopeForm.inputs." +
                                                 "description.placeholder"
                                             ) }
                                             value={ scope.description }
@@ -525,8 +524,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 <Divider hidden />
                 {
                     OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name)
-                        ? <Header>{ t("console:manage.features.oidcScopes.viewAttributes") }</Header>
-                        : <Header>{ t("console:manage.features.oidcScopes.manageAttributes") }</Header>
+                        ? <Header>{ t("oidcScopes:viewAttributes") }</Header>
+                        : <Header>{ t("oidcScopes:manageAttributes") }</Header>
                 }
                 <EmphasizedSegment className="padded">
                     <ListLayout
@@ -541,7 +540,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                         onClick={ () => setTriggerAttributeModal() }
                                     >
                                         <Icon name="add" />
-                                        { t("console:manage.features.oidcScopes.editScope." +
+                                        { t("oidcScopes:editScope." +
                                                 "claimList.addClaim") }
                                     </PrimaryButton>
                                 </Show>
@@ -561,7 +560,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                     icon="search"
                                     iconPosition="left"
                                     onChange={ searchSelectedAttributes }
-                                    placeholder={ t("console:manage.features.oidcScopes.editScope."
+                                    placeholder={ t("oidcScopes:editScope."
                                     + "claimList.searchClaims") }
                                     floated="right"
                                     size="small"

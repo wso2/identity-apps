@@ -84,10 +84,10 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             .catch((error: any) => {
                 dispatch(addAlert({
                     description: error?.description
-                        || t("console:manage.features.claims.local.notifications.getAClaim.genericError.description"),
+                        || t("claims:local.notifications.getAClaim.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("console:manage.features.claims.local.notifications.getAClaim.genericError.message")
+                        || t("claims:local.notifications.getAClaim.genericError.message")
                 })
                 );
             })
@@ -108,7 +108,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         render: () => JSX.Element;
     }[] = [
         {
-            menuItem: t("console:manage.features.claims.local.pageLayout.edit.tabs.general"),
+            menuItem: t("claims:local.pageLayout.edit.tabs.general"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation>
                     <EditBasicDetailsLocalClaims
@@ -120,7 +120,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             )
         },
         {
-            menuItem: t("console:manage.features.claims.local.pageLayout.edit.tabs.mappedAttributes"),
+            menuItem: t("claims:local.pageLayout.edit.tabs.mappedAttributes"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation>
                     <EditMappedAttributesLocalClaims
@@ -132,7 +132,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             )
         },
         {
-            menuItem: t("console:manage.features.claims.local.pageLayout.edit.tabs.additionalProperties"),
+            menuItem: t("claims:local.pageLayout.edit.tabs.additionalProperties"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation>
                     <EditAdditionalPropertiesLocalClaims
@@ -175,12 +175,12 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             ) }
             title={ claim?.displayName }
             pageTitle="Edit Attributes"
-            description={ t("console:manage.features.claims.local.pageLayout.edit.description") }
+            description={ t("claims:local.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
                 },
-                text: t("console:manage.features.claims.local.pageLayout.edit.back")
+                text: t("claims:local.pageLayout.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

@@ -194,21 +194,21 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             dispatch(addAlert({
                 description: userStoreListFetchRequestError?.response?.data?.description
                     ?? userStoreListFetchRequestError?.response?.data?.detail
-                        ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
+                        ?? t("userstores:notifications.fetchUserstores.genericError." +
                         "description"),
                 level: AlertLevels.ERROR,
                 message: userStoreListFetchRequestError?.response?.data?.message
-                    ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
+                    ?? t("userstores:notifications.fetchUserstores.genericError.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
+            description: t("userstores:notifications.fetchUserstores.genericError." +
                 "description"),
             level: AlertLevels.ERROR,
-            message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
+            message: t("userstores:notifications.fetchUserstores.genericError.message")
         }));
     }, [ userStoreListFetchRequestError ]);
 
@@ -469,7 +469,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             } }
                         >
                             <Icon name="add"/>
-                            { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
+                            { t("roles:list.buttons.addButton", { type: "Group" }) }
                         </PrimaryButton>
                     </Show>
                 )

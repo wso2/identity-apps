@@ -164,12 +164,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const invitationStatusOptions: DropdownItemProps[] = [
         {
             key: 2,
-            text: t("console:manage.features.parentOrgInvitations.searchdropdown.pendingLabel"),
+            text: t("parentOrgInvitations:searchdropdown.pendingLabel"),
             value: "Pending"
         },
         {
             key: 3,
-            text: t("console:manage.features.parentOrgInvitations.searchdropdown.expiredLabel"),
+            text: t("parentOrgInvitations:searchdropdown.expiredLabel"),
             value: "Expired"
         }
     ];
@@ -581,12 +581,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }).catch((error: AxiosError) => {
                 handleAlerts({
                     description: error?.response?.data?.description ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "getConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "getConnector.genericError.message"
                     )
                 });
@@ -611,13 +611,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             filterAttributeOptions={ [
                 {
                     key: 0,
-                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                    text: t("users:advancedSearch.form.dropdown." +
                         "filterAttributeOptions.username"),
                     value: "userName"
                 },
                 {
                     key: 1,
-                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                    text: t("users:advancedSearch.form.dropdown." +
                         "filterAttributeOptions.email"),
                     value: "emails"
                 },
@@ -633,18 +633,18 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 }
             ] }
             filterAttributePlaceholder={
-                t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
+                t("users:advancedSearch.form.inputs.filterAttribute" +
                     ".placeholder")
             }
             filterConditionsPlaceholder={
-                t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                t("users:advancedSearch.form.inputs.filterCondition" +
                     ".placeholder")
             }
             filterValuePlaceholder={
-                t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                t("users:advancedSearch.form.inputs.filterValue" +
                     ".placeholder")
             }
-            placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+            placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute="userName"
             defaultSearchOperator="co"
             triggerClearQuery={ triggerClearQuery }
@@ -693,9 +693,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             >
                 { userStoreListFetchRequestError
                     ? (<EmptyPlaceholder
-                        subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
-                            t("console:manage.features.users.placeholders.userstoreError.subtitles.1")     ] }
-                        title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                        subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
+                            t("users:placeholders.userstoreError.subtitles.1")     ] }
+                        title={ t("users:placeholders.userstoreError.title") }
                         image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                     />)
@@ -725,7 +725,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             dropDownOptions.push({
                 "data-componentid": `${componentId}-add-user-dropdown-item`,
                 key: 1,
-                text: t("console:manage.features.users.addUserDropDown.addNewUser"),
+                text: t("users:addUserDropDown.addNewUser"),
                 value: UserAccountTypesMain.EXTERNAL
             });
         }
@@ -737,7 +737,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 "data-componentid": `${testId}-bulk-import-users-dropdown-item`,
                 "data-testid": `${testId}-bulk-import-users-dropdown-item`,
                 key: 2,
-                text: t("console:manage.features.users.addUserDropDown.bulkImport"),
+                text: t("users:addUserDropDown.bulkImport"),
                 value: UserAddOptionTypes.BULK_IMPORT
             });
         }
@@ -747,7 +747,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             dropDownOptions.push({
                 "data-componentid": `${componentId}-invite-parent-user`,
                 key: 3,
-                text: t("console:manage.features.parentOrgInvitations.addUserWizard.heading"),
+                text: t("parentOrgInvitations:addUserWizard.heading"),
                 value: UserAccountTypesMain.INTERNAL
             });
         }
@@ -822,13 +822,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
         panes.push({
             componentId: "users",
-            menuItem: t("console:manage.features.parentOrgInvitations.tab.usersTab"),
+            menuItem: t("parentOrgInvitations:tab.usersTab"),
             render: renderUsersList
         });
 
         panes.push({
             componentId: "invitations",
-            menuItem: t("console:manage.features.parentOrgInvitations.tab.invitationsTab"),
+            menuItem: t("parentOrgInvitations:tab.invitationsTab"),
             render: renderInvitationsList
         });
 
@@ -868,7 +868,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             options={ invitationStatusOptions }
                             onChange={ handleAccountStatusChange }
                             text={
-                                t("console:manage.features.parentOrgInvitations.filterLabel")
+                                t("parentOrgInvitations:filterLabel")
                                 +  invitationStatusOption
                             }
                             disabled={
@@ -882,9 +882,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     userStoreListFetchRequestError
                         ? (
                             <EmptyPlaceholder
-                                subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
-                                    t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
-                                title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                                subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
+                                    t("users:placeholders.userstoreError.subtitles.1") ] }
+                                title={ t("users:placeholders.userstoreError.title") }
                                 image={ getEmptyPlaceholderIllustrations().genericError }
                                 imageSize="tiny"
                             />
@@ -942,13 +942,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header>
-                    { t("console:manage.features.users.confirmations.addMultipleUser.header") }
+                    { t("users:confirmations.addMultipleUser.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message attached warning>
-                    { t("console:manage.features.users.confirmations.addMultipleUser.message") }
+                    { t("users:confirmations.addMultipleUser.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("console:manage.features.users.confirmations.addMultipleUser.content") }
+                    { t("users:confirmations.addMultipleUser.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
@@ -968,8 +968,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 && !isReadOnlyUserStore
                 && renderUserDropDown()
             }
-            title={ t("console:manage.pages.users.title") }
-            pageTitle={ t("console:manage.pages.users.title") }
+            title={ t("pages:users.title") }
+            pageTitle={ t("pages:users.title") }
             description={ t("extensions:manage.users.usersSubTitle") }
             data-testid={ `${ testId }-page-layout` }
         >

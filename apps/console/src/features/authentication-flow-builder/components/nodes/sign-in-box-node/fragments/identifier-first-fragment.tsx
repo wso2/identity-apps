@@ -76,7 +76,7 @@ const IdentifierFirstFragment = (props: IdentifierFirstFragmentPropsInterface): 
     return (
         <div className="identifier-first-fragment" data-componentid={ componentId }>
             <Typography align="center" className="oxygen-sign-in-header" variant="h4">
-                { t("console:loginFlow.nodes.identifierFirst.header") }
+                { t("authenticationFlow:nodes.identifierFirst.header") }
             </Typography>
             <BasicSignInOptionControls
                 onOptionRemove={ (event: MouseEvent<HTMLButtonElement>) => {
@@ -85,27 +85,27 @@ const IdentifierFirstFragment = (props: IdentifierFirstFragmentPropsInterface): 
                     });
                 } }
                 optionSwitchTooltipContent={
-                    t("console:loginFlow.nodes.identifierFirst.controls.optionSwitchTooltipContent")
+                    t("authenticationFlow:nodes.identifierFirst.controls.optionSwitchTooltipContent")
                 }
                 optionRemoveTooltipContent={
-                    t("console:loginFlow.nodes.identifierFirst.controls.optionRemoveTooltipContent")
+                    t("authenticationFlow:nodes.identifierFirst.controls.optionRemoveTooltipContent")
                 }
             >
                 <TextField
                     required
                     fullWidth
-                    label={ t("console:loginFlow.nodes.identifierFirst.form.fields.username.label") }
+                    label={ t("authenticationFlow:nodes.identifierFirst.form.fields.username.label") }
                     name="text"
                     autoComplete="off"
                     value={ null }
-                    placeholder={ t("console:loginFlow.nodes.identifierFirst.form.fields.username.placeholder") }
+                    placeholder={ t("authenticationFlow:nodes.identifierFirst.form.fields.username.placeholder") }
                     className="non-interactive"
                 />
             </BasicSignInOptionControls>
             <FormGroup className="non-interactive">
                 <FormControlLabel
                     control={ <Checkbox color="secondary" /> }
-                    label={ t("console:loginFlow.nodes.identifierFirst.form.fields.rememberMe.label") }
+                    label={ t("authenticationFlow:nodes.identifierFirst.form.fields.rememberMe.label") }
                 />
             </FormGroup>
             <Button
@@ -115,7 +115,7 @@ const IdentifierFirstFragment = (props: IdentifierFirstFragmentPropsInterface): 
                 type="submit"
                 fullWidth
             >
-                { t("console:loginFlow.nodes.identifierFirst.form.actions.primary") }
+                { t("authenticationFlow:nodes.identifierFirst.form.actions.primary") }
             </Button>
         </div>
     );

@@ -41,7 +41,7 @@ export const getFilterAttributeListByActivityType = (activityType: ActivityType)
     const commonFilterAttributes: Omit<DropdownChild,"key">[] = [
         {
             text: I18n.instance.t(
-                "console:manage.features.insights.commonFilters.userId"
+                "insights:commonFilters.userId"
             ) as ReactNode,
             value: "userId"
         }
@@ -51,26 +51,26 @@ export const getFilterAttributeListByActivityType = (activityType: ActivityType)
         [ActivityType.LOGIN]: [
             {
                 text: I18n.instance.t(
-                    "console:manage.features.insights.activityType.login.filters.serviceProvider"
+                    "insights:activityType.login.filters.serviceProvider"
                 ) as ReactNode,
                 value: "serviceProvider"
             },
             ...commonFilterAttributes,
             {
                 text: I18n.instance.t(
-                    "console:manage.features.insights.activityType.login.filters.userStore"
+                    "insights:activityType.login.filters.userStore"
                 ) as ReactNode,
                 value: "userstoreDomain"
             },
             {
                 text: I18n.instance.t(
-                    "console:manage.features.insights.activityType.login.filters.authenticator.attributeName"
+                    "insights:activityType.login.filters.authenticator.attributeName"
                 ) as ReactNode,
                 value: "authenticator"
             },
             {
                 text: I18n.instance.t(
-                    "console:manage.features.insights.activityType.login.filters.identityProvider"
+                    "insights:activityType.login.filters.identityProvider"
                 ) as ReactNode,
                 value: "identityProvider"
             }
@@ -78,7 +78,7 @@ export const getFilterAttributeListByActivityType = (activityType: ActivityType)
         [ActivityType.REGISTRATION]: [
             {
                 text: I18n.instance.t(
-                    "console:manage.features.insights.activityType.registration.filters.onboardingMethod.attributeName"
+                    "insights:activityType.registration.filters.onboardingMethod.attributeName"
                 ) as ReactNode,
                 value: "onboardingMethod"
             },

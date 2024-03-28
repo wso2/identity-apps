@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -158,13 +158,13 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
             <Segment data-componentid={ componentId }>
                 <EmptyPlaceholder
                     title={
-                        t("console:develop.features.idvp.forms.attributeSettings.attributeMapping." +
+                        t("idvp:forms.attributeSettings.attributeMapping." +
                             "emptyPlaceholderEdit.title")
                     }
                     subtitle={ [
                         <p key={ "no-attributes-configured" }>
                             {
-                                t("console:develop.features.idvp.forms.attributeSettings.attributeMapping." +
+                                t("idvp:forms.attributeSettings.attributeMapping." +
                                     "emptyPlaceholderEdit.subtitle")
                             }
                         </p>
@@ -177,7 +177,7 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                             } }
                         >
                             <Icon name="add"/>
-                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.addButton") }
+                            { t("idvp:forms.attributeSettings.attributeMapping.addButton") }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
@@ -326,10 +326,10 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                 <Grid.Row columns={ 1 }>
                     <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 16 } widescreen={ 16 }>
                         <Heading as="h4">
-                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.heading") }
+                            { t("idvp:forms.attributeSettings.attributeMapping.heading") }
                         </Heading>
                         <Hint compact>
-                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.hint") }
+                            { t("idvp:forms.attributeSettings.attributeMapping.hint") }
                         </Hint>
                         <Divider hidden/>
                         { hasMappedAttributes() ? (
@@ -367,7 +367,7 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                                                 >
                                                     <Icon name="add"/>
                                                     {
-                                                        t("console:develop.features.idvp.forms.attributeSettings" +
+                                                        t("idvp:forms.attributeSettings" +
                                                         ".attributeMapping.addButton")
                                                     }
                                                 </PrimaryButton>

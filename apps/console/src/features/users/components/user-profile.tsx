@@ -461,11 +461,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "console:manage.features.users.notifications.deleteUser.success.description"
+                        "users:notifications.deleteUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.users.notifications.deleteUser.success.message"
+                        "users:notifications.deleteUser.success.message"
                     )
                 });
 
@@ -480,16 +480,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.deleteUser.error.message")
+                        message: t("users:notifications.deleteUser.error.message")
                     });
 
                     return;
                 }
 
                 setAlert({
-                    description: t("console:manage.features.users.notifications.deleteUser.genericError.description"),
+                    description: t("users:notifications.deleteUser.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.deleteUser.genericError" +
+                    message: t("users:notifications.deleteUser.genericError" +
                         ".message")
                 });
             });
@@ -540,16 +540,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.getAdminRole.error.message")
+                        message: t("users:notifications.getAdminRole.error.message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.getAdminRole." +
+                    description: t("users:notifications.getAdminRole." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.getAdminRole.genericError" +
+                    message: t("users:notifications.getAdminRole.genericError" +
                         ".message")
                 }));
             });
@@ -577,11 +577,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             .then(() => {
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.users.notifications.revokeAdmin.success.description"
+                        "users:notifications.revokeAdmin.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.users.notifications.revokeAdmin.success.message"
+                        "users:notifications.revokeAdmin.success.message"
                     )
                 }));
                 history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
@@ -591,16 +591,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.revokeAdmin.error.message")
+                        message: t("users:notifications.revokeAdmin.error.message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.revokeAdmin." +
+                    description: t("users:notifications.revokeAdmin." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.revokeAdmin.genericError" +
+                    message: t("users:notifications.revokeAdmin.genericError" +
                         ".message")
                 }));
             });
@@ -890,11 +890,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
+                        "user:profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
+                        "user:profile.notifications.updateProfileInfo.success.message"
                     )
                 });
 
@@ -906,7 +906,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.user.profile.notifications.updateProfileInfo." +
+                        message: t("user:profile.notifications.updateProfileInfo." +
                             "error.message")
                     }));
 
@@ -914,10 +914,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.user.profile.notifications.updateProfileInfo." +
+                    description: t("user:profile.notifications.updateProfileInfo." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.user.profile.notifications.updateProfileInfo." +
+                    message: t("user:profile.notifications.updateProfileInfo." +
                         "genericError.message")
                 }));
             })
@@ -990,15 +990,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         attributeName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             ? (
                                 attributeValue
-                                    ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
+                                    ? t("user:profile.notifications.lockUserAccount." +
                                         "success.description")
-                                    : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
+                                    : t("user:profile.notifications.unlockUserAccount." +
                                         "success.description")
                             ) : (
                                 attributeValue
-                                    ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
+                                    ? t("user:profile.notifications.disableUserAccount." +
                                         "success.description")
-                                    : t("console:manage.features.user.profile.notifications.enableUserAccount." +
+                                    : t("user:profile.notifications.enableUserAccount." +
                                         "success.description")
                             ),
                     level: AlertLevels.SUCCESS,
@@ -1006,18 +1006,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         attributeName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             ? (
                                 attributeValue
-                                    ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
+                                    ? t("user:profile.notifications.lockUserAccount." +
                                         "success.message", { name: user.emails && user.emails !== undefined ?
                                         resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, true) })
-                                    : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
+                                    : t("user:profile.notifications.unlockUserAccount." +
                                         "success.message", { name: user.emails && user.emails !== undefined ?
                                         resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, true) })
                             ) : (
                                 attributeValue
-                                    ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
+                                    ? t("user:profile.notifications.disableUserAccount." +
                                         "success.message", { name: user.emails && user.emails !== undefined ?
                                         resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, false) })
-                                    : t("console:manage.features.user.profile.notifications.enableUserAccount." +
+                                    : t("user:profile.notifications.enableUserAccount." +
                                         "success.message", { name: user.emails && user.emails !== undefined ?
                                         resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, false) })
                             )
@@ -1033,9 +1033,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         level: AlertLevels.ERROR,
                         message:
                             attributeName === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED")
-                                ? t("console:manage.features.user.profile.notifications.lockUserAccount.error." +
+                                ? t("user:profile.notifications.lockUserAccount.error." +
                                     "message")
-                                : t("console:manage.features.user.profile.notifications.disableUserAccount.error." +
+                                : t("user:profile.notifications.disableUserAccount.error." +
                                     "message")
                     });
 
@@ -1046,17 +1046,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     description:
                         editingAttribute?.name === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
                             .get("ACCOUNT_LOCKED")
-                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
+                            ? t("user:profile.notifications.lockUserAccount.genericError." +
                                 "description")
-                            : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
+                            : t("user:profile.notifications.disableUserAccount.genericError." +
                                 "description"),
                     level: AlertLevels.ERROR,
                     message:
                         editingAttribute?.name === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
                             .get("ACCOUNT_LOCKED")
-                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
+                            ? t("user:profile.notifications.lockUserAccount.genericError." +
                                 "message")
-                            : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
+                            : t("user:profile.notifications.disableUserAccount.genericError." +
                                 "message")
                 });
             });
@@ -1081,7 +1081,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 when={ AccessControlConstants.USER_DELETE }
                             >
                                 <DangerZoneGroup
-                                    sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
+                                    sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
                                 >
                                     {
                                         (
@@ -1093,11 +1093,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 <Show when={ AccessControlConstants.USER_EDIT }>
                                                     <DangerZone
                                                         data-testid={ `${ testId }-change-password` }
-                                                        actionTitle={ t("console:manage.features.user.editUser." +
+                                                        actionTitle={ t("user:editUser." +
                                                             "dangerZoneGroup.passwordResetZone.actionTitle") }
-                                                        header={ t("console:manage.features.user.editUser." +
+                                                        header={ t("user:editUser." +
                                                             "dangerZoneGroup.passwordResetZone.header") }
-                                                        subheader={ t("console:manage.features.user.editUser." +
+                                                        subheader={ t("user:editUser." +
                                                             "dangerZoneGroup.passwordResetZone.subheader") }
                                                         onActionClick={ (): void => {
                                                             setOpenChangePasswordModal(true);
@@ -1105,7 +1105,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         isButtonDisabled={ accountLocked
                                                             ? accountLocked
                                                             : user[ userConfig.userProfileSchema ]?.accountLocked }
-                                                        buttonDisableHint={ t("console:manage.features.user.editUser." +
+                                                        buttonDisableHint={ t("user:editUser." +
                                                             "dangerZoneGroup.passwordResetZone.buttonHint") }
                                                     />
                                                 </Show>
@@ -1115,11 +1115,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                             <DangerZone
                                                 data-testid={ `${ testId }-account-disable-button` }
-                                                actionTitle={ t("console:manage.features.user.editUser." +
+                                                actionTitle={ t("user:editUser." +
                                                 "dangerZoneGroup.disableUserZone.actionTitle") }
-                                                header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                header={ t("user:editUser.dangerZoneGroup." +
                                                 "disableUserZone.header") }
-                                                subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                subheader={ t("user:editUser.dangerZoneGroup." +
                                                 "disableUserZone.subheader") }
                                                 onActionClick={ undefined }
                                                 toggle={ {
@@ -1134,14 +1134,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         !allowDeleteOnly && !isUserManagedByParentOrg  && (
                                             <DangerZone
                                                 data-testid={ `${ testId }-danger-zone-toggle` }
-                                                actionTitle={ t("console:manage.features.user.editUser." +
+                                                actionTitle={ t("user:editUser." +
                                                     "dangerZoneGroup.lockUserZone.actionTitle") }
                                                 header={
-                                                    t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                    t("user:editUser.dangerZoneGroup." +
                                                     "lockUserZone.header")
                                                 }
                                                 subheader={
-                                                    t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                    t("user:editUser.dangerZoneGroup." +
                                                     "lockUserZone.subheader")
                                                 }
                                                 onActionClick={ undefined }
@@ -1160,11 +1160,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     (
                                         <DangerZone
                                             data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
-                                            actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            actionTitle={ t("user:editUser.dangerZoneGroup." +
                                             "deleteAdminPriviledgeZone.actionTitle") }
-                                            header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            header={ t("user:editUser.dangerZoneGroup." +
                                             "deleteAdminPriviledgeZone.header") }
-                                            subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            subheader={ t("user:editUser.dangerZoneGroup." +
                                             "deleteAdminPriviledgeZone.subheader") }
                                             onActionClick={ (): void => {
                                                 setShowAdminRevokeConfirmationModal(true);
@@ -1175,14 +1175,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     }
                                     <DangerZone
                                         data-testid={ `${ testId }-danger-zone` }
-                                        actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                        actionTitle={ t("user:editUser.dangerZoneGroup." +
                                         "deleteUserZone.actionTitle") }
-                                        header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                        header={ t("user:editUser.dangerZoneGroup." +
                                         "deleteUserZone.header") }
                                         subheader={ commonConfig.userEditSection.isGuestUser
                                             ? t("extensions:manage.guest.editUser.dangerZoneGroup.deleteUserZone." +
                                                 "subheader")
-                                            : t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            : t("user:editUser.dangerZoneGroup." +
                                                 "deleteUserZone.subheader")
                                         }
                                         onActionClick={ (): void => {
@@ -1191,7 +1191,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         } }
                                         isButtonDisabled={
                                             adminUserType === AdminAccountTypes.INTERNAL && isReadOnlyUserStore }
-                                        buttonDisableHint={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                        buttonDisableHint={ t("user:editUser.dangerZoneGroup." +
                                         "deleteUserZone.buttonDisableHint") }
                                     />
                                 </DangerZoneGroup>
@@ -1268,10 +1268,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     label={ fieldName }
                     required={ schema?.required }
                     requiredErrorMessage={
-                        t("console:manage.features.user.profile.forms.generic.inputs.validations.empty", { fieldName })
+                        t("user:profile.forms.generic.inputs.validations.empty", { fieldName })
                     }
                     placeholder={
-                        t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
+                        t("user:profile.forms.generic.inputs.dropdownPlaceholder",
                             { fieldName })
                     }
                     type="dropdown"
@@ -1279,7 +1279,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     children={ [ {
                         "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
                         key: "empty-locale" as string,
-                        text: t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
+                        text: t("user:profile.forms.generic.inputs.dropdownPlaceholder",
                             { fieldName }) as string,
                         value: "" as string
                     } ].concat(
@@ -1329,7 +1329,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         if (!RegExp(schema.regEx).test(value)) {
                             validation.isValid = false;
                             validation.errorMessages
-                                .push(t("console:manage.features.users.forms.validation.formatError", {
+                                .push(t("users:forms.validation.formatError", {
                                     field: fieldName
                                 }));
                         }
@@ -1369,7 +1369,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns the form field for the profile schema.
      */
     const generateProfileEditForm = (schema: ProfileSchemaInterface, key: number): JSX.Element => {
-        const fieldName: string = t("console:manage.features.user.profile.fields." +
+        const fieldName: string = t("user:profile.fields." +
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
 
@@ -1466,7 +1466,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                                     <Form.Field>
                                                         <label>
-                                                            { t("console:manage.features.user.profile.fields.userId") }
+                                                            { t("user:profile.fields.userId") }
                                                         </label>
                                                         <Input
                                                             name="userID"
@@ -1514,7 +1514,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         data-testid={ `${ testId }-profile-form-one-time-pw }
                                                         -input` }
                                                         name="oneTimePassword"
-                                                        label={ t("console:manage.features.user.profile.fields." +
+                                                        label={ t("user:profile.fields." +
                                                             "oneTimePassword") }
                                                         required={ false }
                                                         requiredErrorMessage=""
@@ -1533,7 +1533,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                                     <Form.Field>
                                                         <label>
-                                                            { t("console:manage.features.user.profile.fields." +
+                                                            { t("user:profile.fields." +
                                                                 "createdDate") }
                                                         </label>
                                                         <Input
@@ -1554,7 +1554,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                                     <Form.Field>
                                                         <label>
-                                                            { t("console:manage.features.user.profile.fields." +
+                                                            { t("user:profile.fields." +
                                                                     "modifiedDate") }
                                                         </label>
                                                         <Input
@@ -1602,7 +1602,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             onClose={ (): void => setShowDeleteConfirmationModal(false) }
                             type="negative"
                             open={ showDeleteConfirmationModal }
-                            assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                            assertionHint={ t("user:deleteUser.confirmationModal." +
                                 "assertionHint") }
                             assertionType="checkbox"
                             primaryAction={ t("common:confirm") }
@@ -1615,7 +1615,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             closeOnDimmerClick={ false }
                         >
                             <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
-                                { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                                { t("user:deleteUser.confirmationModal.header") }
                             </ConfirmationModal.Header>
                             <ConfirmationModal.Message
                                 data-testid={ `${testId}-confirmation-modal-message` }
@@ -1624,14 +1624,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             >
                                 { commonConfig.userEditSection.isGuestUser
                                     ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
-                                    : t("console:manage.features.user.deleteUser.confirmationModal.message")
+                                    : t("user:deleteUser.confirmationModal.message")
                                 }
                             </ConfirmationModal.Message>
                             <ConfirmationModal.Content>
                                 <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                                 { commonConfig.userEditSection.isGuestUser
                                     ? t("extensions:manage.guest.deleteUser.confirmationModal.content")
-                                    : t("console:manage.features.user.deleteUser.confirmationModal.content")
+                                    : t("user:deleteUser.confirmationModal.content")
                                 }
                             </ConfirmationModal.Content>
                         </ConfirmationModal>
@@ -1644,7 +1644,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             onClose={ (): void => setShowAdminRevokeConfirmationModal(false) }
                             type="negative"
                             open={ showAdminRevokeConfirmationModal }
-                            assertionHint={ t("console:manage.features.user.revokeAdmin.confirmationModal." +
+                            assertionHint={ t("user:revokeAdmin.confirmationModal." +
                                 "assertionHint") }
                             assertionType="checkbox"
                             primaryAction={ t("common:confirm") }
@@ -1659,11 +1659,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <ConfirmationModal.Header
                                 data-testid={ `${testId}-admin-privilege-revoke-confirmation-modal-header` }
                             >
-                                { t("console:manage.features.user.revokeAdmin.confirmationModal.header") }
+                                { t("user:revokeAdmin.confirmationModal.header") }
                             </ConfirmationModal.Header>
                             <ConfirmationModal.Content>
                                 <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                                { t("console:manage.features.user.revokeAdmin.confirmationModal.content") }
+                                { t("user:revokeAdmin.confirmationModal.content") }
                             </ConfirmationModal.Content>
                         </ConfirmationModal>
                     )
@@ -1681,8 +1681,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             assertion={ resolveUsernameOrDefaultEmail(user, false) }
                             assertionHint={ editingAttribute.name === ProfileConstants
                                 .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                ? t("console:manage.features.user.lockUser.confirmationModal.assertionHint")
-                                : t("console:manage.features.user.disableUser.confirmationModal.assertionHint") }
+                                ? t("user:lockUser.confirmationModal.assertionHint")
+                                : t("user:disableUser.confirmationModal.assertionHint") }
                             assertionType="checkbox"
                             primaryAction={ t("common:confirm") }
                             secondaryAction={ t("common:cancel") }
@@ -1698,8 +1698,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
                                 { editingAttribute.name === ProfileConstants
                                     .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                    ? t("console:manage.features.user.lockUser.confirmationModal.header")
-                                    : t("console:manage.features.user.disableUser.confirmationModal.header")
+                                    ? t("user:lockUser.confirmationModal.header")
+                                    : t("user:disableUser.confirmationModal.header")
                                 }
                             </ConfirmationModal.Header>
                             <ConfirmationModal.Message
@@ -1709,15 +1709,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             >
                                 { editingAttribute.name === ProfileConstants
                                     .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                    ? t("console:manage.features.user.lockUser.confirmationModal.message")
-                                    : t("console:manage.features.user.disableUser.confirmationModal.message")
+                                    ? t("user:lockUser.confirmationModal.message")
+                                    : t("user:disableUser.confirmationModal.message")
                                 }
                             </ConfirmationModal.Message>
                             <ConfirmationModal.Content>
                                 { editingAttribute.name === ProfileConstants
                                     .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                    ? t("console:manage.features.user.lockUser.confirmationModal.content")
-                                    : t("console:manage.features.user.disableUser.confirmationModal.content")
+                                    ? t("user:lockUser.confirmationModal.content")
+                                    : t("user:disableUser.confirmationModal.content")
                                 }
                             </ConfirmationModal.Content>
                         </ConfirmationModal>

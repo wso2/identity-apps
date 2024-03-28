@@ -242,7 +242,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const userStoreArray: DropdownItemProps[] = [
             {
                 key: -1,
-                text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                text: t("users:userstores.userstoreOptions.primary"),
                 value: "PRIMARY"
             }
         ];
@@ -265,20 +265,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.description"),
+                            ?? t("userstores:notifications.fetchUserstores.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.message")
+                            ?? t("userstores:notifications.fetchUserstores.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                    description: t("userstores:notifications.fetchUserstores.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
+                    message: t("userstores:notifications.fetchUserstores.genericError.message")
                 }));
 
                 setUserStoreError(true);
@@ -311,10 +311,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             return isReadWriteUserStore;
         }).catch(() => {
             dispatch(addAlert({
-                description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
+                description: t("userstores:notifications.fetchUserstores.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
+                message: t("userstores:notifications.fetchUserstores.genericError.message")
             }));
 
             return false;
@@ -355,9 +355,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
+                        "users:notifications.bulkImportUser.submit.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
+                    message: t("users:notifications.bulkImportUser.submit.genericError.message")
                 })
             );
         }
@@ -371,7 +371,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         if (!emailValidation) {
             setIsEmailDataError(true);
             setEmailDataError(
-                t("console:manage.features.users.guestUsers.fields." +
+                t("users:guestUsers.fields." +
                 "username.validations.regExViolation")
             );
             emailList.pop();
@@ -425,14 +425,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     description:
                         error?.response?.data?.description ||
                         t(
-                            "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                            "claims:dialects.notifications.fetchDialects" +
                             ".genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error?.response?.data?.message ||
                         t(
-                            "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                            "claims:dialects.notifications.fetchDialects" +
                             ".genericError.message"
                         )
                 })
@@ -485,14 +485,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     description:
                         error[0]?.response?.data?.description ||
                         t(
-                            "console:manage.features.claims.dialects.notifications." +
+                            "claims:dialects.notifications." +
                                 "fetchExternalClaims.genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error[0]?.response?.data?.message ||
                         t(
-                            "console:manage.features.claims.dialects.notifications." +
+                            "claims:dialects.notifications." +
                                 "fetchExternalClaims.genericError.message"
                         )
                 })
@@ -560,12 +560,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const setValidationError = (error: ValidationError) => {
         setAlert({
             description: t(
-                `console:manage.features.users.notifications.bulkImportUser.validation.${error.descriptionKey}`,
+                `users:notifications.bulkImportUser.validation.${error.descriptionKey}`,
                 error.descriptionValues || {}
             ),
             level: AlertLevels.ERROR,
             message: t(
-                `console:manage.features.users.notifications.bulkImportUser.validation.${error.messageKey}`
+                `users:notifications.bulkImportUser.validation.${error.messageKey}`
             )
         });
     };
@@ -749,12 +749,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     } else if (!FormValidation.email(attributeValue)) {
                         setAlert({
                             description:  t(
-                                "console:manage.features.user.forms.addUserForm.inputs.email." +
+                                "user:forms.addUserForm.inputs.email." +
                                     "validations.invalid"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+                                "user:modals.bulkImportUserWizard.wizardSummary." +
                                 "tableMessages.invalidDataMessage")
                         });
                         throw new Error(DATA_VALIDATION_ERROR);
@@ -1132,9 +1132,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             setHasError(true);
             setManualInviteAlert({
                 description: t(
-                    "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
+                    "users:notifications.bulkImportUser.submit.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
+                message: t("users:notifications.bulkImportUser.submit.genericError.message")
             });
         } finally {
             setIsSubmitting(false);
@@ -1188,17 +1188,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 setFileModeTimeOutError(true);
                 setAlert({
                     description: t(
-                        "console:manage.features.users.notifications.bulkImportUser.timeOut.description"),
+                        "users:notifications.bulkImportUser.timeOut.description"),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:manage.features.users.notifications.bulkImportUser.timeOut.message")
+                        "users:notifications.bulkImportUser.timeOut.message")
                 });
             } else if (error.message !== DATA_VALIDATION_ERROR) {
                 setAlert({
                     description: t(
-                        "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
+                        "users:notifications.bulkImportUser.submit.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
+                    message: t("users:notifications.bulkImportUser.submit.genericError.message")
                 });
             }
         } finally {
@@ -1217,35 +1217,35 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const statusCode: number = operation?.status?.code;
         let operationType: BulkImportResponseOperationTypes = BulkImportResponseOperationTypes.USER_CREATION;
 
-        const defaultMsg: string = t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+        const defaultMsg: string = t("user:modals.bulkImportUserWizard.wizardSummary." +
         "tableMessages.internalErrorMessage");
 
         let statusMessages: Record<number, string> = {};
 
         if (operation?.method === HttpMethods.POST) {
             statusMessages = {
-                201: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                201: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreatedMessage"),
-                202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                202: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreationAcceptedMessage"),
                 400: operation?.response?.includes(UserManagementConstants.USERNAME_REGEX_ERROR_CODE)
-                    ? t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    ? t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidUserNameFormatMessage")
-                    : t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    : t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidDataMessage"),
-                409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                409: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userAlreadyExistsMessage"),
-                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                500: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "internalErrorMessage")
             };
         } else if (operation?.method === HttpMethods.PATCH) {
             operationType = BulkImportResponseOperationTypes.ROLE_ASSIGNMENT;
             statusMessages = {
-                200: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                200: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                 "userAssignmentSuccessMessage", { resource: resourceIdentifier }),
-                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                400: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                 "userAssignmentFailedMessage", { resource: resourceIdentifier }),
-                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                500: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                 "userAssignmentInternalErrorMessage", { resource: resourceIdentifier })
             };
         }
@@ -1302,35 +1302,35 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const statusCode: number = operation?.status?.code;
         let operationType: BulkImportResponseOperationTypes = BulkImportResponseOperationTypes.USER_CREATION;
 
-        const defaultMsg: string = t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+        const defaultMsg: string = t("user:modals.bulkImportUserWizard.wizardSummary." +
         "tableMessages.internalErrorMessage");
 
         let statusMessages: Record<number, string> = {};
 
         if (operation?.method === HttpMethods.POST) {
             statusMessages = {
-                201: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                201: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreatedMessage"),
-                202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                202: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreationAcceptedMessage"),
                 400: operation?.response?.includes(UserManagementConstants.USERNAME_REGEX_ERROR_CODE)
-                    ? t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    ? t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidUserNameFormatMessage")
-                    : t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    : t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidDataMessage"),
-                409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                409: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userAlreadyExistsMessage"),
-                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                500: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "internalErrorMessage")
             };
         } else if (operation?.method === HttpMethods.PATCH) {
             operationType = BulkImportResponseOperationTypes.ROLE_ASSIGNMENT;
             statusMessages = {
-                200: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                200: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                 "userAssignmentSuccessMessage", { resource: resourceIdentifier }),
-                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                400: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                 "userAssignmentFailedMessage", { resource: resourceIdentifier }),
-                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                500: t("user:modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                 "userAssignmentInternalErrorMessage", { resource: resourceIdentifier })
             };
         }
@@ -1385,12 +1385,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      */
     const getStatusFromCode = (statusCode: number): BulkUserImportOperationStatus => {
         if (statusCode === 201 || statusCode === 200) return t(
-            "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.success" );
+            "user:modals.bulkImportUserWizard.wizardSummary.tableStatus.success" );
         if (statusCode === 202) return t(
-            "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.warning" );
+            "user:modals.bulkImportUserWizard.wizardSummary.tableStatus.warning" );
 
         return t(
-            "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.failed" );
+            "user:modals.bulkImportUserWizard.wizardSummary.tableStatus.failed" );
     };
 
     /**
@@ -1435,7 +1435,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 </div>
                                             ) }
                                             content={
-                                                t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                                t("user:modals.bulkImportUserWizard" +
                                                 ".wizardSummary.manualCreation.disabledHint" )
                                             }
                                             size="mini"
@@ -1480,7 +1480,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     className="spacing-bottom"
                     data-componentid={ `${componentId}-userstore-label` }
                 >
-                    { t("console:manage.features.user.forms.addUserForm." +
+                    { t("user:forms.addUserForm." +
                         "inputs.domain.label") }
                 </InputLabel>
                 <Dropdown
@@ -1576,7 +1576,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     data-componentid={ `${componentId}-emails-label` }
                                                 >
                                                     {
-                                                        t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                                        t("user:modals.bulkImportUserWizard" +
                                                         ".wizardSummary.manualCreation.emailsLabel")
                                                     }
                                                 </InputLabel>
@@ -1595,7 +1595,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     required
                                                     variant="outlined"
                                                     placeholder={
-                                                        t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                                        t("user:modals.bulkImportUserWizard" +
                                                         ".wizardSummary.manualCreation.emailsPlaceholder")
                                                     }
                                                     data-componentid={ `${componentId}-email-input` }
@@ -1614,7 +1614,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         } }
                                     />
                                     <Hint>
-                                        { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                        { t("user:modals.bulkImportUserWizard.wizardSummary" +
                                         ".manualCreation.hint" ) }
                                     </Hint>
                                     {
@@ -1654,7 +1654,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         data-componentid={ `${componentId}-roles-label` }
                                                     >
                                                         {
-                                                            t("console:manage.features.user.modals." +
+                                                            t("user:modals." +
                                                             "bulkImportUserWizard.wizardSummary." +
                                                             "manualCreation.groupsLabel")
                                                         }
@@ -1669,7 +1669,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         required
                                                         variant="outlined"
                                                         placeholder={
-                                                            t("console:manage.features.user.modals." +
+                                                            t("user:modals." +
                                                             "bulkImportUserWizard.wizardSummary." +
                                                             "manualCreation.groupsPlaceholder")
                                                         }
@@ -1728,12 +1728,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             >
                                                 <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
                                                     {
-                                                        t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                        t("user:modals.bulkImportUserWizard." +
                                                     "wizardSummary.manualCreation.alerts.creationSuccess.message")
                                                     }
                                                 </AlertTitle>
                                                 {
-                                                    t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                    t("user:modals.bulkImportUserWizard." +
                                                 "wizardSummary.manualCreation.alerts.creationSuccess.description")
                                                 }
                                             </Alert>
@@ -1797,7 +1797,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                             </Grid.Row>
                             {
                                 <Hint>
-                                    { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                    { t("user:modals.bulkImportUserWizard.wizardSummary" +
                                     ".fileBased.hint" ) }
                                 </Hint>
                             }
@@ -1842,28 +1842,28 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                     <div className="help-panel-header-text">
-                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                        { t("applications:wizards.minimalAppCreationWizard.help.heading") }
                     </div>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader/> }>
                         <Heading as="h5">
-                            { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.manual") }
+                            { t("user:modals.bulkImportUserWizard.sidePanel.manual") }
                         </Heading>
                         <p>
-                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                            { t("user:modals.bulkImportUserWizard.wizardSummary" +
                                 ".manualCreation.hint" ) }
                         </p>
                         <Divider />
                         <Heading as="h5">
-                            { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.fileBased") }
+                            { t("user:modals.bulkImportUserWizard.sidePanel.fileBased") }
                         </Heading>
                         <p>
-                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                            { t("user:modals.bulkImportUserWizard.wizardSummary" +
                                 ".fileBased.hint" ) }
                         </p>
                         <Heading as="h6">
-                            { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                            { t("user:modals.bulkImportUserWizard.sidePanel." +
                                 "fileFormatTitle") }
                         </Heading>
                         <p>
@@ -1872,7 +1872,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     ? (
                                         <Trans
                                             i18nKey={
-                                                "console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                                                "user:modals.bulkImportUserWizard.sidePanel." +
                                             "fileFormatContent"
                                             }
                                         >
@@ -1883,7 +1883,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     : (
                                         <Trans
                                             i18nKey={
-                                                "console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                                                "user:modals.bulkImportUserWizard.sidePanel." +
                                                 "fileFormatContent"
                                             }
                                         >
@@ -1894,7 +1894,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                             }
 
                         </p>
-                        <p> { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                        <p> { t("user:modals.bulkImportUserWizard.sidePanel." +
                                 "fileFormatSampleHeading") }</p>
                         <p>
                             <code>
@@ -1928,9 +1928,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         >
             <ModalWithSidePanel.MainPanel>
                 <ModalWithSidePanel.Header className="wizard-header">
-                    { t("console:manage.features.user.modals.bulkImportUserWizard.title") }
+                    { t("user:modals.bulkImportUserWizard.title") }
                     <Heading as="h6">
-                        { t("console:manage.features.user.modals.bulkImportUserWizard.subTitle") }
+                        { t("user:modals.bulkImportUserWizard.subTitle") }
                     </Heading>
                 </ModalWithSidePanel.Header>
 
@@ -1941,7 +1941,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 <Grid.Column>
                                     <Message
                                         icon="mail"
-                                        content={ t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                        content={ t("user:modals.bulkImportUserWizard" +
                                         ".wizardSummary.inviteEmailInfo") }
                                         hideDefaultIcon
                                     />
@@ -1984,7 +1984,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         loading={ isSubmitting }
                                                         disabled={ isManualInviteButtonDisabled() }
                                                     >
-                                                        { t("console:manage.features.user.modals." +
+                                                        { t("user:modals." +
                                                     "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
                                                     </PrimaryButton>
                                                 </Grid.Column>
@@ -2021,7 +2021,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         || !selectedCSVFile
                                                         }
                                                     >
-                                                        { t("console:manage.features.user.modals." +
+                                                        { t("user:modals." +
                                                     "bulkImportUserWizard.buttons.import") }
                                                     </PrimaryButton>
                                                 </Grid.Column>

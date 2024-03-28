@@ -137,12 +137,12 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizations.notifications.updateOrganization." +
+                                "organizations:notifications.updateOrganization." +
                                 "success.description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
-                                "console:manage.features.organizations.notifications.updateOrganization." +
+                                "organizations:notifications.updateOrganization." +
                                 "success.message"
                             )
                         })
@@ -157,7 +157,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 description: error.description,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.organizations.notifications.updateOrganization." +
+                                    "organizations:notifications.updateOrganization." +
                                     "error.message"
                                 )
                             })
@@ -169,12 +169,12 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizations.notifications" +
+                                "organizations:notifications" +
                                 ".updateOrganization.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications" +
+                                "organizations:notifications" +
                                 ".updateOrganization.genericError.message"
                             )
                         })
@@ -192,12 +192,12 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizations.notifications.deleteOrganization.success" +
+                                "organizations:notifications.deleteOrganization.success" +
                                 ".description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
-                                "console:manage.features.organizations.notifications.deleteOrganization.success.message"
+                                "organizations:notifications.deleteOrganization.success.message"
                             )
                         })
                     );
@@ -215,13 +215,13 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                             dispatch(
                                 addAlert({
                                     description: t(
-                                        "console:manage.features.organizations.notifications." +
+                                        "organizations:notifications." +
                                         "deleteOrganizationWithSubOrganizationError",
                                         { organizationName: organization.name }
                                     ),
                                     level: AlertLevels.ERROR,
                                     message: t(
-                                        "console:manage.features.organizations.notifications.deleteOrganization.error" +
+                                        "organizations:notifications.deleteOrganization.error" +
                                         ".message"
                                     )
                                 })
@@ -234,7 +234,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 description: error.response.data.description,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.organizations.notifications.deleteOrganization.error" +
+                                    "organizations:notifications.deleteOrganization.error" +
                                     ".message"
                                 )
                             })
@@ -246,12 +246,12 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizations.notifications.deleteOrganization" +
+                                "organizations:notifications.deleteOrganization" +
                                 ".genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications.deleteOrganization.genericError" +
+                                "organizations:notifications.deleteOrganization.genericError" +
                                 ".message"
                             )
                         })
@@ -278,17 +278,17 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                         addAlert({
                             description: t(
                                 organization.status === "ACTIVE"
-                                    ? "console:manage.features.organizations.notifications" +
+                                    ? "organizations:notifications" +
                                     ".disableOrganization.success.description"
-                                    : "console:manage.features.organizations.notifications" +
+                                    : "organizations:notifications" +
                                     ".enableOrganization.success.description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
                                 organization.status === "ACTIVE"
-                                    ? "console:manage.features.organizations.notifications" +
+                                    ? "organizations:notifications" +
                                     ".disableOrganization.success.message"
-                                    : "console:manage.features.organizations.notifications" +
+                                    : "organizations:notifications" +
                                     ".enableOrganization.success.message"
                             )
                         })
@@ -303,13 +303,13 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                             dispatch(
                                 addAlert({
                                     description: t(
-                                        "console:manage.features.organizations.notifications." +
+                                        "organizations:notifications." +
                                         "disableOrganizationWithSubOrganizationError",
                                         { organizationName: organization.name }
                                     ),
                                     level: AlertLevels.ERROR,
                                     message: t(
-                                        "console:manage.features.organizations.notifications.disableOrganization" +
+                                        "organizations:notifications.disableOrganization" +
                                         ".genericError.message"
                                     )
                                 })
@@ -324,9 +324,9 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 level: AlertLevels.ERROR,
                                 message: t(
                                     organization.status === "ACTIVE"
-                                        ? "console:manage.features.organizations.notifications" +
+                                        ? "organizations:notifications" +
                                         ".disableOrganization.error.message"
-                                        : "console:manage.features.organizations.notifications" +
+                                        : "organizations:notifications" +
                                         ".enableOrganization.error.message"
                                 )
                             })
@@ -339,17 +339,17 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                         addAlert({
                             description: t(
                                 organization.status === "ACTIVE"
-                                    ? "console:manage.features.organizations.notifications" +
+                                    ? "organizations:notifications" +
                                     ".disableOrganization.genericError.description"
-                                    : "console:manage.features.organizations.notifications" +
+                                    : "organizations:notifications" +
                                     ".enableOrganization.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
                                 organization.status === "ACTIVE"
-                                    ? "console:manage.features.organizations.notifications" +
+                                    ? "organizations:notifications" +
                                     ".disableOrganization.genericError.message"
-                                    : "console:manage.features.organizations.notifications" +
+                                    : "organizations:notifications" +
                                     ".enableOrganization.genericError.message"
                             )
                         })
@@ -405,17 +405,17 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         data-testid={ `${ testId }-overview-form-name-input` }
                                         name="name"
                                         label={ t(
-                                            "console:manage.features.organizations.edit.fields.name.label"
+                                            "organizations:edit.fields.name.label"
                                         ) }
                                         required={ true }
                                         requiredErrorMessage="Please enter the organization name"
                                         value={ organization.name }
                                         ariaLabel={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "name.ariaLabel"
                                         ) }
                                         placeholder={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "name.placeholder"
                                         ) }
                                         inputType="name"
@@ -429,18 +429,18 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         data-testid={ `${ testId }-overview-form-description-input` }
                                         name="description"
                                         label={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "description.label"
                                         ) }
                                         required={ false }
                                         requiredErrorMessage=""
                                         value={ organization?.description ?? "" }
                                         placeholder={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "description.placeholder"
                                         ) }
                                         ariaLabel={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "description.ariaLabel"
                                         ) }
                                         inputType="description"
@@ -458,7 +458,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         data-testid={ `${ testId }-overview-form-domain-input` }
                                         name="domain"
                                         label={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "domain.label"
                                         ) }
                                         required={ false }
@@ -466,7 +466,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         value={ organization?.domain || "" }
                                         readOnly={ true }
                                         ariaLabel={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "domain.ariaLabel"
                                         ) }
                                         inputType="url"
@@ -478,7 +478,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                     data-testid={ `${ testId }-overview-form-created-input` }
                                     name="id"
                                     label={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        "organizations:edit.fields." +
                                     "id.label"
                                     ) }
                                     required={ false }
@@ -487,7 +487,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                     readOnly={ true }
                                     value={ organization?.id }
                                     ariaLabel={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        "organizations:edit.fields." +
                                     "id.ariaLabel"
                                     ) }
                                     inputType="copy_input"
@@ -499,7 +499,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         data-testid={ `${ testId }-overview-form-created-input` }
                                         name="created"
                                         label={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "created.label"
                                         ) }
                                         required={ false }
@@ -510,7 +510,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             "YYYY-MM-DD hh:mm:ss"
                                         ) }
                                         ariaLabel={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "created.ariaLabel"
                                         ) }
                                         inputType="default"
@@ -523,7 +523,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         data-testid={ `${ testId }-overview-form-last-modified-input` }
                                         name="lastModified"
                                         label={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "lastModified.label"
                                         ) }
                                         required={ false }
@@ -534,7 +534,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             organization.lastModified
                                         ).format("YYYY-MM-DD hh:mm:ss") }
                                         ariaLabel={ t(
-                                            "console:manage.features.organizations.edit.fields." +
+                                            "organizations:edit.fields." +
                                         "lastModified.ariaLabel"
                                         ) }
                                         inputType="default"
@@ -577,7 +577,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                         type="negative"
                         open={ showOrgDeleteConfirmation }
                         assertionHint={ t(
-                            "console:manage.features.organizations.confirmations." +
+                            "organizations:confirmations." +
                         "deleteOrganization.assertionHint"
                         ) }
                         assertionType="checkbox"
@@ -594,17 +594,17 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     >
                         <ConfirmationModal.Header>
                             { t(
-                                "console:manage.features.organizations.confirmations.deleteOrganization.header"
+                                "organizations:confirmations.deleteOrganization.header"
                             ) }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached negative>
                             { t(
-                                "console:manage.features.organizations.confirmations.deleteOrganization.message"
+                                "organizations:confirmations.deleteOrganization.message"
                             ) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
                             { t(
-                                "console:manage.features.organizations.confirmations.deleteOrganization.content"
+                                "organizations:confirmations.deleteOrganization.content"
                             ) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
@@ -622,15 +622,15 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                         <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
                             <DangerZone
                                 actionTitle={ t(
-                                    "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    "organizations:edit.dangerZone.disableOrganization" +
                                     ".disableActionTitle"
                                 ) }
                                 header={ t(
-                                    "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    "organizations:edit.dangerZone.disableOrganization" +
                                     ".disableActionTitle"
                                 ) }
                                 subheader={ t(
-                                    "console:manage.features.organizations.edit.dangerZone" +
+                                    "organizations:edit.dangerZone" +
                                     ".disableOrganization.subheader"
                                 ) }
                                 onActionClick={ undefined }
@@ -649,15 +649,15 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                             >
                                 <DangerZone
                                     actionTitle={ t(
-                                        "console:manage.features.organizations.edit" +
+                                        "organizations:edit" +
                                         ".dangerZone.title"
                                     ) }
                                     header={ t(
-                                        "console:manage.features.organizations.edit" +
+                                        "organizations:edit" +
                                         ".dangerZone.title"
                                     ) }
                                     subheader={ t(
-                                        "console:manage.features.organizations.edit" +
+                                        "organizations:edit" +
                                         ".dangerZone.subHeader"
                                     ) }
                                     onActionClick={ () =>

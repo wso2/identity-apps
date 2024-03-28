@@ -446,12 +446,13 @@ export const applicationConfig: ApplicationConfig = {
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
                     applicationRoles?.enabled)
                 && (
-                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    application?.advancedConfigurations?.fragment ||
+                    (application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
-                    || application?.templateId === SamlWebAppTemplate?.id
+                    || application?.templateId === SamlWebAppTemplate?.id)
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -618,7 +619,9 @@ export const applicationConfig: ApplicationConfig = {
         showClientSecretMessage: false,
         showFrontChannelLogout: false,
         showIdTokenEncryption: true,
+        showIdTokenResponseSigningAlgorithm: true,
         showNativeClientSecretMessage: false,
+        showRequestObjectConfigurations: true,
         showRequestObjectSignatureValidation: false,
         showReturnAuthenticatedIdPList: false,
         showScopeValidators: false

@@ -134,10 +134,10 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                     });
 
                     dispatch(addAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        description: t("authenticationProvider:notifications.addIDP." +
                         "success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        message: t("authenticationProvider:notifications.addIDP." +
                         "success.message")
                     }));
 
@@ -171,11 +171,11 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
 
                     if (error.response && error.response.data && error.response.data.description) {
                         setAlert({
-                            description: t("console:develop.features.authenticationProvider.notifications." +
+                            description: t("authenticationProvider:notifications." +
                             "addIDP.error.description",
                             { description: error.response.data.description }),
                             level: AlertLevels.ERROR,
-                            message: t("console:develop.features.authenticationProvider.notifications." +
+                            message: t("authenticationProvider:notifications." +
                             "addIDP.error.message")
                         });
 
@@ -183,10 +183,10 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                     }
 
                     setAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        description: t("authenticationProvider:notifications.addIDP." +
                         "genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        message: t("authenticationProvider:notifications.addIDP." +
                         "genericError.message")
                     });
                 })
@@ -343,7 +343,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                                             loading={ isSubmitting }
                                             disabled={ isSubmitting }
                                         >
-                                            { t("console:develop.features.authenticationProvider." +
+                                            { t("authenticationProvider:" +
                                                 "wizards.buttons.next") }
                                         </PrimaryButton>
                                     )
@@ -358,7 +358,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                                             loading={ isSubmitting }
                                             disabled={ isSubmitting }
                                         >
-                                            { t("console:develop.features.authenticationProvider." +
+                                            { t("authenticationProvider:" +
                                                 "wizards.buttons.finish") }
                                         </PrimaryButton>
                                     )
@@ -372,7 +372,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                                         } }
                                         data-testid={ `${ testId }-modal-previous-button` }
                                     >
-                                        { t("console:develop.features.authenticationProvider." +
+                                        { t("authenticationProvider:" +
                                             "wizards.buttons.previous") }
                                     </LinkButton>
                                 )
@@ -403,7 +403,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                            { t("applications:wizards.minimalAppCreationWizard.help.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>
@@ -420,19 +420,19 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                 { openLimitReachedModal &&
                     (<TierLimitReachErrorModal
                         actionLabel={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.action"
                         ) }
                         handleModalClose={ handleLimitReachedModalClose }
                         header={ t(
-                            "console:develop.features.idp.notifications.tierLimitReachedError.heading"
+                            "idp:notifications.tierLimitReachedError.heading"
                         ) }
                         description={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

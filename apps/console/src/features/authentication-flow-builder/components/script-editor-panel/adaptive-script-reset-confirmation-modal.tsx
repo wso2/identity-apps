@@ -66,7 +66,7 @@ const AdaptiveScriptResetConfirmationModal: FunctionComponent<AdaptiveScriptRese
             { ...rest }
         >
             <ConfirmationModal.Header data-componentid={ `${componentId}-header` }>
-                { t("console:develop.features.applications.edit." +
+                { t("applications:edit." +
                     "sections.signOnMethod.sections.authenticationFlow." +
                     "sections.scriptBased.editor.resetConfirmation.heading") }
             </ConfirmationModal.Header>
@@ -75,14 +75,14 @@ const AdaptiveScriptResetConfirmationModal: FunctionComponent<AdaptiveScriptRese
                 warning
                 data-componentid={ `${componentId}-message` }
             >
-                { t("console:develop.features.applications.edit." +
+                { t("applications:edit." +
                         "sections.signOnMethod.sections.authenticationFlow." +
                         "sections.scriptBased.editor.resetConfirmation.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
                 <Trans
                     i18nKey={
-                        "console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                        "applications:edit.sections.signOnMethod.sections" +
                         ".authenticationFlow.sections.scriptBased.editor.resetConfirmation.content"
                     }
                 >

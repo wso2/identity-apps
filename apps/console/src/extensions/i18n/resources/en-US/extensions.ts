@@ -432,6 +432,28 @@ export const extensions: Extensions = {
                     }
                 }
             }
+        },
+        organizationInfo: {
+            heading: "Organization Info",
+            subHeading: "View information related to your organization.",
+            orgId: {
+                label: "Organization ID",
+                heading: "Organization ID",
+                subHeading: "The following organization ID will be useful for you to implement and configure the Asgardeo manangement REST APIs of " +
+                    "organizations."
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while retrieving organization information"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving organization information.",
+                        message: "An error occurred"
+                    }
+                }
+            }
         }
     },
     develop: {
@@ -2659,7 +2681,7 @@ export const extensions: Extensions = {
                 },
                 searchBar: {
                     placeholderDiagnostic: "Search Logs by Trace ID, Action ID, Client ID, Result Message, or Result Status",
-                    placeholderAudit: "Search Logs by Action, Target ID, Initiator ID, Request ID"
+                    placeholderAudit: "Search logs that contain ..."
                 },
                 refreshMessage: {
                     text: "Last fetched logs at ",
@@ -2672,7 +2694,10 @@ export const extensions: Extensions = {
                     label: "Run Query"
                 },
                 downloadButton : {
-                    label : "Download log data"
+                    label : "Download"
+                },
+                viewButton: {
+                    label : "View"
                 },
                 delayMessage: {
                     text: "Some queries may take longer to load."
@@ -2681,6 +2706,17 @@ export const extensions: Extensions = {
             logView: {
                 toolTips: {
                     seeMore: "See more"
+                },
+                headers: {
+                    recordedAt: "Recorded Time",
+                    actionId: "Action",
+                    targetId: "Target"
+                },
+                logDataviewer : {
+                    panelName: "AuditLog Data Viewer",
+                    download: "Download",
+                    copy: "Copy",
+                    close: "Close"
                 }
             },
             notifications: {
@@ -2918,7 +2954,7 @@ export const extensions: Extensions = {
                     " the login flow.",
                 warning: "Ensure that each user in your organization has a unique value assigned for the selected" +
                     " login identifiers.",
-                info: "You have selected email as the username type which makes it the primary login identifier.",
+                info: "You've chosen email as your username type, and it automatically serves as a login identifier.",
                 notification: {
                     error: {
                         description: "Error updating the alternative login identifier configuration.",
@@ -3821,7 +3857,7 @@ export const extensions: Extensions = {
                     },
                     subHeading:
                         "When self registration is enabled, users can register via the " +
-                        "<1>Create an account</1> link on the application’s login page. This creates a new " +
+                        "<1>Register</1> link on the application’s login page. This creates a new " +
                         "<3>user</3> account in the organization."
                 },
                 inviteUserToSetPassword: {

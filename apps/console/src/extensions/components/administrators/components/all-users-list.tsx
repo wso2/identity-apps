@@ -496,7 +496,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                 setShowDeleteConfirmationModal(true);
                 setDeletingUser(user);
             },
-            popupText: (): string => t("console:manage.features.users.usersList.list.iconPopups.delete"),
+            popupText: (): string => t("users:usersList.list.iconPopups.delete"),
             renderer: "semantic-icon"
         });
 
@@ -515,16 +515,16 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                            { t("users:usersList.search.emptyResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                    title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
                             { query: searchQuery }),
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -536,11 +536,11 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                     data-testid={ `${ testId }-empty-placeholder` }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.list.emptyResultPlaceholder.title") }
+                    title={ t("users:usersList.list.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.0"),
-                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.1"),
-                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.2")
+                        t("users:usersList.list.emptyResultPlaceholder.subTitle.0"),
+                        t("users:usersList.list.emptyResultPlaceholder.subTitle.1"),
+                        t("users:usersList.list.emptyResultPlaceholder.subTitle.2")
                     ] }
                 />
             );
@@ -580,7 +580,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal.assertionHint") }
+                        assertionHint={ t("user:deleteUser.confirmationModal.assertionHint") }
                         assertionType="checkbox"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
@@ -592,7 +592,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                            { t("user:deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
@@ -600,7 +600,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                             negative
                         >
                             { resolveUserstore(deletingUser.userName) === userstoresConfig.primaryUserstoreName
-                                ? t("console:manage.features.user.deleteUser.confirmationModal.message")
+                                ? t("user:deleteUser.confirmationModal.message")
                                 : t("extensions:manage.guest.deleteUser.confirmationModal.message")
                             }
                         </ConfirmationModal.Message>
@@ -609,8 +609,8 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                             { resolveUserstore(deletingUser.userName) === userstoresConfig.primaryUserstoreName
                                 ? (
                                     deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
-                                        ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")
-                                        : t("console:manage.features.user.deleteUser.confirmationModal.content")
+                                        ? t("user:deleteJITUser.confirmationModal.content")
+                                        : t("user:deleteUser.confirmationModal.content")
                                 )
                                 : t("extensions:manage.guest.deleteUser.confirmationModal.content")
                             }

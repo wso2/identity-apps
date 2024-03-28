@@ -103,10 +103,10 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications" +
+                    description: t("applications:notifications" +
                         ".updateInboundProvisioningConfig.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateInboundProvisioningConfig" +
+                    message: t("applications:notifications.updateInboundProvisioningConfig" +
                         ".success.message")
                 }));
 
@@ -114,10 +114,10 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications" +
+                    description: t("applications:notifications" +
                         ".updateInboundProvisioningConfig.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateInboundProvisioningConfig" +
+                    message: t("applications:notifications.updateInboundProvisioningConfig" +
                         ".genericError.message")
                 }));
             })
@@ -174,10 +174,10 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     return (
         <>
             <Heading as="h4">
-                { t("console:develop.features.applications.edit.sections.provisioning.inbound.heading") }
+                { t("applications:edit.sections.provisioning.inbound.heading") }
             </Heading>
             <Heading subHeading as="h6">
-                { t("console:develop.features.applications.edit.sections.provisioning.inbound.subHeading") }
+                { t("applications:edit.sections.provisioning.inbound.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>

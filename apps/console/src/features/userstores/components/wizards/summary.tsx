@@ -113,7 +113,7 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
             </Grid.Row>
             { type ? generateSummaryLine("Userstore Type", type) : null }
 
-            <Divider horizontal>{ t("console:manage.features.userstores.wizard.steps.general") }</Divider>
+            <Divider horizontal>{ t("userstores:wizard.steps.general") }</Divider>
 
             {
                 basicProperties?.map((property: TypeProperty, index: number) => {
@@ -146,7 +146,7 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                 })
             }
 
-            <Divider horizontal>{ t("console:manage.features.userstores.wizard.steps.user") }</Divider>
+            <Divider horizontal>{ t("userstores:wizard.steps.user") }</Divider>
 
             {
                 userProperties?.map((property: TypeProperty, index: number) => {
@@ -164,7 +164,7 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                 })
             }
 
-            <Divider horizontal>{ t("console:manage.features.userstores.wizard.steps.group") }</Divider>
+            <Divider horizontal>{ t("userstores:wizard.steps.group") }</Divider>
 
             {
                 groupProperties?.map((property: TypeProperty, index: number) => {

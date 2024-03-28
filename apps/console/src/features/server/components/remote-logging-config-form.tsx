@@ -280,7 +280,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
             </EmphasizedSegment>
             <Divider hidden />
             <DangerZoneGroup
-                sectionHeader={ t("console:develop.features.applications.dangerZoneGroup.header") }
+                sectionHeader={ t("applications:dangerZoneGroup.header") }
             >
                 <DangerZone
                     isButtonDisabled={ !logConfig || Object.keys(logConfig).length === 0 }

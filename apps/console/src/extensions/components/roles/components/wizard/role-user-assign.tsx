@@ -404,12 +404,12 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         >
             <Modal.Header>
                 {
-                    t("console:manage.features.roles.addRoleWizard.users.assignUserModal.heading",
+                    t("roles:addRoleWizard.users.assignUserModal.heading",
                         { type: "Group" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
+                        t("roles:addRoleWizard.users.assignUserModal.subHeading",
                             { type: "group" })
                     }
                 </Heading>
@@ -423,7 +423,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={
-                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                        t("roles:addRoleWizard.users.assignUserModal.list" +
                             ".searchPlaceholder")
                     }
                     isLoading={ isUsersFetchRequestLoading }
@@ -438,9 +438,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         isLoading={ isUsersFetchRequestLoading }
                         listType="unselected"
                         data-testid={ `${ testId }-unselected-transfer-list` }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
+                        emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {
@@ -585,7 +585,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     setEditViewUserList);
                                             } }
                                             placeholder={
-                                                t("console:manage.features.roles.addRoleWizard." +
+                                                t("roles:addRoleWizard." +
                                                     "users.assignUserModal.list.searchPlaceholder")
                                             }
                                             floated="left"
@@ -626,10 +626,10 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                             <EmphasizedSegment>
                                                 <EmptyPlaceholder
-                                                    title={ t("console:manage.features.roles.edit.users.list." +
+                                                    title={ t("roles:edit.users.list." +
                                                         "emptyPlaceholder.title") }
                                                     subtitle={ [
-                                                        t("console:manage.features.roles.edit.users.list." +
+                                                        t("roles:edit.users.list." +
                                                             "emptyPlaceholder.subtitles", { type: "role" })
                                                     ] }
                                                     action={
@@ -641,7 +641,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                 onClick={ handleOpenAddNewRoleModal }
                                                                 icon="plus"
                                                             >
-                                                                { t("console:manage.features.roles.edit.users.list." +
+                                                                { t("roles:edit.users.list." +
                                                                     "emptyPlaceholder.action") }
                                                             </PrimaryButton>
                                                         )
@@ -684,7 +684,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             className="one-column-selection"
                             selectionComponent
                             searchPlaceholder={
-                                t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                                t("roles:addRoleWizard.users.assignUserModal.list" +
                                     ".searchPlaceholder")
                             }
                             isLoading={ isUsersFetchRequestLoading }
@@ -707,7 +707,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                     "to this role."
                                 }
                                 data-testid={ `${ testId }-unselected-transfer-list` }
-                                emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                emptyPlaceholderDefaultContent={ t("transferList:list."
                                     + "emptyPlaceholders.default") }
                             >
                                 {

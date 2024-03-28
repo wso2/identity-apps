@@ -157,7 +157,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
 
     const panes = () => ([
         {
-            menuItem: t("console:manage.features.users.editUser.tab.menuItems.0"),
+            menuItem: t("users:editUser.tab.menuItems.0"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserProfile
@@ -191,7 +191,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
         },
         realmConfigs?.adminUser !== user.userName ?
             {
-                menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
+                menuItem: t("users:editUser.tab.menuItems.2"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <UserRolesList
@@ -216,7 +216,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
         adminUserType === AdminAccountTypes.INTERNAL ||
         UserManagementUtils.isAuthenticatedUser(authenticatedUser, user?.userName)
             ? {
-                menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
+                menuItem: t("users:editUser.tab.menuItems.3"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <UserSessions

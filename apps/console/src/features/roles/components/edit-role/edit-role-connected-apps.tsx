@@ -154,7 +154,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                         </Header>
                     );
                 },
-                title: t("console:develop.features.applications.list.columns.name")
+                title: t("applications:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -162,7 +162,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.applications.list.columns.actions")
+                title: t("applications:list.columns.actions")
             }
         ];
     };
@@ -213,7 +213,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("console:develop.features.idp.connectedApps.placeholders.emptyList", {
+                        t("idp:connectedApps.placeholders.emptyList", {
                             idpName: role?.displayName
                         })
                     ] }
@@ -243,7 +243,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                     handleApplicationEdit(app.value, "#tab=" +
                         ApplicationManagementConstants.ROLES_TAB_URL_FRAG),
                 popupText: (): string => {
-                    return t("console:develop.features.idp.connectedApps.action");
+                    return t("idp:connectedApps.action");
                 },
                 renderer: "semantic-icon"
             }
@@ -282,7 +282,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
 
     return (
         <EmphasizedSegment padded="very">
-            <Heading as="h4">{ t("console:develop.features.idp.connectedApps.header", 
+            <Heading as="h4">{ t("idp:connectedApps.header", 
                 { idpName: role?.displayName }) }</Heading>
             <Divider hidden />
             { associatedApplications && (
@@ -290,7 +290,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                     icon={ <Icon name="search" /> }
                     iconPosition="left"
                     onChange={ handleChange }
-                    placeholder = { t("console:develop.features.idp.connectedApps.placeholders.search") }
+                    placeholder = { t("idp:connectedApps.placeholders.search") }
                     floated="left"
                     size="small"
                     style={ { width: "250px" } }

@@ -133,7 +133,7 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
         >
             <TransferComponent
                 selectionComponent
-                searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
+                searchPlaceholder={ t("transferList:searchPlaceholder",
                     { type: "Groups" }) }
                 handleUnelectedListSearch={ handleUnselectedListSearch }
                 data-testid="user-mgt-add-user-wizard-modal"
@@ -141,10 +141,10 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
                 <TransferList
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
                     listType="unselected"
-                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
+                    emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders." +
                         "users.roles.unselected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-unselected-transfer-list"
-                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                    emptyPlaceholderDefaultContent={ t("transferList:list."
                         + "emptyPlaceholders.default") }
                 >
                     {

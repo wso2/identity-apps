@@ -71,12 +71,12 @@ export const AddUserType: FunctionComponent<AddUserTypeProps> = (props: AddUserT
                             </Grid>
                             <Grid padding={ 1 } textAlign="center">
                                 <Typography variant="h6">
-                                    { t("console:manage.features.users.addUserType.createUser.title") }
+                                    { t("users:addUserType.createUser.title") }
                                 </Typography>
                             </Grid>
                             <Grid padding={ 1 } textAlign="center">
                                 <Typography variant="body2" color="text.secondary">
-                                    { t("console:manage.features.users.addUserType.createUser.description") }
+                                    { t("users:addUserType.createUser.description") }
                                 </Typography>
                             </Grid>
                         </CardContent>
@@ -99,12 +99,12 @@ export const AddUserType: FunctionComponent<AddUserTypeProps> = (props: AddUserT
                             </Grid>
                             <Grid padding={ 1 } textAlign="center">
                                 <Typography variant="h6">
-                                    { t("console:manage.features.users.addUserType.inviteParentUser.title") }
+                                    { t("users:addUserType.inviteParentUser.title") }
                                 </Typography>
                             </Grid>
                             <Grid padding={ 1 } textAlign="center">
                                 <Typography variant="body2" color="text.secondary">
-                                    { t("console:manage.features.users.addUserType.inviteParentUser.description") }
+                                    { t("users:addUserType.inviteParentUser.description") }
                                 </Typography>
                             </Grid>
                         </CardContent>

@@ -1,5 +1,25 @@
 # @wso2is/common
 
+## 2.0.52
+
+### Patch Changes
+
+- [#5835](https://github.com/wso2/identity-apps/pull/5835) [`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve audit log ux
+
+- Updated dependencies [[`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74)]:
+  - @wso2is/react-components@2.1.12
+  - @wso2is/access-control@2.0.22
+
+## 2.0.51
+
+### Patch Changes
+
+- [#5758](https://github.com/wso2/identity-apps/pull/5758) [`2381bd93b8`](https://github.com/wso2/identity-apps/commit/2381bd93b883b2e491419d298796fbc35d4e7990) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix the responsiveness issues in the info card
+
+- Updated dependencies [[`2381bd93b8`](https://github.com/wso2/identity-apps/commit/2381bd93b883b2e491419d298796fbc35d4e7990)]:
+  - @wso2is/react-components@2.1.11
+  - @wso2is/forms@2.0.27
+
 ## 2.0.50
 
 ### Patch Changes

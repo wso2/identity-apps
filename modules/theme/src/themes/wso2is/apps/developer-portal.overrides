@@ -1567,6 +1567,35 @@ TODO : Move values to separate variables and cleanup styles.
         overflow-y: scroll;
     }
 
+    .log-header {
+        color: #999999;
+        display: flex;
+        justify-content: space-between;
+        padding-left: 16px;
+        padding-bottom: 2px;
+
+        .log-Recordedtime {
+            margin-right: 30px;
+            min-width: 150px;
+        }
+
+        .log-description-header {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+
+            .log-actionId {
+                margin-right: 30px;
+                padding-left: 8px;
+            }
+
+            .log-targetId {
+                margin-right: 30px;
+            }
+        }
+    }
+
     .log-row {
         display: flex;
         align-items: center;
@@ -1692,6 +1721,11 @@ TODO : Move values to separate variables and cleanup styles.
 	    }
     }
 
+    .log-targetId-container {
+        text-align: right;
+        margin-right: 30px;
+    }
+
     .log-actionid-container {
         text-align: right;
         margin-right: 30px;
@@ -1757,6 +1791,21 @@ TODO : Move values to separate variables and cleanup styles.
 .download-data-button {
     color: @primaryColor !important;
     cursor: "pointer";
+    padding-right: 10px;
+
+    .topic {
+        margin-right: 3px
+    }
+}
+
+.view-data-button {
+    color: @primaryColor !important;
+    cursor: "pointer";
+    padding-right: 10px;
+
+    .topic {
+        margin-right: 3px
+    }
 }
 
 .custom-portal-wrapper {

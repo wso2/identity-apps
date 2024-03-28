@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -23,6 +24,7 @@ import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { AddIDPCertificateFormComponent } from "./steps/add-certificate-form";
 import { updateIDPCertificate } from "../../api/connections";
@@ -42,8 +44,7 @@ interface AddIDPCertificateWizardPropsInterface extends TestableComponentInterfa
 /**
  *  Add Idp certificate wizard form component.
  *
- * @param {AddIDPCertificateWizard} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
  */
 export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardPropsInterface> = (
     props: AddIDPCertificateWizardPropsInterface): ReactElement => {
@@ -58,12 +59,12 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch : Dispatch = useDispatch();
 
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
     const [ triggerUpload, setTriggerUpload ] = useTrigger();
 
-    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
+    const [ partiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
@@ -92,18 +93,19 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
     const addCertificate = (values: any) => {
         if (idp?.certificate?.certificates?.includes(values["certificate"])) {
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider." +
+                description: t("authenticationProvider:" +
                     "notifications.duplicateCertificateUpload.error" +
                     ".description", { idp: idp.name }),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.authenticationProvider." +
+                message: t("authenticationProvider:" +
                     "notifications.duplicateCertificateUpload.error.message")
             }));
             closeWizard();
+
             return;
         }
 
-        let data;
+        let data: { operation: string; path: string; value: any; }[];
         const certificateIndex: number = idp?.certificate?.certificates ? idp?.certificate?.certificates?.length : 0;
 
         if (idp?.certificate?.jwksUri) {
@@ -134,22 +136,22 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
         updateIDPCertificate(idp.id, data)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider." +
+                    description: t("authenticationProvider:" +
                         "notifications.updateIDPCertificate.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider." +
+                    message: t("authenticationProvider:" +
                         "notifications.updateIDPCertificate.success.message")
                 }));
                 closeWizard();
                 onUpdate(idp.id);
             })
-            .catch((error) => {
+            .catch((error:IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider." +
+                        message: t("authenticationProvider:" +
                             "notifications.updateIDPCertificate.error.message")
                     });
 
@@ -157,11 +159,11 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                 }
 
                 setAlert({
-                    description: t("console:develop.features.authenticationProvider." +
+                    description: t("authenticationProvider:" +
                         "notifications.updateIDPCertificate.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider." +
+                    message: t("authenticationProvider:" +
                         "notifications.updateIDPCertificate.genericError.message")
                 });
             })
@@ -180,19 +182,23 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
     /**
      * This contains the wizard steps
      */
-    const STEPS = [
-        {
-            content: (
-                <AddIDPCertificateFormComponent
-                    triggerCertificateUpload={ triggerUpload }
-                    triggerSubmit={ finishSubmit }
-                    onSubmit={ handleWizardFormFinish }
-                />
-            ),
-            icon: getConnectionWizardStepIcons().general,
-            title: t("console:manage.features.certificates.keystore.wizard.steps.upload")
-        }
-    ];
+    const STEPS : {
+                    content: JSX.Element;
+                    icon: any;
+                        title: string;
+                    }[] = [
+                        {
+                            content: (
+                                <AddIDPCertificateFormComponent
+                                    triggerCertificateUpload={ triggerUpload }
+                                    triggerSubmit={ finishSubmit }
+                                    onSubmit={ handleWizardFormFinish }
+                                />
+                            ),
+                            icon: getConnectionWizardStepIcons().general,
+                            title: t("certificates:keystore.wizard.steps.upload")
+                        }
+                    ];
 
     return (
         <Modal
@@ -206,10 +212,10 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("console:develop.features.authenticationProvider.modals.addCertificate.title",
+                { t("authenticationProvider:modals.addCertificate.title",
                     { idpName: idp.name }) }
                 <Heading as="h6">
-                    { t("console:develop.features.authenticationProvider.modals.addCertificate.subTitle") }
+                    { t("authenticationProvider:modals.addCertificate.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
@@ -217,7 +223,11 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                     current={ currentWizardStep }
                     data-testid={ `${ testId }-steps` }
                 >
-                    { STEPS.map((step, index) => (
+                    { STEPS.map((step : {
+                                            content: JSX.Element;
+                                            icon: any;
+                                            title: string;
+                                        } , index : number) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }

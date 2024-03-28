@@ -206,7 +206,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 { applicationConfig.signInMethod.authenticatorSelection.messages
                                     .secondFactorDisabledInFirstStep ??
                                     t(
-                                        "console:develop.features.applications.edit.sections" +
+                                        "applications:edit.sections" +
                                         ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                         ".secondFactorDisabledInFirstStep"
                                     ) }
@@ -220,7 +220,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                     .secondFactorDisabled ?? (
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.applications.edit.sections" +
+                                            "applications:edit.sections" +
                                                 ".signOnMethod.sections.authenticationFlow.sections" +
                                                 ".stepBased.secondFactorDisabled"
                                         }
@@ -246,7 +246,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             { InfoLabel }
                             <Text>
                                 { t(
-                                    "console:develop.features.applications.edit.sections" +
+                                    "applications:edit.sections" +
                                     ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                     ".backupCodesDisabledInFirstStep"
                                 ) }
@@ -257,7 +257,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             { InfoLabel }
                             <Text>
                                 { t(
-                                    "console:develop.features.applications.edit.sections" +
+                                    "applications:edit.sections" +
                                     ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                     ".backupCodesDisabled"
                                 ) }
@@ -272,7 +272,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     { InfoLabel }
                     <Text>
                         { t(
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            "applications:edit.sections.signOnMethod.sections." +
                             "authenticationFlow.sections.stepBased.authenticatorDisabled"
                         ) }
                     </Text>
@@ -287,7 +287,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     <Text>
                         {
                             t(
-                                "console:develop.features.applications.edit.sections" +
+                                "applications:edit.sections" +
                                 ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                 ".firstFactorDisabled"
                             )
@@ -303,12 +303,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         {
                             (authenticationSteps[currentStep]?.options?.length !== 0)
                                 ? t(
-                                    "console:develop.features.applications.edit.sections" +
+                                    "applications:edit.sections" +
                                     ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                     ".sessionExecutorDisabledInMultiOptionStep"
                                 )
                                 : t(
-                                    "console:develop.features.applications.edit.sections" +
+                                    "applications:edit.sections" +
                                     ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                     ".sessionExecutorDisabledInFirstStep"
                                 )

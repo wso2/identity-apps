@@ -436,12 +436,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.applications.notifications." +
+                            "applications:notifications." +
                             "addApplication.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:develop.features.applications.notifications." +
+                            "applications:notifications." +
                             "addApplication.success.message"
                         )
                     })
@@ -474,7 +474,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 description: error.response.data.description,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:develop.features.applications.notifications." +
+                                    "applications:notifications." +
                                     "addApplication.error.message"
                                 )
                             });
@@ -503,7 +503,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:develop.features.applications.notifications." +
+                            "applications:notifications." +
                             "addApplication.error.message"
                         )
                     });
@@ -514,12 +514,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
                 setAlert({
                     description: t(
-                        "console:develop.features.applications.notifications." +
+                        "applications:notifications." +
                         "addApplication.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:develop.features.applications.notifications." +
+                        "applications:notifications." +
                         "addApplication.genericError.message"
                     )
                 });
@@ -606,7 +606,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:develop.features.applications.notifications.fetchTemplate.error.message"
+                                "applications:notifications.fetchTemplate.error.message"
                             )
                         })
                     );
@@ -616,12 +616,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.applications.notifications.fetchTemplate" +
+                            "applications:notifications.fetchTemplate" +
                             ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:develop.features.applications.notifications.fetchTemplate.genericError.message"
+                            "applications:notifications.fetchTemplate.genericError.message"
                         )
                     })
                 );
@@ -803,7 +803,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         if (!isNameValid(appName)) {
             validation.isValid = false;
             validation.errorMessages.push(
-                t("console:develop.features.applications.forms." +
+                t("applications:forms." +
                     "spaProtocolSettingsWizard.fields.name.validations.invalid", {
                     appName: value.toString(),
                     characterLimit: ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH
@@ -815,7 +815,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         if (isAppNameReserved(appName)) {
             validation.isValid = false;
             validation.errorMessages.push(
-                t("console:develop.features.applications.forms.generalDetails.fields.name.validations.reserved", {
+                t("applications:forms.generalDetails.fields.name.validations.reserved", {
                     appName: appName,
                     characterLimit: ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH
                 })
@@ -830,7 +830,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             if (response?.applications?.length > 0) {
                 validation.isValid = false;
                 validation.errorMessages.push(
-                    t("console:develop.features.applications.forms.generalDetails.fields.name.validations.duplicate")
+                    t("applications:forms.generalDetails.fields.name.validations.duplicate")
                 );
             }
         } catch (error) {
@@ -838,17 +838,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 dispatch(addAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchApplications.error.message")
+                    message: t("applications:notifications.fetchApplications.error.message")
                 }));
 
                 return;
             }
 
             dispatch(addAlert({
-                description: t("console:develop.features.applications.notifications." +
+                description: t("applications:notifications." +
                     "fetchApplications.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications." +
+                message: t("applications:notifications." +
                     "fetchApplications.genericError.message")
             }));
         }
@@ -1072,15 +1072,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 name="name"
                                 ref={ nameRef }
                                 label={ t(
-                                    "console:develop.features.applications.forms.generalDetails.fields.name.label"
+                                    "applications:forms.generalDetails.fields.name.label"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "console:develop.features.applications.forms.generalDetails.fields.name" +
+                                    "applications:forms.generalDetails.fields.name" +
                                     ".validations.empty"
                                 ) }
                                 placeholder={ t(
-                                    "console:develop.features.applications.forms.generalDetails.fields.name.placeholder"
+                                    "applications:forms.generalDetails.fields.name.placeholder"
                                 ) }
                                 type="text"
                                 data-testid={ `${ testId }-application-name-input` }
@@ -1112,14 +1112,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                     value={ [ "isManagementApp" ] }
                                     children={ [
                                         {
-                                            label: t("console:develop.features.applications.forms.generalDetails" +
+                                            label: t("applications:forms.generalDetails" +
                                                 ".fields.isManagementApp.label" ),
                                             value: "manageApp"
                                         }
                                     ] }
                                 />
                                 <Hint compact>
-                                    { t("console:develop.features.applications.forms.generalDetails.fields" +
+                                    { t("applications:forms.generalDetails.fields" +
                                             ".isManagementApp.hint" ) }
                                 </Hint>
                             </div>
@@ -1140,14 +1140,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                     value={ [ "isFAPIApp" ] }
                                     children={ [
                                         {
-                                            label: t("console:develop.features.applications.forms.generalDetails" +
+                                            label: t("applications:forms.generalDetails" +
                                                 ".fields.isFapiApp.label" ),
                                             value: "fapiApp"
                                         }
                                     ] }
                                 />
                                 <Hint compact>
-                                    { t("console:develop.features.applications.forms.generalDetails.fields" +
+                                    { t("applications:forms.generalDetails.fields" +
                                         ".isFapiApp.hint" ) }
                                 </Hint>
                             </div>
@@ -1176,11 +1176,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                     setIsAppSharingEnabled(data.checked);
                                                     setIsApplicationSharingEnabled;
                                                 } }
-                                                label={ t("console:develop.features.applications.forms.generalDetails" +
+                                                label={ t("applications:forms.generalDetails" +
                                                     ".fields.isSharingEnabled.label") }
                                             />
                                             <Hint inline popup>
-                                                { t("console:develop.features.applications.forms.generalDetails" +
+                                                { t("applications:forms.generalDetails" +
                                                     ".fields.isSharingEnabled.hint") }
                                             </Hint>
                                         </div>
@@ -1224,7 +1224,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                     <div className="help-panel-header-text">
-                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                        { t("applications:wizards.minimalAppCreationWizard.help.heading") }
                     </div>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
@@ -1269,19 +1269,19 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             { openLimitReachedModal && (
                 <TierLimitReachErrorModal
                     actionLabel={ t(
-                        "console:develop.features.applications.notifications." +
+                        "applications:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.action"
                     ) }
                     handleModalClose={ handleLimitReachedModalClose }
                     header={ t(
-                        "console:develop.features.applications.notifications.tierLimitReachedError.heading"
+                        "applications:notifications.tierLimitReachedError.heading"
                     ) }
                     description={ t(
-                        "console:develop.features.applications.notifications." +
+                        "applications:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                     ) }
                     message={ t(
-                        "console:develop.features.applications.notifications." +
+                        "applications:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                     ) }
                     openModal={ openLimitReachedModal }

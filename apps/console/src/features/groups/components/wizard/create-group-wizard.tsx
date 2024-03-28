@@ -411,7 +411,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
             />
         ),
         icon: getGroupsWizardStepIcons().general,
-        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.0")
+        title: t("roles:addRoleWizard.wizardSteps.0")
     },{
         content: (
             viewRolePermissions
@@ -432,7 +432,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 )
         ),
         icon: getGroupsWizardStepIcons().roles,
-        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.5")
+        title: t("roles:addRoleWizard.wizardSteps.5")
     },{
         content: (
             <CreateGroupSummary
@@ -443,7 +443,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
             />
         ),
         icon: getGroupsWizardStepIcons().summary,
-        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
+        title: t("roles:addRoleWizard.wizardSteps.3")
     } ];
 
     const WIZARD_STEPS: WizardStepInterface[] = isSuperOrganization
@@ -495,7 +495,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         >
             <Modal.Header className="wizard-header">
                 {
-                    t("console:manage.features.roles.addRoleWizard.heading", { type: "Group" })
+                    t("roles:addRoleWizard.heading", { type: "Group" })
                 }
                 {
                     wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.groupName
@@ -504,7 +504,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 }
                 <Heading as="h6">
                     {
-                        t("console:manage.features.roles.addRoleWizard.subHeading", { type: "group" })
+                        t("roles:addRoleWizard.subHeading", { type: "group" })
                     }
                 </Heading>
             </Modal.Header>
@@ -544,7 +544,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                                     onClick={ changeStepToNext }
                                     data-testid={ `${ testId }-next-button` }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.next") }
+                                    { t("roles:addRoleWizard.buttons.next") }
                                     <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
                                 </PrimaryButton>
                             ) }
@@ -556,7 +556,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                                     onClick={ handleFinishFlow }
                                     data-testid={ `${testId}-initial-finish-button` }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                    { t("roles:addRoleWizard.buttons.finish") }
                                 </Button>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
@@ -567,7 +567,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                    { t("roles:addRoleWizard.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { currentStep > 0 && (
@@ -577,7 +577,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                                     data-testid={ `${ testId }-previous-button` }
                                 >
                                     <Icon name="arrow left" data-testid={ `${ testId }-previous-button-icon` }/>
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.previous") }
+                                    { t("roles:addRoleWizard.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

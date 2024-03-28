@@ -215,12 +215,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizations.notifications.deleteOrganization.success" +
+                            "organizations:notifications.deleteOrganization.success" +
                             ".description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.organizations.notifications.deleteOrganization.success.message"
+                            "organizations:notifications.deleteOrganization.success.message"
                         )
                     })
                 );
@@ -235,13 +235,13 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "console:manage.features.organizations.notifications." +
+                                    "organizations:notifications." +
                                     "deleteOrganizationWithSubOrganizationError",
                                     { organizationName: deletingOrganization.name }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.organizations.notifications.deleteOrganization.error" +
+                                    "organizations:notifications.deleteOrganization.error" +
                                     ".message"
                                 )
                             })
@@ -255,7 +255,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications.deleteOrganization.error" +
+                                "organizations:notifications.deleteOrganization.error" +
                                 ".message"
                             )
                         })
@@ -267,12 +267,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizations.notifications.deleteOrganization" +
+                            "organizations:notifications.deleteOrganization" +
                             ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizations.notifications.deleteOrganization.genericError" +
+                            "organizations:notifications.deleteOrganization.genericError" +
                             ".message"
                         )
                     })
@@ -378,7 +378,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         </Header>
                     );
                 },
-                title: t("console:manage.features.organizations.list.columns.name")
+                title: t("organizations:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -386,7 +386,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.organizations.list.columns.actions")
+                title: t("organizations:list.columns.actions")
             }
         ];
     };
@@ -561,7 +561,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     } }
                                 >
                                     <Icon name="add" />
-                                    { t("console:manage.features.organizations.placeholders.emptyList.action") }
+                                    { t("organizations:placeholders.emptyList.action") }
                                 </PrimaryButton>
                             </Show>
                         )
@@ -570,9 +570,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     imageSize="tiny"
                     subtitle={ [
                         parentOrganization
-                            ? t("console:manage.features.organizations.placeholders.emptyList.subtitles.3",
+                            ? t("organizations:placeholders.emptyList.subtitles.3",
                                 { parent: parentOrganization.name })
-                            : t("console:manage.features.organizations.placeholders.emptyList.subtitles.0")
+                            : t("organizations:placeholders.emptyList.subtitles.0")
                     ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 />
@@ -612,7 +612,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     type="negative"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
-                        "console:manage.features.organizations.confirmations.deleteOrganization." + "assertionHint"
+                        "organizations:confirmations.deleteOrganization." + "assertionHint"
                     ) }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
@@ -625,18 +625,18 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-componentid={ `${ componentId }-delete-confirmation-modal-header` }>
-                        { t("console:manage.features.organizations.confirmations.deleteOrganization.header") }
+                        { t("organizations:confirmations.deleteOrganization.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
                         negative
                         data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
                     >
-                        { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
+                        { t("organizations:confirmations.deleteOrganization.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content
                         data-componentid={ `${ componentId }-delete-confirmation-modal-content` }>
-                        { t("console:manage.features.organizations.confirmations.deleteOrganization.content") }
+                        { t("organizations:confirmations.deleteOrganization.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

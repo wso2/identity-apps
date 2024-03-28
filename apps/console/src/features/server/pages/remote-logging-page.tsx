@@ -78,7 +78,7 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.rolesEdit.backButton", { type: "Server" })
+                text: t("pages:rolesEdit.backButton", { type: "Server" })
             } }
             bottomMargin={ false }
             isLoading={ isRemoteLogPublishingConfigsLoading }
@@ -88,7 +88,7 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
                 logType={ LogType.AUDIT }
                 logConfig={ remoteLogPublishingConfigs?.find(
                     (config: RemoteLogPublishingConfigurationInterface) =>
-                        config.logType.toLowerCase() === LogType.AUDIT.toString()
+                        config?.logType?.toLowerCase() === LogType.AUDIT.toString()
                 ) }
             />
         </PageLayout>

@@ -206,16 +206,16 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                             data-testid={ `${ componentId }-search-empty-placeholder-clear-button` }
                             onClick={ () => setSearchQuery("") }
                         >
-                            { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
+                            { t("roles:list.emptyPlaceholders.search.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
+                    title={ t("roles:list.emptyPlaceholders.search.title") }
                     subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.0",
+                        t("roles:list.emptyPlaceholders.search.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.1")
+                        t("roles:list.emptyPlaceholders.search.subtitles.1")
                     ] }
                 />
             );
@@ -235,7 +235,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                                     onClick={ () => setShowWizard(true) }
                                 >
                                     <Icon name="add"/>
-                                    { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
+                                    { t("roles:list.emptyPlaceholders.emptyRoleList.action",
                                         { type: "Group" }) }
                                 </PrimaryButton>
                             ) }
@@ -260,7 +260,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                             imageSize="tiny"
                             title={ t("extensions:console.identityProviderGroups.groupsList.noGroupsAvailable") }
                             subtitle={ [
-                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
                                     { type: "groups" })
                             ] }
                         />

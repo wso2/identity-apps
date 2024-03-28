@@ -158,14 +158,14 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                             content={
                                 (<>
                                     {
-                                        t("console:develop.features.applications.edit.sections" +
+                                        t("applications:edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder." +
                                         "types.passkey.info.progressiveEnrollmentEnabled")
                                     }
                                     <p>
                                         <Trans
                                             i18nKey={
-                                                t("console:develop.features.applications.edit.sections" +
+                                                t("applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                                 "info.progressiveEnrollmentEnabledCheckbox")
                                             }
@@ -192,11 +192,11 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 ariaLabel="Allow passkey progressive enrollment"
                 name="FIDO_EnablePasskeyProgressiveEnrollment"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".fido2.allowProgressiveEnrollment.label")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".fido2.allowProgressiveEnrollment.hint")
                 }
                 readOnly={ isReadOnly }
@@ -208,11 +208,11 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 ariaLabel="Allow passkey usernameless authentication"
                 name="FIDO_EnableUsernamelessAuthentication"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".fido2.allowUsernamelessAuthentication.label")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".fido2.allowUsernamelessAuthentication.hint")
                 }
                 readOnly={ isReadOnly }

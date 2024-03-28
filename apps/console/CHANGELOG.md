@@ -1,5 +1,134 @@
 # @wso2is/console
 
+## 2.13.29
+
+### Patch Changes
+
+- [#5834](https://github.com/wso2/identity-apps/pull/5834) [`457d834336`](https://github.com/wso2/identity-apps/commit/457d834336d197b55e907e22bc56d31320861d9e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Added null check to logType in audit logs
+
+* [#5835](https://github.com/wso2/identity-apps/pull/5835) [`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve audit log ux
+
+- [#5838](https://github.com/wso2/identity-apps/pull/5838) [`982b621840`](https://github.com/wso2/identity-apps/commit/982b6218401fdd19dc73d5ddf00e8c40f5208287) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add missing i18n for organization information retrieval
+
+- Updated dependencies [[`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74)]:
+  - @wso2is/react-components@2.1.12
+  - @wso2is/dynamic-forms@2.0.41
+  - @wso2is/theme@2.0.71
+  - @wso2is/form@2.0.42
+  - @wso2is/access-control@2.0.22
+  - @wso2is/common@2.0.52
+
+## 2.13.28
+
+### Patch Changes
+
+- [#5830](https://github.com/wso2/identity-apps/pull/5830) [`17ab3e87c6`](https://github.com/wso2/identity-apps/commit/17ab3e87c68da2c1971a00bcb6653e62682b996a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add models for login security related doc links
+
+## 2.13.27
+
+### Patch Changes
+
+- [#5823](https://github.com/wso2/identity-apps/pull/5823) [`970ee6eea1`](https://github.com/wso2/identity-apps/commit/970ee6eea1c91151d1bb101bc0b00a2e6476e9a9) Thanks [@savindi7](https://github.com/savindi7)! - Improve Profile Information.
+
+## 2.13.26
+
+### Patch Changes
+
+- [#5822](https://github.com/wso2/identity-apps/pull/5822) [`beedc6b44f`](https://github.com/wso2/identity-apps/commit/beedc6b44f66800ba07a178796c48d31c8c0519e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Disable URL input validation for empty values in advanced tab in branding page
+
+## 2.13.25
+
+### Patch Changes
+
+- [#5816](https://github.com/wso2/identity-apps/pull/5816) [`fd82055601`](https://github.com/wso2/identity-apps/commit/fd820556010c0f240bd695f0764bbe70b220d01c) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Make secondary attribute dropdown in trusted token issuer advanced tab clearable
+
+* [#5818](https://github.com/wso2/identity-apps/pull/5818) [`11701769b9`](https://github.com/wso2/identity-apps/commit/11701769b91ec2c865bcda4df1744bd8bbc44d4f) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Introduce configurations to alter visibility of app configs
+
+* Updated dependencies [[`fd82055601`](https://github.com/wso2/identity-apps/commit/fd820556010c0f240bd695f0764bbe70b220d01c)]:
+  - @wso2is/i18n@2.1.5
+
+## 2.13.24
+
+### Patch Changes
+
+- [#5798](https://github.com/wso2/identity-apps/pull/5798) [`de0b331c72`](https://github.com/wso2/identity-apps/commit/de0b331c723c47295a1d1731684520df64150c9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix revert button for individual custom text configuration fields not appearing in text tab in branding page
+
+- Updated dependencies [[`de0b331c72`](https://github.com/wso2/identity-apps/commit/de0b331c723c47295a1d1731684520df64150c9c)]:
+  - @wso2is/form@2.0.41
+
+## 2.13.23
+
+### Patch Changes
+
+- [#5783](https://github.com/wso2/identity-apps/pull/5783) [`a731a5731c`](https://github.com/wso2/identity-apps/commit/a731a5731c7b07d94005454f27e4c18b9923a7f4) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Remove legacyAuthzRuntime check when transforming tenantDomain
+
+## 2.13.22
+
+### Patch Changes
+
+- [#5773](https://github.com/wso2/identity-apps/pull/5773) [`598c5065ad`](https://github.com/wso2/identity-apps/commit/598c5065adb9412f630649ea42225c20ca13121d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add SMS OTP first factor template to the login flow editor landing page
+
+- Updated dependencies [[`a3a24504a9`](https://github.com/wso2/identity-apps/commit/a3a24504a969bb8d9a1fce5c77025cb6ecbaf2b6)]:
+  - @wso2is/i18n@2.1.4
+
+## 2.13.21
+
+### Patch Changes
+
+- [#5774](https://github.com/wso2/identity-apps/pull/5774) [`a34dce97f1`](https://github.com/wso2/identity-apps/commit/a34dce97f1df685d97c0247ee98cdd065a5a69fc) Thanks [@savindi7](https://github.com/savindi7)! - Rearrange condition used to show user attributes in profile.
+
+## 2.13.20
+
+### Patch Changes
+
+- [#5775](https://github.com/wso2/identity-apps/pull/5775) [`ba15b1c3f2`](https://github.com/wso2/identity-apps/commit/ba15b1c3f2559394df61daf5ad9ded981f1c2059) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Temporarily disable extension scripts in console and myaccount
+
+## 2.13.19
+
+### Patch Changes
+
+- [#5767](https://github.com/wso2/identity-apps/pull/5767) [`7a88bbf2e4`](https://github.com/wso2/identity-apps/commit/7a88bbf2e464f75da147fe9f01b851e3432e5df6) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix custom properties update issue in connections
+
+## 2.13.18
+
+### Patch Changes
+
+- [#5758](https://github.com/wso2/identity-apps/pull/5758) [`12e1dfa241`](https://github.com/wso2/identity-apps/commit/12e1dfa241b48900b03169cd970bcb22ea0c4584) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add changeset
+
+* [#5758](https://github.com/wso2/identity-apps/pull/5758) [`2381bd93b8`](https://github.com/wso2/identity-apps/commit/2381bd93b883b2e491419d298796fbc35d4e7990) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix the responsiveness issues in the info card
+
+* Updated dependencies [[`12e1dfa241`](https://github.com/wso2/identity-apps/commit/12e1dfa241b48900b03169cd970bcb22ea0c4584), [`2381bd93b8`](https://github.com/wso2/identity-apps/commit/2381bd93b883b2e491419d298796fbc35d4e7990)]:
+  - @wso2is/theme@2.0.70
+  - @wso2is/react-components@2.1.11
+  - @wso2is/common@2.0.51
+  - @wso2is/dynamic-forms@2.0.40
+  - @wso2is/form@2.0.40
+  - @wso2is/forms@2.0.27
+
+## 2.13.17
+
+### Patch Changes
+
+- [#5763](https://github.com/wso2/identity-apps/pull/5763) [`9879e1b049`](https://github.com/wso2/identity-apps/commit/9879e1b049489e5440176cc728dafdd0ea4dfefa) Thanks [@brionmario](https://github.com/brionmario)! - Fix tab getting removed in Shared apps
+
+## 2.13.16
+
+### Patch Changes
+
+- [#5762](https://github.com/wso2/identity-apps/pull/5762) [`12e3c2c635`](https://github.com/wso2/identity-apps/commit/12e3c2c635b47e13c490f75a863bb96a2dc669bc) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Improve logic to hide API native auth in applications
+
+## 2.13.15
+
+### Patch Changes
+
+- [#5550](https://github.com/wso2/identity-apps/pull/5550) [`f33bd0d9b6`](https://github.com/wso2/identity-apps/commit/f33bd0d9b613b60e21c5cd90b39fe24a8a85064d) Thanks [@sandushi](https://github.com/sandushi)! - Improve the alternative login identifier UI
+
+## 2.13.14
+
+### Patch Changes
+
+- [#5756](https://github.com/wso2/identity-apps/pull/5756) [`eeae0d9ef3`](https://github.com/wso2/identity-apps/commit/eeae0d9ef3aa4aa9e9562f3809e415a7f0180326) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add config to disable connection provisioning attributes
+
 ## 2.13.13
 
 ### Patch Changes

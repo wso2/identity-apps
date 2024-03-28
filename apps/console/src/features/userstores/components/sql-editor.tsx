@@ -110,7 +110,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     <Accordion.Title
                                         active={ accordionIndex === 0 }
                                         className="category-name"
-                                        content={ t("console:manage.features.userstores.sqlEditor.create") }
+                                        content={ t("userstores:sqlEditor.create") }
                                         index={ accordionIndex }
                                         icon={ <Icon className="angle right caret-icon" /> }
                                         onClick={ () => setAccordionIndex(accordionIndex === 0 ? -1 : 0) }
@@ -155,7 +155,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 <Accordion.Title
                                     active={ accordionIndex === 1 }
                                     className="category-name"
-                                    content={ t("console:manage.features.userstores.sqlEditor.read") }
+                                    content={ t("userstores:sqlEditor.read") }
                                     index={ accordionIndex }
                                     icon={ <Icon className="angle right caret-icon" /> }
                                     onClick={ () => setAccordionIndex(accordionIndex === 1 ? -1 : 1) }
@@ -199,7 +199,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 <Accordion.Title
                                     active={ accordionIndex === 2 }
                                     className="category-name"
-                                    content={ t("console:manage.features.userstores.sqlEditor.update") }
+                                    content={ t("userstores:sqlEditor.update") }
                                     index={ accordionIndex }
                                     icon={ <Icon className="angle right caret-icon" /> }
                                     onClick={ () => setAccordionIndex(accordionIndex === 2 ? -1 : 2) }
@@ -243,7 +243,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 <Accordion.Title
                                     active={ accordionIndex === 3 }
                                     className="category-name"
-                                    content={ t("console:manage.features.userstores.sqlEditor.delete") }
+                                    content={ t("userstores:sqlEditor.delete") }
                                     index={ accordionIndex }
                                     icon={ <Icon className="angle right caret-icon" /> }
                                     onClick={ () => setAccordionIndex(accordionIndex === 3 ? -1 : 3) }
@@ -381,7 +381,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                             } }
                                             data-testid={ `${ testId }-reset-button` }
                                         >
-                                            { t("console:manage.features.userstores.sqlEditor.reset") }
+                                            { t("userstores:sqlEditor.reset") }
                                         </LinkButton>
                                         <PrimaryButton
                                             type="button"

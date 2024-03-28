@@ -69,7 +69,7 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
             const storeOptions: UserStoreDropdownItem[] = [
                 {
                     key: -1,
-                    text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                    text: t("users:userstores.userstoreOptions.primary"),
                     value: "primary"
                 }
             ];

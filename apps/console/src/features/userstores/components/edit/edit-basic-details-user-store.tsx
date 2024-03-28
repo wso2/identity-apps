@@ -123,28 +123,28 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             open={ confirmDelete }
             assertion={ userStore?.name }
             assertionHint={
-                t("console:manage.features.userstores.confirmation.hint")
+                t("userstores:confirmation.hint")
             }
             assertionType="checkbox"
-            primaryAction={ t("console:manage.features.userstores.confirmation.confirm") }
+            primaryAction={ t("userstores:confirmation.confirm") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => {
                 deleteUserStore(id)
                     .then(() => {
                         dispatch(addAlert({
-                            description: t("console:manage.features.userstores.notifications." +
+                            description: t("userstores:notifications." +
                                 "deleteUserstore.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("console:manage.features.userstores.notifications." +
+                            message: t("userstores:notifications." +
                                 "deleteUserstore.success.message")
 
                         }));
                         dispatch(addAlert({
-                            description: t("console:manage.features.userstores.notifications." +
+                            description: t("userstores:notifications." +
                                 "delay.description"),
                             level: AlertLevels.WARNING,
-                            message: t("console:manage.features.userstores.notifications." +
+                            message: t("userstores:notifications." +
                                 "delay.message")
                         }));
 
@@ -153,10 +153,10 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                     .catch((error: IdentityAppsError) => {
                         dispatch(addAlert({
                             description: error?.description
-                                ?? t("console:manage.features.userstores.notifications." +
+                                ?? t("userstores:notifications." +
                                     "deleteUserstore.genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: error?.message ?? t("console:manage.features.userstores.notifications." +
+                            message: error?.message ?? t("userstores:notifications." +
                                 "deleteUserstore.genericError.message")
                         }));
                     }).finally(() => {
@@ -169,19 +169,19 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }
             >
-                { t("console:manage.features.userstores.confirmation.header") }
+                { t("userstores:confirmation.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
-                { t("console:manage.features.userstores.confirmation.message") }
+                { t("userstores:confirmation.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-delete-confirmation-modal-content` }
             >
-                { t("console:manage.features.userstores.confirmation.content") }
+                { t("userstores:confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -271,10 +271,10 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
 
         patchUserStore(id, patchData).then(() => {
             dispatch(addAlert({
-                description: t("console:manage.features.userstores.notifications." +
+                description: t("userstores:notifications." +
                     "updateUserstore.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:manage.features.userstores.notifications." +
+                message: t("userstores:notifications." +
                     "updateUserstore.success.message")
             }));
 
@@ -283,9 +283,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
             // TODO: Remove delay notification once backend is fixed.
             dispatch(addAlert<AlertInterface>({
-                description: t("console:manage.features.userstores.notifications.updateDelay.description"),
+                description: t("userstores:notifications.updateDelay.description"),
                 level: AlertLevels.WARNING,
-                message: t("console:manage.features.userstores.notifications.updateDelay.message")
+                message: t("userstores:notifications.updateDelay.message")
             }));
 
             // Re-fetch the userstore details
@@ -293,10 +293,10 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
         }).catch((error: IdentityAppsError) => {
             dispatch(addAlert({
                 description: error?.description
-                    || t("console:manage.features.userstores.notifications." +
+                    || t("userstores:notifications." +
                         "updateUserstore.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message || t("console:manage.features.userstores.notifications." +
+                message: error?.message || t("userstores:notifications." +
                     "updateUserstore.genericError.message")
             }));
         }).finally(() => {
@@ -326,10 +326,10 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 setEnabled(data.checked);
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications." +
+                    description: t("userstores:notifications." +
                         "updateUserstore.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.userstores.notifications." +
+                    message: t("userstores:notifications." +
                         "updateUserstore.success.message")
                 }));
 
@@ -338,9 +338,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification once backend is fixed.
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications.updateDelay.description"),
+                    description: t("userstores:notifications.updateDelay.description"),
                     level: AlertLevels.WARNING,
-                    message: t("console:manage.features.userstores.notifications.updateDelay.message")
+                    message: t("userstores:notifications.updateDelay.message")
                 }));
 
                 // Re-fetch the userstore details
@@ -349,10 +349,10 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             .catch((error: IdentityAppsError) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error?.description
-                        || t("console:manage.features.userstores.notifications." +
+                        || t("userstores:notifications." +
                             "updateUserstore.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || t("console:manage.features.userstores.notifications." +
+                    message: error?.message || t("userstores:notifications." +
                         "updateUserstore.genericError.message")
                 }));
             });
@@ -369,13 +369,13 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 8 }>
                                 <Field
-                                    label={ t("console:manage.features.userstores.forms.general.name.label") }
+                                    label={ t("userstores:forms.general.name.label") }
                                     name="name"
                                     type="text"
                                     required={ false }
-                                    requiredErrorMessage={ t("console:manage.features.userstores.forms.general." +
+                                    requiredErrorMessage={ t("userstores:forms.general." +
                                         "name.requiredErrorMessage") }
-                                    placeholder={ t("console:manage.features.userstores.forms.general.name" +
+                                    placeholder={ t("userstores:forms.general.name" +
                                         ".placeholder") }
                                     value={
                                         userStore?.name === CONSUMER_USERSTORE
@@ -390,13 +390,13 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                         && id !== CONSUMER_USERSTORE_ID)
                                         && (
                                             <Field
-                                                label={ t("console:manage.features.userstores.forms.general." +
+                                                label={ t("userstores:forms.general." +
                                                     "type.label") }
                                                 name="type"
                                                 type="text"
                                                 disabled
                                                 required={ false }
-                                                requiredErrorMessage={ t("console:manage.features.userstores." +
+                                                requiredErrorMessage={ t("userstores:" +
                                                     "forms.general.type.requiredErrorMessage") }
                                                 value={ userStore?.typeName }
                                                 data-testid={ `${ testId }-form-type-input` }
@@ -406,13 +406,13 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                 {
                                     <Field
                                         label={
-                                            t("console:manage.features.userstores.forms.general.description.label") }
+                                            t("userstores:forms.general.description.label") }
                                         name="description"
                                         disabled={ id == CONSUMER_USERSTORE_ID || readOnly }
                                         type="textarea"
                                         required={ false }
                                         requiredErrorMessage=""
-                                        placeholder={ t("console:manage.features.userstores.forms.general." +
+                                        placeholder={ t("userstores:forms.general." +
                                             "description.placeholder") }
                                         value={ userStore?.description }
                                         data-testid={ `${ testId }-form-description-textarea` }
@@ -428,7 +428,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                     .get("invalidStringValue").toString();
 
                                                 validation.errorMessages.push(
-                                                    t("console:manage.features.userstores.forms.general.description"
+                                                    t("userstores:forms.general.description"
                                                         + ".validationErrorMessages.invalidInputErrorMessage", {
                                                         invalidString: invalidString
                                                     })
@@ -470,14 +470,14 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                             required={ true }
                                                             label={ name }
                                                             requiredErrorMessage={
-                                                                t("console:manage.features.userstores.forms." +
+                                                                t("userstores:forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                             }
                                                             placeholder={
-                                                                t("console:manage.features.userstores.forms." +
+                                                                t("userstores:forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -500,14 +500,14 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                 required={ false }
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
-                                                                    t("console:manage.features.userstores.forms." +
+                                                                    t("userstores:forms." +
                                                                     "custom.requiredErrorMessage",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                                 }
                                                                 placeholder={
-                                                                    t("console:manage.features.userstores.forms." +
+                                                                    t("userstores:forms." +
                                                                     "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
@@ -529,14 +529,14 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                 required={ true }
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
-                                                                    t("console:manage.features.userstores.forms." +
+                                                                    t("userstores:forms." +
                                                                     "custom.requiredErrorMessage",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                                 }
                                                                 placeholder={
-                                                                    t("console:manage.features.userstores.forms." +
+                                                                    t("userstores:forms." +
                                                                     "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
@@ -602,14 +602,14 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                     required={ false }
                                                                     label={ name }
                                                                     requiredErrorMessage={
-                                                                        t("console:manage.features.userstores.forms." +
+                                                                        t("userstores:forms." +
                                                                         "custom.requiredErrorMessage",
                                                                         {
                                                                             name: property.description.split("#")[ 0 ]
                                                                         })
                                                                     }
                                                                     placeholder={
-                                                                        t("console:manage.features.userstores.forms." +
+                                                                        t("userstores:forms." +
                                                                         "custom.placeholder",
                                                                         {
                                                                             name: property.description.split("#")[ 0 ]
@@ -636,14 +636,14 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                         required={ false }
                                                                         label={ property.description.split("#")[ 0 ] }
                                                                         requiredErrorMessage={
-                                                                            t("console:manage.features.userstores." +
+                                                                            t("userstores:" +
                                                                             "forms.custom.requiredErrorMessage", {
                                                                                 name: property.description
                                                                                     .split("#")[ 0 ]
                                                                             })
                                                                         }
                                                                         placeholder={
-                                                                            t("console:manage.features.userstores." +
+                                                                            t("userstores:" +
                                                                             "forms.custom.placeholder", {
                                                                                 name: property.description
                                                                                     .split("#")[ 0 ]
@@ -668,14 +668,14 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                         required={ false }
                                                                         label={ property.description.split("#")[ 0 ] }
                                                                         requiredErrorMessage={
-                                                                            t("console:manage.features.userstores." +
+                                                                            t("userstores:" +
                                                                             "forms.custom.requiredErrorMessage", {
                                                                                 name: property.description
                                                                                     .split("#")[ 0 ]
                                                                             })
                                                                         }
                                                                         placeholder={
-                                                                            t("console:manage.features.userstores." +
+                                                                            t("userstores:" +
                                                                             "forms.custom.placeholder", {
                                                                                 name: property.description
                                                                                     .split("#")[ 0 ]
@@ -750,9 +750,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                             ata-testid={ `${ testId }-danger-zone-group` }
                         >
                             <DangerZone
-                                actionTitle={ t("console:manage.features.userstores.dangerZone.disable.actionTitle") }
-                                header={ t("console:manage.features.userstores.dangerZone.disable.header") }
-                                subheader={ t("console:manage.features.userstores.dangerZone.disable.subheader") }
+                                actionTitle={ t("userstores:dangerZone.disable.actionTitle") }
+                                header={ t("userstores:dangerZone.disable.header") }
+                                subheader={ t("userstores:dangerZone.disable.subheader") }
                                 onActionClick={ undefined }
                                 data-testid={ `${ testId }-delete-danger-zone` }
                                 toggle={ {
@@ -765,9 +765,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                 } }
                             />
                             <DangerZone
-                                actionTitle={ t("console:manage.features.userstores.dangerZone.delete.actionTitle") }
-                                header={ t("console:manage.features.userstores.dangerZone.delete.header") }
-                                subheader={ t("console:manage.features.userstores.dangerZone.delete.subheader") }
+                                actionTitle={ t("userstores:dangerZone.delete.actionTitle") }
+                                header={ t("userstores:dangerZone.delete.header") }
+                                subheader={ t("userstores:dangerZone.delete.subheader") }
                                 onActionClick={ () => setConfirmDelete(true) }
                                 data-testid={ `${ testId }-delete-danger-zone` }
                             />

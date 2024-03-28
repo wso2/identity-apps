@@ -168,7 +168,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 description: error.description,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.organizations.notifications." +
+                                    "organizations:notifications." +
                                     "getOrganizationList.error.message"
                                 )
                             })
@@ -180,12 +180,12 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizations.notifications.getOrganizationList" +
+                                "organizations:notifications.getOrganizationList" +
                                 ".genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications." +
+                                "organizations:notifications." +
                                 "getOrganizationList.genericError.message"
                             )
                         })
@@ -332,7 +332,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                         >
                                             <h5>
                                                 { t(
-                                                    "console:manage.features.organizations." +
+                                                    "organizations:" +
                                                     "switching.subOrganizations"
                                                 ) }
                                             </h5>
@@ -360,7 +360,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                                 event.stopPropagation();
                                             } }
                                             placeholder={ t(
-                                                "console:manage.features.organizations.switching.search.placeholder"
+                                                "organizations:switching.search.placeholder"
                                             ) }
                                             floated="right"
                                             size="small"

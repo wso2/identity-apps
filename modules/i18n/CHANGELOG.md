@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.1.5
+
+### Patch Changes
+
+- [#5816](https://github.com/wso2/identity-apps/pull/5816) [`fd82055601`](https://github.com/wso2/identity-apps/commit/fd820556010c0f240bd695f0764bbe70b220d01c) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Make secondary attribute dropdown in trusted token issuer advanced tab clearable
+
+## 2.1.4
+
+### Patch Changes
+
+- [#5773](https://github.com/wso2/identity-apps/pull/5773) [`a3a24504a9`](https://github.com/wso2/identity-apps/commit/a3a24504a969bb8d9a1fce5c77025cb6ecbaf2b6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n text for sms otp first factor template card
+
 ## 2.1.3
 
 ### Patch Changes

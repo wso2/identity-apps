@@ -117,11 +117,11 @@ const MissingSocialAuthenticatorSelectionModal: FunctionComponent<
                     missingSocialAuthenticatorModalOnClose(event, data);
                 } }
                 primaryAction={
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    t("applications:edit.sections.signOnMethod.sections.landing." +
                     "flowBuilder.addMissingSocialAuthenticatorModal.primaryButton")
                 }
                 secondaryAction={
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    t("applications:edit.sections.signOnMethod.sections.landing." +
                     "flowBuilder.addMissingSocialAuthenticatorModal.secondaryButton")
                 }
                 onSecondaryActionClick={ (event: MouseEvent<HTMLElement>): void => {
@@ -137,14 +137,14 @@ const MissingSocialAuthenticatorSelectionModal: FunctionComponent<
             >
                 <ConfirmationModal.Header>
                     {
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        t("applications:edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.addMissingSocialAuthenticatorModal.heading",
                         { authenticator: authenticatorCategoryDisplayName })
                     }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message attached info>
                     {
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        t("applications:edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.addMissingSocialAuthenticatorModal.content.message",
                         { authenticator: authenticatorCategoryDisplayName })
                     }
@@ -152,7 +152,7 @@ const MissingSocialAuthenticatorSelectionModal: FunctionComponent<
                 <ConfirmationModal.Content>
                     <Trans
                         i18nKey={
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                            "applications:edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.addMissingSocialAuthenticatorModal.content.body"
                         }
                         tOptions={ { authenticator: authenticatorCategoryDisplayName } }

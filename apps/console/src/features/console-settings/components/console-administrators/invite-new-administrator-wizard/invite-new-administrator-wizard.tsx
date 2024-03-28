@@ -122,11 +122,11 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                 if (responseData.result.status !== ParentOrgUserInviteResultStatus.SUCCESS) {
                     setAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.sendInvite.error.description",
+                            "invite:notifications.sendInvite.error.description",
                             { description: responseData.result.errorDescription }
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+                        message: t("invite:notifications.sendInvite.error.message")
                     });
 
                     return;
@@ -134,11 +134,11 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
 
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.invite.notifications.sendInvite.success.description"
+                        "invite:notifications.sendInvite.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.invite.notifications.sendInvite.success.message"
+                        "invite:notifications.sendInvite.success.message"
                     )
                 }));
 
@@ -153,11 +153,11 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                 if (!error.response || error.response.status === 401) {
                     setAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.sendInvite.error.description"
+                            "invite:notifications.sendInvite.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.invite.notifications.sendInvite.error.message"
+                            "invite:notifications.sendInvite.error.message"
                         )
                     });
                 } else if (error.response.status === 403 &&
@@ -174,22 +174,22 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                 } else if (error?.response?.data?.description) {
                     setAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.sendInvite.error.description",
+                            "invite:notifications.sendInvite.error.description",
                             { description: error.response.data.description }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.invite.notifications.sendInvite.error.message"
+                            "invite:notifications.sendInvite.error.message"
                         )
                     });
                 } else {
                     setAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.sendInvite.genericError.description"
+                            "invite:notifications.sendInvite.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.invite.notifications.sendInvite.genericError.message"
+                            "invite:notifications.sendInvite.genericError.message"
                         )
                     });
                 }

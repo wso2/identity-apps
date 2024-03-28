@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,3 +19,41 @@
 export * from "./common-ns";
 export * from "./console-ns";
 export * from "./myaccount-ns";
+export * from "./userstores-ns";
+export * from "./validation-ns";
+export * from "./jwt-private-key-configuration-ns";
+export * from "./transfer-list-ns";
+export * from "./user-ns";
+export * from "./users-ns";
+export * from "./pages-ns";
+export * from "./idvp-ns";
+export * from "./invite-ns";
+export * from "./parent-org-invitations-ns";
+export * from "./oidc-scopes-ns";
+export * from "./onboarded-ns";
+export * from "./organization-discovery-ns";
+export * from "./organizations-ns";
+export * from "./authentication-flow-ns";
+export * from "./remote-fetch-ns";
+export * from "./roles-ns";
+export * from "./server-configs-ns";
+export * from "./saml2-config-ns";
+export * from "./session-management-ns";
+export * from "./ws-federation-config-ns";
+export * from "./insights-ns";
+export * from "./sms-providers-ns";
+export * from "./claims-ns";
+export * from "./email-locale-ns";
+export * from "./help-panel-ns";
+export * from "./suborganizations-ns";
+export * from "./console-settings-ns";
+export * from "./secrets-ns";
+export * from "./branding-ns";
+export * from "./email-templates-ns";
+export * from "./certificates-ns";
+export * from "./authentication-provider-ns";
+export * from "./governance-connectors-ns";
+export * from "./groups-ns";
+export * from "./applications-ns";
+export * from "./idp-ns";
+export * from "./api-resources-ns";

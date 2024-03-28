@@ -229,7 +229,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     isOIDCMapping ?
                         (<Hint warning={ true } popup>
                             {
-                                t("console:develop.features.applications.edit.sections.attributes" +
+                                t("applications:edit.sections.attributes" +
                                     ".selection.mappingTable.listItem.faultyAttributeMappingHint")
                             }
                         </Hint>)
@@ -238,7 +238,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 {
                     <Popup
                         content={ isOIDCMapping && claimURI.startsWith(localDialectURI)
-                            ? t("console:develop.features.applications.edit.sections.attributes" +
+                            ? t("applications:edit.sections.attributes" +
                             ".selection.mappingTable.listItem.faultyAttributeMapping")
                             : claimURI }
                         inverted
@@ -246,14 +246,14 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             localDialect ? (
                                 <Code compact withBackground={ false }>
                                     { isOIDCMapping && claimURI.startsWith(localDialectURI)
-                                        ? t("console:develop.features.applications.edit.sections.attributes" +
+                                        ? t("applications:edit.sections.attributes" +
                                         ".selection.mappingTable.listItem.faultyAttributeMapping")
                                         : claimURI }
                                 </Code>
                             ) : (
                                 <Code>
                                     { isOIDCMapping && claimURI.startsWith(localDialectURI)
-                                        ? t("console:develop.features.applications.edit.sections.attributes" +
+                                        ? t("applications:edit.sections.attributes" +
                                         ".selection.mappingTable.listItem.faultyAttributeMapping")
                                         : claimURI }
                                 </Code>
@@ -270,7 +270,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         <Table.Cell error={ errorInClaimMapping }>
                             <Input
                                 placeholder={
-                                    t("console:develop.features.applications.edit.sections.attributes" +
+                                    t("applications:edit.sections.attributes" +
                                         ".selection.mappingTable.listItem.fields.claim.placeholder",
                                     { name: displayName })
                                 }

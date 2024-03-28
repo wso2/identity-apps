@@ -177,7 +177,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         description: error.response.data.description || error.response.data.detail,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.users.userSessions.notifications.getAdminUser." +
+                            "users:userSessions.notifications.getAdminUser." +
                             "error.message"
                         )
                     }));
@@ -186,11 +186,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.users.userSessions.notifications.getAdminUser." +
+                    description: t("users:userSessions.notifications.getAdminUser." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.users.userSessions.notifications.getAdminUser." +
+                        "users:userSessions.notifications.getAdminUser." +
                         "genericError.message"
                     )
                 }));
@@ -202,7 +202,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const panes = () => ([
         {
-            menuItem: t("console:manage.features.users.editUser.tab.menuItems.0"),
+            menuItem: t("users:editUser.tab.menuItems.0"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserProfile
@@ -220,7 +220,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         {
-            menuItem: t("console:manage.features.users.editUser.tab.menuItems.1"),
+            menuItem: t("users:editUser.tab.menuItems.1"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserGroupsList
@@ -233,7 +233,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         isSuperOrganization() && roleV1Enabled ? {
-            menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
+            menuItem: t("users:editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserRolesV1List
@@ -248,7 +248,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         } : null,
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
         isSuperOrganization() && !roleV1Enabled ? {
-            menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
+            menuItem: t("users:editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserRolesList user={ user } />
@@ -256,7 +256,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         } : null,
         {
-            menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
+            menuItem: t("users:editUser.tab.menuItems.3"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserSessions

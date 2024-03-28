@@ -335,11 +335,11 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         if (FIDOAuthenticatorDetailsFetchError) {
             if (FIDOAuthenticatorDetailsFetchError?.response?.data?.description) {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider." +
+                    description: t("authenticationProvider:" +
                         "notifications.getConnectionDetails.error.description",
                     { description: FIDOAuthenticatorDetailsFetchError?.response?.data?.description }),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider." +
+                    message: t("authenticationProvider:" +
                         "notifications.getConnectionDetails.error.message")
                 }));
 
@@ -347,10 +347,10 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
             }
 
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider." +
+                description: t("authenticationProvider:" +
                     "notifications.getConnectionDetails.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.authenticationProvider." +
+                message: t("authenticationProvider:" +
                     "notifications.getConnectionDetails.genericError.message")
             }));
 
@@ -393,14 +393,14 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         <>
                             <AlertTitle>
                                 {
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder." +
                                     "types.passkey.info.progressiveEnrollmentEnabled")
                                 }
                             </AlertTitle>
                             <Trans
                                 i18nKey={
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                     "info.passkeyAsFirstStepWhenprogressiveEnrollmentEnabled")
                                 }
@@ -425,14 +425,14 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         <>
                             <AlertTitle>
                                 {
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder." +
                                     "types.passkey.info.progressiveEnrollmentEnabled")
                                 }
                             </AlertTitle>
                             <Trans
                                 i18nKey={
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                     "info.passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled")
                                 }
@@ -454,7 +454,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                     <>
                         <Trans
                             i18nKey={
-                                t("console:develop.features.applications.edit.sections" +
+                                t("applications:edit.sections" +
                                 ".signOnMethod.sections.landing.flowBuilder." +
                                 "types.passkey.info.progressiveEnrollmentDisabled")
                             }
@@ -533,7 +533,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                     style={ { marginTop: `${infoAlertBoxHeight + 15}px` } }
                 >
                     <ArrowRotateLeft />
-                    { t("console:loginFlow.visualEditor.actions.revert.label") }
+                    { t("authenticationFlow:visualEditor.actions.revert.label") }
                 </Button>
                 <ReactFlow
                     fitView
@@ -554,7 +554,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                             disabled={ !isValidAuthenticationFlow }
                             data-componentid={ `${componentId}-update-button` }
                         >
-                            { t("console:loginFlow.visualEditor.actions.update.label") }
+                            { t("authenticationFlow:visualEditor.actions.update.label") }
                         </Button>
                     ) }
                 </ReactFlow>

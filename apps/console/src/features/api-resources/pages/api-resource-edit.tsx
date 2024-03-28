@@ -148,10 +148,10 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                     "data-testid": `${componentId}-back-button`,
                     onClick: handleBackButtonClick,
                     text: categoryId === APIResourceType.MANAGEMENT
-                        ? t("console:manage.pages.rolesEdit.backButton", { type: "Management APIs" })
+                        ? t("pages:rolesEdit.backButton", { type: "Management APIs" })
                         : categoryId === APIResourceType.ORGANIZATION
-                            ? t("console:manage.pages.rolesEdit.backButton", { type: "Organization APIs" })
-                            : t("console:manage.pages.rolesEdit.backButton", { type: "APIs" })
+                            ? t("pages:rolesEdit.backButton", { type: "Organization APIs" })
+                            : t("pages:rolesEdit.backButton", { type: "APIs" })
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }

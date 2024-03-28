@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,3 +19,42 @@
 export * from "./common";
 export * from "./console";
 export * from "./myaccount";
+export * from "./userstores";
+export * from "./validation";
+export * from "./jwt-private-key-configuration";
+export * from "./transfer-list";
+export * from "./user";
+export * from "./users";
+export * from "./governance-connectors";
+export * from "./groups";
+export * from "./pages";
+export * from "./idvp";
+export * from "./invite";
+export * from "./parent-org-invitations";
+export * from "./oidc-scopes";
+export * from "./onboarded";
+export * from "./organization-discovery";
+export * from "./organizations";
+export * from "./authentication-flow";
+export * from "./remote-fetch";
+export * from "./roles";
+export * from "./server-configs";
+export * from "./saml2-config";
+export * from "./session-management";
+export * from "./ws-federation-config";
+export * from "./insights";
+export * from "./sms-providers";
+export * from "./claims";
+export * from "./email-locale";
+export * from "./help-panel";
+export * from "./suborganizations";
+export * from "./console-settings";
+export * from "./secrets";
+export * from "./branding";
+export * from "./email-templates";
+export * from "./certificates";
+export * from "./authentication-provider";
+export * from "./applications";
+export * from "./idp";
+export * from "./api-resources";
+

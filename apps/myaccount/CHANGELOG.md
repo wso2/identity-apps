@@ -1,5 +1,53 @@
 # @wso2is/myaccount
 
+## 2.4.9
+
+### Patch Changes
+
+- [#5835](https://github.com/wso2/identity-apps/pull/5835) [`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve audit log ux
+
+- Updated dependencies [[`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74)]:
+  - @wso2is/react-components@2.1.12
+  - @wso2is/theme@2.0.71
+  - @wso2is/access-control@2.0.22
+
+## 2.4.8
+
+### Patch Changes
+
+- [#5816](https://github.com/wso2/identity-apps/pull/5816) [`fd82055601`](https://github.com/wso2/identity-apps/commit/fd820556010c0f240bd695f0764bbe70b220d01c) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Make secondary attribute dropdown in trusted token issuer advanced tab clearable
+
+- Updated dependencies [[`fd82055601`](https://github.com/wso2/identity-apps/commit/fd820556010c0f240bd695f0764bbe70b220d01c)]:
+  - @wso2is/i18n@2.1.5
+
+## 2.4.7
+
+### Patch Changes
+
+- [#5773](https://github.com/wso2/identity-apps/pull/5773) [`a3a24504a9`](https://github.com/wso2/identity-apps/commit/a3a24504a969bb8d9a1fce5c77025cb6ecbaf2b6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n text for sms otp first factor template card
+
+- Updated dependencies [[`a3a24504a9`](https://github.com/wso2/identity-apps/commit/a3a24504a969bb8d9a1fce5c77025cb6ecbaf2b6)]:
+  - @wso2is/i18n@2.1.4
+
+## 2.4.6
+
+### Patch Changes
+
+- [#5775](https://github.com/wso2/identity-apps/pull/5775) [`ba15b1c3f2`](https://github.com/wso2/identity-apps/commit/ba15b1c3f2559394df61daf5ad9ded981f1c2059) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Temporarily disable extension scripts in console and myaccount
+
+## 2.4.5
+
+### Patch Changes
+
+- [#5758](https://github.com/wso2/identity-apps/pull/5758) [`12e1dfa241`](https://github.com/wso2/identity-apps/commit/12e1dfa241b48900b03169cd970bcb22ea0c4584) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add changeset
+
+* [#5758](https://github.com/wso2/identity-apps/pull/5758) [`2381bd93b8`](https://github.com/wso2/identity-apps/commit/2381bd93b883b2e491419d298796fbc35d4e7990) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix the responsiveness issues in the info card
+
+* Updated dependencies [[`12e1dfa241`](https://github.com/wso2/identity-apps/commit/12e1dfa241b48900b03169cd970bcb22ea0c4584), [`2381bd93b8`](https://github.com/wso2/identity-apps/commit/2381bd93b883b2e491419d298796fbc35d4e7990)]:
+  - @wso2is/theme@2.0.70
+  - @wso2is/react-components@2.1.11
+  - @wso2is/forms@2.0.27
+
 ## 2.4.4
 
 ### Patch Changes

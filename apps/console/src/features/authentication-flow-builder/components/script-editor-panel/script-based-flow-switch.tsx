@@ -125,14 +125,14 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                             >
                                 <Typography variant="body1">
                                     {
-                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                        t("applications:edit.sections.signOnMethod." +
                                             "sections.authenticationFlow.sections.scriptBased.accordion." +
                                             "title.heading")
                                     }
                                 </Typography>
                                 <Typography variant="body2">
                                     {
-                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                        t("applications:edit.sections.signOnMethod." +
                                             "sections.authenticationFlow.sections.scriptBased.accordion." +
                                             "title.description")
                                     }

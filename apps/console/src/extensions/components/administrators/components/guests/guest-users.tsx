@@ -338,13 +338,13 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
                         filterAttributeOptions={ (invitationStatusOption === InvitationStatus.ACCEPTED) ? [
                             {
                                 key: 0,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.username"),
                                 value: "userName"
                             },
                             {
                                 key: 1,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.email"),
                                 value: "emails"
                             }
@@ -352,24 +352,24 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
                             [
                                 {
                                     key: 0,
-                                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                    text: t("users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.email"),
                                     value: "email"
                                 }
                             ]
                         }
                         filterAttributePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute.placeholder")
+                            t("users:advancedSearch.form.inputs.filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                            t("users:advancedSearch.form.inputs.filterCondition" +
                                 ".placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                            t("users:advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
-                        placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                        placeholder={ t("users:advancedSearch.placeholder") }
                         defaultSearchAttribute={ (invitationStatusOption === InvitationStatus.ACCEPTED)
                             ? "userName": "email" }
                         defaultSearchOperator="co"
@@ -417,30 +417,30 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
                                     filterAttributeOptions={ [
                                         {
                                             key: 0,
-                                            text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                            text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.username"),
                                             value: "userName"
                                         },
                                         {
                                             key: 1,
-                                            text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                            text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.email"),
                                             value: "emails"
                                         }
                                     ] }
                                     filterAttributePlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
+                                        t("users:advancedSearch.form.inputs.filterAttribute" +
                                             ".placeholder")
                                     }
                                     filterConditionsPlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                                        t("users:advancedSearch.form.inputs.filterCondition" +
                                             ".placeholder")
                                     }
                                     filterValuePlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                                        t("users:advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
                                     }
-                                    placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                                    placeholder={ t("users:advancedSearch.placeholder") }
                                     defaultSearchAttribute="userName"
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }

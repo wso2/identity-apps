@@ -202,11 +202,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         ValidationConfigStatusFetchRequestError.response.data
                             .description ??
                         t(
-                            "console:manage.features.validation.fetchValidationConfigData.error.description"
+                            "validation:fetchValidationConfigData.error.description"
                         ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.validation.fetchValidationConfigData.error.message"
+                        "validation:fetchValidationConfigData.error.message"
                     )
                 })
             );
@@ -224,11 +224,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         ValidationConfigStatusFetchRequestError.response.data
                             .description ??
                         t(
-                            "console:manage.features.validation.fetchValidationConfigData.error.description"
+                            "validation:fetchValidationConfigData.error.description"
                         ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.validation.fetchValidationConfigData.error.message"
+                        "validation:fetchValidationConfigData.error.message"
                     )
                 })
             );
@@ -245,7 +245,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     description: passwordExpiryError.response.data.description,
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.validation.fetchValidationConfigData.error.message"
+                        "validation:fetchValidationConfigData.error.message"
                     )
                 })
             );
@@ -256,12 +256,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         dispatch(
             addAlert({
                 description: t(
-                    "console:manage.features.validation.fetchValidationConfigData" +
+                    "validation:fetchValidationConfigData" +
                     ".genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "console:manage.features.validation.fetchValidationConfigData" +
+                    "validation:fetchValidationConfigData" +
                     ".genericError.message"
                 )
             })
@@ -323,13 +323,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -338,12 +338,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -368,18 +368,18 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                 ValidationConfigConstants.VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS.PASSWORD_MIN_VALUE) {
                 error = true;
                 description = t(
-                    "console:manage.features.validation.validationError.minLimitError"
+                    "validation:validationError.minLimitError"
                 );
             } else if (Number(values.maxLength) >
                 ValidationConfigConstants.VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS.PASSWORD_MAX_VALUE) {
                 error = true;
                 description = t(
-                    "console:manage.features.validation.validationError.maxLimitError"
+                    "validation:validationError.maxLimitError"
                 );
             } else if (Number(values.minLength) > Number(values.maxLength)) {
                 error = true;
                 description = t(
-                    "console:manage.features.validation.validationError.minMaxMismatch"
+                    "validation:validationError.minMaxMismatch"
                 );
             } else if (
                 values.uniqueCharacterValidatorEnabled &&
@@ -387,7 +387,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             ) {
                 error = true;
                 description = t(
-                    "console:manage.features.validation.validationError.uniqueChrMismatch"
+                    "validation:validationError.uniqueChrMismatch"
                 );
             } else if (
                 values.consecutiveCharacterValidatorEnabled &&
@@ -396,7 +396,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             ) {
                 error = true;
                 description = t(
-                    "console:manage.features.validation.validationError.consecutiveChrMismatch"
+                    "validation:validationError.consecutiveChrMismatch"
                 );
             } else if (
                 Number(values.minLowerCaseCharacters) +
@@ -407,7 +407,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             ) {
                 error = true;
                 description = t(
-                    "console:manage.features.validation.validationError.invalidConfig"
+                    "validation:validationError.invalidConfig"
                 );
             }
         }
@@ -418,7 +418,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     description: description,
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.validation.validationError.wrongCombination"
+                        "validation:validationError.wrongCombination"
                     )
                 })
             );
@@ -484,11 +484,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.validation.notifications.success.description"
+                            "validation:notifications.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.validation.notifications.success.message"
+                            "validation:notifications.success.message"
                         )
                     })
                 );
@@ -501,13 +501,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 error?.response?.data?.description ??
                                 error?.response?.data?.detail ??
                                 t(
-                                    "console:manage.features.validation.notifications.error.description"
+                                    "validation:notifications.error.description"
                                 ),
                             level: AlertLevels.ERROR,
                             message:
                                 error?.response?.data?.message ??
                                 t(
-                                    "console:manage.features.validation.notifications.error.message"
+                                    "validation:notifications.error.message"
                                 )
                         })
                     );
@@ -517,11 +517,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.validation.notifications.genericError.description"
+                            "validation:notifications.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.validation.notifications.genericError.message"
+                            "validation:notifications.genericError.message"
                         )
                     })
                 );
@@ -1426,15 +1426,15 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
     return (
         <PageLayout
-            pageTitle={ t("console:manage.features.validation.pageTitle") }
+            pageTitle={ t("validation:pageTitle") }
             title={ (
                 <>
-                    { t("console:manage.features.validation.pageTitle") }
+                    { t("validation:pageTitle") }
                 </>
             ) }
             description={ (
                 <>
-                    { t("console:manage.features.validation.description") }
+                    { t("validation:description") }
                     <DocumentationLink
                         link={ getLink("manage.validation.passwordValidation.learnMore") }
                     >
@@ -1446,7 +1446,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

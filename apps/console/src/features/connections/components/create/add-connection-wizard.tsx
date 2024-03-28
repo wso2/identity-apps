@@ -182,10 +182,10 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 });
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    description: t("authenticationProvider:notifications.addIDP." +
                     "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    message: t("authenticationProvider:notifications.addIDP." +
                     "success.message")
                 }));
 
@@ -217,11 +217,11 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications." +
+                        description: t("authenticationProvider:notifications." +
                         "addIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider.notifications." +
+                        message: t("authenticationProvider:notifications." +
                         "addIDP.error.message")
                     });
 
@@ -229,10 +229,10 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 }
 
                 setAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    description: t("authenticationProvider:notifications.addIDP." +
                     "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    message: t("authenticationProvider:notifications.addIDP." +
                     "genericError.message")
                 });
             })
@@ -305,8 +305,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
         if (isUserInputIdpNameAlreadyTaken) {
             return t(
-                "console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
+                "authenticationProvider:forms.generalDetails.name." +
                 "validations.duplicate"
             );
         }
@@ -436,7 +435,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("console:develop.features.authenticationProvider." +
+                                        { t("authenticationProvider:" +
                                             "wizards.buttons.next") }
                                     </PrimaryButton>
                                 )
@@ -454,7 +453,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         {
                                             totalStep === 1
                                                 ? t("common:create")
-                                                : t("console:develop.features.authenticationProvider." +
+                                                : t("authenticationProvider:" +
                                                     "wizards.buttons.finish")
                                         }
                                     </PrimaryButton>
@@ -470,7 +469,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                     data-testid="add-connection-modal-previous-button"
                                     data-componentid="add-connection-modal-previous-button"
                                 >
-                                    { t("console:develop.features.authenticationProvider." +
+                                    { t("authenticationProvider:" +
                                         "wizards.buttons.previous") }
                                 </LinkButton>
                             )
@@ -497,7 +496,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                     <div className="help-panel-header-text">
-                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                        { t("applications:wizards.minimalAppCreationWizard.help.heading") }
                     </div>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
@@ -539,19 +538,19 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 (
                     <TierLimitReachErrorModal
                         actionLabel={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.action"
                         ) }
                         handleModalClose={ handleLimitReachedModalClose }
                         header={ t(
-                            "console:develop.features.idp.notifications.tierLimitReachedError.heading"
+                            "idp:notifications.tierLimitReachedError.heading"
                         ) }
                         description={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

@@ -98,11 +98,11 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             const results: (void | UserstoreType)[] = await Promise.all(
                 typeRequests.map((response: Promise<UserstoreType>) => response.catch((error: AxiosError) => {
                     dispatch(addAlert({
-                        description: t("console:manage.features.userstores.notifications." +
+                        description: t("userstores:notifications." +
                                 "fetchUserstoreTemplates.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("console:manage.features.userstores.notifications." +
+                            || t("userstores:notifications." +
                                 "fetchUserstoreTemplates.genericError.message")
                     }));
                 }))
@@ -142,10 +142,10 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             setRawUserstoreTypes(rawUserstoreTypes);
         }).catch((error: AxiosError) => {
             dispatch(addAlert({
-                description: t("console:manage.features.userstores.notifications." +
+                description: t("userstores:notifications." +
                     "fetchUserstoreTypes.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message || t("console:manage.features.userstores.notifications." +
+                message: error?.message || t("userstores:notifications." +
                     "fetchUserstoreTypes.genericError.message")
             }));
         }).finally(() => {
@@ -170,15 +170,15 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             }
             <PageLayout
                 isLoading={ isLoading }
-                title={ t("console:manage.features.userstores.pageLayout.templates.title") }
-                pageTitle={ t("console:manage.features.userstores.pageLayout.templates.title") }
-                description={ t("console:manage.features.userstores.pageLayout.templates.description") }
+                title={ t("userstores:pageLayout.templates.title") }
+                pageTitle={ t("userstores:pageLayout.templates.title") }
+                description={ t("userstores:pageLayout.templates.description") }
                 contentTopMargin={ true }
                 backButton={ {
                     onClick: () => {
                         history.push(AppConstants.getPaths().get("USERSTORES"));
                     },
-                    text: t("console:manage.features.userstores.pageLayout.templates.back")
+                    text: t("userstores:pageLayout.templates.back")
                 }
                 }
                 titleTextAlign="left"

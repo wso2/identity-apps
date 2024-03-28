@@ -290,7 +290,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                 dispatch(addAlert({
                     description: t("extensions:manage.accountLogin.notifications.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.validation.notifications.success.message")
+                    message: t("validation:notifications.success.message")
                 }));
             })
             .catch((error: AxiosError) => {
@@ -337,7 +337,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                 onClick: handleBackButtonClick,
                 text: isApplicationRedirect ?
                     t("extensions:manage.accountLogin.goBackToApplication")
-                    : t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                    : t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }
