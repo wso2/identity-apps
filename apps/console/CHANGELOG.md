@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.13.31
+
+### Patch Changes
+
+- [#5766](https://github.com/wso2/identity-apps/pull/5766) [`3481972af3`](https://github.com/wso2/identity-apps/commit/3481972af3ed6ac3e4d4998fa639850e80a83cdd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Users section unification
+
+* [#5843](https://github.com/wso2/identity-apps/pull/5843) [`0cde7bb6c1`](https://github.com/wso2/identity-apps/commit/0cde7bb6c1382ea9f536402763c75499b5a8dbcf) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Conditionally show the user store info message in add multiple user wizard
+
 ## 2.13.30
 
 ### Patch Changes
