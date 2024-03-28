@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -145,7 +145,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     useEffect(() => {
         getDialects(null)
             .then((dialects: ClaimDialect[]) => {
-                const customUserDialect: ClaimDialect = dialects.find(
+                const customUserDialect: ClaimDialect = dialects?.find(
                     (dialect: ClaimDialect) => dialect?.dialectURI === customUserSchemaURI);
 
                 if (customUserDialect) {

@@ -241,7 +241,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             return;
                         }
 
-                        if (schema.extended
+                        if (schema?.extended
                             && profileDetails?.profileInfo[customUserSchemaURI]
                             && profileDetails?.profileInfo[customUserSchemaURI][schemaNames[0]]) {
                             tempProfileInfo.set(

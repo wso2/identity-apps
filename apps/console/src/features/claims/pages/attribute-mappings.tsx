@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -333,7 +333,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             );
                         }
 
-                        return claim.id !== "local" &&
+                        return claim?.id !== "local" &&
                             claim.id !== ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP") &&
                             claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET");
                     });
@@ -359,10 +359,10 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     });
 
                     if (type === ClaimManagementConstants.SCIM) {
-                        if (attributeConfig.showCustomDialectInSCIM
-                            && filteredDialect.filter((e: ClaimDialect) => e.dialectURI
-                                === customUserSchemaURI).length > 0  ) {
-                            attributeMappings.push(filteredDialect.filter((e: ClaimDialect) => e.dialectURI
+                        if (attributeConfig?.showCustomDialectInSCIM
+                            && filteredDialect?.filter((e: ClaimDialect) => e?.dialectURI
+                                === customUserSchemaURI)?.length > 0  ) {
+                            attributeMappings?.push(filteredDialect?.filter((e: ClaimDialect) => e?.dialectURI
                                 === customUserSchemaURI)[0]);
                         }
                     }
@@ -409,8 +409,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                 render: () => (
                                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                                         <ExternalDialectEditPage
-                                            id={ dialect.id }
-                                            attributeUri={ tab.uri }
+                                            id={ dialect?.id }
+                                            attributeUri={ tab?.uri }
                                             attributeType={ type }
                                             mappedLocalClaims={ mappedLocalclaims }
                                             updateMappedClaims={ setTriggerFetchMappedClaims }
@@ -423,7 +423,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
 
                 if (attributeConfig.showCustomDialectInSCIM) {
                     const dialect: ClaimDialect = dialects?.find((dialect: ClaimDialect) =>
-                        dialect.dialectURI === customUserSchemaURI
+                        dialect?.dialectURI === customUserSchemaURI
                     );
 
                     if (dialect) {
@@ -432,9 +432,9 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             render: () => (
                                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                                     <ExternalDialectEditPage
-                                        id={ dialect.id }
+                                        id={ dialect?.id }
                                         attributeType={ type }
-                                        attributeUri={ dialect.dialectURI }
+                                        attributeUri={ dialect?.dialectURI }
                                         mappedLocalClaims={ mappedLocalclaims }
                                         updateMappedClaims={ setTriggerFetchMappedClaims }
                                     />
@@ -461,8 +461,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             render: () => (
                                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                                     <ExternalDialectEditPage
-                                        id={ dialect.id }
-                                        attributeUri={ tab.uri }
+                                        id={ dialect?.id }
+                                        attributeUri={ tab?.uri }
                                         attributeType={ type }
                                         mappedLocalClaims={ mappedLocalclaims }
                                         updateMappedClaims={ setTriggerFetchMappedClaims }
@@ -482,9 +482,9 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <ExternalDialectEditPage
-                                id={ dialect.id  }
+                                id={ dialect?.id  }
                                 attributeType={ type }
-                                attributeUri={ dialect.dialectURI }
+                                attributeUri={ dialect?.dialectURI }
                                 mappedLocalClaims={ mappedLocalclaims }
                                 updateMappedClaims={ setTriggerFetchMappedClaims }
                             />

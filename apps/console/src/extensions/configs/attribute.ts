@@ -156,7 +156,7 @@ export const attributeConfig: AttributeConfig = {
             await getDialects()
                 .then((response: Claim[] | ClaimDialect[]) => {
                     response.map((dialect: Claim | ClaimDialect) => {
-                        if (dialect.dialectURI === customUserSchemaURI) {
+                        if (dialect?.dialectURI === customUserSchemaURI) {
                             dialectID = dialect.id;
                         }
                     });
@@ -257,7 +257,7 @@ export const attributeConfig: AttributeConfig = {
                 await getDialects()
                     .then((response: Claim[] | ClaimDialect[]) => {
                         response.map((dialect: Claim | ClaimDialect) => {
-                            if (dialect.dialectURI === customUserSchemaURI) {
+                            if (dialect?.dialectURI === customUserSchemaURI) {
                                 dialectID = dialect.id;
                             }
                         });
@@ -267,7 +267,7 @@ export const attributeConfig: AttributeConfig = {
                     await getClaimsForDialect(dialectID)
                         .then((response: Claim[] | ExternalClaim[]) => {
                             response.map((attrib: Claim | ExternalClaim) => {
-                                if (attrib.claimURI === `${customUserSchemaURI}:` + attributeName) {
+                                if (attrib?.claimURI === `${customUserSchemaURI}:` + attributeName) {
                                     availability.set("SCIM", false);
                                 }
                             });
@@ -310,7 +310,7 @@ export const attributeConfig: AttributeConfig = {
             await getDialects()
                 .then((response: Claim[] | ClaimDialect[]) => {
                     response.map((dialect: Claim | ClaimDialect) => {
-                        if (dialect.dialectURI === customUserSchemaURI) {
+                        if (dialect?.dialectURI === customUserSchemaURI) {
                             dialectID = dialect.id;
                         }
                     });

@@ -314,10 +314,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[customUserSchemaURI]
+                            if (schema?.extended && userInfo[customUserSchemaURI]
                                 && userInfo[customUserSchemaURI][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[customUserSchemaURI][schemaNames[0]]
+                                    schema?.name, userInfo[customUserSchemaURI][schemaNames[0]]
                                 );
 
                                 return;
@@ -337,7 +337,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const schemaName: string = schemaNames[0];
                             const schemaSecondaryProperty: string = schemaNames[1];
 
-                            if (schema.extended && userInfo[customUserSchemaURI]) {
+                            if (schema?.extended && userInfo[customUserSchemaURI]) {
                                 schemaName && schemaSecondaryProperty &&
                                     userInfo[customUserSchemaURI][schemaName] &&
                                     userInfo[customUserSchemaURI][schemaName][schemaSecondaryProperty] && (
@@ -395,10 +395,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[customUserSchemaURI]
+                            if (schema?.extended && userInfo[customUserSchemaURI]
                                 && userInfo[customUserSchemaURI][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[customUserSchemaURI][schemaNames[0]]
+                                    schema?.name, userInfo[customUserSchemaURI][schemaNames[0]]
                                 );
 
                                 return;
@@ -970,8 +970,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     {
                         "op": "replace",
                         "value": {
-                            [ SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled.startsWith(customUserSchemaURI) &&
-                                SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked.startsWith(customUserSchemaURI)
+                            [ SCIMConfigs?.scimEnterpriseUserClaimUri?.accountDisabled?.
+                                startsWith(customUserSchemaURI) &&
+                                SCIMConfigs?.scimEnterpriseUserClaimUri?.accountLocked?.startsWith(customUserSchemaURI)
                                 ? customUserSchemaURI
                                 : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
                                 [attributeName]: attributeValue
