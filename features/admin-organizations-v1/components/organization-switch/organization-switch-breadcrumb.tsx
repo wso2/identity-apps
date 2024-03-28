@@ -36,7 +36,7 @@ import { Dispatch } from "redux";
 import { Breadcrumb, Dropdown, Icon } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
-import useSignIn from "../../../authentication/hooks/use-sign-in";
+import useSignIn from "../../../admin-authentication-v1/hooks/use-sign-in";
 import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { AppConstants, AppState } from "../../../core";
 import { history } from "../../../core/helpers/history";

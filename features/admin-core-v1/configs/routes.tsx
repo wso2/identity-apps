@@ -1335,7 +1335,7 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: lazy(() => import("../../authentication/pages/sign-out")),
+            component: lazy(() => import("../../admin-authentication-v1/pages/sign-out")),
             icon: null,
             id: "authLayoutLogout",
             name: "Logout",
