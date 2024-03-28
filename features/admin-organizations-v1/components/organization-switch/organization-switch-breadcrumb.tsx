@@ -40,7 +40,7 @@ import useSignIn from "../../../authentication/hooks/use-sign-in";
 import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { AppConstants, AppState } from "../../../core";
 import { history } from "../../../core/helpers/history";
-import TenantDropdown from "../../../tenants/components/dropdown/tenant-dropdown";
+import TenantDropdown from "../../../admin-tenants-v1/components/dropdown/tenant-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
 import { useGetCurrentOrganizationType } from "../../hooks/use-get-organization-type";
 import useOrganizationSwitch from "../../hooks/use-organization-switch";

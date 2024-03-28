@@ -42,7 +42,7 @@ import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-c
 import { getRolesResourceEndpoints } from "../../roles/configs/endpoints";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
-import { getTenantResourceEndpoints } from "../../tenants/configs/endpoints";
+import { getTenantResourceEndpoints } from "../../admin-tenants-v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "../../admin-users-v1/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "../../admin-userstores-v1/configs/endpoints";
 import { getValidationServiceEndpoints } from "../../admin-validation-v1/configs";

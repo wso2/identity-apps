@@ -41,7 +41,7 @@ import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jw
 import { RolesResourceEndpointsInterface } from "../../roles/models/endpoints";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
-import { TenantResourceEndpointsInterface } from "../../tenants/models/endpoints";
+import { TenantResourceEndpointsInterface } from "../../admin-tenants-v1/models/endpoints";
 import { UsersResourceEndpointsInterface } from "../../admin-users-v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "../../admin-userstores-v1/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "../../admin-validation-v1/models";
