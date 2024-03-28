@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { OrganizationType } from "../../../../organizations/constants";
-import { OrganizationResponseInterface } from "../../../../organizations/models";
+import { OrganizationType } from "../../../../admin-organizations-v1/constants";
+import { OrganizationResponseInterface } from "../../../../admin-organizations-v1/models";
 
 export enum OrganizationActionTypes {
     SET_SUPER_ADMIN = "SET_SUPER_ADMIN",

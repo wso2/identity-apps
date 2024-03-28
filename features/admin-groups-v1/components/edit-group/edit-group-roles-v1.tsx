@@ -55,12 +55,12 @@ import {
     Table
 } from "semantic-ui-react";
 import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../../admin-core-v1";
-import { getOrganizationRoles } from "../../../organizations/api";
+import { getOrganizationRoles } from "../../../admin-organizations-v1/api";
 import {
     OrganizationResponseInterface,
     OrganizationRoleListResponseInterface
-} from "../../../organizations/models/organizations";
-import { OrganizationUtils } from "../../../organizations/utils";
+} from "../../../admin-organizations-v1/models/organizations";
+import { OrganizationUtils } from "../../../admin-organizations-v1/utils";
 import { getRolesList } from "../../../admin-roles-v2/api/roles";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../admin-roles-v2/constants/role-constants";
 import { UserRolePermissions } from "../../../admin-users-v1/components/user-role-permissions";

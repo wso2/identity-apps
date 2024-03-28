@@ -27,8 +27,8 @@ import {
     SetSuperAdminTypeInterface,
     SetUserOrganizationIdInterface
 } from "./types";
-import { OrganizationType } from "../../../organizations/constants";
-import { OrganizationResponseInterface } from "../../../organizations/models";
+import { OrganizationType } from "../../../admin-organizations-v1/constants";
+import { OrganizationResponseInterface } from "../../../admin-organizations-v1/models";
 import { ServerConfigurationsInterface, getServerConfigs } from "../../../admin-server-configurations-v1";
 
 /**

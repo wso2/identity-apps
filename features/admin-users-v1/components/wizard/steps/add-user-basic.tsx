@@ -31,7 +31,7 @@ import { userConfig, userstoresConfig } from "../../../../../extensions/configs"
 import { AppConstants } from "../../../../admin-core-v1/constants";
 import { history } from "../../../../admin-core-v1/helpers/history";
 import { EventPublisher, SharedUserStoreUtils } from "../../../../admin-core-v1/utils";
-import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
 import {
     ServerConfigurationsConstants
 } from "../../../../admin-server-configurations-v1/constants/server-configurations-constants";

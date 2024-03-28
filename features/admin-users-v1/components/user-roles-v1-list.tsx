@@ -47,13 +47,13 @@ import { Button, Divider, Grid, Icon, Input, InputOnChangeData, Label, Modal, Ta
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard/user-role-permissions";
 import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../admin-core-v1";
-import { getOrganizationRoles } from "../../organizations/api";
+import { getOrganizationRoles } from "../../admin-organizations-v1/api";
 import {
     OrganizationResponseInterface,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
-} from "../../organizations/models/organizations";
-import { OrganizationUtils } from "../../organizations/utils";
+} from "../../admin-organizations-v1/models/organizations";
+import { OrganizationUtils } from "../../admin-organizations-v1/utils";
 import { getRolesList } from "../../admin-roles-v2/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../admin-roles-v2/constants";
 

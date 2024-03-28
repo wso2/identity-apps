@@ -31,7 +31,7 @@ import { useTranslation } from "react-i18next";
 import AdministratorsList from "./administrators-list/administrators-list";
 import InvitedAdministratorsList from "./invited-administrators/invited-administrators-list";
 import { UserStoreProperty, getAUserStore } from "../../../admin-core-v1";
-import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
 import { useUserStores } from "../../../admin-userstores-v1/api";
 import { CONSUMER_USERSTORE } from "../../../admin-userstores-v1/constants";
 import { UserStoreDropdownItem, UserStoreListItem, UserStorePostData } from "../../../admin-userstores-v1/models";

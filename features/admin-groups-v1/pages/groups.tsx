@@ -42,8 +42,8 @@ import {
     getAUserStore,
     getEmptyPlaceholderIllustrations
 } from "../../admin-core-v1";
-import { RootOnlyComponent } from "../../organizations/components";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { RootOnlyComponent } from "../../admin-organizations-v1/components";
+import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../admin-userstores-v1/api";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../admin-userstores-v1/constants";
 import { UserStorePostData } from "../../admin-userstores-v1/models/user-stores";
