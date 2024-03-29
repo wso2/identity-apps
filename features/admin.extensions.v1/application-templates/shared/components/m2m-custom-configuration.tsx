@@ -26,8 +26,7 @@ import {
     Heading,
     Hint,
     SegmentedAccordion,
-    Text,
-    useDocumentation
+    Text
 } from "@wso2is/react-components";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";

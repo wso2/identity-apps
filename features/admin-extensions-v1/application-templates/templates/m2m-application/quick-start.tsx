@@ -29,8 +29,8 @@ import { Grid } from "semantic-ui-react";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface
-} from "../../../../features/applications/models";
-import { M2MCustomConfiguration } from "../../shared/components";
+} from "../../../../admin-applications-v1/models";
+import { M2MCustomConfiguration } from "../../../application-templates/shared/components";
 
 /**
  * Prop types of the M2M Application Quickstart component.
