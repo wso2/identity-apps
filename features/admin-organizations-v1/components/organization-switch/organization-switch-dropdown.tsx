@@ -45,7 +45,7 @@ import {
 } from "semantic-ui-react";
 import OrganizationListItem from "./organization-list-item";
 import OrganizationSwitcherList from "./organization-switch-list";
-import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
+import { ReactComponent as CrossIcon } from "../../../themes/default/assets/images/icons/cross-icon.svg";
 import { AppState } from "../../../admin-core-v1";
 import { getOrganizations } from "../../api";
 import {

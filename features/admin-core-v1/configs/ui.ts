@@ -17,157 +17,157 @@
  */
 
 import { FunctionComponent, ReactNode } from "react";
-import { ReactComponent as AlertIcon } from "../../../themes/default/assets/images/icons/alert-icon.svg";
+import { ReactComponent as AlertIcon } from "../../themes/default/assets/images/icons/alert-icon.svg";
 import {
     ReactComponent as ApplicationRolesIcon
-} from "../../../themes/default/assets/images/icons/application-roles.svg";
-import { ReactComponent as ArrowRight } from "../../../themes/default/assets/images/icons/arrow-right-icon.svg";
-import { ReactComponent as CaretLeftIcon } from "../../../themes/default/assets/images/icons/caret-left-icon.svg";
-import { ReactComponent as CaretRightIcon } from "../../../themes/default/assets/images/icons/caret-right-icon.svg";
+} from "../../themes/default/assets/images/icons/application-roles.svg";
+import { ReactComponent as ArrowRight } from "../../themes/default/assets/images/icons/arrow-right-icon.svg";
+import { ReactComponent as CaretLeftIcon } from "../../themes/default/assets/images/icons/caret-left-icon.svg";
+import { ReactComponent as CaretRightIcon } from "../../themes/default/assets/images/icons/caret-right-icon.svg";
 import {
     ReactComponent as CertificateAvatar
-} from "../../../themes/default/assets/images/icons/certificate-avatar.svg";
-import { ReactComponent as CertificateIcon } from "../../../themes/default/assets/images/icons/certificate-icon.svg";
-import { ReactComponent as ClaimsIcon } from "../../../themes/default/assets/images/icons/claims-icon.svg";
-import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
-import { ReactComponent as ConnectionIcon } from "../../../themes/default/assets/images/icons/connection.svg";
-import ConsoleIcon from "../../../themes/default/assets/images/icons/console-icon.svg";
-import { ReactComponent as CrossIcon } from "../../../themes/default/assets/images/icons/cross-icon.svg";
-import { ReactComponent as DashboardIcon } from "../../../themes/default/assets/images/icons/dashboard-icon.svg";
-import { ReactComponent as DatabaseIcon } from "../../../themes/default/assets/images/icons/database-icon.svg";
-import { ReactComponent as DragSquaresIcon } from "../../../themes/default/assets/images/icons/drag-squares-icon.svg";
-import { ReactComponent as EmailIcon } from "../../../themes/default/assets/images/icons/email-icon.svg";
-import { ReactComponent as ForbiddenIcon } from "../../../themes/default/assets/images/icons/forbidden-icon.svg";
-import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
-import LogoutIcon from "../../../themes/default/assets/images/icons/logout-icon.svg";
-import { ReactComponent as MaximizeIcon } from "../../../themes/default/assets/images/icons/maximize-icon.svg";
-import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
-import { ReactComponent as MinimizeIcon } from "../../../themes/default/assets/images/icons/minimize-icon.svg";
-import MyAccountIcon from "../../../themes/default/assets/images/icons/myaccount-icon.svg";
+} from "../../themes/default/assets/images/icons/certificate-avatar.svg";
+import { ReactComponent as CertificateIcon } from "../../themes/default/assets/images/icons/certificate-icon.svg";
+import { ReactComponent as ClaimsIcon } from "../../themes/default/assets/images/icons/claims-icon.svg";
+import { ReactComponent as CodeForkIcon } from "../../themes/default/assets/images/icons/code-fork.svg";
+import { ReactComponent as ConnectionIcon } from "../../themes/default/assets/images/icons/connection.svg";
+import ConsoleIcon from "../../themes/default/assets/images/icons/console-icon.svg";
+import { ReactComponent as CrossIcon } from "../../themes/default/assets/images/icons/cross-icon.svg";
+import { ReactComponent as DashboardIcon } from "../../themes/default/assets/images/icons/dashboard-icon.svg";
+import { ReactComponent as DatabaseIcon } from "../../themes/default/assets/images/icons/database-icon.svg";
+import { ReactComponent as DragSquaresIcon } from "../../themes/default/assets/images/icons/drag-squares-icon.svg";
+import { ReactComponent as EmailIcon } from "../../themes/default/assets/images/icons/email-icon.svg";
+import { ReactComponent as ForbiddenIcon } from "../../themes/default/assets/images/icons/forbidden-icon.svg";
+import { ReactComponent as GearsIcon } from "../../themes/default/assets/images/icons/gears-icon.svg";
+import LogoutIcon from "../../themes/default/assets/images/icons/logout-icon.svg";
+import { ReactComponent as MaximizeIcon } from "../../themes/default/assets/images/icons/maximize-icon.svg";
+import { ReactComponent as IDPMetadataIcon } from "../../themes/default/assets/images/icons/metadata.svg";
+import { ReactComponent as MinimizeIcon } from "../../themes/default/assets/images/icons/minimize-icon.svg";
+import MyAccountIcon from "../../themes/default/assets/images/icons/myaccount-icon.svg";
 import {
     ReactComponent as OrganizationRolesIcon
-} from "../../../themes/default/assets/images/icons/organization-roles.svg";
+} from "../../themes/default/assets/images/icons/organization-roles.svg";
 import {
     ReactComponent as AccountManagementOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/account-management-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/account-management-outline.svg";
 import {
     ReactComponent as AdminAdvisoryBannerIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/admin-advisory-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/admin-advisory-outline.svg";
 import {
     ReactComponent as AnalyticsIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/analytics.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/analytics.svg";
 import {
     ReactComponent as ApplicationsOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/application-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/application-outline.svg";
 import {
     ReactComponent as BriefcaseIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/briefcase-outline.svg";
-import { ReactComponent as HomeIcon } from "../../../themes/default/assets/images/icons/outline-icons/home-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/briefcase-outline.svg";
+import { ReactComponent as HomeIcon } from "../../themes/default/assets/images/icons/outline-icons/home-outline.svg";
 import {
     ReactComponent as IDPOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/idp-provider-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/idp-provider-outline.svg";
 import {
     ReactComponent as IDVPOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/idvp-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/idvp-outline.svg";
 import {
     ReactComponent as KeyOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/key-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/key-outline.svg";
 import {
     ReactComponent as LDAPOutlineLegacyIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/ldap-outline-legacy.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/ldap-outline-legacy.svg";
 import {
     ReactComponent as LDAPOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/ldap-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/ldap-outline.svg";
 import {
     ReactComponent as LoginAttemptSecurityOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/login-attempts-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/login-attempts-outline.svg";
 import {
     ReactComponent as UserOnboardingOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/onboarding-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/onboarding-outline.svg";
 import {
     ReactComponent as OtherSettingsOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/other-settings-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/other-settings-outline.svg";
 import {
     ReactComponent as ApprovalsIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
 import {
     ReactComponent as RemoteLoggingIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
-import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
-import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
-import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
+import { ReactComponent as PinIcon } from "../../themes/default/assets/images/icons/pin-icon.svg";
+import { ReactComponent as PlugIcon } from "../../themes/default/assets/images/icons/plug-icon.svg";
+import { ReactComponent as ScopeIcon } from "../../themes/default/assets/images/icons/scope.svg";
 import {
     ReactComponent as LockIconFilled
-} from "../../../themes/default/assets/images/icons/secret-grey.svg";
-import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
+} from "../../themes/default/assets/images/icons/secret-grey.svg";
+import { ReactComponent as SMSIcon } from "../../themes/default/assets/images/icons/sms-icon.svg";
 import {
     ReactComponent as DarkModeIcon
-} from "../../../themes/default/assets/images/icons/solid-icons/crescent-icon.svg";
-import { ReactComponent as KeyIcon } from "../../../themes/default/assets/images/icons/solid-icons/key.svg";
+} from "../../themes/default/assets/images/icons/solid-icons/crescent-icon.svg";
+import { ReactComponent as KeyIcon } from "../../themes/default/assets/images/icons/solid-icons/key.svg";
 import {
     ReactComponent as LightModeIcon
-} from "../../../themes/default/assets/images/icons/solid-icons/light-icon.svg";
+} from "../../themes/default/assets/images/icons/solid-icons/light-icon.svg";
 import {
     ReactComponent as MyAccountSolidIcon
-} from "../../../themes/default/assets/images/icons/solid-icons/my-account-icon.svg";
+} from "../../themes/default/assets/images/icons/solid-icons/my-account-icon.svg";
 import {
     ReactComponent as OpenBookIcon
-} from "../../../themes/default/assets/images/icons/solid-icons/oidc.svg";
-import { ReactComponent as UnPinIcon } from "../../../themes/default/assets/images/icons/unpin-icon.svg";
-import { ReactComponent as FileUploadIllustration } from "../../../themes/default/assets/images/icons/upload.svg";
-import { ReactComponent as UserGroupIcon } from "../../../themes/default/assets/images/icons/user-group-icon.svg";
-import { ReactComponent as UserIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
-import { ReactComponent as CertificateBadge } from "../../../themes/default/assets/images/illustrations/badge.svg";
+} from "../../themes/default/assets/images/icons/solid-icons/oidc.svg";
+import { ReactComponent as UnPinIcon } from "../../themes/default/assets/images/icons/unpin-icon.svg";
+import { ReactComponent as FileUploadIllustration } from "../../themes/default/assets/images/icons/upload.svg";
+import { ReactComponent as UserGroupIcon } from "../../themes/default/assets/images/icons/user-group-icon.svg";
+import { ReactComponent as UserIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
+import { ReactComponent as CertificateBadge } from "../../themes/default/assets/images/illustrations/badge.svg";
 import {
     ReactComponent as CertificateIllustration
-} from "../../../themes/default/assets/images/illustrations/certificate.svg";
+} from "../../themes/default/assets/images/illustrations/certificate.svg";
 import {
     ReactComponent as JWTKey
-} from "../../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
-import { ReactComponent as CertificateRibbon } from "../../../themes/default/assets/images/illustrations/ribbon.svg";
+} from "../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
+import { ReactComponent as CertificateRibbon } from "../../themes/default/assets/images/illustrations/ribbon.svg";
 import {
     ReactComponent as BrokenPageIllustration
-} from "../../../themes/default/assets/images/placeholder-illustrations/broken-page-illustration.svg";
+} from "../../themes/default/assets/images/placeholder-illustrations/broken-page-illustration.svg";
 import {
     ReactComponent as CreateErrorIllustration
-} from "../../../themes/default/assets/images/placeholder-illustrations/create-error-illustration.svg";
+} from "../../themes/default/assets/images/placeholder-illustrations/create-error-illustration.svg";
 import {
     ReactComponent as EmptyListIllustration
-} from "../../../themes/default/assets/images/placeholder-illustrations/empty-list-illustration.svg";
+} from "../../themes/default/assets/images/placeholder-illustrations/empty-list-illustration.svg";
 import {
     ReactComponent as EmptySearchResultsIllustration
-} from "../../../themes/default/assets/images/placeholder-illustrations/empty-search-illustration.svg";
+} from "../../themes/default/assets/images/placeholder-illustrations/empty-search-illustration.svg";
 import {
     ReactComponent as PageNotFoundIllustration
-} from "../../../themes/default/assets/images/placeholder-illustrations/page-not-found-illustration.svg";
-import AxschemaLogo from "../../../themes/default/assets/images/protocols/axschema.png";
-import EidasLogo from "../../../themes/default/assets/images/protocols/eidas.png";
-import OAuth2Logo from "../../../themes/default/assets/images/protocols/oauth2.png";
-import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.png";
-import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
-import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
-import SCIMLogo from "../../../themes/default/assets/images/protocols/scim.png";
-import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
-import { ReactComponent as AndroidLogo } from "../../../themes/default/assets/images/technologies/android-logo.svg";
-import { ReactComponent as AngularLogo } from "../../../themes/default/assets/images/technologies/angular-logo.svg";
-import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/technologies/apple-logo.svg";
-import { ReactComponent as CSharpLogo } from "../../../themes/default/assets/images/technologies/c-sharp-logo.svg";
-import { ReactComponent as CordovaLogo } from "../../../themes/default/assets/images/technologies/cordova-logo.svg";
-import { ReactComponent as DotNetLogo } from "../../../themes/default/assets/images/technologies/dotnet-logo.svg";
-import { ReactComponent as FlutterLogo } from "../../../themes/default/assets/images/technologies/flutter-logo.svg";
-import { ReactComponent as HTMLLogo } from "../../../themes/default/assets/images/technologies/html-logo.svg";
-import { ReactComponent as IOSLogo } from "../../../themes/default/assets/images/technologies/ios-logo.svg";
-import { ReactComponent as JavaLogo } from "../../../themes/default/assets/images/technologies/java-logo.svg";
+} from "../../themes/default/assets/images/placeholder-illustrations/page-not-found-illustration.svg";
+import AxschemaLogo from "../../themes/default/assets/images/protocols/axschema.png";
+import EidasLogo from "../../themes/default/assets/images/protocols/eidas.png";
+import OAuth2Logo from "../../themes/default/assets/images/protocols/oauth2.png";
+import OIDCFullLogo from "../../themes/default/assets/images/protocols/oidc.png";
+import OIDCLogo from "../../themes/default/assets/images/protocols/openid-connect.png";
+import SamlLogo from "../../themes/default/assets/images/protocols/saml.png";
+import SCIMLogo from "../../themes/default/assets/images/protocols/scim.png";
+import WSFedLogo from "../../themes/default/assets/images/protocols/ws-fed.png";
+import { ReactComponent as AndroidLogo } from "../../themes/default/assets/images/technologies/android-logo.svg";
+import { ReactComponent as AngularLogo } from "../../themes/default/assets/images/technologies/angular-logo.svg";
+import { ReactComponent as AppleLogo } from "../../themes/default/assets/images/technologies/apple-logo.svg";
+import { ReactComponent as CSharpLogo } from "../../themes/default/assets/images/technologies/c-sharp-logo.svg";
+import { ReactComponent as CordovaLogo } from "../../themes/default/assets/images/technologies/cordova-logo.svg";
+import { ReactComponent as DotNetLogo } from "../../themes/default/assets/images/technologies/dotnet-logo.svg";
+import { ReactComponent as FlutterLogo } from "../../themes/default/assets/images/technologies/flutter-logo.svg";
+import { ReactComponent as HTMLLogo } from "../../themes/default/assets/images/technologies/html-logo.svg";
+import { ReactComponent as IOSLogo } from "../../themes/default/assets/images/technologies/ios-logo.svg";
+import { ReactComponent as JavaLogo } from "../../themes/default/assets/images/technologies/java-logo.svg";
 import {
     ReactComponent as JavaScriptLogo
-} from "../../../themes/default/assets/images/technologies/javascript-logo.svg";
-import MacOSLogo from "../../../themes/default/assets/images/technologies/macos-logo.png";
-import { ReactComponent as NodeJSLogo } from "../../../themes/default/assets/images/technologies/nodejs-logo.svg";
-import { ReactComponent as PHPLogo } from "../../../themes/default/assets/images/technologies/php-logo.svg";
-import { ReactComponent as PythonLogo } from "../../../themes/default/assets/images/technologies/python-logo.svg";
-import { ReactComponent as ReactLogo } from "../../../themes/default/assets/images/technologies/react-logo.svg";
-import { ReactComponent as VueLogo } from "../../../themes/default/assets/images/technologies/vue-logo.svg";
-import { ReactComponent as WindowsLogo } from "../../../themes/default/assets/images/technologies/windows-logo.svg";
+} from "../../themes/default/assets/images/technologies/javascript-logo.svg";
+import MacOSLogo from "../../themes/default/assets/images/technologies/macos-logo.png";
+import { ReactComponent as NodeJSLogo } from "../../themes/default/assets/images/technologies/nodejs-logo.svg";
+import { ReactComponent as PHPLogo } from "../../themes/default/assets/images/technologies/php-logo.svg";
+import { ReactComponent as PythonLogo } from "../../themes/default/assets/images/technologies/python-logo.svg";
+import { ReactComponent as ReactLogo } from "../../themes/default/assets/images/technologies/react-logo.svg";
+import { ReactComponent as VueLogo } from "../../themes/default/assets/images/technologies/vue-logo.svg";
+import { ReactComponent as WindowsLogo } from "../../themes/default/assets/images/technologies/windows-logo.svg";
 import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1/constants";
 
 /**

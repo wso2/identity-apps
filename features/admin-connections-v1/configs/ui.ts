@@ -16,23 +16,23 @@
  * under the License.
  */
 
-import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
-import FIDOIcon from "../../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
-import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
-import SCIMLogo from "../../../themes/default/assets/images/connectors/scim.png";
-import SPMLLogo from "../../../themes/default/assets/images/connectors/spml.png";
-import FacebookLogo from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
-import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
-import GoogleLogo from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
-import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
+import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.png";
+import FIDOIcon from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
+import SalesforceLogo from "../../themes/default/assets/images/connectors/salesforce.png";
+import SCIMLogo from "../../themes/default/assets/images/connectors/scim.png";
+import SPMLLogo from "../../themes/default/assets/images/connectors/spml.png";
+import FacebookLogo from "../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
+import GithubIdPIcon from "../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+import GoogleLogo from "../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+import KerberosLogo from "../../themes/default/assets/images/identity-providers/kerberos.png";
+import Office365Logo from "../../themes/default/assets/images/identity-providers/office-365.svg";
 import TrustedTokenIssuerIcon
-    from "../../../themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
-import TwitterLogo from "../../../themes/default/assets/images/identity-providers/twitter.svg";
-import YahooLogo from "../../../themes/default/assets/images/identity-providers/yahoo.svg";
-import JWTLogo from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
-import AppleLogo from "../../../themes/default/assets/images/third-party/apple-logo.svg";
-import MicrosoftLogo from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
+    from "../../themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
+import TwitterLogo from "../../themes/default/assets/images/identity-providers/twitter.svg";
+import YahooLogo from "../../themes/default/assets/images/identity-providers/yahoo.svg";
+import JWTLogo from "../../themes/default/assets/images/technologies/jwt-logo.svg";
+import AppleLogo from "../../themes/default/assets/images/third-party/apple-logo.svg";
+import MicrosoftLogo from "../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { SupportedServices } from "../models/connection";
 import ConnectionIcon from "../resources/assets/images/icons/connection.svg";
 import { ReactComponent as DefaultConnectionIcon

@@ -197,7 +197,7 @@ export class BrandingPreferenceUtils {
     public static getPredefinedThemePreferences = (
         appTheme: string): Promise<BrandingPreferenceThemeInterface> => {
 
-        return import(`../../../themes/${ appTheme }/theme-variables.json`)
+        return import(`../../themes/${ appTheme }/theme-variables.json`)
             .then((response: Record<string, string>) => {
                 return Promise.resolve({
                     activeTheme: BrandingPreferencesConstants.DEFAULT_THEME,

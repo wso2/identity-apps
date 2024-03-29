@@ -17,25 +17,25 @@
  */
 
 import {  FunctionComponent, SVGProps } from "react";
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as DocumentIcon } from "../../themes/default/assets/images/icons/document-icon.svg";
 import {
     ReactComponent as DatabaseOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/database-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/database-outline.svg";
 import {
     ReactComponent as ActiveDirectoryUserstoreIllustration
-} from "../../../themes/default/assets/images/illustrations/ad-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/ad-illustration.svg";
 import {
     ReactComponent as CustomApplicationTemplateIllustration
-} from "../../../themes/default/assets/images/illustrations/custom-app-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/custom-app-illustration.svg";
 import {
     ReactComponent as JDBCUserstoreIllustration
-} from "../../../themes/default/assets/images/illustrations/jdbc-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/jdbc-illustration.svg";
 import {
     ReactComponent as LDAPUserstoreIllustration
-} from "../../../themes/default/assets/images/illustrations/ldap-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/ldap-illustration.svg";
 import {
     ReactComponent as LDAPReadOnlyUserstoreIllustration
-} from "../../../themes/default/assets/images/illustrations/ldap-readonly-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/ldap-readonly-illustration.svg";
 
 export const getAddUserstoreWizardStepIcons  = (): {
     general: FunctionComponent<SVGProps<SVGSVGElement>>;

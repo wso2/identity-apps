@@ -32,67 +32,67 @@ import {
 import UsernameValidationIcon from "../../admin-extensions-v1/assets/images/icons/username-validation-icon.svg";
 import {
     default as LockRecoverIcon
-} from "../../../themes/default/assets/images/icons/lock-recover-icon.svg";
+} from "../../themes/default/assets/images/icons/lock-recover-icon.svg";
 import {
     default as PasswordValidationIcon
-} from "../../../themes/default/assets/images/icons/password-validation.svg";
+} from "../../themes/default/assets/images/icons/password-validation.svg";
 import {
     ReactComponent as RobotIcon
-} from "../../../themes/default/assets/images/icons/robot-icon.svg";
+} from "../../themes/default/assets/images/icons/robot-icon.svg";
 import {
     default as UserAddIcon
-} from "../../../themes/default/assets/images/icons/user-add.svg";
+} from "../../themes/default/assets/images/icons/user-add.svg";
 import {
     default as WarningWithNumberIcon
-} from "../../../themes/default/assets/images/icons/warning-with-number.svg";
+} from "../../themes/default/assets/images/icons/warning-with-number.svg";
 import {
     default as AccountDisableConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/account-disable-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/account-disable-illustration.svg";
 import {
     default as AccountLockConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/account-lock.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/account-lock.svg";
 import {
     default as AccountRecoveryConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/account-recovery-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/account-recovery-illustration.svg";
 import {
     default as AnalyticsEngineConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/analytics-engine-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/analytics-engine-illustration.svg";
 import {
     default as AskPasswordConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/ask-password-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/ask-password-illustration.svg";
 import {
     default as reCaptchaConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/captcha-sso-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/captcha-sso-illustration.svg";
 import {
     default as ConsentInfoConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/consent-management-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/consent-management-illustration.svg";
 import {
     default as DefaultConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/default-connector-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/default-connector-illustration.svg";
 import {
     default as LiteUserRegistrationConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/lite-user-registration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/lite-user-registration.svg";
 import {
     default as idleAccountSuspendConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/lock-idle-accounts-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/lock-idle-accounts-illustration.svg";
 import {
     default as PasswordHistoryConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/password-history.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/password-history.svg";
 import {
     default as PasswordPatternConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/password-pattern-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/password-pattern-illustration.svg";
 import {
     default as PasswordResetConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/password-reset-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/password-reset-illustration.svg";
 import {
     default as SelfRegConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/self-registration-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/self-registration-illustration.svg";
 import {
     default as UserClaimUpdateConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
 import {
     default as JWTKeyIcon
-} from "../../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
+} from "../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
 import { ServerConfigurationsConstants } from "../constants";
 
 interface GetGovernanceConnectorIllustrationsInterface {

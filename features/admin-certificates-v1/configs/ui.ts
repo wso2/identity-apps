@@ -19,14 +19,14 @@
 import {  FunctionComponent, SVGProps } from "react";
 import {
     ReactComponent as CertificateAvatar
-} from "../../../themes/default/assets/images/icons/certificate-avatar.svg";
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import { ReactComponent as FileUploadIllustration } from "../../../themes/default/assets/images/icons/upload.svg";
-import { ReactComponent as CertificateBadge } from "../../../themes/default/assets/images/illustrations/badge.svg";
+} from "../../themes/default/assets/images/icons/certificate-avatar.svg";
+import { ReactComponent as DocumentIcon } from "../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as FileUploadIllustration } from "../../themes/default/assets/images/icons/upload.svg";
+import { ReactComponent as CertificateBadge } from "../../themes/default/assets/images/illustrations/badge.svg";
 import {
     ReactComponent as CertificateIllustration
-} from "../../../themes/default/assets/images/illustrations/certificate.svg";
-import { ReactComponent as CertificateRibbon } from "../../../themes/default/assets/images/illustrations/ribbon.svg";
+} from "../../themes/default/assets/images/illustrations/certificate.svg";
+import { ReactComponent as CertificateRibbon } from "../../themes/default/assets/images/illustrations/ribbon.svg";
 
 export const getCertificateIllustrations = (): {
     avatar: FunctionComponent<SVGProps<SVGSVGElement>>;

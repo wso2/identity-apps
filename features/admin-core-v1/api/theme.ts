@@ -26,7 +26,7 @@
 export const getThemeVariables = (themeName: string): Promise<Record<string, string>> =>  {
 
     return new Promise((resolve: (value: Record<string, string>) => void, reject: (reason?: Error) => void) => {
-        import(`../../../themes/${ themeName }/theme-variables.json`)
+        import(`../../themes/${ themeName }/theme-variables.json`)
             .then((response: Record<string, string>) => {
                 resolve(response);
             }).catch((error: Error) => {

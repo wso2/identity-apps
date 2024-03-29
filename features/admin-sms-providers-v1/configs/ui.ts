@@ -17,9 +17,9 @@
  */
 
 import { FunctionComponent, ReactNode } from "react";
-import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
-import { ReactComponent as TwilioLogo } from "../../../themes/default/assets/images/twilio-logo.svg";
-import { ReactComponent as VonageLogo } from "../../../themes/default/assets/images/vonage-logo.svg";
+import { ReactComponent as SMSIcon } from "../../themes/default/assets/images/icons/sms-icon.svg";
+import { ReactComponent as TwilioLogo } from "../../themes/default/assets/images/twilio-logo.svg";
+import { ReactComponent as VonageLogo } from "../../themes/default/assets/images/vonage-logo.svg";
 
 // This is a temp flag to keep vonage logo hidden.
 // remove this once explicit permission is granted to use vonage logo

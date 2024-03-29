@@ -19,7 +19,7 @@
 import {  FunctionComponent, SVGProps } from "react";
 import {
     ReactComponent as PendingApprovalOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
 
 export const getTableIcons = (): {
     header: {

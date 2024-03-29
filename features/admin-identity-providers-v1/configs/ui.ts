@@ -17,54 +17,54 @@
  */
 
 import { identityProviderConfig } from "../../admin-extensions-v1/configs/identity-provider";
-import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
-import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
-import SMSOTPIcon from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
-import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
-import SCIMLogo from "../../../themes/default/assets/images/connectors/scim.png";
-import SPMLLogo from "../../../themes/default/assets/images/connectors/spml.png";
-import BackupCodesAuthenticatorLogo from "../../../themes/default/assets/images/icons/backup-code-icon.svg";
-import CertificateColoredIcon from "../../../themes/default/assets/images/icons/certificate-colored-icon.svg";
-import ClockColoredIcon from "../../../themes/default/assets/images/icons/clock-colored-icon.svg";
-import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
-import MagicLinkLogo from "../../../themes/default/assets/images/icons/magic-link-icon.svg";
-import MagnifierColoredIcon from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
-import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
-import TOTPIcon from "../../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
-import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
-import EmailOTPIcon from "../../../themes/default/assets/images/icons/solid-icons/email-solid.svg";
+import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.png";
+import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
+import SMSOTPIcon from "../../themes/default/assets/images/authenticators/sms-otp.svg";
+import SalesforceLogo from "../../themes/default/assets/images/connectors/salesforce.png";
+import SCIMLogo from "../../themes/default/assets/images/connectors/scim.png";
+import SPMLLogo from "../../themes/default/assets/images/connectors/spml.png";
+import BackupCodesAuthenticatorLogo from "../../themes/default/assets/images/icons/backup-code-icon.svg";
+import CertificateColoredIcon from "../../themes/default/assets/images/icons/certificate-colored-icon.svg";
+import ClockColoredIcon from "../../themes/default/assets/images/icons/clock-colored-icon.svg";
+import ConnectionIcon from "../../themes/default/assets/images/icons/connection.svg";
+import { ReactComponent as DocumentIcon } from "../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as GearsIcon } from "../../themes/default/assets/images/icons/gears-icon.svg";
+import MagicLinkLogo from "../../themes/default/assets/images/icons/magic-link-icon.svg";
+import MagnifierColoredIcon from "../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
+import { ReactComponent as OpenBookIcon } from "../../themes/default/assets/images/icons/open-book-icon.svg";
+import TOTPIcon from "../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
+import { ReactComponent as ReportIcon } from "../../themes/default/assets/images/icons/report-icon.svg";
+import EmailOTPIcon from "../../themes/default/assets/images/icons/solid-icons/email-solid.svg";
 import {
     ReactComponent as ProvisionCapabilityIcon
-} from "../../../themes/default/assets/images/identity-provider-capabilities/provision.svg";
+} from "../../themes/default/assets/images/identity-provider-capabilities/provision.svg";
 import {
     ReactComponent as EnterpriseModeIdPIcon
-} from "../../../themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+} from "../../themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
 import {
     ReactComponent as ExpertModeIdPIcon
-} from "../../../themes/default/assets/images/identity-providers/expert.svg";
-import FacebookLogo from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
-import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
-import GoogleLogo from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-import HyprLogo from "../../../themes/default/assets/images/identity-providers/hypr.svg";
-import IproovLogo from "../../../themes/default/assets/images/identity-providers/iproov.svg";
-import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
-import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
-import OrganizationSSOIcon from "../../../themes/default/assets/images/identity-providers/organization-sso.svg";
+} from "../../themes/default/assets/images/identity-providers/expert.svg";
+import FacebookLogo from "../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
+import GithubIdPIcon from "../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+import GoogleLogo from "../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+import HyprLogo from "../../themes/default/assets/images/identity-providers/hypr.svg";
+import IproovLogo from "../../themes/default/assets/images/identity-providers/iproov.svg";
+import KerberosLogo from "../../themes/default/assets/images/identity-providers/kerberos.png";
+import Office365Logo from "../../themes/default/assets/images/identity-providers/office-365.svg";
+import OrganizationSSOIcon from "../../themes/default/assets/images/identity-providers/organization-sso.svg";
 import TrustedTokenIssuerIcon
-    from "../../../themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
-import TwitterLogo from "../../../themes/default/assets/images/identity-providers/twitter.svg";
-import YahooLogo from "../../../themes/default/assets/images/identity-providers/yahoo.svg";
-import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
-import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
-import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
-import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
-import JWTLogo from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
-import AppleLogo from "../../../themes/default/assets/images/third-party/apple-logo.svg";
+    from "../../themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
+import TwitterLogo from "../../themes/default/assets/images/identity-providers/twitter.svg";
+import YahooLogo from "../../themes/default/assets/images/identity-providers/yahoo.svg";
+import OIDCLogo from "../../themes/default/assets/images/protocols/openid-connect.png";
+import OpenIDLogo from "../../themes/default/assets/images/protocols/openid.png";
+import SamlLogo from "../../themes/default/assets/images/protocols/saml.png";
+import WSFedLogo from "../../themes/default/assets/images/protocols/ws-fed.png";
+import JWTLogo from "../../themes/default/assets/images/technologies/jwt-logo.svg";
+import AppleLogo from "../../themes/default/assets/images/third-party/apple-logo.svg";
 import LinkedInLogo
-    from "../../../themes/default/assets/images/third-party/linkedin-logo.svg";
-import MicrosoftLogo from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
+    from "../../themes/default/assets/images/third-party/linkedin-logo.svg";
+import MicrosoftLogo from "../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { SupportedServices } from "../models";
 
 export const getAddIDPCertificateWizardStepIcons = (): any => {

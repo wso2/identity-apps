@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as DocumentIcon } from "../../themes/default/assets/images/icons/document-icon.svg";
 
 export const getAddDialectWizardStepIcons = (): {
     general: React.FunctionComponent<React.SVGProps<SVGSVGElement>>

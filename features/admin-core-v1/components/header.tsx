@@ -52,15 +52,15 @@ import {
     TenantTier,
     TenantTierRequestResponse
 } from "../../admin-extensions-v1/components/subscription/models/subscription";
-import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
-import { ReactComponent as MyAccountIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
-import { ReactComponent as AskHelpIcon } from "../../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
-import { ReactComponent as CommunityIcon } from "../../../themes/wso2is/assets/images/icons/community-icon.svg";
+import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
+import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
+import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
+import { ReactComponent as CommunityIcon } from "../../themes/wso2is/assets/images/icons/community-icon.svg";
 import {
     ReactComponent as ContactSupportIcon
-} from "../../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
-import { ReactComponent as DocsIcon } from "../../../themes/wso2is/assets/images/icons/docs-icon.svg";
-import { ReactComponent as BillingPortalIcon } from "../../../themes/wso2is/assets/images/icons/dollar-icon.svg";
+} from "../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
+import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
+import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import useAuthorization from "../../admin-authorization-v1/hooks/use-authorization";
 import { OrganizationSwitchBreadcrumb } from "../../admin-organizations-v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
