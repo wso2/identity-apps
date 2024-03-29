@@ -42,9 +42,6 @@ log("Pre build script started.....");
 // Run the clean script.
 execSync("pnpm clean:build");
 
-// Run theme content copying to source script.
-execSync("pnpm copy:themes:src");
-
 // Copy i18n defaults used for text branding from login app.
 execSync("pnpm copy:branding:i18n:defaults");
 
