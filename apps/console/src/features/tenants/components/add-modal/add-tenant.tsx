@@ -99,7 +99,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
             .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
-                    addTenant(submissionValue.tenantName);
+                    addTenant(submissionValue.tenantName, submissionValue.deploymentUuid);
                 } else {
                     setIsNewTenantLoading(false);
                     setAlert({
@@ -140,10 +140,10 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
         title: t("extensions:manage.features.tenant.wizards.addTenant.heading")
     } ];
 
-    const addTenant = (tenantName: string): void => {
+    const addTenant = (tenantName: string, deploymentUuid: string): void => {
         setIsNewTenantLoading(true);
         setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.tenantCreate"));
-        addNewTenant(tenantName)
+        addNewTenant(tenantName, deploymentUuid)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     eventPublisher.publish("create-new-organization");

@@ -133,7 +133,7 @@
             var legacyAuthzRuntime = startupConfig.legacyAuthzRuntime;
             var isAdaptiveAuthenticationAvailable = true;
             var isOrganizationManagementEnabled = true;
-
+<!--            sessionStorage.setItem("auth_callback_url_console", null);-->
             if (window.top === window.self && sessionStorage.getItem("auth_callback_url_console") === null) {
                 var authCallbackUrl = window.location.pathname + window.location.hash;
 

@@ -68,6 +68,7 @@ export interface AddTenantFormErrorValidationsInterface {
  */
 export interface AddTenantFormValuesInterface {
     tenantName: string;
+    deploymentUUID: string;
 }
 
 const FORM_ID: string = "create-tenant-form";
@@ -121,7 +122,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
     }, [ deploymentRegion ]);
 
     /**
-     * Generate alternative console url base path based on the 
+     * Generate alternative console url base path based on the
      * current deployment region and url pattern.
      * Alternative region will be the inverse of the current region.
      */
@@ -137,24 +138,24 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
 
             if (regionQualifiedConsoleUrl.includes("asgardeo.io")) {
                 const position: number = regionQualifiedConsoleUrl.indexOf("asgardeo.io");
-                
+
                 return [
-                    regionQualifiedConsoleUrl.slice(0, position), 
-                    `${Region.EU.toLowerCase()}.`, 
+                    regionQualifiedConsoleUrl.slice(0, position),
+                    `${Region.EU.toLowerCase()}.`,
                     regionQualifiedConsoleUrl.slice(position)
                 ].join("");
             } else if (regionQualifiedConsoleUrl.includes("asg.io")) {
                 const position: number = regionQualifiedConsoleUrl.indexOf("asg.io");
-                
+
                 return [
-                    regionQualifiedConsoleUrl.slice(0, position), 
-                    `${Region.EU.toLowerCase()}.`, 
+                    regionQualifiedConsoleUrl.slice(0, position),
+                    `${Region.EU.toLowerCase()}.`,
                     regionQualifiedConsoleUrl.slice(position)
                 ].join("");
             } else {
                 return TenantManagementConstants.EU_PROD_CONSOLE_FALLBACK_URL;
             }
-            
+
         } else {
             if (regionQualifiedConsoleUrl.includes("."+Region.EU.toLowerCase())) {
                 return regionQualifiedConsoleUrl.replace(/.eu/g,"");
@@ -250,7 +251,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
             .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
-                    addTenant(submissionValue.tenantName);
+                    addTenant(submissionValue.tenantName, submissionValue.deploymentUUID);
                 } else {
                     setIsNewTenantLoading(false);
                     setAlert({
@@ -266,10 +267,10 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
     /**
      * Function which contains the logic to add a new tenant by calling APIs.
      */
-    const addTenant = (tenantName: string): void => {
+    const addTenant = (tenantName: string, deploymentUUID: string): void => {
         setIsNewTenantLoading(true);
         setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.tenantCreate"));
-        addNewTenant(tenantName)
+        addNewTenant(tenantName, deploymentUUID)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     eventPublisher.publish("create-new-organization");
@@ -460,8 +461,8 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                                                 "tenantCreationPrompt.subHeading1") }
                                         </Text>
                                         <Text display="inline">
-                                            <Flag 
-                                                name={ String(deploymentRegion)?.toLowerCase() as FlagNameValues } 
+                                            <Flag
+                                                name={ String(deploymentRegion)?.toLowerCase() as FlagNameValues }
                                             />
                                             { deploymentRegion }
                                             { " " }
@@ -489,8 +490,8 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                                         <Text muted display="inline">{ t("extensions:manage.features.tenant." +
                                                 "tenantCreationPrompt.subHeading6") }</Text>
                                         <Text display="inline">
-                                            <Flag 
-                                                name={ String(alternativeRegion)?.toLowerCase() as FlagNameValues } 
+                                            <Flag
+                                                name={ String(alternativeRegion)?.toLowerCase() as FlagNameValues }
                                             />
                                             { alternativeRegion }
                                             { " " }
@@ -550,13 +551,13 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                             { isCheckingTenantExistence
                                 ? (
                                     <Text className="tenant-uri-prefix">
-                                        { `${regionQualifiedConsoleUrl ?? 
+                                        { `${regionQualifiedConsoleUrl ??
                                             "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
                                         <Icon name="circle notched" color="grey" loading/>
                                     </Text>
                                 ) : (
                                     <span>
-                                        { `${regionQualifiedConsoleUrl ?? 
+                                        { `${regionQualifiedConsoleUrl ??
                                             "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
                                         <span
                                             className={ `${
