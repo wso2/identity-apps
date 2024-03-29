@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.1.6
+
+### Patch Changes
+
+- [#5847](https://github.com/wso2/identity-apps/pull/5847) [`92c327a9ef`](https://github.com/wso2/identity-apps/commit/92c327a9ef7b584f7f105790f1ec389f2d62a39d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enable configurability for SCIM custom schema URI
+
+- Updated dependencies [[`92c327a9ef`](https://github.com/wso2/identity-apps/commit/92c327a9ef7b584f7f105790f1ec389f2d62a39d)]:
+  - @wso2is/core@2.0.38
+
 ## 2.1.5
 
 ### Patch Changes
