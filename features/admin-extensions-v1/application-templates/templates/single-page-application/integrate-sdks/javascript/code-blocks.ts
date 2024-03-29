@@ -18,7 +18,7 @@
 
 import { SDKInitConfig } from "../../../../shared";
 
-export const javascriptSDKInitialisationCode = (SDKInitConfig: SDKInitConfig): string => {
+export const javascriptSDKInitialisationCode: any = (SDKInitConfig: SDKInitConfig): string => {
 
     const scopesForDisplay = (): string => {
 

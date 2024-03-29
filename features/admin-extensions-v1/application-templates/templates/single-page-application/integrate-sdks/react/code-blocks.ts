@@ -32,7 +32,7 @@ export const reactSDKContextImportCode = (): string => {
     );
 };
 
-export const reactSDKInitialisationCode = (SDKInitConfig: SDKInitConfig): string => {
+export const reactSDKInitialisationCode: any = (SDKInitConfig: SDKInitConfig): string => {
 
     const scopesForDisplay = (): string => {
 
