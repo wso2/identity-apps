@@ -364,10 +364,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableEmailDomain?: boolean;
     /**
-     * Scim2 custom user schema URI.
-     */
-    customUserSchemaURI?: string;
-    /**
      * Should show/hide marketing consent banner.
      */
     isMarketingConsentBannerEnabled: boolean;

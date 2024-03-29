@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -169,12 +169,8 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
     /**
      * Show App Switch button in the Header for Super Tenant User.
      */
-    showAppSwitchButton?: boolean;
-     /**
-     * Scim2 custom user schema URI.
-     */
-    customUserSchemaURI?: string;
-}
+     showAppSwitchButton?: boolean;
+    }
 
 /**
  * Interface for defining settings and configs of an external app.

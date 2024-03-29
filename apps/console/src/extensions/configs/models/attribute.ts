@@ -72,6 +72,7 @@ export interface AttributeConfig {
             showSummary: boolean;
             identifyAsCustomAttrib: boolean;
         }
+        customDialectURI: string;
         oidcDialectURI: string;
         createCustomDialect: boolean;
         mapClaimToCustomDialect: boolean;

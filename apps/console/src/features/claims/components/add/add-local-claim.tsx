@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,12 +18,12 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { ClaimDialect } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
+import { ClaimDialect } from "@wso2is/core/src/models";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -97,8 +97,6 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const skipSCIM: MutableRefObject<boolean> = useRef(false);
 
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
-    const customUserSchemaURI: string = useSelector(
-        (state: AppState) => state?.config?.ui?.customUserSchemaURI);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
@@ -169,7 +167,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
             await attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((available: string) => {
                 if (available === "") {
-                    addDialect(customUserSchemaURI);
+                    addDialect(attributeConfig.localAttributes.customDialectURI);
                 }
             });
 
@@ -195,7 +193,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     if (!skipSCIM) {
                         attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((claimId: string) => {
                             addExternalClaim(claimId, {
-                                claimURI: `${customUserSchemaURI}:${ customMappings?.get("scim") }`,
+                                claimURI: `${ attributeConfig.localAttributes.customDialectURI
+                                }:${ customMappings.get("scim") }`,
                                 mappedLocalClaimURI: data.claimURI
                             }).then(() => {
                                 fetchUpdatedSchemaList();

@@ -91,6 +91,7 @@ export class UserManagementConstants {
 
     // Schema related constants.
     public static readonly ENTERPRISESCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+    public static readonly CUSTOMSCHEMA: string = "urn:scim:wso2:schema";
 
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts

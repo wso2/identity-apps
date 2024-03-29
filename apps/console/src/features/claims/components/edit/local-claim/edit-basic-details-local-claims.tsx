@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,6 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
-    ClaimDialect,
     ExternalClaim,
     ProfileSchemaInterface,
     TestableComponentInterface
@@ -57,6 +56,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
+import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
 import {
@@ -68,7 +68,7 @@ import { getProfileSchemas } from "../../../../users/api";
 import { getUsernameConfiguration } from "../../../../users/utils/user-management-utils";
 import { useValidationConfigData } from "../../../../validation/api";
 import { ValidationFormInterface } from "../../../../validation/models";
-import { deleteAClaim, getDialects, getExternalClaims, updateAClaim } from "../../../api";
+import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 
 /**
@@ -126,60 +126,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const customUserSchemaURI: string = useSelector(
-        (state: AppState) => state?.config?.ui?.customUserSchemaURI);
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
     const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
     const [ selfRegistrationEnabled, setSelfRegistrationEnabledEnabled ] = useState<boolean>(false);
-    const [ customUserSchemaID, setCustomUserSchemaID ] = useState<string>(null);
 
     const { t } = useTranslation();
 
     const { data: validationData } = useValidationConfigData();
-
-    /**
-     * Retrieve the scim2 custom user dialect id.
-     */
-    useEffect(() => {
-        getDialects(null)
-            .then((dialects: ClaimDialect[]) => {
-                const customUserDialect: ClaimDialect = dialects?.find(
-                    (dialect: ClaimDialect) => dialect?.dialectURI === customUserSchemaURI);
-
-                if (customUserDialect) {
-                    setCustomUserSchemaID(customUserDialect?.id);
-                } else {
-                    if (customUserSchemaID !== null) {
-                        setCustomUserSchemaID(null);
-                    }
-                }
-            })
-            .catch((error: IdentityAppsApiException) => {
-                if (customUserSchemaID !== null) {
-                    setCustomUserSchemaID(null);
-                }
-
-                dispatch(
-                    addAlert({
-                        description:
-                            error?.response?.data?.description ||
-                            t(
-                                "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                ".genericError.description"
-                            ),
-                        level: AlertLevels.ERROR,
-                        message:
-                            error?.response?.data?.message ||
-                            t(
-                                "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                ".genericError.message"
-                            )
-                    })
-                );
-            });
-    }, [ customUserSchemaID ]);
 
     /**
      * Get username configuration.
@@ -278,7 +233,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 }
             }).finally(() => setMappingChecked(true));
         }
-    }, [ claim, customUserSchemaID ]);
+    }, [ claim ]);
 
     useEffect(() => {
         getConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
@@ -352,8 +307,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"));
-        if (customUserSchemaID) {
-            dialectID.push(customUserSchemaID);
+        if (SCIMConfigs.scimDialectID?.customEnterpriseSchema) {
+            dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
         }
 
         return dialectID;
