@@ -28,6 +28,9 @@ export const getApplicationsResourceEndpoints = (serverHost: string): Applicatio
     const serverHostWithoutOPath: string = serverHost.replace("/o/", "/");
 
     return {
+        applicationTemplate: `${serverHost}/api/server/v1/extensions/applications/{{id}}`,
+        applicationTemplateMetadata: `${serverHost}/api/server/v1/extensions/applications/{{id}}/metadata`,
+        applicationTemplates: `${serverHost}/api/server/v1/extensions/applications`,
         applications: `${ serverHost }/api/server/v1/applications`,
         myAccountConfigMgt: `${ serverHostWithoutOPath }/api/identity/config-mgt/v1.0/resource/myaccount`,
         requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`
