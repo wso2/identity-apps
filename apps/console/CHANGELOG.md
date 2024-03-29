@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.14.0
+
+### Minor Changes
+
+- [#5849](https://github.com/wso2/identity-apps/pull/5849) [`00ea371f27`](https://github.com/wso2/identity-apps/commit/00ea371f2764336ad79964227268316ccb46aacb) Thanks [@thiva-k](https://github.com/thiva-k)! - Refactor features into root
+
 ## 2.13.32
 
 ### Patch Changes
