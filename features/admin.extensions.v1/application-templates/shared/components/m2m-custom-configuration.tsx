@@ -194,7 +194,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("console:develop.features.applications.confirmations." +
+                                            t("applications:confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.label")
                                         }
                                         <Hint className="mt-0 mb-0" popup>
