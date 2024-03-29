@@ -286,7 +286,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                         <Hint className="mt-0 mb-0" popup>
                                             {
                                                 t("extensions:develop.applications.quickstart" +
-                                                ".m2m.configurations.tokenRequest")
+                                                    ".m2m.configurations.tokenRequest")
                                             }
                                         </Hint> 
                                     </label>
@@ -301,9 +301,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                         } }
                                         height="100%"
                                         theme="dark"
-                                        sourceCode={
-                                            tokenRequest
-                                        }
+                                        sourceCode={ tokenRequest }
                                     />
                                 </Form.Field>
                             </Form>
