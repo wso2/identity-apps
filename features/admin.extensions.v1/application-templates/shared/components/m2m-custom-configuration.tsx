@@ -261,7 +261,6 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                                 }
                                             >
                                                 These are the set of scopes that are authorized.
-
                                                 If you want to add more scopes, please authorize an API in the
                                                 <a
                                                     className="link pointing"
