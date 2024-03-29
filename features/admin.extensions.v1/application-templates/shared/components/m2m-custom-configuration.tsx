@@ -350,7 +350,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                         className="spa-config-accordion-title"
                     >
                         <Heading as="h5">
-                            { t("extensions:console.application.quickStart.spa.customConfig.configurations") }
+                            { t("extensions:console.application.quickStart.m2m.customConfig.configurations") }
                         </Heading>
                     </SegmentedAccordion.Title>
                     <SegmentedAccordion.Content

@@ -177,7 +177,8 @@ export const extensions: Extensions = {
                 m2m: {
                     customConfig: {
                         tokenEndpoint: "Token Endpoint",
-                        tokenRequest: "Token Request"
+                        tokenRequest: "Token Request",
+                        configurations: "Configurations"
                     }
                 }
             }

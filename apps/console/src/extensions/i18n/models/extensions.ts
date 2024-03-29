@@ -154,6 +154,7 @@ export interface Extensions {
                     customConfig: {
                         tokenEndpoint: string;
                         tokenRequest: string;
+                        configurations: string;
                     };
                 }
             };
