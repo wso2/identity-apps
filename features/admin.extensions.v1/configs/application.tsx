@@ -30,7 +30,7 @@ import {
     ResourceTabPaneInterface,
     Text
 } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
+import React, { ElementType, ReactElement } from "react";
 import { Trans } from "react-i18next";
 import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
@@ -41,11 +41,20 @@ import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
+<<<<<<< HEAD:features/admin.extensions.v1/configs/application.tsx
 } from "../../admin.applications.v1/components/settings";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
+=======
+} from "../../features/applications/components/settings";
+import { ApplicationManagementConstants } from "../../features/applications/constants";
+import CustomApplicationTemplate from
+    "../../features/applications/data/application-templates/templates/custom-application/custom-application.json";
+>>>>>>> 2ace16da79 (update application configs):features/admin-extensions-v1/configs/application.tsx
 import {
     ApplicationInterface,
     ApplicationTabTypes,
+    ApplicationTemplateIdTypes,
+    ApplicationTemplateListItemInterface,
     SupportedAuthProtocolTypes,
     additionalSpProperty
 } from "../../admin.applications.v1/models";
@@ -60,7 +69,9 @@ import SamlWebAppTemplate
 import SinglePageAppTemplate from
     "../application-templates/templates/single-page-application/single-page-application.json";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
+import QuickStartTab from "../components/component-extensions/application/quick-start-tab";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
+import { UsersConstants } from "../components/users/constants";
 
 function isClaimInterface(
     claim: ExtendedClaimInterface | ExtendedExternalClaimInterface
@@ -75,6 +86,7 @@ function isClaimInterface(
 const IS_ENTERPRISELOGIN_MANAGEMENT_APP: string = "isEnterpriseLoginManagementApp";
 
 // Relative tab indexes.
+const QUICK_START_INDEX: number = 0;
 const API_AUTHORIZATION_INDEX: number = 4;
 const APPLICATION_ROLES_INDEX: number = 4;
 const M2M_API_AUTHORIZATION_INDEX: number = 2;
@@ -380,10 +392,14 @@ export const applicationConfig: ApplicationConfig = {
         },
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
-            tenantDomain: string
+            tenantDomain: string,
+            templateId: string,
+            customApplicationTemplateId: string
         ): number => {
             if (clientId === getTryItClientId(tenantDomain)) {
                 return ApplicationManagementConstants.TRY_IT_SIGNIN_TAB; // For Asgardeo Try It App
+            } else if (templateId === customApplicationTemplateId) {
+                return 3; // For other apps built on Custom Application Templates
             } else {
                 return ApplicationManagementConstants.APPLICATION_SIGNIN_TAB; // For other applications
             }
@@ -393,17 +409,43 @@ export const applicationConfig: ApplicationConfig = {
             features: FeatureConfigInterface,
             isReadOnly: boolean
         ): ResourceTabPaneInterface[] => {
+            const { content, ...rest } = props;
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
             const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
             const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
 
             const application: ApplicationInterface = props?.application as ApplicationInterface;
+            const applicationTemplate: ApplicationTemplateListItemInterface =
+                props?.template as ApplicationTemplateListItemInterface;
 
             const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
             const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
+
+            // Enable the quick start tab for supported templates when the quick start content is available.
+            if (
+                content
+                && application?.templateId !== CustomApplicationTemplate.id
+                && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+                && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+                && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            ) {
+                tabExtensions.push(
+                    {
+                        componentId: "quick-start",
+                        index: QUICK_START_INDEX + tabExtensions.length,
+                        menuItem: I18n.instance.t(
+                            (applicationTemplate?.templateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION) ?
+                                "extensions:develop.applications.quickstart.mobileApp.tabHeading":
+                                "console:develop.componentExtensions.component.application.quickStart.title"
+                        ),
+                        render: () => <QuickStartTab content={ content as ElementType } { ...rest } />
+                    }
+                );
+            }
+
 
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
             if (
@@ -529,7 +571,7 @@ export const applicationConfig: ApplicationConfig = {
                             Do not have a user account?{ " " }<a
                                 onClick={ () => {
                                     window.open(AppConstants.getClientOrigin()
-                                    + AppConstants.getPaths().get("USERS"),
+                                    + UsersConstants.getPaths().get("USERS_PATH"),
                                     "",
                                     "noopener");
                                 } }
