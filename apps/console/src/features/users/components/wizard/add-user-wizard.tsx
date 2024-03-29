@@ -30,11 +30,11 @@ import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import intersection from "lodash-es/intersection";
 import merge from "lodash-es/merge";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Icon, Modal } from "semantic-ui-react";
+import { DropdownItemProps, Grid, Icon, Modal } from "semantic-ui-react";
 import { AddUserUpdated } from "./steps/add-user-basic";
 import { AddUserGroups } from "./steps/add-user-groups";
 import { AddUserType } from "./steps/add-user-type";
@@ -46,6 +46,10 @@ import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { AppState } from "../../../core/store";
 import { GroupsInterface } from "../../../groups";
 import { updateGroupDetails, useGroupList } from "../../../groups/api";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { getAUserStore, useUserStores } from "../../../userstores/api";
+import { UserStoreManagementConstants } from "../../../userstores/constants";
+import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../../userstores/models";
 import { useValidationConfigData } from "../../../validation/api";
 import { ValidationFormInterface } from "../../../validation/models";
 import { addUser } from "../../api";
@@ -119,6 +123,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();
@@ -127,15 +132,14 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
 
-
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ fixedGroupList, setFixedGroupsList ] = useState<GroupsInterface[]>(undefined);
-    const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
-    const [ tempGroupList, setTempGroupList ] = useState<GroupsInterface[]>([]);
-    const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>([]);
-    const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
+    const [ groupList, setGroupsList ] = useState<GroupsInterface[]>(undefined);
+    const [ tempGroupList, setTempGroupList ] = useState<GroupsInterface[]>(undefined);
+    const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>(undefined);
+    const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
@@ -154,6 +158,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ newUserId, setNewUserId ] = useState<string>("");
     const [ userTypeSelection, setUserTypeSelection ] = useState<string>(AdminAccountTypes.EXTERNAL);
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
+    const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
 
     const excludedAttributes: string = "members";
 
@@ -171,6 +176,62 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         null,
         userTypeSelection === AdminAccountTypes.EXTERNAL
     );
+
+    // Hook to get the user store list.
+    const {
+        data: originalUserStoreList,
+        isLoading: isUserStoreListFetchRequestLoading,
+        isValidating: isUserStoreListFetchRequestValidating,
+        error: userStoreListFetchRequestError
+    } = useUserStores(
+        null,
+        !isSubOrganization()
+    );
+
+    /**
+     * Set read-write userstores list.
+     */
+    const readWriteUserStoresList: DropdownItemProps[] = useMemo(() => {
+        const storeOptions: DropdownItemProps[] = [
+            {
+                key: -1,
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreId
+            }
+        ];
+
+        if (!originalUserStoreList) {
+            return null;
+        }
+
+        if (originalUserStoreList?.length > 0) {
+            originalUserStoreList.map((store: UserStoreListItem, index: number) => {
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
+                    getAUserStore(store.id).then((response: UserStorePostData) => {
+                        const isDisabled: boolean = response.properties.find(
+                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+
+                        const isReadOnly: boolean = response.properties.find(
+                            (property: UserStoreProperty) =>
+                                property.name === UserStoreManagementConstants.
+                                    USER_STORE_PROPERTY_READ_ONLY)?.value === "true";
+
+                        if (!isDisabled && !isReadOnly) {
+                            const storeOption: DropdownItemProps = {
+                                key: index,
+                                text: store.name,
+                                value: store.id
+                            };
+
+                            storeOptions.push(storeOption);
+                        }
+                    });
+                }
+            });
+        }
+
+        return storeOptions;
+    }, [ originalUserStoreList ]);
 
     /**
      * Fetch initial role list based on conditions
@@ -262,6 +323,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             return;
         }
 
+        if (!isSubOrganization() &&
+            (isUserStoreListFetchRequestLoading || isUserStoreListFetchRequestValidating)) {
+            return;
+        }
+
         const wizardStepArray: WizardStepInterface[] = [];
 
         // The user is created in the organization.
@@ -285,7 +351,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [
         fixedGroupList,
         isUserSummaryEnabled,
-        userTypeSelection
+        userTypeSelection,
+        isUserStoreListFetchRequestLoading,
+        isUserStoreListFetchRequestValidating
     ]);
 
     /**
@@ -316,6 +384,37 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             message: t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
         }));
     }, [ groupListFetchRequestError ]);
+
+    /**
+     * Handles the userstore list fetch request error.
+     */
+    useEffect(() => {
+        if (!userStoreListFetchRequestError) {
+            return;
+        }
+
+        setUserStoreError(true);
+
+        if (userStoreListFetchRequestError.response
+            && userStoreListFetchRequestError.response.data
+            && userStoreListFetchRequestError.response.data.description) {
+            dispatch(addAlert({
+                description: userStoreListFetchRequestError.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications." +
+                    "fetchUsers.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:manage.features.users.notifications.fetchUserstores.genericError." +
+                "description"),
+            level: AlertLevels.ERROR,
+            message: t("console:manage.features.users.notifications.fetchUserstores.genericError.message")
+        }));
+    }, [ userStoreListFetchRequestError ]);
 
     const resolveNamefieldAttributes = (profileSchemas: ProfileSchemaInterface[]) => {
         const hiddenAttributes: (HiddenFieldNames)[] = [];
@@ -839,6 +938,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     isBasicDetailsLoading={ isBasicDetailsLoading }
                     setBasicDetailsLoading={ setBasicDetailsLoading }
                     validationConfig ={ validationData }
+                    readWriteUserStoresList={ readWriteUserStoresList }
+                    isUserStoreError={ isUserStoreError }
                 />
             ),
             icon: getUserWizardStepIcons().general,

@@ -62,7 +62,7 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
     const [ , setIsSelectUnassignedAllGroupsChecked ] = useState(false);
 
     useEffect(() => {
-        setCheckedUnassignedListItems(initialValues?.tempGroupList);
+        setCheckedUnassignedListItems(initialValues?.tempGroupList ?? []);
     }, [ initialValues?.tempGroupList ]);
 
     /**
@@ -159,7 +159,7 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
                                     listItemId={ group.id }
                                     listItemIndex={ index }
                                     listItemTypeLabel={ null }
-                                    isItemChecked={ checkedUnassignedListItems.includes(group) }
+                                    isItemChecked={ checkedUnassignedListItems?.includes(group) }
                                     showSecondaryActions={ false }
                                     handleOpenPermissionModal={ () => handleSetGroupId(group.id) }
                                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups"
