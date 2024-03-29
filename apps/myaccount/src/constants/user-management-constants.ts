@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,9 +39,4 @@ export class UserManagementConstants {
         .set("USERNAME", "userName")
         .set("NAME", "name")
         .set("DISPLAY_NAME", "displayName");
-
-    /**
-     * Default scim2 custom user schema URI.
-     */
-    public static readonly DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI: string = "urn:scim:wso2:schema";
 }

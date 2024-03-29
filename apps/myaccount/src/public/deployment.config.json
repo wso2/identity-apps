@@ -114,7 +114,6 @@
             "showLanguageSwitcher": true,
             "langAutoDetectEnabled": true
         },
-        "customUserSchemaURI": "urn:scim:wso2:schema",
         "privacyPolicyConfigs": {},
         "isProfileUsernameReadonly": true,
         "productName": "WSO2 Identity Server",

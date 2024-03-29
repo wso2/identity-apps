@@ -27,7 +27,6 @@ import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-run
 import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";
-import { ClaimManagementConstants } from "../../claims/constants";
 import { getConnectionResourceEndpoints } from "../../connections";
 import { getConsoleSettingsResourceEndpoints } from "../../console-settings/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
@@ -320,8 +319,6 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
-            customUserSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI
-                ?? ClaimManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI,
             emailTemplates: {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
