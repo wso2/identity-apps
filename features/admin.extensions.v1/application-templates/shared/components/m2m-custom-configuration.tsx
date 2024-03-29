@@ -49,7 +49,7 @@ interface M2MCustomConfigurationPropsInterface extends IdentifiableComponentInte
     icons: Array<GenericIconProps["icon"]> | TechnologyArrayPropsInterface[];
     documentationLink: string;
     onTriggerTabUpdate: (tabIndex: number) => void;
-    APIAuthorizationIndex: number,
+    APIAuthorizationTabIndex: number,
     protocolTabIndex: number;
     inboundProtocolConfig: any;
 }
@@ -73,7 +73,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
     const {
         onTriggerTabUpdate,
         documentationLink,
-        APIAuthorizationIndex,
+        APIAuthorizationTabIndex,
         protocolTabIndex,
         inboundProtocolConfig,
         ["data-componentid"]: componentId
@@ -152,7 +152,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
     }, [ allAuthorizedScopes ]);
 
     const onAPIAuthorizationTabClick = (): void => {
-        onTriggerTabUpdate(APIAuthorizationIndex);
+        onTriggerTabUpdate(APIAuthorizationTabIndex);
     };
 
     const onProtocolTabClick = (): void => {

@@ -74,7 +74,7 @@ const M2MApplicationQuickStart:
                             <M2MCustomConfiguration
                                 onTriggerTabUpdate={ onTriggerTabUpdate }
                                 protocolTabIndex={ PROTOCOL_TAB_INDEX }
-                                APIAuthorizationIndex= { API_Authorization_INDEX }
+                                APIAuthorizationTabIndex= { API_Authorization_INDEX }
                                 inboundProtocolConfig={ inboundProtocolConfig }
                                 icons={ [
                                 ] }
