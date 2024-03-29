@@ -15,6 +15,7 @@
         "tests": "tests",
         "theme": "modules/theme",
         "validation": "modules/validation",
-        "common": "modules/common"
+        "common": "modules/common",
+        "features": "features"    
     }
 }
