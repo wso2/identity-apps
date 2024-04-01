@@ -80,7 +80,8 @@ const BrandingComponent: React.FC<BrandingComponentProps> = (props: BrandingComp
         setShowRevertConfirmationModal,
         showRevertConfirmationModal,
         handleBrandingPreferenceDelete,
-        isBrandingPreferenceDeleteRequestLoading } = props;
+        isBrandingPreferenceDeleteRequestLoading
+    } = props;
 
     return (
         <>
