@@ -27,11 +27,7 @@ import {
     ConfirmationModal,
     DangerZone,
     DangerZoneGroup,
-    DocumentationLink,
-    GenericIcon,
     Message,
-    PageLayout,
-    useDocumentation,
     useMediaContext
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -60,21 +56,14 @@ import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
-    PredefinedLayouts,
-    PredefinedThemes
+    PredefinedLayouts
 } from "../models";
-import BrandingPreferenceProvider from "../providers/branding-preference-provider";
 import { BrandingPreferenceUtils } from "../utils";
 
 /**
  * Prop-types for the branding core component.
  */
 type BrandingCoreInterface = IdentifiableComponentInterface;
-
-/**
- * Should show the org logo in the page title?
- */
-const SHOW_ORGANIZATION_LOGO_IN_PAGE_TITLE: boolean = false;
 
 /**
  * Branding core.
@@ -92,7 +81,6 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { getLink } = useDocumentation();
     const { isGreaterThanComputerViewport } = useMediaContext();
     const { organizationType } = useGetCurrentOrganizationType();
 
