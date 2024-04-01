@@ -17,29 +17,24 @@
  */
 
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
-import { userConfig, userstoresConfig } from "../../../../admin-extensions-v1/configs";
 import { AppConstants } from "../../../../admin-core-v1/constants";
 import { history } from "../../../../admin-core-v1/helpers/history";
-import { EventPublisher, SharedUserStoreUtils } from "../../../../admin-core-v1/utils";
-import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
+import { EventPublisher } from "../../../../admin-core-v1/utils/event-publisher";
+import { SharedUserStoreUtils } from "../../../../admin-core-v1/utils/user-store-utils";
+import { userConfig } from "../../../../admin-extensions-v1/configs/user";
+import { userstoresConfig } from "../../../../admin-extensions-v1/configs/userstores";
 import {
     ServerConfigurationsConstants
 } from "../../../../admin-server-configurations-v1/constants/server-configurations-constants";
-import { getAUserStore, useUserStore, useUserStores } from "../../../../admin-userstores-v1/api";
-import {
-    USERSTORE_REGEX_PROPERTIES, UserStoreManagementConstants
-} from "../../../../admin-userstores-v1/constants/user-store-constants";
-import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../../../admin-userstores-v1/models";
+import { useUserStore } from "../../../../admin-userstores-v1/api/user-stores";
+import { USERSTORE_REGEX_PROPERTIES } from "../../../../admin-userstores-v1/constants";
+import { UserStoreProperty } from "../../../../admin-userstores-v1/models/user-stores";
 import { ValidationDataInterface, ValidationFormInterface } from "../../../../admin-validation-v1/models";
 import { getUsersList } from "../../../api/users";
 import {
@@ -80,6 +75,8 @@ export interface AddUserProps {
     setSelectedUserStore?: (selectedUserStore: string) => void;
     isBasicDetailsLoading?: boolean;
     setBasicDetailsLoading?: (toggle: boolean) => void;
+    readWriteUserStoresList: DropdownItemProps[];
+    isUserStoreError: boolean;
 }
 
 /**
@@ -106,7 +103,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         setOfflineUser,
         isBasicDetailsLoading,
         setBasicDetailsLoading,
-        validationConfig
+        validationConfig,
+        readWriteUserStoresList,
+        isUserStoreError
     } = props;
 
     const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(userConfig.defaultPasswordOption);
@@ -119,7 +118,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const [ userStore, setUserStore ] = useState<string>(userstoresConfig.primaryUserstoreId);
     const [ isValidEmail, setIsValidEmail ] = useState<boolean>(false);
     const [ isEmailFilled, setIsEmailFilled ] = useState<boolean>(false);
-    const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
 
     const formBottomRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const emailRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
@@ -127,10 +125,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const { t } = useTranslation();
 
     const { UIConfig } = useUIConfig();
-
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-
-    const dispatch: Dispatch = useDispatch();
 
     // Username input validation error messages.
     const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("users:consumerUsers.fields." +
@@ -156,62 +150,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     } = useUserStore(
         userStore
     );
-
-    // Hook to get the user store list.
-    const {
-        data: orginalUserStoreList,
-        isLoading: isUserStoreListFetchRequestLoading,
-        isValidating: isUserStoreListFetchRequestValidating,
-        error: userStoreListFetchRequestError
-    } = useUserStores(
-        null,
-        !isSubOrganization()
-    );
-
-    /**
-     * Set read-write userstores list.
-     */
-    const readWriteUserStoresList: DropdownItemProps[] = useMemo(() => {
-        const storeOptions: DropdownItemProps[] = [
-            {
-                key: -1,
-                text: userstoresConfig.primaryUserstoreName,
-                value: userstoresConfig.primaryUserstoreId
-            }
-        ];
-
-        if (isUserStoreListFetchRequestLoading || isUserStoreListFetchRequestValidating) {
-            return storeOptions;
-        }
-
-        if (orginalUserStoreList?.length > 0) {
-            orginalUserStoreList.map((store: UserStoreListItem, index: number) => {
-                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
-                    getAUserStore(store.id).then((response: UserStorePostData) => {
-                        const isDisabled: boolean = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
-
-                        const isReadOnly: boolean = response.properties.find(
-                            (property: UserStoreProperty) =>
-                                property.name === UserStoreManagementConstants.
-                                    USER_STORE_PROPERTY_READ_ONLY)?.value === "true";
-
-                        if (!isDisabled && !isReadOnly) {
-                            const storeOption: DropdownItemProps = {
-                                key: index,
-                                text: store.name,
-                                value: store.id
-                            };
-
-                            storeOptions.push(storeOption);
-                        }
-                    });
-                }
-            });
-        }
-
-        return storeOptions;
-    }, [ orginalUserStoreList ]);
 
     const userStoreRegex: string = useMemo(() => {
         if (originalUserStore) {
@@ -267,37 +205,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             setIsValidEmail(false);
         }
     }, [ usernameConfig ]);
-
-    /**
-     * Handles the userstore list fetch request error.
-     */
-    useEffect(() => {
-        if (!userStoreListFetchRequestError) {
-            return;
-        }
-
-        setUserStoreError(true);
-
-        if (userStoreListFetchRequestError.response
-            && userStoreListFetchRequestError.response.data
-            && userStoreListFetchRequestError.response.data.description) {
-            dispatch(addAlert({
-                description: userStoreListFetchRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications." +
-                    "fetchUsers.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("console:manage.features.users.notifications.fetchUserstores.genericError." +
-                "description"),
-            level: AlertLevels.ERROR,
-            message: t("console:manage.features.users.notifications.fetchUserstores.genericError.message")
-        }));
-    }, [ userStoreListFetchRequestError ]);
 
     /**
      * Check whether the alphanumeric usernames are enabled.
@@ -963,7 +870,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             <Grid>
                 {
                     !hiddenFields.includes(HiddenFieldNames.USERSTORE) &&
-                        !isUserStoreError && (readWriteUserStoresList.length > 1) && (
+                        !isUserStoreError && (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <div ref={ emailRef }/>
@@ -984,7 +891,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         onChange={
                                             (e: React.ChangeEvent<HTMLInputElement>, data: DropdownProps) => {
                                                 setUserStore(data.value.toString());
-                                                setSelectedUserStore(readWriteUserStoresList.find(
+                                                setSelectedUserStore(readWriteUserStoresList?.find(
                                                     (userStore: DropdownItemProps) =>
                                                         userStore.value === data.value)?.text?.toString());
                                             }

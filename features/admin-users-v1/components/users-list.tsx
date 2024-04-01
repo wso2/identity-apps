@@ -41,9 +41,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { SCIMConfigs } from "../../admin-extensions-v1/configs/scim";
-import { userConfig } from "../../admin-extensions-v1/configs/user";
-import { userstoresConfig } from "../../admin-extensions-v1/configs/userstores";
 import {
     AppConstants,
     AppState,
@@ -52,6 +49,9 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin-core-v1";
+import { SCIMConfigs } from "../../admin-extensions-v1/configs/scim";
+import { userConfig } from "../../admin-extensions-v1/configs/user";
+import { userstoresConfig } from "../../admin-extensions-v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { RealmConfigInterface } from "../../admin-server-configurations-v1";
 import { deleteUser } from "../api";
@@ -243,7 +243,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             return user.name.givenName[0];
         } else if (user?.name?.familyName) {
             return user.name.familyName[0];
-        } else if (user?.emails?.length > 0){
+        } else if (user?.emails?.length > 0 && user?.emails[0]) {
             return user.emails[0][0];
         } else if (!checkUUID(usernameUUID)){
             return usernameUUID[0];
@@ -435,6 +435,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
         const actions: TableActionsInterface[] = [
             {
+                "data-componentid": "users-list-item-edit-button",
                 "data-testid": "users-list-item-edit-button",
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_READ")),
@@ -471,6 +472,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         ];
 
         actions.push({
+            "data-componentid": "users-list-item-delete-button",
             "data-testid": "users-list-item-delete-button",
             hidden: (user: UserBasicInterface): boolean => {
                 const userStore: string = user?.userName?.split("/").length > 1
@@ -578,7 +580,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             />
             <ConfirmationModal
                 primaryActionLoading={ loading }
-                data-testid={ `${testId}-confirmation-modal` }
+                data-testid={ `${ testId }-confirmation-modal` }
+                data-componentid={ `${ testId }-confirmation-modal` }
                 onClose={ (): void => setShowDeleteConfirmationModal(false) }
                 type="negative"
                 open={ showDeleteConfirmationModal }
@@ -600,7 +603,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 } }
                 closeOnDimmerClick={ false }
             >
-                <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                <ConfirmationModal.Header
+                    data-testid={ `${ testId }-confirmation-modal-header` }
+                    data-componentid={ `${ testId }-confirmation-modal-header` }
+                >
                     { t("user:deleteUser.confirmationModal.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
@@ -610,7 +616,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 >
                     { t("user:deleteUser.confirmationModal.message") }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                <ConfirmationModal.Content
+                    data-testid={ `${ testId }-confirmation-modal-content` }
+                    data-componentid={ `${ testId }-confirmation-modal-content` }
+                >
                     {
                         deletingUser && deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
                             ? t("user:deleteJITUser.confirmationModal.content")

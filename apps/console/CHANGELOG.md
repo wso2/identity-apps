@@ -1,5 +1,31 @@
 # @wso2is/console
 
+## 2.14.3
+
+### Patch Changes
+
+- [#5865](https://github.com/wso2/identity-apps/pull/5865) [`f2db9622bf`](https://github.com/wso2/identity-apps/commit/f2db9622bfdee027ed509c2de43f95ccb7580645) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent choreo sms provider configs being autofilled in custom SMS provider configuration form
+
+- Updated dependencies [[`f2db9622bf`](https://github.com/wso2/identity-apps/commit/f2db9622bfdee027ed509c2de43f95ccb7580645)]:
+  - @wso2is/features@2.13.34
+
+## 2.14.2
+
+### Patch Changes
+
+- [#5869](https://github.com/wso2/identity-apps/pull/5869) [`63b61f2227`](https://github.com/wso2/identity-apps/commit/63b61f2227dab37ef33c291a92e3c91e9149f571) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add auditlog componentIds
+
+* [#5868](https://github.com/wso2/identity-apps/pull/5868) [`6d4a50edd7`](https://github.com/wso2/identity-apps/commit/6d4a50edd753843fc3a7586d8e06eba0f4bc3c36) Thanks [@chamathns](https://github.com/chamathns)! - Refactor branding page
+
+* Updated dependencies [[`a42afeec39`](https://github.com/wso2/identity-apps/commit/a42afeec3982b1cd489a97a9461bb10370f4666d), [`6d4a50edd7`](https://github.com/wso2/identity-apps/commit/6d4a50edd753843fc3a7586d8e06eba0f4bc3c36)]:
+  - @wso2is/features@2.13.33
+
+## 2.14.1
+
+### Patch Changes
+
+- [#5863](https://github.com/wso2/identity-apps/pull/5863) [`c4e3e17b97`](https://github.com/wso2/identity-apps/commit/c4e3e17b975da969cf8374879a5e6be0a42042eb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger console release
+
 ## 2.14.0
 
 ### Minor Changes
