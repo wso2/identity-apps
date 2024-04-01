@@ -548,3 +548,13 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
         </div>
     );
 };
+
+
+/**
+ * Default props for the component.
+ */
+AuditLogsPage.defaultProps = {
+    "data-componentid": "audit-logs"
+};
+
+export default AuditLogsPage;
