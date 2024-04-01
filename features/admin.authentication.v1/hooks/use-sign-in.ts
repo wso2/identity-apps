@@ -40,10 +40,10 @@ import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
-import { Config } from "../../admin-core-v1/configs/app";
-import { AppConstants, CommonConstants } from "../../admin-core-v1/constants";
-import { DeploymentConfigInterface } from "../../admin-core-v1/models/config";
-import { AppState } from "../../admin-core-v1/store";
+import { Config } from "../../admin.core.v1/configs/app";
+import { AppConstants, CommonConstants } from "../../admin.core.v1/constants";
+import { DeploymentConfigInterface } from "../../admin.core.v1/models/config";
+import { AppState } from "../../admin.core.v1/store";
 import {
     getServerConfigurations,
     setCurrentOrganization,
@@ -52,7 +52,7 @@ import {
     setOrganization,
     setOrganizationType,
     setUserOrganizationId
-} from "../../admin-core-v1/store/actions/organization";
+} from "../../admin.core.v1/store/actions/organization";
 import { OrganizationType } from "../../admin-organizations-v1/constants";
 import useOrganizationSwitch from "../../admin-organizations-v1/hooks/use-organization-switch";
 import useOrganizations from "../../admin-organizations-v1/hooks/use-organizations";

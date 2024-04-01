@@ -17,13 +17,13 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { I18nConstants } from "../../admin-core-v1/constants/i18n-constants";
+import { I18nConstants } from "../../admin.core.v1/constants/i18n-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin-core-v1/hooks/use-request";
-import { store } from "../../admin-core-v1/store";
+} from "../../admin.core.v1/hooks/use-request";
+import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin-organizations-v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";

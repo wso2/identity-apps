@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { AddRoleUsers } from "./role-user-assign";
-import { AssignGroups } from "../../../admin-core-v1";
+import { AssignGroups } from "../../../admin.core.v1";
 import { GroupsInterface } from "../../../admin-groups-v1/models/groups";
 import { UserBasicInterface } from "../../../admin-users-v1/models/user";
 

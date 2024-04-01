@@ -21,7 +21,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
-import { AppConstants, store } from "../../admin-core-v1";
+import { AppConstants, store } from "../../admin.core.v1";
 import { getConnectorCategories } from "../api";
 import { ServerConfigurationsConstants } from "../constants";
 import {

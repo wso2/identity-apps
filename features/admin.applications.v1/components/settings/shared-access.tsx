@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { FeatureConfigInterface } from "../../../admin-core-v1";
+import { FeatureConfigInterface } from "../../../admin.core.v1";
 import { ApplicationInterface } from "../../models";
 import { ApplicationShareForm } from "../forms";
 

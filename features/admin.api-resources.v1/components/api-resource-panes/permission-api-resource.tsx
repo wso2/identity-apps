@@ -31,7 +31,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../admin-core-v1";
+import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 import { AddAPIResourcePermission } from "../wizard";
 

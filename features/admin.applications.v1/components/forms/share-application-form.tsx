@@ -52,7 +52,7 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
-import { AppState } from "../../../admin-core-v1";
+import { AppState } from "../../../admin.core.v1";
 import {
     getOrganizations,
     getSharedOrganizations,

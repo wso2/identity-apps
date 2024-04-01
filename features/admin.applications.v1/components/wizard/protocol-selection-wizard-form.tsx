@@ -29,7 +29,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card } from "semantic-ui-react";
-import { AppState, getEmptyPlaceholderIllustrations } from "../../../admin-core-v1";
+import { AppState, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import {
     ApplicationTemplateListItemInterface,

@@ -54,7 +54,7 @@ import {
     Segment,
     Transition
 } from "semantic-ui-react";
-import { AppState, EventPublisher } from "../../../admin-core-v1";
+import { AppState, EventPublisher } from "../../../admin.core.v1";
 import {
     getOrganizations,
     getSharedOrganizations,

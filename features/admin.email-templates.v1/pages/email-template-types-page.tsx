@@ -25,7 +25,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../admin-core-v1";
+import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../admin.core.v1";
 import { OrganizationUtils } from "../../admin-organizations-v1/utils";
 import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
 import { AddEmailTemplateTypeWizard, EmailTemplateTypeList } from "../components";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { store } from "../../admin-core-v1/store";
+import { store } from "../../admin.core.v1/store";
 import { OrganizationManagementConstants, OrganizationType } from "../constants";
 import { GenericOrganization } from "../models";
 

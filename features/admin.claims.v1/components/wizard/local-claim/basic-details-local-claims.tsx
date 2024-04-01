@@ -23,7 +23,7 @@ import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Grid, Icon, Label } from "semantic-ui-react";
 import { attributeConfig } from "../../../../admin-extensions-v1";
-import { getTechnologyLogos } from "../../../../admin-core-v1";
+import { getTechnologyLogos } from "../../../../admin.core.v1";
 import { ClaimManagementConstants } from "../../../constants";
 
 /**

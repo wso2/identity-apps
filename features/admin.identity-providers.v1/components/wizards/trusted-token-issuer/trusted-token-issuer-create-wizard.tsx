@@ -64,7 +64,7 @@ import {
     EventPublisher,
     TierLimitReachErrorModal,
     getCertificateIllustrations
-} from "../../../../admin-core-v1";
+} from "../../../../admin.core.v1";
 import { createIdentityProvider, useIdentityProviderList } from "../../../api";
 import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../../configs/ui";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../../../constants";

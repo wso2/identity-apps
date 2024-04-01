@@ -24,7 +24,7 @@ import camelCase from "lodash-es/camelCase";
 import intersectionBy from "lodash-es/intersectionBy";
 import unionBy from "lodash-es/unionBy";
 import { FunctionComponent, SVGProps } from "react";
-import { DocPanelUICardInterface, store } from "../../admin-core-v1";
+import { DocPanelUICardInterface, store } from "../../admin.core.v1";
 import {
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,

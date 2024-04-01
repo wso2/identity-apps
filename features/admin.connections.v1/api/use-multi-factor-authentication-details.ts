@@ -18,11 +18,11 @@
 
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig } from "axios";
-import { store } from "../../admin-core-v1";
+import { store } from "../../admin.core.v1";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin-core-v1/hooks/use-request";
+} from "../../admin.core.v1/hooks/use-request";
 import {
     MultiFactorAuthenticatorInterface
 } from "../models/authenticators";

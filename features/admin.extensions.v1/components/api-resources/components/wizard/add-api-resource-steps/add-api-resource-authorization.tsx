@@ -22,7 +22,7 @@ import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-comp
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../../../../admin-core-v1/store";
+import { AppState } from "../../../../../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../../../../configs/models";
 import { AuthorizationAPIResourceInterface } from "../../../models";
 

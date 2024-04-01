@@ -42,7 +42,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../admin-extensions-v1/configs/server-configuration";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorFormFactory } from "../forms";

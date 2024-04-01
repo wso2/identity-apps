@@ -42,7 +42,7 @@ import React, { FunctionComponent, ReactElement, useMemo, useState } from "react
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState } from "../../../../admin-core-v1/store";
+import { AppState } from "../../../../admin.core.v1/store";
 import { updateRoleDetails } from "../../../../admin-roles-v2/api/roles";
 import { RenderChip } from "../../../../admin-roles-v2/components/edit-role/edit-role-common/render-chip";
 import { Schemas } from "../../../../admin-roles-v2/constants/role-constants";

@@ -50,7 +50,7 @@ import {
     UserRoleInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../../admin-core-v1";
+} from "../../../../../admin.core.v1";
 import { updateRoleDetails } from "../../../../../admin-roles-v2/api/roles";
 import { PatchRoleDataInterface } from "../../../../../admin-roles-v2/models/roles";
 import { RealmConfigInterface } from "../../../../../admin-server-configurations-v1";

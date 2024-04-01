@@ -23,7 +23,7 @@ import { Certificate as CertificateDisplay, Code, GenericIcon } from "@wso2is/re
 import React, { FC, PropsWithChildren, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Segment } from "semantic-ui-react";
-import { getCertificateIllustrations } from "../../../../../admin-core-v1";
+import { getCertificateIllustrations } from "../../../../../admin.core.v1";
 
 /**
  * Props interface of {@link ShowCertificateModal}

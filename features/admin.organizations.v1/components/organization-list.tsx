@@ -53,8 +53,8 @@ import {
     FeatureConfigInterface,
     UIConstants,
     history
-} from "../../admin-core-v1";
-import { getEmptyPlaceholderIllustrations } from "../../admin-core-v1/configs/ui";
+} from "../../admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
 import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";

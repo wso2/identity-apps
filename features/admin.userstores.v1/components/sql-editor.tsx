@@ -21,7 +21,7 @@ import { CodeEditor, GenericIcon, Heading, LinkButton, Popup, PrimaryButton, Too
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
-import { getOperationIcons } from "../../admin-core-v1/configs";
+import { getOperationIcons } from "../../admin.core.v1/configs";
 import { RequiredBinary, TypeProperty } from "../models";
 
 interface SqlEditorPropsInterface extends TestableComponentInterface {

@@ -36,7 +36,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { commonConfig } from "../../../admin-extensions-v1";
-import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "../../../admin-core-v1";
+import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "../../../admin.core.v1";
 import { SAMLConfigModes } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 

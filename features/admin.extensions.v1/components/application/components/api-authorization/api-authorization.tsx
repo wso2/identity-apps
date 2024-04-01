@@ -29,7 +29,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import { RequestErrorInterface } from "../../../../../admin-core-v1/hooks/use-request";
+import { RequestErrorInterface } from "../../../../../admin.core.v1/hooks/use-request";
 import { AxiosError } from "axios";
 import React, {
     Fragment,
@@ -44,7 +44,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SubscribedAPIResources } from ".";
 import { AuthorizeAPIResource } from "./wizard";
-import { AppState, history } from "../../../../../admin-core-v1";
+import { AppState, history } from "../../../../../admin.core.v1";
 import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
 import { useAPIResources } from "../../../api-resources/api";
 import { APIResourcesConstants } from "../../../api-resources/constants";

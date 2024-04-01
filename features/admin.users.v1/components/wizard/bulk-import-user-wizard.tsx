@@ -75,7 +75,7 @@ import {
     UserStoreProperty,
     getCertificateIllustrations,
     history
-} from "../../../admin-core-v1";
+} from "../../../admin.core.v1";
 import { getGroupList, useGroupList } from "../../../admin-groups-v1/api";
 import { GroupsInterface } from "../../../admin-groups-v1/models";
 import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";

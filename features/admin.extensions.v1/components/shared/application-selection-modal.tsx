@@ -27,7 +27,7 @@ import { DropdownProps, Grid, Modal, ModalProps, PaginationProps } from "semanti
 import { getApplicationList } from "../../../admin.applications.v1/api";
 import { ApplicationList } from "../../../admin.applications.v1/components/application-list";
 import { ApplicationListInterface } from "../../../admin.applications.v1/models";
-import { AppConstants, UIConstants, history } from "../../../admin-core-v1";
+import { AppConstants, UIConstants, history } from "../../../admin.core.v1";
 
 /**
  * Proptypes for the application selection modal component.

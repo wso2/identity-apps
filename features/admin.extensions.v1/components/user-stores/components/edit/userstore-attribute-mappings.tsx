@@ -46,7 +46,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Header, Segment } from "semantic-ui-react";
 import { getAllLocalClaims } from "../../../../../admin.claims.v1/api";
-import { AppState, sortList } from "../../../../../admin-core-v1";
+import { AppState, sortList } from "../../../../../admin.core.v1";
 import { updateUserStoreAttributeMappings } from "../../../../../admin-userstores-v1/api/user-stores";
 import { DISABLED } from "../../../../../admin-userstores-v1/constants/user-store-constants";
 import {

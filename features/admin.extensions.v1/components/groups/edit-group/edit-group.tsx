@@ -29,7 +29,7 @@ import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { GroupRolesList } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
-import { AppState, FeatureConfigInterface } from "../../../../admin-core-v1";
+import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { GroupsInterface } from "../../../../admin-groups-v1";
 import { GroupConstants } from "../../../../admin-groups-v1/constants";
 import useGroupManagement from "../../../../admin-groups-v1/hooks/use-group-management";

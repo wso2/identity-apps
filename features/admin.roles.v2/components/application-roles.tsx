@@ -56,9 +56,9 @@ import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard"
 import { updateApplicationDetails } from "../../admin.applications.v1/api";
 import { useGetApplication } from "../../admin.applications.v1/api/use-get-application";
 import { ApplicationInterface } from "../../admin.applications.v1/models";
-import { history } from "../../admin-core-v1/helpers/history";
-import { FeatureConfigInterface } from "../../admin-core-v1/models";
-import { AppState } from "../../admin-core-v1/store";
+import { history } from "../../admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "../../admin.core.v1/models";
+import { AppState } from "../../admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { getApplicationRolesByAudience } from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";

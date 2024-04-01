@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { AppConstants, history } from "../../../admin-core-v1";
+import { AppConstants, history } from "../../../admin.core.v1";
 import { createNewTemplateType } from "../../api";
 import { getAddEmailTemplateTypeWizardStepIcons } from "../../configs";
 import { AddEmailTemplateTypeForm } from "../forms";

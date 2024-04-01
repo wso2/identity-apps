@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
-import { AppState } from "../../admin-core-v1";
+import { AppState } from "../../admin.core.v1";
 import { EmailTemplateType } from "../models";
 
 const FORM_ID: string = "email-customization-header-form";

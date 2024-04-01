@@ -22,8 +22,8 @@ import { Button, ContentLoader, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, List } from "semantic-ui-react";
-import { AppConstants } from "../../../../admin-core-v1/constants";
-import { EventPublisher } from "../../../../admin-core-v1/utils";
+import { AppConstants } from "../../../../admin.core.v1/constants";
+import { EventPublisher } from "../../../../admin.core.v1/utils";
 import { getUserDetails } from "../../../../admin-users-v1/api";
 import { AddConsumerUserWizard } from "../../../../admin-users-v1/components/wizard/add-consumer-user-wizard";
 

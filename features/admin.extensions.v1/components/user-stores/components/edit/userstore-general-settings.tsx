@@ -42,7 +42,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, Grid, Icon, List, Segment } from "semantic-ui-react";
-import { AppConstants, AppState, history } from "../../../../../admin-core-v1";
+import { AppConstants, AppState, history } from "../../../../../admin.core.v1";
 import { deleteUserStore, patchUserStore } from "../../../../../admin-userstores-v1/api/user-stores";
 import { DISABLED } from "../../../../../admin-userstores-v1/constants/user-store-constants";
 import {

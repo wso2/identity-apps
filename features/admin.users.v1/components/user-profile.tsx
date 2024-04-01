@@ -54,7 +54,7 @@ import { TenantInfo } from "../../admin-extensions-v1/components/tenants/models"
 import { getAssociationType } from "../../admin-extensions-v1/components/tenants/utils/tenants";
 import { administratorConfig } from "../../admin-extensions-v1/configs/administrator";
 import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import { searchRoleList, updateRoleDetails } from "../../admin-roles-v2/api/roles";
 import {
     OperationValueInterface,

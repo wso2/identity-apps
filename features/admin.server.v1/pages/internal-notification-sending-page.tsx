@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
-import { AppConstants, history } from "../../admin-core-v1";
+import { AppConstants, history } from "../../admin.core.v1";
 import { getConnectorDetails, updateGovernanceConnector } from "../../admin-server-configurations-v1/api";
 import {
     ConnectorPropertyInterface,

@@ -27,7 +27,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { ExtendedExternalClaimInterface } from "./attribute-settings";
-import { AttributeSelectList } from "../../../../admin-core-v1";
+import { AttributeSelectList } from "../../../../admin.core.v1";
 
 interface AttributeSelectionWizardOtherDialectPropsInterface extends TestableComponentInterface {
     availableExternalClaims: ExtendedExternalClaimInterface[];

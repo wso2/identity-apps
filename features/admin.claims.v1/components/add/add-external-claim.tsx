@@ -28,7 +28,7 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Label } from "semantic-ui-react";
 import { SCIMConfigs, attributeConfig } from "../../../admin-extensions-v1";
 import { getAllLocalClaims } from "../../../admin.claims.v1/api";
-import { AppConstants, AppState, history } from "../../../admin-core-v1";
+import { AppConstants, AppState, history } from "../../../admin.core.v1";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim, ServerSupportedClaimsInterface } from "../../models";

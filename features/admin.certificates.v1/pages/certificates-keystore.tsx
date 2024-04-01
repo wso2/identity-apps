@@ -35,7 +35,7 @@ import {
     UIConstants,
     filterList,
     sortList
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import { listCertificateAliases } from "../api";
 import { CertificatesList, ImportCertificate } from "../components";
 

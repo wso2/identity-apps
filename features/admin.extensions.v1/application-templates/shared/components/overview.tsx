@@ -27,7 +27,7 @@ import {
     InboundProtocolListItemInterface,
     URLFragmentTypes
 } from "../../../../admin.applications.v1/models";
-import { EventPublisher, history } from "../../../../admin-core-v1";
+import { EventPublisher, history } from "../../../../admin.core.v1";
 import { QuickStartModes } from "../models";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";

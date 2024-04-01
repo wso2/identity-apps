@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Header } from "semantic-ui-react";
 import { PermissionMappingList } from "./permission-mapping-list";
 import { PermissionMappingListItem } from "./permission-mapping-list-item";
-import { FeatureConfigInterface } from "../../../../admin-core-v1";
+import { FeatureConfigInterface } from "../../../../admin.core.v1";
 import { APIResourcePermissionInterface } from "../../../models";
 
 /**

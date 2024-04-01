@@ -37,7 +37,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../../admin-core-v1";
+import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../../admin.core.v1";
 import {
     GroupsInterface,
     PatchGroupDataInterface,

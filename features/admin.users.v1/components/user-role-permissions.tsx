@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Modal } from "semantic-ui-react";
-import { AppConstants, AppState, history } from "../../admin-core-v1";
+import { AppConstants, AppState, history } from "../../admin.core.v1";
 import { getOrganizationRoleById } from "../../admin-organizations-v1/api";
 import { OrganizationResponseInterface } from "../../admin-organizations-v1/models/organizations";
 import { OrganizationUtils } from "../../admin-organizations-v1/utils";

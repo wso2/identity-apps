@@ -35,7 +35,7 @@ import { getAllApplicationRolesList } from "../../admin-extensions-v1/components
 import { ApplicationRoleInterface } from "../../admin-extensions-v1/components/groups/models";
 import { getApplicationList } from "../../admin.applications.v1/api";
 import { ApplicationListInterface, ApplicationListItemInterface } from "../../admin.applications.v1/models";
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../admin-core-v1";
+import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
 import { ApplicationRolesList } from "../components";
 
 type ApplicationRolesPageInterface = IdentifiableComponentInterface;

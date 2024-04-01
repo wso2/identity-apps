@@ -36,7 +36,7 @@ import {
     UserStoreDetails,
     UserStoreProperty,
     history
-} from "../../../admin-core-v1";
+} from "../../../admin.core.v1";
 import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
 import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
 

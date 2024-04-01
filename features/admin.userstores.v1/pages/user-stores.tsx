@@ -37,7 +37,7 @@ import {
     filterList,
     history,
     sortList
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import { getUserStores } from "../api";
 import { UserStoresList } from "../components";
 import { QueryParams, UserStoreListItem } from "../models";

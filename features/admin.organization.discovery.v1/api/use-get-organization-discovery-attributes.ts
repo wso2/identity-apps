@@ -21,8 +21,8 @@ import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin-core-v1/hooks/use-request";
-import { store } from "../../admin-core-v1/store";
+} from "../../admin.core.v1/hooks/use-request";
+import { store } from "../../admin.core.v1/store";
 import { OrganizationDiscoveryAttributeDataInterface } from "../models/organization-discovery";
 
 /**

@@ -30,7 +30,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
-import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../../admin-core-v1";
+import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
 import { getIdentityProviderList } from "../../../../admin-identity-providers-v1/api/identity-provider";
 import {
     IdentityProviderInterface,

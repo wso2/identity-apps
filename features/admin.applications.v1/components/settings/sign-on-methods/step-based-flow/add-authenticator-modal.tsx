@@ -66,9 +66,9 @@ import { identityProviderConfig } from "../../../../../admin-extensions-v1/confi
 import useAuthenticationFlow from "../../../../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { ConnectionManagementConstants } from "../../../../../admin.connections.v1";
 import { ConnectionsManagementUtils } from "../../../../../admin.connections.v1/utils/connection-utils";
-import { getEmptyPlaceholderIllustrations } from "../../../../../admin-core-v1/configs/ui";
-import { AppState } from "../../../../../admin-core-v1/store";
-import { EventPublisher } from "../../../../../admin-core-v1/utils/event-publisher";
+import { getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1/configs/ui";
+import { AppState } from "../../../../../admin.core.v1/store";
+import { EventPublisher } from "../../../../../admin.core.v1/utils/event-publisher";
 import { getIdPIcons } from "../../../../../admin-identity-providers-v1/configs/ui";
 import {
     IdentityProviderManagementConstants

@@ -30,7 +30,7 @@ import { Button, Dropdown, Grid, Icon, Input, Item, Loader, Segment } from "sema
 import { 
     ReactComponent as CrossIcon 
 } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { getMiscellaneousIcons } from "../../../admin-core-v1";
+import { getMiscellaneousIcons } from "../../../admin.core.v1";
 import OrganizationSwitcherList from
     "../../../admin-organizations-v1/components/organization-switch/organization-switch-list";
 import { OrganizationManagementConstants } from "../../../admin-organizations-v1/constants";

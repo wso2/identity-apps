@@ -32,7 +32,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { AppState, getEmptyPlaceholderIllustrations } from "../../admin-core-v1";
+import { AppState, getEmptyPlaceholderIllustrations } from "../../admin.core.v1";
 import { ReadOnlyRoleList } from "../../admin-roles-v2/components/readonly-role-list";
 import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN } from "../../admin-roles-v2/constants";
 import "./user-roles-list.scss";

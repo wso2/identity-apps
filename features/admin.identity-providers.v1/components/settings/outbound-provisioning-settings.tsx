@@ -34,7 +34,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
-import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../admin-core-v1";
+import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { RootOnlyComponent } from "../../../admin-organizations-v1/components";
 import {
     getOutboundProvisioningConnector,

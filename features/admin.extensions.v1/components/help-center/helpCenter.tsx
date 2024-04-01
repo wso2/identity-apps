@@ -21,7 +21,7 @@ import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Dropdown, Icon, Menu } from "semantic-ui-react";
-import { AppState } from "../../../admin-core-v1";
+import { AppState } from "../../../admin.core.v1";
 import { ReactComponent as DocIcon } from "../../../themes/wso2is/assets/images/documentation.svg";
 import { ReactComponent as HelpIcon } from "../../../themes/wso2is/assets/images/help.svg";
 

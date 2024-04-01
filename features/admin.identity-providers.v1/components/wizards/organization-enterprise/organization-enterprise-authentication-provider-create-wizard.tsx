@@ -37,7 +37,7 @@ import {
     EventPublisher,
     ModalWithSidePanel,
     TierLimitReachErrorModal
-} from "../../../../admin-core-v1";
+} from "../../../../admin.core.v1";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../../constants";

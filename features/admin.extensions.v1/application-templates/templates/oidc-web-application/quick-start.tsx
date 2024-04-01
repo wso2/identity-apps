@@ -42,9 +42,9 @@ import {
     ApplicationTemplateInterface,
     URLFragmentTypes
 } from "../../../../admin.applications.v1/models";
-import { history } from "../../../../admin-core-v1";
-import { getTechnologyLogos } from "../../../../admin-core-v1/configs";
-import { AppState } from "../../../../admin-core-v1/store";
+import { history } from "../../../../admin.core.v1";
+import { getTechnologyLogos } from "../../../../admin.core.v1/configs";
+import { AppState } from "../../../../admin.core.v1/store";
 import JavaLogo from "../../../assets/images/icons/java-logo.svg";
 import DotNetLogo from "../../../assets/images/icons/net-logo.svg";
 import NextJSLogo from "../../../assets/images/icons/next-js-logo.svg";

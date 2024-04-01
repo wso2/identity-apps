@@ -36,7 +36,7 @@ import {
     EventPublisher,
     ModalWithSidePanel,
     TierLimitReachErrorModal
-} from "../../../../admin-core-v1";
+} from "../../../../admin.core.v1";
 import { createConnection } from "../../../api/connections";
 import { getConnectionIcons } from "../../../configs/ui";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";

@@ -44,8 +44,8 @@ import {
     EventPublisher,
     UIConstants,
     history
-} from "../../admin-core-v1";
-import { getEmptyPlaceholderIllustrations } from "../../admin-core-v1/configs/ui";
+} from "../../admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
 import { OrganizationIcon } from "../configs/ui";
 import { OrganizationDiscoveryConstants } from "../constants/organization-discovery-constants";
 import {

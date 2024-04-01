@@ -35,8 +35,8 @@ import {
     AppState,
     EventPublisher,
     history
-} from "../../../admin-core-v1";
-import { setActiveView } from "../../../admin-core-v1/store";
+} from "../../../admin.core.v1";
+import { setActiveView } from "../../../admin.core.v1/store";
 import { OrganizationType } from "../../../admin-organizations-v1/constants";
 import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
 import { AppViewExtensionTypes } from "../../configs/models";

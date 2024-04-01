@@ -47,7 +47,7 @@ import {
     getEmptyPlaceholderIllustrations,
     getSecretManagementIllustrations,
     history
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import { deleteSecret } from "../api/secret";
 import { ADAPTIVE_SCRIPT_SECRETS, FEATURE_EDIT_PATH } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";

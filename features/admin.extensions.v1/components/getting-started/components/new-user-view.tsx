@@ -34,8 +34,8 @@ import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
 } from "../../../../admin.applications.v1/models";
-import { AppState, ConfigReducerStateInterface } from "../../../../admin-core-v1";
-import { FeatureConfigInterface } from "../../../../admin-core-v1/models";
+import { AppState, ConfigReducerStateInterface } from "../../../../admin.core.v1";
+import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
 
 export type NewUserViewContextCardPropsInterface = {
     applications: ApplicationListItemInterface[];

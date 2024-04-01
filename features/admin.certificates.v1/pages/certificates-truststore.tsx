@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../admin-core-v1";
+import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../admin.core.v1";
 import { listClientCertificates } from "../api";
 import { CertificatesList } from "../components";
 

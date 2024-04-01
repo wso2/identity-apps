@@ -32,7 +32,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, PaginationProps } from "semantic-ui-react";
-import { AppState, getEmptyPlaceholderIllustrations } from "../../../../admin-core-v1";
+import { AppState, getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
 import { ExtendedFeatureConfigInterface } from "../../../configs/models";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";

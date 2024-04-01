@@ -34,8 +34,8 @@ import {
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch } from "redux";
-import { Config } from "../../../admin-core-v1/configs";
-import { store } from "../../../admin-core-v1/store";
+import { Config } from "../../../admin.core.v1/configs";
+import { store } from "../../../admin.core.v1/store";
 import { getProfileInfo, getProfileSchemas } from "../../../admin-users-v1/api";
 
 /**

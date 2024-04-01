@@ -67,7 +67,7 @@ import {
     UIConstants,
     getGeneralIcons,
     history
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import { OrganizationType } from "../../admin-organizations-v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";

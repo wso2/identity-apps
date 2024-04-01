@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../../../admin-core-v1";
+import { store } from "../../../../admin.core.v1";
 import { ApplicationRoleInterface, GroupRoleAssignPayloadInterface } from "../models/application-roles";
 
 /**

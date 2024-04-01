@@ -23,7 +23,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider, Grid, Icon } from "semantic-ui-react";
-import { AppConstants } from "../../../admin-core-v1/constants";
+import { AppConstants } from "../../../admin.core.v1/constants";
 
 /**
  * Proptypes for the general settings wizard form component.

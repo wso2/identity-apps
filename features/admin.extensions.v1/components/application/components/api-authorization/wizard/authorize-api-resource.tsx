@@ -38,7 +38,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Grid, Header, Modal } from "semantic-ui-react";
-import { AppState } from "../../../../../../admin-core-v1/store";
+import { AppState } from "../../../../../../admin.core.v1/store";
 import { useAPIResources } from "../../../../api-resources/api";
 import { APIResourcesConstants } from "../../../../api-resources/constants";
 import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../api-resources/models";

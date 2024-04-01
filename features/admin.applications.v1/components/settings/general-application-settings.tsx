@@ -35,7 +35,7 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { applicationConfig } from "../../../admin-extensions-v1";
 import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
-import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../admin-core-v1";
+import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../admin.core.v1";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import {
     ApplicationInterface,

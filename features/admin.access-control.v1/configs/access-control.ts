@@ -18,7 +18,7 @@
 
 import { PermissionsInterface } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { FeatureConfigInterface } from "../../admin-core-v1";
+import { FeatureConfigInterface } from "../../admin.core.v1";
 import { AccessControlConstants } from "../constants/access-control";
 
 export class AccessControlUtils {

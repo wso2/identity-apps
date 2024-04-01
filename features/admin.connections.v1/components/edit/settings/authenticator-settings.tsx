@@ -38,8 +38,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../admin-extensions-v1";
-import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../../admin-core-v1";
-import { AuthenticatorAccordion } from "../../../../admin-core-v1/components";
+import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
+import { AuthenticatorAccordion } from "../../../../admin.core.v1/components";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,

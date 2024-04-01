@@ -51,10 +51,10 @@ import { organizationConfigs } from "../../../admin-extensions-v1";
 import { 
     FeatureGateConstants 
 } from "../../../admin-extensions-v1/components/feature-gate/constants/feature-gate";
-import { getMiscellaneousIcons } from "../../../admin-core-v1/configs";
-import { AppConstants } from "../../../admin-core-v1/constants";
-import { history } from "../../../admin-core-v1/helpers/history";
-import { AppState } from "../../../admin-core-v1/store";
+import { getMiscellaneousIcons } from "../../../admin.core.v1/configs";
+import { AppConstants } from "../../../admin.core.v1/constants";
+import { history } from "../../../admin.core.v1/helpers/history";
+import { AppState } from "../../../admin.core.v1/store";
 import { OrganizationType } from "../../../admin-organizations-v1/constants";
 import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";

@@ -43,7 +43,7 @@ import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
 import { commonConfig } from "../../../../admin-extensions-v1/configs";
-import { AppState, ConfigReducerStateInterface } from "../../../../admin-core-v1";
+import { AppState, ConfigReducerStateInterface } from "../../../../admin.core.v1";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderConstants } from "../../../constants";
 import { CertificatePatchRequestInterface, IdentityProviderInterface } from "../../../models";

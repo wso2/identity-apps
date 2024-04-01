@@ -31,7 +31,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, u
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState } from "../../admin-core-v1/store";
+import { AppState } from "../../admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "../../admin-organizations-v1/models/organizations";
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";

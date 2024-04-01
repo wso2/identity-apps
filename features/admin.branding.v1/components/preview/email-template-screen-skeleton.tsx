@@ -22,7 +22,7 @@ import parse from "html-react-parser";
 import Mustache from "mustache";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../admin-core-v1/store";
+import { AppState } from "../../../admin.core.v1/store";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";

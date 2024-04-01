@@ -19,7 +19,7 @@
 import { GenericIcon } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Placeholder } from "semantic-ui-react";
-import { getMiscellaneousIcons } from "../../../admin-core-v1/configs";
+import { getMiscellaneousIcons } from "../../../admin.core.v1/configs";
 import { TriggerPropTypesInterface } from "../../models";
 
 export const TenantDropdownTrigger = (props: TriggerPropTypesInterface): ReactElement => {

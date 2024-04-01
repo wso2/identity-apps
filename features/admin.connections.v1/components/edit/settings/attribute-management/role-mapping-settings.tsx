@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AppState } from "../../../../../admin-core-v1";
+import { AppState } from "../../../../../admin.core.v1";
 import { getOrganizationRoles } from "../../../../../admin-organizations-v1/api";
 import { useGetCurrentOrganizationType } from "../../../../../admin-organizations-v1/hooks/use-get-organization-type";
 import {

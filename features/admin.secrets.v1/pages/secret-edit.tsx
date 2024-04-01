@@ -23,7 +23,7 @@ import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppConstants, getSecretManagementIllustrations, history } from "../../admin-core-v1";
+import { AppConstants, getSecretManagementIllustrations, history } from "../../admin.core.v1";
 import { getSecret } from "../api/secret";
 import EditSecret from "../components/edit-secret";
 import { EmptySecretListPlaceholder } from "../components/empty-secret-list-placeholder";

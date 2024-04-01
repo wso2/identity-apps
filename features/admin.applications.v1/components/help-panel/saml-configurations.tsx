@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Form, Grid, Icon } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, store } from "../../../admin-core-v1";
+import { AppState, FeatureConfigInterface, store } from "../../../admin.core.v1";
 import { getHelpPanelIcons } from "../../configs/ui";
 import { SAMLApplicationConfigurationInterface } from "../../models";
 

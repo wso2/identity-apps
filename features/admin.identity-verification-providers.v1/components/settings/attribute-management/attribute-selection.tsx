@@ -26,7 +26,7 @@ import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AddAttributeSelectionModal } from "./attribute-selection-modal";
 import { AttributeMappingList } from "./attributes-mapping-list";
 import { fetchAllLocalClaims } from "./utils/claim-utils";
-import { getEmptyPlaceholderIllustrations } from "../../../../admin-core-v1";
+import { getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
 
 /**

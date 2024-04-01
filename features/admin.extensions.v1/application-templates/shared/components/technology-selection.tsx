@@ -23,7 +23,7 @@ import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Divider } from "semantic-ui-react";
-import { EventPublisher } from "../../../../admin-core-v1/utils";
+import { EventPublisher } from "../../../../admin.core.v1/utils";
 
 /**
  * Prop-types for the Technology Selection component.

@@ -43,8 +43,8 @@ import {
     UserBasicInterface,
     UserRoleInterface,
     getUsersList
-} from "../../../../../admin-core-v1";
-import { EventPublisher } from "../../../../../admin-core-v1/utils";
+} from "../../../../../admin.core.v1";
+import { EventPublisher } from "../../../../../admin.core.v1/utils";
 import { getRolesList } from "../../../../../admin-roles-v2/api";
 import { UserInviteInterface, UserListInterface } from "../../../../../admin-users-v1/models/user";
 import { UserManagementUtils } from "../../../../../admin-users-v1/utils";

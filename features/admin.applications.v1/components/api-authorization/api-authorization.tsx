@@ -41,7 +41,7 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SubscribedAPIResources } from "./subscribed-api-resources";
 import { AuthorizeAPIResource } from "./wizard/authorize-api-resource";
 import { useAPIResources } from "../../../admin.api-resources.v1/api";
-import { AppState, FeatureConfigInterface, history } from "../../../admin-core-v1";
+import { AppState, FeatureConfigInterface, history } from "../../../admin.core.v1";
 import {
     authorizeAPI,
     removeAuthorizedAPI

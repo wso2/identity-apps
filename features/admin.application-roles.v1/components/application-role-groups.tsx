@@ -46,7 +46,7 @@ import {
     ApplicationRoleGroupInterface,
     ApplicationRoleGroupsUpdatePayloadInterface
 } from "../../admin-extensions-v1/components/application/models";
-import { UIConstants } from "../../admin-core-v1";
+import { UIConstants } from "../../admin.core.v1";
 import { CONSUMER_USERSTORE } from "../../admin-userstores-v1/constants";
 
 interface ApplicationRoleGroupsProps extends IdentifiableComponentInterface {

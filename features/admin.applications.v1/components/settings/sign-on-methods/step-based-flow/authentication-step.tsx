@@ -27,7 +27,7 @@ import useAuthenticationFlow from "../../../../../admin.authentication-flow-buil
 import { AuthenticatorManagementConstants } from "../../../../../admin.connections.v1";
 import { AuthenticatorCategories } from "../../../../../admin.connections.v1/models/authenticators";
 import { ConnectionsManagementUtils } from "../../../../../admin.connections.v1/utils/connection-utils";
-import { getGeneralIcons } from "../../../../../admin-core-v1";
+import { getGeneralIcons } from "../../../../../admin.core.v1";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../admin-identity-providers-v1/constants/identity-provider-management-constants";

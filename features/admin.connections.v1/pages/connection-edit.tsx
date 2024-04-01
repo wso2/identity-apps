@@ -55,7 +55,7 @@ import {
     AppState,
     FeatureConfigInterface,
     history
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import {
     EditMultiFactorAuthenticator
 } from "../../admin-identity-providers-v1/components/edit-multi-factor-authenticator";

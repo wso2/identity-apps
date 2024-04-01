@@ -28,7 +28,7 @@ import { Icon, Label, Message } from "semantic-ui-react";
 import {
     AppConstants,
     history
-} from "../../../../admin-core-v1";
+} from "../../../../admin.core.v1";
 import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {

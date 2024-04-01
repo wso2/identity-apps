@@ -24,8 +24,8 @@ import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin-core-v1/hooks/use-request";
-import { store } from "../../admin-core-v1/store";
+} from "../../admin.core.v1/hooks/use-request";
+import { store } from "../../admin.core.v1/store";
 import { PatchGroupDataInterface } from "../../admin-groups-v1";
 import { PatchRoleDataInterface } from "../../admin-roles-v2/models";
 import { UserManagementConstants } from "../constants";

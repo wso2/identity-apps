@@ -32,7 +32,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card, Form, Grid } from "semantic-ui-react";
 import { SAMLApplicationConfigurationInterface } from "../../../../admin.applications.v1/models";
-import { AppState, EventPublisher } from "../../../../admin-core-v1";
+import { AppState, EventPublisher } from "../../../../admin.core.v1";
 
 type TechnologyArrayPropsInterface = {
     techIcon: GenericIconProps;

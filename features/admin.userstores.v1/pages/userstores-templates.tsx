@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { userstoresConfig } from "../../admin-extensions-v1";
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../admin-core-v1";
+import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
 import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
 import { getUserstoreTemplateIllustrations } from "../configs";

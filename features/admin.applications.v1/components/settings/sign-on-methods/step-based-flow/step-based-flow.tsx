@@ -29,7 +29,7 @@ import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { applicationConfig, identityProviderConfig } from "../../../../../admin-extensions-v1";
 import { AuthenticatorManagementConstants } from "../../../../../admin.connections.v1/constants/autheticator-constants";
-import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../../admin-core-v1";
+import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../../admin.core.v1";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../admin-identity-providers-v1/constants/identity-provider-management-constants";

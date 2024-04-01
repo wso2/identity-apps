@@ -26,7 +26,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid, Icon } from "semantic-ui-react";
-import { AppState } from "../../../admin-core-v1/store";
+import { AppState } from "../../../admin.core.v1/store";
 import { OrganizationType } from "../../../admin-organizations-v1/constants";
 import { OrganizationResponseInterface } from "../../../admin-organizations-v1/models";
 import { generateInviteLink } from "../../api";

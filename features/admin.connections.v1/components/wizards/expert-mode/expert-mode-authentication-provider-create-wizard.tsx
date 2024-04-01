@@ -38,8 +38,8 @@ import { Grid } from "semantic-ui-react";
 import {
     ExpertModeAuthenticationProviderCreateWizardContent
 } from "./expert-mode-authentication-provider-create-wizard-content";
-import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../admin-core-v1/components";
-import { EventPublisher } from "../../../../admin-core-v1/utils";
+import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../admin.core.v1/components";
+import { EventPublisher } from "../../../../admin.core.v1/utils";
 import { createConnection } from "../../../api/connections";
 import { getConnectionIcons } from "../../../configs/ui";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";

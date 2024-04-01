@@ -26,9 +26,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
-import { UserStoreDetails } from "../../../admin-core-v1";
-import { SharedUserStoreConstants } from "../../../admin-core-v1/constants";
-import { SharedUserStoreUtils } from "../../../admin-core-v1/utils";
+import { UserStoreDetails } from "../../../admin.core.v1";
+import { SharedUserStoreConstants } from "../../../admin.core.v1/constants";
+import { SharedUserStoreUtils } from "../../../admin.core.v1/utils";
 // TODO: Remove this once the api is updated.
 import { RootOnlyComponent } from "../../../admin-organizations-v1/components";
 import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";

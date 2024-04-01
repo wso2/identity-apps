@@ -25,7 +25,7 @@ import { CreateConnectionWizard } from "./add-connection-wizard";
 import {
     EnterpriseConnectionCreateWizard
 } from "./enterprise-connection-create-wizard";
-import { AppState } from "../../../admin-core-v1";
+import { AppState } from "../../../admin.core.v1";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import {

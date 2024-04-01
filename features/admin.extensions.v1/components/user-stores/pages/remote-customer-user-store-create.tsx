@@ -29,7 +29,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { getAllLocalClaims } from "../../../../admin.claims.v1/api";
 import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin-core-v1";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin.core.v1";
 import { addUserStore, getAType } from "../../../../admin-userstores-v1/api/user-stores";
 import { UserStoreManagementConstants } from "../../../../admin-userstores-v1/constants/user-store-constants";
 import {

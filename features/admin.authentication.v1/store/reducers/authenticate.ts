@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthReducerStateInterface } from "../../../admin-core-v1/models";
+import { AuthReducerStateInterface } from "../../../admin.core.v1/models";
 
 /**
  * Initial state for the common authenticate reducer.

@@ -29,7 +29,7 @@ import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
 import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
-import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../admin-core-v1";
+import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../admin.core.v1";
 import { getOrganizationRoles } from "../../../admin-organizations-v1/api";
 import { OrganizationRoleManagementConstants } from "../../../admin-organizations-v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";

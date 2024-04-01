@@ -41,8 +41,8 @@ import {
     ApplicationTemplateInterface,
     URLFragmentTypes
 } from "../../../../admin.applications.v1/models";
-import { history } from "../../../../admin-core-v1";
-import { AppState } from "../../../../admin-core-v1/store";
+import { history } from "../../../../admin.core.v1";
+import { AppState } from "../../../../admin.core.v1/store";
 import { QuickStartModes } from "../../shared";
 import { QuickStartPanelOverview, SPACustomConfiguration, SPATechnologySelection } from "../../shared/components";
 import { SDKMeta } from "../../templates/single-page-application/meta";

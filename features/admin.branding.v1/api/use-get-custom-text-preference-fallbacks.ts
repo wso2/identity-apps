@@ -17,13 +17,13 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { AppConstants } from "../../admin-core-v1/constants/app-constants";
-import { I18nConstants } from "../../admin-core-v1/constants/i18n-constants";
+import { AppConstants } from "../../admin.core.v1/constants/app-constants";
+import { I18nConstants } from "../../admin.core.v1/constants/i18n-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin-core-v1/hooks/use-request";
+} from "../../admin.core.v1/hooks/use-request";
 import { BrandingPreferenceTypes } from "../models/branding-preferences";
 import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
 

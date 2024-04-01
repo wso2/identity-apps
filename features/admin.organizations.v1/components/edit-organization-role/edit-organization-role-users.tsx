@@ -21,7 +21,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState } from "../../../admin-core-v1";
+import { AppState } from "../../../admin.core.v1";
 import { AddRoleUsers } from "../../../admin-roles-v2/components/wizard/role-user-assign";
 import { ScimOperationsInterface } from "../../../admin-roles-v2/models/roles";
 import { UserBasicInterface } from "../../../admin-users-v1/models/user";

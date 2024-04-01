@@ -58,7 +58,7 @@ import {
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     store
-} from "../../../admin-core-v1";
+} from "../../../admin.core.v1";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,

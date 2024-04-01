@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid, Icon, Modal } from "semantic-ui-react";
 import { sendFeedback } from "./feedback-api";
-import { AppState, store } from "../../../admin-core-v1";
+import { AppState, store } from "../../../admin.core.v1";
 import { ReactComponent as FeedBackIcon } from "../../assets/images/icons/feedback-outline.svg";
 
 export default (): ReactElement => {

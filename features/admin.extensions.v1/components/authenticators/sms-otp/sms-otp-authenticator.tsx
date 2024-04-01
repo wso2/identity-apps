@@ -20,8 +20,8 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { FeatureConfigInterface } from "../../../../admin-core-v1/models";
-import { AppState } from "../../../../admin-core-v1/store";
+import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
+import { AppState } from "../../../../admin.core.v1/store";
 import {
     SMSOTPAuthenticatorForm
 } from "../../../../admin-identity-providers-v1/components/forms/authenticators/sms-otp-authenticator-form";

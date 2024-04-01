@@ -35,7 +35,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AccessControlConstants } from "../../../../../admin.access-control.v1/constants/access-control";
-import { history } from "../../../../../admin-core-v1";
+import { history } from "../../../../../admin.core.v1";
 import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";

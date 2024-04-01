@@ -32,7 +32,7 @@ import { useTranslation } from "react-i18next";
 import { Accordion, Grid } from "semantic-ui-react";
 import RolesList from "./roles-list";
 import { ApplicationRoleInterface } from "../../admin-extensions-v1/components/groups/models";
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../admin-core-v1";
+import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
 
 interface ApplicationRolesListProps extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**

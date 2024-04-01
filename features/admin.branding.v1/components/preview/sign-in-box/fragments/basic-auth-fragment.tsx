@@ -23,7 +23,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { AppConstants } from "../../../../../admin-core-v1/constants";
+import { AppConstants } from "../../../../../admin.core.v1/constants";
 import { CustomTextPreferenceConstants } from "../../../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../../../hooks/use-branding-preference";
 

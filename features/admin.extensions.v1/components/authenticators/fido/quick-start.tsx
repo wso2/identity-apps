@@ -35,8 +35,8 @@ import BuildLoginFlowIllustration from
     "../../../../admin.connections.v1/components/authenticators/fido/assets/build-login-flow.png";
 import ConfigureParametersIllustration from
     "../../../../admin.connections.v1/components/authenticators/fido/assets/configure-parameters.png";
-import { FeatureConfigInterface } from "../../../../admin-core-v1/models";
-import { AppState } from "../../../../admin-core-v1/store";
+import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
+import { AppState } from "../../../../admin.core.v1/store";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
 

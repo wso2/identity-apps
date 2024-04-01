@@ -52,7 +52,7 @@ import {
     EventPublisher,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../admin-core-v1";
+} from "../../../../admin.core.v1";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,

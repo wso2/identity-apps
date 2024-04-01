@@ -28,7 +28,7 @@ import {
     FeatureConfigInterface,
     getSidePanelIcons,
     history
-} from "../../../../admin-core-v1";
+} from "../../../../admin.core.v1";
 import { getGroupById } from "../../../../admin-groups-v1/api";
 import { GroupsInterface } from "../../../../admin-groups-v1/models";
 import GroupManagementProvider from "../../../../admin-groups-v1/providers/group-management-provider";

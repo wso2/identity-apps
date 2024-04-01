@@ -55,7 +55,7 @@ import {
     UIConstants, 
     getEmptyPlaceholderIllustrations, 
     history
-} from "../../../admin-core-v1";
+} from "../../../admin.core.v1";
 
 /**
  * Proptypes for the advance settings component.

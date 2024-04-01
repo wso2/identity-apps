@@ -47,7 +47,7 @@ import { ReactComponent as CustomLayoutSuccessImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
-import { AppState } from "../../../admin-core-v1/store";
+import { AppState } from "../../../admin.core.v1/store";
 import { useLayout, useLayoutStyle } from "../../api";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
 import { BrandingPreferenceMeta, LAYOUT_DATA, PredefinedLayouts } from "../../meta";

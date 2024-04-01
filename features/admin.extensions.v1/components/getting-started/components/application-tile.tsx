@@ -22,7 +22,7 @@ import React, { FC, MutableRefObject, ReactElement, useEffect, useRef, useState 
 import { Icon } from "semantic-ui-react";
 import { DynamicTile, DynamicTilePropsInterface } from "./dynamic-tile";
 import { ApplicationListItemInterface } from "../../../../admin.applications.v1/models";
-import { AppConstants, EventPublisher, getSidePanelIcons, history } from "../../../../admin-core-v1";
+import { AppConstants, EventPublisher, getSidePanelIcons, history } from "../../../../admin.core.v1";
 
 export type ApplicationTilePropsInterface = {
     application?: ApplicationListItemInterface;

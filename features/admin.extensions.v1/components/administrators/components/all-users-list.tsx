@@ -42,7 +42,7 @@ import {
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations, history
-} from "../../../../admin-core-v1";
+} from "../../../../admin.core.v1";
 import { RealmConfigInterface } from "../../../../admin-server-configurations-v1";
 import { UserManagementConstants } from "../../../../admin-users-v1/constants";
 import { UserBasicInterface, UserListInterface } from "../../../../admin-users-v1/models";

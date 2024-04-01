@@ -26,8 +26,8 @@ import {
     AddAuthenticatorModal,
     AddAuthenticatorModalPropsInterface
 } from "../../admin.applications.v1/components/settings/sign-on-methods/step-based-flow/add-authenticator-modal";
-import { FeatureConfigInterface } from "../../admin-core-v1/models";
-import { AppState } from "../../admin-core-v1/store";
+import { FeatureConfigInterface } from "../../admin.core.v1/models";
+import { AppState } from "../../admin.core.v1/store";
 import { GenericAuthenticatorInterface } from "../../admin-identity-providers-v1/models/identity-provider";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 

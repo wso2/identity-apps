@@ -30,9 +30,9 @@ import CustomizeStepsIllustration from "./assets/customize-steps.png";
 import { getApplicationList } from "../../../../admin.applications.v1/api";
 import { ApplicationList } from "../../../../admin.applications.v1/components/application-list";
 import { ApplicationListInterface } from "../../../../admin.applications.v1/models";
-import { AdvancedSearchWithBasicFilters } from "../../../../admin-core-v1/components";
-import { AppConstants } from "../../../../admin-core-v1/constants";
-import { history } from "../../../../admin-core-v1/helpers";
+import { AdvancedSearchWithBasicFilters } from "../../../../admin.core.v1/components";
+import { AppConstants } from "../../../../admin.core.v1/constants";
+import { history } from "../../../../admin.core.v1/helpers";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateInterface

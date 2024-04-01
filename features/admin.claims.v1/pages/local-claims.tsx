@@ -40,7 +40,7 @@ import {
     filterList,
     history,
     sortList
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import { getADialect } from "../api";
 import { AddLocalClaims, ClaimsList, ListType } from "../components";
 

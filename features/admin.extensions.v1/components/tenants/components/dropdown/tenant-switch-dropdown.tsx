@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, Grid, Icon, Input, Item, Loader, Segment } from "semantic-ui-react";
-import { getMiscellaneousIcons } from "../../../../../admin-core-v1";
+import { getMiscellaneousIcons } from "../../../../../admin.core.v1";
 import OrganizationSwitcherList from
     "../../../../../admin-organizations-v1/components/organization-switch/organization-switch-list";
 import { OrganizationManagementConstants } from "../../../../../admin-organizations-v1/constants";

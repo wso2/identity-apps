@@ -49,7 +49,7 @@ import {
     ConfigReducerStateInterface,
     FeatureConfigInterface,
     history
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import { getIdentityProviderDetail, getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api";
 import { EditMultiFactorAuthenticator } from "../components/edit-multi-factor-authenticator";
 import { EditIdentityProvider } from "../components/identity-provider-edit";

@@ -31,7 +31,7 @@ import React, { Fragment, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Grid } from "semantic-ui-react";
 import GroupsList from "./groups-list";
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../../admin-core-v1";
+import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../../admin.core.v1";
 import { AuthenticatorInterface } from "../../../admin-identity-providers-v1/models";
 
 interface AuthenticatorGroupsListProps extends LoadableComponentInterface, IdentifiableComponentInterface {

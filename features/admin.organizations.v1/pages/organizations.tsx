@@ -56,7 +56,7 @@ import {
     EventPublisher,
     FeatureConfigInterface,
     UIConstants
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import {

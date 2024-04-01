@@ -18,7 +18,7 @@
 
 import { RolesInterface } from "@wso2is/core/models";
 import { AxiosError } from "axios";
-import { UserBasicInterface, UserRoleInterface } from "../../admin-core-v1/models/users";
+import { UserBasicInterface, UserRoleInterface } from "../../admin.core.v1/models/users";
 import { updateRoleDetails } from "../../admin-roles-v2/api/roles";
 import { PatchRoleDataInterface } from "../../admin-roles-v2/models/roles";
 import { PayloadInterface } from "../../admin-users-v1/models/user";

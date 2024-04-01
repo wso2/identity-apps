@@ -34,7 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { IdentityProviderGroupsList } from "./identity-provider-groups-list";
-import { AppState, FeatureConfigInterface } from "../../../../../admin-core-v1";
+import { AppState, FeatureConfigInterface } from "../../../../../admin.core.v1";
 import { useClaimConfigs } from "../../../../api/connections";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import {
