@@ -36,7 +36,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
 
 
     return (
-        <BrandingCore/>
+        <BrandingCore />
     );
 };
 
