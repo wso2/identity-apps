@@ -50,8 +50,8 @@ import {
     UIConstants,
     history
 } from "../../admin.core.v1";
-import { OrganizationType } from "../../admin-organizations-v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
+import { OrganizationType } from "../../admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";
 import { useGetConnections } from "../api/connections";
 import { AuthenticatorGrid } from "../components/authenticator-grid";

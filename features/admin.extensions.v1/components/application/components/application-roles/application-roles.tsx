@@ -62,7 +62,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../../../admin.core.v1";
-import { OrganizationResponseInterface } from "../../../../../admin-organizations-v1/models";
+import { OrganizationResponseInterface } from "../../../../../admin.organizations.v1/models";
 import { deleteRole, getApplicationRolesList, useSharedApplicationData } from "../../api/application-roles";
 import {
     ApplicationRolesResponseInterface,

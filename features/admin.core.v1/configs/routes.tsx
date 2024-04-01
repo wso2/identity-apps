@@ -474,7 +474,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../admin-organizations-v1/pages/organization-edit")
+                                    import("../../admin.organizations.v1/pages/organization-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -487,7 +487,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../admin-organizations-v1/pages/organizations")),
+                        component: lazy(() => import("../../admin.organizations.v1/pages/organizations")),
                         exact: true,
                         icon: {
                             icon: <BuildingIcon />

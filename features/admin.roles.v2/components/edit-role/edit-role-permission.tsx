@@ -51,7 +51,7 @@ import { useAPIResources } from "../../../admin.api-resources.v1/api";
 import { useGetAuthorizedAPIList } from "../../../admin.api-resources.v1/api/useGetAuthorizedAPIList";
 import { APIResourceCategories, APIResourcesConstants } from "../../../admin.api-resources.v1/constants";
 import { APIResourceUtils } from "../../../admin.api-resources.v1/utils/api-resource-utils";
-import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails } from "../../api";
 import { RoleAudienceTypes } from "../../constants/role-constants";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";

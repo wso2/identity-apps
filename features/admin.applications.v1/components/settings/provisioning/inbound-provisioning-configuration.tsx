@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid } from "semantic-ui-react";
 import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "../../../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../../../admin.userstores.v1/api";
 import { updateApplicationConfigurations } from "../../../api";
 import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models";

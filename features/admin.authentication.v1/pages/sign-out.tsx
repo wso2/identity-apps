@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AppState, PreLoader, history } from "../../admin.core.v1";
-import useOrganizations from "../../admin-organizations-v1/hooks/use-organizations";
+import useOrganizations from "../../admin.organizations.v1/hooks/use-organizations";
 
 /**
  * Virtual component used to handle Sign in action.

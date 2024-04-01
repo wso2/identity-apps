@@ -24,12 +24,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { SimpleUserStoreListItemInterface } from "../../../admin.applications.v1/models";
 import { store } from "../../../admin.core.v1";
-import { OrganizationUtils } from "../../../admin-organizations-v1/utils";
+import { OrganizationUtils } from "../../../admin.organizations.v1/utils";
 import { getUserStoreList } from "../../../admin.userstores.v1/api";
 import { updateJITProvisioningConfigs } from "../../api";
 import { JITProvisioningResponseInterface } from "../../models";
 import { JITProvisioningConfigurationsForm } from "../forms";
-import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the identity provider general details component.

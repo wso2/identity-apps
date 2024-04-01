@@ -25,7 +25,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { ReactComponent as SMSIcon } from "../../themes/default/assets/images/icons/sms-icon.svg";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { SettingsSection } from "../settings/settings-section";
 import "./notification-channels.scss";
 

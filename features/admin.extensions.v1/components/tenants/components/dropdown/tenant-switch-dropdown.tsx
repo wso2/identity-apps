@@ -29,9 +29,9 @@ import { Dispatch } from "redux";
 import { Button, Dropdown, Grid, Icon, Input, Item, Loader, Segment } from "semantic-ui-react";
 import { getMiscellaneousIcons } from "../../../../../admin.core.v1";
 import OrganizationSwitcherList from
-    "../../../../../admin-organizations-v1/components/organization-switch/organization-switch-list";
-import { OrganizationManagementConstants } from "../../../../../admin-organizations-v1/constants";
-import { OrganizationInterface } from "../../../../../admin-organizations-v1/models";
+    "../../../../../admin.organizations.v1/components/organization-switch/organization-switch-list";
+import { OrganizationManagementConstants } from "../../../../../admin.organizations.v1/constants";
+import { OrganizationInterface } from "../../../../../admin.organizations.v1/models";
 import { ReactComponent as CrossIcon } from "../../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { getAssociatedTenants } from "../../api";
 import { TenantInfo, TenantRequestResponse } from "../../models";

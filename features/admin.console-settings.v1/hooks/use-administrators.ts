@@ -26,7 +26,7 @@ import useConsoleRoles from "./use-console-roles";
 import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
 import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../admin.core.v1/models/users";
 import { AppState } from "../../admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useUsersList } from "../../admin.users.v1/api/users";
 import { useGetParentOrgUserInvites } from "../../admin.users.v1/components/guests/api/use-get-parent-org-user-invites";
 import { InvitationsInterface } from "../../admin.users.v1/components/guests/models/invite";

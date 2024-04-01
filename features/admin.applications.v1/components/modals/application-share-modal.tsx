@@ -61,13 +61,13 @@ import {
     shareApplication,
     stopSharingApplication,
     unshareApplication
-} from "../../../admin-organizations-v1/api";
+} from "../../../admin.organizations.v1/api";
 import {
     OrganizationInterface,
     OrganizationListInterface,
     OrganizationResponseInterface,
     ShareApplicationRequestInterface
-} from "../../../admin-organizations-v1/models";
+} from "../../../admin.organizations.v1/models";
 
 enum ShareType {
     SHARE_ALL,

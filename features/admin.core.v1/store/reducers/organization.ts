@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OrganizationManagementConstants, OrganizationType } from "../../../admin-organizations-v1/constants";
+import { OrganizationManagementConstants, OrganizationType } from "../../../admin.organizations.v1/constants";
 import { OrganizationReducerStateInterface } from "../../models";
 import { OrganizationAction, OrganizationActionTypes } from "../actions/types";
 

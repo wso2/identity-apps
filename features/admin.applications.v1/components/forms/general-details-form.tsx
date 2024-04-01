@@ -30,7 +30,7 @@ import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { applicationConfig } from "../../../admin.extensions.v1";
 import { AppConstants, AppState, UIConfigInterface } from "../../../admin.core.v1";
-import { OrganizationType } from "../../../admin-organizations-v1/constants";
+import { OrganizationType } from "../../../admin.organizations.v1/constants";
 import { useMyAccountStatus } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationInterface } from "../../models";

@@ -51,8 +51,8 @@ import {
     history,
     setActiveView
 } from "../../../../admin.core.v1";
-import { OrganizationType } from "../../../../admin-organizations-v1/constants";
-import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
+import { OrganizationType } from "../../../../admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { AppViewExtensionTypes } from "../../../configs";
 import { TryItApplicationConstants } from "../../application/constants";
 import { getTryItClientId } from "../../application/utils/try-it-utils";

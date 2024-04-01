@@ -52,7 +52,7 @@ import { AppState } from "../../admin.core.v1/store";
 import {
     IdentityProviderManagementConstants
 } from "../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { OrganizationType } from "../../admin-organizations-v1/constants/organization-constants";
+import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";

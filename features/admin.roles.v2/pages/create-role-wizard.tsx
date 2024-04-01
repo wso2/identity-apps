@@ -29,7 +29,7 @@ import { Dispatch } from "redux";
 import { AppConstants } from "../../admin.core.v1/constants";
 import { history } from "../../admin.core.v1/helpers";
 import { store } from "../../admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { createRole } from "../api/roles";
 import { RoleBasics } from "../components/wizard-updated/role-basics";
 import { RolePermissionsList } from "../components/wizard-updated/role-permissions/role-permissions";

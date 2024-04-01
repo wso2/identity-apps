@@ -24,8 +24,8 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../admin.core.v1/hooks/use-request";
-import { OrganizationType } from "../../admin-organizations-v1/constants/organization-constants";
-import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
+import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceTypes

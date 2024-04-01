@@ -34,7 +34,7 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { getProfileInformation } from "../../admin.authentication.v1/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getGovernanceConnectors } from "../../admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "../../admin.server-configurations.v1/constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../admin.server-configurations.v1/models";
