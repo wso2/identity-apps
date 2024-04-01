@@ -327,7 +327,10 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
     );
 
     const LogViewerToolbar: ReactElement = (
-        <Box className="log-data-viewer-toolbar-container">
+        <Box
+            className="log-data-viewer-toolbar-container"
+            data-componentid={ `${ componentId }-toolbar-container` }
+        >
             <Toolbar variant="dense">
                 <Box>
                     <Typography>
@@ -338,6 +341,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                 </Box>
                 <Box className="actions">
                     <Button
+                        data-componentid={ `${ componentId }-log-data-viewer-panel-download-button` }
                         className="data-viewer-buttons"
                         onClick={ exportCurrentLog }
                         startIcon={ <DownloadIcon /> }
@@ -345,6 +349,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                         { t("extensions:develop.monitor.logView.logDataviewer.download") }
                     </Button>
                     <Button
+                        data-testid={ `${ componentId }-'log-data-viewer-panel-copy-button` }
                         className="data-viewer-buttons"
                         onClick={ copyCurrentLog }
                         startIcon={ <CopyIcon /> }
@@ -352,6 +357,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                         { t("extensions:develop.monitor.logView.logDataviewer.copy") }
                     </Button>
                     <IconButton
+                        data-componentid={ `${ componentId }-log-data-viewer-panel-close-button` }
                         size="small"
                         onClick={ handleLogDataViewClose }
                     >
@@ -406,8 +412,11 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                 onClick={ handleClick }
                                 style={ { padding: "0px" } }
                             >
-                                <div className="log-row">
-                                    <Icon name="dropdown" />
+                                <div className="log-row" >
+                                    <Icon
+                                        name="dropdown"
+                                        data-componentid={ `${ componentId }-dropdown-button` }
+                                    />
                                     <div className="log-time-container">
                                         { getDateFromTimestamp(log.recordedAt) }
                                         <span className="log-time">
@@ -530,5 +539,13 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         </div>
     );
 };
+
+/**
+ * Default props for the component.
+ */
+InfiniteScrollContainer.defaultProps = {
+    "data-componentid": "logs-container"
+};
+
 
 export default InfiniteScrollContainer;
