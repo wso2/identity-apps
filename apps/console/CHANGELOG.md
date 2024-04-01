@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.14.2
+
+### Patch Changes
+
+- [#5869](https://github.com/wso2/identity-apps/pull/5869) [`63b61f2227`](https://github.com/wso2/identity-apps/commit/63b61f2227dab37ef33c291a92e3c91e9149f571) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add auditlog componentIds
+
+* [#5868](https://github.com/wso2/identity-apps/pull/5868) [`6d4a50edd7`](https://github.com/wso2/identity-apps/commit/6d4a50edd753843fc3a7586d8e06eba0f4bc3c36) Thanks [@chamathns](https://github.com/chamathns)! - Refactor branding page
+
+* Updated dependencies [[`a42afeec39`](https://github.com/wso2/identity-apps/commit/a42afeec3982b1cd489a97a9461bb10370f4666d), [`6d4a50edd7`](https://github.com/wso2/identity-apps/commit/6d4a50edd753843fc3a7586d8e06eba0f4bc3c36)]:
+  - @wso2is/features@2.13.33
+
 ## 2.14.1
 
 ### Patch Changes
