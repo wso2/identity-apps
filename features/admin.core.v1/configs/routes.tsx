@@ -577,7 +577,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../admin-email-and-sms-v1/" + "pages/email-and-sms")
+                            import("../../admin.email-and-sms.v1/" + "pages/email-and-sms")
                         ),
                         exact: true,
                         icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
