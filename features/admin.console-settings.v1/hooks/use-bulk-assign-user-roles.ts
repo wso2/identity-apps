@@ -21,7 +21,7 @@ import { AxiosError } from "axios";
 import { UserBasicInterface, UserRoleInterface } from "../../admin.core.v1/models/users";
 import { updateRoleDetails } from "../../admin-roles-v2/api/roles";
 import { PatchRoleDataInterface } from "../../admin-roles-v2/models/roles";
-import { PayloadInterface } from "../../admin-users-v1/models/user";
+import { PayloadInterface } from "../../admin.users.v1/models/user";
 
 /**
  * Props interface of {@link useBulkAssignAdministratorRoles}

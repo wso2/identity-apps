@@ -38,8 +38,8 @@ import { ApplicationManagementConstants } from "../../../../admin.applications.v
 import { ApplicationListInterface, MainApplicationInterface } from "../../../../admin.applications.v1/models";
 import { AppState, EventPublisher } from "../../../../admin.core.v1";
 import { TierLimitReachErrorModal } from "../../../../admin.core.v1/components/tier-limit-reach-error-modal";
-import { getUserDetails } from "../../../../admin-users-v1/api/users";
-import { AddConsumerUserWizard } from "../../../../admin-users-v1/components/wizard/add-consumer-user-wizard";
+import { getUserDetails } from "../../../../admin.users.v1/api/users";
+import { AddConsumerUserWizard } from "../../../../admin.users.v1/components/wizard/add-consumer-user-wizard";
 import LoginApplicationTemplate from
     "../../../application-templates/templates/single-page-application/login-playground-application.json";
 import InformationIcon from "../../../assets/images/illustrations/information-icon.svg";

@@ -54,14 +54,14 @@ import {
 import { updateRoleDetails } from "../../../../../admin-roles-v2/api/roles";
 import { PatchRoleDataInterface } from "../../../../../admin-roles-v2/models/roles";
 import { RealmConfigInterface } from "../../../../../admin-server-configurations-v1";
-import { deleteGuestUser } from "../../../../../admin-users-v1/api";
-import { UserManagementConstants } from "../../../../../admin-users-v1/constants";
+import { deleteGuestUser } from "../../../../../admin.users.v1/api";
+import { UserManagementConstants } from "../../../../../admin.users.v1/constants";
 import {
     InternalAdminUserListInterface,
     UserBasicInterface,
     UserListInterface
-} from "../../../../../admin-users-v1/models";
-import { UserManagementUtils } from "../../../../../admin-users-v1/utils";
+} from "../../../../../admin.users.v1/models";
+import { UserManagementUtils } from "../../../../../admin.users.v1/utils";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
 import {

@@ -80,10 +80,10 @@ import { getGroupList, useGroupList } from "../../../admin.groups.v1/api";
 import { GroupsInterface } from "../../../admin.groups.v1/models";
 import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "../../../admin-roles-v2/models";
-import { getAUserStore, getUserStores } from "../../../admin-userstores-v1/api";
-import { UserStoreManagementConstants } from "../../../admin-userstores-v1/constants";
-import { useValidationConfigData } from "../../../admin-validation-v1/api";
-import { ValidationFormInterface } from "../../../admin-validation-v1/models";
+import { getAUserStore, getUserStores } from "../../../admin.userstores.v1/api";
+import { UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
+import { useValidationConfigData } from "../../../admin.validation.v1/api";
+import { ValidationFormInterface } from "../../../admin.validation.v1/models";
 import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,

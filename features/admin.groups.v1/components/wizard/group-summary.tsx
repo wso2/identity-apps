@@ -20,7 +20,7 @@ import { UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { CONSUMER_USERSTORE } from "../../../admin-userstores-v1/constants/user-store-constants";
+import { CONSUMER_USERSTORE } from "../../../admin.userstores.v1/constants/user-store-constants";
 
 /**
  * Interface to capture current wizard state

@@ -44,9 +44,9 @@ import {
 } from "../../admin.core.v1";
 import { RootOnlyComponent } from "../../admin-organizations-v1/components";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
-import { getUserStoreList } from "../../admin-userstores-v1/api";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../admin-userstores-v1/constants";
-import { UserStorePostData } from "../../admin-userstores-v1/models/user-stores";
+import { getUserStoreList } from "../../admin.userstores.v1/api";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../admin.userstores.v1/constants";
+import { UserStorePostData } from "../../admin.userstores.v1/models/user-stores";
 import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizardUpdated } from "../components/wizard/create-group-wizard-updated";

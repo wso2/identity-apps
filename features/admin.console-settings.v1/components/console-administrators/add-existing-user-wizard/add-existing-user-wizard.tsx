@@ -28,7 +28,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "reac
 import { useTranslation } from "react-i18next";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import { UserBasicInterface } from "../../../../admin.core.v1/models/users";
-import { UserManagementConstants } from "../../../../admin-users-v1/constants";
+import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import useConsoleRoles from "../../../hooks/use-console-roles";

@@ -39,7 +39,7 @@ import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-
 import { AppConstants, SharedUserStoreUtils, history } from "../../../../../admin.core.v1";
 import { deleteRoleById, updateRoleDetails } from "../../../../../admin-roles-v2/api";
 import { PatchRoleDataInterface } from "../../../../../admin-roles-v2/models";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../../../admin-userstores-v1/constants/user-store-constants";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../../../admin.userstores.v1/constants/user-store-constants";
 
 /**
  * Interface to contain props needed for component

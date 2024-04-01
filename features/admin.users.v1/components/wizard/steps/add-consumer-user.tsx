@@ -30,12 +30,12 @@ import {
 import { userstoresConfig } from "../../../../admin.extensions.v1/configs/userstores";
 import { AppState } from "../../../../admin.core.v1";
 import { SharedUserStoreUtils } from "../../../../admin.core.v1/utils";
-import { getUsersList } from "../../../../admin-users-v1/api/users";
-import { UserListInterface } from "../../../../admin-users-v1/models/user";
-import { getConfiguration, getUsernameConfiguration } from "../../../../admin-users-v1/utils";
-import { USERSTORE_REGEX_PROPERTIES } from "../../../../admin-userstores-v1/constants/user-store-constants";
-import { useValidationConfigData } from "../../../../admin-validation-v1/api";
-import { ValidationFormInterface } from "../../../../admin-validation-v1/models";
+import { getUsersList } from "../../../../admin.users.v1/api/users";
+import { UserListInterface } from "../../../../admin.users.v1/models/user";
+import { getConfiguration, getUsernameConfiguration } from "../../../../admin.users.v1/utils";
+import { USERSTORE_REGEX_PROPERTIES } from "../../../../admin.userstores.v1/constants/user-store-constants";
+import { useValidationConfigData } from "../../../../admin.validation.v1/api";
+import { ValidationFormInterface } from "../../../../admin.validation.v1/models";
 import { UserManagementConstants } from "../../../constants";
 
 /**

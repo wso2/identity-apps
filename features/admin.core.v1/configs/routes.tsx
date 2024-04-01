@@ -86,7 +86,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         children: [
                             {
-                                component: lazy(() => import("../../admin-session-management-v1/pages/session-management")),
+                                component: lazy(() => import("../../admin.session-management.v1/pages/session-management")),
                                 exact: true,
                                 id: "sessionManagement",
                                 name: "sessionManagement:title",
@@ -251,7 +251,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.userManagement",
                         children: [
                             {
-                                component: lazy(() => import("../../admin-users-v1/pages/user-edit")),
+                                component: lazy(() => import("../../admin.users.v1/pages/user-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -263,7 +263,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../admin-users-v1/pages/users")),
+                        component: lazy(() => import("../../admin.users.v1/pages/users")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().users
@@ -607,7 +607,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.smsProvider",
                         component: lazy(() =>
-                            import("../../admin-sms-providers-v1" + "/pages/sms-providers")
+                            import("../../admin.sms-providers.v1" + "/pages/sms-providers")
                         ),
                         exact: true,
                         icon: {
@@ -900,7 +900,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../admin-validation-v1/pages/validation-config-edit")
+                                    import("../../admin.validation.v1/pages/validation-config-edit")
                                 ),
                                 exact: true,
                                 icon: {

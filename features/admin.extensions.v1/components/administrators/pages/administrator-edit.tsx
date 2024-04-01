@@ -48,9 +48,9 @@ import {
     GovernanceConnectorInterface,
     RealmConfigInterface
 } from "../../../../admin-server-configurations-v1/models";
-import { getUserDetails, updateUserInfo } from "../../../../admin-users-v1/api/users";
-import { UserManagementConstants } from "../../../../admin-users-v1/constants/user-management-constants";
-import { UserManagementUtils } from "../../../../admin-users-v1/utils/user-management-utils";
+import { getUserDetails, updateUserInfo } from "../../../../admin.users.v1/api/users";
+import { UserManagementConstants } from "../../../../admin.users.v1/constants/user-management-constants";
+import { UserManagementUtils } from "../../../../admin.users.v1/utils/user-management-utils";
 import { administratorConfig } from "../../../configs/administrator";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { EditGuestUser } from "../components";

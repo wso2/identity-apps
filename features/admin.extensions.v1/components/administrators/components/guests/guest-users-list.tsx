@@ -41,8 +41,8 @@ import {
     UserListInterface,
     getEmptyPlaceholderIllustrations
 } from "../../../../../admin.core.v1";
-import { InvitationStatus, UserInviteInterface } from "../../../../../admin-users-v1/models";
-import { deleteInvite, resendInvite, updateInvite } from "../../../../../admin-users-v1/api";
+import { InvitationStatus, UserInviteInterface } from "../../../../../admin.users.v1/models";
+import { deleteInvite, resendInvite, updateInvite } from "../../../../../admin.users.v1/api";
 
 
 /**

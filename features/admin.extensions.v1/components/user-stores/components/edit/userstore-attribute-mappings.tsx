@@ -47,13 +47,13 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Header, Segment } from "semantic-ui-react";
 import { getAllLocalClaims } from "../../../../../admin.claims.v1/api";
 import { AppState, sortList } from "../../../../../admin.core.v1";
-import { updateUserStoreAttributeMappings } from "../../../../../admin-userstores-v1/api/user-stores";
-import { DISABLED } from "../../../../../admin-userstores-v1/constants/user-store-constants";
+import { updateUserStoreAttributeMappings } from "../../../../../admin.userstores.v1/api/user-stores";
+import { DISABLED } from "../../../../../admin.userstores.v1/constants/user-store-constants";
 import {
     AttributeMapping,
     UserStore,
     UserStoreProperty
-} from "../../../../../admin-userstores-v1/models/user-stores";
+} from "../../../../../admin.userstores.v1/models/user-stores";
 import { RemoteUserStoreConstants } from "../../constants";
 
 /**

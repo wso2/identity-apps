@@ -36,8 +36,8 @@ import { CreateGroupMemberInterface } from "../../../../../admin.groups.v1/model
 import { createRole } from "../../../../../admin-roles-v2/api";
 import { getRolesWizardStepIcons } from "../../../../../admin-roles-v2/configs";
 import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../../../../admin-roles-v2/models";
-import { UserBasicInterface } from "../../../../../admin-users-v1/models/user";
-import { CONSUMER_USERSTORE } from "../../../../../admin-userstores-v1/constants";
+import { UserBasicInterface } from "../../../../../admin.users.v1/models/user";
+import { CONSUMER_USERSTORE } from "../../../../../admin.userstores.v1/constants";
 
 /**
  * Interface which captures create role props.

@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { SimpleUserStoreListItemInterface } from "../../../../admin.applications.v1/models";
 import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
-import { getUserStoreList } from "../../../../admin-userstores-v1/api";
+import { getUserStoreList } from "../../../../admin.userstores.v1/api";
 import { updateJITProvisioningConfigs } from "../../../api/connections";
 import { JITProvisioningResponseInterface } from "../../../models/connection";
 import { JITProvisioningConfigurationsForm } from "../forms";

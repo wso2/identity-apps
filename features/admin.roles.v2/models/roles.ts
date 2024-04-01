@@ -19,7 +19,7 @@
 import { RolesInterface } from "@wso2is/core/models";
 import { ScopeInterface } from "./apiResources";
 import { CreateGroupMemberInterface } from "../../admin.groups.v1/models";
-import { SchemaAttributeValueInterface } from "../../admin-users-v1/models";
+import { SchemaAttributeValueInterface } from "../../admin.users.v1/models";
 import { RoleAudienceTypes } from "../constants/role-constants";
 
 /**

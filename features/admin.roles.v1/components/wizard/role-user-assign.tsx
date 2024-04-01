@@ -40,8 +40,8 @@ import { useSelector } from "react-redux";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { OrganizationManagementConstants } from "../../../admin-organizations-v1/constants";
-import { getUsersList } from "../../../admin-users-v1/api/users";
-import { UserBasicInterface, UserListInterface } from "../../../admin-users-v1/models/user";
+import { getUsersList } from "../../../admin.users.v1/api/users";
+import { UserBasicInterface, UserListInterface } from "../../../admin.users.v1/models/user";
 
 /**
  * Proptypes for the role user list component.

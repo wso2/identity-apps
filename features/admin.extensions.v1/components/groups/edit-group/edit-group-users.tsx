@@ -63,9 +63,9 @@ import {
     PatchGroupDataInterface,
     updateGroupDetails
 } from "../../../../admin.groups.v1";
-import { getUsersList } from "../../../../admin-users-v1/api/users";
-import { UserBasicInterface, UserListInterface } from "../../../../admin-users-v1/models/user";
-import { UserManagementUtils } from "../../../../admin-users-v1/utils";
+import { getUsersList } from "../../../../admin.users.v1/api/users";
+import { UserBasicInterface, UserListInterface } from "../../../../admin.users.v1/models/user";
+import { UserManagementUtils } from "../../../../admin.users.v1/utils";
 import { SCIMConfigs } from "../../../configs/scim";
 
 /**

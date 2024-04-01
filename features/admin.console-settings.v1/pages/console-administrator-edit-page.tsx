@@ -38,10 +38,10 @@ import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hook
 import { getGovernanceConnectors } from "../../admin-server-configurations-v1/api";
 import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1/constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../admin-server-configurations-v1/models";
-import { getUserDetails, updateUserInfo } from "../../admin-users-v1/api/users";
-import { EditUser } from "../../admin-users-v1/components/edit-user";
-import UserManagementProvider from "../../admin-users-v1/providers/user-management-provider";
-import { UserManagementUtils } from "../../admin-users-v1/utils/user-management-utils";
+import { getUserDetails, updateUserInfo } from "../../admin.users.v1/api/users";
+import { EditUser } from "../../admin.users.v1/components/edit-user";
+import UserManagementProvider from "../../admin.users.v1/providers/user-management-provider";
+import { UserManagementUtils } from "../../admin.users.v1/utils/user-management-utils";
 import { ConsoleSettingsModes } from "../models/ui";
 
 /**

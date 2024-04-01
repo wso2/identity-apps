@@ -33,7 +33,7 @@ import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { GroupsInterface } from "../../../../admin.groups.v1";
 import { GroupConstants } from "../../../../admin.groups.v1/constants";
 import useGroupManagement from "../../../../admin.groups.v1/hooks/use-group-management";
-import { CONSUMER_USERSTORE } from "../../../../admin-userstores-v1/constants";
+import { CONSUMER_USERSTORE } from "../../../../admin.userstores.v1/constants";
 import { ExtendedFeatureConfigInterface } from "../../../configs/models";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { getAllApplicationRolesList } from "../api";

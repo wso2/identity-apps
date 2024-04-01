@@ -24,8 +24,8 @@ import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { attributeConfig } from "../../../../admin.extensions.v1";
 import { AppState } from "../../../../admin.core.v1";
-import { getUserStoreList } from "../../../../admin-userstores-v1/api";
-import { UserStoreListItem } from "../../../../admin-userstores-v1/models/user-stores";
+import { getUserStoreList } from "../../../../admin.userstores.v1/api";
+import { UserStoreListItem } from "../../../../admin.userstores.v1/models/user-stores";
 
 /**
  * Prop types of `MappedAttributes` component

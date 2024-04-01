@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { WizardStepInterface } from "../../../admin-users-v1/models";
+import { WizardStepInterface } from "../../../admin.users.v1/models";
 import { addDialect, addExternalClaim } from "../../api";
 import { getAddDialectWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";

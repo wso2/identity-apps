@@ -41,9 +41,9 @@ import {
 import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES
-} from "../../admin-userstores-v1/constants/user-store-constants";
-import { useValidationConfigData } from "../../admin-validation-v1/api";
-import { ValidationFormInterface } from "../../admin-validation-v1/models";
+} from "../../admin.userstores.v1/constants/user-store-constants";
+import { useValidationConfigData } from "../../admin.validation.v1/api";
+import { ValidationFormInterface } from "../../admin.validation.v1/models";
 import { updateUserInfo } from "../api";
 import { getConfiguration } from "../utils";
 

@@ -41,10 +41,10 @@ import { JWTAuthenticationServiceEndpointsInterface } from "../../admin-private-
 import { RolesResourceEndpointsInterface } from "../../admin-roles-v2/models/endpoints";
 import { SecretsManagementEndpoints } from "../../admin-secrets-v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../admin-server-configurations-v1";
-import { TenantResourceEndpointsInterface } from "../../admin-tenants-v1/models/endpoints";
-import { UsersResourceEndpointsInterface } from "../../admin-users-v1/models/endpoints";
-import { UserstoreResourceEndpointsInterface } from "../../admin-userstores-v1/models/endpoints";
-import { ValidationServiceEndpointsInterface } from "../../admin-validation-v1/models";
+import { TenantResourceEndpointsInterface } from "../../admin.tenants.v1/models/endpoints";
+import { UsersResourceEndpointsInterface } from "../../admin.users.v1/models/endpoints";
+import { UserstoreResourceEndpointsInterface } from "../../admin.userstores.v1/models/endpoints";
+import { ValidationServiceEndpointsInterface } from "../../admin.validation.v1/models";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,

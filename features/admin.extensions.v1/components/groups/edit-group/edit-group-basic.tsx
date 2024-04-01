@@ -46,7 +46,7 @@ import {
     searchGroupList,
     updateGroupDetails
 } from "../../../../admin.groups.v1";
-import { CONSUMER_USERSTORE } from "../../../../admin-userstores-v1/constants";
+import { CONSUMER_USERSTORE } from "../../../../admin.userstores.v1/constants";
 
 /**
  * Interface to contain props needed for component

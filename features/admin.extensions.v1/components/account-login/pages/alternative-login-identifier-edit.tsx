@@ -79,8 +79,8 @@ import {
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
 } from "../../../../admin-server-configurations-v1/models";
-import { getUsernameConfiguration } from "../../../../admin-users-v1/utils/user-management-utils";
-import { useValidationConfigData } from "../../../../admin-validation-v1/api";
+import { getUsernameConfiguration } from "../../../../admin.users.v1/utils/user-management-utils";
+import { useValidationConfigData } from "../../../../admin.validation.v1/api";
 import {
     AlternativeLoginIdentifierFormInterface
 } from "../models";

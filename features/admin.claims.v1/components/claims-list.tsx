@@ -71,9 +71,9 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
-import { getProfileSchemas } from "../../admin-users-v1/api";
-import { getUserStores } from "../../admin-userstores-v1/api/user-stores";
-import { UserStoreListItem } from "../../admin-userstores-v1/models/user-stores";
+import { getProfileSchemas } from "../../admin.users.v1/api";
+import { getUserStores } from "../../admin.userstores.v1/api/user-stores";
+import { UserStoreListItem } from "../../admin.userstores.v1/models/user-stores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim } from "../models";

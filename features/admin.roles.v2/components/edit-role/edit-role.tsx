@@ -31,7 +31,7 @@ import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
 import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
 import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
-import { UserManagementConstants } from "../../../admin-users-v1/constants";
+import { UserManagementConstants } from "../../../admin.users.v1/constants";
 import { RoleConstants as LocalRoleConstants, RoleAudienceTypes } from "../../constants";
 
 /**

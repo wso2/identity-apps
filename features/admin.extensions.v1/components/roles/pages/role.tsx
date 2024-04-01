@@ -54,7 +54,7 @@ import {
 import { deleteRoleById, getRolesList, searchRoleList } from "../../../../admin-roles-v2/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../admin-roles-v2/constants";
 import { SearchRoleInterface } from "../../../../admin-roles-v2/models";
-import { getUserStoreList } from "../../../../admin-userstores-v1/api";
+import { getUserStoreList } from "../../../../admin.userstores.v1/api";
 import { CreateRoleWizard, RoleList } from "../components";
 import helpDoc from "../data/role.md";
 

@@ -38,12 +38,12 @@ import {
 import { UserBasicInterface } from "../../../../admin.core.v1";
 import { updateRoleDetails } from "../../../../admin-roles-v2/api/roles";
 import { PatchRoleDataInterface } from "../../../../admin-roles-v2/models/roles";
-import { getUserWizardStepIcons } from "../../../../admin-users-v1/configs/ui";
+import { getUserWizardStepIcons } from "../../../../admin.users.v1/configs/ui";
 import { AdminAccountTypes } from "../constants";
 import { InternalAdminFormDataInterface } from "../models";
-import { UserInviteInterface } from "../../../../admin-users-v1/models";
-import { sendInvite } from "../../../../admin-users-v1/api";
-import { UserManagementConstants } from "../../../../admin-users-v1/constants";
+import { UserInviteInterface } from "../../../../admin.users.v1/models";
+import { sendInvite } from "../../../../admin.users.v1/api";
+import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     closeWizard: () => void;

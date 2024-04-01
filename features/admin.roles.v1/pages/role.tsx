@@ -34,7 +34,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, UIConstants } from "../../admin.core.v1";
-import { getUserStoreList } from "../../admin-userstores-v1/api";
+import { getUserStoreList } from "../../admin.userstores.v1/api";
 import { deleteRoleById, getRolesList, searchRoleList } from "../api/roles";
 import { RoleList } from "../components/role-list";
 import { CreateRoleWizard } from "../components/wizard/create-role-wizard";

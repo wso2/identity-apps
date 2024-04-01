@@ -46,8 +46,8 @@ import {
     getEmptyPlaceholderIllustrations
 } from "../../../../admin.core.v1";
 import { useServerConfigs } from "../../../../admin-server-configurations-v1";
-import { UserInviteInterface } from "../../../../admin-users-v1/components/guests/models/invite";
-import { UserManagementConstants } from "../../../../admin-users-v1/constants";
+import { UserInviteInterface } from "../../../../admin.users.v1/components/guests/models/invite";
+import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 
 /**
  * Props interface of {@link InvitedAdministratorsTable}
