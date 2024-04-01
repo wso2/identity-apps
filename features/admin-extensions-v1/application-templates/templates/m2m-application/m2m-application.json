@@ -8,11 +8,7 @@
     "image": "oidcMobile",
     "name": "M2M Application",
     "subTemplatesSectionTitle": "Technology",
-    "types": [
-        "android",
-        "ios",
-        "flutter"
-    ],
+    "types": [],
     "authenticationProtocol": "oidc",
     "application": {
         "name": "",
