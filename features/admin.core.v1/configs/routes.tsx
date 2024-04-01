@@ -1101,7 +1101,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "console:manage.features.sidePanel.categories.legacy",
-                        component: lazy(() => import("../../admin-certificates-v1/pages/certificates-keystore")),
+                        component: lazy(() => import("../../admin.certificates.v1/pages/certificates-keystore")),
                         icon: {
                             icon: getSidePanelIcons().certificate
                         },
