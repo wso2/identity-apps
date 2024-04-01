@@ -1087,7 +1087,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.userManagement",
-                        component: lazy(() => import("../../admin-workflow-approvals-v1/pages/approvals")),
+                        component: lazy(() => import("../../admin.workflow.approvals.v1/pages/approvals")),
                         exact: true,
                         icon: {
                             icon: <DocumentCheckIcon fill="black" className="icon" />
