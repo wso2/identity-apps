@@ -31,7 +31,6 @@ import {
     PageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import smsProviderConfig from "../../admin-extensions-v1/configs/sms-provider";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,6 +47,7 @@ import {
     FeatureConfigInterface
 } from "../../admin-core-v1";
 import { history } from "../../admin-core-v1/helpers";
+import smsProviderConfig from "../../admin-extensions-v1/configs/sms-provider";
 import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
 import { providerCards } from "../configs/provider-cards";
 import { SMSProviderConstants } from "../constants";
@@ -548,7 +548,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                 onSubmit={ handleSubmit }
                                 validate={ validateForm }
                                 initialValues={
-                                    smsProviderSettings?.selectedProvider
+                                    smsProviderSettings?.selectedProvider && !isChoreoSMSOTPProvider
                                         ? smsProviderSettings
                                             ?.providerParams[smsProviderSettings?.selectedProvider]
                                         :  {}
