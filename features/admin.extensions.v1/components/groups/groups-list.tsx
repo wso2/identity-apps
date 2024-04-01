@@ -44,8 +44,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../admin.core.v1";
-import { GroupConstants } from "../../../admin-groups-v1/constants";
-import { GroupsInterface } from "../../../admin-groups-v1/models";
+import { GroupConstants } from "../../../admin.groups.v1/constants";
+import { GroupsInterface } from "../../../admin.groups.v1/models";
 import { CONSUMER_USERSTORE } from "../../../admin-userstores-v1/constants";
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,

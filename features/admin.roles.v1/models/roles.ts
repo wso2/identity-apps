@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { CreateGroupMemberInterface } from "../../admin-groups-v1/models";
+import { CreateGroupMemberInterface } from "../../admin.groups.v1/models";
 import { SchemaAttributeValueInterface } from "../../admin-users-v1/models";
 
 /**

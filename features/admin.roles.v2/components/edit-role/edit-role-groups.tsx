@@ -38,7 +38,7 @@ import { AuthenticatorManagementConstants } from "../../../admin.connections.v1/
 import {
     PatchGroupAddOpInterface,
     PatchGroupRemoveOpInterface
-} from "../../../admin-groups-v1";
+} from "../../../admin.groups.v1";
 import { useIdentityProviderList } from "../../../admin-identity-providers-v1/api/identity-provider";
 import { IdentityProviderInterface, StrictIdentityProviderInterface } from "../../../admin-identity-providers-v1/models";
 import { updateRoleDetails } from "../../api";

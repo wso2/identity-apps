@@ -193,7 +193,7 @@ export const commonConfig: CommonConfig = {
             children: [
                 {
                     component: lazy(() =>
-                        import("../../admin-groups-v1/pages/group-edit")
+                        import("../../admin.groups.v1/pages/group-edit")
                     ),
                     exact: true,
                     icon: {
@@ -206,7 +206,7 @@ export const commonConfig: CommonConfig = {
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => import("../../admin-groups-v1/pages/groups")),
+            component: lazy(() => import("../../admin.groups.v1/pages/groups")),
             exact: true,
             icon: {
                 icon: <UserGroupIcon className="icon" fill="black" />

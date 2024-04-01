@@ -62,7 +62,7 @@ import {
     GroupsMemberInterface,
     PatchGroupDataInterface,
     updateGroupDetails
-} from "../../../../admin-groups-v1";
+} from "../../../../admin.groups.v1";
 import { getUsersList } from "../../../../admin-users-v1/api/users";
 import { UserBasicInterface, UserListInterface } from "../../../../admin-users-v1/models/user";
 import { UserManagementUtils } from "../../../../admin-users-v1/utils";

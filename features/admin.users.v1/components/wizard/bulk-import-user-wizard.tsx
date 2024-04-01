@@ -76,8 +76,8 @@ import {
     getCertificateIllustrations,
     history
 } from "../../../admin.core.v1";
-import { getGroupList, useGroupList } from "../../../admin-groups-v1/api";
-import { GroupsInterface } from "../../../admin-groups-v1/models";
+import { getGroupList, useGroupList } from "../../../admin.groups.v1/api";
+import { GroupsInterface } from "../../../admin.groups.v1/models";
 import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "../../../admin-roles-v2/models";
 import { getAUserStore, getUserStores } from "../../../admin-userstores-v1/api";

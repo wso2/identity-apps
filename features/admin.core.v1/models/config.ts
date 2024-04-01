@@ -32,7 +32,7 @@ import { BrandingPreferenceResourceEndpointsInterface } from "../../admin.brandi
 import { CertificatesResourceEndpointsInterface } from "../../admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "../../admin.claims.v1/models/endpoints";
 import { ConsoleSettingsResourceEndpointsInterface } from "../../admin.console-settings.v1/models/endpoints";
-import { GroupsResourceEndpointsInterface } from "../../admin-groups-v1";
+import { GroupsResourceEndpointsInterface } from "../../admin.groups.v1";
 import { IDPResourceEndpointsInterface } from "../../admin-identity-providers-v1/models/endpoints";
 import { IdentityProviderTemplateLoadingStrategies } from "../../admin-identity-providers-v1/models/identity-provider";
 import { ScopesResourceEndpointsInterface } from "../../admin-oidc-scopes-v1";

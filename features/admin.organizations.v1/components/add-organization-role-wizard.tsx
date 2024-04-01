@@ -26,7 +26,7 @@ import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { OrganizationRoleBasics } from "./add-organization-role/organization-role-basics";
 import { CreateOrganizationRoleSummary } from "./add-organization-role/organization-role-sumary";
 import { OrganizationPermissionList } from "./edit-organization-role/organization-role-permission";
-import { CreateGroupMemberInterface, GroupsInterface, getGroupList } from "../../admin-groups-v1";
+import { CreateGroupMemberInterface, GroupsInterface, getGroupList } from "../../admin.groups.v1";
 import { AssignGroupsUsers } from "../../admin-roles-v2/components/wizard/assign-groups-users";
 import { getRolesWizardStepIcons } from "../../admin-roles-v2/configs/ui";
 import { TreeNode } from "../../admin-roles-v2/models/permission";

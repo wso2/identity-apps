@@ -45,7 +45,7 @@ import {
     deleteGroupById,
     searchGroupList,
     updateGroupDetails
-} from "../../../../admin-groups-v1";
+} from "../../../../admin.groups.v1";
 import { CONSUMER_USERSTORE } from "../../../../admin-userstores-v1/constants";
 
 /**

@@ -36,7 +36,7 @@ import {
     ApplicationRoleGroupInterface,
     ApplicationRoleGroupsAPIResponseInterface
 } from "../../admin.extensions.v1/components/application/models";
-import { getGroupList } from "../../admin-groups-v1/api";
+import { getGroupList } from "../../admin.groups.v1/api";
 
 /**
  * Interface which captures create group props.
