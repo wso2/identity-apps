@@ -27,7 +27,7 @@ import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-
 import { getBrandingResourceEndpoints } from "../../admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../admin.certificates.v1";
 import { getClaimResourceEndpoints } from "../../admin.claims.v1/configs/endpoints";
-import { getConnectionResourceEndpoints } from "../../admin-connections-v1";
+import { getConnectionResourceEndpoints } from "../../admin.connections.v1";
 import { getConsoleSettingsResourceEndpoints } from "../../admin-console-settings-v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../admin-email-templates-v1";
 import { getGroupsResourceEndpoints } from "../../admin-groups-v1";

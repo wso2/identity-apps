@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
-import { ConnectionTabTypes } from "../../../admin-connections-v1/models/connection";
+import { ConnectionTabTypes } from "../../../admin.connections.v1/models/connection";
 import {
     AuthenticatorInterface,
     GenericIdentityProviderCreateWizardPropsInterface

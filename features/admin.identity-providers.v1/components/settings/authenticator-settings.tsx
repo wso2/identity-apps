@@ -64,7 +64,7 @@ import {
     handleGetFederatedAuthenticatorMetadataAPICallError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
-import { ConnectionManagementConstants } from "../../../admin-connections-v1";
+import { ConnectionManagementConstants } from "../../../admin.connections.v1";
 
 /**
  * Proptypes for the identity providers settings component.

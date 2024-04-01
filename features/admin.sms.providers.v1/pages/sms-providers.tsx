@@ -40,7 +40,7 @@ import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
 import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { AuthenticatorManagementConstants } from "../../admin-connections-v1/constants/autheticator-constants";
+import { AuthenticatorManagementConstants } from "../../admin.connections.v1/constants/autheticator-constants";
 import {
     AppConstants,
     AppState,

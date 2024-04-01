@@ -37,7 +37,7 @@ import { ApplicationList } from "../../../../admin.applications.v1/components/ap
 import {
     ConnectionInterface,
     ConnectionTemplateInterface
-} from "../../../../admin-connections-v1/models/connection";
+} from "../../../../admin.connections.v1/models/connection";
 import { AdvancedSearchWithBasicFilters } from "../../../../admin-core-v1/components";
 import { AppConstants } from "../../../../admin-core-v1/constants";
 import { history } from "../../../../admin-core-v1/helpers";

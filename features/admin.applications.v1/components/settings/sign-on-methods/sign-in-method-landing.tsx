@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Segment } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../admin-extensions-v1/configs/identity-provider";
 import useAuthenticationFlow from "../../../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { ConnectionManagementConstants } from "../../../../admin-connections-v1/constants/connection-constants";
+import { ConnectionManagementConstants } from "../../../../admin.connections.v1/constants/connection-constants";
 import { EventPublisher, FeatureConfigInterface } from "../../../../admin-core-v1";
 import {
     IdentityProviderManagementConstants
