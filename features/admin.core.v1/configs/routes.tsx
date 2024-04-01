@@ -548,7 +548,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
-                        component: lazy(() => import("../../admin-branding-v1/pages/branding")),
+                        component: lazy(() => import("../../admin.branding.v1/pages/branding")),
                         exact: true,
                         icon: {
                             icon: import("../../admin-extensions-v1/assets/images/icons/paint-palette-and-brush-outline.svg")
