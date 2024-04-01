@@ -964,7 +964,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.monitor",
-                        component: lazy(() => import("../../admin-org-insights-v1/pages/org-insights")),
+                        component: lazy(() => import("../../admin.org-insights.v1/pages/org-insights")),
                         exact: true,
                         featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
                         featureStatus: "BETA",
