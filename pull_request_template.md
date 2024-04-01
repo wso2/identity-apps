@@ -1,5 +1,5 @@
 ### Purpose
-<!-- Describe the problem, feature, improvement or the change introduces by the PR briefly. Add screenshots/GIFs if UI/UX changes are introduced. Remove this placeholder when you're editing. -->
+<!-- Describe the problem, feature, improvement or the change introduces by the PR briefly. Add screenshots/GIFs if UI/UX changes are introduced. -->
 
 ### Related Issues
 - 
