@@ -104,7 +104,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../admin.wsfed.configuration.v1/pages/wsfed-configuration")),
+                                component: lazy(() => import("../../admin.wsfed-configuration.v1/pages/wsfed-configuration")),
                                 exact: true,
                                 id: "wsFedConfiguration",
                                 name: "wsFederationConfig:title",
