@@ -63,7 +63,7 @@ import {
 import {
     ApplicationTemplateManagementUtils
 } from "../../../../admin.applications.v1/utils/application-template-management-utils";
-import { ConsoleSettingsModes } from "../../../../admin-console-settings-v1/models/ui";
+import { ConsoleSettingsModes } from "../../../../admin.console-settings.v1/models/ui";
 import {
     AppConstants,
     AppState,
