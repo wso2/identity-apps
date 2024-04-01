@@ -119,7 +119,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
         const configs: CustomConfigInterface = {
             clientId: inboundProtocolConfig.oidc.clientId,
             clientSecret: inboundProtocolConfig.oidc.clientSecret,
-            tokenEndpoint: oidcConfigurations?.tokenEndpoint, 
+            tokenEndpoint: oidcConfigurations?.tokenEndpoint
         };
 
         setSdkConfig(configs);
