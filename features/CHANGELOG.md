@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.13.34
+
+### Patch Changes
+
+- [#5865](https://github.com/wso2/identity-apps/pull/5865) [`f2db9622bf`](https://github.com/wso2/identity-apps/commit/f2db9622bfdee027ed509c2de43f95ccb7580645) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent choreo sms provider configs being autofilled in custom SMS provider configuration form
+
 ## 2.13.33
 
 ### Patch Changes
