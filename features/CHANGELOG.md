@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.13.33
+
+### Patch Changes
+
+- [#5861](https://github.com/wso2/identity-apps/pull/5861) [`a42afeec39`](https://github.com/wso2/identity-apps/commit/a42afeec3982b1cd489a97a9461bb10370f4666d) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add componentId for audit logs
+
+* [#5868](https://github.com/wso2/identity-apps/pull/5868) [`6d4a50edd7`](https://github.com/wso2/identity-apps/commit/6d4a50edd753843fc3a7586d8e06eba0f4bc3c36) Thanks [@chamathns](https://github.com/chamathns)! - Refactor branding page
+
 ## 2.13.32
 
 ### Patch Changes
