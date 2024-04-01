@@ -51,7 +51,7 @@ import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../admin-extensions-v1";
-import useAuthorization from "../../../admin-authorization-v1/hooks/use-authorization";
+import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
 import {
     AppState,
     AuthenticatorAccordion,

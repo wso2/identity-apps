@@ -45,7 +45,7 @@ import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { organizationConfigs } from "../../admin-extensions-v1";
 import useSignIn from "../../admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "../../admin-authorization-v1/hooks/use-authorization";
+import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import {
     AppConstants,
     AppState,

@@ -60,7 +60,7 @@ import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-set
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../admin-extensions-v1";
 import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
-import useAuthorization from "../../../admin-authorization-v1/hooks/use-authorization";
+import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
 import {
     AppConstants,
     AppState,

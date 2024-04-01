@@ -29,7 +29,7 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
 import useSignIn from "../../admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "../../admin-authorization-v1/hooks/use-authorization";
+import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { AppConstants, FeatureConfigInterface, history } from "../../admin-core-v1";
 import { getOrganization, useAuthorizedOrganizationsList, useGetOrganizationBreadCrumb } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";

@@ -22,7 +22,7 @@ import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useAuthorization from "../../admin-authorization-v1/hooks/use-authorization";
+import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { getAppViewRoutes } from "../configs/routes";
 import { AppConstants } from "../constants/app-constants";

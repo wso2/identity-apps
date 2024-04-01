@@ -39,7 +39,7 @@ import axios, { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import useAuthorization from "../../admin-authorization-v1/hooks/use-authorization";
+import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { Config } from "../../admin-core-v1/configs/app";
 import { AppConstants, CommonConstants } from "../../admin-core-v1/constants";
 import { DeploymentConfigInterface } from "../../admin-core-v1/models/config";
