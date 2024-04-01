@@ -70,15 +70,15 @@ import {
 import {
     getConnectorDetails,
     updateGovernanceConnector
-} from "../../../../admin-server-configurations-v1/api";
+} from "../../../../admin.server-configurations.v1/api";
 import {
     ServerConfigurationsConstants
-} from "../../../../admin-server-configurations-v1/constants";
+} from "../../../../admin.server-configurations.v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../../../admin-server-configurations-v1/models";
+} from "../../../../admin.server-configurations.v1/models";
 import { getUsernameConfiguration } from "../../../../admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "../../../../admin.validation.v1/api";
 import {

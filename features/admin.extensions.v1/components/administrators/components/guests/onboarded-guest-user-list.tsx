@@ -51,9 +51,9 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../../../admin.core.v1";
-import { updateRoleDetails } from "../../../../../admin-roles-v2/api/roles";
-import { PatchRoleDataInterface } from "../../../../../admin-roles-v2/models/roles";
-import { RealmConfigInterface } from "../../../../../admin-server-configurations-v1";
+import { updateRoleDetails } from "../../../../../admin.roles.v2/api/roles";
+import { PatchRoleDataInterface } from "../../../../../admin.roles.v2/models/roles";
+import { RealmConfigInterface } from "../../../../../admin.server-configurations.v1";
 import { deleteGuestUser } from "../../../../../admin.users.v1/api";
 import { UserManagementConstants } from "../../../../../admin.users.v1/constants";
 import {

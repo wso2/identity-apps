@@ -30,7 +30,7 @@ import { UserRolesList } from "./user-roles-edit";
 import { AppConstants } from "../../../../../admin.core.v1/constants";
 import { FeatureConfigInterface } from "../../../../../admin.core.v1/models";
 import { AppState } from "../../../../../admin.core.v1/store";
-import { ConnectorPropertyInterface, RealmConfigInterface } from "../../../../../admin-server-configurations-v1/models";
+import { ConnectorPropertyInterface, RealmConfigInterface } from "../../../../../admin.server-configurations.v1/models";
 import { UserProfile } from "../../../../../admin.users.v1/components/user-profile";
 import { UserSessions } from "../../../../../admin.users.v1/components/user-sessions";
 import { UserManagementConstants } from "../../../../../admin.users.v1/constants/user-management-constants";

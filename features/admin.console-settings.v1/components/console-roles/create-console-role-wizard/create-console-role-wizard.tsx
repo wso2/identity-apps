@@ -30,9 +30,9 @@ import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import CreateConsoleRoleWizardBasicInfoForm from "./create-console-role-wizard-basic-info-form";
 import CreateConsoleRoleWizardPermissionsForm from "./create-console-role-wizard-permissions-form";
-import { createRole } from "../../../../admin-roles-v2/api/roles";
-import { RoleAudienceTypes } from "../../../../admin-roles-v2/constants/role-constants";
-import { CreateRoleInterface, CreateRolePermissionInterface } from "../../../../admin-roles-v2/models/roles";
+import { createRole } from "../../../../admin.roles.v2/api/roles";
+import { RoleAudienceTypes } from "../../../../admin.roles.v2/constants/role-constants";
+import { CreateRoleInterface, CreateRolePermissionInterface } from "../../../../admin.roles.v2/models/roles";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import useConsoleSettings from "../../../hooks/use-console-settings";
 

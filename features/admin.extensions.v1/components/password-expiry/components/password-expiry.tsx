@@ -21,7 +21,7 @@ import React, { ReactElement } from "react";
 import { TFunction } from "react-i18next";
 import {
     GovernanceConnectorConstants
-} from "../../../../admin-server-configurations-v1/constants/governance-connector-constants";
+} from "../../../../admin.server-configurations.v1/constants/governance-connector-constants";
 
 export const generatePasswordExpiry = (
     componentId: string,

@@ -60,7 +60,7 @@ import { OrganizationType } from "../../../../admin-organizations-v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "../../../../admin-server-configurations-v1/models/governance-connectors";
+} from "../../../../admin.server-configurations.v1/models/governance-connectors";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,

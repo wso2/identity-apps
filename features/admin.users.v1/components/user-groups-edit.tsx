@@ -57,7 +57,7 @@ import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../admin.core.v1";
 import { useGroupList } from "../../admin.groups.v1/api";
 import { GroupsInterface, GroupsMemberInterface } from "../../admin.groups.v1/models";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../admin-roles-v2/constants";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../admin.roles.v2/constants";
 
 interface UserGroupsPropsInterface {
     /**

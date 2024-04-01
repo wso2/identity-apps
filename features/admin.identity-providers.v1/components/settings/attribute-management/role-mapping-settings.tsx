@@ -31,7 +31,7 @@ import {
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
 } from "../../../../admin-organizations-v1/models";
-import { getRolesList } from "../../../../admin-roles-v2/api/roles";
+import { getRolesList } from "../../../../admin.roles.v2/api/roles";
 import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
 import { handleGetRoleListError } from "../../utils";

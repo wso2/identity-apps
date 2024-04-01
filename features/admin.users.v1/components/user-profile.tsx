@@ -55,14 +55,14 @@ import { getAssociationType } from "../../admin.extensions.v1/components/tenants
 import { administratorConfig } from "../../admin.extensions.v1/configs/administrator";
 import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
-import { searchRoleList, updateRoleDetails } from "../../admin-roles-v2/api/roles";
+import { searchRoleList, updateRoleDetails } from "../../admin.roles.v2/api/roles";
 import {
     OperationValueInterface,
     PatchRoleDataInterface,
     ScimOperationsInterface,
     SearchRoleInterface
-} from "../../admin-roles-v2/models/roles";
-import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../admin-server-configurations-v1";
+} from "../../admin.roles.v2/models/roles";
+import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../admin.server-configurations.v1";
 import { updateUserInfo } from "../api";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";

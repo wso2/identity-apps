@@ -31,7 +31,7 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     ServerConfigurationsConstants
-} from "../../admin-server-configurations-v1";
+} from "../../admin.server-configurations.v1";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 
 /**

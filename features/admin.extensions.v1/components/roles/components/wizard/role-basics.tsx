@@ -28,8 +28,8 @@ import { SharedUserStoreConstants } from "../../../../../admin.core.v1/constants
 import { ConfigReducerStateInterface } from "../../../../../admin.core.v1/models";
 import { AppState } from "../../../../../admin.core.v1/store";
 import { SharedUserStoreUtils } from "../../../../../admin.core.v1/utils";
-import { searchRoleList } from "../../../../../admin-roles-v2/api";
-import { CreateRoleFormData, SearchRoleInterface, TreeNode } from "../../../../../admin-roles-v2/models";
+import { searchRoleList } from "../../../../../admin.roles.v2/api";
+import { CreateRoleFormData, SearchRoleInterface, TreeNode } from "../../../../../admin.roles.v2/models";
 import { getUserStoreList } from "../../../../../admin.userstores.v1/api";
 import { CONSUMER_USERSTORE } from "../../../../../admin.userstores.v1/constants";
 

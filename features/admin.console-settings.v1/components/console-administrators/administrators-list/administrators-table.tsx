@@ -50,7 +50,7 @@ import {
     getEmptyPlaceholderIllustrations
 } from "../../../../admin.core.v1";
 import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
-import { useServerConfigs } from "../../../../admin-server-configurations-v1";
+import { useServerConfigs } from "../../../../admin.server-configurations.v1";
 import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 import { UserListInterface } from "../../../../admin.users.v1/models";
 import { UserManagementUtils } from "../../../../admin.users.v1/utils";

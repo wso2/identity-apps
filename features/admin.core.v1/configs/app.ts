@@ -39,9 +39,9 @@ import { getOrganizationsResourceEndpoints } from "../../admin-organizations-v1/
 import { OrganizationUtils } from "../../admin-organizations-v1/utils";
 import { getJWTAuthenticationServiceEndpoints } from "../../admin-private-key-jwt-v1/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "../../admin-remote-repository-configuration-v1";
-import { getRolesResourceEndpoints } from "../../admin-roles-v2/configs/endpoints";
-import { getSecretsManagementEndpoints } from "../../admin-secrets-v1/configs/endpoints";
-import { getServerConfigurationsResourceEndpoints } from "../../admin-server-configurations-v1";
+import { getRolesResourceEndpoints } from "../../admin.roles.v2/configs/endpoints";
+import { getSecretsManagementEndpoints } from "../../admin.secrets.v1/configs/endpoints";
+import { getServerConfigurationsResourceEndpoints } from "../../admin.server-configurations.v1";
 import { getTenantResourceEndpoints } from "../../admin.tenants.v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "../../admin.users.v1/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "../../admin.userstores.v1/configs/endpoints";

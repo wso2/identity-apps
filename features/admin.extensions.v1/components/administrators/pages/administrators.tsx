@@ -64,9 +64,9 @@ import {
     history,
     store
 } from "../../../../admin.core.v1";
-import { getRoleById, searchRoleList } from "../../../../admin-roles-v2/api/roles";
-import { SearchRoleInterface } from "../../../../admin-roles-v2/models/roles";
-import { useServerConfigs } from "../../../../admin-server-configurations-v1";
+import { getRoleById, searchRoleList } from "../../../../admin.roles.v2/api/roles";
+import { SearchRoleInterface } from "../../../../admin.roles.v2/models/roles";
+import { useServerConfigs } from "../../../../admin.server-configurations.v1";
 import { useInvitedUsersList, useUsersList } from "../../../../admin.users.v1/api";
 import { AddUserWizard } from "../../../../admin.users.v1/components/wizard/add-user-wizard";
 import { InternalAdminUserListInterface, InvitationStatus, UserInviteInterface, UserListInterface } from "../../../../admin.users.v1/models";

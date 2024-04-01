@@ -40,7 +40,7 @@ import { commonConfig, identityProviderConfig } from "../../admin.extensions.v1"
 import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../admin-layouts-v1";
 import { AppView, FullScreenView } from "../../admin.views.v1";
-import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1";
+import { ServerConfigurationsConstants } from "../../admin.server-configurations.v1";
 import { AppConstants } from "../constants";
 
 /**
@@ -95,7 +95,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../admin-saml2-configuration-v1/pages/saml2-configuration")),
+                                component: lazy(() => import("../../admin.saml2-configuration.v1/pages/saml2-configuration")),
                                 exact: true,
                                 id: "saml2Configuration",
                                 name: "saml2Config:title",
@@ -115,7 +115,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-server-configurations-v1/" +
+                                        "../../admin.server-configurations.v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -137,7 +137,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-server-configurations-v1/" +
+                                        "../../admin.server-configurations.v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -193,7 +193,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../admin-server-configurations-v1/pages/connector-listing-page"
+                                "../../admin.server-configurations.v1/pages/connector-listing-page"
                             )
                         ),
                         exact: false,
@@ -686,7 +686,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-server-configurations-v1/" +
+                                        "../../admin.server-configurations.v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -706,7 +706,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-server-configurations-v1/" +
+                                        "../../admin.server-configurations.v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -727,7 +727,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-server-configurations-v1/" +
+                                        "../../admin.server-configurations.v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -748,7 +748,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../admin-server-configurations-v1/pages/connector-listing-page"
+                                "../../admin.server-configurations.v1/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -772,7 +772,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-server-configurations-v1/pages/connector-edit-page"
+                                        "../../admin.server-configurations.v1/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -797,7 +797,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-server-configurations-v1/pages/connector-edit-page"
+                                        "../../admin.server-configurations.v1/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -826,7 +826,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../admin-server-configurations-v1/pages/connector-listing-page"
+                                "../../admin.server-configurations.v1/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -850,7 +850,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-server-configurations-v1/" +
+                                        "../../admin.server-configurations.v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -876,7 +876,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-server-configurations-v1/pages/connector-edit-page"
+                                        "../../admin.server-configurations.v1/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -929,7 +929,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../admin-server-configurations-v1/pages/connector-listing-page"
+                                "../../admin.server-configurations.v1/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -983,7 +983,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.monitor",
                         component: lazy(() =>
                             import(
-                                "../../admin-server-configurations-v1/pages/connector-edit-page"
+                                "../../admin.server-configurations.v1/pages/connector-edit-page"
                             )
                         ),
                         exact: true,
@@ -1008,7 +1008,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         component: lazy(() =>
                             import(
-                                "../../admin-server-configurations-v1/pages/connector-edit-page"
+                                "../../admin.server-configurations.v1/pages/connector-edit-page"
                             )
                         ),
                         exact: true,
@@ -1028,7 +1028,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../admin-server-v1/pages/admin-session-advisory-banner-page")
+                                    import("../../admin.server.v1/pages/admin-session-advisory-banner-page")
                                 ),
                                 exact: true,
                                 icon: {
@@ -1042,7 +1042,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../admin-server-v1/pages/remote-logging-page")
+                                    import("../../admin.server.v1/pages/remote-logging-page")
                                 ),
                                 exact: true,
                                 icon: {
@@ -1056,7 +1056,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../admin-server-v1/pages/internal-notification-sending-page")
+                                    import("../../admin.server.v1/pages/internal-notification-sending-page")
                                 ),
                                 exact: true,
                                 icon: {
@@ -1071,7 +1071,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../admin-server-v1/pages/server"
+                                "../../admin.server.v1/pages/server"
                             )
                         ),
                         exact: true,
@@ -1116,7 +1116,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "console:manage.features.sidePanel.categories.legacy",
                         children: [
                             {
-                                component: lazy(() => import("../../admin-secrets-v1/pages/secret-edit")),
+                                component: lazy(() => import("../../admin.secrets.v1/pages/secret-edit")),
                                 exact: false,
                                 icon: { icon: getSidePanelIcons().childIcon },
                                 id: "secretManagementEdit",
@@ -1126,7 +1126,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../admin-secrets-v1/pages/secrets")),
+                        component: lazy(() => import("../../admin.secrets.v1/pages/secrets")),
                         exact: true,
                         icon: { icon: getSidePanelIcons().secrets },
                         id: "secretsManagement",
@@ -1191,7 +1191,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: false
                     },
                     {
-                        component: lazy(() => import("../../admin-server-configurations-v1/pages/governance-connectors")),
+                        component: lazy(() => import("../../admin.server-configurations.v1/pages/governance-connectors")),
                         exact: true,
                         icon: null,
                         id: "governanceConnectors",
@@ -1202,7 +1202,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: false
                     },
                     {
-                        component: lazy(() => import("../../admin-server-configurations-v1/pages/multi-attribute-login-edit")),
+                        component: lazy(() => import("../../admin.server-configurations.v1/pages/multi-attribute-login-edit")),
                         exact: true,
                         icon: null,
                         id: "multiAttributeLogin",

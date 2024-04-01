@@ -30,7 +30,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label } from "semantic-ui-react";
 import { useGetCurrentOrganizationType } from "../../../../../admin-organizations-v1/hooks/use-get-organization-type";
-import { getRolesList } from "../../../../../admin-roles-v2/api";
+import { getRolesList } from "../../../../../admin.roles.v2/api";
 import { updateConnectionRoleMappings } from "../../../../api/connections";
 import { ConnectionRolesInterface } from "../../../../models/connection";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../../../utils/connection-utils";

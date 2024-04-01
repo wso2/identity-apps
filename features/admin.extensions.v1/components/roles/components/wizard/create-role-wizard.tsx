@@ -33,9 +33,9 @@ import { AddRoleUsers } from "./role-user-assign";
 import { AppConstants } from "../../../../../admin.core.v1/constants";
 import { history } from "../../../../../admin.core.v1/helpers";
 import { CreateGroupMemberInterface } from "../../../../../admin.groups.v1/models";
-import { createRole } from "../../../../../admin-roles-v2/api";
-import { getRolesWizardStepIcons } from "../../../../../admin-roles-v2/configs";
-import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../../../../admin-roles-v2/models";
+import { createRole } from "../../../../../admin.roles.v2/api";
+import { getRolesWizardStepIcons } from "../../../../../admin.roles.v2/configs";
+import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../../../../admin.roles.v2/models";
 import { UserBasicInterface } from "../../../../../admin.users.v1/models/user";
 import { CONSUMER_USERSTORE } from "../../../../../admin.userstores.v1/constants";
 

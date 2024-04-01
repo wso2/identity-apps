@@ -26,7 +26,7 @@ import {
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../admin.core.v1";
-import { CreateRoleInterface } from "../../admin-roles-v2/models/roles";
+import { CreateRoleInterface } from "../../admin.roles.v2/models/roles";
 import { OrganizationRoleListResponseInterface, PatchOrganizationRoleDataInterface } from "../models";
 
 /**

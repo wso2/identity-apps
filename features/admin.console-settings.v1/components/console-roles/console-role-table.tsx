@@ -43,7 +43,7 @@ import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1/configs/ui";
 import { AppState } from "../../../admin.core.v1/store/index";
-import { RoleAudienceTypes } from "../../../admin-roles-v2/constants/role-constants";
+import { RoleAudienceTypes } from "../../../admin.roles.v2/constants/role-constants";
 
 /**
  * Props interface of {@link ConsoleRolesTable}

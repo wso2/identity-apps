@@ -38,8 +38,8 @@ import {
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
 } from "../../../admin-organizations-v1/models";
-import { getRolesList, updateRolesBulk } from "../../../admin-roles-v2/api";
-import { PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../admin-roles-v2/models";
+import { getRolesList, updateRolesBulk } from "../../../admin.roles.v2/api";
+import { PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../admin.roles.v2/models";
 import { WizardStepInterface } from "../../../admin.users.v1/models";
 import { createGroup } from "../../api";
 import { getGroupsWizardStepIcons } from "../../configs";

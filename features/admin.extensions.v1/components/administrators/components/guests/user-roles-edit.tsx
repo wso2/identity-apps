@@ -47,9 +47,9 @@ import {
     FeatureConfigInterface,
     updateResources
 } from "../../../../../admin.core.v1";
-import { getRolesList } from "../../../../../admin-roles-v2/api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../../admin-roles-v2/constants";
-import { RealmConfigInterface } from "../../../../../admin-server-configurations-v1/models";
+import { getRolesList } from "../../../../../admin.roles.v2/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../../admin.roles.v2/constants";
+import { RealmConfigInterface } from "../../../../../admin.server-configurations.v1/models";
 import { UserRolePermissions } from "../../../../../admin.users.v1/components/user-role-permissions";
 import { RolePermissions } from "../../../../../admin.users.v1/components/wizard/user-role-permissions";
 

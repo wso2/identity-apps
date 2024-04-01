@@ -35,10 +35,10 @@ import { useSelector } from "react-redux";
 import SecretDeleteConfirmationModal from "./secret-delete-confirmation-modal";
 import { FeatureConfigInterface } from "../../../admin.core.v1/models";
 import { AppState } from "../../../admin.core.v1/store";
-import { useGetSecrets } from "../../../admin-secrets-v1/api/secret";
-import AddSecretWizard from "../../../admin-secrets-v1/components/add-secret-wizard";
-import { ADAPTIVE_SCRIPT_SECRETS } from "../../../admin-secrets-v1/constants/secrets.common";
-import { SecretModel } from "../../../admin-secrets-v1/models/secret";
+import { useGetSecrets } from "../../../admin.secrets.v1/api/secret";
+import AddSecretWizard from "../../../admin.secrets.v1/components/add-secret-wizard";
+import { ADAPTIVE_SCRIPT_SECRETS } from "../../../admin.secrets.v1/constants/secrets.common";
+import { SecretModel } from "../../../admin.secrets.v1/models/secret";
 import "./secret-selection-dropdown.scss";
 
 /**

@@ -76,7 +76,7 @@ import {
 import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/tier-limit-reach-error-modal";
 import { OrganizationType } from "../../../admin-organizations-v1/constants";
 import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
-import { RoleAudienceTypes, RoleConstants } from "../../../admin-roles-v2/constants/role-constants";
+import { RoleAudienceTypes, RoleConstants } from "../../../admin.roles.v2/constants/role-constants";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";

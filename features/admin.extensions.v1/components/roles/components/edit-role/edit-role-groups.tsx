@@ -56,7 +56,7 @@ import {
 } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../../../../admin.core.v1";
 import { getGroupList } from "../../../../../admin.groups.v1/api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../../../../admin-roles-v2/constants";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../../../../admin.roles.v2/constants";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**

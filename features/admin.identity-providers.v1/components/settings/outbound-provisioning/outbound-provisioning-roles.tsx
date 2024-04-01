@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, DropdownItemProps, Form, Grid, Icon, Label } from "semantic-ui-react";
 import { OrganizationUtils } from "../../../../admin-organizations-v1/utils";
-import { getRolesList } from "../../../../admin-roles-v2/api";
+import { getRolesList } from "../../../../admin.roles.v2/api";
 import { updateIDPRoleMappings } from "../../../api";
 import { IdentityProviderRolesInterface } from "../../../models";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../utils";

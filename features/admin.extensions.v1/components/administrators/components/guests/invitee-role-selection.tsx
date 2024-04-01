@@ -28,7 +28,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid, Modal } from "semantic-ui-react";
-import { getRolesList } from "../../../../../admin-roles-v2/api";
+import { getRolesList } from "../../../../../admin.roles.v2/api";
 import { UserInviteInterface } from "../../../../../admin.users.v1/models";
 
 interface InviteeRoleSelectionPropsInterface extends TestableComponentInterface {

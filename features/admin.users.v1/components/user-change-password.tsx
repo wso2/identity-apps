@@ -33,11 +33,11 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../admin.core.v1";
-import { PatchRoleDataInterface } from "../../admin-roles-v2/models/roles";
+import { PatchRoleDataInterface } from "../../admin.roles.v2/models/roles";
 import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
-} from "../../admin-server-configurations-v1";
+} from "../../admin.server-configurations.v1";
 import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES

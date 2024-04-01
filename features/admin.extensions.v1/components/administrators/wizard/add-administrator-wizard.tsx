@@ -36,8 +36,8 @@ import {
     AddAdminUserBasic
 } from "./steps/admin-user-basic";
 import { UserBasicInterface } from "../../../../admin.core.v1";
-import { updateRoleDetails } from "../../../../admin-roles-v2/api/roles";
-import { PatchRoleDataInterface } from "../../../../admin-roles-v2/models/roles";
+import { updateRoleDetails } from "../../../../admin.roles.v2/api/roles";
+import { PatchRoleDataInterface } from "../../../../admin.roles.v2/models/roles";
 import { getUserWizardStepIcons } from "../../../../admin.users.v1/configs/ui";
 import { AdminAccountTypes } from "../constants";
 import { InternalAdminFormDataInterface } from "../models";

@@ -24,7 +24,7 @@ import {
     WSTrustConfigurationInterface
 } from "./application-inbound";
 import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models/identity-provider";
-import { AssociatedRolesInterface } from "../../admin-roles-v2/models";
+import { AssociatedRolesInterface } from "../../admin.roles.v2/models";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**

@@ -61,8 +61,8 @@ import {
     OrganizationRoleListResponseInterface
 } from "../../../admin-organizations-v1/models/organizations";
 import { OrganizationUtils } from "../../../admin-organizations-v1/utils";
-import { getRolesList } from "../../../admin-roles-v2/api/roles";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../admin-roles-v2/constants/role-constants";
+import { getRolesList } from "../../../admin.roles.v2/api/roles";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../admin.roles.v2/constants/role-constants";
 import { UserRolePermissions } from "../../../admin.users.v1/components/user-role-permissions";
 import { RolePermissions } from "../../../admin.users.v1/components/wizard/user-role-permissions";
 import { GroupsInterface } from "../../models";

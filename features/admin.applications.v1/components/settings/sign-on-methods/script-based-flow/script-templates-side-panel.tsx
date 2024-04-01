@@ -52,18 +52,18 @@ import {
 import {
     getConnectorDetails,
     updateGovernanceConnector
-} from "../../../../../admin-server-configurations-v1/api/governance-connectors";
+} from "../../../../../admin.server-configurations.v1/api/governance-connectors";
 import {
     ServerConfigurationsConstants
-} from "../../../../../admin-server-configurations-v1/constants/server-configurations-constants";
-import { AnalyticsConfigurationForm } from "../../../../../admin-server-configurations-v1/forms/analytics-form";
+} from "../../../../../admin.server-configurations.v1/constants/server-configurations-constants";
+import { AnalyticsConfigurationForm } from "../../../../../admin.server-configurations.v1/forms/analytics-form";
 import {
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../../../../admin-server-configurations-v1/models/governance-connectors";
+} from "../../../../../admin.server-configurations.v1/models/governance-connectors";
 import {
     GovernanceConnectorUtils
-} from "../../../../../admin-server-configurations-v1/utils/governance-connector-utils";
+} from "../../../../../admin.server-configurations.v1/utils/governance-connector-utils";
 import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models";
 
 /**
