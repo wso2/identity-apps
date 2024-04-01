@@ -251,6 +251,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                 <td className="view-data-button">
                                     <Link
                                         data-testid={ `${ componentId }-${ logObject["id"] }-view-data-button` }
+                                        data-componentid={ `${ componentId }-view-data-button` }
                                         underline="hover"
                                         onClick={ () => handleLogDataViewOpen(logObject) }
                                     >
@@ -261,6 +262,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                 <td className="download-data-button">
                                     <Link
                                         data-testid={ `${ componentId }-${ logObject["id"] }-download-data-button` }
+                                        data-componentid={ `${ componentId }-download-data-button` }
                                         underline="hover"
                                         onClick={ () => exportDataOfLog(logObject) }
                                     >
