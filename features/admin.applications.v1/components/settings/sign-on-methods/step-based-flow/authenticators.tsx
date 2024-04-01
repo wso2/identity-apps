@@ -26,7 +26,7 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, Label } from "semantic-ui-react";
-import { applicationConfig } from "../../../../../admin-extensions-v1";
+import { applicationConfig } from "../../../../../admin.extensions.v1";
 import { AuthenticatorManagementConstants } from "../../../../../admin.connections.v1";
 import { ConnectionsManagementUtils } from "../../../../../admin.connections.v1/utils/connection-utils";
 import {

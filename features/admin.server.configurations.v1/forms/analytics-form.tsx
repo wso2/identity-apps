@@ -26,7 +26,7 @@ import { Label } from "semantic-ui-react";
 import {
     AnalyticsAPIRequestInterface,
     AnalyticsFormValuesInterface
-} from "../../admin-extensions-v1/components/governance-connectors/models/analytics";
+} from "../../admin.extensions.v1/components/governance-connectors/models/analytics";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,

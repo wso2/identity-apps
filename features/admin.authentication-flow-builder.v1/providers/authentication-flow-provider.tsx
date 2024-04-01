@@ -19,7 +19,7 @@
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { applicationConfig } from "../../admin-extensions-v1";
+import { applicationConfig } from "../../admin.extensions.v1";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
@@ -27,7 +27,7 @@ import React, { PropsWithChildren, ReactElement, useCallback, useEffect, useMemo
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { identityProviderConfig } from "../../admin-extensions-v1/configs/identity-provider";
+import { identityProviderConfig } from "../../admin.extensions.v1/configs/identity-provider";
 import { useGetAdaptiveAuthTemplates } from "../../admin.applications.v1/api";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import {

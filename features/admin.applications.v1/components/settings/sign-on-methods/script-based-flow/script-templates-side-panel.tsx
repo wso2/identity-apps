@@ -43,7 +43,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Accordion,  Grid, Icon, Menu, Modal, Segment, Sidebar } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../../../../admin-extensions-v1/configs/server-configuration";
+import { serverConfigurationConfig } from "../../../../../admin.extensions.v1/configs/server-configuration";
 // eslint-disable-next-line max-len
 import AdaptiveAuthTemplateInfoModal from "../../../../../admin.authentication-flow-builder.v1/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
 import {

@@ -42,7 +42,7 @@ import { Placeholder } from "semantic-ui-react";
 import { EmailTemplateScreenSkeleton } from "./email-template-screen-skeleton";
 import { LoginScreenSkeleton } from "./login-screen-skeleton";
 import { MyAccountScreenSkeleton } from "./my-account-screen-skeleton";
-import { commonConfig } from "../../../admin-extensions-v1/configs";
+import { commonConfig } from "../../../admin.extensions.v1/configs";
 import { ReactComponent as CustomLayoutSuccessImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from

@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { userstoresConfig } from "../../admin-extensions-v1/configs/userstores";
+import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
 import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,

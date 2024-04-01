@@ -33,7 +33,7 @@ import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffec
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AccordionTitleProps, CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../admin-extensions-v1/configs/identity-provider";
+import { identityProviderConfig } from "../../../admin.extensions.v1/configs/identity-provider";
 import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { AuthenticatorAccordion } from "../../../admin.core.v1/components";
 import {

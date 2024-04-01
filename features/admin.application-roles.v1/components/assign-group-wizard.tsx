@@ -35,7 +35,7 @@ import { Grid, Modal } from "semantic-ui-react";
 import {
     ApplicationRoleGroupInterface,
     ApplicationRoleGroupsAPIResponseInterface
-} from "../../admin-extensions-v1/components/application/models";
+} from "../../admin.extensions.v1/components/application/models";
 import { getGroupList } from "../../admin-groups-v1/api";
 
 /**

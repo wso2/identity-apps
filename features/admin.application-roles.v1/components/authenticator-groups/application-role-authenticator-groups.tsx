@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthenticatorGroupsList } from "./authenticator-groups-list";
-import { ApplicationRolesConstants } from "../../../admin-extensions-v1/components/application/constants";
+import { ApplicationRolesConstants } from "../../../admin.extensions.v1/components/application/constants";
 import { getApplicationDetails } from "../../../admin.applications.v1/api";
 import {
     AuthenticatorInterface as ApplicationAuthenticatorInterface,

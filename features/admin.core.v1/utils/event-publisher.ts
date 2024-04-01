@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { analyticsConfig } from "../../admin-extensions-v1/configs/analytics";
+import { analyticsConfig } from "../../admin.extensions.v1/configs/analytics";
 
 /**
  * A event publisher to perform event logging.

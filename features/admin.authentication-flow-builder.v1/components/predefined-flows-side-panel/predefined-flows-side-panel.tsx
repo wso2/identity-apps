@@ -46,7 +46,7 @@ import AdaptiveAuthTemplateChangeConfirmationModal from "./adaptive-auth-templat
 import AdaptiveAuthTemplateInfoModal from "./adaptive-auth-template-info-modal";
 import BasicLoginFlowTemplateChangeConfirmationModal from "./basic-login-flow-template-change-confimation-modal";
 import PredefinedSocialFlowHandlerModalFactory from "./predefined-social-flow-handler-modal-factory";
-import { serverConfigurationConfig } from "../../../admin-extensions-v1/configs/server-configuration";
+import { serverConfigurationConfig } from "../../../admin.extensions.v1/configs/server-configuration";
 import {
     AdaptiveAuthTemplateCategoryInterface,
     AdaptiveAuthTemplateInterface,

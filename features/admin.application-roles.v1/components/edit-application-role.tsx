@@ -23,7 +23,7 @@ import { TabProps } from "semantic-ui-react";
 import ApplicationRoleGroups from "./application-role-groups";
 import ApplicationRoleInvitedUserGroups from "./application-role-invited-user-groups";
 import ApplicationRoleAuthenticatorGroups from "./authenticator-groups/application-role-authenticator-groups";
-import { ExtendedFeatureConfigInterface } from "../../admin-extensions-v1";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1";
 import { URLFragmentTypes } from "../../admin.applications.v1/models";
 import { AppState, history } from "../../admin.core.v1";
 

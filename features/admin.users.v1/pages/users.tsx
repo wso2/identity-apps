@@ -49,8 +49,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
-import { userstoresConfig } from "../../admin-extensions-v1";
-import { FeatureGateConstants } from "../../admin-extensions-v1/components/feature-gate/constants/feature-gate";
+import { userstoresConfig } from "../../admin.extensions.v1";
+import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,

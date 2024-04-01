@@ -24,7 +24,7 @@ import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, DropdownItemProps, Grid } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../admin-extensions-v1";
+import { identityProviderConfig } from "../../../../admin.extensions.v1";
 import { SimpleUserStoreListItemInterface } from "../../../../admin.applications.v1/models";
 import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
 import {

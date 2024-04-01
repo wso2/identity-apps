@@ -25,7 +25,7 @@ import React, { FC, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import ApplicationSelectionModal
-    from "../../../admin-extensions-v1/components/shared/application-selection-modal";
+    from "../../../admin.extensions.v1/components/shared/application-selection-modal";
 import { ConnectionInterface, ConnectionTemplateInterface } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 

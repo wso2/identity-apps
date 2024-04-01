@@ -47,7 +47,7 @@ import {
 import { BrandingPreferencePreview } from "./preview";
 import ScreenDropdown from "./screen-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import { commonConfig } from "../../admin-extensions-v1/configs";
+import { commonConfig } from "../../admin.extensions.v1/configs";
 import { AppState } from "../../admin.core.v1/store";
 import { BrandingPreferencesConstants } from "../constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";

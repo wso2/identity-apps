@@ -26,7 +26,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
-import { applicationConfig } from "../../../../admin-extensions-v1";
+import { applicationConfig } from "../../../../admin.extensions.v1";
 import { AppState } from "../../../../admin.core.v1";
 import { ApplicationManagementConstants } from "../../../constants";
 import {

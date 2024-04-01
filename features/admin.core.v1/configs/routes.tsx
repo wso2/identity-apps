@@ -36,8 +36,8 @@ import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
-import { commonConfig, identityProviderConfig } from "../../admin-extensions-v1";
-import { FeatureGateConstants } from "../../admin-extensions-v1/components/feature-gate/constants/feature-gate";
+import { commonConfig, identityProviderConfig } from "../../admin.extensions.v1";
+import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../admin-layouts-v1";
 import { AppView, FullScreenView } from "../../admin.views.v1";
 import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1";
@@ -71,7 +71,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             keyBy(
                 compact([
                     {
-                        component: lazy(() => import("../../admin-extensions-v1/components/getting-started/getting-started")),
+                        component: lazy(() => import("../../admin.extensions.v1/components/getting-started/getting-started")),
                         exact: false,
                         icon: {
                             icon: getSidePanelIcons().home
@@ -159,7 +159,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-extensions-v1/components/account-login/" +
+                                        "../../admin.extensions.v1/components/account-login/" +
                                         "pages/username-validation-edit"
                                     )
                                 ),
@@ -176,7 +176,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../admin-extensions-v1/components/account-login/" +
+                                        "../../admin.extensions.v1/components/account-login/" +
                                         "pages/alternative-login-identifier-edit"
                                     )
                                 ),
@@ -551,7 +551,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         component: lazy(() => import("../../admin.branding.v1/pages/branding")),
                         exact: true,
                         icon: {
-                            icon: import("../../admin-extensions-v1/assets/images/icons/paint-palette-and-brush-outline.svg")
+                            icon: import("../../admin.extensions.v1/assets/images/icons/paint-palette-and-brush-outline.svg")
                         },
                         id: "branding",
                         name: "extensions:develop.sidePanel.stylesAndText",
@@ -625,7 +625,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../admin-extensions-v1/components/" + "my-account/pages/my-account-edit")
+                                    import("../../admin.extensions.v1/components/" + "my-account/pages/my-account-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -638,10 +638,10 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../admin-extensions-v1/components/my-account/pages/my-account")),
+                        component: lazy(() => import("../../admin.extensions.v1/components/my-account/pages/my-account")),
                         exact: true,
                         icon: {
-                            icon: import("../../admin-extensions-v1/assets/images/icons/self-service-portal-icon.svg")
+                            icon: import("../../admin.extensions.v1/assets/images/icons/self-service-portal-icon.svg")
                         },
                         id: "myAccount",
                         name: "Self-Service Portal",
@@ -655,7 +655,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../admin-extensions-v1/components/" + "my-account/pages/my-account-edit")
+                                    import("../../admin.extensions.v1/components/" + "my-account/pages/my-account-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -668,10 +668,10 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../admin-extensions-v1/components/my-account/pages/my-account")),
+                        component: lazy(() => import("../../admin.extensions.v1/components/my-account/pages/my-account")),
                         exact: true,
                         icon: {
-                            icon: import("../../admin-extensions-v1/assets/images/icons/self-service-portal-icon.svg")
+                            icon: import("../../admin.extensions.v1/assets/images/icons/self-service-portal-icon.svg")
                         },
                         id: "myAccount",
                         name: "Self-Service Portal",
@@ -949,11 +949,11 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.monitor",
-                        component: lazy(() => import("../../admin-extensions-v1/components/logs/pages/logs")),
+                        component: lazy(() => import("../../admin.extensions.v1/components/logs/pages/logs")),
                         exact: true,
                         featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
                         icon: {
-                            icon: import("../../admin-extensions-v1/assets/images/icons/event-publishing.svg")
+                            icon: import("../../admin.extensions.v1/assets/images/icons/event-publishing.svg")
                         },
                         id: "logs",
                         name: "extensions:develop.sidePanel.monitor",
@@ -1325,7 +1325,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
 export const getAuthLayoutRoutes = (): RouteInterface[] => {
     const routes: RouteInterface[] = [
         {
-            component: lazy(() => import("../../admin-extensions-v1/components/tenants/pages/create-tenant")),
+            component: lazy(() => import("../../admin.extensions.v1/components/tenants/pages/create-tenant")),
             exact: true,
             icon: null,
             id: "createTenant",

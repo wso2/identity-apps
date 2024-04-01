@@ -23,7 +23,7 @@ import isEmpty from "lodash-es/isEmpty";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useConsoleRoles from "./use-console-roles";
-import { SCIMConfigs } from "../../admin-extensions-v1/configs/scim";
+import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
 import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../admin.core.v1/models/users";
 import { AppState } from "../../admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";

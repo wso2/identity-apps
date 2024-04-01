@@ -46,7 +46,7 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
-import { applicationConfig } from "../../../../admin-extensions-v1";
+import { applicationConfig } from "../../../../admin.extensions.v1";
 import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../admin.claims.v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../admin.core.v1";

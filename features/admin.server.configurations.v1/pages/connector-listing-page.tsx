@@ -30,7 +30,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Placeholder, Ref } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../admin-extensions-v1/configs/server-configuration";
+import { serverConfigurationConfig } from "../../admin.extensions.v1/configs/server-configuration";
 import { AppState, FeatureConfigInterface, store  } from "../../admin.core.v1";
 import { getConnectorCategories, getConnectorCategory } from "../api";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";

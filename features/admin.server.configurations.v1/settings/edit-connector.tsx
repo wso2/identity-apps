@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SettingsSection } from "./settings-section";
-import { serverConfigurationConfig } from "../../admin-extensions-v1/configs";
+import { serverConfigurationConfig } from "../../admin.extensions.v1/configs";
 import { AppConstants, history } from "../../admin.core.v1";
 import { getSettingsSectionIcons } from "../configs";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";

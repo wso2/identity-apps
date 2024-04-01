@@ -40,7 +40,7 @@ import { Grid } from "semantic-ui-react";
 import {
     FacebookAuthenticationProviderCreateWizardContent
 } from "./facebook-authentication-provider-create-wizard-content";
-import { identityProviderConfig } from "../../../../admin-extensions-v1/configs";
+import { identityProviderConfig } from "../../../../admin.extensions.v1/configs";
 import {
     AppState,
     ConfigReducerStateInterface,

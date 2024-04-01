@@ -45,7 +45,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Ref } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../admin-extensions-v1";
+import { serverConfigurationConfig } from "../../admin.extensions.v1";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import {
     ConnectorPropertyInterface,

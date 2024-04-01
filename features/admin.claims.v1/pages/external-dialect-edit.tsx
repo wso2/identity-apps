@@ -32,7 +32,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
-import { attributeConfig } from "../../admin-extensions-v1";
+import { attributeConfig } from "../../admin.extensions.v1";
 import { getAllExternalClaims } from "../../admin.claims.v1/api";
 import { AppConstants, history, sortList } from "../../admin.core.v1";
 import { deleteADialect, getADialect } from "../api";

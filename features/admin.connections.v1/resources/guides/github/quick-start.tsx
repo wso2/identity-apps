@@ -31,7 +31,7 @@ import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
 import ApplicationSelectionModal
-    from "../../../../admin-extensions-v1/components/shared/application-selection-modal";
+    from "../../../../admin.extensions.v1/components/shared/application-selection-modal";
 import {
     ConnectionInterface,
     ConnectionTemplateInterface

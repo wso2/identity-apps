@@ -47,10 +47,10 @@ import {
     Placeholder,
     SemanticICONS 
 } from "semantic-ui-react";
-import { organizationConfigs } from "../../../admin-extensions-v1";
+import { organizationConfigs } from "../../../admin.extensions.v1";
 import { 
     FeatureGateConstants 
-} from "../../../admin-extensions-v1/components/feature-gate/constants/feature-gate";
+} from "../../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { getMiscellaneousIcons } from "../../../admin.core.v1/configs";
 import { AppConstants } from "../../../admin.core.v1/constants";
 import { history } from "../../../admin.core.v1/helpers/history";

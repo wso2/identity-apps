@@ -28,7 +28,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { ApplicationCertificatesListComponent } from "./application-certificate-list";
-import { commonConfig } from "../../../../admin-extensions-v1";
+import { commonConfig } from "../../../../admin.extensions.v1";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,

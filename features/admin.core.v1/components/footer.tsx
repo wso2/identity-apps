@@ -26,7 +26,7 @@ import * as moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { commonConfig } from "../../admin-extensions-v1";
+import { commonConfig } from "../../admin.extensions.v1";
 import { AppConstants } from "../constants";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";

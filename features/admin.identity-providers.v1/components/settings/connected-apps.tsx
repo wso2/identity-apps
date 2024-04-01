@@ -49,7 +49,7 @@ import {
     Label, 
     SemanticICONS
 } from "semantic-ui-react";
-import { applicationListConfig } from "../../../admin-extensions-v1/configs/application-list";
+import { applicationListConfig } from "../../../admin.extensions.v1/configs/application-list";
 import { getApplicationDetails } from "../../../admin.applications.v1/api";
 import { ApplicationManagementConstants } from "../../../admin.applications.v1/constants";
 import { 

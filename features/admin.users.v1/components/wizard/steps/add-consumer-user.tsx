@@ -27,7 +27,7 @@ import {
     Grid,
     Message
 } from "semantic-ui-react";
-import { userstoresConfig } from "../../../../admin-extensions-v1/configs/userstores";
+import { userstoresConfig } from "../../../../admin.extensions.v1/configs/userstores";
 import { AppState } from "../../../../admin.core.v1";
 import { SharedUserStoreUtils } from "../../../../admin.core.v1/utils";
 import { getUsersList } from "../../../../admin-users-v1/api/users";

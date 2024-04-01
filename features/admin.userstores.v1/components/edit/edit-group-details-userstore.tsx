@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
-import { userstoresConfig } from "../../../admin-extensions-v1";
+import { userstoresConfig } from "../../../admin.extensions.v1";
 import { patchUserStore } from "../../api";
 import { CONSUMER_USERSTORE_ID } from "../../constants";
 import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty, UserstoreType } from "../../models";
