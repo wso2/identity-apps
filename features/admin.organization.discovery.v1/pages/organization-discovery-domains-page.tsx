@@ -48,7 +48,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
+import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,

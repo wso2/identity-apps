@@ -59,7 +59,7 @@ import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizar
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../admin-extensions-v1";
-import { AccessControlConstants } from "../../../admin-access-control-v1/constants/access-control";
+import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
 import useAuthorization from "../../../admin-authorization-v1/hooks/use-authorization";
 import {
     AppConstants,

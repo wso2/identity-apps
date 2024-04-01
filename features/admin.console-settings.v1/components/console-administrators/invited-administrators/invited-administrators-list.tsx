@@ -29,7 +29,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import InvitedAdministratorsTable from "./invited-administrators-table";
-import { AccessControlConstants } from "../../../../admin-access-control-v1/constants/access-control";
+import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     UIConstants,

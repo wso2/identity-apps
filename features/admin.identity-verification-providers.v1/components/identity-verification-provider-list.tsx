@@ -34,7 +34,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
+import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import {
     AppConstants,
     AppState,

@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import ConsoleRolesTable from "./console-role-table";
-import { AccessControlConstants } from "../../../admin-access-control-v1/constants/access-control";
+import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
 import { AdvancedSearchWithBasicFilters } from "../../../admin-core-v1/components";
 import { AppConstants } from "../../../admin-core-v1/constants/app-constants";
 import { history } from "../../../admin-core-v1/helpers/history";

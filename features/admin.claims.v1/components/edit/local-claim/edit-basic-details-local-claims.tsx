@@ -57,7 +57,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../admin-extensions-v1";
 import { SCIMConfigs } from "../../../../admin-extensions-v1/configs/scim";
-import { AccessControlConstants } from "../../../../admin-access-control-v1/constants/access-control";
+import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin-core-v1";
 import {
     ConnectorPropertyInterface,

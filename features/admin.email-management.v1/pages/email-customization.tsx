@@ -39,7 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
+import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import BrandingPreferenceProvider from "../../admin-branding-v1/providers/branding-preference-provider";
 import { AppState, I18nConstants } from "../../admin-core-v1";
 import {

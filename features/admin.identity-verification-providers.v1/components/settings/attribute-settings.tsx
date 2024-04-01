@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributesSelection } from "./attribute-management/attribute-selection";
-import { AccessControlConstants } from "../../../admin-access-control-v1/constants/access-control";
+import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
 import {
     IDVPClaimMappingInterface,
     IDVPClaimsInterface,

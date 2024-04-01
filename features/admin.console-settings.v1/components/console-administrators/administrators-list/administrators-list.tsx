@@ -30,7 +30,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
-import { AccessControlConstants } from "../../../../admin-access-control-v1/constants/access-control";
+import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
