@@ -27,12 +27,12 @@ import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AsgardeoTheme } from "./branding/theme";
-import { AuthenticateUtils } from "@wso2is/features/admin-authentication-v1";
-import { Config, PreLoader, store } from "@wso2is/features/admin-core-v1";
-import { UserPreferencesInterface } from "@wso2is/features/admin-core-v1/models/user-preferences";
-import AppSettingsProvider from "@wso2is/features/admin-core-v1/providers/app-settings-provider";
-import UserPreferencesProvider from "@wso2is/features/admin-core-v1/providers/user-preferences-provider";
-import OrganizationsProvider from "@wso2is/features/admin-organizations-v1/providers/organizations-provider";
+import { AuthenticateUtils } from "@wso2is/features/admin.authentication.v1";
+import { Config, PreLoader, store } from "@wso2is/features/admin.core.v1";
+import { UserPreferencesInterface } from "@wso2is/features/admin.core.v1/models/user-preferences";
+import AppSettingsProvider from "@wso2is/features/admin.core.v1/providers/app-settings-provider";
+import UserPreferencesProvider from "@wso2is/features/admin.core.v1/providers/user-preferences-provider";
+import OrganizationsProvider from "@wso2is/features/admin.organizations.v1/providers/organizations-provider";
 import { ProtectedApp } from "./protected-app";
 
 // Set the runtime config in the context.
