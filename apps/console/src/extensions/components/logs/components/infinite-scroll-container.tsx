@@ -349,7 +349,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                         { t("extensions:develop.monitor.logView.logDataviewer.download") }
                     </Button>
                     <Button
-                        data-testid={ `${ componentId }-'log-data-viewer-panel-copy-button` }
+                        data-componentid={ `${ componentId }-log-data-viewer-panel-copy-button` }
                         className="data-viewer-buttons"
                         onClick={ copyCurrentLog }
                         startIcon={ <CopyIcon /> }
@@ -412,7 +412,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                 onClick={ handleClick }
                                 style={ { padding: "0px" } }
                             >
-                                <div className="log-row" >
+                                <div className="log-row">
                                     <Icon
                                         name="dropdown"
                                         data-componentid={ `${ componentId }-dropdown-button` }
