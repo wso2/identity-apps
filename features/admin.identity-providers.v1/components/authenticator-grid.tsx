@@ -44,8 +44,8 @@ import { Dispatch } from "redux";
 import { Divider, Icon, List } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin-extensions-v1/configs";
-import { getApplicationDetails } from "../../admin-applications-v1/api";
-import { ApplicationBasicInterface } from "../../admin-applications-v1/models";
+import { getApplicationDetails } from "../../admin.applications.v1/api";
+import { ApplicationBasicInterface } from "../../admin.applications.v1/models";
 import {
     AppConstants,
     AppState,

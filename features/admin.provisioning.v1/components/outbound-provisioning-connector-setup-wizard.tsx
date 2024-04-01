@@ -24,8 +24,8 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { OutboundProvisioningConnectorSetupForm } from "./outbound-provisioning-connector-setup-form";
-import { getApplicationWizardStepIcons } from "../../admin-applications-v1/configs/ui";
-import { OutboundProvisioningConfigurationInterface } from "../../admin-applications-v1/models/application";
+import { getApplicationWizardStepIcons } from "../../admin.applications.v1/configs/ui";
+import { OutboundProvisioningConfigurationInterface } from "../../admin.applications.v1/models/application";
 import { IdentityProviderInterface } from "../../admin-identity-providers-v1/models/identity-provider";
 
 /**

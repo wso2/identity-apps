@@ -34,13 +34,13 @@ import VueIcon from "./assets/vue-logo-icon.svg";
 import { IntegrateSDKs } from "./integrate-sdks/integrate-sdks";
 import { SupportedSPATechnologyTypes } from "./models";
 import { TryoutSamples } from "./tryout-samples";
-import { getApplicationList } from "../../../../admin-applications-v1/api";
+import { getApplicationList } from "../../../../admin.applications.v1/api";
 import {
     ApplicationInterface,
     ApplicationListInterface,
     ApplicationTemplateInterface,
     URLFragmentTypes
-} from "../../../../admin-applications-v1/models";
+} from "../../../../admin.applications.v1/models";
 import { history } from "../../../../admin-core-v1";
 import { AppState } from "../../../../admin-core-v1/store";
 import { QuickStartModes } from "../../shared";

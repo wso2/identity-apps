@@ -17,8 +17,8 @@
  */
 
 import { Context, createContext } from "react";
-import { ApplicationInterface, AuthenticationSequenceInterface } from "../../admin-applications-v1/models/application";
-import { OIDCDataInterface } from "../../admin-applications-v1/models/application-inbound";
+import { ApplicationInterface, AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
+import { OIDCDataInterface } from "../../admin.applications.v1/models/application-inbound";
 
 /**
  * Props interface of {@link ConsoleSettingsContext}

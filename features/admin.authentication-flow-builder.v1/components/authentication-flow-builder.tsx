@@ -39,15 +39,15 @@ import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switc
 import SidePanelDrawer from "./side-panel-drawer";
 import {
     updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
-} from "../../admin-applications-v1/api/application";
+} from "../../admin.applications.v1/api/application";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../admin-applications-v1/models/application";
-import { AdaptiveScriptUtils } from "../../admin-applications-v1/utils/adaptive-script-utils";
+} from "../../admin.applications.v1/models/application";
+import { AdaptiveScriptUtils } from "../../admin.applications.v1/utils/adaptive-script-utils";
 import { AppState } from "../../admin-core-v1/store";
 import {
     IdentityProviderManagementConstants

@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Icon, Segment } from "semantic-ui-react";
-import { OutboundProvisioningConfigurationInterface } from "../../admin-applications-v1/models/application";
+import { OutboundProvisioningConfigurationInterface } from "../../admin.applications.v1/models/application";
 import { OutboundProvisioningConnectorInterface } from "../../admin-connections-v1/models/connection";
 import {
     AppConstants,

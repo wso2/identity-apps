@@ -23,7 +23,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import DuplicateSocialAuthenticatorSelectionModal from "./duplicate-social-authenticator-selection-modal";
 import MissingSocialAuthenticatorSelectionModal from "./missing-social-authenticator-selection-modal";
-import { AuthenticationSequenceInterface, AuthenticatorInterface } from "../../../admin-applications-v1/models/application";
+import { AuthenticationSequenceInterface, AuthenticatorInterface } from "../../../admin.applications.v1/models/application";
 import {
     IdentityProviderManagementConstants
 } from "../../../admin-identity-providers-v1/constants/identity-provider-management-constants";

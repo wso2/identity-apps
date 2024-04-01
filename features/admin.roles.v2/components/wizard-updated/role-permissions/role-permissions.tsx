@@ -38,7 +38,7 @@ import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-i
 import { useAPIResources } from "../../../../admin.api-resources.v1/api";
 import { APIResourceCategories, APIResourcesConstants } from "../../../../admin.api-resources.v1/constants";
 import { APIResourceUtils } from "../../../../admin.api-resources.v1/utils/api-resource-utils";
-import { Policy } from "../../../../admin-applications-v1/constants/api-authorization";
+import { Policy } from "../../../../admin.applications.v1/constants/api-authorization";
 import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api";
 import { RoleAudienceTypes } from "../../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../../models/apiResources";

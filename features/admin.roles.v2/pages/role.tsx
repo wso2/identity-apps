@@ -28,7 +28,7 @@ import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { useApplicationList } from "../../admin-applications-v1/api";
+import { useApplicationList } from "../../admin.applications.v1/api";
 import { AdvancedSearchWithBasicFilters, AppConstants, UIConstants } from "../../admin-core-v1";
 import { history } from "../../admin-core-v1/helpers";
 import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";

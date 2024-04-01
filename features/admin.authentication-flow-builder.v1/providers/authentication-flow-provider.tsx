@@ -28,17 +28,17 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { identityProviderConfig } from "../../admin-extensions-v1/configs/identity-provider";
-import { useGetAdaptiveAuthTemplates } from "../../admin-applications-v1/api";
-import { ApplicationManagementConstants } from "../../admin-applications-v1/constants/application-management";
+import { useGetAdaptiveAuthTemplates } from "../../admin.applications.v1/api";
+import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../admin-applications-v1/models/application";
-import { AdaptiveScriptUtils } from "../../admin-applications-v1/utils/adaptive-script-utils";
-import { SignInMethodUtils } from "../../admin-applications-v1/utils/sign-in-method-utils";
+} from "../../admin.applications.v1/models/application";
+import { AdaptiveScriptUtils } from "../../admin.applications.v1/utils/adaptive-script-utils";
+import { SignInMethodUtils } from "../../admin.applications.v1/utils/sign-in-method-utils";
 import { AuthenticatorManagementConstants } from "../../admin-connections-v1/constants/autheticator-constants";
 import { AuthenticatorMeta } from "../../admin-connections-v1/meta/authenticator-meta";
 import { ConnectionInterface } from "../../admin-connections-v1/models/connection";

@@ -34,7 +34,7 @@ import SwiftLogo from "./assets/swift-logo.svg";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface
-} from "../../../../admin-applications-v1/models";
+} from "../../../../admin.applications.v1/models";
 import { MobileCustomConfiguration } from "../../shared/components";
 
 /**

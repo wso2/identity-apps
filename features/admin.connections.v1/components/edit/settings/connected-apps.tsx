@@ -52,17 +52,17 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { applicationListConfig } from "../../../../admin-extensions-v1/configs/application-list";
-import { getApplicationDetails } from "../../../../admin-applications-v1/api";
-import { ApplicationManagementConstants } from "../../../../admin-applications-v1/constants";
+import { getApplicationDetails } from "../../../../admin.applications.v1/api";
+import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
 import {
     ApplicationAccessTypes,
     ApplicationBasicInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "../../../../admin-applications-v1/models";
+} from "../../../../admin.applications.v1/models";
 import {
     ApplicationTemplateManagementUtils
-} from "../../../../admin-applications-v1/utils/application-template-management-utils";
+} from "../../../../admin.applications.v1/utils/application-template-management-utils";
 import { ConsoleSettingsModes } from "../../../../admin-console-settings-v1/models/ui";
 import {
     AppConstants,

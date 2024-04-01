@@ -17,11 +17,11 @@
  */
 
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
-import { updateApplicationConfigurations, useApplicationList } from "../../admin-applications-v1/api/application";
-import { useGetApplication } from "../../admin-applications-v1/api/use-get-application";
-import useGetApplicationInboundConfigs from "../../admin-applications-v1/api/use-get-application-inbound-configs";
-import { ApplicationManagementConstants } from "../../admin-applications-v1/constants";
-import { AuthenticationSequenceInterface } from "../../admin-applications-v1/models/application";
+import { updateApplicationConfigurations, useApplicationList } from "../../admin.applications.v1/api/application";
+import { useGetApplication } from "../../admin.applications.v1/api/use-get-application";
+import useGetApplicationInboundConfigs from "../../admin.applications.v1/api/use-get-application-inbound-configs";
+import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
+import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import ConsoleSettingsContext from "../context/console-settings-context";
 
 /**

@@ -211,7 +211,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "console:develop.features.sidePanel.categories.application",
                         children: [
                             {
-                                component: lazy(() => import("../../admin-applications-v1/pages/application-template")),
+                                component: lazy(() => import("../../admin.applications.v1/pages/application-template")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -223,7 +223,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../admin-applications-v1/pages/application-edit")),
+                                component: lazy(() => import("../../admin.applications.v1/pages/application-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -235,7 +235,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../admin-applications-v1/pages/applications")),
+                        component: lazy(() => import("../../admin.applications.v1/pages/applications")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().applications

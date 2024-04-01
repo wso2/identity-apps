@@ -56,14 +56,14 @@ import {
 } from "./code-blocks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalOIDCAppTechnologyTypes } from "./models";
-import { updateAuthProtocolConfig } from "../../../../admin-applications-v1/api";
+import { updateAuthProtocolConfig } from "../../../../admin.applications.v1/api";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     OIDCDataInterface,
     SupportedAuthProtocolTypes
-} from "../../../../admin-applications-v1/models";
-import { ApplicationManagementUtils } from "../../../../admin-applications-v1/utils/application-management-utils";
+} from "../../../../admin.applications.v1/models";
+import { ApplicationManagementUtils } from "../../../../admin.applications.v1/utils/application-management-utils";
 import { Config } from "../../../../admin-core-v1/configs";
 import MavenLogo from "../../../assets/images/icons/maven-logo.svg";
 import TomcatLogo from "../../../assets/images/icons/tomcat-icon.svg";

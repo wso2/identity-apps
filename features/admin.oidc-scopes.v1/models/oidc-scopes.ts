@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ExtendedExternalClaimInterface } from "../../admin-applications-v1/components/settings";
+import { ExtendedExternalClaimInterface } from "../../admin.applications.v1/components/settings";
 
 /**
  *  OIDC Scopes list model.

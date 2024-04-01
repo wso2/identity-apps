@@ -32,16 +32,16 @@ import {
     getApplicationDetails,
     getInboundProtocolConfig,
     useApplicationList
-} from "../../../../admin-applications-v1/api";
+} from "../../../../admin.applications.v1/api";
 import {
     MinimalAppCreateWizard
-} from "../../../../admin-applications-v1/components/wizard/minimal-application-create-wizard";
-import { ApplicationManagementConstants } from "../../../../admin-applications-v1/constants";
+} from "../../../../admin.applications.v1/components/wizard/minimal-application-create-wizard";
+import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
 import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "../../../../admin-applications-v1/models";
-import { ApplicationManagementUtils } from "../../../../admin-applications-v1/utils/application-management-utils";
+} from "../../../../admin.applications.v1/models";
+import { ApplicationManagementUtils } from "../../../../admin.applications.v1/utils/application-management-utils";
 import {
     AppConstants,
     AppState,

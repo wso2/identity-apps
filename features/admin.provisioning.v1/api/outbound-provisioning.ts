@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { OutboundProvisioningConfigurationInterface } from "../../admin-applications-v1/models/application";
+import { OutboundProvisioningConfigurationInterface } from "../../admin.applications.v1/models/application";
 import { store } from "../../admin-core-v1/store";
 
 /**

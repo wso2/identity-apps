@@ -20,13 +20,13 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, GenericIconProps, Heading, PageHeader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Card, Grid, Radio } from "semantic-ui-react";
-import { getApplicationList } from "../../../../admin-applications-v1/api";
+import { getApplicationList } from "../../../../admin.applications.v1/api";
 import {
     ApplicationInterface,
     ApplicationListInterface,
     InboundProtocolListItemInterface,
     URLFragmentTypes
-} from "../../../../admin-applications-v1/models";
+} from "../../../../admin.applications.v1/models";
 import { EventPublisher, history } from "../../../../admin-core-v1";
 import { QuickStartModes } from "../models";
 import { useDispatch } from "react-redux";

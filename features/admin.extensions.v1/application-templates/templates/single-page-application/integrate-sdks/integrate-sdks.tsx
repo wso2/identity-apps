@@ -36,7 +36,7 @@ import { IntegrateStepGeneratorFactory } from "./integrate-step-generator-factor
 import {
     ApplicationInterface,
     ApplicationTemplateInterface
-} from "../../../../../admin-applications-v1/models";
+} from "../../../../../admin.applications.v1/models";
 import { AppState, ConfigReducerStateInterface } from "../../../../../admin-core-v1";
 import { SDKInitConfig } from "../../../shared";
 import { AddUserStepContent } from "../../../shared/components";

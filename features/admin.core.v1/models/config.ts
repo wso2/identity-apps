@@ -27,7 +27,7 @@ import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
-} from "../../admin-applications-v1/models";
+} from "../../admin.applications.v1/models";
 import { BrandingPreferenceResourceEndpointsInterface } from "../../admin-branding-v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "../../admin-certificates-v1";
 import { ClaimResourceEndpointsInterface } from "../../admin-claims-v1/models/endpoints";

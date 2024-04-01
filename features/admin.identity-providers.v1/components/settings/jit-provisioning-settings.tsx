@@ -22,7 +22,7 @@ import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { SimpleUserStoreListItemInterface } from "../../../admin-applications-v1/models";
+import { SimpleUserStoreListItemInterface } from "../../../admin.applications.v1/models";
 import { store } from "../../../admin-core-v1";
 import { OrganizationUtils } from "../../../admin-organizations-v1/utils";
 import { getUserStoreList } from "../../../admin-userstores-v1/api";

@@ -44,7 +44,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../admin-applications-v1/constants";
+import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
 import {
     AppConstants,
     AppState,

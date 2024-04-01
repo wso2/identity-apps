@@ -29,7 +29,7 @@ import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Icon, TabProps } from "semantic-ui-react";
-import { URLFragmentTypes } from "../../../../admin-applications-v1/models";
+import { URLFragmentTypes } from "../../../../admin.applications.v1/models";
 import { AppConstants, history } from "../../../../admin-core-v1";
 import { getAType, getAUserStore } from "../../../../admin-userstores-v1/api/user-stores";
 import { getDatabaseAvatarGraphic } from "../../../../admin-userstores-v1/configs/ui";

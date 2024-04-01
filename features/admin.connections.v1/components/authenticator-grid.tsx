@@ -50,7 +50,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { getAuthenticatorList } from "./common";
-import { getApplicationDetails } from "../../admin-applications-v1/api";
+import { getApplicationDetails } from "../../admin.applications.v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface, history } from "../../admin-core-v1";
 import {
     deleteConnection,
