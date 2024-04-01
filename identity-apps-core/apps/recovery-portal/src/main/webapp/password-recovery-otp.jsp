@@ -56,142 +56,143 @@
         channel = request.getParameter("channel");
     }
 
-    String queryString = request.getQueryString();
-    queryString = StringUtils.isNotBlank(queryString)? "?"+queryString: "";
-
     if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(channel)) {
         String recoveryStage = request.getParameter("recoveryStage");
-        switch (recoveryStage) {
-            case "INITIATE":
-                List<UserClaim> userClaims = new ArrayList<UserClaim>();
 
-                // get the username claim string for the tenant
-                String usernameClaimUriForTenant = "http://wso2.org/claims/username"; // todo: RNN : get this claim from somewhere
-                UserClaim userNameClaim = new UserClaim();
-                userNameClaim.setUri(usernameClaimUriForTenant);
-                userNameClaim.setValue(MultitenantUtils.getTenantAwareUsername(username));
-                userClaims.add(userNameClaim);
+        if ("INITIATE".equals(recoveryStage)) {
+            List<UserClaim> userClaims = new ArrayList<UserClaim>();
 
-                // STEP ONE : Initiate password recovery
-                RecoveryInitRequest recoveryInitRequest = new RecoveryInitRequest();
-                recoveryInitRequest.setClaims(userClaims);
+            // get the username claim string for the tenant
+            String usernameClaimUriForTenant = "http://wso2.org/claims/username"; // todo: RNN : get this claim from somewhere
+            UserClaim userNameClaim = new UserClaim();
+            userNameClaim.setUri(usernameClaimUriForTenant);
+            userNameClaim.setValue(MultitenantUtils.getTenantAwareUsername(username));
+            userClaims.add(userNameClaim);
 
-                String flawConfirmationCode = "";
-                String recoveryCode = "";
-                String channelId = "";
-                String channelValue = "";
+            // STEP ONE : Initiate password recovery
+            RecoveryInitRequest recoveryInitRequest = new RecoveryInitRequest();
+            recoveryInitRequest.setClaims(userClaims);
 
-                try {
-                    Map<String, String> requestHeaders = new HashedMap();
-                    if (request.getParameter("g-recaptcha-response") != null) {
-                        requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
-                    }
-                    List<AccountRecoveryType> resp = recoveryApiV2.initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
+            String flawConfirmationCode = "";
+            String recoveryCode = "";
+            String channelId = "";
+            String screenValue = "";
 
-                    org.apache.logging.log4j.LogManager.getLogger().warn(resp);
-                    boolean resultFound = false;
-                    for(AccountRecoveryType x: resp) {
-                        if (x.getMode().equals("recoverWithNotifications")) {
-                            RecoveryChannelInformation channelInfo = x.getChannelInfo();
-                            recoveryCode = channelInfo.getRecoveryCode();
-                            List<RecoveryChannel> channels = channelInfo.getChannels();
-                            for(RecoveryChannel ch: channels) {
-                                flawConfirmationCode = x.getFlowConfirmationCode();
-                                if (ch.getType().equals("SMS")) {
-                                    channelId = ch.getId();
-                                    channelValue = ch.getValue();
-                                }
-                                resultFound = true;
+            try {
+                Map<String, String> requestHeaders = new HashedMap();
+                if (request.getParameter("g-recaptcha-response") != null) {
+                    requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+                }
+                List<AccountRecoveryType> resp = recoveryApiV2.initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
+
+                boolean resultFound = false;
+                for(AccountRecoveryType x: resp) {
+                    if (x.getMode().equals("recoverWithNotifications")) {
+                        RecoveryChannelInformation channelInfo = x.getChannelInfo();
+                        recoveryCode = channelInfo.getRecoveryCode();
+                        List<RecoveryChannel> channels = channelInfo.getChannels();
+                        for(RecoveryChannel ch: channels) {
+                            flawConfirmationCode = x.getFlowConfirmationCode();
+                            if (ch.getType().equals("SMS")) {
+                                channelId = ch.getId();
+                                screenValue = ch.getValue();
                             }
-                        }
-                        if(resultFound) {
-                            break;
+                            resultFound = true;
                         }
                     }
-
-                    // STEP TWO : Get Recovery Information
-                    RecoveryRequest recoveryRequest = new RecoveryRequest();
-                    recoveryRequest.setChannelId(channelId);
-                    recoveryRequest.setRecoveryCode(recoveryCode);
-                    RecoveryResponse recoveryResponse = recoveryApiV2.recoverPassword(recoveryRequest, tenantDomain, requestHeaders);
-                    request.setAttribute("resendCode", recoveryResponse.getResendCode());
-                    request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
-                } catch (ApiException e) {
-                    if (!StringUtils.isBlank(username)) {
-                        request.setAttribute("username", username);
+                    if (resultFound) {
+                        break;
                     }
-                    IdentityManagementEndpointUtil.addErrorInformation(request, e);
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                    return;
                 }
+
+                // STEP TWO : Get Recovery Information
+                RecoveryRequest recoveryRequest = new RecoveryRequest();
+                recoveryRequest.setChannelId(channelId);
+                recoveryRequest.setRecoveryCode(recoveryCode);
+                RecoveryResponse recoveryResponse = recoveryApiV2.recoverPassword(recoveryRequest, tenantDomain, requestHeaders);
+                request.setAttribute("screenValue", screenValue);
+                request.setAttribute("resendCode", recoveryResponse.getResendCode());
+                request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
+            } catch (ApiException e) {
+                org.apache.logging.log4j.LogManager.getLogger().error("ERROR OCCURED!");
+                org.apache.logging.log4j.LogManager.getLogger().error(e);
+                IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+            // STEP THREE : Redirect to enter the OTP sent
+            request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+        } else if ("RESEND".equals(recoveryStage)) {
+            String resendCode = request.getParameter("resendCode");
+            // SENDING RESEND REQEUST
+            try {
+                Map<String, String> requestHeaders = new HashedMap();
+                if (request.getParameter("g-recaptcha-response") != null) {
+                    requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+                }
+                ResendRequest resendRequest = new ResendRequest();
+                resendRequest.setResendCode(resendCode);
+                ResendResponse resendResponse = recoveryApiV2.resendPasswordNotification(resendRequest, tenantDomain, requestHeaders);
                 
-                // STEP THREE : Redirect to enter the OTP sent
-                request.getRequestDispatcher("sms-otp.jsp" + queryString).forward(request, response);
-                break;
-            case "RESEND":
-                org.apache.logging.log4j.LogManager.getLogger().error("RESENDING");
-                String resendCode = request.getParameter("resendCode");
-                org.apache.logging.log4j.LogManager.getLogger().error("Resend Code : "+resendCode);
-
-                // SENDING RESEND REQEUST
-                try {
-                    Map<String, String> requestHeaders = new HashedMap();
-                    if (request.getParameter("g-recaptcha-response") != null) {
-                        requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
-                    }
-                    ResendRequest resendRequest = new ResendRequest();
-                    resendRequest.setResendCode(resendCode);
-                    ResendResponse resendResponse = recoveryApiV2.resendPasswordNotification(resendRequest, tenantDomain, requestHeaders);
-                    
-                    // Resend code re-attached to the reqeust to avoid value being missed after page refresh happening  
-                    // after the resent operation.
-                    request.setAttribute("resendCode", resendResponse.getResendCode());
-                    request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
-                } catch (ApiException e) {
-                    if (!StringUtils.isBlank(username)) {
-                        request.setAttribute("username", username);
-                    }
-                    IdentityManagementEndpointUtil.addErrorInformation(request, e);
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                    return;
-                }
-                request.getRequestDispatcher("sms-otp.jsp" + queryString).forward(request, response);
-                break;
-            case "CONFIRM":
-                String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
-                String OTPcode = request.getParameter("OTPcode");
-                try {
-                    Map<String, String> requestHeaders = new HashedMap();
-                    if (request.getParameter("g-recaptcha-response") != null) {
-                        requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
-                    }
-                    ConfirmRequest confirmRequest = new ConfirmRequest();
-                    // For local notification channels flowConfirmationCode is used as confirmation code
-                    confirmRequest.setConfirmationCode(flowConfirmationCode);
-                    confirmRequest.setOtp(OTPcode);
-                    ConfirmResponse confirmResponse = recoveryApiV2.confirmPasswordRecovery(confirmRequest, tenantDomain, requestHeaders);
-                    request.setAttribute("resetCode", confirmResponse.getResetCode());
-                } catch (ApiException e) {
-                    if (!StringUtils.isBlank(username)) {
-                        request.setAttribute("username", username);
-                    }
-                    IdentityManagementEndpointUtil.addErrorInformation(request, e);
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                    return;
-                }
-                request.getRequestDispatcher("password-reset.jsp" + queryString).forward(request, response);
-                break;
-            case "RESET":
-                request.setAttribute("useRecoveryV2API", "true");            
-                request.getRequestDispatcher("password-reset-complete.jsp" + queryString).forward(request, response);
-                break;
-            default:
-                request.setAttribute("errorMsg", "Invalid password recovery stage.");
+                // Resend code re-attached to the reqeust to avoid value being missed after page refresh happening  
+                // after the resent operation.
+                request.setAttribute("resendCode", resendResponse.getResendCode());
+                request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
+            } catch (ApiException e) {
                 if (!StringUtils.isBlank(username)) {
                     request.setAttribute("username", username);
                 }
-                request.getRequestDispatcher("error.jsp").forward(request, response);
-                break;
+                if (e.getCode() != 406) {
+                    IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    return;
+                }
+                request.setAttribute("isAuthFailure","true");
+                request.setAttribute("authFailureMsg", "authentication.fail.message");
+                request.setAttribute("resendCode", resendCode);
+                request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
+            }
+            request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+        } else if ("CONFIRM".equals(recoveryStage)) {
+            String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
+            String OTPcode = request.getParameter("OTPcode");
+            try {
+                Map<String, String> requestHeaders = new HashedMap();
+                if (request.getParameter("g-recaptcha-response") != null) {
+                    requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+                }
+                ConfirmRequest confirmRequest = new ConfirmRequest();
+                // For local notification channels flowConfirmationCode is used as confirmation code
+                confirmRequest.setConfirmationCode(flowConfirmationCode);
+                confirmRequest.setOtp(OTPcode);
+                ConfirmResponse confirmResponse = recoveryApiV2.confirmPasswordRecovery(confirmRequest, tenantDomain, requestHeaders);
+                request.setAttribute("resetCode", confirmResponse.getResetCode());
+            } catch (ApiException e) {
+                if (!StringUtils.isBlank(username)) {
+                    request.setAttribute("username", username);
+                }
+                if (e.getCode() != 406) {
+                    IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    return;
+                }
+                request.setAttribute("isAuthFailure","true");
+                request.setAttribute("authFailureMsg", "authentication.fail.message");
+                request.setAttribute("resendCode", request.getParameter("resendCode"));
+                request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
+                request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+                return;
+            }
+            request.getRequestDispatcher("password-reset.jsp").forward(request, response);
+        } else if ("RESET".equals(recoveryStage)) {
+            request.setAttribute("useRecoveryV2API", "true");            
+            request.getRequestDispatcher("password-reset-complete.jsp").forward(request, response);
+        } else {
+            request.setAttribute("errorMsg", "Invalid password recovery stage.");
+            if (!StringUtils.isBlank(username)) {
+                request.setAttribute("username", username);
+            }
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 %>

@@ -137,7 +137,6 @@
             // Ignored and fallback to login page url.
         }
     }
-    applicationAccessURLWithoutEncoding = "something is here";
 
     if (StringUtils.isNotBlank(newPassword) && useRecoveryV2API) {
 

@@ -42,35 +42,23 @@
 
 <%
     request.getSession().invalidate();
-
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     }
 
-    String authenticators = Encode.forUriComponent(request.getParameter("authenticators"));
     int otpLength = 6;
-    if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID)) {
-        try {
-            otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
-        } catch (Exception e) {
-            // Exception is caught and ignored. otpLength will be kept as 6.
-        }
-    }
-
-    String queryString = request.getQueryString();
-    Map<String, String> idpAuthenticatorMapping = null;
-    if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
-        idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
+    try {
+        otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
+    } catch (Exception e) {
+        // Exception is caught and ignored. otpLength will be kept as 6.
     }
 
     String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry");
-    String authenticationFailed = "false";
+    boolean authenticationFailed = Boolean.parseBoolean((String)request.getAttribute("isAuthFailure"));
 
-    if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-        authenticationFailed = "true";
-
-        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
-            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
+    if (authenticationFailed) {
+        if (request.getAttribute("authFailureMsg") != null) {
+            errorMessage = (String)request.getAttribute("authFailureMsg");
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry.code.invalid");
@@ -125,7 +113,7 @@
                       </h2>
                       <div class="ui divider hidden"></div>
                       <%
-                          if ("true".equals(authenticationFailed)) {
+                          if (authenticationFailed) {
                       %>
                       <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
                       </div>
@@ -147,10 +135,10 @@
                               } %>
                             
                             <div class="field">
-                                <% if (request.getParameter("screenValue") != null) { %>
+                                <% if (request.getAttribute("screenValue") != null) { %>
                                     <label for="password">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.code.sent.smsotp")%>
-                                        (<%=Encode.forHtmlContent(request.getParameter("screenValue"))%>)
+                                        (<%=Encode.forHtmlContent((String)request.getAttribute("screenValue"))%>)
                                     </label>
                                 <% } else { %>
                                     <label for="password">
@@ -264,20 +252,6 @@
                                             id="resend">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "sms.otp.resend.code")%>
                                     </button>
-
-                                    <%
-                                        String multiOptionURI = request.getParameter("multiOptionURI");
-                                        if (isMultiAuthAvailable(multiOptionURI)) {
-                                    %>
-                                        <div class="ui divider hidden"></div>
-                                        <a
-                                            class="ui fluid primary basic button link-button"
-                                            id="goBackLink"
-                                            href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
-                                        >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "choose.other.option")%>
-                                        </a>
-                                    <% } %>
                                 </div>
                           </form>
                       </div>
@@ -446,31 +420,5 @@
                 ).start();
             }
         </script>
-
-        <%!
-            private boolean isMultiAuthAvailable(String multiOptionURI) {
-                boolean isMultiAuthAvailable = true;
-                if (multiOptionURI == null || multiOptionURI.equals("null")) {
-                    isMultiAuthAvailable = false;
-                } else {
-                    int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
-                    if (authenticatorIndex == -1) {
-                        isMultiAuthAvailable = false;
-                    } else {
-                        String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
-                        int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
-                        authenticators = authenticators.substring(0, authLastIndex);
-                        List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
-                        if (authList.size() < 2) {
-                            isMultiAuthAvailable = false;
-                        }
-                        else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
-                            isMultiAuthAvailable = false;
-                        }
-                    }
-                }
-                return isMultiAuthAvailable;
-            }
-        %>
     </body>
 </html>

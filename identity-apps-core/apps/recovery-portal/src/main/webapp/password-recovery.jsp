@@ -240,9 +240,12 @@
                         <%
                         if (StringUtils.isNotEmpty(username) && !error) {
                         %>
+                        <div class="field mb-5">
+                            <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
+                        </div>
                         <div class="field">
-                            <label class="mb-5 line-break" for="username">
-                                <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
+                            <label for="username">
+                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %> 
                             </label>
                             <div class="ui fluid left icon input">
                                 <input
@@ -269,11 +272,13 @@
                         <%
                         } else {
                         %>
-
+                        <div class="field mb-5">
+                            <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
+                        </div>
                         <div class="field">
-                           <label class="mb-5 line-break" for="username">
-                               <%=i18n(recoveryResourceBundle, customText, "password.recovery.body") /*TODO: RNN: Change i18n values this in all languages*/ %> 
-                           </label>
+                            <label for="username">
+                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %> 
+                            </label>
                             <div class="ui fluid left icon input">
                                 <input
                                     placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, usernamePlaceHolder)%>"
