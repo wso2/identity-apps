@@ -63,7 +63,7 @@ import {
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../admin-extensions-v1/configs/authenticator";
 import { identityProviderConfig } from "../../../../../admin-extensions-v1/configs/identity-provider";
-import useAuthenticationFlow from "../../../../../admin-authentication-flow-builder-v1/hooks/use-authentication-flow";
+import useAuthenticationFlow from "../../../../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { ConnectionManagementConstants } from "../../../../../admin-connections-v1";
 import { ConnectionsManagementUtils } from "../../../../../admin-connections-v1/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "../../../../../admin-core-v1/configs/ui";
