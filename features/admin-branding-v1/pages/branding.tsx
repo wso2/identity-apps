@@ -17,16 +17,12 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { OrganizationType } from "@wso2is/common";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    ConfirmationModal,
-    DangerZone,
-    DangerZoneGroup,
     DocumentationLink,
     GenericIcon,
     Message,
