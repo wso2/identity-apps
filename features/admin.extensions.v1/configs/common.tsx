@@ -262,7 +262,7 @@ export const commonConfig: CommonConfig = {
         },
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
-            component: lazy(() => import("../../admin-provisioning-v1/pages/outbound-provisioning-settings")),
+            component: lazy(() => import("../../admin.provisioning.v1/pages/outbound-provisioning-settings")),
             exact: true,
             icon: {
                 icon: getSidePanelIcons().childIcon
