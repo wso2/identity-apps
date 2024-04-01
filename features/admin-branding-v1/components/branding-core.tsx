@@ -603,34 +603,28 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                         floating
                         attached="top"
                         className="preview-disclaimer"
-                        content={
-                            (
-                                <>
-                                    { t("extensions:develop.branding.publishToggle.hint") }
-                                </>
-                            )
-                        }
+                        content={ t("extensions:develop.branding.publishToggle.hint") }
                         data-componentid="branding-preference-preview-disclaimer"
                     />
                 )
             }
             {
                 showSubOrgBrandingUpdateAlert
-                    ? (
+                    && (
                         <Alert onClose={ () => setShowSubOrgBrandingUpdateAlert(false) } severity="warning">
                             { t("extensions:develop.branding.notifications.update.successWaitingAlert.description",
                                 { tenant: tenantDomain }) }
                         </Alert>
-                    ) : null
+                    )
             }
             {
                 showSubOrgBrandingDeleteAlert
-                    ? (
+                    && (
                         <Alert onClose={ () => setShowSubOrgBrandingDeleteAlert(false) } severity="warning">
                             { t("extensions:develop.branding.notifications.delete.successWaitingAlert.description",
                                 { tenant: tenantDomain }) }
                         </Alert>
-                    ) : null
+                    )
             }
             {
                 showResolutionDisclaimerMessage && (

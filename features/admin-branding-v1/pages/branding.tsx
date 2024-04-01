@@ -49,7 +49,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     return (
         <BrandingPreferenceProvider>
             <PageLayout
-                pageTitle="Branding"
+                pageTitle={ t("extensions:develop.branding.pageHeader.title") }
                 bottomMargin={ false }
                 title={ (
                     <div className="title-container">
