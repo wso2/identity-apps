@@ -33,8 +33,8 @@ import {
     AuthenticationStepInterface
 } from "../../../admin.applications.v1/models";
 import { AuthenticatorManagementConstants } from "../../../admin.connections.v1";
-import { getAuthenticators } from "../../../admin-identity-providers-v1/api";
-import { AuthenticatorInterface, AuthenticatorTypes } from "../../../admin-identity-providers-v1/models";
+import { getAuthenticators } from "../../../admin.identity-providers.v1/api";
+import { AuthenticatorInterface, AuthenticatorTypes } from "../../../admin.identity-providers.v1/models";
 
 interface ApplicationRoleAuthenticatorGroupsProps extends IdentifiableComponentInterface {
     appId: string;

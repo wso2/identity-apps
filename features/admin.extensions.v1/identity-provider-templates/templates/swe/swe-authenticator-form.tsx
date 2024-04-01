@@ -23,7 +23,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../../admin-identity-providers-v1/constants";
+import { IdentityProviderManagementConstants } from "../../../../admin.identity-providers.v1/constants";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -31,7 +31,7 @@ import {
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface,
     CommonPluggableComponentMetaPropertyInterface
-} from "../../../../admin-identity-providers-v1/models";
+} from "../../../../admin.identity-providers.v1/models";
 import { SIWEConstants } from "../../../components/identity-providers/constants";
 
 /**

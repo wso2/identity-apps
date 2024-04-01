@@ -25,7 +25,7 @@ import { AppConstants } from "../../../admin.core.v1/constants/app-constants";
 import { history } from "../../../admin.core.v1/helpers/history";
 import {
     AuthenticatorCreateWizardFactory
-} from "../../../admin-identity-providers-v1/components/wizards/authenticator-create-wizard-factory";
+} from "../../../admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 
 /**

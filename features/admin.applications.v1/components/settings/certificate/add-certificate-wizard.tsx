@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
 import { AddApplicationCertificateFormComponent } from "./add-certificate-form";
-import { getAddIDPCertificateWizardStepIcons } from "../../../../admin-identity-providers-v1/configs/ui";
+import { getAddIDPCertificateWizardStepIcons } from "../../../../admin.identity-providers.v1/configs/ui";
 
 /**
  * Interface for the Add application certificate wizard component props.

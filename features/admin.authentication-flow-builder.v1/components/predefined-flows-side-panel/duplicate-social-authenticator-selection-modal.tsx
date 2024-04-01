@@ -23,8 +23,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 import {
     IdentityProviderManagementConstants
-} from "../../../admin-identity-providers-v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../admin-identity-providers-v1/models/identity-provider";
+} from "../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { GenericAuthenticatorInterface } from "../../../admin.identity-providers.v1/models/identity-provider";
 
 /**
  * Proptypes for the duplicate social authenticator selection modal component.

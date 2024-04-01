@@ -31,7 +31,7 @@ import { getConnectionResourceEndpoints } from "../../admin.connections.v1";
 import { getConsoleSettingsResourceEndpoints } from "../../admin.console-settings.v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../admin.email-templates.v1";
 import { getGroupsResourceEndpoints } from "../../admin.groups.v1";
-import { getIDPResourceEndpoints } from "../../admin-identity-providers-v1/configs/endpoints";
+import { getIDPResourceEndpoints } from "../../admin.identity-providers.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "../../admin-identity-verification-providers-v1";
 import { getScopesResourceEndpoints } from "../../admin-oidc-scopes-v1";
 import { getInsightsResourceEndpoints } from "../../admin-org-insights-v1/config/org-insights";

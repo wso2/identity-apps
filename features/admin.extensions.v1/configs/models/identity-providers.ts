@@ -23,7 +23,7 @@ import { ConnectionTabTypes } from "../../../admin.connections.v1/models/connect
 import {
     AuthenticatorInterface,
     GenericIdentityProviderCreateWizardPropsInterface
-} from "../../../admin-identity-providers-v1/models";
+} from "../../../admin.identity-providers.v1/models";
 
 export interface ExtendedSamlConfigInterface {
     isArtifactBindingEnabled: boolean;

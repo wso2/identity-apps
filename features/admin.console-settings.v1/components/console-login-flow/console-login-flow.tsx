@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { SignOnMethods } from "../../../admin.applications.v1/components/settings/sign-on-methods/sign-on-methods";
 import { AppState } from "../../../admin.core.v1/store";
-import { IdentityProviderManagementConstants } from "../../../admin-identity-providers-v1/constants";
+import { IdentityProviderManagementConstants } from "../../../admin.identity-providers.v1/constants";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-login-flow.scss";
 

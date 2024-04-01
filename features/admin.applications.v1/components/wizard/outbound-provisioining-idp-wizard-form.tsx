@@ -23,11 +23,11 @@ import { Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { getIdentityProviderDetail } from "../../../admin-identity-providers-v1/api/identity-provider";
+import { getIdentityProviderDetail } from "../../../admin.identity-providers.v1/api/identity-provider";
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface
-} from "../../../admin-identity-providers-v1/models/identity-provider";
+} from "../../../admin.identity-providers.v1/models/identity-provider";
 
 /**
  * Proptypes for the outbound provisioning IDP form component.

@@ -54,8 +54,8 @@ import TOTPFragment from "./fragments/totp-fragment";
 import { AuthenticationSequenceInterface, AuthenticatorInterface } from "../../../../admin.applications.v1/models/application";
 import {
     IdentityProviderManagementConstants
-} from "../../../../admin-identity-providers-v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../../admin-identity-providers-v1/models/identity-provider";
+} from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
 

@@ -42,8 +42,8 @@ import {
     ApplicationRoleGroupInterface,
     ApplicationRoleGroupsUpdatePayloadInterface
 } from "../../../admin.extensions.v1/components/application/models";
-import { getIdentityProviderDetail } from "../../../admin-identity-providers-v1/api";
-import { IdentityProviderGroupInterface, IdentityProviderInterface } from "../../../admin-identity-providers-v1/models";
+import { getIdentityProviderDetail } from "../../../admin.identity-providers.v1/api";
+import { IdentityProviderGroupInterface, IdentityProviderInterface } from "../../../admin.identity-providers.v1/models";
 
 interface GroupsListProps extends IdentifiableComponentInterface {
     authenticatorId: string;

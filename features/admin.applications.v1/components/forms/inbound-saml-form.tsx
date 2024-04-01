@@ -28,7 +28,7 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import { applicationConfig, commonConfig } from "../../../admin.extensions.v1";
 import { AppState, ConfigReducerStateInterface } from "../../../admin.core.v1";
-import { getAvailableNameIDFormats } from "../../../admin-identity-providers-v1/components/utils/saml-idp-utils";
+import { getAvailableNameIDFormats } from "../../../admin.identity-providers.v1/components/utils/saml-idp-utils";
 import {
     ApplicationInterface,
     CertificateInterface,

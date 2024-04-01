@@ -46,19 +46,19 @@ import { ConnectionsManagementUtils } from "../../../../admin.connections.v1/uti
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../admin.core.v1";
 import {
     AuthenticatorCreateWizardFactory
-} from "../../../../admin-identity-providers-v1/components/wizards/authenticator-create-wizard-factory";
+} from "../../../../admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
 import {
     IdentityProviderManagementConstants
-} from "../../../../admin-identity-providers-v1/constants/identity-provider-management-constants";
+} from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 // eslint-disable-next-line max-len
-import MicrosoftIDPTemplate from "../../../../admin-identity-providers-v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
+import MicrosoftIDPTemplate from "../../../../admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import {
     GenericAuthenticatorInterface,
     IdentityProviderTemplateInterface
-} from "../../../../admin-identity-providers-v1/models/identity-provider";
+} from "../../../../admin.identity-providers.v1/models/identity-provider";
 import {
     IdentityProviderManagementUtils
-} from "../../../../admin-identity-providers-v1/utils/identity-provider-management-utils";
+} from "../../../../admin.identity-providers.v1/utils/identity-provider-management-utils";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     ApplicationInterface,

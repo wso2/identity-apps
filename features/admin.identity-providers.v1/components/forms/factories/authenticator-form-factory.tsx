@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { identityProviderConfig } from "../../../../admin.extensions.v1/configs/identity-provider";
 import MicrosoftIDPTemplate from
-    "../../../../admin-identity-providers-v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
+    "../../../../admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,

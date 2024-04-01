@@ -34,7 +34,7 @@ import {
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateGroupInterface,
     IdentityProviderTemplateListItemInterface
-} from "../admin-identity-providers-v1/models";
+} from "../admin.identity-providers.v1/models";
 
 /**
  * Class to manage extensions.

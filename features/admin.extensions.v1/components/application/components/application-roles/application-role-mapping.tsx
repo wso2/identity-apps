@@ -37,8 +37,8 @@ import {
     ApplicationInterface,
     IdpRoleMappingInterface
 } from "../../../../../admin.applications.v1/models";
-import { getAuthenticators } from "../../../../../admin-identity-providers-v1/api";
-import { AuthenticatorInterface, AuthenticatorTypes } from "../../../../../admin-identity-providers-v1/models";
+import { getAuthenticators } from "../../../../../admin.identity-providers.v1/api";
+import { AuthenticatorInterface, AuthenticatorTypes } from "../../../../../admin.identity-providers.v1/models";
 import { ApplicationRolesConstants } from "../../constants";
 
 const FORM_ID: string = "application-role-mapping-form";
