@@ -38,8 +38,8 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
-import { APIResourcesConstants } from "../../../admin-api-resources-v1/constants";
-import { APIResourceInterface } from "../../../admin-api-resources-v1/models";
+import { APIResourcesConstants } from "../../../admin.api-resources.v1/constants";
+import { APIResourceInterface } from "../../../admin.api-resources.v1/models";
 import { FeatureConfigInterface } from "../../../admin-core-v1";
 import { Policy } from "../../constants/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../models";

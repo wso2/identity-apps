@@ -109,7 +109,7 @@ export const commonConfig: CommonConfig = {
             children: [
                 {
                     component: lazy(() =>
-                        import("../../admin-api-resources-v1/pages/api-resource-edit")
+                        import("../../admin.api-resources.v1/pages/api-resource-edit")
                     ),
                     exact: true,
                     id: "apiResources-edit",
@@ -120,7 +120,7 @@ export const commonConfig: CommonConfig = {
                 },
                 {
                     component: lazy(() =>
-                        import("../../admin-api-resources-v1/pages/api-resources-internal-list")
+                        import("../../admin.api-resources.v1/pages/api-resources-internal-list")
                     ),
                     exact: true,
                     id: "apiResources-list",
@@ -131,7 +131,7 @@ export const commonConfig: CommonConfig = {
                 }
             ],
             component: lazy(() =>
-                import("../../admin-api-resources-v1/pages/api-resources")
+                import("../../admin.api-resources.v1/pages/api-resources")
             ),
             exact: true,
             icon: {
