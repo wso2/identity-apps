@@ -19,7 +19,7 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Claim } from "@wso2is/core/models";
 import { handleGetAllLocalClaimsError } from "./attribute-settings-utils";
-import { getAllLocalClaims } from "../../../../../admin-claims-v1/api";
+import { getAllLocalClaims } from "../../../../../admin.claims.v1/api";
 import { IDVPLocalClaimInterface } from "../../../../models";
 
 /**

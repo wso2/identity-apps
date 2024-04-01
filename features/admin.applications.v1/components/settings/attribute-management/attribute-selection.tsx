@@ -44,7 +44,7 @@ import {
     SelectedDialectInterface
 } from "./attribute-settings";
 import { applicationConfig } from "../../../../admin-extensions-v1";
-import { ClaimManagementConstants } from "../../../../admin-claims-v1/constants";
+import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
 import {
     AppConstants,
     AppState,

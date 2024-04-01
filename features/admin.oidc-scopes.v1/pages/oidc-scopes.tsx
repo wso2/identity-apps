@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
 import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { ClaimManagementConstants } from "../../admin-claims-v1/constants";
+import { ClaimManagementConstants } from "../../admin.claims.v1/constants";
 import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../admin-core-v1";
 import { useOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";

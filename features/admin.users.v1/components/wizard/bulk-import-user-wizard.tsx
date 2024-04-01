@@ -66,8 +66,8 @@ import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { userConfig, userstoresConfig } from "../../../admin-extensions-v1/configs";
-import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../admin-claims-v1/api";
-import { ClaimManagementConstants } from "../../../admin-claims-v1/constants";
+import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../admin.claims.v1/api";
+import { ClaimManagementConstants } from "../../../admin.claims.v1/constants";
 import {
     AppConstants,
     ModalWithSidePanel,

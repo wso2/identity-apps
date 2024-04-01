@@ -36,7 +36,7 @@ import { Dispatch } from "redux";
 import { Image, StrictTabProps } from "semantic-ui-react";
 import ExternalDialectEditPage from "./external-dialect-edit";
 import { SCIMConfigs, attributeConfig } from "../../admin-extensions-v1";
-import { getAllExternalClaims, getDialects } from "../../admin-claims-v1/api";
+import { getAllExternalClaims, getDialects } from "../../admin.claims.v1/api";
 import { AppConstants, AppState, getTechnologyLogos, history } from "../../admin-core-v1";
 import { } from "../components";
 import { ClaimManagementConstants } from "../constants";
