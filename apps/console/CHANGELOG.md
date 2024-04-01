@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.14.1
+
+### Patch Changes
+
+- [#5863](https://github.com/wso2/identity-apps/pull/5863) [`c4e3e17b97`](https://github.com/wso2/identity-apps/commit/c4e3e17b975da969cf8374879a5e6be0a42042eb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger console release
+
 ## 2.14.0
 
 ### Minor Changes
