@@ -44,7 +44,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Label } from "semantic-ui-react";
 import { SCIMConfigs } from "../../admin-extensions-v1/configs/scim";
-import { getProfileInformation } from "../../admin-authentication-v1/store";
+import { getProfileInformation } from "../../admin.authentication.v1/store";
 import {
     AppConstants,
     AppState,
