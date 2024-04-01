@@ -38,7 +38,7 @@ import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { commonConfig, identityProviderConfig } from "../../admin.extensions.v1";
 import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../admin-layouts-v1";
+import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../admin.layouts.v1";
 import { AppView, FullScreenView } from "../../admin.views.v1";
 import { ServerConfigurationsConstants } from "../../admin.server-configurations.v1";
 import { AppConstants } from "../constants";

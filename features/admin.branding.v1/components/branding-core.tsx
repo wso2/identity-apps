@@ -38,11 +38,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { EventPublisher } from "../../admin-core-v1";
-import { AppState } from "../../admin-core-v1/store";
-import { ExtendedFeatureConfigInterface } from "../../admin-extensions-v1/configs/models";
-import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
-import { OrganizationResponseInterface } from "../../admin-organizations-v1/models/organizations";
+import { EventPublisher } from "../../admin.core.v1";
+import { AppState } from "../../admin.core.v1/store";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import { OrganizationResponseInterface } from "../../admin.organizations.v1/models/organizations";
 import { deleteBrandingPreference, updateBrandingPreference } from "../api";
 import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
 import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";

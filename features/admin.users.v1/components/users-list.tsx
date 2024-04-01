@@ -48,11 +48,11 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin-core-v1";
-import { SCIMConfigs } from "../../admin-extensions-v1/configs/scim";
-import { userConfig } from "../../admin-extensions-v1/configs/user";
-import { userstoresConfig } from "../../admin-extensions-v1/configs/userstores";
-import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
+} from "../../admin.core.v1";
+import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
+import { userConfig } from "../../admin.extensions.v1/configs/user";
+import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { RealmConfigInterface } from "../../admin.server-configurations.v1";
 import { deleteUser } from "../api";
 import { UserManagementConstants } from "../constants";

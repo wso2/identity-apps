@@ -45,9 +45,9 @@ import {
     AppConstants,
     AppState,
     FeatureConfigInterface
-} from "../../admin-core-v1";
-import { history } from "../../admin-core-v1/helpers";
-import smsProviderConfig from "../../admin-extensions-v1/configs/sms-provider";
+} from "../../admin.core.v1";
+import { history } from "../../admin.core.v1/helpers";
+import smsProviderConfig from "../../admin.extensions.v1/configs/sms-provider";
 import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
 import { providerCards } from "../configs/provider-cards";
 import { SMSProviderConstants } from "../constants";
