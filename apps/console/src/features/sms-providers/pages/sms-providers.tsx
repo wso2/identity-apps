@@ -31,7 +31,6 @@ import {
     PageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import smsProviderConfig from "../../../extensions/configs/sms-provider";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +39,7 @@ import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
+import smsProviderConfig from "../../../extensions/configs/sms-provider";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
 import {
@@ -559,13 +559,15 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             <Grid>
                                                 <Grid.Row columns={ 3 }>
                                                     { providerCards.map(
-                                                        (provider: SMSProviderCardInterface) => (
-                                                            <Grid.Column key={ provider.id }>
+                                                        (provider: SMSProviderCardInterface) => {
+                                                            const smsProviderName: string =
+                                                                        provider.name.toLocaleLowerCase();
+
+                                                            return (<Grid.Column key={ provider.id }>
                                                                 <InfoCard
                                                                     fluid
                                                                     data-componentid=
-                                                                        { `${componentId}
-                                                                                -sms-provider-info-card` }
+                                                                        { `${smsProviderName}-sms-provider-info-card` }
                                                                     image={ provider.icon }
                                                                     imageSize="x30"
                                                                     header={
@@ -585,7 +587,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                                     showCardAction={ false }
                                                                 />
                                                             </Grid.Column>
-                                                        )) }
+                                                            );}) }
                                                 </Grid.Row>
                                             </Grid>
                                         </div>
