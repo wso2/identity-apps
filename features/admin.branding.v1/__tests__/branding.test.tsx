@@ -19,7 +19,7 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/branding-permissions";
-import { render, screen, waitFor } from "../../../../test-configs/utils";
+import { render, screen, waitFor } from "../../test-configs/utils";
 import BrandingPage from "../pages/branding";
 
 describe("Test if the Branding page is working as expected", () => {

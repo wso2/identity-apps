@@ -17,7 +17,7 @@
  */
 
 import React from "react";
-import { fireEvent, render, screen, waitFor, within } from "../../../../test-configs";
+import { fireEvent, render, screen, waitFor, within } from "../../test-configs";
 import { getOrganizationsEmptyMockResponse, getOrganizationsPageOneMockResponse } from "../__mocks__/organization";
 import * as api from "../api/organization";
 import { OrganizationList, OrganizationListPropsInterface } from "../components/organization-list";

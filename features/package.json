@@ -10,7 +10,9 @@
         "build": "pnpm build",
         "postinstall": "node scripts/post-install.js",
         "copy:themes:features": "node scripts/copy-themes-to-features.js",
-        "clean:themes:features": "pnpm rimraf ./themes"
+        "clean:themes:features": "pnpm rimraf ./themes",
+        "test": "jest --passWithNoTests",
+        "test:watch": "pnpm run test --watchAll"
     },
     "dependencies": {
         "@asgardeo/auth-react": "^4.0.1",

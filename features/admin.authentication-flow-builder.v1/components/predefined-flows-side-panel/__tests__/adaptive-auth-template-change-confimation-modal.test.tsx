@@ -19,7 +19,7 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../../../test-configs/utils";
+import { render, screen } from "../../../../test-configs/utils";
 import AdaptiveAuthTemplateChangeConfirmationModal, {
     AdaptiveAuthTemplateChangeConfirmationModalPropsInterface
 } from "../adaptive-auth-template-change-confimation-modal";

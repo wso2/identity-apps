@@ -20,7 +20,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { Position } from "reactflow";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../../../test-configs/utils";
+import { render, screen } from "../../../../test-configs/utils";
 import StepAdditionEdge, { StepAdditionEdgePropsInterface } from "../step-addition-edge";
 
 describe("StepAdditionEdge", () => {

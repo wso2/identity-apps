@@ -19,7 +19,7 @@
 import "@testing-library/jest-dom";
 import React from "react";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../../../../../test-configs/utils";
+import { render, screen } from "../../../../../../test-configs/utils";
 import TOTPFragment, { TOTPFragmentPropsInterface } from "../totp-fragment";
 
 describe("TOTPFragment", () => {

@@ -18,7 +18,7 @@
 
 import React from "react";
 import { fullPermissions } from "./__mocks__/getting-started-permissions";
-import { render, screen } from "../../../../../test-configs";
+import { render, screen } from "../../../../test-configs";
 import GettingStartedPage from "../getting-started";
 import "@testing-library/jest-dom";
 

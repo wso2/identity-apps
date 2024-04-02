@@ -22,6 +22,7 @@ import { StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
 import UAParser from "ua-parser-js";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
+import { Config } from "../../admin.core.v1";
 
 /**
  * Response mode fallback.

@@ -17,7 +17,7 @@
  */
 
 import React from "react";
-import { fireEvent,render, screen, waitFor, within } from "../../../../test-configs";
+import { fireEvent,render, screen, waitFor, within } from "../../test-configs";
 import {
     addOrganizationMockResponse,
     getOrganizationsEmptyMockResponse,

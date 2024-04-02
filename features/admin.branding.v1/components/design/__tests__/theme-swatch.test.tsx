@@ -17,7 +17,7 @@
  */
 
 import React from "react";
-import { render, screen } from "../../../../../../test-configs/utils";
+import { render, screen } from "../../../../test-configs/utils";
 import "@testing-library/jest-dom";
 import { BrandingPreferenceMeta } from "../../../meta";
 import { PredefinedThemes } from "../../../models";
