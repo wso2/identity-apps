@@ -52,12 +52,14 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization List Compon
 
     deleteOrganizationMock.mockImplementation(() => Promise.resolve("organization-one"));
 
-    test.only("UTC-1.1 - Test if the placeholder is shown", () => {
+    test.only("UTC-1.1 - Test if the placeholder is shown", async () => {
         render(
             <OrganizationList { ...organizationListProps } list={ getOrganizationsEmptyMockResponse } />
         );
 
-        expect(screen.getByTestId("empty-placeholder")).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByTestId("empty-placeholder")).toBeInTheDocument();
+        });
     });
 
     test("UTC-1.2 - Test if the empty search placeholder is shown", () => {

@@ -26,12 +26,13 @@ import SidePanelDrawer, {
 
 describe("SidePanelDrawer", () => {
     const defaultProps: SidePanelDrawerPropsInterface = {
+        open: true,
         panel: <div>Panel</div>,
         panelControlsLabel: "Panel Controls"
     };
 
-    it("renders the SidePanelDrawer component", () => {
-        render(<SidePanelDrawer { ...defaultProps } />, { allowedScopes: fullPermissions });
+    it("renders the SidePanelDrawer component", async () => {
+        await render(<SidePanelDrawer { ...defaultProps } />, { allowedScopes: fullPermissions });
 
         const sidePanelDrawer: Element = screen.getByTestId("side-panel-drawer");
 

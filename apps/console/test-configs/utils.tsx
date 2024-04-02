@@ -16,7 +16,7 @@
  * under the License.
  */
 
-// import { AuthProvider } from "@asgardeo/auth-react";
+import { AuthProvider } from "@asgardeo/auth-react";
 import {  RenderResult, render as rtlRender } from "@testing-library/react";
 // import { AccessControlProvider } from "@wso2is/access-control";
 import React, { PropsWithChildren, ReactElement } from "react";
@@ -24,8 +24,8 @@ import { Provider } from "react-redux";
 import { mockStore } from "./__mocks__/redux/redux-store";
 import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
 // import { AccessControlUtils } from "../src/features/access-control/configs/access-control";
-// import { AuthenticateUtils } from "../src/features/authentication/utils/authenticate-utils";
-// import { PreLoader } from "../src/features/core/components/pre-loader/pre-loader";
+import { AuthenticateUtils } from "../src/features/authentication/utils/authenticate-utils";
+import { PreLoader } from "../src/features/core/components/pre-loader/pre-loader";
 
 /**
  * Custom render method to includes things like global context providers, data stores, etc.
@@ -55,24 +55,58 @@ const render = (
 
         const { children } = props;
 
+        window.URL.createObjectURL = jest.fn();
+        window.MessageChannel = jest.fn();
+
         return (
-        // <AuthProvider
-        //     config={ AuthenticateUtils.getInitializeConfig() }
-        //     fallback={ <PreLoader /> }
-        //     getAuthParams={ AuthenticateUtils.getAuthParams }
-        // >
             <Provider store={ store }>
                 { /* Temporarily commenting out the AccessControlProvider due to issues with mocking
                     window["AppUtils"] */ }
                 { /* <AccessControlProvider
-                    allowedScopes={ allowedScopes }
-                    features={ featureConfig }
-                    permissions={ AccessControlUtils.getPermissions(featureConfig, allowedScopes) }
-                >
-                </AccessControlProvider> */ }
+                            allowedScopes={ allowedScopes }
+                            features={ featureConfig }
+                            permissions={ AccessControlUtils.getPermissions(featureConfig, allowedScopes) }
+                        >
+                    </AccessControlProvider>
+                    */ }
                 { children }
             </Provider>
-            // </AuthProvider>
+        );
+    };
+
+    return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
+};
+
+const renderWithAuthWrapper = (
+    ui: ReactElement,
+    {
+        // allowedScopes = "internal_login",
+        // featureConfig = window[ "AppUtils" ].getConfig().ui.features,
+        initialState = ReduxStoreStateMock,
+        store = mockStore(initialState),
+        ...renderOptions
+    }: any = {}
+): RenderResult => {
+
+    const Wrapper = (props: PropsWithChildren): ReactElement => {
+
+        const { children } = props;
+
+        window.URL.createObjectURL = jest.fn();
+        window.MessageChannel = jest.fn();
+
+        return (
+            <AuthProvider
+                config={ AuthenticateUtils.getInitializeConfig() }
+                fallback={ <PreLoader /> }
+                getAuthParams={ AuthenticateUtils.getAuthParams }
+            >
+                <Provider store={ store }>
+                    { /* Temporarily commenting out the AccessControlProvider due to issues with mocking
+                    window["AppUtils"] */ }
+                    { children }
+                </Provider>
+            </AuthProvider>
         );
     };
 
@@ -82,4 +116,4 @@ const render = (
 // re-export everything
 export * from "@testing-library/react";
 // override render method
-export { render };
+export { render, renderWithAuthWrapper };

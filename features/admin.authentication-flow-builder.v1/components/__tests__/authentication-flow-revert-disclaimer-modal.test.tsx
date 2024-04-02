@@ -25,7 +25,9 @@ import AuthenticationFlowRevertDisclaimerModal, {
 } from "../authentication-flow-revert-disclaimer-modal";
 
 describe("AuthenticationFlowRevertDisclaimerModal", () => {
-    const defaultProps: AuthenticationFlowRevertDisclaimerModalPropsInterface = {};
+    const defaultProps: AuthenticationFlowRevertDisclaimerModalPropsInterface = {
+        open: true
+    };
 
     it("renders the AuthenticationFlowRevertDisclaimerModal component", () => {
         render(<AuthenticationFlowRevertDisclaimerModal { ...defaultProps } />, { allowedScopes: fullPermissions });
