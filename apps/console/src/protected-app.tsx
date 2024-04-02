@@ -60,11 +60,11 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig } from "./extensions";
-import useTenantTier from "./extensions/components/subscription/api/subscription";
-import { TenantTier } from "./extensions/components/subscription/models/subscription";
-import { SubscriptionProvider } from "./extensions/components/subscription/providers/subscription-provider";
-import useSignIn from "./features/authentication/hooks/use-sign-in";
+import { commonConfig } from "@wso2is/features/admin.extensions.v1";
+import useTenantTier from "@wso2is/features/admin.extensions.v1/components/subscription/api/subscription";
+import { TenantTier } from "@wso2is/features/admin.extensions.v1/components/subscription/models/subscription";
+import { SubscriptionProvider } from "@wso2is/features/admin.extensions.v1/components/subscription/providers/subscription-provider";
+import useSignIn from "@wso2is/features/admin.authentication.v1/hooks/use-sign-in";
 import {
     AppState,
     AppUtils,
@@ -78,15 +78,15 @@ import {
     setFilteredDevelopRoutes,
     setSanitizedDevelopRoutes,
     store
-} from "./features/core";
-import { AppConstants } from "./features/core/constants";
-import { history } from "./features/core/helpers";
-import useRoutes from "./features/core/hooks/use-routes";
-import useOrganizationSwitch from "./features/organizations/hooks/use-organization-switch";
+} from "@wso2is/features/admin.core.v1";
+import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
+import { history } from "@wso2is/features/admin.core.v1/helpers";
+import useRoutes from "@wso2is/features/admin.core.v1/hooks/use-routes";
+import useOrganizationSwitch from "@wso2is/features/admin.organizations.v1/hooks/use-organization-switch";
 import {
     GovernanceCategoryForOrgsInterface,
     useGovernanceConnectorCategories
-} from "./features/server-configurations";
+} from "@wso2is/features/admin.server-configurations.v1";
 
 const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 
@@ -147,8 +147,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     useEffect(() => {
-        dispatch(setFilteredDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
-        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
+        dispatch(setFilteredDevelopRoutes(getAppViewRoutes()));
+        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes()));
     }, [ dispatch ]);
 
     useEffect(() => {

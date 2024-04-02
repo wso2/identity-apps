@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "module": "commonjs",
+        "rootDir": ".",
+        "outDir": "dist/src"
+    },
+    "extends": "../../../../../tsconfig.base.json"
+}

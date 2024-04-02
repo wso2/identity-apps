@@ -1,0 +1,29 @@
+{
+    "root": "features/",
+    "prefix": "@wso2is",
+    "implicitDependencies": [
+        "access-control",
+        "core",
+        "form",
+        "forms",
+        "i18n",
+        "react-components",
+        "theme",
+        "validation"
+    ],
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm copy:themes:features",
+                        "description": "copy themes inside features from modules"
+                    }
+                ],
+                "cwd": "features",
+                "parallel": true
+            }
+        }
+    }
+}

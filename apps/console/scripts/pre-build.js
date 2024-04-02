@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,9 +41,6 @@ log("Pre build script started.....");
 
 // Run the clean script.
 execSync("pnpm clean:build");
-
-// Run theme content copying to source script.
-execSync("pnpm copy:themes:src");
 
 // Copy i18n defaults used for text branding from login app.
 execSync("pnpm copy:branding:i18n:defaults");
@@ -103,9 +100,13 @@ const hash = crypto.createHash("sha1").update(JSON.stringify(meta)).digest("hex"
 const newMetaFileName = "meta." + hash.substr(0, 8) + ".json";
 const tmpDir = path.join(__dirname, "..", "src", "extensions", "i18n", "tmp");
 
-if (!fs.existsSync(tmpDir)) {
-    fs.mkdirSync(tmpDir);
+// Remove the tmp directory if it exists.
+if (fs.existsSync(tmpDir)) {
+    fs.removeSync(tmpDir);
 }
+
+fs.mkdirSync(tmpDir);
+
 const newMetaFilePath = path.join(tmpDir, newMetaFileName);
 
 // Save meta.json file.
@@ -115,13 +116,14 @@ log("Cleaning the tmp directory...");
 execSync("pnpm clean:i18n:dist");
 
 // Path of the build directory.
-const layoutsDirectory = path.join(__dirname, "..", "..", "..", "identity-apps-core", "components", "login-portal-layouts", "layouts");
+const layoutsDirectory = path.join(
+    __dirname, "..", "..", "..", "identity-apps-core", "components", "login-portal-layouts", "layouts");
 const layoutsSrc = path.join(__dirname, "..", "src", "login-portal-layouts");
 
 // Remove the src directory if it exists.
 if (fs.existsSync(layoutsSrc)) {
-  log("Removing existing layouts directory in src");
-  fs.removeSync(layoutsSrc);
+    log("Removing existing layouts directory in src");
+    fs.removeSync(layoutsSrc);
 }
 
 // Copy the layouts directory to the src directory.
