@@ -18,12 +18,12 @@
 
 import {
     getEmptyPlaceholderIllustrations
-} from "@wso2is/common/src/configs/ui";
+} from "../../admin.core.v1/configs/ui";
 import {
     AppConstants
-} from "@wso2is/common/src/constants/app-constants";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+} from "../../admin.core.v1/constants/app-constants";
+import useDeploymentConfig from "../../admin.core.v1/hooks/use-app-configs";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,

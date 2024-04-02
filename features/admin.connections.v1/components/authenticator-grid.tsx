@@ -21,9 +21,9 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import {
     getEmptyPlaceholderIllustrations
-} from "@wso2is/common/src/configs/ui";
-import { AppConstants } from "@wso2is/common/src/constants/app-constants";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+} from "../../admin.core.v1/configs/ui";
+import { AppConstants } from "../../admin.core.v1/constants/app-constants";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

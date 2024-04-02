@@ -28,7 +28,7 @@ import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { OrganizationType } from "@wso2is/common";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";

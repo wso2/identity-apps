@@ -23,8 +23,8 @@ import {
     OIDCEndpoints,
     useAuthContext
 } from "@asgardeo/auth-react";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
-import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
+import useDeploymentConfig from "../../admin.core.v1/hooks/use-deployment-configs";
+import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
