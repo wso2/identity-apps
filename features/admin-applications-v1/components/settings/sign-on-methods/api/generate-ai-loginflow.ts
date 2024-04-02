@@ -43,15 +43,14 @@ const useGenerateAILoginFlow = (
         axios.post(
             "http://localhost:3000/loginflow/generate",
             {
-                userQuery: userQuery,
-                userClaims: userClaims,
-                availableAuthenticators: availableAuthenticators,
+                user_query: userQuery,
+                user_claims: userClaims,
+                available_authenticators: availableAuthenticators,
             },
             {
                 headers: {
-                    "traceId": traceId
+                    "Trace-Id": traceId
                 },
-                withCredentials: false
             }
         )
         .then(response => {
