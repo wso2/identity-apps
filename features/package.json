@@ -30,7 +30,6 @@
         "@oxygen-ui/react": "^1.11.0",
         "@oxygen-ui/react-icons": "^1.11.0",
         "@wso2is/access-control": "^2.0.22",
-        "@wso2is/common": "^2.0.52",
         "@wso2is/core": "^2.0.37",
         "@wso2is/dynamic-forms": "^2.0.41",
         "@wso2is/form": "^2.0.42",

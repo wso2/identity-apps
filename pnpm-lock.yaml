@@ -520,9 +520,6 @@ importers:
       '@wso2is/access-control':
         specifier: ^2.0.23
         version: link:../../modules/access-control
-      '@wso2is/common':
-        specifier: ^2.0.53
-        version: link:../../modules/common
       '@wso2is/core':
         specifier: ^2.0.38
         version: link:../../modules/core
@@ -1128,9 +1125,6 @@ importers:
       '@wso2is/access-control':
         specifier: ^2.0.22
         version: link:../modules/access-control
-      '@wso2is/common':
-        specifier: ^2.0.52
-        version: link:../modules/common
       '@wso2is/core':
         specifier: ^2.0.37
         version: link:../modules/core
