@@ -26,8 +26,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
-import { applicationConfig } from "../../../../admin.extensions.v1";
 import { AppState } from "../../../../admin.core.v1";
+import { applicationConfig } from "../../../../admin.extensions.v1";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
@@ -180,6 +180,22 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         }
     }, [ selectedSubjectValue ]);
 
+    const getSelectedDropDownValue = ((
+        options: DropdownOptionsInterface[],
+        checkValue: string
+    ) : string => {
+        const dropDownOptions: DropdownOptionsInterface[] = options as DropdownOptionsInterface[];
+        let claimURI: string = "";
+
+        if (showSubjectAttribute) {
+            claimURI = getDefaultDropDownValue (dropDownOptions, checkValue);
+        } else {
+            claimURI = defaultSubjectAttribute;
+        }
+
+        return claimURI;
+    });
+
     /**
      * Check whether initial value is exist in dropdown list.
      */
@@ -232,7 +248,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 mappings: []
             },
             subject: {
-                claim: getDefaultDropDownValue(dropDownOptions, values.subjectAttribute),
+                claim: getSelectedDropDownValue(dropDownOptions, values.subjectAttribute),
                 includeTenantDomain: !!values.subjectIncludeTenantDomain,
                 includeUserDomain: !!values.subjectIncludeUserDomain,
                 mappedLocalSubjectMandatory: mandateLinkedLocalAccount,
@@ -422,23 +438,25 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Hint>
                         </>
                     ) }
-                    <Field.Dropdown
-                        ariaLabel="Subject attribute"
-                        name="subjectAttribute"
-                        label={
-                            t("applications:forms.advancedAttributeSettings" +
+                    { !dropDownOptions.isEmpty() ? (
+                        <Field.Dropdown
+                            ariaLabel="Subject attribute"
+                            name="subjectAttribute"
+                            label={
+                                t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectAttribute.label")
-                        }
-                        required={ claimMappingOn }
-                        value={ selectedSubjectValue }
-                        options={ dropDownOptions }
-                        hidden={ resolveSubjectAttributeHiddenStatus() }
-                        readOnly={ readOnly }
-                        data-testid={ `${ componentId }-subject-attribute-dropdown` }
-                        listen={ subjectAttributeChangeListener }
-                        enableReinitialize={ true }
-                        hint={ resolveSubjectAttributeHint() }
-                    />
+                            }
+                            initialValue= { null }
+                            required={ claimMappingOn }
+                            value={ selectedSubjectValue }
+                            options={ dropDownOptions }
+                            hidden={ resolveSubjectAttributeHiddenStatus() }
+                            readOnly={ readOnly }
+                            data-testid={ `${ componentId }-subject-attribute-dropdown` }
+                            listen={ subjectAttributeChangeListener }
+                            enableReinitialize={ true }
+                            hint={ resolveSubjectAttributeHint() }
+                        /> ) : null }
                     <Field.CheckboxLegacy
                         ariaLabel="Subject include user domain"
                         name="subjectIncludeUserDomain"

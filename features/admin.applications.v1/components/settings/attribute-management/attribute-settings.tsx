@@ -721,6 +721,27 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     };
 
     /**
+     * Create sorted dropdown list.
+     */
+    const createDropDownList = () : DropdownOptionsInterface[]=> {
+        let soretdDropdownList: DropdownOptionsInterface[] = [];
+
+        soretdDropdownList = createDropdownOption();
+
+        if (onlyOIDCConfigured) {
+            const defaultSubjectClaimIndex: number =
+            soretdDropdownList.findIndex(
+                (option: DropdownOptionsInterface) => option?.value === DefaultSubjectAttribute
+            );
+
+            soretdDropdownList = soretdDropdownList.filter((item:DropdownOptionsInterface,
+                index:number) => index !== defaultSubjectClaimIndex);
+        }
+
+        return soretdDropdownList;
+    };
+
+    /**
      * Create dropdown options
      */
     const createDropdownOption = (): DropdownOptionsInterface[] => {
@@ -1219,7 +1240,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <AdvanceAttributeSettings
-                                        dropDownOptions={ createDropdownOption() }
+                                        dropDownOptions={ createDropDownList() }
                                         triggerSubmission={ (submitFunction: () => void) => {
                                             submitAdvanceForm = submitFunction;
                                         } }
