@@ -475,11 +475,21 @@
    <% } %>
     <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)) { %>
             <div class="field m-0">
-                <% if (isMultiAttributeLoginEnabledInTenant) { %>
-                    <label><%=usernameLabel %></label>
-                <% } else { %>
-                    <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%></label>
-                <% } %>
+                <% String loginInputLabel=i18n(resourceBundle, customText, "login.identifier.input.label" , "", false ); %>
+                
+                    <% if (StringUtils.isNotBlank(loginInputLabel)) { %>
+                        <label>
+                            <%= loginInputLabel %>
+                        </label>
+                        <% } else if (isMultiAttributeLoginEnabledInTenant) { %>
+                            <label>
+                                <%= usernameLabel %>
+                            </label>
+                            <% } else { %>
+                                <label>
+                                    <%= AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel) %>
+                                </label>
+                                <% } %>
                 <div class="ui fluid left icon input">
                 <input
                     type="text"
