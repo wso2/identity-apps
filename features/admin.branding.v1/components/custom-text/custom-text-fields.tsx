@@ -30,9 +30,9 @@ import orderBy from "lodash-es/orderBy";
 import React, { FunctionComponent, ReactElement, SVGAttributes, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../admin.core.v1/store";
 import { serverConfigurationConfig } from "../../../../extensions/configs/server-configuration";
 import { ReactComponent as WarningIcon } from "../../../../themes/default/assets/images/icons/warning-icon.svg";
+import { AppState } from "../../../admin.core.v1/store";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers/history";
 import {
