@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.13.36
+
+### Patch Changes
+
+- [#5876](https://github.com/wso2/identity-apps/pull/5876) [`40f58e48c4`](https://github.com/wso2/identity-apps/commit/40f58e48c4f8e47856227bad6a6bff60ebee5982) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Add validation for identity claims in OIDC connection
+
 ## 2.13.35
 
 ### Patch Changes
