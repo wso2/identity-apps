@@ -1,5 +1,134 @@
 # @wso2is/console
 
+## 2.14.4
+
+### Patch Changes
+
+- [#5874](https://github.com/wso2/identity-apps/pull/5874) [`02a605ee26`](https://github.com/wso2/identity-apps/commit/02a605ee26a8b454ec5351a9efe957681c52cde8) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Updated folder names within the `features` package to standardize directory naming conventions, adopting the format `admin.<feature-name>.<version>`, like admin-access-control.v1, admin-roles.v2, for clearer organization.
+
+* [#5871](https://github.com/wso2/identity-apps/pull/5871) [`5eaae63b1e`](https://github.com/wso2/identity-apps/commit/5eaae63b1ef15be35be15e5f37e8b6a0be426f12) Thanks [@chamathns](https://github.com/chamathns)! - Refactor branding page
+
+* Updated dependencies [[`02a605ee26`](https://github.com/wso2/identity-apps/commit/02a605ee26a8b454ec5351a9efe957681c52cde8), [`5eaae63b1e`](https://github.com/wso2/identity-apps/commit/5eaae63b1ef15be35be15e5f37e8b6a0be426f12)]:
+  - @wso2is/features@2.13.35
+
+## 2.14.3
+
+### Patch Changes
+
+- [#5865](https://github.com/wso2/identity-apps/pull/5865) [`f2db9622bf`](https://github.com/wso2/identity-apps/commit/f2db9622bfdee027ed509c2de43f95ccb7580645) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent choreo sms provider configs being autofilled in custom SMS provider configuration form
+
+- Updated dependencies [[`f2db9622bf`](https://github.com/wso2/identity-apps/commit/f2db9622bfdee027ed509c2de43f95ccb7580645)]:
+  - @wso2is/features@2.13.34
+
+## 2.14.2
+
+### Patch Changes
+
+- [#5869](https://github.com/wso2/identity-apps/pull/5869) [`63b61f2227`](https://github.com/wso2/identity-apps/commit/63b61f2227dab37ef33c291a92e3c91e9149f571) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add auditlog componentIds
+
+* [#5868](https://github.com/wso2/identity-apps/pull/5868) [`6d4a50edd7`](https://github.com/wso2/identity-apps/commit/6d4a50edd753843fc3a7586d8e06eba0f4bc3c36) Thanks [@chamathns](https://github.com/chamathns)! - Refactor branding page
+
+* Updated dependencies [[`a42afeec39`](https://github.com/wso2/identity-apps/commit/a42afeec3982b1cd489a97a9461bb10370f4666d), [`6d4a50edd7`](https://github.com/wso2/identity-apps/commit/6d4a50edd753843fc3a7586d8e06eba0f4bc3c36)]:
+  - @wso2is/features@2.13.33
+
+## 2.14.1
+
+### Patch Changes
+
+- [#5863](https://github.com/wso2/identity-apps/pull/5863) [`c4e3e17b97`](https://github.com/wso2/identity-apps/commit/c4e3e17b975da969cf8374879a5e6be0a42042eb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger console release
+
+## 2.14.0
+
+### Minor Changes
+
+- [#5849](https://github.com/wso2/identity-apps/pull/5849) [`00ea371f27`](https://github.com/wso2/identity-apps/commit/00ea371f2764336ad79964227268316ccb46aacb) Thanks [@thiva-k](https://github.com/thiva-k)! - Refactor features into root
+
+## 2.13.32
+
+### Patch Changes
+
+- [#5847](https://github.com/wso2/identity-apps/pull/5847) [`92c327a9ef`](https://github.com/wso2/identity-apps/commit/92c327a9ef7b584f7f105790f1ec389f2d62a39d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enable configurability for SCIM custom schema URI
+
+- Updated dependencies [[`92c327a9ef`](https://github.com/wso2/identity-apps/commit/92c327a9ef7b584f7f105790f1ec389f2d62a39d)]:
+  - @wso2is/core@2.0.38
+  - @wso2is/access-control@2.0.23
+  - @wso2is/common@2.0.53
+  - @wso2is/dynamic-forms@2.0.42
+  - @wso2is/form@2.0.43
+  - @wso2is/forms@2.0.28
+  - @wso2is/i18n@2.1.6
+  - @wso2is/react-components@2.1.13
+
+## 2.13.31
+
+### Patch Changes
+
+- [#5766](https://github.com/wso2/identity-apps/pull/5766) [`3481972af3`](https://github.com/wso2/identity-apps/commit/3481972af3ed6ac3e4d4998fa639850e80a83cdd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Users section unification
+
+* [#5843](https://github.com/wso2/identity-apps/pull/5843) [`0cde7bb6c1`](https://github.com/wso2/identity-apps/commit/0cde7bb6c1382ea9f536402763c75499b5a8dbcf) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Conditionally show the user store info message in add multiple user wizard
+
+## 2.13.30
+
+### Patch Changes
+
+- [#5840](https://github.com/wso2/identity-apps/pull/5840) [`4daa5d3ed3`](https://github.com/wso2/identity-apps/commit/4daa5d3ed35c45f1f8c05955ae5780b00a29bd21) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Delete all custom text preference configurations upon reverting branding configs
+
+## 2.13.29
+
+### Patch Changes
+
+- [#5834](https://github.com/wso2/identity-apps/pull/5834) [`457d834336`](https://github.com/wso2/identity-apps/commit/457d834336d197b55e907e22bc56d31320861d9e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Added null check to logType in audit logs
+
+* [#5835](https://github.com/wso2/identity-apps/pull/5835) [`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve audit log ux
+
+- [#5838](https://github.com/wso2/identity-apps/pull/5838) [`982b621840`](https://github.com/wso2/identity-apps/commit/982b6218401fdd19dc73d5ddf00e8c40f5208287) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add missing i18n for organization information retrieval
+
+- Updated dependencies [[`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74)]:
+  - @wso2is/react-components@2.1.12
+  - @wso2is/dynamic-forms@2.0.41
+  - @wso2is/theme@2.0.71
+  - @wso2is/form@2.0.42
+  - @wso2is/access-control@2.0.22
+  - @wso2is/common@2.0.52
+
+## 2.13.28
+
+### Patch Changes
+
+- [#5830](https://github.com/wso2/identity-apps/pull/5830) [`17ab3e87c6`](https://github.com/wso2/identity-apps/commit/17ab3e87c68da2c1971a00bcb6653e62682b996a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add models for login security related doc links
+
+## 2.13.27
+
+### Patch Changes
+
+- [#5823](https://github.com/wso2/identity-apps/pull/5823) [`970ee6eea1`](https://github.com/wso2/identity-apps/commit/970ee6eea1c91151d1bb101bc0b00a2e6476e9a9) Thanks [@savindi7](https://github.com/savindi7)! - Improve Profile Information.
+
+## 2.13.26
+
+### Patch Changes
+
+- [#5822](https://github.com/wso2/identity-apps/pull/5822) [`beedc6b44f`](https://github.com/wso2/identity-apps/commit/beedc6b44f66800ba07a178796c48d31c8c0519e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Disable URL input validation for empty values in advanced tab in branding page
+
+## 2.13.25
+
+### Patch Changes
+
+- [#5816](https://github.com/wso2/identity-apps/pull/5816) [`fd82055601`](https://github.com/wso2/identity-apps/commit/fd820556010c0f240bd695f0764bbe70b220d01c) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Make secondary attribute dropdown in trusted token issuer advanced tab clearable
+
+* [#5818](https://github.com/wso2/identity-apps/pull/5818) [`11701769b9`](https://github.com/wso2/identity-apps/commit/11701769b91ec2c865bcda4df1744bd8bbc44d4f) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Introduce configurations to alter visibility of app configs
+
+* Updated dependencies [[`fd82055601`](https://github.com/wso2/identity-apps/commit/fd820556010c0f240bd695f0764bbe70b220d01c)]:
+  - @wso2is/i18n@2.1.5
+
+## 2.13.24
+
+### Patch Changes
+
+- [#5798](https://github.com/wso2/identity-apps/pull/5798) [`de0b331c72`](https://github.com/wso2/identity-apps/commit/de0b331c723c47295a1d1731684520df64150c9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix revert button for individual custom text configuration fields not appearing in text tab in branding page
+
+- Updated dependencies [[`de0b331c72`](https://github.com/wso2/identity-apps/commit/de0b331c723c47295a1d1731684520df64150c9c)]:
+  - @wso2is/form@2.0.41
+
 ## 2.13.23
 
 ### Patch Changes

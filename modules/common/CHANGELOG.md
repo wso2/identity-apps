@@ -1,5 +1,28 @@
 # @wso2is/common
 
+## 2.0.53
+
+### Patch Changes
+
+- [#5847](https://github.com/wso2/identity-apps/pull/5847) [`92c327a9ef`](https://github.com/wso2/identity-apps/commit/92c327a9ef7b584f7f105790f1ec389f2d62a39d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enable configurability for SCIM custom schema URI
+
+- Updated dependencies [[`92c327a9ef`](https://github.com/wso2/identity-apps/commit/92c327a9ef7b584f7f105790f1ec389f2d62a39d)]:
+  - @wso2is/core@2.0.38
+  - @wso2is/access-control@2.0.23
+  - @wso2is/forms@2.0.28
+  - @wso2is/i18n@2.1.6
+  - @wso2is/react-components@2.1.13
+
+## 2.0.52
+
+### Patch Changes
+
+- [#5835](https://github.com/wso2/identity-apps/pull/5835) [`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve audit log ux
+
+- Updated dependencies [[`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74)]:
+  - @wso2is/react-components@2.1.12
+  - @wso2is/access-control@2.0.22
+
 ## 2.0.51
 
 ### Patch Changes

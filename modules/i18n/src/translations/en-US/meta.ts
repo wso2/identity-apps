@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,45 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.COMMON_NAMESPACE,
         I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
         I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
-        I18nModuleConstants.EXTENSIONS_NAMESPACE
+        I18nModuleConstants.EXTENSIONS_NAMESPACE,
+        I18nModuleConstants.USERSTORES_NAMESPACE,
+        I18nModuleConstants.VALIDATION_NAMESPACE,
+        I18nModuleConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE,
+        I18nModuleConstants.USER_NAMESPACE,
+        I18nModuleConstants.USERS_NAMESPACE,
+        I18nModuleConstants.TRANSFER_LIST_NAMESPACE,
+        I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE,
+        I18nModuleConstants.GROUPS_NAMESPACE,
+        I18nModuleConstants.PAGES_NAMESPACE,
+        I18nModuleConstants.IDVP_NAMESPACE,
+        I18nModuleConstants.INVITE_NAMESPACE,
+        I18nModuleConstants.PARENT_ORG_INVITATIONS_NAMESPACE,
+        I18nModuleConstants.OIDC_SCOPES_NAMESPACE,
+        I18nModuleConstants.ONBOARDED_NAMESPACE,
+        I18nModuleConstants.ORGANIZATION_DISCOVERY_NAMESPACE,
+        I18nModuleConstants.ORGANIZATIONS_NAMESPACE,
+        I18nModuleConstants.AUTHENTICATION_FLOW_NAMESPACE,
+        I18nModuleConstants.REMOTE_FETCH_NAMESPACE,
+        I18nModuleConstants.ROLES_NAMESPACE,
+        I18nModuleConstants.SERVER_CONFIGS_NAMESPACE,
+        I18nModuleConstants.SAML2_CONFIG_NAMESPACE,
+        I18nModuleConstants.SESSION_MANAGEMENT_NAMESPACE,
+        I18nModuleConstants.WS_FEDERATION_CONFIG_NAMESPACE,
+        I18nModuleConstants.INSIGHTS_NAMESPACE,
+        I18nModuleConstants.SMS_PROVIDERS_NAMESPACE,
+        I18nModuleConstants.CLAIMS_NAMESPACE,
+        I18nModuleConstants.EMAIL_LOCALE_NAMESPACE,
+        I18nModuleConstants.HELP_PANEL_NAMESPACE,
+        I18nModuleConstants.SUBORGANIZATIONS_NAMESPACE,
+        I18nModuleConstants.CONSOLE_SETTINGS_NAMESPACE,
+        I18nModuleConstants.SECRETS_NAMESPACE,
+        I18nModuleConstants.BRANDING_NAMESPACE,
+        I18nModuleConstants.EMAIL_TEMPLATES_NAMESPACE,
+        I18nModuleConstants.CERTIFICATES_NAMESPACE,
+        I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE,
+        I18nModuleConstants.APPLICATIONS_NAMESPACE,
+        I18nModuleConstants.IDP_NAMESPACE,
+        I18nModuleConstants.API_RESOURCES_NAMESPACE
+
     ]
 };

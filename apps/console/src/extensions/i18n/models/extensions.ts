@@ -297,6 +297,18 @@ export interface Extensions {
                 };
             };
         };
+        organizationInfo: {
+            heading: string;
+            subHeading: string;
+            orgId: {
+                label: string;
+                heading: string;
+                subHeading: string;
+            };
+            notifications: {
+                getConfiguration: Notification;
+            }
+        }
     };
     develop: {
         apiResource: {
@@ -2395,6 +2407,9 @@ export interface Extensions {
                 downloadButton: {
                     label : string;
                 };
+                viewButton: {
+                    label : string;
+                };
                 delayMessage: {
                     text: string;
                 }
@@ -2403,6 +2418,17 @@ export interface Extensions {
                 toolTips: {
                     seeMore: string;
                 };
+                headers: {
+                    recordedAt: string,
+                    actionId: string,
+                    targetId: string
+                },
+                logDataviewer : {
+                    panelName: string,
+                    download: string,
+                    copy: string,
+                    close: string
+                }
             };
             notifications: {
                 genericError: {
