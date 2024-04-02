@@ -20,8 +20,10 @@
 
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.Random" %>
+<%@ page import="java.util.UUID" %>
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
@@ -47,6 +49,19 @@
 <%-- Include tenant context --%>
 <%@ include file="tenant-resolve.jsp"%>
 
+<%! 
+    public static String getRandomNumberString(int len) {
+
+        StringBuilder sb = new StringBuilder(len);
+        Random random = new Random();
+
+        for (int i = 0; i < len; i++) {
+            Integer numAtIndex = random.nextInt(10);
+            sb.append(numAtIndex.toString());
+        }
+        return sb.toString();
+    }
+%>
 <%
     RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
     String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
@@ -84,7 +99,14 @@
                     requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
                 }
                 List<AccountRecoveryType> resp = recoveryApiV2.initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
-
+                if (resp == null) {
+                    // handling invalid username scenario. proceeds to next level without warning to avoid an attacker bruteforcing to learn the usernames
+                    request.setAttribute("screenValue", "******" + getRandomNumberString(4));
+                    request.setAttribute("resendCode", UUID.randomUUID().toString());
+                    request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
+                    request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+                    return;
+                }
                 boolean resultFound = false;
                 for(AccountRecoveryType x: resp) {
                     if (x.getMode().equals("recoverWithNotifications")) {
@@ -123,6 +145,7 @@
             // STEP THREE : Redirect to enter the OTP sent
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
         } else if ("RESEND".equals(recoveryStage)) {
+            org.apache.logging.log4j.LogManager.getLogger().error("REACHED RESEND START");
             String resendCode = request.getParameter("resendCode");
             // SENDING RESEND REQEUST
             try {
@@ -139,6 +162,7 @@
                 request.setAttribute("resendCode", resendResponse.getResendCode());
                 request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
             } catch (ApiException e) {
+            org.apache.logging.log4j.LogManager.getLogger().error("REACHED RESEND ERROR");
                 if (!StringUtils.isBlank(username)) {
                     request.setAttribute("username", username);
                 }
@@ -152,6 +176,7 @@
                 request.setAttribute("resendCode", resendCode);
                 request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
             }
+            org.apache.logging.log4j.LogManager.getLogger().error("REACHED RESEND END");
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
         } else if ("CONFIRM".equals(recoveryStage)) {
             String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
