@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { AppViewExtensionTypes } from "../../admin.extensions.v1";
+import { UIConfigInterface } from "../models/config";
 
 /**
- * Types of views supported by default in the application.
- * @readonly
- * @enum {string}
+ * UI config action types.
  */
-export enum StrictAppViewTypes {
-    DEVELOP = "DEVELOP",
-    MANAGE = "MANAGE"
-}
+export const UIConfigActionTypes = {
+    SET_UI_CONFIG: "SET_UI_CONFIG",
+};
 
 /**
- * Combination of views in the application with extensions.
+ * UI config action interface.
  */
-export type AppViewTypes = StrictAppViewTypes | AppViewExtensionTypes;
+export type UIConfigAction = {
+    type: typeof UIConfigActionTypes.SET_UI_CONFIG;
+    payload: UIConfigInterface;
+};
