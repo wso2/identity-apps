@@ -68,6 +68,21 @@ const LOGOUT_URL: string = "sign_out_url";
  * Props interface of {@link useSignIn}
  */
 export type UseSignInInterface = {
+    /**
+     * Handles the sign-in process.
+     *
+     * @example
+     * ```
+     * const { onSignIn } = useSignIn();
+     * ```
+     *
+     * @param response - The basic user information returned from the sign-in process.
+     * @param onTenantResolve - Callback to be triggered when tenant is resolved.
+     * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
+     * @param onAppReady - Callback to be triggered when the app is ready.
+     *
+     * @returns A promise.
+     */
     onSignIn: (
         response: BasicUserInfo,
         onTenantResolve: (tenantDomain: string) => void,
@@ -103,7 +118,13 @@ const useSignIn = (): UseSignInInterface => {
         removeUserOrgInLocalStorage
     } = useOrganizations();
 
-    const setCustomServerHost = (orgType: string, wellKnownEndpoint: string) => {
+    /**
+     * Resolves and sets the custom server host.
+     *
+     * @param orgType - Type of the organization. Ex: sub organization, etc.
+     * @param wellKnownEndpoint - Wellknown discovery endpoint.
+     */
+    const setCustomServerHost = (orgType: string, wellKnownEndpoint: string): void => {
         const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
 
         if (legacyAuthzRuntime && !disabledFeatures?.includes("branding.hostnameUrlBranding")) {
@@ -176,6 +197,21 @@ const useSignIn = (): UseSignInInterface => {
         }
     };
 
+    /**
+     * Handles the sign-in process.
+     *
+     * @example
+     * ```
+     * const { onSignIn } = useSignIn();
+     * ```
+     *
+     * @param response - The basic user information returned from the sign-in process.
+     * @param onTenantResolve - Callback to be triggered when tenant is resolved.
+     * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
+     * @param onAppReady - Callback to be triggered when the app is ready.
+     *
+     * @returns A promise.
+     */
     const onSignIn = async (
         response: BasicUserInfo,
         onTenantResolve: (tenantDomain: string) => void,
@@ -472,6 +508,7 @@ const useSignIn = (): UseSignInInterface => {
      * @param currentLogoutRedirect - Current logout redirect URL.
      * @param userOrg - User's org.
      * @param orgId - User's org ID.
+     *
      * @returns Derived logout redirect URL.
      */
     const deriveLogoutRedirectForSubOrgLogins = (currentLogoutRedirect: string, userOrg: string, orgId: string) => {
