@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { 
+import {
     ResourceTab,
     useDocumentation
 } from "@wso2is/react-components";
@@ -29,7 +29,7 @@ import { Grid } from "semantic-ui-react";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface
-} from "../../../../admin-applications-v1/models";
+} from "../../../../admin.applications.v1/models";
 import { M2MCustomConfiguration } from "../../../application-templates/shared/components";
 
 /**

@@ -159,8 +159,9 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
         onTriggerTabUpdate(protocolTabIndex);
     };
 
+    // eslint-disable-next-line max-len
     let tokenRequest: string = `curl --location '${sdkConfig?.tokenEndpoint}' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Authorization: Basic '${btoa(sdkConfig?.clientId.concat(":", sdkConfig?.clientSecret))}'' -d 'grant_type=client_credentials'`;
-    
+
     if(copyScopesValue){
         tokenRequest = tokenRequest.concat(` -d 'scope=${copyScopesValue}'`);
     }
