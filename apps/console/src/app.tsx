@@ -46,25 +46,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import { commonConfig } from "@wso2is/features/admin-extensions-v1";
-import { useGetAllFeatures } from "@wso2is/features/admin-extensions-v1/components/feature-gate/api/feature-gate";
-import { featureGateConfig } from "@wso2is/features/admin-extensions-v1/configs/feature-gate";
-import { AccessControlUtils } from "@wso2is/features/admin-access-control-v1/configs/access-control";
-import { EventPublisher, PreLoader } from "@wso2is/features/admin-core-v1";
-import { ProtectedRoute } from "@wso2is/features/admin-core-v1/components";
-import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/features/admin-core-v1/configs";
-import { AppConstants } from "@wso2is/features/admin-core-v1/constants";
-import { history } from "@wso2is/features/admin-core-v1/helpers";
+import { commonConfig } from "@wso2is/features/admin.extensions.v1";
+import { useGetAllFeatures } from "@wso2is/features/admin.extensions.v1/components/feature-gate/api/feature-gate";
+import { featureGateConfig } from "@wso2is/features/admin.extensions.v1/configs/feature-gate";
+import { AccessControlUtils } from "@wso2is/features/admin.access-control.v1/configs/access-control";
+import { EventPublisher, PreLoader } from "@wso2is/features/admin.core.v1";
+import { ProtectedRoute } from "@wso2is/features/admin.core.v1/components";
+import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/features/admin.core.v1/configs";
+import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
+import { history } from "@wso2is/features/admin.core.v1/helpers";
 import {
     ConfigReducerStateInterface,
     DocumentationLinksInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface
-} from "@wso2is/features/admin-core-v1/models";
-import { AppState, store } from "@wso2is/features/admin-core-v1/store";
+} from "@wso2is/features/admin.core.v1/models";
+import { AppState, store } from "@wso2is/features/admin.core.v1/store";
 import "moment/locale/si";
 import "moment/locale/fr";
-import { OrganizationUtils } from "@wso2is/features/admin-organizations-v1/utils";
+import { OrganizationUtils } from "@wso2is/features/admin.organizations.v1/utils";
 
 /**
  * Main App component.
