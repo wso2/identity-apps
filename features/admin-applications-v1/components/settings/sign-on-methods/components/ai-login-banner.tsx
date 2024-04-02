@@ -89,7 +89,7 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
         e.preventDefault();
         const formData = new FormData(e.target);
         const loginFlowInput = formData.get("loginFlowInput").toString();
-
+        console.log(loginFlowInput);
 
 
         //temporary authenticator details
@@ -106,8 +106,7 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
 
         fetchUserClaims()
             .then((response:{claimURIs: ClaimURIs[]; error: IdentityAppsApiException;}) => {
-                console.log(response);
-                if (response.error) {
+                 if (response.error) {
                     dispatch(addAlert(
                         {
                             description: response.error?.response?.data?.description
