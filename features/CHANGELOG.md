@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.13.35
+
+### Patch Changes
+
+- [#5874](https://github.com/wso2/identity-apps/pull/5874) [`02a605ee26`](https://github.com/wso2/identity-apps/commit/02a605ee26a8b454ec5351a9efe957681c52cde8) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Updated folder names within the `features` package to standardize directory naming conventions, adopting the format `admin.<feature-name>.<version>`, like admin-access-control.v1, admin-roles.v2, for clearer organization.
+
+* [#5871](https://github.com/wso2/identity-apps/pull/5871) [`5eaae63b1e`](https://github.com/wso2/identity-apps/commit/5eaae63b1ef15be35be15e5f37e8b6a0be426f12) Thanks [@chamathns](https://github.com/chamathns)! - Refactor branding page
+
 ## 2.13.34
 
 ### Patch Changes
