@@ -175,16 +175,16 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
             }}>
                 <div>
                     <Header as="h3">
-                        {t("console:develop.features.ai.banner.full.heading")}
+                        {t("ai:banner.full.heading")}
                     </Header>
                     <p>
-                        {t("console:develop.features.ai.banner.full.subheading1")}<br />
-                        {t("console:develop.features.ai.banner.full.subheading2")}
+                        {t("ai:banner.full.subheading1")}<br />
+                        {t("ai:banner.full.subheading2")}
                     </p>
                 </div>
                 <Button onClick={handleTryLoginFlowButtonClick} color="secondary" variant="outlined">
                     <GenericIcon icon={AIIcon} style={{paddingRight: "5px"}}/>
-                        {t("console:develop.features.ai.banner.full.button")}
+                        {t("ai:banner.full.button")}
                 </Button>
             </div>
         </Segment>
@@ -219,7 +219,7 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
                                                                                 cursor: "pointer"}}>
                         <ChevronUpIcon />
                     </button>
-                    <Header as="h3">{t("console:develop.features.ai.banner.input.heading")}</Header>
+                    <Header as="h3">{t("ai:banner.input.heading")}</Header>
 
                 </div>
                 
@@ -230,7 +230,7 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
                 
                 }}>   
                     <p>
-                        {t("console:develop.features.ai.banner.input.subheading")}
+                        {t("ai:banner.input.subheading")}
                         <DocumentationLink
                         link={"develop.applications.editApplication.asgardeoTryitApplication.general.learnMore"}
                         isLinkRef={true}>
@@ -250,7 +250,7 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
                     }}> 
                         <TextArea
                             name="loginFlowInput"
-                            placeholder={t("console:develop.features.ai.banner.input.placeholder")} 
+                            placeholder={t("ai:banner.input.placeholder")} 
                             style={{
                                 width: '80%',
                                 minHeight: '100px',
@@ -265,7 +265,7 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
                         />
                         <Button type='submit' color="secondary" variant="outlined" style= {{height: "25%", alignItems:"center"}}>
                             <GenericIcon icon={AIIcon} style={{paddingRight: "5px"}}/>
-                            {t("console:develop.features.ai.banner.input.button")}
+                            {t("ai:banner.input.button")}
                         </Button>
                     </div>
                 </form>
@@ -303,7 +303,7 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
                                                                         cursor: "pointer"}}>
                         <XMarkIcon />
                     </button>
-                    <Header as="h3">{t("console:develop.features.ai.banner.collapsed.heading")}</Header>
+                    <Header as="h3">{t("ai:banner.collapsed.heading")}</Header>
                 </div>
                 <div style={{
                     display: "flex",
@@ -313,7 +313,7 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
                 }}>
                     <div> 
                         <p>
-                            {t("console:develop.features.ai.banner.collapsed.subheading")}
+                            {t("ai:banner.collapsed.subheading")}
                             <DocumentationLink
                                 link={"develop.applications.editApplication.asgardeoTryitApplication.general.learnMore"}
                                 isLinkRef={true}>
@@ -325,7 +325,7 @@ const LoginFLowAIComponent: React.FC<LoginFlowAIComponentProps> = ({onGenerateCl
                     </div>
                     <Button onClick={handleTryLoginFlowButtonClick} color="secondary" variant="outlined">
                         <GenericIcon icon={AIIcon} style={{paddingRight: "5px"}}/>
-                        {t("console:develop.features.ai.banner.collapsed.button")}
+                        {t("ai:banner.collapsed.button")}
                     </Button>
                 </div>
             </div>

@@ -235,6 +235,8 @@ export class I18nConstants {
      */
     public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string =
       I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
+    
+    public static readonly AI_NAMESPACE: string = "ai";
 
     /**
      * Locations of the I18n namespaces.
@@ -280,7 +282,8 @@ export class I18nConstants {
         [ I18nConstants.GROUPS_NAMESPACE, "portals" ],
         [ I18nConstants.APPLICATIONS_NAMESPACE, "portals" ],
         [ I18nConstants.IDP_NAMESPACE, "portals" ],
-        [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ]
+        [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ],
+        [ I18nConstants.AI_NAMESPACE, "portals"]
     ]);
 
     /**

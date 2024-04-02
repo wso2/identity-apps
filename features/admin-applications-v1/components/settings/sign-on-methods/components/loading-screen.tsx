@@ -32,9 +32,9 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     const [ progress, setProgress ] = useState(0);
     const [ factIndex, setFactIndex ] = useState(0);
     const facts: string[] = [
-        t("console:develop.features.ai.screens.loading.facts.0"),
-        t("console:develop.features.ai.screens.loading.facts.1"),
-        t("console:develop.features.ai.screens.loading.facts.2"),
+        t("ai:screens.loading.facts.0"),
+        t("ai:screens.loading.facts.1"),
+        t("ai:screens.loading.facts.2"),
     ];
     const [ polling, setPolling ] = useState(true);
 
@@ -52,16 +52,16 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     ];
 
     const statusLabels: Record<string, string> = {
-        optimizing_and_validating_user_query: t("console:develop.features.ai.screens.loading.states.1"),
-        optimization_and_validation_complete: t("console:develop.features.ai.screens.loading.states.2"),
-        retrieving_examples: t("console:develop.features.ai.screens.loading.states.3"),
-        retrieval_of_examples_complete: t("console:develop.features.ai.screens.loading.states.4"),
-        generating_login_flow_script: t("console:develop.features.ai.screens.loading.states.5"),
-        generation_of_login_flow_script_complete: t("console:develop.features.ai.screens.loading.states.6"),
-        generating_login_flow_authenticators: t("console:develop.features.ai.screens.loading.states.7"),
-        generation_of_login_flow_authenticators_complete: t("console:develop.features.ai.screens.loading.states.8"),
-        optimizing_and_validating_final_login_flow: t("console:develop.features.ai.screens.loading.states.9"),
-        login_flow_generation_complete: t("console:develop.features.ai.screens.loading.states.10")
+        optimizing_and_validating_user_query: t("ai:screens.loading.states.1"),
+        optimization_and_validation_complete: t("ai:screens.loading.states.2"),
+        retrieving_examples: t("ai:screens.loading.states.3"),
+        retrieval_of_examples_complete: t("ai:screens.loading.states.4"),
+        generating_login_flow_script: t("ai:screens.loading.states.5"),
+        generation_of_login_flow_script_complete: t("ai:screens.loading.states.6"),
+        generating_login_flow_authenticators: t("ai:screens.loading.states.7"),
+        generation_of_login_flow_authenticators_complete: t("ai:screens.loading.states.8"),
+        optimizing_and_validating_final_login_flow: t("ai:screens.loading.states.9"),
+        login_flow_generation_complete: t("ai:screens.loading.states.10")
     };
 
     const statusProgress: Record<string, number> = {
@@ -131,7 +131,7 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     };
 
     const updateProgress = (fetchedStatus: Record<string, any>) => {
-        let latestCompletedStep: string = t("console:develop.features.ai.screens.loading.states.0");
+        let latestCompletedStep: string = t("ai:screens.loading.states.0");
         let currentProgress: number = 0;
 
         statusSequence.forEach((key: string) => {
