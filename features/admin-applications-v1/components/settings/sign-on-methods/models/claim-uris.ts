@@ -15,3 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+//Interface to define the claim URIs.
+export interface ClaimURIs {
+    description: string;
+    claimURI: string;
+}

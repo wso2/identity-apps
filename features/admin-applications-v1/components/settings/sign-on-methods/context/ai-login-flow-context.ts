@@ -17,3 +17,21 @@
  */
 
 import { Context, createContext } from "react";
+
+export interface AiLoginFlowContextInterface {
+    // Add the required properties here
+    
+    /**
+     * Display name of the Console application.
+     */
+    signOnMethodsDisplayName: string;
+
+}
+const AiLoginFlowContext = createContext<AiLoginFlowContextInterface>(undefined);
+
+/**
+ * Display name for the AiLoginFlowContext.
+ */
+AiLoginFlowContext.displayName = "SignOnMethodsContext";
+
+export default AiLoginFlowContext;

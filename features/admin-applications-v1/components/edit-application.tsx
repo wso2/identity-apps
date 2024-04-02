@@ -40,8 +40,7 @@ import {
     AttributeSettings,
     GeneralApplicationSettings,
     ProvisioningSettings,
-    SharedAccess,
-    SignOnMethods
+    SharedAccess
 } from "./settings";
 import { Info } from "./settings/info";
 import { applicationConfig } from "../../admin-extensions-v1";
@@ -73,6 +72,8 @@ import {
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
+import SignOnMethodsCore from "./settings/sign-on-methods/sign-on-methods-core";
+import AiLoginFlowProvider from "./settings/sign-on-methods/providers/ai-login-flow-provider";
 
 /**
  * Proptypes for the applications edit component.
@@ -949,18 +950,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const SignOnMethodsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <SignOnMethods
-                application={ application }
-                appId={ application.id }
-                authenticationSequence={ application.authenticationSequence }
-                clientId={ inboundProtocolConfig?.oidc?.clientId }
-                hiddenAuthenticators={ hiddenAuthenticators }
-                isLoading={ isLoading }
-                onUpdate={ handleApplicationUpdate }
-                featureConfig={ featureConfig }
-                readOnly={ readOnly }
-                data-componentid={ `${ componentId }-sign-on-methods` }
-            />
+            <AiLoginFlowProvider>
+                <SignOnMethodsCore 
+                    application={ application}
+                    clientId={ inboundProtocolConfig?.oidc?.clientId }
+                    isLoading={ isLoading }
+                    onUpdate={ handleApplicationUpdate }
+                    readOnly={ readOnly }
+                    hiddenAuthenticators={ hiddenAuthenticators}
+                    featureConfig={ featureConfig}
+                    data-componentid={ `${ componentId }-sign-on-methods` }
+                />
+            </AiLoginFlowProvider>
         </ResourceTab.Pane>
     );
 
