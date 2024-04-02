@@ -250,10 +250,10 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 hideIdentityClaimAttributes={
-                    /*identity claim attributes are disabled for saml*/
-                    isSaml && identityProviderConfig.utils.hideIdentityClaimAttributes(
+                    /*identity claim attributes are disabled for saml and oidc selectively*/
+                    (isSaml || isOidc ) && ( identityProviderConfig.utils.hideIdentityClaimAttributes(
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
-                    )
+                    ))
                 }
                 isRoleMappingsEnabled={
                     isSaml || identityProviderConfig.utils.isRoleMappingsEnabled(
