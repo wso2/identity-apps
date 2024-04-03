@@ -1895,6 +1895,16 @@ export const extensions: Extensions = {
                         message: "Reverting branding preferences"
                     }
                 },
+                customTextPreferenceDelete: {
+                    genericError: {
+                        description: "An error occurred while reverting the custom text preferences for {{ tenant }}.",
+                        message: "Couldn't revert custom text preferences"
+                    },
+                    success: {
+                        description: "Successfully reverted custom text preferences for {{ tenant }}.",
+                        message: "Revert successful"
+                    }
+                },
                 fetch: {
                     customLayoutNotFound: {
                         description: "There is no deployed custom layout for {{ tenant }}.",
