@@ -90,6 +90,7 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
         setTraceId(uuidv4());
 
         //temporary authenticator details
+        // Need to add authenitcator details fetching logic to fetch-user-authenticators.ts
         const available_authenticators= [
             {"authenticator": "BasicAuthenticator", "idp": "LOCAL"},
             {"authenticator" : "GoogleAuthenticator", "idp": "google123", },
