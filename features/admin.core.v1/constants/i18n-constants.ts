@@ -237,6 +237,10 @@ export class I18nConstants {
       I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
 
     /**
+     * AI namespace.
+     */
+    public static readonly AI_NAMESPACE: string = "ai";
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -280,7 +284,8 @@ export class I18nConstants {
         [ I18nConstants.GROUPS_NAMESPACE, "portals" ],
         [ I18nConstants.APPLICATIONS_NAMESPACE, "portals" ],
         [ I18nConstants.IDP_NAMESPACE, "portals" ],
-        [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ]
+        [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ],
+        [ I18nConstants.AI_NAMESPACE, "portals"]
     ]);
 
     /**
