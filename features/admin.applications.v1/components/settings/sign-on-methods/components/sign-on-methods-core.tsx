@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -73,7 +73,6 @@ import SecondFactorEMAILOTPSequenceTemplate from "../templates/second-factor-ema
 import SecondFactorSMSOTPSequenceTemplate from "../templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "../templates/second-factor-totp-sequence.json";
 import SmsOTPSequenceTemplate from "../templates/sms-otp-sequence.json";
-// eslint-disable-next-line max-len
 
 /**
  * Proptypes for the sign on methods component.
@@ -200,7 +199,6 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
             ApplicationManagementConstants.AUTHENTICATORS_LOCAL_STORAGE_KEY,
             JSON.stringify([])
         );
-
     }, []);
 
     /**
@@ -211,8 +209,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
      * re-render the component.
      */
     useEffect(() => {
-
-        if (authenticationSequence === undefined) {
+        if (!authenticationSequence) {
             return;
         }
 
