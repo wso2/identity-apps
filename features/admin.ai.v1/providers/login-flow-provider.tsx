@@ -129,7 +129,6 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
                 }
             })
             .then((response:{loginFlow:any; isError:boolean; error:any}) => {
-                console.log(response);
                 if (response.isError) {
                     dispatch(
                         addAlert({
