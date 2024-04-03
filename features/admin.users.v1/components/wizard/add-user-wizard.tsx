@@ -144,6 +144,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
     const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
+    const [ isUserstoreRequired, setUserstoreRequired ] = useState<boolean>(false);
     const [ isFirstNameRequired, setFirstNameRequired ] = useState<boolean>(true);
     const [ isLastNameRequired, setLastNameRequired ] = useState<boolean>(true);
     const [ isEmailRequired, setEmailRequired ] = useState<boolean>(false);
@@ -428,6 +429,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             setEmailRequired(emailSchema.required);
         }
 
+        if (isSubOrganization()) {
+            hiddenAttributes.push(HiddenFieldNames.USERSTORE);
+            setUserstoreRequired(false);
+        }
+
         if (nameSchema?.subAttributes?.length > 0) {
             // Check for presence of firstName, lastName attributes.
             const firstNameAttribute: ProfileSchemaInterface = nameSchema.subAttributes
@@ -439,21 +445,20 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 setFirstNameRequired(firstNameAttribute.required);
                 setLastNameRequired(lastNameAttribute.required);
 
-                return;
-            }
+            } else {
+                if (firstNameAttribute) {
+                    // First Name attribute is available.
+                    // But Last Name attribute is not available
+                    hiddenAttributes.push(HiddenFieldNames.LASTNAME);
+                    setFirstNameRequired(firstNameAttribute.required);
+                }
 
-            if (firstNameAttribute) {
-                // First Name attribute is available.
-                // But Last Name attribute is not available
-                hiddenAttributes.push(HiddenFieldNames.LASTNAME);
-                setFirstNameRequired(firstNameAttribute.required);
-            }
-
-            if (lastNameAttribute) {
-                // Last Name attribute is available.
-                // But First Name attribute is not available
-                hiddenAttributes.push(HiddenFieldNames.FIRSTNAME);
-                setLastNameRequired(lastNameAttribute.required);
+                if (lastNameAttribute) {
+                    // Last Name attribute is available.
+                    // But First Name attribute is not available
+                    hiddenAttributes.push(HiddenFieldNames.FIRSTNAME);
+                    setLastNameRequired(lastNameAttribute.required);
+                }
             }
         } else {
             // If nameSchema is not present, firstName and lastName is set
@@ -927,6 +932,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     hiddenFields={ hiddenFields }
                     requestedPasswordOption={ wizardState &&
                     wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
+                    isUserstoreRequired={ isUserstoreRequired }
                     isFirstNameRequired={ isFirstNameRequired }
                     isLastNameRequired={ isLastNameRequired }
                     isEmailRequired={ isEmailRequired }
