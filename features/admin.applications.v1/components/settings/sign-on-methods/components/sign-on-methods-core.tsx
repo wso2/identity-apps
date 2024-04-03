@@ -25,6 +25,13 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
+import AuthenticationFlowBuilder
+    from "../../../../../admin.authentication-flow-builder.v1/components/authentication-flow-builder";
+import AuthenticationFlowProvider
+    from "../../../../../admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
+import { ConnectionsManagementUtils } 
+    from "../../../../../admin.connections.v1/utils/connection-utils";
+import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../../admin.core.v1";
 import { SignInMethodCustomization } from "../sign-in-method-customization";
 import { SignInMethodLanding } from "../sign-in-method-landing";
 import AppleLoginSequenceTemplate from "../templates/apple-login-sequence.json";
@@ -40,13 +47,6 @@ import SecondFactorEMAILOTPSequenceTemplate from "../templates/second-factor-ema
 import SecondFactorSMSOTPSequenceTemplate from "../templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "../templates/second-factor-totp-sequence.json";
 import SmsOTPSequenceTemplate from "../templates/sms-otp-sequence.json";
-import AuthenticationFlowBuilder 
-from "../../../../../admin.authentication-flow-builder.v1/components/authentication-flow-builder";
-import AuthenticationFlowProvider 
-from "../../../../../admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
-import { ConnectionsManagementUtils } 
-from "../../../../../admin.connections.v1/utils/connection-utils";
-import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../../admin.core.v1";
 import {
     AuthenticatorCreateWizardFactory
 } from "../../../../../admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
