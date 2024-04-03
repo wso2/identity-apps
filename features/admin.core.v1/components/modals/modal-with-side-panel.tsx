@@ -19,7 +19,7 @@
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import { Modal, ModalProps } from "semantic-ui-react";
-import { getHelpPanelActionIcons } from "../configs";
+import { getHelpPanelActionIcons } from "../../configs";
 
 /**
  * Model of the sub components  of the `ModalWithSidePanel` component.

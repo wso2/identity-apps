@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { HelpPanelModal } from "@wso2is/common/src/components/modals/help-panel-modal";
-import { ModalWithSidePanel } from "@wso2is/common/src/components/modals/modal-with-side-panel";
-import { TierLimitReachErrorModal } from "@wso2is/common/src/components/modals/tier-limit-error-modal";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import { HelpPanelModal } from "../../../admin.core.v1/components/modals/help-panel-modal";
+import { ModalWithSidePanel } from "../../../admin.core.v1/components";
+import { TierLimitReachErrorModal } from "../../../admin.core.v1/components";
+import useDeploymentConfig from "../../../admin.core.v1/hooks/use-app-configs";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

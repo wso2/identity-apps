@@ -26,7 +26,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Image from "@oxygen-ui/react/Image";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Typography from "@oxygen-ui/react/Typography";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
+import useDeploymentConfig from "../../../admin.core.v1/hooks/use-deployment-configs";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {

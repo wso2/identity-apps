@@ -18,7 +18,7 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
+import useResourceEndpoints from "@wso2is/features/admin.core.v1/hooks/use-resource-endpoints";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";

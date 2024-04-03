@@ -17,7 +17,7 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";

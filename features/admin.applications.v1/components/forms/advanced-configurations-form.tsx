@@ -17,7 +17,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,

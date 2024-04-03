@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";

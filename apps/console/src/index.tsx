@@ -18,7 +18,7 @@
 
 import { AuthProvider } from "@asgardeo/auth-react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
-import { AppConfigProvider } from "@wso2is/common/src/providers/app-config-provider";
+import { AppConfigProvider } from "@wso2is/features/admin.core.v1/providers/app-config-provider";
 import { ContextUtils } from "@wso2is/core/utils";
 import * as React from "react";
 import { ReactElement } from "react";

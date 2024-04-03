@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OrganizationType } from "@wso2is/common/src/constants/organization-constants";
+import { OrganizationType } from "../../../../admin.core.v1/constants/organization-constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";

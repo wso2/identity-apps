@@ -21,7 +21,7 @@ import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../configs/ui";
+import { getEmptyPlaceholderIllustrations } from "../../configs/ui";
 
 /**
  * Prop types for the limit reach error modal component.

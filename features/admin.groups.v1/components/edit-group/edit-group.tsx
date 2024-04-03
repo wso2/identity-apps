@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
