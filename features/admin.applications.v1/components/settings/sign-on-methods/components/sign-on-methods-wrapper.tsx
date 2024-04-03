@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useContext, useState } from "react";
+import React, { FunctionComponent, ReactElement, useContext, useState, useEffect } from "react";
 import { SignOnMethodsCore } from "./sign-on-methods-core";
 import { FeatureConfigInterface } from "../../../../../admin.core.v1";
 import {
@@ -104,14 +104,21 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
     const { 
         aiGeneratedAiLoginFlow 
     } = useContext(AILoginFlowContext);
+    
     /**
      * Checks if the AI generated login flow is available.
      * If available update the authentication sequence with generated value.
      */
-    if (aiGeneratedAiLoginFlow !== undefined){
+    useEffect(()=>{
+        console.log("ai generated login flow", aiGeneratedAiLoginFlow);
+        if (!aiGeneratedAiLoginFlow){
+            console.log("return null")
+            return;
+        }
         setmodifiedAuthenticatinSequence(aiGeneratedAiLoginFlow);
-    };
-
+        console.log("modified", modifiedAuthenticatinSequence);
+    }, [aiGeneratedAiLoginFlow]);
+    
     return (
             <SignOnMethodsCore
                 application={ application }
