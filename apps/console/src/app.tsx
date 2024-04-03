@@ -94,12 +94,12 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
     const [ orgId, setOrgId ] = useState<string>();
-    const [ featureGateConfigData, setFeatureGateConfigData ] = 
+    const [ featureGateConfigData, setFeatureGateConfigData ] =
         useState<FeatureGateInterface | null>(featureGateConfigUpdated);
 
-    const { 
+    const {
         data: allFeatures,
-        error: featureGateAPIException 
+        error: featureGateAPIException
     } = useGetAllFeatures(orgId, state.isAuthenticated);
 
     useEffect(() => {
@@ -135,13 +135,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                 const path: string = feature.featureIdentifier.replace(/-/g, ".");
                 // Obtain the status and set it to the feature gate config.
                 const featureStatusPath: string = `${ path }.status`;
-    
+
                 set(featureGateConfigUpdated,featureStatusPath, feature.featureStatus);
-    
+
                 const featureTagPath: string = `${ path }.tags`;
-                
+
                 set(featureGateConfigUpdated,featureTagPath, feature.featureTags);
-                
+
                 setFeatureGateConfigData(featureGateConfigUpdated);
             });
         }
