@@ -97,7 +97,6 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
                     Audit
                     <Chip
                         size="small"
-                        sx={ { marginLeft: 1 } }
                         label={ t("common:beta").toUpperCase() }
                         className="oxygen-chip-beta"
                     />
