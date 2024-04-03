@@ -20,7 +20,7 @@ import get from "lodash-es/get";
 import  {
     useContext
 } from "react";
-import { FeatureGateContext } from "../context";
+import FeatureGateContext from "../context/feature-gate-context";
 import { FeatureGateContextPropsInterface } from "../models";
 
 const useCheckFeatureTags = (path: string): string[] => {

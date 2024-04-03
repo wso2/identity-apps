@@ -27,7 +27,7 @@ import React, {
     useContext
 } from "react";
 import { useAccess } from "react-access-control";
-import { FeatureGateContext } from "../context";
+import FeatureGateContext from "../context/feature-gate-context";
 import { FeatureGateContextPropsInterface, FeatureStatus } from "../models/feature-gate";
 
 /**
