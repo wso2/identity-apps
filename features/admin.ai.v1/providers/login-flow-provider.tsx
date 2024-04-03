@@ -49,6 +49,10 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
     const {children} = props;
 
     const { t } = useTranslation();
+    /**
+     * Get the disbles features for application.
+     */
+    const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.applications?.disabledFeatures;
 
     /**
      * State to hold the login flow banner state.
@@ -166,7 +170,9 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
         }}>
             {!isAiLoginFlowGenerationRequested &&
             <>
-                <LoginFLowBanner onGenerateClick={handleGenerateButtonClick} />
+                {!disabledFeatures?.includes("loginFlowAI") && 
+                    <LoginFLowBanner onGenerateClick={handleGenerateButtonClick} />
+                }
                 { children }
             </>
             
