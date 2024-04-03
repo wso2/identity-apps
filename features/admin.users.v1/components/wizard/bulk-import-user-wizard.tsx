@@ -862,6 +862,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 }
             }
 
+            // Add the email address when the email username is enabled.
             if (!isAlphanumericUsername) {
                 dataObj["emails"] =
                     [ { primary: true, value: emailValue } ];
