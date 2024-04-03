@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.14.8
+
+### Patch Changes
+
+- [#5883](https://github.com/wso2/identity-apps/pull/5883) [`6ad01c1993`](https://github.com/wso2/identity-apps/commit/6ad01c19932da23ee9d012edd5ba2708786b4b59) Thanks [@jathushan-r](https://github.com/jathushan-r)! - There were identical pieces of code ("duplicates") found in modules/common and features/admin.core.v1. merged the additional codes from modules/common into features/admin.core.v1, and removed @wso2is/common module dependencies from apps/console and features.
+
+- Updated dependencies [[`6ad01c1993`](https://github.com/wso2/identity-apps/commit/6ad01c19932da23ee9d012edd5ba2708786b4b59)]:
+  - @wso2is/features@2.14.8
+
 ## 2.14.7
 
 ### Patch Changes
