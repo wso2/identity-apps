@@ -18,15 +18,17 @@
 
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
+import { SignOnMethodsCore } from "./components/sign-on-methods-core";
 import { FeatureConfigInterface } from "../../../../admin.core.v1";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
 } from "../../../models";
-import { SignOnMethodsCore } from "./components/sign-on-methods-core";
+
 /**
  * Proptypes for the sign on methods component.
  */
+
 interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
     /**
      * Editing application.
@@ -92,16 +94,18 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     } = props;
 
     return (
-        <SignOnMethodsCore 
-            application={application}
-            appId={appId}
-            authenticationSequence={authenticationSequence}
-            clientId={clientId}
-            isLoading={isLoading}
-            onUpdate={onUpdate}
-            readOnly={readOnly}
-            isSystemApplication={isSystemApplication}
-            hiddenAuthenticators={hiddenAuthenticators}
+        <SignOnMethodsCore
+            application={ application }
+            appId={ appId }
+            authenticationSequence={ authenticationSequence }
+            clientId={ clientId }
+            isLoading={ isLoading }
+            onUpdate={ onUpdate }
+            readOnly={ readOnly }
+            isSystemApplication={ isSystemApplication }
+            hiddenAuthenticators={ hiddenAuthenticators }
+            data-componentid={ `${ componentId }-sign-on-methods` }
+
 
         />
     );
