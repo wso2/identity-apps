@@ -177,8 +177,8 @@ const LoginFLowBanner: React.FC<LoginFLowBannerProps> = ({onGenerateClick}): Rea
                             placeholder={t("ai:banner.input.placeholder")} 
                             style={{
                                 width: '80%',
-                                minHeight: '100px',
-                                maxHeight: '200px',
+                                minHeight: '10px',
+                                maxHeight: '50px',
                                 overflowX: 'hidden',
                                 overflowY: 'auto',
                                 border: '1px solid grey',
