@@ -67,10 +67,8 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-import { userConfig } from "../../../../extensions/configs";
-import { ClaimManagementConstants } from "../../../../features/claims/constants";
-import { getGroupList, useGroupList } from "../../../../features/groups/api";
-import { GroupsInterface } from "../../../../features/groups/models";
+import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../admin.claims.v1/api";
+import { ClaimManagementConstants } from "../../../admin.claims.v1/constants";
 import {
     AppConstants,
     ModalWithSidePanel,
@@ -79,6 +77,7 @@ import {
     getCertificateIllustrations,
     history
 } from "../../../admin.core.v1";
+import { userConfig } from "../../../admin.extensions.v1/configs";
 import { getGroupList, useGroupList } from "../../../admin.groups.v1/api";
 import { GroupsInterface } from "../../../admin.groups.v1/models";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
@@ -87,7 +86,6 @@ import { getAUserStore, getUserStores } from "../../../admin.userstores.v1/api";
 import { UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
 import { useValidationConfigData } from "../../../admin.validation.v1/api";
 import { ValidationFormInterface } from "../../../admin.validation.v1/models";
-import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,
