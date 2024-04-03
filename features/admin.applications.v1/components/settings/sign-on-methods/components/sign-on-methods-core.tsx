@@ -39,7 +39,8 @@ import {
     IdentityProviderManagementConstants
 } from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 import MicrosoftIDPTemplate
-    from "../../../../../admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
+    from "../../../../../admin.identity-providers.v1/data/\
+    identity-provider-templates/templates/microsoft/microsoft.json";
 import {
     GenericAuthenticatorInterface,
     IdentityProviderTemplateInterface
@@ -48,7 +49,6 @@ import {
     IdentityProviderManagementUtils
 } from "../../../../../admin.identity-providers.v1/utils/identity-provider-management-utils";
 import { ApplicationManagementConstants } from "../../../../constants";
-import { SignInMethodCustomization } from "../sign-in-method-customization";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
@@ -58,6 +58,7 @@ import {
     additionalSpProperty
 } from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
+import { SignInMethodCustomization } from "../sign-in-method-customization";
 import { SignInMethodLanding } from "../sign-in-method-landing";
 import AppleLoginSequenceTemplate from "../templates/apple-login-sequence.json";
 import DefaultFlowConfigurationSequenceTemplate from "../templates/default-sequence.json";
@@ -77,7 +78,8 @@ import SmsOTPSequenceTemplate from "../templates/sms-otp-sequence.json";
 /**
  * Proptypes for the sign on methods component.
  */
-interface SignOnMethodsCorePropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
+interface SignOnMethodsCorePropsInterface extends 
+SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
     /**
      * Editing application.
      */
@@ -299,7 +301,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         const isBasicStep: boolean = authenticationSequence.steps[0].options[0].authenticator
             === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
         const isBasicScript: boolean = !authenticationSequence.script
-            || AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script, authenticationSequence.steps?.length);
+            ||AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script, authenticationSequence.steps?.length);
 
         return isBasicStep && isBasicScript && authenticationSequence.type === AuthenticationSequenceType.DEFAULT;
     };
