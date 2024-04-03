@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import Chip from "@oxygen-ui/react/Chip";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     PageLayout,
-    ResourceTab } from "@wso2is/react-components";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
+    ResourceTab,
+    ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -29,10 +30,12 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { TabProps } from "semantic-ui-react";
+import { MenuItem, TabProps } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { AuditLogsPage } from "../../audit-logs/audit-logs";
 import { DiagnosticLogsPage } from "../../diagnostic-logs/diagnostic-logs";
 import { TabIndex } from "../models/log-models";
+import "./logs.scss";
 
 /**
  * Proptypes for the logs page component.
@@ -73,25 +76,35 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
         );
     };
 
-    const resolveLogTabPanes = (): LogTabPane[] => {
-        const panes: LogTabPane[] = [];
+    const resolveLogTabPanes = (): ResourceTabPaneInterface[] => {
+        const panes: ResourceTabPaneInterface[] = [];
 
         { featureConfig.diagnosticLogs?.enabled &&  panes.push({
             componentId: "diagnostic-logs",
-            menuItem: {
-                content: "Diagnostic"
-            },
+            menuItem: (
+                <MenuItem key="text" className="item-with-chip">
+                    Dianostic
+                </MenuItem>
+            ),
             render: renderLogContentDiagnosticNew
         }); }
 
 
         { featureConfig.auditLogs?.enabled && panes.push({
             componentId: "audit-logs",
-            menuItem: {
-                content: "Audit"
-            },
+            menuItem: (
+                <MenuItem key="text" className="item-with-chip">
+                    Audit
+                    <Chip
+                        size="small"
+                        label={ t("common:beta").toUpperCase() }
+                        className="oxygen-chip-beta"
+                    />
+                </MenuItem>
+            ),
             render: renderLogContentAuditNew
-        }); }
+        });
+        }
 
         return panes;
     };
@@ -132,18 +145,5 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
 LogsPage.defaultProps = {
     "data-componentid": "logs-page"
 };
-
-
-/**
- * Interface for the Log Tab Pane.
- */
-interface LogTabPane {
-    componentId: string;
-    menuItem: {
-        content: string;
-    };
-    render: () => React.ReactElement;
-}
-
 
 export default LogsPage;
