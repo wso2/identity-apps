@@ -38,11 +38,6 @@ export * from "./components/modals/help-panel-modal";
 export * from "./components/vertical-stepper/vertical-stepper";
 export * from "./components/vertical-stepper/step";
 
-/**
- * Export API configs.
- */
-export * from "./configs/app";
-export * from "./configs/ui";
 
 /**
  * Export constants.

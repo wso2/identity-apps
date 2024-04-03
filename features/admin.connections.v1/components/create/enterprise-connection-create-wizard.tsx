@@ -20,7 +20,7 @@ import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import Backdrop from "@mui/material/Backdrop";
 import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
-import { ModalWithSidePanel } from "../../../admin.core.v1/components/modals/modal-with-side-panel";
+import { ModalWithSidePanel } from "../../../admin.core.v1/components";
 import { getCertificateIllustrations } from "../../../admin.core.v1/configs/ui";
 import { ConfigReducerStateInterface } from "../../../admin.core.v1/models/reducer-state";
 import { AppState } from "../../../admin.core.v1/store";

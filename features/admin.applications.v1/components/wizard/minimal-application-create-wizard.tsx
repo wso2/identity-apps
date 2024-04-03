@@ -73,7 +73,7 @@ import {
     history,
     store
 } from "../../../admin.core.v1";
-import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/tier-limit-reach-error-modal";
+import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "../../../admin.roles.v2/constants/role-constants";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,5 @@
  * under the License.
  */
 
-export * from "./app-constants";
-export * from "./common-constants";
-export * from "./i18n-constants";
-export * from "./ui-constants";
-export * from "./user-store-constants";
-export * from "./organization-constants";
-export * from "./shared";
+export * from "./application-management";
+export * from "./role-management";
