@@ -58,7 +58,11 @@ const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterf
                                     type="text"
                                     id="usernameUserInput"
                                     name="usernameUserInput"
-                                    placeholder="Username"
+                                    placeholder={
+                                        i18n(CustomTextPreferenceConstants
+                                            .TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY
+                                            .IDENTIFIER.INPUT.PLACEHOLDER, "Username")
+                                    }
                                     data-testid="login-page-username-input"
                                 />
                                 <i aria-hidden="true" className="user outline icon"></i>
