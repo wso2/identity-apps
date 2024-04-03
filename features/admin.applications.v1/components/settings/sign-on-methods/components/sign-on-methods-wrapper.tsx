@@ -108,10 +108,10 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
      * Checks if the AI generated login flow is available.
      * If available update the authentication sequence with generated value.
      */
-    if (!aiGeneratedAiLoginFlow){
+    if (aiGeneratedAiLoginFlow !== undefined){
         setmodifiedAuthenticatinSequence(aiGeneratedAiLoginFlow);
     };
-    
+
     return (
             <SignOnMethodsCore
                 application={ application }
