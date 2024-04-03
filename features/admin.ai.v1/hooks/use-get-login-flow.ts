@@ -15,26 +15,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import {Context, createContext} from "react";
-import {BannerState} from "../models/banner-state";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
-export interface AILoginFlowContextInterface{
-    // Add required properties here
-    /**
-     * Banner State of the AI login flow banner component
-     */
-    bannerState: BannerState;
-    /**
-     * State to hold the generated login flow.
-     */
-     aiGeneratedAiLoginFlow: AuthenticationSequenceInterface;
-    /**
-     * Callback function to set banner state.
-     */
-    setBannerState: (state: BannerState) => void;
-}
 
-const AILoginFlowContext = createContext<AILoginFlowContextInterface>(undefined);
+const useGetLoginFLow = (generatedLoginFlow: any): AuthenticationSequenceInterface => {
 
-export default AILoginFlowContext;
+    const aiGeneratedLoginFlow: AuthenticationSequenceInterface = {
+        attributeStepId : generatedLoginFlow.authenticationSequence.attributeStepId,
+        requestPathAuthenticators :[],
+        steps: generatedLoginFlow.authenticationSequence.steps, 
+        script: generatedLoginFlow.script,
+        type : generatedLoginFlow.type,
+        subjectStepId : generatedLoginFlow.subjectStepId
+    };
+    return aiGeneratedLoginFlow;
+
+};
+
+export default useGetLoginFLow;
