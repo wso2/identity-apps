@@ -1,5 +1,19 @@
 # @wso2is/features
 
+## 2.13.38
+
+### Patch Changes
+
+- [#5889](https://github.com/wso2/identity-apps/pull/5889) [`0899bd4191`](https://github.com/wso2/identity-apps/commit/0899bd4191b8816b2a68779c7f6381102b2ca4b4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix user creation bug in bulk user wizard
+
+* [#5882](https://github.com/wso2/identity-apps/pull/5882) [`6ee73a950b`](https://github.com/wso2/identity-apps/commit/6ee73a950b9ba26fc8f011153429f3805170854b) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Restructured the sign-on-methods to include AI login flow components.
+
+- [#5886](https://github.com/wso2/identity-apps/pull/5886) [`27f0ae4c89`](https://github.com/wso2/identity-apps/commit/27f0ae4c89905661cc5e5c95b45b373d91939e85) Thanks [@chamathns](https://github.com/chamathns)! - Refactor branding page layout
+
+* [#5891](https://github.com/wso2/identity-apps/pull/5891) [`0723530b5b`](https://github.com/wso2/identity-apps/commit/0723530b5b61c9f1fb31fe91f414d435160651cb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Hide userstore dropdown in sub-organizations
+
+- [#5872](https://github.com/wso2/identity-apps/pull/5872) [`d34f01f0de`](https://github.com/wso2/identity-apps/commit/d34f01f0dec8649020674eb1d6dba1354f62aa08) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent custom text preference delete request not being triggered on reverting branding when there is no branding is configured.
+
 ## 2.13.37
 
 ### Patch Changes
