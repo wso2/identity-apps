@@ -78,7 +78,7 @@ import SmsOTPSequenceTemplate from "../templates/sms-otp-sequence.json";
 /**
  * Proptypes for the sign on methods component.
  */
-interface SignOnMethodsCorePropsInterface extends 
+interface SignOnMethodsCorePropsInterface extends
 SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
     /**
      * Editing application.
