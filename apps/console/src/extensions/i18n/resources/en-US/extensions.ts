@@ -1332,7 +1332,7 @@ export const extensions: Extensions = {
                         },
                         tokenRequest: "Client Credentials grant request to obtain an access token.",
                         tokenEndpoint: "This endpoint is called by applications to  retrieve the token.",
-                        scopes: "These are the set of scopes that are authorized." +
+                        scopes: "These are the set of authorized scopes" +
                                 "If you want to add more scopes, please authorize an API in the <1>API Authorization</1> tab."
                     }
                 }
