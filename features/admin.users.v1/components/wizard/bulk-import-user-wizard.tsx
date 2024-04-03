@@ -45,6 +45,7 @@ import {
     CSVFileStrategy,
     CSVResult,
     ContentLoader,
+    DocumentationLink,
     FilePicker,
     Heading,
     Hint,
@@ -54,6 +55,7 @@ import {
     PickerResult,
     Popup,
     PrimaryButton,
+    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -65,9 +67,10 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-import { userConfig, userstoresConfig } from "../../../admin.extensions.v1/configs";
-import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../admin.claims.v1/api";
-import { ClaimManagementConstants } from "../../../admin.claims.v1/constants";
+import { userConfig } from "../../../../extensions/configs";
+import { ClaimManagementConstants } from "../../../../features/claims/constants";
+import { getGroupList, useGroupList } from "../../../../features/groups/api";
+import { GroupsInterface } from "../../../../features/groups/models";
 import {
     AppConstants,
     ModalWithSidePanel,
@@ -84,6 +87,7 @@ import { getAUserStore, getUserStores } from "../../../admin.userstores.v1/api";
 import { UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
 import { useValidationConfigData } from "../../../admin.validation.v1/api";
 import { ValidationFormInterface } from "../../../admin.validation.v1/models";
+import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,
@@ -205,6 +209,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ fileModeTimeOutError , setFileModeTimeOutError ] = useState<boolean>(false);
 
     const { data: validationData } = useValidationConfigData();
+    const { getLink } = useDocumentation();
     const config: ValidationFormInterface = getUsernameConfiguration(validationData);
     const isAlphanumericUsername: boolean = config?.enableValidator === "true";
 
@@ -597,7 +602,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const headers: string[] = userData.headers;
         const rows: string[][] = userData.items;
 
-        const requiredFields: string[] = Object.values(RequiredBulkUserImportAttributes);
+        const requiredFields: string[] = isAlphanumericUsername
+            ? Object.values(RequiredBulkUserImportAttributes)
+            : Object.values(RequiredBulkUserImportAttributes.EMAILADDRESS);
         const missingFields: string[] = getMissingFields(headers, requiredFields);
         const duplicateEntries: string[] = getDuplicateEntries(headers);
         const blockedAttributes: string[] = Object.values(BlockedBulkUserImportAttributes);
@@ -713,6 +720,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         ): Record<string, unknown> => {
             const dataObj: Record<string, unknown> = {};
             const schemasSet: Set<string> = new Set([ UserManagementConstants.SCIM2_USER_SCHEMA ]);
+            let emailValue: string = "";
 
             for (const attribute of filteredAttributeMapping) {
                 const scimAttribute: string = attribute.mappedSCIMAttributeURI.replace(
@@ -729,6 +737,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 // Handle username attribute.
                 if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
+                    emailValue = attributeValue;
+
                     if (isEmptyAttribute(attributeValue)) {
                         setEmptyDataFieldError(attribute.attributeName);
                         throw new Error(DATA_VALIDATION_ERROR);
@@ -744,6 +754,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 // Handle email attribute.
                 if (attribute.attributeName === RequiredBulkUserImportAttributes.EMAILADDRESS) {
+                    if (!isAlphanumericUsername) {
+                        continue;
+                    }
+
                     if (isEmptyAttribute(attributeValue)) {
                         setEmptyDataFieldError(attribute.attributeName);
                         throw new Error(DATA_VALIDATION_ERROR);
@@ -848,6 +862,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                     continue;
                 }
+            }
+
+            if (!isAlphanumericUsername) {
+                dataObj["emails"] =
+                    [ { primary: true, value: emailValue } ];
             }
 
             return {
@@ -1944,12 +1963,22 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         <p> { t("user:modals.bulkImportUserWizard.sidePanel." +
                                 "fileFormatSampleHeading") }</p>
                         <p>
-                            <code>
-                                username,givenname,emailaddress,groups<br />
-                                user1,john,john@test.com,group1|group2<br/>
-                                user2,jake,jake@test.com,group2<br/>
-                                user3,jane,jane@test.com,group1<br/>
-                            </code>
+                            {
+                                isAlphanumericUsername ? (
+                                    <code>
+                                        username,givenname,emailaddress,groups<br />
+                                        user1,john,john@test.com,group1|group2<br/>
+                                        user2,jake,jake@test.com,group2<br/>
+                                        user3,jane,jane@test.com,group1<br/>
+                                    </code>
+                                ) : (
+                                    <code>
+                                        username,givenname,groups<br />
+                                        user1,john,group1|group2<br/>
+                                        user2,jake,group2<br/>
+                                        user3,jane,group1<br/>
+                                    </code>)
+                            }
                         </p>
                     </Suspense>
                 </ModalWithSidePanel.Content>
@@ -1978,6 +2007,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     { t("user:modals.bulkImportUserWizard.title") }
                     <Heading as="h6">
                         { t("user:modals.bulkImportUserWizard.subTitle") }
+                        <DocumentationLink
+                            link={ getLink("manage.users.bulkUsers.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
                     </Heading>
                 </ModalWithSidePanel.Header>
 
