@@ -5,7 +5,6 @@
     "description": "Applications developed to target m2m applciation.",
     "enabled": true,
     "displayOrder": 5,
-    "image": "oidcMobile",
     "name": "M2M Application",
     "subTemplatesSectionTitle": "Technology",
     "types": [],
