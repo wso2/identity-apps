@@ -16,12 +16,16 @@
  * under the License.
  */
  
-.tabs.resource-tabs{
+ .tabs.resource-tabs {
 
     .ui.pointing.secondary.menu {
 
         .item.item-with-chip {
+            
             min-height: 50px;
+            .oxygen-chip-beta {
+                margin-left: 8px;
+            }
         }
     }
 }
