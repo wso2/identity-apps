@@ -259,17 +259,6 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                         { t("extensions:develop.monitor.filter.viewButton.label") }
                                     </Link>
                                 </td>
-                                <td className="download-data-button">
-                                    <Link
-                                        data-testid={ `${ componentId }-${ logObject["id"] }-download-data-button` }
-                                        data-componentid={ `${ componentId }-download-data-button` }
-                                        underline="hover"
-                                        onClick={ () => exportDataOfLog(logObject) }
-                                    >
-                                        <DownloadIcon className="topic"/>
-                                        { t("extensions:develop.monitor.filter.downloadButton.label") }
-                                    </Link>
-                                </td>
                             </tr>
                         );
                     } else {
