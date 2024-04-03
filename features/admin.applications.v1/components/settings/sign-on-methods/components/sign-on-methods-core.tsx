@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ConfirmationModal, ContentLoader, LabeledCard, Text } from "@wso2is/react-components";
