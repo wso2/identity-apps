@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.13.37
+
+### Patch Changes
+
+- [#5885](https://github.com/wso2/identity-apps/pull/5885) [`7902647766`](https://github.com/wso2/identity-apps/commit/7902647766a1027ecf8f02bf4f57c91331c26b09) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - make audit beta feature
+
 ## 2.13.36
 
 ### Patch Changes
