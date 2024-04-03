@@ -129,16 +129,6 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
     };
 
     /**
-     * Handles the download of the data of current log.
-    */
-    const exportDataOfLog = (logObject : InterfaceLogEntry) => {
-        const blob: Blob = new Blob( [ JSON.stringify(logObject["data"], null, 2) ],
-            { type: "application/json" });
-
-        saveAs(blob, "log_data_" + logObject["id"] + ".json");
-    };
-
-    /**
      * Handles the LogData copy
     */
     const copyCurrentLog = () => {
