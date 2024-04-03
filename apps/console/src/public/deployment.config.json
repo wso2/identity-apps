@@ -1124,6 +1124,7 @@
             "hypr-idp",
             "swe-idp"
         ],
+        "hiddenApplicationTemplates": [],
         "hiddenUserStores": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false,

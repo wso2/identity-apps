@@ -2458,6 +2458,13 @@ export interface ApplicationsNS {
         };
     };
     placeholders: {
+        emptyApplicationTypeList: {
+            title: string;
+            subtitles: {
+                0: string;
+                1: string;
+            };
+        };
         emptyAttributesList: {
             action: string;
             title: string;

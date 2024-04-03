@@ -24,7 +24,7 @@ import useRequest, {
     RequestResultInterface
 } from "../../admin-core-v1/hooks/use-request";
 import { AppState, store } from "../../admin-core-v1/store";
-import { CONSOLE_BASE_URL_PLACEHOLDER } from "../constants/application-templates";
+import { ApplicationTemplateConstants } from "../constants/application-templates";
 import { ApplicationTemplateListInterface } from "../models/application-templates";
 
 /**
@@ -52,10 +52,15 @@ const useGetApplicationTemplates = <
     );
 
     if (Array.isArray(data)) {
+        data.sort(
+            (template1: ApplicationTemplateListInterface, template2: ApplicationTemplateListInterface) =>
+                template1?.displayOrder - template2?.displayOrder
+        );
+
         for (const template of data) {
-            if (template?.image?.includes(CONSOLE_BASE_URL_PLACEHOLDER)) {
+            if (template?.image?.includes(ApplicationTemplateConstants.CONSOLE_BASE_URL_PLACEHOLDER)) {
                 template.image = template.image.replace(
-                    CONSOLE_BASE_URL_PLACEHOLDER,
+                    ApplicationTemplateConstants.CONSOLE_BASE_URL_PLACEHOLDER,
                     `${clientOrigin}/${appBaseNameWithoutTenant}`
                 );
             }

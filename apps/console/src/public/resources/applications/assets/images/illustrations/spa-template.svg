@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="spa-template-illustration" class="icon" width="70" height="66" viewBox="0 0 70 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="70" height="56" rx="4" fill="#ECECEC"/>
+<path d="M20 16C20 14.8954 20.8954 14 22 14H48C49.1046 14 50 14.8954 50 16V50C50 51.1046 49.1046 52 48 52H22C20.8954 52 20 51.1046 20 50V16Z" fill="url(#paint0_linear_927_10516)"/>
+<path d="M3 14H17C18.1046 14 19 14.8954 19 16V50C19 51.1046 18.1046 52 17 52H3V14Z" fill="white"/>
+<path d="M3 5.5C3 4.67157 3.67157 4 4.5 4V4C5.32843 4 6 4.67157 6 5.5V5.5C6 6.32843 5.32843 7 4.5 7V7C3.67157 7 3 6.32843 3 5.5V5.5Z" fill="black"/>
+<path d="M8 5.5C8 4.67157 8.67157 4 9.5 4V4C10.3284 4 11 4.67157 11 5.5V5.5C11 6.32843 10.3284 7 9.5 7V7C8.67157 7 8 6.32843 8 5.5V5.5Z" fill="black"/>
+<path d="M13 5.5C13 4.67157 13.6716 4 14.5 4V4C15.3284 4 16 4.67157 16 5.5V5.5C16 6.32843 15.3284 7 14.5 7V7C13.6716 7 13 6.32843 13 5.5V5.5Z" fill="black"/>
+<path d="M67 52L53 52C51.8954 52 51 51.1046 51 50L51 16C51 14.8954 51.8954 14 53 14L67 14L67 52Z" fill="white"/>
+<path d="M39.3249 48.1378L43.4972 65.4622L47.6347 58.4945L55.3335 55.9653L39.3249 48.1378Z" fill="#67777E"/>
+<defs>
+<linearGradient id="paint0_linear_927_10516" x1="35" y1="14" x2="35" y2="52" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EE575C"/>
+<stop offset="1" stop-color="#F67147"/>
+</linearGradient>
+</defs>
+</svg>

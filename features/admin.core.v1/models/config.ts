@@ -330,6 +330,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenConnectionTemplates?: string[];
     /**
+     * Set of application templates to be hidden.
+     * Include the IDs of application templates.
+     */
+    hiddenApplicationTemplates?: string[];
+    /**
      * Configurations for IDP templates.
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;

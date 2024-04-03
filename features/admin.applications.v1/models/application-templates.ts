@@ -134,10 +134,10 @@ export enum ApplicationTemplateCategories {
      */
     DEFAULT = "DEFAULT",
     /**
-     * Vendor templates.
+     * SSO Integration templates.
      * ex: Zoom, Salesforce etc.
      */
-    VENDOR = "VENDOR",
+    SSO_INTEGRATION = "SSO-INTEGRATION",
 }
 
 /**
@@ -152,4 +152,14 @@ export interface SupportedTechnologyMetadataInterface {
      * URL of the technology logo.
      */
     logo?: string;
+}
+
+/**
+ * Interface for the categorized application templates.
+ */
+export interface CategorizedApplicationTemplatesInterface {
+    /**
+     * Category name - Template list mapping.
+     */
+    [ key: string ]: ApplicationTemplateListInterface[]
 }

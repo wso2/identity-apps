@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,14 +18,16 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import groupBy from "lodash-es/groupBy";
 import isObject from "lodash-es/isObject";
 import startCase  from "lodash-es/startCase";
-import { getTechnologyLogos } from "../../admin.core.v1/configs";
-import { store } from "../../admin.core.v1/store";
+import { AppConstants } from "../../admin-core-v1";
+import { getTechnologyLogos } from "../../admin-core-v1/configs";
+import { store } from "../../admin-core-v1/store";
 import {
     getApplicationTemplateList
 } from "../api";
@@ -198,7 +200,7 @@ export class ApplicationTemplateManagementUtils {
                     && Object.prototype.hasOwnProperty.call(technology, "displayName")
                     && Object.prototype.hasOwnProperty.call(technology, "logo")
                     && Object.prototype.hasOwnProperty.call(technology, "name")) {
-                    
+
                     return technology;
                 }
 
@@ -425,7 +427,7 @@ export class ApplicationTemplateManagementUtils {
     private static resolveHelpContent(templates: ApplicationTemplateInterface[]): ApplicationTemplateInterface[] {
 
         templates.map((template: ApplicationTemplateInterface) => {
-            const config: TemplateConfigInterface<ApplicationTemplateInterface> = 
+            const config: TemplateConfigInterface<ApplicationTemplateInterface> =
             getApplicationTemplatesConfig().templates
                 .find((config: TemplateConfigInterface<ApplicationTemplateInterface>) => {
                     return config.id === template.id;
@@ -439,5 +441,37 @@ export class ApplicationTemplateManagementUtils {
         });
 
         return templates;
+    }
+
+    /**
+     * Util to resolve application resource path.
+     *
+     * @param path - Resource path.
+     * @returns The absolute path to the resource location.
+     */
+    public static resolveApplicationResourcePath(path: string): string {
+        if (typeof path !== "string") {
+            return path;
+        }
+
+        if (URLUtils.isHttpsOrHttpUrl(path) && ImageUtils.isValidImageExtension(path)) {
+            return path;
+        }
+
+        if (URLUtils.isDataUrl(path)) {
+            return path;
+        }
+
+        if (AppConstants.getClientOrigin()) {
+
+            const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
+
+            if (path?.includes(AppConstants.getClientOrigin())) {
+
+                return path;
+            }
+
+            return AppConstants.getClientOrigin() + basename + "/resources/applications/" + path;
+        }
     }
 }

@@ -2771,6 +2771,13 @@ export const applications: ApplicationsNS = {
         }
     },
     placeholders: {
+        emptyApplicationTypeList: {
+            subtitles: {
+                0: "There are currently no application types available.",
+                1: "for configuration."
+            },
+            title: "No application types found"
+        },
         emptyAttributesList: {
             action: "Add User Attribute",
             subtitles: "There are no user attributes selected for the application at the moment.",

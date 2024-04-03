@@ -1650,6 +1650,13 @@
                 {% endfor %}
             {% endif %}
         ],
+        "hiddenApplicationTemplates": [
+            {% if console.ui.hiddenApplicationTemplates is defined %}
+                {% for value in console.ui.hiddenApplicationTemplates %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         "hiddenUserStores": [
             {% if console.ui.hidden_user_stores is defined %}
                 {% for value in console.ui.hidden_user_stores %}
