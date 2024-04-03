@@ -65,7 +65,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-import { userConfig, userstoresConfig } from "../../../admin.extensions.v1/configs";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../admin.claims.v1/api";
 import { ClaimManagementConstants } from "../../../admin.claims.v1/constants";
 import {
@@ -76,12 +75,13 @@ import {
     getCertificateIllustrations,
     history
 } from "../../../admin.core.v1";
+import { userConfig, userstoresConfig } from "../../../admin.extensions.v1/configs";
 import { getGroupList, useGroupList } from "../../../admin.groups.v1/api";
 import { GroupsInterface } from "../../../admin.groups.v1/models";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "../../../admin.roles.v2/models";
 import { getAUserStore, getUserStores } from "../../../admin.userstores.v1/api";
-import { UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
 import { useValidationConfigData } from "../../../admin.validation.v1/api";
 import { ValidationFormInterface } from "../../../admin.validation.v1/models";
 import { addBulkUsers } from "../../api";
@@ -200,7 +200,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ manualInviteAlert, setManualInviteAlert, manualInviteAlertComponent ]
         = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig.primaryUserstoreName);
     const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
     const [ fileModeTimeOutError , setFileModeTimeOutError ] = useState<boolean>(false);
 
@@ -243,8 +243,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const userStoreArray: DropdownItemProps[] = [
             {
                 key: -1,
-                text: t("users:userstores.userstoreOptions.primary"),
-                value: "PRIMARY"
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreName
             }
         ];
 
@@ -735,7 +735,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     }
 
                     dataObj[RequiredBulkUserImportAttributes.USERNAME] = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${attributeValue}`
                         : attributeValue;
 
@@ -888,7 +888,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             uniqueCSVGroups.forEach((group: string) => {
                 if (isEmptyAttribute(group)) return;
                 const domainGroupName: string = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                     ? `${selectedUserStore}/${group}`
                     : group;
 
@@ -1053,10 +1053,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
                 ],
                 userName:
-                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${email}`
                         : email,
-                [ userstore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                [ userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                     ? UserManagementConstants.CUSTOMSCHEMA
                     : UserManagementConstants.ENTERPRISESCHEMA
                 ]: {
