@@ -39,8 +39,8 @@ import {
     IdentityProviderManagementConstants
 } from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 import MicrosoftIDPTemplate
-    from "../../../../../admin.identity-providers.v1/data/\
-    identity-provider-templates/templates/microsoft/microsoft.json";
+    from
+    "../../../../../admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import {
     GenericAuthenticatorInterface,
     IdentityProviderTemplateInterface
