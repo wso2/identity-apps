@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useReducer } from "react";
 import { AccessProvider } from "react-access-control";
 import AccessControlContext  from "./access-control-context-provider";
-import { FeatureGateContext } from "../context";
+import FeatureGateContext from "../context/feature-gate-context";
 import { PermissionsInterface } from "../models";
 import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from "../models/feature-gate";
 
@@ -29,7 +29,9 @@ import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from 
 export interface AccessControlProviderInterface {
     allowedScopes: string;
     features: FeatureGateInterface;
-    permissions: PermissionsInterface
+    permissions: PermissionsInterface;
+    isLegacyRuntimeEnabled: boolean;
+    organizationType: string;
 }
 
 export const featureGateReducer = (
@@ -59,10 +61,15 @@ const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlPr
         allowedScopes,
         children,
         features,
+        isLegacyRuntimeEnabled,
+        organizationType,
         permissions
     } = props;
 
     const [ , dispatch ] = useReducer(featureGateReducer, features);
+
+    console.log("isLegacyRuntimeEnabled", isLegacyRuntimeEnabled);
+    console.log("organizationType", organizationType);
 
     useEffect (() => {
         dispatch({ payload: features, type: FeatureGateActionTypes.SET_FEATURE_STATE });
