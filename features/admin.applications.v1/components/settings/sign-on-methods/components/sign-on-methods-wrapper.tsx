@@ -17,14 +17,14 @@
  */
 
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useContext, useState } from "react";
 import { SignOnMethodsCore } from "./sign-on-methods-core";
 import { FeatureConfigInterface } from "../../../../../admin.core.v1";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
 } from "../../../../models";
-
+import AILoginFlowContext from "../../../../../admin.ai.v1/context/login-flow-context";
 /**
  * Proptypes for the sign on methods component.
  */
@@ -92,12 +92,31 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
         hiddenAuthenticators,
         [ "data-componentid" ]: componentId
     } = props;
-
+    /**
+     * State to keep the authentication sequence to be passed to child component.
+     * Set the initial value to applications current configured authentication sequence.
+     */
+    const [modifiedAuthenticatinSequence, setmodifiedAuthenticatinSequence] =
+    useState<AuthenticationSequenceInterface>(authenticationSequence);
+    /**
+     * Get the state of the AI generated login flow.
+     */
+    const { 
+        aiGeneratedAiLoginFlow 
+    } = useContext(AILoginFlowContext);
+    /**
+     * Checks if the AI generated login flow is available.
+     * If available update the authentication sequence with generated value.
+     */
+    if (!aiGeneratedAiLoginFlow){
+        setmodifiedAuthenticatinSequence(aiGeneratedAiLoginFlow);
+    };
+    
     return (
             <SignOnMethodsCore
                 application={ application }
                 appId={ appId }
-                authenticationSequence={ authenticationSequence }
+                authenticationSequence={ modifiedAuthenticatinSequence }
                 clientId={ clientId }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
