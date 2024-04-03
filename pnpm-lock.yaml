@@ -1445,7 +1445,7 @@ importers:
   modules/access-control:
     dependencies:
       '@wso2is/core':
-        specifier: ^2.0.37
+        specifier: ^2.0.38
         version: link:../core
       jest:
         specifier: ^29.7.0
@@ -1988,7 +1988,7 @@ importers:
         specifier: ^29.5.12
         version: 29.5.12
       '@wso2is/core':
-        specifier: ^2.0.37
+        specifier: ^2.0.38
         version: link:../core
       babel-jest:
         specifier: ^26.3.0
@@ -2007,7 +2007,7 @@ importers:
         version: 4.17.21
       react-i18next:
         specifier: ^11.18.5
-        version: 11.18.5(i18next@21.9.1)(react@18.2.0)
+        version: 11.18.5(i18next@21.9.1)(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@types/i18next':
         specifier: 8.4.3
@@ -5217,7 +5217,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.9
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.18.9
     dev: true
 
   /@babel/plugin-transform-react-display-name@7.18.6(@babel/core@7.18.13):
@@ -6120,8 +6120,8 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.9
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-validator-option': 7.23.5
+      '@babel/helper-plugin-utils': 7.18.9
+      '@babel/helper-validator-option': 7.18.6
       '@babel/plugin-transform-react-display-name': 7.18.6(@babel/core@7.23.9)
       '@babel/plugin-transform-react-jsx': 7.18.10(@babel/core@7.23.9)
       '@babel/plugin-transform-react-jsx-development': 7.18.6(@babel/core@7.23.9)
@@ -24793,6 +24793,8 @@ packages:
     peerDependenciesMeta:
       webpack:
         optional: true
+      webpack-sources:
+        optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.11)(webpack-cli@4.10.0)
       webpack-sources: 3.2.3
@@ -28607,25 +28609,6 @@ packages:
       i18next: 21.9.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /react-i18next@11.18.5(i18next@21.9.1)(react@18.2.0):
-    resolution: {integrity: sha512-cKcyuuzIv0YUZ4l9WORflVNuhISPAqQShOAsxwFyYuJoCA7HlLmHm7XnvO6hfAGmGpDNRhJHoBX8hG49Cb2xZQ==}
-    peerDependencies:
-      i18next: '>= 19.0.0'
-      react: '>= 16.8.0'
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.22.15
-      html-parse-stringify: 3.0.1
-      i18next: 21.9.1
-      react: 18.2.0
     dev: false
 
   /react-inspector@5.1.1(react@18.2.0):
