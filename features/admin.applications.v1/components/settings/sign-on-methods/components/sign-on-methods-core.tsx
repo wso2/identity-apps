@@ -29,10 +29,35 @@ import AuthenticationFlowBuilder
     from "../../../../../admin.authentication-flow-builder.v1/components/authentication-flow-builder";
 import AuthenticationFlowProvider
     from "../../../../../admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
-import { ConnectionsManagementUtils } 
+import { ConnectionsManagementUtils }
     from "../../../../../admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../../admin.core.v1";
+import {
+    AuthenticatorCreateWizardFactory
+} from "../../../../../admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
+import {
+    IdentityProviderManagementConstants
+} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
+import MicrosoftIDPTemplate
+    from "../../../../../admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
+import {
+    GenericAuthenticatorInterface,
+    IdentityProviderTemplateInterface
+} from "../../../../../admin.identity-providers.v1/models/identity-provider";
+import {
+    IdentityProviderManagementUtils
+} from "../../../../../admin.identity-providers.v1/utils/identity-provider-management-utils";
+import { ApplicationManagementConstants } from "../../../../constants";
 import { SignInMethodCustomization } from "../sign-in-method-customization";
+import {
+    ApplicationInterface,
+    AuthenticationSequenceInterface,
+    AuthenticationSequenceType,
+    AuthenticatorInterface,
+    LoginFlowTypes,
+    additionalSpProperty
+} from "../../../../models";
+import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 import { SignInMethodLanding } from "../sign-in-method-landing";
 import AppleLoginSequenceTemplate from "../templates/apple-login-sequence.json";
 import DefaultFlowConfigurationSequenceTemplate from "../templates/default-sequence.json";
@@ -47,32 +72,7 @@ import SecondFactorEMAILOTPSequenceTemplate from "../templates/second-factor-ema
 import SecondFactorSMSOTPSequenceTemplate from "../templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "../templates/second-factor-totp-sequence.json";
 import SmsOTPSequenceTemplate from "../templates/sms-otp-sequence.json";
-import {
-    AuthenticatorCreateWizardFactory
-} from "../../../../../admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
-import {
-    IdentityProviderManagementConstants
-} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 // eslint-disable-next-line max-len
-import MicrosoftIDPTemplate 
-from "../../../../../admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
-import {
-    GenericAuthenticatorInterface,
-    IdentityProviderTemplateInterface
-} from "../../../../../admin.identity-providers.v1/models/identity-provider";
-import {
-    IdentityProviderManagementUtils
-} from "../../../../../admin.identity-providers.v1/utils/identity-provider-management-utils";
-import { ApplicationManagementConstants } from "../../../../constants";
-import {
-    ApplicationInterface,
-    AuthenticationSequenceInterface,
-    AuthenticationSequenceType,
-    AuthenticatorInterface,
-    LoginFlowTypes,
-    additionalSpProperty
-} from "../../../../models";
-import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 
 /**
  * Proptypes for the sign on methods component.
