@@ -92,7 +92,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         hiddenAuthenticators,
         [ "data-componentid" ]: componentId
     } = props;
-    
+
     return (
         <SignOnMethodsCore
             application={ application }
