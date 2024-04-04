@@ -57,7 +57,7 @@
         "@wso2is/react-components": "^2.1.13",
         "@wso2is/theme": "^2.0.71",
         "@wso2is/validation": "^2.0.3",
-        "@wso2is/features": "2.14.10",
+        "@wso2is/features": "^2.14.10",
         "axios": "^0.19.2",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
