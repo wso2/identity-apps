@@ -25,6 +25,7 @@ import {
     AuthenticationSequenceInterface
 } from "../../../../models";
 import useGetModifiedLoginFLow from "../../../../../admin.ai.v1/hooks/use-get-modified-login-flow";
+import AILoginFlowContext from "../../../../../admin.ai.v1/context/login-flow-context";
 /**
  * Proptypes for the sign on methods component.
  */
@@ -93,7 +94,11 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
         [ "data-componentid" ]: componentId
     } = props;
     
+    /**
+     * Get the AI generated login flow if available.
+     */
     const modifiedAuthenticatinSequence = useGetModifiedLoginFLow(authenticationSequence);
+
     return (
             <SignOnMethodsCore
                 application={ application }
