@@ -602,7 +602,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         const requiredFields: string[] = isAlphanumericUsername
             ? Object.values(RequiredBulkUserImportAttributes)
-            : Object.values(RequiredBulkUserImportAttributes.EMAILADDRESS);
+            : [ RequiredBulkUserImportAttributes.USERNAME ];
         const missingFields: string[] = getMissingFields(headers, requiredFields);
         const duplicateEntries: string[] = getDuplicateEntries(headers);
         const blockedAttributes: string[] = Object.values(BlockedBulkUserImportAttributes);
