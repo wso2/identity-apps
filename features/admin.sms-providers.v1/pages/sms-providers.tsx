@@ -559,13 +559,17 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             <Grid>
                                                 <Grid.Row columns={ 3 }>
                                                     { providerCards.map(
-                                                        (provider: SMSProviderCardInterface) => (
-                                                            <Grid.Column key={ provider.id }>
+                                                        (provider: SMSProviderCardInterface) => {
+                                                            // Get the provider name in lower case to use as the
+                                                            // data-componentid.
+                                                            const smsProviderName: string =
+                                                                    provider?.name?.toLocaleLowerCase();
+
+                                                            return (<Grid.Column key={ provider?.id }>
                                                                 <InfoCard
                                                                     fluid
                                                                     data-componentid=
-                                                                        { `${componentId}
-                                                                                -sms-provider-info-card` }
+                                                                        { `${smsProviderName}-sms-provider-info-card` }
                                                                     image={ provider.icon }
                                                                     imageSize="x30"
                                                                     header={
@@ -584,8 +588,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                                     showSetupGuideButton={ false }
                                                                     showCardAction={ false }
                                                                 />
-                                                            </Grid.Column>
-                                                        )) }
+                                                            </Grid.Column>);
+                                                        })
+                                                    }
                                                 </Grid.Row>
                                             </Grid>
                                         </div>
