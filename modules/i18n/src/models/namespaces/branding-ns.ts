@@ -49,6 +49,10 @@ export interface BrandingNS {
                 "login.heading": {
                     hint: string;
                 };
+                "login.identifier.input.label": {
+                    hint: string;
+                    warning?: string;
+                };
                 "sms.otp.heading": {
                     hint: string;
                 };
@@ -66,6 +70,10 @@ export interface BrandingNS {
                 };
                 "password.recovery.body": {
                     hint: string;
+                };
+                "password.recovery.identifier.input.placeholder": {
+                    hint: string;
+                    warning?: string;
                 };
                 "password.recovery.button": {
                     hint: string;
@@ -128,6 +136,10 @@ export interface BrandingNS {
             label: string;
             placeholder: string;
         };
+    };
+    connectors: {
+        multiAttributeLogin: string;
+        alternativeLoginIdentifier: string;
     };
     form: {
         actions: {

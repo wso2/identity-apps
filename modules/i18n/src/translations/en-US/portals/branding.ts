@@ -57,6 +57,10 @@ export const branding: BrandingNS = {
                 "login.heading": {
                     hint: "The heading of the login box. If not set, {{productName}} defaults are used."
                 },
+                "login.identifier.input.label": {
+                    hint: "The label of the identifier input field in the login box. If not set, {{productName}} defaults are used.",
+                    warning: "<0>IMPORTANT</0>: Customizing the login identifier label will replace the dynamic label when {{feature}} are <1>configured</1>."
+                },
                 "sms.otp.heading": {
                     hint: "The heading of the SMS OTP box. If not set, {{productName}} defaults are used."
                 },
@@ -74,6 +78,10 @@ export const branding: BrandingNS = {
                 },
                 "password.recovery.body": {
                     hint: "The body text of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.identifier.input.placeholder": {
+                    hint: "The placeholder of the identifier input field in the password recovery box. If not set, {{productName}} defaults are used.",
+                    warning: "<0>IMPORTANT</0>: Customizing the password recovery identifier placeholder will replace the dynamic placeholder when {{feature}} are <1>configured</1>."
                 },
                 "password.recovery.button": {
                     hint: "The text that appears on the main action button of the password recovery box. If not set, {{productName}} defaults are used."
@@ -136,6 +144,10 @@ export const branding: BrandingNS = {
             label: "Screen",
             placeholder: "Select screen"
         }
+    },
+    connectors: {
+        multiAttributeLogin: "Multi Attribute Login Identifiers",
+        alternativeLoginIdentifier: "Alternative Login Identifiers"
     },
     form: {
         actions: {
