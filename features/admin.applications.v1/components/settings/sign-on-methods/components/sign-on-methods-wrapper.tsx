@@ -24,7 +24,7 @@ import {
     ApplicationInterface,
     AuthenticationSequenceInterface
 } from "../../../../models";
-import AILoginFlowContext from "../../../../../admin.ai.v1/context/login-flow-context";
+import useGetModifiedLoginFLow from "../../../../../admin.ai.v1/hooks/use-get-modified-login-flow";
 /**
  * Proptypes for the sign on methods component.
  */
@@ -92,33 +92,8 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
         hiddenAuthenticators,
         [ "data-componentid" ]: componentId
     } = props;
-    /**
-     * State to keep the authentication sequence to be passed to child component.
-     * Set the initial value to applications current configured authentication sequence.
-     */
-    const [modifiedAuthenticatinSequence, setmodifiedAuthenticatinSequence] =
-    useState<AuthenticationSequenceInterface>(authenticationSequence);
-    /**
-     * Get the state of the AI generated login flow.
-     */
-    const { 
-        aiGeneratedAiLoginFlow 
-    } = useContext(AILoginFlowContext);
     
-    /**
-     * Checks if the AI generated login flow is available.
-     * If available update the authentication sequence with generated value.
-     */
-    useEffect(()=>{
-        console.log("ai generated login flow", aiGeneratedAiLoginFlow);
-        if (!aiGeneratedAiLoginFlow){
-            console.log("return null")
-            return;
-        }
-        setmodifiedAuthenticatinSequence(aiGeneratedAiLoginFlow);
-        console.log("modified", modifiedAuthenticatinSequence);
-    }, [aiGeneratedAiLoginFlow]);
-    
+    const modifiedAuthenticatinSequence = useGetModifiedLoginFLow(authenticationSequence);
     return (
             <SignOnMethodsCore
                 application={ application }
