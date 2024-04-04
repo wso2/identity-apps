@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import {
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/common/src/configs/ui";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -31,7 +28,7 @@ import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState, EventPublisher } from "../../../admin-core-v1";
+import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { ApplicationTemplateConstants } from "../../constants/application-templates";
 import useApplicationTemplates from "../../hooks/use-application-templates";
 import { AuthProtocolMetaListItemInterface } from "../../models";

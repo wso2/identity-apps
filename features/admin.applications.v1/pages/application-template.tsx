@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import {
     AppConstants,
     history
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import ApplicationCreationAdapter from "../components/application-templates/application-creation-adapter";
 import ApplicationTemplateGrid from "../components/application-templates/application-templates-grid";
 import { ApplicationTemplateListInterface } from "../models/application-templates";

@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../admin-core-v1";
+import { AppState } from "../../../admin.core.v1";
 import { ApplicationTemplateManagementUtils } from "../..//utils/application-template-management-utils";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationTemplateListItemInterface } from "../../models";

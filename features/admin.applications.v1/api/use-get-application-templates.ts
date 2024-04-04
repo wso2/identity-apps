@@ -22,8 +22,8 @@ import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin-core-v1/hooks/use-request";
-import { AppState, store } from "../../admin-core-v1/store";
+} from "../../admin.core.v1/hooks/use-request";
+import { AppState, store } from "../../admin.core.v1/store";
 import { ApplicationTemplateConstants } from "../constants/application-templates";
 import { ApplicationTemplateListInterface } from "../models/application-templates";
 
