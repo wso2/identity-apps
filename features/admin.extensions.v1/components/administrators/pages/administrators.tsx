@@ -1054,7 +1054,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         setInvitationStatusOption(InvitationStatus.ACCEPTED);
         setActiveTabIndex(data.activeIndex as number);
         handleSearchQueryClear();
-        setInternalAdminUserListFetchRequestLoading(true);
     };
 
     const resolveAdminTabPanes = (): any[] => {
