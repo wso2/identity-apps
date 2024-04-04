@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useState } from "react";
 import { Claim, ClaimsGetParams } from "@wso2is/core/models";
 import { getAllLocalClaims } from "../../admin.claims.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
