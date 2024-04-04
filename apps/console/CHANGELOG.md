@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.14.10
+
+### Patch Changes
+
+- [#5900](https://github.com/wso2/identity-apps/pull/5900) [`d2f75b6e3c`](https://github.com/wso2/identity-apps/commit/d2f75b6e3c7a4e245c1636dc4fae75333348485c) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Provide proper name to SMS provider tabs
+
+* [#5906](https://github.com/wso2/identity-apps/pull/5906) [`d7368b96bc`](https://github.com/wso2/identity-apps/commit/d7368b96bc846e49f878c4a1862c16165a8bc75f) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add changeset
+
+* Updated dependencies [[`d2f75b6e3c`](https://github.com/wso2/identity-apps/commit/d2f75b6e3c7a4e245c1636dc4fae75333348485c), [`d7368b96bc`](https://github.com/wso2/identity-apps/commit/d7368b96bc846e49f878c4a1862c16165a8bc75f)]:
+  - @wso2is/features@2.14.10
+
 ## 2.14.9
 
 ### Patch Changes
