@@ -20,9 +20,9 @@ import { Context, createContext } from "react";
 import { AccessControlContextPropsInterface } from "../models/access-control";
 
 /**
- * Context object for feature gate configurations.
+ * Context object for access control module.
  */
-const FeatureGateContext: Context<AccessControlContextPropsInterface>  =
+const AccessControlContext: Context<AccessControlContextPropsInterface>  =
     createContext<AccessControlContextPropsInterface>(undefined);
 
-export default FeatureGateContext;
+export default AccessControlContext;

@@ -18,9 +18,9 @@
 
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useReducer } from "react";
 import { AccessProvider } from "react-access-control";
-import AccessControlContext  from "./access-control-context-provider";
+import AccessControlContextProvider  from "./access-control-context-provider";
 import FeatureGateContext from "../context/feature-gate-context";
-import { PermissionsInterface } from "../models";
+import { PermissionsInterface } from "../models/access-control";
 import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from "../models/feature-gate";
 
 /**
@@ -68,9 +68,6 @@ const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlPr
 
     const [ , dispatch ] = useReducer(featureGateReducer, features);
 
-    console.log("isLegacyRuntimeEnabled", isLegacyRuntimeEnabled);
-    console.log("organizationType", organizationType);
-
     useEffect (() => {
         dispatch({ payload: features, type: FeatureGateActionTypes.SET_FEATURE_STATE });
     }, [ features ]);
@@ -78,12 +75,14 @@ const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlPr
     return (
         <AccessProvider>
             <FeatureGateContext.Provider value={ { dispatch, features } }>
-                <AccessControlContext
+                <AccessControlContextProvider
                     allowedScopes={ allowedScopes }
                     permissions={ permissions }
+                    isLegacyRuntimeEnabled={ isLegacyRuntimeEnabled }
+                    organizationType={ organizationType }
                 >
                     { children }
-                </AccessControlContext>
+                </AccessControlContextProvider>
             </FeatureGateContext.Provider>
         </AccessProvider>
     );

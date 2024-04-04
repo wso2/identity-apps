@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,22 @@
  * under the License.
  */
 
-import get from "lodash-es/get";
 import  {
     useContext
 } from "react";
-import FeatureGateContext from "../context/feature-gate-context";
-import { FeatureGateContextPropsInterface, FeatureStatus } from "../models/feature-gate";
+import AccessControlContext from "../context/access-control-context";
+import { hasRequiredScopes } from "../helpers/access-control";
+import { AccessControlContextPropsInterface } from "../models/access-control";
 
-const useCheckFeatureStatus = (path: string): FeatureStatus => {
-    const featureStatusPath: string = `${ path }.status`;
-    const features: FeatureGateContextPropsInterface = useContext(FeatureGateContext);
-    // obtain the status path and return the status.
+const useAccess = (scopes: string[]): boolean => {
+    const accessControlContext: AccessControlContextPropsInterface = useContext(AccessControlContext);
 
-    return get(features?.features, featureStatusPath);
+    return hasRequiredScopes(
+        scopes,
+        accessControlContext.allowedScopes,
+        accessControlContext.organizationType,
+        accessControlContext.isLegacyRuntimeEnabled
+    );
 };
 
-export default useCheckFeatureStatus;
+export default useAccess;

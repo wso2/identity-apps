@@ -28,7 +28,7 @@ const hasScope = (scope: string, allowedScopes: string): boolean => {
     const scopes: string[] = allowedScopes?.split(" ");
 
     return scopes?.includes(scope);
-}
+};
 
 /**
  * Checks if the feature is enabled.
@@ -61,7 +61,6 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
 /**
  * Checks if the required scopes are available to perform the desired CRUD operation.
  *
- * @param feature - `FeatureAccessConfigInterface` Evaluating feature.
  * @param scopes - `string[]` Set of scopes to check.
  * @param allowedScopes - `string` Set of allowed scopes.
  * @param organzationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
@@ -71,13 +70,12 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  * @returns `boolean` True is scopes are enough and false if not.
  */
 export const hasRequiredScopes = (
-    feature: FeatureAccessConfigInterface,
     scopes: string[],
     allowedScopes: string,
     organzationType: string,
     isLegacyRuntimeEnabled: boolean
 ): boolean => {
-    const isDefined: boolean = feature?.scopes && !isEmpty(feature.scopes) && scopes && !isEmpty(scopes);
+    const isDefined: boolean = scopes && !isEmpty(scopes);
 
     if (!isDefined) {
         return true;
@@ -153,11 +151,12 @@ export const isPortalAccessGranted = <T = unknown>(
     for (const value of Object.values(featureConfig)) {
         const feature: FeatureAccessConfigInterface = value;
 
-        if (hasRequiredScopes(feature,
+        if (hasRequiredScopes(
             feature?.scopes?.read,
             allowedScopes,
             organzationType,
-            isLegacyRuntimeDisabled)) {
+            isLegacyRuntimeDisabled
+        )) {
             isAllowed = true;
 
             break;

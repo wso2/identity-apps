@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { FeatureGateInterface } from "./feature-gate";
-
 export interface AccessControlConfigInterface {
     permissions: PermissionsInterface
 }
@@ -98,7 +96,6 @@ export enum OrganizationType {
 
 export interface AccessControlContextPropsInterface {
     allowedScopes: string;
-    features: FeatureGateInterface;
     permissions: PermissionsInterface;
     isLegacyRuntimeEnabled: boolean;
     organizationType: string;

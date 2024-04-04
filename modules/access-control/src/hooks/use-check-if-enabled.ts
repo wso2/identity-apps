@@ -21,7 +21,7 @@ import  {
     useContext
 } from "react";
 import FeatureGateContext from "../context/feature-gate-context";
-import { FeatureGateContextPropsInterface, FeatureStatus } from "../models";
+import { FeatureGateContextPropsInterface, FeatureStatus } from "../models/feature-gate";
 
 const useCheckIfEnabled = (path: string): boolean => {
     const featureStatusPath: string = `${ path }.status`;

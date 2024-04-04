@@ -19,7 +19,8 @@
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect } from "react";
 import { useAccess } from "react-access-control";
-import { PermissionsInterface } from "../models";
+import AccessControlContext from "../context/access-control-context";
+import { PermissionsInterface } from "../models/access-control";
 
 /**
  * Interface to store Access Control Context props
@@ -27,6 +28,8 @@ import { PermissionsInterface } from "../models";
 export interface AccessControlContextInterface {
     allowedScopes: string;
     permissions: PermissionsInterface
+    isLegacyRuntimeEnabled: boolean;
+    organizationType: string;
 }
 
 /**
@@ -36,7 +39,7 @@ export interface AccessControlContextInterface {
  * @param props - component props
  * @returns
  */
-const AccessControlContext: FunctionComponent<PropsWithChildren<AccessControlContextInterface>> = (
+const AccessControlContextProvider: FunctionComponent<PropsWithChildren<AccessControlContextInterface>> = (
     props: PropsWithChildren<AccessControlContextInterface>
 ): ReactElement => {
 
@@ -45,7 +48,9 @@ const AccessControlContext: FunctionComponent<PropsWithChildren<AccessControlCon
     const {
         allowedScopes,
         children,
-        permissions
+        permissions,
+        isLegacyRuntimeEnabled,
+        organizationType
     } = props;
 
     useEffect(() => {
@@ -63,7 +68,18 @@ const AccessControlContext: FunctionComponent<PropsWithChildren<AccessControlCon
         });
     }, [ allowedScopes ]);
 
-    return (<> { children } </>);
+    return (
+        <AccessControlContext.Provider
+            value={ {
+                allowedScopes,
+                isLegacyRuntimeEnabled,
+                organizationType,
+                permissions
+            } }
+        >
+            { children }
+        </AccessControlContext.Provider>
+    );
 };
 
-export default AccessControlContext;
+export default AccessControlContextProvider;
