@@ -60,7 +60,7 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
-import camelCase from "lodash-es/camelCase";
+import capitalize from "lodash-es/Capitalize";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -77,7 +77,6 @@ import {
     getCertificateIllustrations,
     history
 } from "../../../admin.core.v1";
-import { userConfig, userstoresConfig } from "../../../admin.extensions.v1/configs";
 import { getGroupList, useGroupList } from "../../../admin.groups.v1/api";
 import { GroupsInterface } from "../../../admin.groups.v1/models";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
@@ -1565,11 +1564,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                                 "bulkImportUserWizard.wizardSummary.userstoreMessage"
                                                             }
                                                             tOptions={ {
-                                                                userstore: camelCase(userstore)
+                                                                userstore: capitalize(userstore)
                                                             } }
                                                         >
                                                             The created users will be added to
-                                                            the <b>{ camelCase(userstore) }</b> user store.
+                                                            the <b>{ capitalize(userstore) }</b> user store.
                                                         </Trans>
                                                     </Alert>
                                                 </Grid.Column>
@@ -1812,11 +1811,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         ".wizardSummary.userstoreMessage"
                                                     }
                                                     tOptions={ {
-                                                        userstore: camelCase(userstore)
+                                                        userstore: capitalize(userstore)
                                                     } }
                                                 >
                                                     The created users will be added to
-                                                    the <b>{ camelCase(userstore) }</b> user store.
+                                                    the <b>{ capitalize(userstore) }</b> user store.
                                                 </Trans>
                                             </Alert>
                                         </Grid.Column>
