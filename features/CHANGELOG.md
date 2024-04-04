@@ -1,5 +1,16 @@
 # @wso2is/features
 
+## 2.14.9
+
+### Patch Changes
+
+- [#5894](https://github.com/wso2/identity-apps/pull/5894) [`616887f5f8`](https://github.com/wso2/identity-apps/commit/616887f5f8450f86c42a98a3d5d373e20d3f5810) Thanks [@savindi7](https://github.com/savindi7)! - Add branding to Identifier in Login and Password Recovery.
+
+* [#5902](https://github.com/wso2/identity-apps/pull/5902) [`1e1701787a`](https://github.com/wso2/identity-apps/commit/1e1701787ab4a5fdabdbee7fc2c38d617402f469) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix inifinite loading issue in adminstrator list
+
+* Updated dependencies [[`616887f5f8`](https://github.com/wso2/identity-apps/commit/616887f5f8450f86c42a98a3d5d373e20d3f5810)]:
+  - @wso2is/i18n@2.1.7
+
 ## 2.14.8
 
 ### Patch Changes
