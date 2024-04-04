@@ -21,6 +21,7 @@ import AuthenticationFlowContext, { AuthenticationFlowContextProps } from "./../
 import useUserPreferences from "../../admin.core.v1/hooks/use-user-preferences";
 import { UserPreferencesInterface } from "../../admin.core.v1/models/user-preferences";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
+import useGetModifiedLoginFLow from "../../admin.ai.v1/hooks/use-get-modified-login-flow";
 
 /**
  * Interface for the return type of the UseAuthenticationFlow hook.
@@ -67,6 +68,13 @@ const useAuthenticationFlow = (): UseAuthenticationFlowInterface => {
             preferredAuthenticationFlowBuilderMode: mode
         });
     };
+
+    /**
+     * Set the AI generated login flow if it is available.
+     */
+    if(context){
+        context.authenticationSequence = useGetModifiedLoginFLow(context.authenticationSequence);
+    }
 
     return {
         preferredAuthenticationFlowBuilderMode: getPreferredAuthenticationFlowBuilderMode(),
