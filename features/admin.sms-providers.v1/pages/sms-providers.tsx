@@ -563,7 +563,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                             // Get the provider name in lower case to use as the
                                                             // data-componentid.
                                                             const smsProviderName: string =
-                                                                    provider.name.toLocaleLowerCase();
+                                                                    provider?.name?.toLocaleLowerCase();
 
                                                             return (<Grid.Column key={ provider.id }>
                                                                 <InfoCard
