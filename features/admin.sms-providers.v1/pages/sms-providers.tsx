@@ -565,7 +565,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                             const smsProviderName: string =
                                                                     provider?.name?.toLocaleLowerCase();
 
-                                                            return (<Grid.Column key={ provider.id }>
+                                                            return (<Grid.Column key={ provider?.id }>
                                                                 <InfoCard
                                                                     fluid
                                                                     data-componentid=
