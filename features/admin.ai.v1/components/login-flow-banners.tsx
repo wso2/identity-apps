@@ -36,7 +36,8 @@ interface LoginFLowBannerProps {
     onGenerateClick: (userInput:string) => void;
 
 }
-const LoginFLowBanner: React.FC<LoginFLowBannerProps> = ( onGenerateClick:any): ReactElement => {
+// eslint-disable-next-line @typescript-eslint/typedef
+const LoginFLowBanner: React.FC<LoginFLowBannerProps> = ( { onGenerateClick }): ReactElement => {
 
     const { t } = useTranslation();
     /**
