@@ -17,19 +17,20 @@
  */
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 
-const useGetLoginFLow = (generatedLoginFlow: any): AuthenticationSequenceInterface => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const getLoginFLow = (generatedLoginFlow:any): AuthenticationSequenceInterface => {
 
     const aiGeneratedLoginFlow: AuthenticationSequenceInterface = {
         attributeStepId : generatedLoginFlow.authenticationSequence.attributeStepId,
         requestPathAuthenticators :[],
-        steps: generatedLoginFlow.authenticationSequence.steps, 
         script: generatedLoginFlow.script,
-        type : generatedLoginFlow.type,
-        subjectStepId : generatedLoginFlow.subjectStepId
+        steps: generatedLoginFlow.authenticationSequence.steps,
+        subjectStepId : generatedLoginFlow.subjectStepId,
+        type : generatedLoginFlow.type
     };
 
     return aiGeneratedLoginFlow;
 
 };
 
-export default useGetLoginFLow;
+export default getLoginFLow;
