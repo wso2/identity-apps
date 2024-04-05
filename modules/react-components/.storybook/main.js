@@ -112,7 +112,7 @@ module.exports = {
         };
 
         return config;
-    },
+    }
 };
 
 /**
