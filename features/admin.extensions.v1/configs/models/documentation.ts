@@ -383,6 +383,9 @@ interface UsersDocumentationLinksInterface {
     newCollaboratorUser: {
         learnMore: string;
     }
+    bulkUsers: {
+        learnMore: string;
+    }
 }
 
 /**
