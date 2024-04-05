@@ -25,7 +25,7 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
-import { OrganizationType } from "@wso2is/common";
+import { OrganizationType } from "../../admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
