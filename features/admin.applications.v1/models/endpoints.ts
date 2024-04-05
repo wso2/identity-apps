@@ -34,6 +34,10 @@ export interface ApplicationsResourceEndpointsInterface {
      * Endpoint to get the application template metadata.
      */
     applicationTemplateMetadata: string;
+    /**
+     * Endpoint to get the application template categories.
+     */
+    applicationTemplateCategories: string;
     applications: string;
     myAccountConfigMgt: string;
     requestPathAuthenticators: string;

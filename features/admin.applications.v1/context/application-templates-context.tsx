@@ -29,7 +29,7 @@ export interface ApplicationTemplatesContextProps {
     /**
      * Templates categorized by their `category`.
      */
-    categorizedTemplates: CategorizedApplicationTemplatesInterface;
+    categorizedTemplates: CategorizedApplicationTemplatesInterface[];
     /**
      * Application Templates.
      */

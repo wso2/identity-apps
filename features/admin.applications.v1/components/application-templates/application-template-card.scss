@@ -1,0 +1,118 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.application-template {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 330px;
+    margin: 5px;
+    padding: 12px;
+    position: relative;
+
+    &.disabled {
+        opacity: 0.6;
+        cursor: not-allowed !important;
+        filter: grayscale(100%);
+
+        &:hover {
+            border-color: #d7d9e3 !important;
+            box-shadow: none;
+        }
+    }
+
+    .application-template-coming-soon-ribbon {
+        position: absolute;
+        right: 0;
+        top: 13px;
+        font-size: .8em;
+        font-weight: 500;
+        color: #fff;
+        height: 24px;
+        width: 100px;
+        background: linear-gradient(270deg,#ff9d4d 0,#ff7300 100%);
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        align-items: center;
+        justify-content: space-around;
+        clip-path: polygon(4% 0,0 100%,100% 100%,100% 0,100% 0);
+        -webkit-clip-path: polygon(4% 0,0 100%,100% 100%,100% 0,100% 0);
+    }
+
+    .application-template-header {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        align-content: center;
+        align-items: center;
+        padding-bottom: 0;
+
+        .application-template-image-container {
+            height: 35px;
+            width: 35px;
+            justify-content: center;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+
+            .application-template-image {
+                flex: 1;
+                height: 100%;
+                max-width: 100%;
+                object-fit: contain;
+            }
+        }
+    }
+
+    .application-template-body {
+        padding-bottom: 16px;
+
+        .application-template-description {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 2; /* Number of lines to show */
+            /* Ensure compatibility with other browsers */
+            height: calc(0.875rem * 1.5 * 2); /* Line height * number of lines */
+            white-space: normal;
+        }
+
+        .application-template-supported-technologies {
+            justify-content: flex-end;
+            margin-top: 10px;
+
+            .application-template-supported-technology {
+                margin-left: 3px;
+
+                &:last-child {
+                    margin-left: -2px;
+                }
+
+                .MuiAvatar-img {
+                    object-fit: contain;
+                }
+            }
+        }
+    }
+}
+
+.application-template:hover {
+    border-color: var(--oxygen-palette-primary-main);
+}

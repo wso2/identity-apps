@@ -87,6 +87,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             apiResourceCollection: "",
             apiResourceCollections: "",
             applicationTemplate: "",
+            applicationTemplateCategories: "",
             applicationTemplateMetadata: "",
             applicationTemplates: "",
             applications: "",

@@ -65,7 +65,7 @@ export interface ApplicationTemplateListInterface extends ApplicationTemplateCom
     /**
      * Additional properties of the template.
      */
-    additionalProperties?: AdditionalPropertyInterface[];
+    customAttributes?: CustomAttributeInterface[];
 }
 
 /**
@@ -111,7 +111,7 @@ export interface ApplicationTemplateMetadataInterface {
 /**
  * Interface for the additional properties of the template.
  */
-export interface AdditionalPropertyInterface {
+export interface CustomAttributeInterface {
     /**
      * Key of the property.
      */
@@ -141,6 +141,28 @@ export enum ApplicationTemplateCategories {
 }
 
 /**
+ * Interface for the application template category details.
+ */
+export interface ApplicationTemplateCategoryInterface {
+    /**
+     * Unique identifier of the application template category.
+     */
+    id: string,
+    /**
+     * Display name of the application template category.
+     */
+    displayName: string,
+    /**
+     * Description of the application template category.
+     */
+    description: string,
+    /**
+     * Order in which the application template category is displayed.
+     */
+    displayOrder: number
+}
+
+/**
  * Supported technology metadata interface.
  */
 export interface SupportedTechnologyMetadataInterface {
@@ -157,9 +179,23 @@ export interface SupportedTechnologyMetadataInterface {
 /**
  * Interface for the categorized application templates.
  */
-export interface CategorizedApplicationTemplatesInterface {
+export interface CategorizedApplicationTemplatesInterface extends ApplicationTemplateCategoryInterface {
     /**
-     * Category name - Template list mapping.
+     * Template associated with a specific category.
      */
-    [ key: string ]: ApplicationTemplateListInterface[]
+    templates: ApplicationTemplateListInterface[]
+}
+
+/**
+ * Supported technology metadata interface.
+ */
+export interface SupportedTechnologyMetadataInterface {
+    /**
+     * Display name of the technology.
+     */
+    displayName: string;
+    /**
+     * URL of the technology logo.
+     */
+    logo?: string;
 }

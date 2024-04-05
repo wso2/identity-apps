@@ -25,6 +25,7 @@ import { Dispatch } from "redux";
 import useGetApplicationTemplates from "../api/use-get-application-templates";
 import ApplicationTemplatesContext from "../context/application-templates-context";
 import {
+    ApplicationTemplateCategoryInterface,
     ApplicationTemplateListInterface,
     CategorizedApplicationTemplatesInterface
 } from "../models/application-templates";
@@ -33,6 +34,24 @@ import {
  * Props interface for the Application templates provider.
  */
 export type ApplicationTemplatesProviderProps = PropsWithChildren;
+
+/**
+ * This should be retrieved via the API upon the introduction of the extension categorization endpoint.
+ */
+const applicationTemplateCategories: ApplicationTemplateCategoryInterface[] = [
+    {
+        description: "Basic application types to configure a service provider",
+        displayName: "Application Types",
+        displayOrder: 0,
+        id: "DEFAULT"
+    },
+    {
+        description: "Single sign on application template to configure SSO with enterprise applications",
+        displayName: "SSO Integrations",
+        displayOrder: 1,
+        id: "SSO-INTEGRATION"
+    }
+];
 
 /**
  * Application templates provider.
@@ -56,26 +75,25 @@ const ApplicationTemplatesProvider = (props: ApplicationTemplatesProviderProps):
     /**
      * Categorize application templates based on the `category` attribute.
      */
-    const categorizedTemplates: CategorizedApplicationTemplatesInterface = useMemo(() => {
-        const categoryMap: CategorizedApplicationTemplatesInterface = {};
+    const categorizedTemplates: CategorizedApplicationTemplatesInterface[] = useMemo(() => {
+        const categoryMap: CategorizedApplicationTemplatesInterface[] = [];
 
-        if (applicationTemplates) {
-            // Create a category called "ALL" and push all items into it
-            categoryMap["ALL"] = [ ...applicationTemplates ];
+        if (!applicationTemplates
+            || !Array.isArray(applicationTemplates)
+            || applicationTemplates?.length <= 0) {
 
-            // Categorize the templates based on their actual categories
-            applicationTemplates.forEach((template: ApplicationTemplateListInterface) => {
-                const category: string = template?.category;
-
-                if (category) {
-                    if (!categoryMap[category]) {
-                        categoryMap[category] = [];
-                    }
-
-                    categoryMap[category].push(template);
-                }
-            });
+            return categoryMap;
         }
+
+        // Categorize the templates based on their actual categories
+        applicationTemplateCategories.forEach((category: ApplicationTemplateCategoryInterface) => {
+            const categoryData: CategorizedApplicationTemplatesInterface = { ...category, templates: [] };
+
+            categoryData.templates = applicationTemplates.filter(
+                (template: ApplicationTemplateListInterface) => template?.category === category?.id);
+
+            categoryMap.push(categoryData);
+        });
 
         return categoryMap;
     }, [ applicationTemplates ]);

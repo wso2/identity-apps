@@ -23,15 +23,15 @@ import useRequest, {
     RequestResultInterface
 } from "../../admin.core.v1/hooks/use-request";
 import { store } from "../../admin.core.v1/store";
-import { ApplicationTemplateListInterface } from "../models/application-templates";
+import { ApplicationTemplateCategoryInterface } from "../models/application-templates";
 
 /**
- * Hook to fetches the application templates from the API.
+ * Hook to fetches the application template categories from the API.
  *
  * @returns A promise containing the response.
  */
-const useGetApplicationTemplates = <
-    Data = ApplicationTemplateListInterface[],
+const useGetApplicationTemplateCategories = <
+    Data = ApplicationTemplateCategoryInterface[],
     Error = RequestErrorInterface
 >(): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -40,15 +40,15 @@ const useGetApplicationTemplates = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store?.getState()?.config?.endpoints?.applicationTemplates
+        url: store?.getState()?.config?.endpoints?.applicationTemplateCategories
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 
     if (Array.isArray(data)) {
         data.sort(
-            (template1: ApplicationTemplateListInterface, template2: ApplicationTemplateListInterface) =>
-                template1?.displayOrder - template2?.displayOrder
+            (category1: ApplicationTemplateCategoryInterface, category2: ApplicationTemplateCategoryInterface) =>
+                category1?.displayOrder - category2?.displayOrder
         );
     }
 
@@ -61,4 +61,4 @@ const useGetApplicationTemplates = <
     };
 };
 
-export default useGetApplicationTemplates;
+export default useGetApplicationTemplateCategories;

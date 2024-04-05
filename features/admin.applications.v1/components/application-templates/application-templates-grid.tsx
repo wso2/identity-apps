@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Typography } from "@mui/material";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -25,20 +26,21 @@ import {
     SearchWithFilterLabels
 } from "@wso2is/react-components";
 import union from "lodash-es/union";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import ApplicationTemplateCard from "./application-template-card";
 import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { ApplicationTemplateConstants } from "../../constants/application-templates";
 import useApplicationTemplates from "../../hooks/use-application-templates";
 import { AuthProtocolMetaListItemInterface } from "../../models";
 import {
-    AdditionalPropertyInterface,
-    ApplicationTemplateListInterface
+    ApplicationTemplateListInterface,
+    CategorizedApplicationTemplatesInterface
 } from "../../models/application-templates";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { ApplicationTemplateManagementUtils } from "../../utils/application-template-management-utils";
 import { InboundProtocolsMeta } from "../meta";
+import "./application-templates-grid.scss";
 
 /**
  * Props for the Application templates grid page.
@@ -70,7 +72,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
     const hiddenApplicationTemplates: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.hiddenApplicationTemplates);
 
-    const { templates, isApplicationTemplatesRequestLoading } = useApplicationTemplates();
+    const { templates, categorizedTemplates, isApplicationTemplatesRequestLoading } = useApplicationTemplates();
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ selectedFilters, setSelectedFilters ] = useState<string[]>([]);
@@ -193,7 +195,10 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
      * @param e - Click event.
      * @param id - Selected template details.
      */
-    const handleTemplateSelection = (e: SyntheticEvent, template: ApplicationTemplateListInterface): void => {
+    const handleTemplateSelection = (
+        e: MouseEvent<HTMLDivElement>,
+        template: ApplicationTemplateListInterface
+    ): void => {
         if (!template) {
             return;
         }
@@ -281,11 +286,75 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         return null;
     };
 
+    const renderApplicationTemplateGrid = (): ReactElement | ReactElement[] => {
+        let isAdvancedSearchApplied: boolean = false;
+
+        if (searchQuery || (!selectedFilters && Array.isArray(selectedFilters) && selectedFilters?.length > 0)) {
+            isAdvancedSearchApplied = true;
+        }
+
+        if (isAdvancedSearchApplied) {
+            return (
+                <ResourceGrid
+                    isEmpty={ !Array.isArray(filteredTemplates) || filteredTemplates.length <= 0 }
+                    emptyPlaceholder={ showPlaceholders(filteredTemplates) }
+                >
+                    {
+                        filteredTemplates
+                            .map((template: ApplicationTemplateListInterface) => {
+                                return (
+                                    <ApplicationTemplateCard
+                                        key={ template?.id }
+                                        onClick={ (e: MouseEvent<HTMLDivElement>) => {
+                                            handleTemplateSelection(e, template);
+                                        } }
+                                        template={ template }
+                                    />
+                                );
+                            })
+                    }
+                </ResourceGrid>
+            );
+        } else {
+            return categorizedTemplates
+                .map((category: CategorizedApplicationTemplatesInterface) => {
+                    const refinedTemplates: ApplicationTemplateListInterface[] =
+                        removeIrrelevantTemplates(category?.templates);
+
+                    return (
+                        <div key={ category?.id } className="application-template-card-group">
+                            <Typography variant="h5">
+                                { category?.displayName }
+                            </Typography>
+                            <ResourceGrid
+                                isEmpty={ !Array.isArray(categorizedTemplates) || categorizedTemplates.length <= 0 }
+                                emptyPlaceholder={ showPlaceholders(categorizedTemplates) }
+                            >
+                                {
+                                    refinedTemplates.map((template: ApplicationTemplateListInterface) => {
+                                        return (
+                                            <ApplicationTemplateCard
+                                                key={ template?.id }
+                                                onClick={ (e: MouseEvent<HTMLDivElement>) => {
+                                                    handleTemplateSelection(e, template);
+                                                } }
+                                                template={ template }
+                                            />
+                                        );
+                                    })
+                                }
+                            </ResourceGrid>
+                        </div>
+                    );
+                });
+        }
+    };
+
     return (
         <GridLayout
             search={ (
                 <SearchWithFilterLabels
-                    placeholder={ t("common:advancedSearch.placeholder", { attribute: "name" }) }
+                    placeholder={ t("console:common.advancedSearch.placeholder", { attribute: "name" }) }
                     onSearch={ handleApplicationTemplateSearch }
                     onFilter={ handleApplicationTemplateTypeFilter }
                     filterLabels={ filterTags }
@@ -294,68 +363,8 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
             isLoading={ isApplicationTemplatesRequestLoading }
         >
             {
-                (filteredTemplates && !isApplicationTemplatesRequestLoading)
-                    ? (
-                        <ResourceGrid
-                            isEmpty={ !Array.isArray(filteredTemplates) || filteredTemplates.length <= 0 }
-                            emptyPlaceholder={ showPlaceholders(templates) }
-                        >
-                            {
-                                filteredTemplates
-                                    .map((template: ApplicationTemplateListInterface) => {
-                                        let isTemplateComingSoon: boolean = false;
-
-                                        if (template?.additionalProperties
-                                            && Array.isArray(template?.additionalProperties)
-                                            && template?.additionalProperties.length > 0) {
-
-                                            const comingSoonPropertyIndex: number =
-                                                template?.additionalProperties
-                                                    .findIndex(
-                                                        (property: AdditionalPropertyInterface) =>
-                                                            property?.key ===
-                                                                ApplicationTemplateConstants
-                                                                    .COMING_SOON_ATTRIBUTE_KEY
-                                                    );
-
-                                            if (comingSoonPropertyIndex >= 0) {
-                                                isTemplateComingSoon =
-                                                    template?.additionalProperties[
-                                                        comingSoonPropertyIndex
-                                                    ]?.value === "true";
-                                            }
-                                        }
-
-                                        return (
-                                            <ResourceGrid.Card
-                                                key={ template?.id }
-                                                resourceName={ template?.name }
-                                                showSetupGuideButton={ false }
-                                                isResourceComingSoon={ isTemplateComingSoon }
-                                                comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                resourceDescription={ template?.description }
-                                                resourceImage={
-                                                    ApplicationTemplateManagementUtils
-                                                        .resolveApplicationResourcePath(template.image)
-                                                }
-                                                tags={ template.tags }
-                                                showActions={ true }
-                                                onClick={ (e: SyntheticEvent) => {
-                                                    handleTemplateSelection(e, template);
-                                                } }
-                                                showTooltips={
-                                                    {
-                                                        description: true,
-                                                        header: false
-                                                    }
-                                                }
-                                                data-testid={ `${ componentId }-${ template.name }` }
-                                            />
-                                        );
-                                    })
-                            }
-                        </ResourceGrid>
-                    )
+                (categorizedTemplates && filteredTemplates && !isApplicationTemplatesRequestLoading)
+                    ? renderApplicationTemplateGrid()
                     : <ContentLoader dimmer/>
             }
         </GridLayout>
