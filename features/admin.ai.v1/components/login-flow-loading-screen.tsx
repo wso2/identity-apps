@@ -34,7 +34,7 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     const facts: string[] = [
         t("ai:screens.loading.facts.0"),
         t("ai:screens.loading.facts.1"),
-        t("ai:screens.loading.facts.2"),
+        t("ai:screens.loading.facts.2")
     ];
     const [ polling, setPolling ] = useState(true);
 
@@ -52,29 +52,29 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     ];
 
     const statusLabels: Record<string, string> = {
-        optimizing_and_validating_user_query: t("ai:screens.loading.states.1"),
-        optimization_and_validation_complete: t("ai:screens.loading.states.2"),
-        retrieving_examples: t("ai:screens.loading.states.3"),
-        retrieval_of_examples_complete: t("ai:screens.loading.states.4"),
-        generating_login_flow_script: t("ai:screens.loading.states.5"),
-        generation_of_login_flow_script_complete: t("ai:screens.loading.states.6"),
         generating_login_flow_authenticators: t("ai:screens.loading.states.7"),
+        generating_login_flow_script: t("ai:screens.loading.states.5"),
         generation_of_login_flow_authenticators_complete: t("ai:screens.loading.states.8"),
+        generation_of_login_flow_script_complete: t("ai:screens.loading.states.6"),
+        login_flow_generation_complete: t("ai:screens.loading.states.10"),
+        optimization_and_validation_complete: t("ai:screens.loading.states.2"),
         optimizing_and_validating_final_login_flow: t("ai:screens.loading.states.9"),
-        login_flow_generation_complete: t("ai:screens.loading.states.10")
+        optimizing_and_validating_user_query: t("ai:screens.loading.states.1"),
+        retrieval_of_examples_complete: t("ai:screens.loading.states.4"),
+        retrieving_examples: t("ai:screens.loading.states.3")
     };
 
     const statusProgress: Record<string, number> = {
-        optimizing_and_validating_user_query: 10,
-        optimization_and_validation_complete: 20,
-        retrieving_examples: 25,
-        retrieval_of_examples_complete: 40,
-        generating_login_flow_script: 45,
-        generation_of_login_flow_script_complete: 70,
         generating_login_flow_authenticators: 75,
+        generating_login_flow_script: 45,
         generation_of_login_flow_authenticators_complete: 95,
+        generation_of_login_flow_script_complete: 70,
+        login_flow_generation_complete: 100,
+        optimization_and_validation_complete: 20,
         optimizing_and_validating_final_login_flow: 97,
-        login_flow_generation_complete: 100
+        optimizing_and_validating_user_query: 10,
+        retrieval_of_examples_complete: 40,
+        retrieving_examples: 25
     };
 
     const initialProgress: number = 5;
@@ -105,27 +105,26 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
                 "http://localhost:3000/loginflow/status",
                 { headers: { "trace-id": traceId } }
             );
+
             // const response = await axios.get('http://localhost:3000/status', { headers: { 'trace-id': 'custom' } });
             return response.data.status;
         } catch (error) {
-            console.log("error",error);
-            console.log("error.reponse",error.response);
             if (
                 error.response &&
                 error.response.status === 404 &&
                 error.response.data.detail === "No login flow generation request with the provided tracking reference."
             ) {
 
-                return {optimizing_and_validating_user_query: true,
-                        optimization_and_validation_complete: true,
-                        retrieving_examples: true,
-                        retrieval_of_examples_complete: true,
-                        generating_login_flow_script: true,
-                        generation_of_login_flow_script_complete: true,
-                        generating_login_flow_authenticators: true,
-                        generation_of_login_flow_authenticators_complete: true,
-                        optimizing_and_validating_final_login_flow: true,
-                        login_flow_generation_complete: true};
+                return { generating_login_flow_authenticators: true,
+                    generating_login_flow_script: true,
+                    generation_of_login_flow_authenticators_complete: true,
+                    generation_of_login_flow_script_complete: true,
+                    login_flow_generation_complete: true,
+                    optimization_and_validation_complete: true,
+                    optimizing_and_validating_final_login_flow: true,
+                    optimizing_and_validating_user_query: true,
+                    retrieval_of_examples_complete: true,
+                    retrieving_examples: true };
             }
         }
     };
@@ -173,19 +172,20 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
-    
+
         if (polling) {
             interval = setInterval(async () => {
                 const fetchedStatus: Record<string, any> = await fetchProgress();
+
                 updateProgress(fetchedStatus);
             }, 1000);
         } else {
             clearInterval(interval);
         }
-    
+
         return () => clearInterval(interval);
     }, [ polling ]);
-    
+
 
     useEffect(() => {
         const interval: NodeJS.Timeout = setInterval(() => {
@@ -248,4 +248,5 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
         </Box>
     );
 };
+
 export default LoadingScreen;
