@@ -21,10 +21,12 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
+import { Message } from "@wso2is/react-components/src";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
+import { Checkbox, CheckboxProps, Divider, Icon } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { AppState } from "../../../../admin.core.v1";
 import { applicationConfig } from "../../../../admin.extensions.v1";
@@ -438,25 +440,35 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Hint>
                         </>
                     ) }
-                    { !dropDownOptions.isEmpty() ? (
-                        <Field.Dropdown
-                            ariaLabel="Subject attribute"
-                            name="subjectAttribute"
-                            label={
-                                t("applications:forms.advancedAttributeSettings" +
+                    { !resolveSubjectAttributeHiddenStatus () && isEmpty(dropDownOptions) && (
+                        <Message info>
+                            <Icon name="info circle" />
+                            { t("applications:forms.advancedAttributeSettings" +
+                        ".sections.subject.fields.subjectAttribute.info") }
+                        </Message>
+                    ) }
+
+                    <Field.Dropdown
+                        ariaLabel="Subject attribute"
+                        name="subjectAttribute"
+                        label={
+                            t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectAttribute.label")
-                            }
-                            initialValue= { null }
-                            required={ claimMappingOn }
-                            value={ selectedSubjectValue }
-                            options={ dropDownOptions }
-                            hidden={ resolveSubjectAttributeHiddenStatus() }
-                            readOnly={ readOnly }
-                            data-testid={ `${ componentId }-subject-attribute-dropdown` }
-                            listen={ subjectAttributeChangeListener }
-                            enableReinitialize={ true }
-                            hint={ resolveSubjectAttributeHint() }
-                        /> ) : null }
+                        }
+                        placeholder = {
+                            t("applications:forms.advancedAttributeSettings" +
+                                ".sections.subject.fields.subjectAttribute.placeholder")
+                        }
+                        required={ claimMappingOn }
+                        value={ selectedSubjectValue }
+                        options={ dropDownOptions }
+                        hidden={ resolveSubjectAttributeHiddenStatus() || isEmpty(dropDownOptions) }
+                        readOnly={ readOnly }
+                        data-testid={ `${ componentId }-subject-attribute-dropdown` }
+                        listen={ subjectAttributeChangeListener }
+                        enableReinitialize={ true }
+                        hint={ resolveSubjectAttributeHint() }
+                    />
                     <Field.CheckboxLegacy
                         ariaLabel="Subject include user domain"
                         name="subjectIncludeUserDomain"
@@ -466,8 +478,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
-                            || resolveSubjectAttributeHiddenStatus() }
+                        hidden={ disabledFeatures?.includes("applications.attributes" +
+                                        ".alternativeSubjectIdentifier")
+                            || resolveSubjectAttributeHiddenStatus() || isEmpty(dropDownOptions) }
                         hint={
                             t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -484,8 +497,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-include-tenant-domain-checkbox` }
-                        hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
-                            || resolveSubjectAttributeHiddenStatus() }
+                        hidden={ disabledFeatures?.includes("applications.attributes" +
+                                        ".alternativeSubjectIdentifier")
+                            || resolveSubjectAttributeHiddenStatus() || isEmpty(dropDownOptions) }
                         hint={
                             t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")

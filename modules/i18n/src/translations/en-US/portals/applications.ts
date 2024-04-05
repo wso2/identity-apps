@@ -972,7 +972,9 @@ export const applications: ApplicationsNS = {
                             label: "Subject attribute",
                             validations: {
                                 empty: "Select the subject attribute"
-                            }
+                            },
+                            placeholder: "Select an attribute",
+                            info: "Alternate subject identifier's can be assigned only if user attributes are selected."
                         },
                         subjectIncludeTenantDomain: {
                             hint: "This option will append the organization name to the local subject " +

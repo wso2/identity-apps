@@ -782,6 +782,8 @@ export interface ApplicationsNS {
                             validations: {
                                 empty: string;
                             };
+                            placeholder: string;
+                            info: string;
                         };
                         subjectIncludeTenantDomain: {
                             hint: string;
