@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -51,13 +51,17 @@ module.exports = {
         builder: "webpack5"
     },
 
+    docs: {
+        autodocs: true
+    },
+
     previewHead: head => `
         ${head}
         <link rel="stylesheet" href="${RELATIVE_PATHS.storybookDefaultTheme}" />
     `,
 
-    staticDirs: [path.resolve(__dirname, "..", STATIC_DIRECTORY_NAME)],
-    stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
+    staticDirs: [ path.resolve(__dirname, "..", STATIC_DIRECTORY_NAME) ],
+    stories: [ "../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)" ],
 
     webpackFinal: async config => {
         config.plugins.push(
@@ -109,10 +113,6 @@ module.exports = {
 
         return config;
     },
-
-    docs: {
-        autodocs: true
-    }
 };
 
 /**
