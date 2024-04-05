@@ -27,11 +27,11 @@ import { v4 as uuidv4 } from "uuid";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import useAuthenticationFlow from "../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import fetchUserClaims from "../api/fetch-user-claims";
-import useGenerateAILoginFlow from "../api/generate-ai-loginflow";
+import generateAILoginFlow from "../api/generate-ai-loginflow";
 import LoginFLowBanner from "../components/login-flow-banners";
 import LoadingScreen from "../components/login-flow-loading-screen";
 import AILoginFlowContext from "../context/login-flow-context";
-import useGetLoginFLow from "../hooks/use-get-login-flow";
+import getLoginFLow from "../hooks/get-login-flow";
 import { BannerState } from "../models/banner-state";
 import { ClaimURIs } from "../models/claim-uris";
 
@@ -125,7 +125,7 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
                     /**
                     * API call to generate AI login flow.
                     */
-                    return useGenerateAILoginFlow(userInput, response.claimURIs, available_authenticators, traceId);
+                    return generateAILoginFlow(userInput, response.claimURIs, available_authenticators, traceId);
                 }
             })
             .then((response:{loginFlow:any; isError:boolean; error:any}) => {
@@ -139,10 +139,10 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
                     );
                     () => refetchApplication();
                 }else{
-                    setAiGeneratedAiLoginFlow(useGetLoginFLow(response.loginFlow));
+                    setAiGeneratedAiLoginFlow(getLoginFLow(response.loginFlow));
                 }
             })
-            .catch((error) => {
+            .catch((error:any) => {
                 dispatch(
                     addAlert({
                         description: error?.response?.data?.detail,
