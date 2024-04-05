@@ -18,10 +18,11 @@
 
 import { useContext } from "react";
 import AuthenticationFlowContext, { AuthenticationFlowContextProps } from "./../context/authentication-flow-context";
+import AILoginFlowContext from "../../admin.ai.v1/context/login-flow-context";
 import useUserPreferences from "../../admin.core.v1/hooks/use-user-preferences";
 import { UserPreferencesInterface } from "../../admin.core.v1/models/user-preferences";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
-import useGetModifiedLoginFLow from "../../admin.ai.v1/hooks/use-get-modified-login-flow";
+
 
 /**
  * Interface for the return type of the UseAuthenticationFlow hook.
@@ -44,6 +45,12 @@ export interface UseAuthenticationFlowInterface extends AuthenticationFlowContex
  */
 const useAuthenticationFlow = (): UseAuthenticationFlowInterface => {
     const context: AuthenticationFlowContextProps = useContext(AuthenticationFlowContext);
+    /**
+     * Get the state of the AI generated login flow.
+     */
+    const {
+        aiGeneratedAiLoginFlow
+    } = useContext(AILoginFlowContext);
 
     const { setPreferences, preferredAuthenticationFlowBuilderMode } = useUserPreferences<UserPreferencesInterface>();
 
@@ -72,8 +79,8 @@ const useAuthenticationFlow = (): UseAuthenticationFlowInterface => {
     /**
      * Set the AI generated login flow if it is available.
      */
-    if(context){
-        context.authenticationSequence = useGetModifiedLoginFLow(context.authenticationSequence);
+    if(context && aiGeneratedAiLoginFlow){
+        context.authenticationSequence = aiGeneratedAiLoginFlow;
     }
 
     return {
