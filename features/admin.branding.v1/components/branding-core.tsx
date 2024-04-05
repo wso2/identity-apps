@@ -18,7 +18,7 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { OrganizationType } from "@wso2is/common";
+import { OrganizationType } from "../../admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";

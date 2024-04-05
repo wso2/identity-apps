@@ -350,6 +350,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 allUsers: {
                     learnMore: undefined
                 },
+                bulkUsers: {
+                    learnMore: undefined
+                },
                 collaboratorAccounts: {
                     adminSettingsLearnMore: undefined,
                     learnMore: undefined,

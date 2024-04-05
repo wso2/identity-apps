@@ -17,7 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { OrganizationType } from "@wso2is/common";
+import { OrganizationType } from "../../admin.core.v1";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
