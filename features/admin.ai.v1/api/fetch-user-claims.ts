@@ -22,7 +22,7 @@ import { ClaimURIs } from "../models/claim-uris";
 
 const fetchUserClaims = (): Promise<{ claimURIs: ClaimURIs[]; error: IdentityAppsApiException }> => {
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve:any, reject:any) => {
         // Set params
         const params: ClaimsGetParams = {
             "exclude-identity-claims": false,
