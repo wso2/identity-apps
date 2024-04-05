@@ -23,8 +23,6 @@ import {
     OIDCEndpoints,
     useAuthContext
 } from "@asgardeo/auth-react";
-import useDeploymentConfig from "../../admin.core.v1/hooks/use-deployment-configs";
-import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
@@ -42,6 +40,8 @@ import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { Config } from "../../admin.core.v1/configs/app";
 import { AppConstants, CommonConstants } from "../../admin.core.v1/constants";
+import useDeploymentConfig from "../../admin.core.v1/hooks/use-deployment-configs";
+import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
 import { DeploymentConfigInterface } from "../../admin.core.v1/models/config";
 import { AppState } from "../../admin.core.v1/store";
 import {
