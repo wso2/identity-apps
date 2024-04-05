@@ -109,21 +109,37 @@ Use the following command to examine the footprint introduced by the prospective
 
 :bulb: The analyzer will open in http://localhost:8889
 
+1. Navigate to `console` application directory:
 ```shell
 cd apps/console
-pnpm build:analyze
+```
+2. Edit the `.env.local` file to enable the analyzer:
+```
+ENABLE_ANALYZER=true
+```
+3. Build Application:
+```shell
+pnpm build
 ```
 
 #### Analyze for My Account
 
 :bulb: The analyzer will open in http://localhost:8888
 
+1. Navigate to `myaccount` application directory:
 ```shell
 cd apps/myaccount
-pnpm build:analyze
+```
+2. Edit the `.env.local` file to enable the analyzer:
+```
+ENABLE_ANALYZER=true
+```
+3. Build Application:
+```shell
+pnpm build
 ```
 
-Once you execute the above command, the resulting view will look something like the following.
+Following these steps will enable the analyzer, the resulting view will look something like the following.
 
 ![webpack-analyzer-sample](../assets/webpack-analyzer-sample.jpg)
 
