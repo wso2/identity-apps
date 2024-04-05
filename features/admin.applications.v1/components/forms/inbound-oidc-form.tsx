@@ -1913,6 +1913,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     getAllowedList(metadata?.fapiMetadata?.tokenEndpointAuthMethod)
                                                     : getAllowedList(metadata?.tokenEndpointAuthMethod) }
                                                 readOnly={ readOnly }
+                                                data-testid={ `${ testId }-client-auth-method-dropdown` }
                                             />
                                             <Hint>
                                                 { t("applications:forms.inboundOIDC.sections" +
@@ -1950,6 +1951,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms) :
                                                 getAllowedList(metadata?.tokenEndpointSignatureAlgorithm) }
                                             readOnly={ readOnly }
+                                            data-testid={ `${ testId }-client-auth-signing-algorithm-dropdown` }
                                         />
                                         <Hint>
                                             { t("applications:forms.inboundOIDC.sections" +
@@ -2032,6 +2034,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                 ] }
                                 readOnly={ readOnly }
+                                data-testid={ `${ testId }-pushed-authorization-checkbox` }
                             />
                             <Hint>
                                 { t("applications:forms.inboundOIDC.sections" +
@@ -2081,6 +2084,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms)
                                         : getAllowedList(metadata?.requestObjectSignatureAlgorithm) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-request-object-signing-algorithm-dropdown` }
                                 />
                                 <Hint>
                                     <Trans
@@ -2119,6 +2123,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         getAllowedList(metadata?.fapiMetadata?.allowedEncryptionAlgorithms) :
                                         getAllowedList(metadata?.requestObjectEncryptionAlgorithm) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-request-object-encryption-algorithm-dropdown` }
                                 />
                                 <Hint>
                                     <Trans
@@ -2155,6 +2160,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     children={ getAllowedList(metadata?.requestObjectEncryptionMethod) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-request-object-encryption-method-dropdown` }
                                 />
                                 <Hint>
                                     <Trans
@@ -2928,6 +2934,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms) :
                                     getAllowedList(metadata?.idTokenSignatureAlgorithm) }
                                 readOnly={ readOnly }
+                                data-testid={ `${ testId }-id_token-response-signing-algorithm-dropdown` }
                             />
                             <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
                                 <Trans

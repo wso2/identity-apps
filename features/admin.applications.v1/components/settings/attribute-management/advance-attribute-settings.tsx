@@ -509,6 +509,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                           setSelectedSubjectType(subjectType);
                                                       } }
                                                       readOnly={ readOnly }
+                                                      data-testid={
+                                                        `${ componentId }-subject-type-${ subjectType }-radio`
+                                                        }
                                                   />
                                               </>
                                           );
@@ -536,6 +539,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             minLength={ 3 }
                             width={ 16 }
                             initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
+                            data-testid={ `${ componentId }-sector-identifier-uri` }
                         />
                     )
                     }
