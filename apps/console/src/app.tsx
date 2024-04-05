@@ -18,7 +18,6 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import useResourceEndpoints from "@wso2is/features/admin.core.v1/hooks/use-resource-endpoints";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
@@ -32,6 +31,7 @@ import { ProtectedRoute } from "@wso2is/features/admin.core.v1/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/features/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
 import { history } from "@wso2is/features/admin.core.v1/helpers";
+import useResourceEndpoints from "@wso2is/features/admin.core.v1/hooks/use-resource-endpoints";
 import {
     ConfigReducerStateInterface,
     DocumentationLinksInterface,

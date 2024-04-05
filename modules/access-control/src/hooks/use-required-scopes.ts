@@ -23,7 +23,7 @@ import AccessControlContext from "../context/access-control-context";
 import { hasRequiredScopes } from "../helpers/access-control";
 import { AccessControlContextPropsInterface } from "../models/access-control";
 
-const useAccess = (scopes: string[]): boolean => {
+const useRequiredScopes = (scopes: string[]): boolean => {
     const accessControlContext: AccessControlContextPropsInterface = useContext(AccessControlContext);
 
     return hasRequiredScopes(
@@ -34,4 +34,4 @@ const useAccess = (scopes: string[]): boolean => {
     );
 };
 
-export default useAccess;
+export default useRequiredScopes;

@@ -25,5 +25,5 @@ export * from "./use-check-feature-tags";
 export { default as useCheckIfEnabled } from "./use-check-if-enabled";
 export * from "./use-check-if-enabled";
 
-export { default as useAccess } from "./use-access";
-export * from "./use-access";
+export { default as useRequiredScopes } from "./use-required-scopes";
+export * from "./use-required-scopes";
