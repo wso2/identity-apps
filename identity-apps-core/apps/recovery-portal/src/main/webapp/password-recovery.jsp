@@ -128,15 +128,15 @@
     }
 
     Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
-    Boolean isNotificationBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isSMSOTPBasedPasswordRecoveryEnabledByTenant = false;
+    Boolean isEmailLinkBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isMultiAttributeLoginEnabledInTenant = false;
     String allowedAttributes = null;
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain) &&
                                                      Boolean.parseBoolean(IdentityUtil.getProperty("Connectors.ChallengeQuestions.Enabled"));
-        isNotificationBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkNotificationBasedPasswordRecovery(tenantDomain);
+        isEmailLinkBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkEmailLinkBasedPasswordRecovery(tenantDomain);
         isSMSOTPBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkSMSOTPBasedPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
         allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
@@ -151,7 +151,7 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-    Boolean isEmailRecoveryAvailable = isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant;
+    Boolean isEmailRecoveryAvailable = isEmailNotificationEnabled && isEmailLinkBasedPasswordRecoveryEnabledByTenant;
     Boolean isSMSRecoveryAvailable = isSmsOTPEnabled && isSMSOTPBasedPasswordRecoveryEnabledByTenant;
 
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
