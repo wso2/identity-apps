@@ -44,20 +44,21 @@ module.exports = {
         "@storybook/addon-toolbars",
         "@storybook/addon-measure",
         "@storybook/addon-outline",
-        "@nrwl/react/plugins/storybook"
+        "@nx/react/plugins/storybook"
     ],
+
     core: {
         builder: "webpack5"
     },
+
     previewHead: head => `
         ${head}
         <link rel="stylesheet" href="${RELATIVE_PATHS.storybookDefaultTheme}" />
     `,
-    staticDirs: [ path.resolve(__dirname, "..", STATIC_DIRECTORY_NAME) ],
-    stories: [
-        "../src/**/*.stories.mdx",
-        "../src/**/*.stories.@(js|jsx|ts|tsx)"
-    ],
+
+    staticDirs: [path.resolve(__dirname, "..", STATIC_DIRECTORY_NAME)],
+    stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
+
     webpackFinal: async config => {
         config.plugins.push(
             new CopyWebpackPlugin({
@@ -83,9 +84,7 @@ module.exports = {
                                 }
                             }
 
-                            return `${
-                                ABSOLUTE_PATHS.storybookThemes
-                            }/${path.relative(
+                            return `${ABSOLUTE_PATHS.storybookThemes}/${path.relative(
                                 context,
                                 moderatedAbsoluteFileName
                             )}`;
@@ -109,6 +108,10 @@ module.exports = {
         };
 
         return config;
+    },
+
+    docs: {
+        autodocs: true
     }
 };
 
@@ -125,22 +128,11 @@ const getRelativePaths = (env, context) => {
         source: "src",
         staticDirectory: STATIC_DIRECTORY_NAME,
         // Default theme relative to the static directory. (public)
-        storybookDefaultTheme: path.join(
-            "themes",
-            defaultTheme,
-            MINIFIED_THEME_STYLESHEET_NAME
-        ),
+        storybookDefaultTheme: path.join("themes", defaultTheme, MINIFIED_THEME_STYLESHEET_NAME),
         storybookHelpers: "storybook-helpers",
         storybookPreviewHeader: "preview-head.html",
         storybookThemes: path.join(STATIC_DIRECTORY_NAME, "themes"),
-        themes: path.join(
-            "node_modules",
-            "@wso2is",
-            "theme",
-            "dist",
-            "lib",
-            "themes"
-        )
+        themes: path.join("node_modules", "@wso2is", "theme", "dist", "lib", "themes")
     };
 };
 
@@ -157,21 +149,9 @@ const getAbsolutePaths = (env, context) => {
     return {
         libNodeModules: path.resolve(__dirname, "..", "node_modules"),
         libSource: path.resolve(__dirname, "..", RELATIVE_PATHS.source),
-        storybookHelpers: path.resolve(
-            __dirname,
-            "..",
-            RELATIVE_PATHS.source,
-            RELATIVE_PATHS.storybookHelpers
-        ),
-        storybookPreviewHeader: path.resolve(
-            __dirname,
-            RELATIVE_PATHS.storybookPreviewHeader
-        ),
-        storybookThemes: path.resolve(
-            __dirname,
-            "..",
-            RELATIVE_PATHS.storybookThemes
-        ),
+        storybookHelpers: path.resolve(__dirname, "..", RELATIVE_PATHS.source, RELATIVE_PATHS.storybookHelpers),
+        storybookPreviewHeader: path.resolve(__dirname, RELATIVE_PATHS.storybookPreviewHeader),
+        storybookThemes: path.resolve(__dirname, "..", RELATIVE_PATHS.storybookThemes),
         themes: path.resolve(__dirname, "..", RELATIVE_PATHS.themes),
         tsconfig: path.resolve(__dirname, "..", "tsconfig.json")
     };

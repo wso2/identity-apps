@@ -1,0 +1,8 @@
+{
+    "babelrcRoots": [
+      "./apps/*",
+      "./modules/*",
+      "./features/*"
+    ]
+  }
+  

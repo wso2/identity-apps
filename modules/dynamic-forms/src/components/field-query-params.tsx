@@ -26,6 +26,10 @@ export interface FieldQueryParamsProps extends DynamicFieldProps {
      * Pass through onChange(value)
      */
     listen?: (value: string) => void;
+    /**
+     * test id
+     */
+    "data-testid": string;
 }
 
 /**

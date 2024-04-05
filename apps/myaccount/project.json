@@ -1,23 +1,15 @@
 {
+    "name": "myaccount",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "apps/myaccount",
     "sourceRoot": "apps/myaccount/src",
     "projectType": "application",
     "generators": {},
     "prefix": "@wso2is",
     "tags": [],
-    "implicitDependencies": [
-        "access-control",
-        "core",
-        "forms",
-        "i18n",
-        "react-components",
-        "theme",
-        "validation"
-    ],
+    "implicitDependencies": ["access-control", "core", "forms", "i18n", "react-components", "theme", "validation"],
     "targets": {
         "build-prepare": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
@@ -30,10 +22,8 @@
             }
         },
         "build-base": {
-            "executor": "@nrwl/web:webpack",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "executor": "@nx/web:webpack",
+            "outputs": ["{options.outputPath}"],
             "defaultConfiguration": "production",
             "options": {
                 "compiler": "babel",
@@ -100,19 +90,15 @@
             }
         },
         "build": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
-                "commands": [
-                    "pnpm nx run myaccount:build-prepare",
-                    "pnpm nx run myaccount:build-base"
-                ],
+                "commands": ["pnpm nx run myaccount:build-prepare", "pnpm nx run myaccount:build-base"],
                 "cwd": "apps/myaccount",
                 "parallel": false
             }
         },
-
         "clean": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
@@ -125,7 +111,7 @@
             }
         },
         "serve-prepare": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
@@ -138,7 +124,7 @@
             }
         },
         "serve-base": {
-            "executor": "@nrwl/web:dev-server",
+            "executor": "@nx/web:dev-server",
             "defaultConfiguration": "development",
             "options": {
                 "buildTarget": "myaccount:build-base",
@@ -159,18 +145,15 @@
             }
         },
         "serve": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
-                "commands": [
-                    "pnpm nx run myaccount:serve-prepare",
-                    "pnpm nx run myaccount:serve-base"
-                ],
+                "commands": ["pnpm nx run myaccount:serve-prepare", "pnpm nx run myaccount:serve-base"],
                 "cwd": "apps/myaccount",
                 "parallel": false
             }
         },
         "lint": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm lint",
                 "cwd": "apps/myaccount",
@@ -178,7 +161,7 @@
             }
         },
         "test": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
                 "cwd": "apps/myaccount",

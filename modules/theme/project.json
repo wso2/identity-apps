@@ -1,6 +1,6 @@
 {
+    "name": "theme",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/theme",
     "sourceRoot": "modules/theme/src",
     "projectType": "library",
     "generators": {},
@@ -8,10 +8,8 @@
     "tags": [],
     "targets": {
         "build": {
-            "executor": "@nrwl/workspace:run-commands",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "executor": "nx:run-commands",
+            "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "modules/theme/dist",
                 "tsconfig": "modules/theme/tsconfig.json",
@@ -20,7 +18,7 @@
             }
         },
         "lint": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm lint",
                 "cwd": "modules/theme",
@@ -28,7 +26,7 @@
             }
         },
         "test": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
                 "cwd": "modules/theme",

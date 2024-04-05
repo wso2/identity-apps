@@ -1,19 +1,15 @@
 {
+    "name": "dynamic-forms",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/dynamic-forms",
     "sourceRoot": "modules/dynamic-forms/src",
     "projectType": "library",
     "generators": {},
     "prefix": "@wso2is",
     "tags": [],
-    "implicitDependencies": [
-        "core",
-        "react-components",
-        "validation"
-    ],
+    "implicitDependencies": ["core", "react-components", "validation"],
     "targets": {
         "build": {
-            "executor": "@nrwl/web:rollup",
+            "executor": "@nrwl/rollup:rollup",
             "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "modules/dynamic-forms/dist",
@@ -21,12 +17,9 @@
                 "project": "modules/dynamic-forms/package.json",
                 "entryFile": "modules/dynamic-forms/src/index.ts",
                 "external": ["react/jsx-runtime"],
-                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "rollupConfig": "@nx/react/plugins/bundle-rollup",
                 "compiler": "babel",
-                "format": [
-                    "esm",
-                    "cjs"
-                ],
+                "format": ["esm", "cjs"],
                 "assets": [
                     {
                         "glob": "modules/dynamic-forms/README.md",
@@ -37,7 +30,7 @@
             }
         },
         "lint": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm lint",
                 "cwd": "modules/dynamic-forms",
@@ -45,7 +38,7 @@
             }
         },
         "test": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
                 "cwd": "modules/dynamic-forms",

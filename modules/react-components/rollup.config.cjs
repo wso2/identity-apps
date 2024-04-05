@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,14 @@
  * under the License.
  */
 
-const nrwlConfig = require("@nrwl/react/plugins/bundle-rollup");
+const nrwlConfig = require("@nx/react/plugins/bundle-rollup");
 const url = require("@rollup/plugin-url");
-const svgr = require("@svgr/rollup");
 
 module.exports = (config) => {
     const nxConfig = nrwlConfig(config);
 
     return {
         ...nxConfig,
-        plugins: [ ...nxConfig.plugins, url(), svgr() ]
+        plugins: [ ...nxConfig.plugins, url() ]
     };
 };

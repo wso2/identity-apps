@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,15 +39,15 @@ export class RouteUtils {
     /**
      * Filters the set of enabled routes based on the app config.
      *
-     * @param {RouteInterface[]} routes - Routes to evaluate.
-     * @param {T} featureConfig - Feature config.
-     * @param {string} allowedScopes - Set of allowed scopes.
-     * @param {boolean} checkForUIResourceScopes - Sets if UI Resource Scopes should be considered for filtering.
-     * @param {string[]} hiddenRoutes - Routes to be hidden.
-     * @param {string[]} allowedRoutes - Routes to be shown.
-     * @param {(route: RouteInterface) => void} - Custom logic to perform on route object.
+     * @param routes - Routes to evaluate.
+     * @param featureConfig - Feature config.
+     * @param allowedScopes - Set of allowed scopes.
+     * @param checkForUIResourceScopes - Sets if UI Resource Scopes should be considered for filtering.
+     * @param hiddenRoutes - Routes to be hidden.
+     * @param allowedRoutes - Routes to be shown.
+     * @param customLogic - Custom logic to perform on route object.
      *
-     * @return {RouteInterface[]} Filtered routes.
+     * @returns Filtered routes.
      */
     public static filterEnabledRoutes<T>(routes: RouteInterface[],
         featureConfig: T,
@@ -85,7 +85,7 @@ export class RouteUtils {
                         filteredRoutes.push(route);
 
                         if (route.showOnSidePanel) {
-                            const sanitizedRoute = { ...route };
+                            const sanitizedRoute: RouteInterface | ChildRouteInterface = { ...route };
 
                             sanitizedRoute.children = [];
                             sanitizedRoutes.push(sanitizedRoute);
@@ -168,14 +168,14 @@ export class RouteUtils {
     /**
      * Checks if the URL path is similar to the path of the route that's passed in.
      *
-     * @param {string} pathname - Current pathname in location.
-     * @param {RouteInterface | ChildRouteInterface} route - Route to be evaluated.
-     * @return {boolean} If the route is active or not.
+     * @param pathname - Current pathname in location.
+     * @param route - Route to be evaluated.
+     * @returns If the route is active or not.
      */
     public static isActiveRoute(pathname: string, route: RouteInterface | ChildRouteInterface): boolean {
 
         const match = (routePath: string): boolean => {
-            return matchPath(pathname, routePath)?.isExact;
+            return matchPath(pathname, routePath).isExact;
         };
 
         const checkChildren = (childRoutes): boolean => {

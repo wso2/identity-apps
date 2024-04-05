@@ -1,6 +1,6 @@
 {
+    "name": "tests",
     "$schema": "../node_modules/nx/schemas/project-schema.json",
-    "root": "tests",
     "sourceRoot": "tests",
     "projectType": "library",
     "generators": {},
@@ -8,10 +8,8 @@
     "tags": [],
     "targets": {
         "build": {
-            "executor": "@nrwl/workspace:run-commands",
-            "outputs": [
-                "tests/dist"
-            ],
+            "executor": "nx:run-commands",
+            "outputs": ["{projectRoot}/dist"],
             "options": {
                 "tsconfig": "tests/tsconfig.json",
                 "command": "pnpm build",
@@ -19,7 +17,5 @@
             }
         }
     },
-    "outputs": [
-        "{options.outputPath}"
-    ]
+    "outputs": ["{options.outputPath}"]
 }

@@ -1,17 +1,15 @@
 {
+    "name": "identity-apps-core",
     "$schema": "../node_modules/nx/schemas/project-schema.json",
-    "root": "identity-apps-core",
     "sourceRoot": "identity-apps-core/apps",
     "projectType": "application",
     "generators": {},
     "prefix": "@wso2is",
     "tags": [],
-    "implicitDependencies": [
-        "theme"
-    ],
+    "implicitDependencies": ["theme"],
     "targets": {
         "build": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
@@ -24,7 +22,7 @@
             }
         },
         "clean": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
