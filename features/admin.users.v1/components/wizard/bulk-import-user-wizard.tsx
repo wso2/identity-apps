@@ -60,7 +60,7 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
-import capitalize from "lodash-es/Capitalize";
+import toUpper from "lodash-es/toUpper";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -1564,11 +1564,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                                 "bulkImportUserWizard.wizardSummary.userstoreMessage"
                                                             }
                                                             tOptions={ {
-                                                                userstore: capitalize(userstore)
+                                                                userstore: toUpper(userstore)
                                                             } }
                                                         >
                                                             The created users will be added to
-                                                            the <b>{ capitalize(userstore) }</b> user store.
+                                                            the <b>{ toUpper(userstore) }</b> user store.
                                                         </Trans>
                                                     </Alert>
                                                 </Grid.Column>
@@ -1811,11 +1811,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         ".wizardSummary.userstoreMessage"
                                                     }
                                                     tOptions={ {
-                                                        userstore: capitalize(userstore)
+                                                        userstore: toUpper(userstore)
                                                     } }
                                                 >
                                                     The created users will be added to
-                                                    the <b>{ capitalize(userstore) }</b> user store.
+                                                    the <b>{ toUpper(userstore) }</b> user store.
                                                 </Trans>
                                             </Alert>
                                         </Grid.Column>
