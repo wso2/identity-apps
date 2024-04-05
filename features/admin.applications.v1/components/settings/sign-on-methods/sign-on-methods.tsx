@@ -93,7 +93,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         hiddenAuthenticators,
         [ "data-componentid" ]: componentId
     } = props;
-    
+
     return (
         <AILoginFlowProvider>
             <SignOnMethodsWrapper

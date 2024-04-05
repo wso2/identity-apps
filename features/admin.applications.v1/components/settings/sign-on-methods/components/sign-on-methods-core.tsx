@@ -146,7 +146,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         hiddenAuthenticators,
         [ "data-componentid" ]: componentId
     } = props;
-    
+
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
 
