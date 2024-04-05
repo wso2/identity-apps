@@ -17,7 +17,7 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
 import { AppState } from "../../../../../admin.core.v1";

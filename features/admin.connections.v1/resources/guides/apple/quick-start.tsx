@@ -19,7 +19,7 @@
 import {
     VerticalStepper,
     VerticalStepperStepInterface
-} from "@wso2is/common/src";
+} from "../../../../admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";

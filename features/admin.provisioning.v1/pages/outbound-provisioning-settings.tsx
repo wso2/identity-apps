@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations } from "@wso2is/common/src/configs/ui";
+import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

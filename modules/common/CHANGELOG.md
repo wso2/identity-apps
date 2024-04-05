@@ -1,5 +1,14 @@
 # @wso2is/common
 
+## 2.0.54
+
+### Patch Changes
+
+- [#5894](https://github.com/wso2/identity-apps/pull/5894) [`616887f5f8`](https://github.com/wso2/identity-apps/commit/616887f5f8450f86c42a98a3d5d373e20d3f5810) Thanks [@savindi7](https://github.com/savindi7)! - Add branding to Identifier in Login and Password Recovery.
+
+- Updated dependencies [[`616887f5f8`](https://github.com/wso2/identity-apps/commit/616887f5f8450f86c42a98a3d5d373e20d3f5810)]:
+  - @wso2is/i18n@2.1.7
+
 ## 2.0.53
 
 ### Patch Changes

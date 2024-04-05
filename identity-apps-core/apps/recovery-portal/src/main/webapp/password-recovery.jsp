@@ -268,25 +268,17 @@
                            </label>
                            <% } %>
                             <div class="ui fluid left icon input">
-                                <% if (isMultiAttributeLoginEnabledInTenant) { %>
-                                    <input
-                                        placeholder="<%=usernameLabel%>"
-                                        id="usernameUserInput"
-                                        name="usernameUserInput"
-                                        type="text"
-                                        tabindex="0"
-                                        required
-                                    >
-                                <% } else { %>
-                                    <input
-                                        placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>"
-                                        id="usernameUserInput"
-                                        name="usernameUserInput"
-                                        type="text"
-                                        tabindex="0"
-                                        required
-                                    >
-                                <% } %>
+                                <% String identifierPlaceholder=i18n(recoveryResourceBundle, customText, "password.recovery.identifier.input.placeholder" , "" , false); %>
+                                <% if (StringUtils.isNotBlank(identifierPlaceholder)) { %>
+                                    <input placeholder="<%=identifierPlaceholder%>" id="usernameUserInput" name="usernameUserInput" type="text"
+                                        tabindex="0" required>
+                                    <% } else if (isMultiAttributeLoginEnabledInTenant) { %>
+                                        <input placeholder="<%=usernameLabel%>" id="usernameUserInput" name="usernameUserInput" type="text"
+                                            tabindex="0" required>
+                                        <% } else { %>
+                                            <input placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>"
+                                                id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
+                                            <% } %>
                                 <i aria-hidden="true" class="user outline icon"></i>
                             </div>
                             <input id="username" name="username" type="hidden">

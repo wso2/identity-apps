@@ -27,7 +27,7 @@ import Autocomplete, {
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { AlertLevels, RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, GenericIcon } from "@wso2is/react-components";

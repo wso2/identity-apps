@@ -53,6 +53,14 @@ export type ConfigInterface = CommonConfigInterface<
     I18nModuleOptionsInterface,
     UIConfigInterface>;
 
+
+interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
+    /**
+     * Connection templates.
+     */
+    templates?: Record<string, any>[];
+}
+
 /**
  * Application configuration interface.
  */
@@ -229,6 +237,10 @@ export interface FeatureConfigInterface {
      * Resident Outbound Provisioning feature
      */
     residentOutboundProvisioning?: FeatureAccessConfigInterface;
+    /**
+     * Connection management feature.
+     */
+    connections?: ConnectionConfigInterface;
 }
 
 /**
@@ -433,6 +445,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Feature configs related to governance connectors.
      */
     governanceConnectors?: GovernanceConnectorsFeatureConfig;
+
+    /**
+     * Configurations for IDP templates.
+     */
+    connectionTemplates?: any;
 }
 
 /**
@@ -505,4 +522,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     me: string;
     saml2Meta: string;
     wellKnown: string;
+}
+
+export interface ResourceEndpointsInterface {
+    [key: string]: string;
 }

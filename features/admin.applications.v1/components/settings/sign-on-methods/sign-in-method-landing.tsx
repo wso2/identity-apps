@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
+import useDeploymentConfig from "../../../../admin.core.v1/hooks/use-deployment-configs";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";

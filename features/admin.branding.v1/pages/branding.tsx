@@ -17,10 +17,8 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
-import BrandingCore from "../components/branding-core";
+import BrandingPageLayout from "../components/branding-page-layout";
 import BrandingPreferenceProvider from "../providers/branding-preference-provider";
 
 /**
@@ -31,57 +29,16 @@ type BrandingPageInterface = IdentifiableComponentInterface;
 /**
  * Branding page.
  *
- * @param props - Props injected to the component.
  * @returns Branding page component.
  */
 const BrandingPage: FunctionComponent<BrandingPageInterface> = (
-    props: BrandingPageInterface
 ): ReactElement => {
-
-    const { getLink } = useDocumentation();
-
-    const {
-        ["data-componentid"]: componentId
-    } = props;
-
-    const { t } = useTranslation();
 
     return (
         <BrandingPreferenceProvider>
-            <PageLayout
-                pageTitle={ t("extensions:develop.branding.pageHeader.title") }
-                bottomMargin={ false }
-                title={ (
-                    <div className="title-container">
-                        <div className="title-container-heading">
-                            { t("extensions:develop.branding.pageHeader.title") }
-                        </div>
-                    </div>
-                ) }
-                description={ (
-                    <div className="with-label">
-                        { t("extensions:develop.branding.pageHeader.description") }
-                        <DocumentationLink
-                            link={ getLink("develop.branding.learnMore") }
-                        >
-                            { t("common:learnMore") }
-                        </DocumentationLink>
-                    </div>
-                ) }
-                data-componentid={ `${ componentId }-layout` }
-                className="branding-page"
-            >
-                <BrandingCore />
-            </PageLayout>
+            <BrandingPageLayout />
         </BrandingPreferenceProvider>
     );
-};
-
-/**
- * Default props for the component.
- */
-BrandingPage.defaultProps = {
-    "data-componentid": "branding-page"
 };
 
 export default BrandingPage;

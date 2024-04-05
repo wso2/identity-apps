@@ -57,7 +57,13 @@ const LOGOUT_URL: string = "sign_out_url";
 export interface UseSignInInterface {
     /**
      * Handles the sign-in process.
+     *
+     * @example
+     * ```
+     * const { onSignIn } = useSignIn();
+     * ```
      * @param response - The basic user information returned from the sign-in process.
+     *
      * @returns A promise.
      */
     onSignIn: (response: BasicUserInfo) => Promise<void>;
@@ -92,7 +98,8 @@ const useSignIn = (): UseSignInInterface => {
      * const { onSignIn } = useSignIn();
      * ```
      * @param response - The basic user information returned from the sign-in process.
-     * @throws Will throw an error if the new onSignIn method is not implemented.
+     *
+     * @returns A promise.
      */
     const onSignIn = async (response: BasicUserInfo): Promise<void> => {
         if (legacyAuthzRuntime) {
@@ -106,7 +113,10 @@ const useSignIn = (): UseSignInInterface => {
 
     /**
      * Handles the sign-in process for the new authorization server.
+     *
      * @param response - The basic user information returned from the sign-in process.
+     *
+     * @returns A promise.
      */
     const _onSignIn = async (response: BasicUserInfo): Promise<void> => {
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
@@ -249,8 +259,11 @@ const useSignIn = (): UseSignInInterface => {
 
     /**
      * Handles the sign-in process for legacy authorization server.
+     *
      * @deprecated This is deprecated and will be removed in the next major release.
      * @param response - The basic user information returned from the sign-in process.
+     *
+     * @returns A promise.
      */
     const legacyOnSignIn = async (response: BasicUserInfo): Promise<void> => {
         let logoutUrl: string;
