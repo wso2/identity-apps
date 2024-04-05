@@ -17,6 +17,7 @@
  */
 
 import axios from "axios";
+import AutheticatorsRecord  from "../models/authenticators-record";
 import { ClaimURIs } from "../models/claim-uris";
 /**
  * Hook to trigger the back end for start generating the AI login flow.
@@ -27,18 +28,15 @@ import { ClaimURIs } from "../models/claim-uris";
  * @returns The response from the back end.
 */
 
-interface AutheticatorsRecord{
-    authenticator: string;
-    idp: string;
-}
 
-const useGenerateAILoginFlow = (
+
+const generateAILoginFlow = async(
     userQuery: string,
     userClaims: ClaimURIs[],
     availableAuthenticators: AutheticatorsRecord[],
     traceId: string
 ): Promise<{ loginFlow: any; isError: boolean; error: any }> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve:any, reject:any) => {
         axios.post(
             "http://localhost:3000/loginflow/generate",
             {
@@ -52,14 +50,13 @@ const useGenerateAILoginFlow = (
                 }
             }
         )
-            .then(response => {
-                resolve({ loginFlow: response.data, isError: false, error: null });
+            .then((response: any) => {
+                resolve({ error: null, isError: false, loginFlow: response.data });
             })
-            .catch(error => {
-                console.error("Error while generating the AI login flow: ", error);
-                reject({ loginFlow: null, isError: true, error: error });
+            .catch((error: any) => {
+                reject({ error: error, isError: true, loginFlow: null });
             });
     });
 };
 
-export default useGenerateAILoginFlow;
+export default generateAILoginFlow;
