@@ -17,7 +17,7 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
-import { OrganizationType } from "@wso2is/common";
+import { OrganizationType } from "../../../admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
