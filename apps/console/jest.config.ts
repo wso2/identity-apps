@@ -33,7 +33,6 @@ module.exports = {
     ],
     moduleNameMapper: {
         "@oxygen-ui/react": "<rootDir>/node_modules/@oxygen-ui/react",
-        "@wso2is/common": "<rootDir>/../../modules/common/dist",
         "@wso2is/core/api": "<rootDir>/../../modules/core/dist/src/api",
         "@wso2is/core/configs": "<rootDir>/../../modules/core/dist/src/configs",
         "@wso2is/core/constants": "<rootDir>/../../modules/core/dist/src/constants",
