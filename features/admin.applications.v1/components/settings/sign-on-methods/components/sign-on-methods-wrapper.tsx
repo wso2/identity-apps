@@ -19,7 +19,6 @@
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { SignOnMethodsCore } from "./sign-on-methods-core";
-import useGetModifiedLoginFLow from "../../../../../admin.ai.v1/hooks/use-get-modified-login-flow";
 import { FeatureConfigInterface } from "../../../../../admin.core.v1";
 import {
     ApplicationInterface,
@@ -94,17 +93,12 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
         [ "data-componentid" ]: componentId
     } = props;
 
-    /**
-     * Get the AI generated login flow if available.
-     */
-    const modifiedAuthenticatinSequence: AuthenticationSequenceInterface =
-        useGetModifiedLoginFLow(authenticationSequence);
 
     return (
         <SignOnMethodsCore
             application={ application }
             appId={ appId }
-            authenticationSequence={ modifiedAuthenticatinSequence }
+            authenticationSequence={ authenticationSequence }
             clientId={ clientId }
             isLoading={ isLoading }
             onUpdate={ onUpdate }
