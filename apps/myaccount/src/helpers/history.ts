@@ -19,5 +19,6 @@
 import { History, createBrowserHistory } from "history";
 
 
-// eslint-disable-next-line max-len
-export const history: History =  createBrowserHistory({ basename: window["AppUtils"]?.getConfig()?.appBaseNameForHistoryAPI });
+export const history: History =  createBrowserHistory({
+    basename: window["AppUtils"]?.getConfig()?.appBaseNameForHistoryAPI
+});
