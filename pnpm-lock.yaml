@@ -863,6 +863,9 @@ importers:
       '@wso2is/core':
         specifier: ^2.0.38
         version: link:../../modules/core
+      '@wso2is/features':
+        specifier: ^2.14.10
+        version: link:../../features
       '@wso2is/forms':
         specifier: ^2.0.28
         version: link:../../modules/forms
