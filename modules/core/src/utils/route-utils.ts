@@ -30,8 +30,6 @@ export class RouteUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -131,11 +129,11 @@ export class RouteUtils {
      * Sanitize the routes for UI. Removes unnecessary routes which are not supposed to be
      * displayed on the UI navigation panels.
      *
-     * @param {RouteInterface[]} routes - Routes to evaluate.
-     * @param {string[]} hiddenRoutes - Set of hidden routes.
-     * @return {RouteInterface[]} Filtered routes.
+     * @param routes - Routes to evaluate.
+     * @param hiddenRoutes - Set of hidden routes.
+     * @returns filtered routes.
      */
-    public static sanitizeForUI<T>(routes: RouteInterface[], hiddenRoutes: string[] = []): RouteInterface[] {
+    public static sanitizeForUI(routes: RouteInterface[], hiddenRoutes: string[] = []): RouteInterface[] {
 
         // Remove any redundant routes.
         const sanitize = (routeArr: RouteInterface[] | ChildRouteInterface[]) => {
@@ -145,12 +143,14 @@ export class RouteUtils {
                 }
 
                 if (!isEmpty(route.children) && !route.path) {
-                    const isFurtherNested = route.children.some((item) => item.children);
+                    const isFurtherNested: boolean = route.children.some((item: ChildRouteInterface) => item.children);
 
                     if (isFurtherNested) {
                         route.children = sanitize(route.children);
                     } else {
-                        return route.children.some((item) => item.showOnSidePanel && !hiddenRoutes.includes(item.id));
+                        return route.children.some(
+                            (item: ChildRouteInterface) => item.showOnSidePanel && !hiddenRoutes.includes(item.id)
+                        );
                     }
                 }
 
@@ -178,13 +178,13 @@ export class RouteUtils {
             return matchPath(pathname, routePath).isExact;
         };
 
-        const checkChildren = (childRoutes): boolean => {
+        const checkChildren = (childRoutes: ChildRouteInterface[]): boolean => {
             if (!childRoutes) {
                 return false;
             }
 
             for (const child of childRoutes) {
-                const isMatching = match(child.path);
+                const isMatching: boolean = match(child.path);
 
                 if (isMatching) {
                     return true;
@@ -200,9 +200,9 @@ export class RouteUtils {
     /**
      * Gets the active route on initial app loading time.
      *
-     * @param {string} pathname - Current pathname in location.
-     * @param {RouteInterface[]} routes - Evaluating routes.
-     * @return {RouteInterface | ChildRouteInterface} Initially active route.
+     * @param pathname - Current pathname in location.
+     * @param routes - Evaluating routes.
+     * @returns initially active route.
      */
     public static getInitialActiveRoute(pathname: string,
         routes: RouteInterface[]): RouteInterface | ChildRouteInterface {

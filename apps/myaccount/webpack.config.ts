@@ -212,19 +212,21 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     if (isProduction && !isDeployedOnExternalStaticServer) {
         config.plugins.push(
             (new HtmlWebpackPlugin({
-                authorizationCode: '<%=request.getParameter("code")%>',
+                authorizationCode: "<%=request.getParameter(\"code\")%>",
                 contentType:
-                    '<%@ page language="java" contentType="text/html; charset=UTF-8" ' + 'pageEncoding="UTF-8" %>',
+                    // eslint-disable-next-line max-len
+                    "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " + "pageEncoding=\"UTF-8\" %>",
                 // eslint-disable-next-line max-len
                 cookieproDomainScriptId:
-                    '<% String cookiepro_domain_script_id = System.getenv("cookiepro_domain_script_id"); %>',
+                    "<% String cookiepro_domain_script_id = System.getenv(\"cookiepro_domain_script_id\"); %>",
                 cookieproDomainScriptIdVar: "<%= cookiepro_domain_script_id %>",
                 cookieproEnabledCheck: "<% if ((Boolean.TRUE.toString()).equals(is_cookiepro_enabled)) { %>",
                 cookieproEnabledCheckEnd: "<% } %>",
-                cookieproEnabledFlag: '<% String is_cookiepro_enabled = System.getenv("is_cookiepro_enabled"); %>',
+                cookieproEnabledFlag: "<% String is_cookiepro_enabled = System.getenv(\"is_cookiepro_enabled\"); %>",
                 // eslint-disable-next-line max-len
                 cookieproInitialScriptTypeCheck:
-                    '<% String initialScriptType = (Boolean.TRUE.toString()).equals(is_cookiepro_enabled) ? "text/plain" : "text/javascript"; %>',
+                    // eslint-disable-next-line max-len
+                    "<% String initialScriptType = (Boolean.TRUE.toString()).equals(is_cookiepro_enabled) ? \"text/plain\" : \"text/javascript\"; %>",
                 cookieproInitialScriptTypeVar: "<%= initialScriptType %>",
                 filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
                 getAdaptiveAuthenticationAvailability: !isDeployedOnExternalTomcatServer
@@ -232,21 +234,21 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
                     : "",
                 getOrganizationManagementAvailability: !isDeployedOnExternalTomcatServer
-                    ? '<%@ page import="static org.wso2.carbon.identity.application.' +
-                      'authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled"%>'
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                      "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
                     : "",
                 hash: true,
-                importStringUtils: '<%@ page import="org.apache.commons.lang.StringUtils" %>',
+                importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
-                    ? '<%@ page import="static org.wso2.carbon.utils.multitenancy.' +
-                      'MultitenantConstants.SUPER_TENANT_DOMAIN_NAME"%>'
+                    ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                      "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
                     : "",
                 importTenantPrefix: !isDeployedOnExternalTomcatServer
-                    ? '<%@ page import="static org.wso2.carbon.utils.multitenancy.' +
-                      'MultitenantConstants.TENANT_AWARE_URL_PREFIX"%>'
+                    ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                      "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>"
                     : "",
                 importUtil: !isDeployedOnExternalTomcatServer
-                    ? '<%@ page import="' + 'static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>'
+                    ? "<%@ page import=\"" + "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                     : "",
                 isAdaptiveAuthenticationAvailable: !isDeployedOnExternalTomcatServer
                     ? "<%= isAdaptiveAuthenticationAvailable() %>"
@@ -256,11 +258,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     : "false",
                 minify: false,
                 publicPath: baseHref,
-                serverUrl: !isDeployedOnExternalTomcatServer ? '<%=getServerURL("", true, true)%>' : "",
-                sessionState: '<%=request.getParameter("session_state")%>',
+                serverUrl: !isDeployedOnExternalTomcatServer ? "<%=getServerURL(\"\", true, true)%>" : "",
+                sessionState: "<%=request.getParameter(\"session_state\")%>",
                 superTenantConstant: !isDeployedOnExternalTomcatServer ? "<%=SUPER_TENANT_DOMAIN_NAME%>" : "",
                 template: path.join(__dirname, "src", "home.jsp"),
-                tenantDelimiter: !isDeployedOnExternalTomcatServer ? '"/"+\'<%=TENANT_AWARE_URL_PREFIX%>\'+"/"' : "",
+                tenantDelimiter: !isDeployedOnExternalTomcatServer ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"" : "",
                 tenantPrefix: !isDeployedOnExternalTomcatServer ? "<%=TENANT_AWARE_URL_PREFIX%>" : "",
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
@@ -269,33 +271,34 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
         config.plugins.push(
             (new HtmlWebpackPlugin({
-                authenticatedIdPs: '<%=request.getParameter("AuthenticatedIdPs")%>',
-                authorizationCode: '<%=Encode.forHtml(request.getParameter("code"))%>',
+                authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
+                authorizationCode: "<%=Encode.forHtml(request.getParameter(\"code\"))%>",
                 basename: DeploymentConfig.appBaseName,
                 clientID: DeploymentConfig.clientID,
                 contentType:
-                    '<%@ page language="java" contentType="text/html; charset=UTF-8" ' + 'pageEncoding="UTF-8" %>',
+                    // eslint-disable-next-line max-len
+                    "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " + "pageEncoding=\"UTF-8\" %>",
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
                 getAdaptiveAuthenticationAvailability: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
                 "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
                     : "",
                 getOrganizationManagementAvailability: !isDeployedOnExternalTomcatServer
-                    ? '<%@ page import="static org.wso2.carbon.identity.application.' +
-                      'authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled"%>'
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                      "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
                     : "",
                 hash: true,
-                importOwaspEncode: '<%@ page import="org.owasp.encoder.Encode" %>',
+                importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
-                    ? '<%@ page import="static org.wso2.carbon.utils.multitenancy.' +
-                      'MultitenantConstants.SUPER_TENANT_DOMAIN_NAME"%>'
+                    ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                      "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
                     : "",
                 importTenantPrefix: !isDeployedOnExternalTomcatServer
-                    ? '<%@ page import="static org.wso2.carbon.utils.multitenancy.' +
-                      'MultitenantConstants.TENANT_AWARE_URL_PREFIX"%>'
+                    ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                      "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>"
                     : "",
                 importUtil: !isDeployedOnExternalTomcatServer
-                    ? '<%@ page import="' + 'static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>'
+                    ? "<%@ page import=\"" + "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                     : "",
                 inject: false,
                 isAdaptiveAuthenticationAvailable: !isDeployedOnExternalTomcatServer
@@ -307,16 +310,16 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 minify: false,
                 publicPath: baseHref,
                 requestForwardSnippet:
-                    'if(request.getParameter("code") != null && ' +
-                    '!request.getParameter("code").trim().isEmpty()) ' +
-                    '{request.getRequestDispatcher("/authenticate?code="+request.getParameter("code")+' +
-                    '"&AuthenticatedIdPs="+request.getParameter("AuthenticatedIdPs")' +
-                    '+"&session_state="+request.getParameter("session_state")).forward(request, response);}',
-                serverUrl: !isDeployedOnExternalTomcatServer ? '<%=getServerURL("", true, true)%>' : "",
-                sessionState: '<%=Encode.forHtml(request.getParameter("session_state"))%>',
+                    "if(request.getParameter(\"code\") != null && " +
+                    "!request.getParameter(\"code\").trim().isEmpty()) " +
+                    "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+" +
+                    "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")" +
+                    "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}",
+                serverUrl: !isDeployedOnExternalTomcatServer ? "<%=getServerURL(\"\", true, true)%>" : "",
+                sessionState: "<%=Encode.forHtml(request.getParameter(\"session_state\"))%>",
                 superTenantConstant: !isDeployedOnExternalTomcatServer ? "<%=SUPER_TENANT_DOMAIN_NAME%>" : "",
                 template: ABSOLUTE_PATHS.indexTemplateInSource,
-                tenantDelimiter: !isDeployedOnExternalTomcatServer ? '"/"+\'<%=TENANT_AWARE_URL_PREFIX%>\'+"/"' : "",
+                tenantDelimiter: !isDeployedOnExternalTomcatServer ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"" : "",
                 tenantPrefix: !isDeployedOnExternalTomcatServer ? "<%=TENANT_AWARE_URL_PREFIX%>" : "",
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
@@ -419,7 +422,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 cacheLocation: ABSOLUTE_PATHS.eslintCache,
                 context: ABSOLUTE_PATHS.appSrc,
                 eslintPath: require.resolve("eslint"),
-                extensions: ["js", "jsx", "ts", "tsx"],
+                extensions: [ "js", "jsx", "ts", "tsx" ],
                 lintDirtyModulesOnly: true,
                 overrideConfigFile: ABSOLUTE_PATHS.eslintrc
             }) as unknown) as WebpackPluginInstance
@@ -530,7 +533,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
              */
             "react-helmet": path.resolve("node_modules/react-helmet")
         },
-        extensions: [...config.resolve.extensions, ".json"],
+        extensions: [ ...config.resolve.extensions, ".json" ],
         // In webpack 5 automatic node.js polyfills are removed.
         // Node.js Polyfills should not be used in front end code.
         // https://github.com/webpack/webpack/issues/11282
@@ -567,7 +570,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
     config.module.rules.push({
         test: /\.md$/,
-        use: ["raw-loader"]
+        use: [ "raw-loader" ]
     });
 
     config.module.rules.forEach((rule: RuleSetRule) => {
@@ -724,7 +727,7 @@ const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextI
         distribution: path.join("build", "myaccount"),
         homeTemplate,
         indexTemplate: context.buildOptions?.index ?? context.options.index,
-        javaEEFolders: ["**/WEB-INF/**/*"],
+        javaEEFolders: [ "**/WEB-INF/**/*" ],
         source: "src",
         staticJs: path.join("static", "js"),
         staticMedia: path.join("static", "media")
@@ -756,7 +759,7 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
         appTemplateInDistribution: path.resolve(__dirname, RELATIVE_PATHS.distribution, RELATIVE_PATHS.indexTemplate),
         authTemplateInSource: path.resolve(__dirname, RELATIVE_PATHS.source, "auth.html"),
         distribution: path.resolve(__dirname, RELATIVE_PATHS.distribution),
-        entryPoints: ["@babel/polyfill", path.resolve(__dirname, "src", "init", "init.ts")],
+        entryPoints: [ "@babel/polyfill", path.resolve(__dirname, "src", "init", "init.ts") ],
         eslintCache: path.resolve(__dirname, "node_modules", ".cache", ".eslintcache"),
         eslintrc: isProduction ? path.resolve(__dirname, ".prod.eslintrc.js") : path.resolve(__dirname, ".eslintrc.js"),
         homeTemplateInDistribution,
