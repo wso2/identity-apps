@@ -19,12 +19,12 @@
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { SignOnMethodsWrapper } from "./components/sign-on-methods-wrapper";
+import AILoginFlowProvider from "../../../../admin.ai.v1/providers/login-flow-provider";
 import { FeatureConfigInterface } from "../../../../admin.core.v1";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
 } from "../../../models";
-import AILoginFlowProvider from "../../../../admin.ai.v1/providers/login-flow-provider";
 
 /**
  * Proptypes for the sign on methods component.

@@ -16,24 +16,24 @@
  * under the License.
  */
 
-import React, { useState } from "react";
-import { Trans, useTranslation} from 'react-i18next';
-import AILoginFlowContext from "../context/login-flow-context";
-import { BannerState } from "../models/banner-state";
-import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
-import { v4 as uuidv4 } from "uuid";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { v4 as uuidv4 } from "uuid";
+import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import useAuthenticationFlow from "../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import fetchUserClaims from '../api/fetch-user-claims';
-import { ClaimURIs } from '../models/claim-uris';
-import useGenerateAILoginFlow from '../api/generate-ai-loginflow';
-import useGetLoginFLow from "../hooks/use-get-login-flow";
+import fetchUserClaims from "../api/fetch-user-claims";
+import useGenerateAILoginFlow from "../api/generate-ai-loginflow";
+import LoginFLowBanner from "../components/login-flow-banners";
 import LoadingScreen from "../components/login-flow-loading-screen";
-import LoginFLowBanner from "../components/login-flow-banners"
+import AILoginFlowContext from "../context/login-flow-context";
+import useGetLoginFLow from "../hooks/use-get-login-flow";
+import { BannerState } from "../models/banner-state";
+import { ClaimURIs } from "../models/claim-uris";
 
 export type AILoginFlowProviderProps = unknown;
 
@@ -46,7 +46,7 @@ export type AILoginFlowProviderProps = unknown;
 
 const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderProps>): React.ReactElement=>{
 
-    const {children} = props;
+    const { children } = props;
 
     const { t } = useTranslation();
     /**
@@ -57,19 +57,19 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
     /**
      * State to hold the login flow banner state.
      */
-    const [bannerState, setBannerState] = useState<BannerState>(BannerState.Full);
+    const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.Full);
     /**
      * State to hold the generated login flow.
      */
-    const [aiGeneratedAiLoginFlow, setAiGeneratedAiLoginFlow] = useState<AuthenticationSequenceInterface>(undefined);
+    const [ aiGeneratedAiLoginFlow, setAiGeneratedAiLoginFlow ] = useState<AuthenticationSequenceInterface>(undefined);
     /**
      * State to hold whether the AI login flow generation is requested.
      */
-    const [isAiLoginFlowGenerationRequested, setIsAiLoginFlowGenerationRequested] = useState<boolean>(false);
+    const [ isAiLoginFlowGenerationRequested, setIsAiLoginFlowGenerationRequested ] = useState<boolean>(false);
     /**
      * State to hold the trace id.
      */
-    const [traceId, setTraceId] = useState<string>("");
+    const [ traceId, setTraceId ] = useState<string>("");
 
     /**
      * Dispatch to add an alert.
@@ -79,7 +79,7 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
     /**
     * Hook to fetch the recent application status.
     */
-    const {refetchApplication} = useAuthenticationFlow();
+    const { refetchApplication } = useAuthenticationFlow();
 
     /**
      * Callback fucntion to handle the 'Generate' button click in login-flow-banner component.
@@ -95,33 +95,33 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
 
         //temporary authenticator details
         // Need to add authenitcator details fetching logic to fetch-user-authenticators.ts
-        const available_authenticators= [
-            {"authenticator": "BasicAuthenticator", "idp": "LOCAL"},
-            {"authenticator" : "GoogleAuthenticator", "idp": "google123", },
-            {"authenticator":"email-otp-authenticator", "idp" : "LOCAL"},
-            {"authenticator": "totp", "idp": "LOCAL"},
-            {"authenticator" : "FIDOAuthenticator","idp" : "abcxyz"},
-            {"authenticator" : "MagicLinkAuthenticator","idp" : "LOCAL"}
-            
-            ]
-        
+        const available_authenticators: { authenticator: string; idp: string }[] = [
+            { "authenticator": "BasicAuthenticator", "idp": "LOCAL" },
+            { "authenticator" : "GoogleAuthenticator", "idp": "google123" },
+            { "authenticator":"email-otp-authenticator", "idp" : "LOCAL" },
+            { "authenticator": "totp", "idp": "LOCAL" },
+            { "authenticator" : "FIDOAuthenticator","idp" : "abcxyz" },
+            { "authenticator" : "MagicLinkAuthenticator","idp" : "LOCAL" }
+        ];
+
         /**
         * Fetching user claims
         */
         fetchUserClaims()
             .then((response:{claimURIs: ClaimURIs[]; error: IdentityAppsApiException;}) => {
-                 if (response.error) {
+                if (response.error) {
                     dispatch(addAlert(
                         {
-                            description: response.error?.response?.data?.description
-                                || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                            description: response.error?.response?.data?.description ||
+                            t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: response.error?.response?.data?.message
-                                || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                            message: response.error?.response?.data?.message ||
+                            t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
                         }
                     ));
-                    return ({loginFlow: null, isError: true, error: response.error});
-                }else{
+
+                    return ({ error: response.error, isError: true, loginFlow: null });
+                } else {
                     /**
                     * API call to generate AI login flow.
                     */
@@ -142,7 +142,7 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
                     setAiGeneratedAiLoginFlow(useGetLoginFLow(response.loginFlow));
                 }
             })
-            .catch((error) => { 
+            .catch((error) => {
                 dispatch(
                     addAlert({
                         description: error?.response?.data?.detail,
@@ -154,33 +154,35 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
             })
             .finally(() => {
                 setBannerState(BannerState.Collapsed);
-                setIsAiLoginFlowGenerationRequested(false);                
+                setIsAiLoginFlowGenerationRequested(false);
             });
 
 
 
 
     };
+
     return (
-        <AILoginFlowContext.Provider value={{
-            bannerState: bannerState,
-            aiGeneratedAiLoginFlow: aiGeneratedAiLoginFlow,
-            setBannerState: setBannerState,
-        }}>
-            {!isAiLoginFlowGenerationRequested &&
-            <>
-                {!disabledFeatures?.includes("loginFlowAI") && 
-                    <LoginFLowBanner onGenerateClick={handleGenerateButtonClick} />
+        <AILoginFlowContext.Provider
+            value={ {
+                aiGeneratedAiLoginFlow: aiGeneratedAiLoginFlow,
+                bannerState: bannerState,
+                setBannerState: setBannerState
+            } }>
+            { !isAiLoginFlowGenerationRequested &&
+            (<>
+                { !disabledFeatures?.includes("loginFlowAI") &&
+                    <LoginFLowBanner onGenerateClick={ handleGenerateButtonClick } />
                 }
                 { children }
-            </>
-            
+            </>)
+
             }
-            {isAiLoginFlowGenerationRequested && 
-            <LoadingScreen traceId={traceId} />}
+            { isAiLoginFlowGenerationRequested &&
+            <LoadingScreen traceId={ traceId } /> }
 
         </AILoginFlowContext.Provider>
     );
-}
+};
 
 export default AILoginFlowProvider;

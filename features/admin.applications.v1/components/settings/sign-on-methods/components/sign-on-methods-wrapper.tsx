@@ -17,20 +17,20 @@
  */
 
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useContext, useState, useEffect } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { SignOnMethodsCore } from "./sign-on-methods-core";
+import useGetModifiedLoginFLow from "../../../../../admin.ai.v1/hooks/use-get-modified-login-flow";
 import { FeatureConfigInterface } from "../../../../../admin.core.v1";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
 } from "../../../../models";
-import useGetModifiedLoginFLow from "../../../../../admin.ai.v1/hooks/use-get-modified-login-flow";
-import AILoginFlowContext from "../../../../../admin.ai.v1/context/login-flow-context";
 /**
  * Proptypes for the sign on methods component.
  */
 
-interface SignOnMethodsWrapperPropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
+interface SignOnMethodsWrapperPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    IdentifiableComponentInterface {
     /**
      * Editing application.
      */
@@ -93,27 +93,28 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
         hiddenAuthenticators,
         [ "data-componentid" ]: componentId
     } = props;
-    
+
     /**
      * Get the AI generated login flow if available.
      */
-    const modifiedAuthenticatinSequence = useGetModifiedLoginFLow(authenticationSequence);
+    const modifiedAuthenticatinSequence: AuthenticationSequenceInterface =
+        useGetModifiedLoginFLow(authenticationSequence);
 
     return (
-            <SignOnMethodsCore
-                application={ application }
-                appId={ appId }
-                authenticationSequence={ modifiedAuthenticatinSequence }
-                clientId={ clientId }
-                isLoading={ isLoading }
-                onUpdate={ onUpdate }
-                readOnly={ readOnly }
-                isSystemApplication={ isSystemApplication }
-                hiddenAuthenticators={ hiddenAuthenticators }
-                data-componentid={ `${ componentId }-sign-on-methods` }
+        <SignOnMethodsCore
+            application={ application }
+            appId={ appId }
+            authenticationSequence={ modifiedAuthenticatinSequence }
+            clientId={ clientId }
+            isLoading={ isLoading }
+            onUpdate={ onUpdate }
+            readOnly={ readOnly }
+            isSystemApplication={ isSystemApplication }
+            hiddenAuthenticators={ hiddenAuthenticators }
+            data-componentid={ `${ componentId }-sign-on-methods` }
 
 
-            />
+        />
     );
 };
 
