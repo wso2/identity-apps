@@ -20,7 +20,7 @@ import { Context, createContext } from "react";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import { BannerState } from "../models/banner-state";
 
-export interface AILoginFlowContextInterface{
+export interface AILoginFlowContextProps{
     // Add required properties here
     /**
      * Banner State of the AI login flow banner component
@@ -36,6 +36,10 @@ export interface AILoginFlowContextInterface{
     setBannerState: (state: BannerState) => void;
 }
 
-const AILoginFlowContext: Context<AILoginFlowContextInterface> = createContext<AILoginFlowContextInterface>(undefined);
+const AILoginFlowContext: Context<AILoginFlowContextProps> = createContext<AILoginFlowContextProps>({
+    aiGeneratedAiLoginFlow: null,
+    bannerState: BannerState.Full,
+    setBannerState:null
+});
 
 export default AILoginFlowContext;
