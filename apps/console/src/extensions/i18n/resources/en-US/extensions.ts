@@ -3586,7 +3586,11 @@ export const extensions: Extensions = {
                                     maxLengthReached:
                                         "SMS OTP expiry time should be a string with 20 or less characters."
                                 }
-                            }
+                            },
+                            enableEmailBasedRecovery: {
+                                hint: "This specifies whether to send an recovery link to the email address.",
+                                label: "Enable email link based recovery"
+                            },
                         }
                     },
                     connectorDescription: "Enable self-service password recovery for users " + "on the login page.",

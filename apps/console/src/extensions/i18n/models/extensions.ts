@@ -3020,6 +3020,7 @@ export interface Extensions {
                         fields: {
                             enable: FormAttributes;
                             enableSMSBasedRecovery: FormAttributes;
+                            enableEmailBasedRecovery: FormAttributes;
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
                             smsOtpExpiryTime: FormAttributes;

@@ -414,6 +414,25 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     }
                 </Hint>
                 <Field.Checkbox
+                    ariaLabel="enableEmailBasedRecovery"
+                    name="enableEmailBasedRecovery"
+                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "passwordRecovery.form.fields.enableEmailBasedRecovery.label") }
+                    required={ false }
+                    readOnly={ readOnly }
+                    width={ 10 }
+                    disabled={ !isConnectorEnabled }
+                    listen={ (value: boolean) => setIsEmailRecoveryEnabled(value) }
+                    data-testid={ `${testId}-email-link-based-recovery` }
+                />
+                <Hint className={ "mb-5" }>
+                    {
+                        t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.enableEmailBasedRecovery.hint")
+                    }
+                </Hint>
+                <Field.Checkbox
+                    className="ml-6"
                     ariaLabel="notifyRecoverySuccess"
                     name="notifySuccess"
                     label={ t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -424,13 +443,14 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     disabled={ !isConnectorEnabled }
                     data-testid={ `${testId}-notify-success` }
                 />
-                <Hint className={ "mb-5" }>
+                <Hint className={ "ml-6 mb-5" }>
                     {
                         t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.notifySuccess.hint")
                     }
                 </Hint>
                 <Field.Input
+                    className="ml-6"
                     ariaLabel="expiryTime"
                     inputType="number"
                     name="expiryTime"
@@ -466,7 +486,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         content={ "mins" }
                     />
                 </Field.Input>
-                <Hint className={ "mb-5" }>
+                <Hint className={ "ml-6 mb-5" }>
                     {
                         t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.expiryTime.hint")
