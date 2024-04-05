@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.14.11
+
+### Patch Changes
+
+- [#5878](https://github.com/wso2/identity-apps/pull/5878) [`4dcf6d1912`](https://github.com/wso2/identity-apps/commit/4dcf6d1912bd083afeecc63907de4daef4d1cfb5) Thanks [@brionmario](https://github.com/brionmario)! - Clean up and separate out the legacy onSignIn hook in Console
+
+* [#5890](https://github.com/wso2/identity-apps/pull/5890) [`e1ed20a208`](https://github.com/wso2/identity-apps/commit/e1ed20a208dab287ba6b9314aef4eb835c0651fe) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve add multiple users flow when the email username is enabled
+
 ## 2.14.10
 
 ### Patch Changes
