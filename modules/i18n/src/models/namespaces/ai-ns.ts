@@ -42,4 +42,4 @@ export interface aiNS{
             };
         };
     };
-};
+}

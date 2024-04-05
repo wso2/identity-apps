@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import React from "react";
 import axios from "axios";
-import { ClaimURIs } from '../models/claim-uris';
+import { ClaimURIs } from "../models/claim-uris";
 /**
- * Hook to trigger the back end for start generating the AI login flow. 
+ * Hook to trigger the back end for start generating the AI login flow.
  * @param userQuery - The user's input login scenario.
  * @param userClaims - User claims list.
  * @param availableAuthenticators - Available authenticators list.
@@ -43,23 +42,23 @@ const useGenerateAILoginFlow = (
         axios.post(
             "http://localhost:3000/loginflow/generate",
             {
-                user_query: userQuery,
-                user_claims: userClaims,
                 available_authenticators: availableAuthenticators,
+                user_claims: userClaims,
+                user_query: userQuery
             },
             {
                 headers: {
                     "Trace-Id": traceId
-                },
+                }
             }
         )
-        .then(response => {
-            resolve({ loginFlow: response.data, isError: false, error: null });
-        })
-        .catch(error => {
-            console.error("Error while generating the AI login flow: ", error);
-            reject({ loginFlow: null, isError: true, error: error });
-        });
+            .then(response => {
+                resolve({ loginFlow: response.data, isError: false, error: null });
+            })
+            .catch(error => {
+                console.error("Error while generating the AI login flow: ", error);
+                reject({ loginFlow: null, isError: true, error: error });
+            });
     });
 };
 

@@ -15,10 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Claim, ClaimsGetParams } from "@wso2is/core/models";
 import { getAllLocalClaims } from "../../admin.claims.v1/api";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { ClaimURIs } from '../models/claim-uris';
+import { ClaimURIs } from "../models/claim-uris";
 
 const fetchUserClaims = (): Promise<{ claimURIs: ClaimURIs[]; error: IdentityAppsApiException }> => {
 
@@ -36,9 +36,9 @@ const fetchUserClaims = (): Promise<{ claimURIs: ClaimURIs[]; error: IdentityApp
             .then((response: Claim[]) => {
 
                 // extract the claim URIs from the response.
-                const claimURIs = response.map((claim: Claim) => ({
-                    description: claim.description,
-                    claimURI: claim.claimURI
+                const claimURIs: ClaimURIs[] = response.map((claim: Claim) => ({
+                    claimURI: claim.claimURI,
+                    description: claim.description
                 }));
 
                 resolve({ claimURIs, error: null });

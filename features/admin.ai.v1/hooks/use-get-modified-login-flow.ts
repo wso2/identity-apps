@@ -15,12 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import {useContext} from "react";
-import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
+import { useContext } from "react";
 import AILoginFlowContext from "../../admin.ai.v1/context/login-flow-context";
+import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 
 /**
- * 
+ *
  * @param authenticationSequence currently configured authentication sequence for the application.
  */
 
@@ -29,15 +29,16 @@ const useGetModifiedLoginFLow = (authenticationSequence: any): AuthenticationSeq
     /**
      * Get the state of the AI generated login flow.
      */
-    const { 
-        aiGeneratedAiLoginFlow 
+    const {
+        aiGeneratedAiLoginFlow
     } = useContext(AILoginFlowContext);
-    
+
     if (aiGeneratedAiLoginFlow){
         return aiGeneratedAiLoginFlow;
     }
+
     return authenticationSequence;
 
-}
+};
 
 export default useGetModifiedLoginFLow;

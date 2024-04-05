@@ -27,6 +27,7 @@ const useGetLoginFLow = (generatedLoginFlow: any): AuthenticationSequenceInterfa
         type : generatedLoginFlow.type,
         subjectStepId : generatedLoginFlow.subjectStepId
     };
+
     return aiGeneratedLoginFlow;
 
 };

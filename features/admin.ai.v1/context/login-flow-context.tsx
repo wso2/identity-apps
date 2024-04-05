@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import {Context, createContext} from "react";
-import {BannerState} from "../models/banner-state";
+import { Context, createContext } from "react";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
+import { BannerState } from "../models/banner-state";
+
 export interface AILoginFlowContextInterface{
     // Add required properties here
     /**
@@ -35,6 +36,6 @@ export interface AILoginFlowContextInterface{
     setBannerState: (state: BannerState) => void;
 }
 
-const AILoginFlowContext = createContext<AILoginFlowContextInterface>(undefined);
+const AILoginFlowContext: Context<AILoginFlowContextInterface> = createContext<AILoginFlowContextInterface>(undefined);
 
 export default AILoginFlowContext;
