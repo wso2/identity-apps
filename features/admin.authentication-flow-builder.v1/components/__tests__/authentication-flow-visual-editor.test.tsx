@@ -24,7 +24,7 @@ import AuthenticationFlowVisualEditor, {
     AuthenticationFlowVisualEditorPropsInterface
 } from "../authentication-flow-visual-editor";
 
-describe.skip("AuthenticationFlowVisualEditor", () => {
+describe("AuthenticationFlowVisualEditor", () => {
     const defaultProps: AuthenticationFlowVisualEditorPropsInterface = {
         onIDPCreateWizardTrigger: jest.fn(),
         onUpdate: jest.fn()

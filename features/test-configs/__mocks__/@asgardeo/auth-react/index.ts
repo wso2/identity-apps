@@ -16,21 +16,23 @@
  * under the License.
  */
 
-import { DecodedIDTokenPayload } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
 
-const AsgardeoSPAClient = {
+const AsgardeoSPAClientMock: {
+    getInstance: jest.Mock<AsgardeoSPAClient>
+} = {
     getInstance: jest.fn().mockReturnValue({
         httpRequest: jest.fn(),
         httpRequestAll: jest.fn()
     })
 };
 
-const getDecodedIDToken = jest.fn().mockResolvedValue({
+const getDecodedIDToken: jest.Mock<Promise<DecodedIDTokenPayload | undefined>> = jest.fn().mockResolvedValue({
     aud: "",
-    sub: "",
-    iss: "",
     email: "",
+    iss: "",
     preferred_username: "",
+    sub: "",
     tenant_domain: ""
 });
 
@@ -40,7 +42,7 @@ enum ResponseMode {
 }
 
 export {
-    AsgardeoSPAClient,
+    AsgardeoSPAClientMock as AsgardeoSPAClient,
     getDecodedIDToken,
     ResponseMode
 };
