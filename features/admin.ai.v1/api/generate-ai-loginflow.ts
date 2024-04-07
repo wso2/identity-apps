@@ -39,7 +39,7 @@ const generateAILoginFlow = async(
     resourceEndpoints: ResourceEndpointsInterface
 ): Promise<{ loginFlow: any; isError: boolean; error: any }> => {
 
-    const url: string = resourceEndpoints.application + "/" + "ai/loginflow/generate";
+    const url: string = resourceEndpoints.applications + "/" + "ai/loginflow/generate";
 
     return new Promise((resolve:any, reject:any) => {
         axios.post(
