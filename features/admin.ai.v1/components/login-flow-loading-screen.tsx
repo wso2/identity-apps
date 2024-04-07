@@ -105,7 +105,7 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     }, []);
 
     const fetchProgress = async () => {
-        const url: string = resourceEndpoint.application + "/" + "ai/loginflow/status";
+        const url: string = resourceEndpoint.applications + "/" + "ai/loginflow/status";
 
         try {
             const response: AxiosResponse<any> = await axios.get(
