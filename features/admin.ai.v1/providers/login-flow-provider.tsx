@@ -24,6 +24,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
+import { ResourceEndpointsContextInterface } from "../../../modules/common/src/contexts/resource-endpoints-context";
+import useResourceEndpoints  from "../../../modules/common/src/hooks/use-resource-endpoints";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import useAuthenticationFlow from "../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import useGetAvailableAuthenticators  from "../api/fetch-user-authenticators";
@@ -55,6 +57,11 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
      * Get the disbles features for application.
      */
     const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.applications?.disabledFeatures;
+
+    /**
+     * State to hold the resource endpoints.
+     */
+    const resourceEndpoints: ResourceEndpointsContextInterface = useResourceEndpoints();
 
     /**
      * State to hold the login flow banner state.
@@ -123,7 +130,12 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
                     * API call to generate AI login flow.
                     */
 
-                    return generateAILoginFlow(userInput, response.claimURIs, availableAuthenticators, traceId);
+                    return generateAILoginFlow(
+                        userInput,
+                        response.claimURIs,
+                        availableAuthenticators,
+                        traceId,
+                        resourceEndpoints.resourceEndpoints);
                 }
             })
             .then((response:{loginFlow:any; isError:boolean; error:any}) => {
@@ -165,6 +177,7 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
             value={ {
                 aiGeneratedAiLoginFlow: aiGeneratedAiLoginFlow,
                 bannerState: bannerState,
+                resourceEndpoint: resourceEndpoints.resourceEndpoints,
                 setBannerState: setBannerState
             } }>
             { !isAiLoginFlowGenerationRequested &&

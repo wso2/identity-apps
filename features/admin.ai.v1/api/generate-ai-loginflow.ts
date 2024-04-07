@@ -17,6 +17,7 @@
  */
 
 import axios from "axios";
+import { ResourceEndpointsInterface } from "../../../modules/common/src/models/config";
 import AutheticatorsRecord  from "../models/authenticators-record";
 import { ClaimURIs } from "../models/claim-uris";
 /**
@@ -34,11 +35,15 @@ const generateAILoginFlow = async(
     userQuery: string,
     userClaims: ClaimURIs[],
     availableAuthenticators: AutheticatorsRecord[],
-    traceId: string
+    traceId: string,
+    resourceEndpoints: ResourceEndpointsInterface
 ): Promise<{ loginFlow: any; isError: boolean; error: any }> => {
+
+    const url: string = resourceEndpoints.application + "/" + "ai/loginflow/generate";
+
     return new Promise((resolve:any, reject:any) => {
         axios.post(
-            "http://localhost:3000/loginflow/generate",
+            url,
             {
                 available_authenticators: availableAuthenticators,
                 user_claims: userClaims,

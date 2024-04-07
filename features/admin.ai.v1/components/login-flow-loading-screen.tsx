@@ -21,13 +21,18 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Typography from "@oxygen-ui/react/Typography";
 import axios, { AxiosResponse } from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
     from "../../themes/wso2is/assets/images/ai/ai-loading-screen-placeholder.svg";
+import AILoginFlowContext from "../context/login-flow-context";
 
 const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     const { t } = useTranslation();
+    /**
+     * Rsource endpoints.
+     */
+    const { resourceEndpoint } = useContext(AILoginFlowContext);
     const [ currentStatus, setCurrentStatus ] = useState("Initializing...");
     const [ progress, setProgress ] = useState(0);
     const [ factIndex, setFactIndex ] = useState(0);
@@ -100,9 +105,11 @@ const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     }, []);
 
     const fetchProgress = async () => {
+        const url: string = resourceEndpoint.application + "/" + "ai/loginflow/status";
+
         try {
             const response: AxiosResponse<any> = await axios.get(
-                "http://localhost:3000/loginflow/status",
+                url,
                 { headers: { "trace-id": traceId } }
             );
 

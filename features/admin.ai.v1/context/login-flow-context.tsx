@@ -17,6 +17,7 @@
  */
 
 import { Context, createContext } from "react";
+import {ResourceEndpointsInterface}  from "../../../modules/common/src/models/config";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import { BannerState } from "../models/banner-state";
 
@@ -34,11 +35,16 @@ export interface AILoginFlowContextProps{
      * Callback function to set banner state.
      */
     setBannerState: (state: BannerState) => void;
+    /**
+     * Application Resource Endpoints.
+     */
+    resourceEndpoint: ResourceEndpointsInterface;
 }
 
 const AILoginFlowContext: Context<AILoginFlowContextProps> = createContext<AILoginFlowContextProps>({
     aiGeneratedAiLoginFlow: null,
     bannerState: BannerState.Full,
+    resourceEndpoint: null,
     setBannerState:null
 });
 
