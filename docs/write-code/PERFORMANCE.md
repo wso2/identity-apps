@@ -149,7 +149,7 @@ ENABLE_ANALYZER=true
 pnpm build
 ```
 
-Following these steps will enable the analyzer, the resulting view will look something like the following.
+Following these steps will enable the analyzer and result in a view that would look like the following.
 
 ![webpack-analyzer-sample](../assets/webpack-analyzer-sample.jpg)
 
