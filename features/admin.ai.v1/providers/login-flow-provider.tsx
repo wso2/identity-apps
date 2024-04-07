@@ -19,19 +19,21 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import useAuthenticationFlow from "../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
+import useGetAvailableAuthenticators  from "../api/fetch-user-authenticators";
 import fetchUserClaims from "../api/fetch-user-claims";
 import generateAILoginFlow from "../api/generate-ai-loginflow";
 import LoginFLowBanner from "../components/login-flow-banners";
 import LoadingScreen from "../components/login-flow-loading-screen";
 import AILoginFlowContext from "../context/login-flow-context";
 import getLoginFLow from "../hooks/get-login-flow";
+import AutheticatorsRecord  from "../models/authenticators-record";
 import { BannerState } from "../models/banner-state";
 import { ClaimURIs } from "../models/claim-uris";
 
@@ -80,6 +82,11 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
     * Hook to fetch the recent application status.
     */
     const { refetchApplication } = useAuthenticationFlow();
+    /**
+     * Hook to fetch the available authenticators.
+     */
+
+    const availableAuthenticators: AutheticatorsRecord[] =  useGetAvailableAuthenticators();
 
     /**
      * Callback fucntion to handle the 'Generate' button click in login-flow-banner component.
@@ -93,16 +100,6 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
         setIsAiLoginFlowGenerationRequested(true);
         setTraceId(uuidv4());
 
-        //temporary authenticator details
-        // Need to add authenitcator details fetching logic to fetch-user-authenticators.ts
-        const available_authenticators: { authenticator: string; idp: string }[] = [
-            { "authenticator": "BasicAuthenticator", "idp": "LOCAL" },
-            { "authenticator" : "GoogleAuthenticator", "idp": "google123" },
-            { "authenticator":"email-otp-authenticator", "idp" : "LOCAL" },
-            { "authenticator": "totp", "idp": "LOCAL" },
-            { "authenticator" : "FIDOAuthenticator","idp" : "abcxyz" },
-            { "authenticator" : "MagicLinkAuthenticator","idp" : "LOCAL" }
-        ];
 
         /**
         * Fetching user claims
@@ -125,7 +122,8 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
                     /**
                     * API call to generate AI login flow.
                     */
-                    return generateAILoginFlow(userInput, response.claimURIs, available_authenticators, traceId);
+
+                    return generateAILoginFlow(userInput, response.claimURIs, availableAuthenticators, traceId);
                 }
             })
             .then((response:{loginFlow:any; isError:boolean; error:any}) => {
@@ -171,7 +169,7 @@ const AILoginFlowProvider =(props: React.PropsWithChildren<AILoginFlowProviderPr
             } }>
             { !isAiLoginFlowGenerationRequested &&
             (<>
-                { !disabledFeatures?.includes("loginFlowAI") &&
+                { !!disabledFeatures?.includes("loginFlowAI") &&
                     <LoginFLowBanner onGenerateClick={ handleGenerateButtonClick } />
                 }
                 { children }
