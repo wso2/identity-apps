@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { ResourceEndpointsInterface }  from "@wso2is/common/src/models/config";
 import { Context, createContext } from "react";
-import {ResourceEndpointsInterface}  from "../../../modules/common/src/models/config";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import { BannerState } from "../models/banner-state";
 
