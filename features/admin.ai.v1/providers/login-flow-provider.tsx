@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ResourceEndpointsContextInterface } from "@wso2is/common/src/contexts/resource-endpoints-context";
+import useResourceEndpoints  from "@wso2is/common/src/hooks/use-resource-endpoints";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,8 +26,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
-import { ResourceEndpointsContextInterface } from "../../../modules/common/src/contexts/resource-endpoints-context";
-import useResourceEndpoints  from "../../../modules/common/src/hooks/use-resource-endpoints";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import useAuthenticationFlow from "../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import useGetAvailableAuthenticators  from "../api/fetch-user-authenticators";

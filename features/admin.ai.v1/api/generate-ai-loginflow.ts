@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { ResourceEndpointsInterface } from "@wso2is/common/src/models/config";
 import axios from "axios";
-import { ResourceEndpointsInterface } from "../../../modules/common/src/models/config";
 import AutheticatorsRecord  from "../models/authenticators-record";
 import { ClaimURIs } from "../models/claim-uris";
 /**
