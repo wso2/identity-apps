@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.14.14
+
+### Patch Changes
+
+- [#5929](https://github.com/wso2/identity-apps/pull/5929) [`4d2f511ab9`](https://github.com/wso2/identity-apps/commit/4d2f511ab9cc213e1196d75e162b9e46cfa55e7d) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix roles routing issue
+
+- Updated dependencies [[`4d2f511ab9`](https://github.com/wso2/identity-apps/commit/4d2f511ab9cc213e1196d75e162b9e46cfa55e7d)]:
+  - @wso2is/features@2.14.13
+
 ## 2.14.13
 
 ### Patch Changes
