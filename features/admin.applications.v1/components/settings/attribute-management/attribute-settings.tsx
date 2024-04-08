@@ -846,24 +846,28 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         } else {
             let usernameAdded: boolean = false;
 
-            selectedExternalClaims.map((element: ExtendedExternalClaimInterface) => {
-                const option: DropdownOptionsInterface = {
-                    key: element.claimURI,
-                    text: (
-                        <SubjectAttributeListItem
-                            key={ element.id }
-                            displayName={ element.localClaimDisplayName }
-                            claimURI={ element.claimURI }
-                            value={ element.mappedLocalClaimURI }
-                        />
-                    ),
-                    value: element.mappedLocalClaimURI
-                };
+            unfilteredExternalClaimsGroupedByScopes.map((scope: OIDCScopesClaimsListInterface) => {
+                scope?.claims.map((element: ExtendedExternalClaimInterface) => {
+                    if(element.requested) {
+                        const option: DropdownOptionsInterface = {
+                            key: element.claimURI,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ element.id }
+                                    displayName={ element.localClaimDisplayName }
+                                    claimURI={ element.claimURI }
+                                    value={ element.mappedLocalClaimURI }
+                                />
+                            ),
+                            value: element.mappedLocalClaimURI
+                        };
 
-                options.push(option);
-                if (element.mappedLocalClaimURI === DefaultSubjectAttribute) {
-                    usernameAdded = true;
-                }
+                        options.push(option);
+                        if (element.mappedLocalClaimURI === DefaultSubjectAttribute) {
+                            usernameAdded = true;
+                        }
+                    }
+                });
             });
             if (!usernameAdded) {
                 const allExternalClaims: ExtendedExternalClaimInterface[] = [
