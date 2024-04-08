@@ -36,6 +36,7 @@ import {
     GenericAuthenticatorInterface
 } from "../../../../../admin.identity-providers.v1/models/identity-provider";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
+import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the authentication step component.
@@ -148,6 +149,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const classes: string = classNames("authentication-step-container timeline-body", className);
@@ -173,12 +176,17 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
             // if the authenticator is TOTP, Email OTP, SMS OTP or Backup Code,
             // show the backup codes enable checkbox.
-            if([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR ]
-                .includes(option.authenticator)) {
-                isBackupCodeSupportedAuthenticator = true;
+            if(
+                [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+                 IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+                 IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+                 IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                ].includes(option.authenticator)
+            ) {
+                // Disabling backup codes option for suborganization users until the IS7 migration is completed.
+                if (!isSubOrganization() || (isSubOrganization() && UIConfig?.legacyMode?.enablingBackupCodesForB2BUsers)) {
+                    isBackupCodeSupportedAuthenticator = true;
+                }
             }
         });
         setShowBackupCodesEnableCheckBox(isBackupCodeSupportedAuthenticator);

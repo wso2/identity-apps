@@ -219,6 +219,7 @@ export interface LegacyModeInterface {
     applicationSystemAppsSettings: boolean;
     approvals: boolean;
     certificates: boolean;
+    enablingBackupCodesForB2BUsers: boolean;
     loginAndRegistrationEmailDomainDiscovery: boolean;
     organizations: boolean;
     rolesV1: boolean;
