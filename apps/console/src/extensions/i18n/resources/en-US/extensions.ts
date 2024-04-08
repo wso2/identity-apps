@@ -1327,13 +1327,16 @@ export const extensions: Extensions = {
                 },
                 m2m: {
                     configurations: {
+                        clientId: {
+                            hint: "The Client ID generated when registering the application in Asgardeo."
+                        },
                         clientSecret: {
-                            hint: "The OAuth 2.0 Client Secret valid at the authorization server."
+                            hint: "The Client Secret generated when registering the application in Asgardeo."
                         },
                         tokenRequest: "The API request used by the application to obtain an access token from Asgardeo.",
                         tokenEndpoint: "The token endpoint of Asgardeo.",
-                        scopes: "The list of scopes that are authorized." +
-                                "Please add more scopes by authorizing APIs from the <1>API Authorization</1> tab."
+                        scopes: "The list of authorized scopes." +
+                                "Include required scopes by authorizing APIs through the <1>API Authorization</1> tab"
                     }
                 }
             }

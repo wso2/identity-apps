@@ -200,8 +200,8 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                         }
                                         <Hint className="mt-0 mb-0" popup>
                                             {
-                                                t("extensions:develop.applications.quickstart.spa.integrate" +
-                                                    ".common.sdkConfigs.clientId.hint")
+                                                t("extensions:develop.applications.quickstart" +
+                                                ".m2m.configurations.clientId.hint")
                                             }
                                         </Hint>
                                     </label>
@@ -261,8 +261,8 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                                     ".m2m.configurations.scopes"
                                                 }
                                             >
-                                                The list of scopes that are authorized.
-                                                Please add more scopes by authorizing APIs from the
+                                                The list of authorized scopes.
+                                                Include required scopes by authorizing APIs through the
                                                 <a
                                                     className="link pointing"
                                                     onClick={ onAPIAuthorizationTabClick }

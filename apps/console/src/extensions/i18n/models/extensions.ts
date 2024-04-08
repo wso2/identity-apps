@@ -1137,6 +1137,9 @@ export interface Extensions {
                 };
                 m2m: {
                     configurations: {
+                        clientId: {
+                            hint: string;
+                        },
                         clientSecret: {
                             hint: string;
                         },
