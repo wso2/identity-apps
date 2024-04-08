@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -54,6 +53,7 @@ import {
     FeatureConfigInterface,
     history
 } from "../../admin.core.v1";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
