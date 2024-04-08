@@ -377,12 +377,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             </FormGroup>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column width={ 16 }>
-                            <Heading as="h5">
-                                { t("extensions:develop.applications.edit.sections.rolesV2.assignedRoles") }
-                            </Heading>
-                        </Grid.Column>
+
                         { /* {
                             // Will be enabled once the feature is completed.
                             roleAudience === RoleAudienceTypes.APPLICATION
@@ -397,64 +392,73 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     </Grid.Column>
                                 )
                         } */ }
-                        <Grid.Column width={ 8 }>
-                            <Autocomplete
-                                multiple
-                                disableCloseOnSelect
-                                loading={ isLoading }
-                                options={ roleList }
-                                value={ selectedRoles ?? [] }
-                                disabled = { isReadOnly }
-                                getOptionLabel={
-                                    (role: BasicRoleInterface) => role.name
-                                }
-                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                    <TextField
-                                        { ...params }
-                                        placeholder={ !isReadOnly && t("extensions:develop.applications.edit." +
-                                            "sections.rolesV2.searchPlaceholder") }
-                                    />
-                                ) }
-                                onChange={ (event: SyntheticEvent, roles: BasicRoleInterface[]) => {
-                                    setSelectedRoles(roles);
-                                } }
-                                isOptionEqualToValue={
-                                    (option: BasicRoleInterface, value: BasicRoleInterface) =>
-                                        option.id === value.id
-                                }
-                                renderTags={ (
-                                    value: BasicRoleInterface[],
-                                    getTagProps: AutocompleteRenderGetTagProps
-                                ) => value.map((option: BasicRoleInterface, index: number) => (
-                                    <Chip
-                                        { ...getTagProps({ index }) }
-                                        key={ index }
-                                        label={ option.name }
-                                        activeOption={ activeOption }
-                                        setActiveOption={ setActiveOption }
-                                        variant={
-                                            initialSelectedRoles?.find(
-                                                (role: BasicRoleInterface) => role.id === option.id
-                                            )
-                                                ? "solid"
-                                                : "outlined"
-                                        }
-                                    />
-                                )) }
-                                renderOption={ (
-                                    props: HTMLAttributes<HTMLLIElement>,
-                                    option: BasicRoleInterface,
-                                    { selected }: { selected: boolean }
-                                ) => (
-                                    <AutoCompleteRenderOption
-                                        selected={ selected }
-                                        displayName={ option.name }
-                                        renderOptionProps={ props }
-                                    />
-                                ) }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
+
+                       {tempRoleAudience === RoleAudienceTypes.APPLICATION ? (
+                        <Grid.Row>
+                                               <Grid.Column width={ 16 }>
+                                                   <Heading as="h5">
+                                                       { t("extensions:develop.applications.edit.sections.rolesV2.assignedRoles") }
+                                                   </Heading>
+                                               </Grid.Column>
+                           <Grid.Column width={8}>
+                               <Autocomplete
+                                   multiple
+                                   disableCloseOnSelect
+                                   loading={isLoading}
+                                   options={roleList}
+                                   value={selectedRoles ?? []}
+                                   disabled={isReadOnly}
+                                   getOptionLabel={(role: BasicRoleInterface) => role.name}
+                                   renderInput={(params: AutocompleteRenderInputParams) => (
+                                       <TextField
+                                           {...params}
+                                           placeholder={
+                                               !isReadOnly &&
+                                               t(
+                                                   "extensions:develop.applications.edit.sections.rolesV2.searchPlaceholder"
+                                               )
+                                           }
+                                       />
+                                   )}
+                                   onChange={(event: SyntheticEvent, roles: BasicRoleInterface[]) => {
+                                       setSelectedRoles(roles);
+                                   }}
+                                   isOptionEqualToValue={(option: BasicRoleInterface, value: BasicRoleInterface) =>
+                                       option.id === value.id
+                                   }
+                                   renderTags={(value: BasicRoleInterface[], getTagProps: AutocompleteRenderGetTagProps) =>
+                                       value.map((option: BasicRoleInterface, index: number) => (
+                                           <Chip
+                                               {...getTagProps({ index })}
+                                               key={index}
+                                               label={option.name}
+                                               activeOption={activeOption}
+                                               setActiveOption={setActiveOption}
+                                               variant={
+                                                   initialSelectedRoles?.find((role: BasicRoleInterface) => role.id === option.id)
+                                                       ? "solid"
+                                                       : "outlined"
+                                               }
+                                           />
+                                       ))
+                                   }
+                                   renderOption={(
+                                       props: HTMLAttributes<HTMLLIElement>,
+                                       option: BasicRoleInterface,
+                                       { selected }: { selected: boolean }
+                                   ) => (
+                                       <AutoCompleteRenderOption
+                                           selected={selected}
+                                           displayName={option.name}
+                                           renderOptionProps={props}
+                                       />
+                                   )}
+                               />
+                           </Grid.Column>
+                            </Grid.Row>
+                       ) : null}
+
+
                     {
                         !isReadOnly && (
                             <Grid.Row className="mt-4">

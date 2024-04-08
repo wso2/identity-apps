@@ -167,22 +167,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     </ResourceTab.Pane>
                 )
             },
-            // Hide connected apps tab if the audience is application.
-            roleObject?.audience?.type === RoleAudienceTypes.ORGANIZATION.toLocaleLowerCase()
-                ? {
-                    menuItem: t("roles:edit.menuItems.connectedApps"),
-                    render: () => (
-                        <ResourceTab.Pane controlledSegmentation attached={ false }>
-                            <RoleConnectedApps
-                                isReadOnly={ isReadOnly }
-                                role={ roleObject }
-                                onRoleUpdate={ onRoleUpdate }
-                                tabIndex={ 4 }
-                            />
-                        </ResourceTab.Pane>
-                    )
-                }
-                : null
         ];
 
         return panes;
