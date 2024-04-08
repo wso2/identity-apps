@@ -2214,7 +2214,7 @@ export const extensions: Extensions = {
                     choreoAsSMSProvider: {
                         title: "Configure Choreo as SMS Provider",
                         enableRequiredNote: {
-                            message: "Asgardeo publishes identity events to Choreo, where Chreo webhooks can be used to" +
+                            message: "Asgardeo publishes identity events to Choreo, where Choreo webhooks can be used to" +
                             " integrate with multiple services to send SMS notifications and run custom business" +
                             " logic. <1>Learn More</1>"
                         }
@@ -2636,6 +2636,12 @@ export const extensions: Extensions = {
             }
         },
         monitor: {
+            logs: {
+                tabs: {
+                    audit: "Audit",
+                    diagnostic: "Diagnostic"
+                }
+            },
             filter: {
                 advancedSearch: {
                     attributes: {

@@ -1,5 +1,18 @@
 # @wso2is/myaccount
 
+## 2.5.0
+
+### Minor Changes
+
+- [#5915](https://github.com/wso2/identity-apps/pull/5915) [`8645d13505`](https://github.com/wso2/identity-apps/commit/8645d13505fa1582f65b7236a6f6dedfe7ba145a) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove modules/common reference from myaccount and add @wso2is/features as dependency
+
+### Patch Changes
+
+- [#5878](https://github.com/wso2/identity-apps/pull/5878) [`4dcf6d1912`](https://github.com/wso2/identity-apps/commit/4dcf6d1912bd083afeecc63907de4daef4d1cfb5) Thanks [@brionmario](https://github.com/brionmario)! - Clean up and separate out the legacy onSignIn hook in Console
+
+- Updated dependencies [[`4dcf6d1912`](https://github.com/wso2/identity-apps/commit/4dcf6d1912bd083afeecc63907de4daef4d1cfb5), [`e1ed20a208`](https://github.com/wso2/identity-apps/commit/e1ed20a208dab287ba6b9314aef4eb835c0651fe)]:
+  - @wso2is/features@2.14.11
+
 ## 2.4.11
 
 ### Patch Changes

@@ -17,7 +17,6 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { OrganizationType } from "@wso2is/common";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -34,6 +33,7 @@ import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
+    OrganizationType,
     UIConstants
 } from "../../admin.core.v1";
 import { history } from "../../admin.core.v1/helpers";
