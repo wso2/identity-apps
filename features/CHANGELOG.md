@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.14.12
+
+### Patch Changes
+
+- [#5918](https://github.com/wso2/identity-apps/pull/5918) [`c09c1aba4b`](https://github.com/wso2/identity-apps/commit/c09c1aba4b45bc8159474dea8656ee6d0a97e631) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add i18n for logs
+
 ## 2.14.11
 
 ### Patch Changes
