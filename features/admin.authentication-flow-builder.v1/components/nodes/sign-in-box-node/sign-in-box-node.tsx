@@ -51,15 +51,19 @@ import EmailOTPFragment from "./fragments/email-otp-fragment";
 import IdentifierFirstFragment from "./fragments/identifier-first-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
-import { AuthenticationSequenceInterface, AuthenticatorInterface } from "../../../../admin.applications.v1/models/application";
+import {
+    AuthenticationSequenceInterface,
+    AuthenticatorInterface
+} from "../../../../admin.applications.v1/models/application";
+import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import {
     IdentityProviderManagementConstants
 } from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
+import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
+
 
 // TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
 const CrossIcon = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElement => (
@@ -195,7 +199,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const { UIConfig } = useUIConfig();
-    
+
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const authenticators: GenericAuthenticatorInterface[] = Object.values(
@@ -501,7 +505,10 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 ].includes(option.authenticator)
             ) {
                 // Disabling backup codes option for suborganization users until the IS7 migration is completed.
-                if (!isSubOrganization() || (isSubOrganization() && UIConfig?.legacyMode?.enablingBackupCodesForB2BUsers)) {
+                if (
+                    !isSubOrganization()
+                    || (isSubOrganization() && UIConfig?.legacyMode?.enablingBackupCodesForB2BUsers)
+                ) {
                     shouldShowBackupCodesEnableCheck = true;
                 }
             }

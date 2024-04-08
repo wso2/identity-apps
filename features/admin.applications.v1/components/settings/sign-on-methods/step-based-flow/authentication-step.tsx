@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup, Tooltip } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -28,6 +27,7 @@ import { AuthenticatorManagementConstants } from "../../../../../admin.connectio
 import { AuthenticatorCategories } from "../../../../../admin.connections.v1/models/authenticators";
 import { ConnectionsManagementUtils } from "../../../../../admin.connections.v1/utils/connection-utils";
 import { getGeneralIcons } from "../../../../../admin.core.v1";
+import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -35,8 +35,8 @@ import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "../../../../../admin.identity-providers.v1/models/identity-provider";
-import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
 import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
 
 /**
  * Proptypes for the authentication step component.
@@ -178,13 +178,16 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             // show the backup codes enable checkbox.
             if(
                 [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                 IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-                 IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                 IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
                 ].includes(option.authenticator)
             ) {
                 // Disabling backup codes option for suborganization users until the IS7 migration is completed.
-                if (!isSubOrganization() || (isSubOrganization() && UIConfig?.legacyMode?.enablingBackupCodesForB2BUsers)) {
+                if (
+                    !isSubOrganization()
+                    || (isSubOrganization() && UIConfig?.legacyMode?.enablingBackupCodesForB2BUsers)
+                ) {
                     isBackupCodeSupportedAuthenticator = true;
                 }
             }
@@ -355,11 +358,11 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         size="micro"
                                         spaced="right"
                                         floated="left"
-                                        icon={ 
-                                            authenticator.idp === AuthenticatorCategories.LOCAL || 
-                                            authenticator.defaultAuthenticator?.authenticatorId === 
+                                        icon={
+                                            authenticator.idp === AuthenticatorCategories.LOCAL ||
+                                            authenticator.defaultAuthenticator?.authenticatorId ===
                                             AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
-                                                ? authenticator.image 
+                                                ? authenticator.image
                                                 : ConnectionsManagementUtils
                                                     .resolveConnectionResourcePath(
                                                         connectionResourcesUrl, authenticator.image)
