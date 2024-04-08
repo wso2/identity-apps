@@ -55,10 +55,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin.core.v1";
 import { attributeConfig } from "../../../../admin.extensions.v1";
 import { SCIMConfigs } from "../../../../admin.extensions.v1/configs/scim";
-import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin.core.v1";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
@@ -736,7 +735,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         !hideSpecialClaims &&
                         (
                             <Show
-                                when={ AccessControlConstants.ATTRIBUTE_EDIT }
+                                when={ featureConfig?.attributeDialects?.scopes?.update }
                             >
                                 <Field.Button
                                     form={ FORM_ID }
@@ -760,7 +759,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 && !hideSpecialClaims
                 && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
                 && (
-                    <Show when={ AccessControlConstants.ATTRIBUTE_DELETE }>
+                    <Show
+                        when={ featureConfig?.attributeDialects?.scopes?.delete }
+                    >
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                             data-testid={ `${ testId }-danger-zone-group` }

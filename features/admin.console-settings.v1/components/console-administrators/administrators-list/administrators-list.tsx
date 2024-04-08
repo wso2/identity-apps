@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,14 +26,15 @@ import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
-import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
+    AppState,
+    FeatureConfigInterface,
     UIConstants,
     UserBasicInterface,
     UserRoleInterface,
@@ -116,8 +117,9 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 
     const dispatch: Dispatch = useDispatch();
 
-    const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
     const { unassignAdministratorRoles } = useBulkAssignAdministratorRoles();
 
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -349,7 +351,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                     ) : null
             }
             topActionPanelExtension={ (
-                <Show when={ [ AccessControlConstants.USER_WRITE, AccessControlConstants.ROLE_EDIT ] }>
+                <Show when={ [ ...featureConfig?.users?.scopes?.create, ...featureConfig?.userRoles?.scopes?.update ] }>
                     { renderAdministratorAddOptions() }
                 </Show>
             ) }

@@ -24,7 +24,6 @@ import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { setI18nConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
 import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
-import { AccessControlUtils } from "@wso2is/features/admin.access-control.v1/configs/access-control";
 import useAuthorization from "@wso2is/features/admin.authorization.v1/hooks/use-authorization";
 import { EventPublisher, PreLoader } from "@wso2is/features/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/features/admin.core.v1/components";
@@ -85,7 +84,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -342,7 +340,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                             <AccessControlProvider
                                 allowedScopes={ allowedScopes }
                                 features={ featureGateConfigData }
-                                permissions={ AccessControlUtils.getPermissions(featureConfig, allowedScopes) }
                                 isLegacyRuntimeEnabled={ legacyAuthzRuntime }
                                 organizationType={ organizationType }
                             >

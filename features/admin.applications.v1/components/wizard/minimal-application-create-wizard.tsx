@@ -17,7 +17,6 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -58,8 +57,6 @@ import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-u
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
-import { applicationConfig } from "../../../admin.extensions.v1";
-import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
 import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
 import {
     AppConstants,
@@ -74,6 +71,8 @@ import {
     store
 } from "../../../admin.core.v1";
 import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "../../../admin.extensions.v1";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "../../../admin.roles.v2/constants/role-constants";
@@ -1163,7 +1162,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && !isClientSecretHashEnabled
                         && (
                             <Show
-                                when={ AccessControlConstants.APPLICATION_EDIT }
+                                when={ featureConfig?.applications?.scopes?.update }
                             >
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>

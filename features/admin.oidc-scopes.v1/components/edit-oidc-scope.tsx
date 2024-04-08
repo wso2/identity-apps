@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,7 +31,6 @@ import {
     TableColumnInterface,
     TableDataInterface
 } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -47,8 +47,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AttributeSelectionWizardOtherDialect }
-    from "../../admin.applications.v1/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
+import { AttributeSelectionWizardOtherDialect } from
+    "../../admin.applications.v1/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
 import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../admin.core.v1";
 import { updateOIDCScopeDetails } from "../api";
 import { OIDCScopesManagementConstants } from "../constants";
@@ -303,7 +303,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 subtitle={ [ t("oidcScopes:editScope." +
                     "claimList.emptyPlaceholder.subtitles.0") ] }
                 action={
-                    (<Show when={ AccessControlConstants.SCOPE_WRITE }>
+                    (<Show when={ featureConfig?.oidcScopes?.scopes?.create }>
                         <PrimaryButton
                             data-testid="user-mgt-roles-list-add-button"
                             size="medium"

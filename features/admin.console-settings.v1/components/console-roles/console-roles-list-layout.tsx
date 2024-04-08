@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,17 +23,16 @@ import { ListLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import ConsoleRolesTable from "./console-role-table";
-import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
+import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
 import { AdvancedSearchWithBasicFilters } from "../../../admin.core.v1/components";
 import { AppConstants } from "../../../admin.core.v1/constants/app-constants";
 import { history } from "../../../admin.core.v1/helpers/history";
-import { deleteRoleById } from "../../../admin.roles.v2/api/roles";
-import { RoleConstants } from "../../../admin.roles.v2/constants/role-constants";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { deleteRoleById } from "../../../admin.roles.v2/api/roles";
 
 /**
  * Props interface of {@link ConsoleRolesListLayout}
@@ -81,6 +80,7 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
@@ -196,7 +196,7 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
             onPageChange={ handlePaginationChange }
             showTopActionPanel={ (rolesList?.totalResults > 0 || searchQuery?.length !== 0) }
             topActionPanelExtension={ !isSubOrganization() && (
-                <Show when={ AccessControlConstants.ROLE_WRITE }>
+                <Show when={ featureConfig?.userRoles?.scopes?.create }>
                     <PrimaryButton
                         data-componentid={ `${componentId}-add-button` }
                         onClick={ () => onRoleCreate() }

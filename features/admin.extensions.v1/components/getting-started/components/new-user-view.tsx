@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
@@ -110,8 +110,8 @@ export const NewUserView: FC<NewUserViewContextCardPropsInterface> = (props: New
                     <Grid.Row relaxed="very">
                         <Show
                             when={ [
-                                AccessControlConstants.APPLICATION_WRITE,
-                                AccessControlConstants.APPLICATION_READ
+                                ...featureConfig?.applications?.scopes?.create,
+                                ...featureConfig?.applications?.scopes?.read
                             ] }
                         >
                             <Grid.Column width={ featureConfig.tryIt?.enabled ? 7 : 16 }>

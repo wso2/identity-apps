@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,17 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
+import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
 
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
@@ -66,6 +68,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     } = props;
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
 
@@ -105,8 +108,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     const renderMappingTable = (): ReactElement => (
-        <Grid 
-            data-testid={ testId } 
+        <Grid
+            data-testid={ testId }
             className="user-role-edit-header-segment clearing attributes ml-0 mr-0"
         >
             <Grid.Row>
@@ -128,7 +131,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                 />
                             </Table.Cell>
                             <Table.Cell textAlign="right">
-                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                     <Button
                                         size="medium"
                                         icon="pencil"
@@ -229,7 +232,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         "subtitles.0")
                                                 ] }
                                                 action={ (
-                                                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                                                    <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                                         <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
                                                             { t("authenticationProvider:" +
                                                                 "buttons.addAttribute") }

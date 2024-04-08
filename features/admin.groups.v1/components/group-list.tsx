@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -215,7 +215,9 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
                     action={ !isReadOnlyUserStore && (
-                        <Show when={ AccessControlConstants.GROUP_WRITE }>
+                        <Show
+                            when={ featureConfig?.groups?.scopes?.create }
+                        >
                             <PrimaryButton
                                 data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
                                 onClick={ onEmptyListPlaceholderActionClick }

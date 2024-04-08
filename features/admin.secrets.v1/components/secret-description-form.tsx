@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,17 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
+import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FC, Fragment, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { AppState, FeatureConfigInterface } from "../../admin.core.v1";
 import { patchSecret } from "../api/secret";
 import { SecretModel } from "../models/secret";
 import { SECRET_DESCRIPTION_LENGTH } from "../utils/secrets.validation.utils";
@@ -50,7 +53,8 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ copyOfEditingSecret, setCopyOfEditingSecret ] = useState<SecretModel>();
     const [ loading, setLoading ] = useState<boolean>(false);
@@ -97,7 +101,7 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                 secretName: copyOfEditingSecret?.secretName,
                 secretType: copyOfEditingSecret?.type
             }
-        }).then(({ data }): void => {
+        }).then(({ data }: { data: SecretModel }): void => {
             setCopyOfEditingSecret({
                 ...copyOfEditingSecret,
                 description: data?.description
@@ -110,7 +114,7 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                 level: AlertLevels.SUCCESS,
                 message: t("secrets:alerts.updatedSecret.message")
             }));
-        }).catch((error): void => {
+        }).catch((error: AxiosError): void => {
             if (error.response && error.response.data && error.response.data.description) {
                 dispatch(addAlert({
                     description: error.response.data.description,
@@ -156,7 +160,7 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                     maxLength={ SECRET_DESCRIPTION_LENGTH.max }
                     listen={ (value: string): void => setSecretDescription(value) }
                 />
-                <Show when={ AccessControlConstants.SECRET_EDIT }>
+                <Show when={ featureConfig?.secretsManagement?.scopes?.update }>
                     <Field.Button
                         form={ FORM_ID }
                         data-componentid={ `${ testId }-update-button` }

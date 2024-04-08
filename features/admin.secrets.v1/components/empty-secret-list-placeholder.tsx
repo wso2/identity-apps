@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,20 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "../../admin.core.v1";
 import { FEATURE_BASE_PATH } from "../constants/secrets.common";
 
 /**
@@ -38,8 +45,7 @@ export type EmptySecretListPlaceholderProps = {
  * added to it. It can be either adaptive script secrets or custom
  * created secret-types.
  *
- * @constructor
- * @return {ReactElement}
+ * @returns EmptySecretListPlaceholder component
  */
 export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
     props: EmptySecretListPlaceholderProps
@@ -53,6 +59,8 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
 
     const { t } = useTranslation();
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
     /**
      * Navigate back to feature base.
      */
@@ -64,13 +72,13 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
         return (
             <EmptyPlaceholder
                 action={
-                    <LinkButton
+                    (<LinkButton
                         aria-label={ t("secrets:emptyPlaceholders" +
                             ".buttons.backToSecrets.ariaLabel") }
                         onClick={ whenTheRequestedResourceIsNotFound }>
                         <Icon name="backward"/>
                         { t("secrets:emptyPlaceholders.buttons.backToSecrets.label") }
-                    </LinkButton>
+                    </LinkButton>)
                 }
                 image={ getEmptyPlaceholderIllustrations().pageNotFound }
                 imageSize="tiny"
@@ -86,7 +94,9 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
     return (
         <EmptyPlaceholder
             action={
-                <Show when={ AccessControlConstants.SECRET_WRITE }>
+                (<Show
+                    when={ featureConfig?.secretsManagement?.scopes?.create }
+                >
                     <PrimaryButton
                         aria-label={
                             t("secrets:emptyPlaceholders.buttons.addSecret.ariaLabel")
@@ -95,7 +105,7 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
                         <Icon name="add"/>
                         { t("secrets:emptyPlaceholders.buttons.addSecret.label") }
                     </PrimaryButton>
-                </Show>
+                </Show>)
             }
             image={ getEmptyPlaceholderIllustrations().newList }
             imageSize="tiny"
@@ -103,7 +113,6 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
             data-testid={ testId }
         />
     );
-
 };
 
 /**

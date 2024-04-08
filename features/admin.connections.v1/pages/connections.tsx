@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -38,18 +38,19 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import {
-    AuthenticatorExtensionsConfigInterface,
-    identityProviderConfig
-} from "../../admin.extensions.v1/configs";
-import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
+    FeatureConfigInterface,
     UIConstants,
     history
 } from "../../admin.core.v1";
+import {
+    AuthenticatorExtensionsConfigInterface,
+    identityProviderConfig
+} from "../../admin.extensions.v1/configs";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";
@@ -93,6 +94,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const { organizationType } = useGetCurrentOrganizationType();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
@@ -421,7 +423,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                 !(!searchQuery && connectionsList?.identityProviders?.length <= 0)) &&
                 identityProviderConfig.useNewConnectionsView !== undefined &&
                 (
-                    <Show when={ AccessControlConstants.IDP_WRITE }>
+                    <Show when={ featureConfig?.identityProviders?.scopes?.create }>
                         <PrimaryButton
                             onClick={ (): void => {
                                 eventPublisher.publish("connections-click-new-connection-button");

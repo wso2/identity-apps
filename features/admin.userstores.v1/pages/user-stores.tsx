@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,8 +26,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -38,6 +36,7 @@ import {
     history,
     sortList
 } from "../../admin.core.v1";
+import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
 import { getUserStores } from "../api";
 import { UserStoresList } from "../components";
 import { QueryParams, UserStoreListItem } from "../models";
@@ -230,7 +229,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 && userstoresConfig.userstoreList.allowAddingUserstores
                 && (
                     <Show
-                        when={ AccessControlConstants.USER_STORE_WRITE }
+                        when={ featureConfig?.userStores?.scopes?.create }
                     >
                         <PrimaryButton
                             onClick={ () => {

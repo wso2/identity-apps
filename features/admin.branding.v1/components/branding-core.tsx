@@ -17,7 +17,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { OrganizationType } from "@wso2is/common";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -684,7 +684,9 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-            <Show when={ AccessControlConstants.BRANDING_DELETE }>
+            <Show
+                when={ featureConfig?.branding?.scopes?.delete }
+            >
                 <DangerZoneGroup sectionHeader={ t("extensions:develop.branding.dangerZoneGroup.header") }>
                     { brandingPreference.configs?.isBrandingEnabled && (
                         <DangerZone

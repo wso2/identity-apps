@@ -35,9 +35,9 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { I18nConstants } from "../../admin.core.v1";
+import { AppState, FeatureConfigInterface, I18nConstants } from "../../admin.core.v1";
 import { EmailTemplate } from "../models";
 
 interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInterface {
@@ -104,6 +104,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     /**
      * Following `key` state and the use of the useEffect are temporary
@@ -251,7 +252,9 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                     </Grid>
                 </Form>
 
-                <Show when={ AccessControlConstants.EMAIL_TEMPLATES_DELETE }>
+                <Show
+                    when={ featureConfig?.emailTemplates?.scopes?.delete }
+                >
                     <DangerZone
                         data-componentid={ `${ componentId }-revert-email-provider-config` }
                         actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }

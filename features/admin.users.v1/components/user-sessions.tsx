@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { UserAgentParser } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -50,8 +50,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
+import {
+    AppState,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "../../admin.core.v1";
 import { userstoresConfig } from "../../admin.extensions.v1";
-import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 
@@ -100,6 +105,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ userSessions, setUserSessions ] = useState<UserSessionsInterface>(undefined);
     const [ terminatingSession, setTerminatingSession ] = useState<UserSessionInterface>(undefined);
@@ -476,7 +483,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
                                     { showSessionTerminationButton && (
-                                        <Show when={ AccessControlConstants.USER_EDIT }>
+                                        <Show when={ featureConfig?.users?.scopes?.update }>
                                             <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                                                 <DangerZone
                                                     actionTitle={ t("users:userSessions." +
@@ -703,7 +710,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 { showSessionTerminationButton && (
-                                    <Show when={ AccessControlConstants.USER_EDIT }>
+                                    <Show when={ featureConfig?.users?.scopes?.update }>
                                         <DangerButton
                                             floated="right"
                                             data-testid={ `${ testId }-terminate-all-button` }

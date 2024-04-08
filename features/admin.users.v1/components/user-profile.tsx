@@ -49,12 +49,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import { SCIMConfigs, commonConfig, userConfig } from "../../admin.extensions.v1";
 import { TenantInfo } from "../../admin.extensions.v1/components/tenants/models";
 import { getAssociationType } from "../../admin.extensions.v1/components/tenants/utils/tenants";
 import { administratorConfig } from "../../admin.extensions.v1/configs/administrator";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import { searchRoleList, updateRoleDetails } from "../../admin.roles.v2/api/roles";
 import {
     OperationValueInterface,
@@ -1078,7 +1077,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     (!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
                     && !isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser ? (
                             <Show
-                                when={ AccessControlConstants.USER_DELETE }
+                                when={ featureConfig?.users?.scopes?.delete }
                             >
                                 <DangerZoneGroup
                                     sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
@@ -1090,7 +1089,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             !isUserManagedByParentOrg &&
                                             user.userName !== adminUsername
                                         ) ? (
-                                                <Show when={ AccessControlConstants.USER_EDIT }>
+                                                <Show when={ featureConfig?.users?.scopes?.update }>
                                                     <DangerZone
                                                         data-testid={ `${ testId }-change-password` }
                                                         actionTitle={ t("user:editUser." +

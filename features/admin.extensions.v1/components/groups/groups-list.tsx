@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -174,7 +174,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             return (
                 <>
                     <Show
-                        when={ AccessControlConstants.GROUP_WRITE }
+                        when={ featureConfig?.groups?.scopes?.create }
                     >
                         <EmptyPlaceholder
                             data-testid={ `${ testId }-empty-list-empty-placeholder` }
@@ -202,7 +202,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     </Show>
                     <Show
                         when={ [] }
-                        notWhen={ AccessControlConstants.GROUP_WRITE }
+                        notWhen={ featureConfig?.groups?.scopes?.create }
                     >
                         <EmptyPlaceholder
                             data-testid={ `${ testId }-empty-list-empty-placeholder` }
