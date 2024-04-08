@@ -155,7 +155,7 @@ export interface ApplicationTemplateCategoryInterface {
     /**
      * Description of the application template category.
      */
-    description: string,
+    description?: string,
     /**
      * Order in which the application template category is displayed.
      */

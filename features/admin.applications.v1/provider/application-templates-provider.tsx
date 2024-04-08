@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import useGetApplicationTemplates from "../api/use-get-application-templates";
+import { ApplicationTemplateConstants } from "../constants/application-templates";
 import ApplicationTemplatesContext from "../context/application-templates-context";
 import {
     ApplicationTemplateCategoryInterface,
@@ -34,24 +35,6 @@ import {
  * Props interface for the Application templates provider.
  */
 export type ApplicationTemplatesProviderProps = PropsWithChildren;
-
-/**
- * This should be retrieved via the API upon the introduction of the extension categorization endpoint.
- */
-const applicationTemplateCategories: ApplicationTemplateCategoryInterface[] = [
-    {
-        description: "Basic application types to configure a service provider",
-        displayName: "Application Types",
-        displayOrder: 0,
-        id: "DEFAULT"
-    },
-    {
-        description: "Single sign on application template to configure SSO with enterprise applications",
-        displayName: "SSO Integrations",
-        displayOrder: 1,
-        id: "SSO-INTEGRATION"
-    }
-];
 
 /**
  * Application templates provider.
@@ -85,14 +68,32 @@ const ApplicationTemplatesProvider = (props: ApplicationTemplatesProviderProps):
             return categoryMap;
         }
 
+        // Sort the application template categories based on their assigned display order.
+        ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO.sort(
+            (category1: ApplicationTemplateCategoryInterface, category2: ApplicationTemplateCategoryInterface) =>
+                category1?.displayOrder - category2?.displayOrder
+        );
+
         // Categorize the templates based on their actual categories
-        applicationTemplateCategories.forEach((category: ApplicationTemplateCategoryInterface) => {
-            const categoryData: CategorizedApplicationTemplatesInterface = { ...category, templates: [] };
+        ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO.forEach(
+            (category: ApplicationTemplateCategoryInterface) => {
+                const categoryData: CategorizedApplicationTemplatesInterface = { ...category, templates: [] };
 
-            categoryData.templates = applicationTemplates.filter(
-                (template: ApplicationTemplateListInterface) => template?.category === category?.id);
+                categoryData.templates = applicationTemplates.filter(
+                    (template: ApplicationTemplateListInterface) => template?.category === category?.id);
 
-            categoryMap.push(categoryData);
+                categoryMap.push(categoryData);
+            }
+        );
+
+        // Categorize all other unsupported template categories as the "other" type.
+        const supportedCategories: string[] = ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO.map(
+            (category: ApplicationTemplateCategoryInterface) => category?.id);
+
+        categoryMap.push({
+            ...ApplicationTemplateConstants.OTHER_CATEGORY_INFO,
+            templates: applicationTemplates.filter(
+                (template: ApplicationTemplateListInterface) => !supportedCategories.includes(template?.category))
         });
 
         return categoryMap;

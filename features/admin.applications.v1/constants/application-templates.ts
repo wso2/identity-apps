@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ApplicationTemplateCategoryInterface } from "../models/application-templates";
+
 /**
  * Class containing application templates management constants.
  */
@@ -27,4 +29,23 @@ export class ApplicationTemplateConstants {
     public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
 
     public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
+
+    public static readonly SUPPORTED_CATEGORIES_INFO: ApplicationTemplateCategoryInterface[] = [
+        {
+            displayName: "Application Types",
+            displayOrder: 0,
+            id: "DEFAULT"
+        },
+        {
+            displayName: "SSO Integrations",
+            displayOrder: 1,
+            id: "SSO-INTEGRATION"
+        }
+    ];
+
+    public static readonly OTHER_CATEGORY_INFO: ApplicationTemplateCategoryInterface = {
+        displayName: "Others",
+        displayOrder: Infinity,
+        id: "OTHER"
+    }
 }
