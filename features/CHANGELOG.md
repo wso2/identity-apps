@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.14.14
+
+### Patch Changes
+
+- [#5930](https://github.com/wso2/identity-apps/pull/5930) [`eeba472d82`](https://github.com/wso2/identity-apps/commit/eeba472d82895a23a382095dc92d2d71234c3d48) Thanks [@brionmario](https://github.com/brionmario)! - Revert "Refactor `onSignIn` hooks"
+
 ## 2.14.13
 
 ### Patch Changes
