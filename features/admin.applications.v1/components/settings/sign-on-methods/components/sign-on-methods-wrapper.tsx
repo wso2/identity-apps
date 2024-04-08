@@ -18,18 +18,18 @@
 
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { SignOnMethodsWrapper } from "./components/sign-on-methods-wrapper";
-import { FeatureConfigInterface } from "../../../../admin.core.v1";
+import { SignOnMethodsCore } from "./sign-on-methods-core";
+import { FeatureConfigInterface } from "../../../../../admin.core.v1";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
-} from "../../../models";
-
+} from "../../../../models";
 /**
  * Proptypes for the sign on methods component.
  */
 
-interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
+interface SignOnMethodsWrapperPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    IdentifiableComponentInterface {
     /**
      * Editing application.
      */
@@ -76,8 +76,8 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
  *
  * @returns React element.
  */
-export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
-    props: SignOnMethodsPropsInterface
+export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsInterface> = (
+    props: SignOnMethodsWrapperPropsInterface
 ): ReactElement => {
 
     const {
@@ -93,8 +93,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         [ "data-componentid" ]: componentId
     } = props;
 
+
     return (
-        <SignOnMethodsWrapper
+        <SignOnMethodsCore
             application={ application }
             appId={ appId }
             authenticationSequence={ authenticationSequence }
@@ -104,7 +105,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             readOnly={ readOnly }
             isSystemApplication={ isSystemApplication }
             hiddenAuthenticators={ hiddenAuthenticators }
-            data-componentid={ componentId }
+            data-componentid={ componentId  }
 
 
         />
