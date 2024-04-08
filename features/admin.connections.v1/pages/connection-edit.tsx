@@ -24,9 +24,11 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     AppAvatar,
+    DocumentationLink,
     LabelWithPopup,
     Popup,
-    TabPageLayout
+    TabPageLayout,
+    useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
@@ -47,15 +49,15 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
 import {
-    AuthenticatorExtensionsConfigInterface,
-    identityProviderConfig
-} from "../../admin.extensions.v1/configs";
-import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
     history
 } from "../../admin.core.v1";
+import {
+    AuthenticatorExtensionsConfigInterface,
+    identityProviderConfig
+} from "../../admin.extensions.v1/configs";
 import {
     EditMultiFactorAuthenticator
 } from "../../admin.identity-providers.v1/components/edit-multi-factor-authenticator";
@@ -152,6 +154,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         !hasRequiredScopes(
             featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
+    const { getLink } = useDocumentation();
 
     /**
      *  Group the connection templates.
@@ -728,6 +731,15 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                         : AuthenticatorMeta.getAuthenticatorDescription(
                             connector.id
                         )
+                }
+                { connector.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
+                    (
+                        <DocumentationLink
+                            link={ getLink("develop.connections.newConnection.smsOtp.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    )
                 }
             </div>
         );
