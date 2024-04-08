@@ -25,7 +25,7 @@ import { AppConstants } from "../../admin.core.v1/constants";
 
 const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
 
-const resolvedRoleRoute: RouteInterface = legacyMode?.rolesV1
+const resolveRoleRoute = (): RouteInterface =>  legacyMode?.rolesV1
     ? {
         category: "extensions:manage.sidePanel.categories.userManagement",
         children: [
@@ -274,7 +274,7 @@ export const commonConfig: CommonConfig = {
             protected: true,
             showOnSidePanel: false
         },
-        resolvedRoleRoute
+        resolveRoleRoute()
     ],
     footer: {
         customClassName: "console-footer"
