@@ -2626,8 +2626,8 @@ export const extensions: Extensions = {
             }
         },
         monitor: {
-            logs : {
-                tabs : {
+            logs: {
+                tabs: {
                     audit: "Audit",
                     diagnostic: "Diagnostic"
                 }

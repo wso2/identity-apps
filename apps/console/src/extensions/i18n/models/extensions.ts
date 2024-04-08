@@ -2337,8 +2337,8 @@ export interface Extensions {
             };
         };
         monitor: {
-            logs : {
-                tabs : {
+            logs: {
+                tabs: {
                     audit: string,
                     diagnostic: string
                 }
