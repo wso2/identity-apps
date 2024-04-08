@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.14.13
+
+### Patch Changes
+
+- [#5921](https://github.com/wso2/identity-apps/pull/5921) [`8c83335c09`](https://github.com/wso2/identity-apps/commit/8c83335c0999360f2e7a2930bbcf6936bf6d1e00) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix spelling issue
+
 ## 2.14.12
 
 ### Patch Changes
