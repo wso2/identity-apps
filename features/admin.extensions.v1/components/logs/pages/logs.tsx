@@ -83,7 +83,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
             componentId: "diagnostic-logs",
             menuItem: (
                 <MenuItem key="text" className="item-with-chip">
-                    Dianostic
+                    Diagnostic
                 </MenuItem>
             ),
             render: renderLogContentDiagnosticNew
