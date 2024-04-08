@@ -1332,8 +1332,8 @@ export const extensions: Extensions = {
                         },
                         tokenRequest: "The API request used by the application to obtain an access token from Asgardeo.",
                         tokenEndpoint: "The token endpoint of Asgardeo.",
-                        scopes: "These are the set of authorized scopes." +
-                                "If you want to add more scopes, please authorize an API in the <1>API Authorization</1> tab."
+                        scopes: "The list of scopes that are authorized." +
+                                "Please add more scopes by authorizing APIs from the <1>API Authorization</1> tab."
                     }
                 }
             }

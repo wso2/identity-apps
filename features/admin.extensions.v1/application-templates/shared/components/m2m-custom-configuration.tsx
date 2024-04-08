@@ -261,8 +261,8 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                                     ".m2m.configurations.scopes"
                                                 }
                                             >
-                                                These are the set of authorized scopes.
-                                                If you want to add more scopes, please authorize an API in the
+                                                The list of scopes that are authorized.
+                                                Please add more scopes by authorizing APIs from the
                                                 <a
                                                     className="link pointing"
                                                     onClick={ onAPIAuthorizationTabClick }
