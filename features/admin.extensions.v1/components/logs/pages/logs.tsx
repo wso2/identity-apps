@@ -21,7 +21,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     PageLayout,
     ResourceTab,
-    ResourceTabPaneInterface } from "@wso2is/react-components";
+    ResourceTabPaneInterface
+} from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -83,7 +84,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
             componentId: "diagnostic-logs",
             menuItem: (
                 <MenuItem key="text" className="item-with-chip">
-                    Dianostic
+                    { t("extensions:develop.monitor.logs.tabs.diagnostic") }
                 </MenuItem>
             ),
             render: renderLogContentDiagnosticNew
@@ -94,7 +95,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
             componentId: "audit-logs",
             menuItem: (
                 <MenuItem key="text" className="item-with-chip">
-                    Audit
+                    { t("extensions:develop.monitor.logs.tabs.audit") }
                     <Chip
                         size="small"
                         label={ t("common:beta").toUpperCase() }

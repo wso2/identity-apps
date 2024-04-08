@@ -2337,6 +2337,12 @@ export interface Extensions {
             };
         };
         monitor: {
+            logs : {
+                tabs : {
+                    audit: string,
+                    diagnostic: string
+                }
+            },
             filter: {
                 advancedSearch: {
                     attributes: {
