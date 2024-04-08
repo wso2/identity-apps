@@ -2636,6 +2636,12 @@ export const extensions: Extensions = {
             }
         },
         monitor: {
+            logs: {
+                tabs: {
+                    audit: "Audit",
+                    diagnostic: "Diagnostic"
+                }
+            },
             filter: {
                 advancedSearch: {
                     attributes: {
