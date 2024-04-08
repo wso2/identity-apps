@@ -328,13 +328,13 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                     >
                         A Machine-to-Machine Application represents a program that
                         interacts with an API without any user involvement.
-                        Execute a { " " }
+                        It uses the { " " }
                         <DocumentationLink
                             link={ documentationLink }
                             showEmptyLinkText
                         >
                             client credentials grant
-                        </DocumentationLink> flow to get an access token for authorized APIs.
+                        </DocumentationLink> flow to obtain an access token for authorized API access.
 
                     </Trans>
                 </Text>

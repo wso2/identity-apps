@@ -35,7 +35,7 @@ import { M2MCustomConfiguration } from "../../../application-templates/shared/co
 /**
  * Prop types of the M2M Application Quickstart component.
  */
-interface M2MApplicationQuickStartPropsInterface extends IdentifiableComponentInterface {
+export interface M2MApplicationQuickStartPropsInterface extends IdentifiableComponentInterface {
     application: ApplicationInterface;
     inboundProtocolConfig: any;
     template: ApplicationTemplateInterface;

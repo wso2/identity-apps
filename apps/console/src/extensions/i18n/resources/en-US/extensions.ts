@@ -1330,8 +1330,8 @@ export const extensions: Extensions = {
                         clientSecret: {
                             hint: "The OAuth 2.0 Client Secret valid at the authorization server."
                         },
-                        tokenRequest: "Client Credentials grant request to obtain an access token.",
-                        tokenEndpoint: "This endpoint is called by applications to  retrieve the token.",
+                        tokenRequest: "The API request used by the application to obtain an access token from Asgardeo.",
+                        tokenEndpoint: "The token endpoint of Asgardeo.",
                         scopes: "These are the set of authorized scopes." +
                                 "If you want to add more scopes, please authorize an API in the <1>API Authorization</1> tab."
                     }
