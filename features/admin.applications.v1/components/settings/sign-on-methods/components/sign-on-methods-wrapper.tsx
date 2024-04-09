@@ -68,7 +68,6 @@ interface SignOnMethodsWrapperPropsInterface extends SBACInterface<FeatureConfig
     hiddenAuthenticators: string[];
 }
 
-
 /**
  * Configure the different sign on strategies for an application.
  *
@@ -79,7 +78,6 @@ interface SignOnMethodsWrapperPropsInterface extends SBACInterface<FeatureConfig
 export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsInterface> = (
     props: SignOnMethodsWrapperPropsInterface
 ): ReactElement => {
-
     const {
         application,
         appId,
@@ -93,7 +91,6 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
         [ "data-componentid" ]: componentId
     } = props;
 
-
     return (
         <SignOnMethodsCore
             application={ application }
@@ -106,8 +103,13 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
             isSystemApplication={ isSystemApplication }
             hiddenAuthenticators={ hiddenAuthenticators }
             data-componentid={ componentId  }
-
-
         />
     );
+};
+
+/**
+ * Default props for the application sign-on-methods component.
+ */
+SignOnMethodsWrapper.defaultProps = {
+    "data-componentid": "sign-on-methods-wrapper"
 };

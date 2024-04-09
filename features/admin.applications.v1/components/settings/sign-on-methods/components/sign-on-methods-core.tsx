@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ConfirmationModal, ContentLoader, LabeledCard, Text } from "@wso2is/react-components";
@@ -32,6 +31,7 @@ import AuthenticationFlowProvider
 import { ConnectionsManagementUtils }
     from "../../../../../admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../../admin.core.v1";
+import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
 import {
     AuthenticatorCreateWizardFactory
 } from "../../../../../admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
