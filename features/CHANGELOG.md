@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.14.15
+
+### Patch Changes
+
+- [#5926](https://github.com/wso2/identity-apps/pull/5926) [`2b039954fb`](https://github.com/wso2/identity-apps/commit/2b039954fb439d06fd461bb674d25eb9a40f1897) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the SMS OTP description
+
 ## 2.14.14
 
 ### Patch Changes
