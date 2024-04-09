@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { render, screen } from "@unit-testing";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
+import { render, screen } from "../../../../test-configs/utils";
 import AdaptiveAuthTemplateChangeConfirmationModal, {
     AdaptiveAuthTemplateChangeConfirmationModalPropsInterface
 } from "../adaptive-auth-template-change-confimation-modal";
@@ -112,7 +112,8 @@ describe("AdaptiveAuthTemplateChangeConfirmationModal", () => {
             authenticationSteps: 1,
             helpLink: ""
         },
-        onTemplateChange: jest.fn()
+        onTemplateChange: jest.fn(),
+        onELKConfigureClick: jest.fn()
     };
     /* eslint-enable max-len */
 

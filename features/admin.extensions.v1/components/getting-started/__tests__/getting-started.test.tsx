@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { render, screen } from "@unit-testing";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
 import { fullPermissions } from "./__mocks__/getting-started-permissions";
+import { render, screen } from "../../../../test-configs";
 import GettingStartedPage from "../getting-started";
+import "@testing-library/jest-dom";
 
 describe("Test if the Getting Started page is working as expected", () => {
 

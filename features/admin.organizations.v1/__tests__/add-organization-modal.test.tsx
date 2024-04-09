@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,16 +17,17 @@
  */
 
 import React from "react";
-import { fireEvent,render, screen, waitFor, within } from "../../../../test-configs";
+import { fireEvent,render, screen, waitFor, within } from "../../test-configs";
 import {
     addOrganizationMockResponse,
     getOrganizationsEmptyMockResponse,
     getOrganizationsFilterMockResponse
 } from "../__mocks__/organization";
+import "@testing-library/jest-dom";
 import * as api from "../api/organization";
 import { AddOrganizationModal, AddOrganizationModalPropsInterface } from "../components";
 
-const onUpdateMock = jest.fn();
+const onUpdateMock: jest.Mock<any, any> = jest.fn();
 const addComponentModalProps: AddOrganizationModalPropsInterface = {
     closeWizard: jest.fn(),
     onUpdate: onUpdateMock,

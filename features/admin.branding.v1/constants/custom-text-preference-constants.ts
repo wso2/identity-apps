@@ -107,10 +107,20 @@ export class CustomTextPreferenceConstants {
         LOGIN: {
             BUTTON: string;
             HEADING: string;
+            IDENTIFIER: {
+                INPUT: {
+                    LABEL: string;
+                }
+            }
         };
         PASSWORD_RECOVERY: {
             HEADING: string;
             BODY: string;
+            IDENTIFIER: {
+                INPUT: {
+                    PLACEHOLDER: string;
+                }
+            }
             BUTTON: string;
         },
         PASSWORD_RESET: {
@@ -145,12 +155,22 @@ export class CustomTextPreferenceConstants {
         },
         LOGIN: {
             BUTTON: "login.button",
-            HEADING: "login.heading"
+            HEADING: "login.heading",
+            IDENTIFIER: {
+                INPUT: {
+                    LABEL: "login.identifier.input.label"
+                }
+            }
         },
         PASSWORD_RECOVERY: {
             BODY: "password.recovery.body",
             BUTTON: "password.recovery.button",
-            HEADING: "password.recovery.heading"
+            HEADING: "password.recovery.heading",
+            IDENTIFIER: {
+                INPUT: {
+                    PLACEHOLDER: "password.recovery.identifier.input.placeholder"
+                }
+            }
         },
         PASSWORD_RESET: {
             BUTTON: "password.reset.button",

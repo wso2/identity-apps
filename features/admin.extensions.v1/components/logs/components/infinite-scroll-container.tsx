@@ -129,16 +129,6 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
     };
 
     /**
-     * Handles the download of the data of current log.
-    */
-    const exportDataOfLog = (logObject : InterfaceLogEntry) => {
-        const blob: Blob = new Blob( [ JSON.stringify(logObject["data"], null, 2) ],
-            { type: "application/json" });
-
-        saveAs(blob, "log_data_" + logObject["id"] + ".json");
-    };
-
-    /**
      * Handles the LogData copy
     */
     const copyCurrentLog = () => {
@@ -257,17 +247,6 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                     >
                                         <EyeIcon  className="topic"/>
                                         { t("extensions:develop.monitor.filter.viewButton.label") }
-                                    </Link>
-                                </td>
-                                <td className="download-data-button">
-                                    <Link
-                                        data-testid={ `${ componentId }-${ logObject["id"] }-download-data-button` }
-                                        data-componentid={ `${ componentId }-download-data-button` }
-                                        underline="hover"
-                                        onClick={ () => exportDataOfLog(logObject) }
-                                    >
-                                        <DownloadIcon className="topic"/>
-                                        { t("extensions:develop.monitor.filter.downloadButton.label") }
                                     </Link>
                                 </td>
                             </tr>

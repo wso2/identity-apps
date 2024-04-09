@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { render, screen } from "@unit-testing";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import { render, screen } from "../../../../test-configs/utils";
+import "@testing-library/jest-dom";
 import { BrandingPreferenceMeta } from "../../../meta";
 import { PredefinedThemes } from "../../../models";
 import { ThemeSwatch } from "../theme-swatch";

@@ -69,8 +69,20 @@ import { SearchRoleInterface } from "../../../../admin.roles.v2/models/roles";
 import { useServerConfigs } from "../../../../admin.server-configurations.v1";
 import { useInvitedUsersList, useUsersList } from "../../../../admin.users.v1/api";
 import { AddUserWizard } from "../../../../admin.users.v1/components/wizard/add-user-wizard";
-import { InternalAdminUserListInterface, InvitationStatus, UserInviteInterface, UserListInterface } from "../../../../admin.users.v1/models";
+import { UserManagementConstants } from "../../../../admin.users.v1/constants";
+import {
+    InternalAdminUserListInterface,
+    InvitationStatus,
+    UserInviteInterface,
+    UserListInterface
+} from "../../../../admin.users.v1/models";
 import { UserManagementUtils } from "../../../../admin.users.v1/utils";
+import { getUserStores } from "../../../../admin.userstores.v1/api";
+import {
+    CONSUMER_USERSTORE,
+    PRIMARY_USERSTORE,
+    UserStoreManagementConstants
+} from "../../../../admin.userstores.v1/constants";
 import { administratorConfig } from "../../../configs/administrator";
 import { SCIMConfigs } from "../../../configs/scim";
 import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
@@ -87,9 +99,6 @@ import {
     UserAccountTypes
 } from "../constants";
 import { AddAdministratorWizard } from "../wizard";
-import { getUserStores } from "../../../../admin.userstores.v1/api";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../../admin.userstores.v1/constants";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 
 /**
  * Props for the Users page.
@@ -1054,7 +1063,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         setInvitationStatusOption(InvitationStatus.ACCEPTED);
         setActiveTabIndex(data.activeIndex as number);
         handleSearchQueryClear();
-        setInternalAdminUserListFetchRequestLoading(true);
     };
 
     const resolveAdminTabPanes = (): any[] => {

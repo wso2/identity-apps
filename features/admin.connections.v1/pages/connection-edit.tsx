@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -24,9 +23,11 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     AppAvatar,
+    DocumentationLink,
     LabelWithPopup,
     Popup,
-    TabPageLayout
+    TabPageLayout,
+    useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
@@ -47,15 +48,16 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
 import {
-    AuthenticatorExtensionsConfigInterface,
-    identityProviderConfig
-} from "../../admin.extensions.v1/configs";
-import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
     history
 } from "../../admin.core.v1";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import {
+    AuthenticatorExtensionsConfigInterface,
+    identityProviderConfig
+} from "../../admin.extensions.v1/configs";
 import {
     EditMultiFactorAuthenticator
 } from "../../admin.identity-providers.v1/components/edit-multi-factor-authenticator";
@@ -152,6 +154,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         !hasRequiredScopes(
             featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
+    const { getLink } = useDocumentation();
 
     /**
      *  Group the connection templates.
@@ -729,6 +732,11 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             connector.id
                         )
                 }
+                <DocumentationLink
+                    link={ getLink(`develop.connections.newConnection.${connector.name}.learnMore`) }
+                >
+                    { t("common:learnMore") }
+                </DocumentationLink>
             </div>
         );
     };

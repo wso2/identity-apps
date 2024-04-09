@@ -1671,6 +1671,16 @@ export interface Extensions {
                         message: string;
                     };
                 };
+                customTextPreferenceDelete: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                };
                 fetch: {
                     customLayoutNotFound: {
                         description: string;
@@ -2337,6 +2347,12 @@ export interface Extensions {
             };
         };
         monitor: {
+            logs: {
+                tabs: {
+                    audit: string,
+                    diagnostic: string
+                }
+            },
             filter: {
                 advancedSearch: {
                     attributes: {

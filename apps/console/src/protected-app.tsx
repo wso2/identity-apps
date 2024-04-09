@@ -23,7 +23,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/features/admin.core.v1/hooks/use-ui-configs";
 import {
     AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";

@@ -73,7 +73,12 @@ const BasicAuthFragment: FunctionComponent<BasicAuthFragmentInterface> = (
             <div className="segment-form">
                 <div className="ui large form">
                     <div className="field m-0">
-                        <label>Username</label>
+                        <label>
+                            {
+                                i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.LOGIN.IDENTIFIER.INPUT.LABEL,
+                                    "Username")
+                            }
+                        </label>
                         <div className="ui fluid left icon input">
                             <input
                                 type="text"
@@ -146,7 +151,7 @@ const BasicAuthFragment: FunctionComponent<BasicAuthFragmentInterface> = (
                     </div>
                     <div className="mt-4 mb-4">
                         <div className="mt-3 external-link-container text-small">
-                            { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.REGISTER_TEXT.MESSAGE, 
+                            { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.REGISTER_TEXT.MESSAGE,
                                 "Don't have an account? ") }
                             <a
                                 target="_self"
@@ -155,7 +160,7 @@ const BasicAuthFragment: FunctionComponent<BasicAuthFragmentInterface> = (
                                 rel="noopener noreferrer"
                                 data-testid="login-page-create-account-button"
                             >
-                                { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.REGISTER_TEXT.REGISTER, 
+                                { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.REGISTER_TEXT.REGISTER,
                                     "Register") }
                             </a>
                         </div>

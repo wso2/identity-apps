@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { render, screen } from "@unit-testing";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
+import { render, screen } from "../../../../test-configs/utils";
 import AdaptiveScriptResetConfirmationModal, {
     AdaptiveScriptResetConfirmationModalPropsInterface
 } from "../adaptive-script-reset-confirmation-modal";
@@ -30,7 +30,7 @@ describe("AdaptiveScriptResetConfirmationModal", () => {
     it("renders the AdaptiveScriptResetConfirmationModal component", () => {
         render(<AdaptiveScriptResetConfirmationModal { ...defaultProps } />, { allowedScopes: fullPermissions });
 
-        const adaptiveScriptResetConfirmationModal: Element = 
+        const adaptiveScriptResetConfirmationModal: Element =
             screen.getByTestId("adaptive-script-reset-confirmation-modal");
 
         expect(adaptiveScriptResetConfirmationModal).toBeInTheDocument();

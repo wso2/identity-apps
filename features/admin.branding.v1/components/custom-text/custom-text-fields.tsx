@@ -19,17 +19,25 @@
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
+import Link from "@oxygen-ui/react/Link";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FinalFormField, FormRenderProps, FormSpy, FormState, TextFieldAdapter } from "@wso2is/form";
-import { Hint } from "@wso2is/react-components";
+import { GenericIcon, Hint } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import orderBy from "lodash-es/orderBy";
 import React, { FunctionComponent, ReactElement, SVGAttributes, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { AppConstants } from "../../../admin.core.v1/constants";
+import { history } from "../../../admin.core.v1/helpers/history";
 import { AppState } from "../../../admin.core.v1/store";
+import { serverConfigurationConfig } from "../../../admin.extensions.v1/configs/server-configuration";
+import {
+    ServerConfigurationsConstants
+} from "../../../admin.server-configurations.v1/constants/server-configurations-constants";
+import { ReactComponent as WarningIcon } from "../../../themes/default/assets/images/icons/warning-icon.svg";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
 import { CustomTextInterface } from "../../models/custom-text-preference";
@@ -155,6 +163,107 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
         );
     };
 
+    const handleMultiAttributeLink = (): void => {
+
+        const multiAttributeLoginConnectorHidden: boolean = serverConfigurationConfig.connectorsToHide
+            .includes(ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID);
+
+        const alternativeLoginIdentifierHidden: boolean = serverConfigurationConfig.connectorsToHide
+            .includes(ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER);
+
+        if (!multiAttributeLoginConnectorHidden) {
+            history.push(
+                AppConstants.getPaths().get(
+                    "GOVERNANCE_CONNECTOR_EDIT"
+                ).replace(
+                    ":categoryId",
+                    ServerConfigurationsConstants.
+                        ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
+                ).replace(
+                    ":connectorId",
+                    ServerConfigurationsConstants.
+                        MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID
+                )
+            );
+        } else if (!alternativeLoginIdentifierHidden) {
+            history.push(AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"));
+        }
+    };
+
+    const getMultiAttributeLabel = (): string => {
+
+        const multiAttributeLoginConnectorHidden: boolean = serverConfigurationConfig.connectorsToHide
+            .includes(ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID);
+
+        const alternativeLoginIdentifierHidden: boolean = serverConfigurationConfig.connectorsToHide
+            .includes(ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER);
+
+        if (!multiAttributeLoginConnectorHidden) {
+            return t("branding:connectors.multiAttributeLogin");
+        } else if (!alternativeLoginIdentifierHidden) {
+            return t("branding:connectors.alternativeLoginIdentifier");
+        }
+    };
+
+    const isMultiAttributeEnabled = (): boolean => {
+
+        return !serverConfigurationConfig.connectorsToHide
+            .includes(
+                ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID
+            ) || !serverConfigurationConfig.connectorsToHide
+            .includes(
+                ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER
+            );
+    };
+
+    const getHelperText = (hintKey: string, warningKey: string, fieldName: string): ReactElement => {
+
+        return i18n.exists(hintKey) || i18n.exists(warningKey)
+            ? (
+                <Hint>
+                    { i18n.exists(hintKey) && <p>{ t(hintKey, { productName }) }</p> }
+                    { i18n.exists(warningKey) && (
+                        <p>
+                            <GenericIcon
+                                icon={ WarningIcon }
+                                key="warningIcon"
+                                defaultIcon
+                                colored
+                                inline
+                                verticalAlign="middle"
+                            />&nbsp;
+                            {
+                                isMultiAttributeEnabled() === true
+                                    && (fieldName.replaceAll("_", ".") === CustomTextPreferenceConstants
+                                        .TEXT_BUNDLE_KEYS.LOGIN.IDENTIFIER.INPUT.LABEL
+                                        || fieldName.replaceAll("_", ".") === CustomTextPreferenceConstants
+                                            .TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.IDENTIFIER.INPUT.PLACEHOLDER)
+                                    ? (
+                                        <Trans
+                                            i18nKey={ warningKey }
+                                            values={ {
+                                                feature: getMultiAttributeLabel(),
+                                                productName: productName
+                                            } }
+                                            components={ [
+                                                <strong key="importantText">IMPORTANT</strong>,
+                                                <Link
+                                                    key="configureLink"
+                                                    onClick={ handleMultiAttributeLink }
+                                                >
+                                                    configured
+                                                </Link>
+                                            ] }
+                                        >
+                                        </Trans>
+                                    ) : t(warningKey)
+                            }
+                        </p>
+                    ) }
+                </Hint>
+            ) : null;
+    };
+
     return (
         <div className="branding-preference-custom-text-fields">
             <FinalForm
@@ -192,6 +301,10 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                         fieldName.replaceAll("_", ".")
                                     }.hint`;
 
+                                    const warningKey: string = `branding:brandingCustomText.form.fields.${
+                                        fieldName.replaceAll("_", ".")
+                                    }.warning`;
+
                                     return (
                                         <FinalFormField
                                             key={ fieldName }
@@ -208,11 +321,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                             placeholder={
                                                 t("branding:brandingCustomText.form.genericFieldPlaceholder")
                                             }
-                                            helperText={ (
-                                                i18n.exists(hintKey) && (
-                                                    <Hint>{ t(hintKey, { productName }) }</Hint>
-                                                )
-                                            ) }
+                                            helperText={ getHelperText(hintKey, warningKey, fieldName) }
                                             component={ TextFieldAdapter }
                                             multiline={ customTextScreenMeta &&
                                                 customTextScreenMeta[fieldName.replaceAll("_", ".")]?.MULTI_LINE }

@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
+import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
