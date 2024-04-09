@@ -1178,6 +1178,36 @@ export const applications: ApplicationsNS = {
                 }
             }
         },
+
+        applicationsSettings: {
+            fields: {
+                dcrEndpoint: {
+                    label: "DCR Endpoint",
+                    placeholder: "https://dev.api.asgardeo.io/t/john/api/identity/oauth2/dcr/v1.1/register",
+                    hint: "The DCR endpoint allows OAuth clients to be registered as applications in an authorization server."
+                },
+                ssaJwks: {
+                    label: "JWKS endpoint to validate SSA",
+                    placeholder: "https://example.com/samplejwks.jwks",
+                    hint: "The JWKS url will be used to validate the software statement assertion (SSA) coming in DCR create request.",
+                    validations: {
+                        empty: "JWKS URL is required to validate SSA"
+                    }
+                },
+                mandateSSA: {
+                    label: "Mandate SSA Validation",
+                    hint: "When checked, SSA validation is mandated, and software_statement parameter is required for the DCR create request."
+                },
+                authenticationRequired: {
+                    label: "Require Authentication",
+                    hint: "When checked, authentication will be required for DCR create endpoint. If unchecked authentication is not needed to invoke DCR create endpoint."
+                },
+                enforceFapi: {
+                    label: "Enforce FAPI Conformance",
+                    hint: "When checked, an application which is created through DCR endpoint will be a FAPI compliant application."
+                }
+            }
+        },
         generalDetails: {
             fields: {
                 accessUrl: {

@@ -210,6 +210,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         };
 
         if (isDiscoverable && !values.accessUrl) {
+            console.log("values.accessUrl", values.accessUrl)
             errors.accessUrl = t("applications:forms.generalDetails.fields.accessUrl" +
                 ".validations.empty");
         }

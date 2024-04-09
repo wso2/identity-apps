@@ -2647,6 +2647,27 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: null
             },
+            applicationsSettings: {
+                backButton: "Go back to Applications",
+                subTitle: "Dynamic Client Registration (DCR) can be used to create applications using DCR API.",
+                title: "Dynamic Client Registration",
+                learnMore: "Learn More",
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "Failed to update DCR configurations.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated DCR configurations.",
+                        message: "Update successful"
+                    }
+                },
+
+            },
             authenticationProvider: {
                 subTitle: "Create and manage connections to use in the login flow of your applications.",
                 title: "Connections"

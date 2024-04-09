@@ -68,6 +68,14 @@ interface ApplicationsDocumentationLinksInterface {
         }
     }
     learnMore: string;
+    applicationsSettings: {
+        dcr: {
+            learnMore: string;
+            authenticationRequired: {
+                learnMore: string;
+            },
+        }
+    },
     editApplication: {
         asgardeoTryitApplication: {
             general: {

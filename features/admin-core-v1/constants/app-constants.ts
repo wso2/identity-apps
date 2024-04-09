@@ -262,6 +262,7 @@ export class AppConstants {
             [ "APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications` ],
             [ "APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates` ],
             [ "APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id` ],
+            [ "APPLICATIONS_SETTINGS", `${ AppConstants.getDeveloperViewBasePath() }/applications-settings` ],
             [ "APPLICATION_ROLES", `${ AppConstants.getAdminViewBasePath() }/application-roles` ],
             [ "APPLICATION_ROLES_EDIT",
                 `${ AppConstants.getAdminViewBasePath() }/application-roles/:applicationId/:roleId` ],

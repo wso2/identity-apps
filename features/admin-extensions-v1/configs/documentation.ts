@@ -53,6 +53,14 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         }
                     }
                 },
+                applicationsSettings: {
+                    dcr: {
+                        learnMore: undefined,
+                        authenticationRequired: {
+                            learnMore: undefined
+                        },
+                    }
+                },
                 editApplication: {
                     asgardeoTryitApplication: {
                         general: {

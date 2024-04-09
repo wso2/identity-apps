@@ -25,6 +25,11 @@ export interface ApplicationsResourceEndpointsInterface {
     applications: string;
     myAccountConfigMgt: string;
     requestPathAuthenticators: string;
+
+    /**
+     * Below route is to fetch the dcr configuration from server configurations api.
+     */
+    dcrConfiguration: string;
 }
 
 export interface UpdateClaimConfiguration {
