@@ -3856,8 +3856,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
  * Default props for the Inbound OIDC form component.
  */
 InboundOIDCForm.defaultProps = {
-    "data-testid": "inbound-oidc-form",
     "data-componentid": "inbound-oidc-form",
+    "data-testid": "inbound-oidc-form",
     initialValues: {
         accessToken: undefined,
         allowedOrigins: [],
