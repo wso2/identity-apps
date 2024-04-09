@@ -2341,6 +2341,10 @@ export interface ApplicationsNS {
             };
         };
         updateClaimConfig: {
+            mistmatchAlternativesubjectIdentifierError: {
+                message: string;
+                description: string;
+            }
             error: {
                 message: string;
                 description: string;

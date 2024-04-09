@@ -2702,6 +2702,10 @@ export const applications: ApplicationsNS = {
             }
         },
         updateClaimConfig: {
+            mistmatchAlternativesubjectIdentifierError: {
+                description: "The alternative subject identifier is not in the requested user attributes.",
+                message: "Something went wrong"
+            },
             error: {
                 description: "Mapped user attributes cannot be duplicated.",
                 message: "Update error"

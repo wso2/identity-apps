@@ -1096,9 +1096,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         const onClaimConfigUpdateWithNotAllowedSubjectAttributeError = () => {
             dispatch(addAlert({
                 description: t("applications:notifications.updateClaimConfig" +
-                    ".genericError.description"),
+                    ".mistmatchAlternativesubjectIdentifierError.description"),
                 level: AlertLevels.ERROR,
-                message: "The alternative subject identifier is not in the requested user attributes."
+                message: t("applications:notifications.updateClaimConfig.mistmatchAlternativesubjectIdentifierError" +
+                ".message")
             }));
         };
 
