@@ -44,11 +44,14 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         return featureConfig?.branding?.disabledFeatures;
     }, [ featureConfig ]);
     const [ traceId, setTraceId ] = useState<string>("");
-    const { handleGenerate,
+    const {
+        handleGenerate,
         isGeneratingBranding,
         mergedBrandingPreference,
+        operationId,
         setGeneratingBranding,
-        setOperationId } = useAIBrandingPreference();
+        setOperationId
+    } = useAIBrandingPreference();
 
     return (
         <PageLayout
@@ -74,28 +77,26 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             data-componentid={ `${ componentId }-layout` }
             className="branding-page"
         >
+            {
+                !disabledFeatures.includes("branding.ai1") && (
+                    <BrandingAIBanner
+                        onGenerate={ handleGenerate }
+                        onGenerateBrandingClick={ (generatedTraceId: string, operationId: string) => {
+                            setTraceId(generatedTraceId);
+                            setOperationId(operationId);
+                            setGeneratingBranding(true);
+                        } }
+                    />
+                )
+            }
             { isGeneratingBranding ? (
                 <div>
                     <LoadingScreen
                         traceId={ traceId } />
                 </div>
             )
-                : (
-                    <>
-                        {
-                            !disabledFeatures.includes("branding.ai1") &&
-                            (<BrandingAIBanner
-                                onGenerate={ handleGenerate }
-                                onGenerateBrandingClick={ (generatedTraceId: string, operationId: string) => {
-                                    setTraceId(generatedTraceId);
-                                    setOperationId(operationId);
-                                    setGeneratingBranding(true);
-                                } }
-                            />)
-                        }
-                        <BrandingCore brandingPreference={ mergedBrandingPreference }/>
-                    </>
-                ) }
+                : <BrandingCore brandingPreference={ mergedBrandingPreference }/>
+            }
         </PageLayout>
     );
 };

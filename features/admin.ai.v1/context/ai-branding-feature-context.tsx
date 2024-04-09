@@ -23,25 +23,12 @@ import { Context, createContext } from "react";
  * Props interface for AIBrandingFeatureContext.
  */
 export interface AIBrandingFeatureContextProps {
-    /**
-     * Current status.
-     */
-    currentStatus: string;
-    /**
-     * Set current status.
-     * @param status - Status.
-     */
-    setCurrentStatus: (status: string) => void;
-
-    mergedBrandingPreference: BrandingPreferenceInterface;
 
     handleGenerate: (data: any) => void;
-
     isGeneratingBranding: boolean;
-
-    setGeneratingBranding: (status: boolean) => void;
-
+    mergedBrandingPreference: BrandingPreferenceInterface;
     operationId: string;
+    setGeneratingBranding: (status: boolean) => void;
     setOperationId: (id: string) => void;
 }
 

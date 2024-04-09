@@ -16,6 +16,12 @@
  * under the License.
  */
 
+ .branding-card {
+    &.hidden {
+        display: none;
+    }
+ }
+
  .branding-card-banner-full {
     // display: flex;
     // align-items: center;

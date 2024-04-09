@@ -112,12 +112,10 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     return (
         <AIFeatureContext.Provider
             value={ {
-                currentStatus,
                 handleGenerate,
                 isGeneratingBranding,
                 mergedBrandingPreference,
                 operationId,
-                setCurrentStatus,
                 setGeneratingBranding,
                 setOperationId
             } }

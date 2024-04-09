@@ -37,14 +37,13 @@ export const LoadingScreen = ( { traceId }: { traceId: string} ): JSX.Element =>
         t("branding:ai.screens.loading.facts.1"),
         t("branding:ai.screens.loading.facts.2")
     ];
+    const [ currentStatus, setCurrentStatus ] = useState("Initializing...");
 
     const { handleGenerate,
         isGeneratingBranding,
         mergedBrandingPreference,
         setGeneratingBranding,
-        operationId,
-        currentStatus,
-        setCurrentStatus
+        operationId
          } = useAIBrandingPreference();
 
     const [ polling, setPolling ] = useState(isGeneratingBranding);

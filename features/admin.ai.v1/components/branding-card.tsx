@@ -25,6 +25,7 @@ import axios from "axios";
 import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import classNames from "classnames";
 import { Header, Icon, Input, Segment } from "semantic-ui-react";
 
 import { v4 as uuidv4 } from "uuid";
@@ -67,6 +68,7 @@ export const BrandingAIBanner: FunctionComponent<BrandingAIBannerProps> = (
 
     const handleGenerateClick = async () => {
         const traceId: string = uuidv4();
+        // setGeneratingBranding(true);
 
         try {
             const response: any = await
@@ -81,11 +83,11 @@ export const BrandingAIBanner: FunctionComponent<BrandingAIBannerProps> = (
             });
 
             const operationId: string = response.data.operation_id;
-
-            console.log("Operation id branding card:", operationId);
             setOperationId(operationId);
             onGenerateBrandingClick(traceId, operationId);
-            setGeneratingBranding(true);
+
+            console.log("Operation id branding card:", operationId);
+            
         } catch (error) {
             // console.error("Error:", error);
         }
@@ -96,7 +98,15 @@ export const BrandingAIBanner: FunctionComponent<BrandingAIBannerProps> = (
             { bannerState === BannerState.Full && (
                 <Segment
                     basic
-                    className="branding-card-banner-full"
+                    className={
+                        classNames(
+                            "branding-card",
+                            {
+                                hidden: isGeneratingBranding
+                            },
+                            "branding-card-banner-full"
+                        )
+                    }
                 >
                     <div className="branding-card-banner-full-heading">
                         <div>
@@ -114,7 +124,16 @@ export const BrandingAIBanner: FunctionComponent<BrandingAIBannerProps> = (
                 </Segment>
             ) }
             { bannerState === BannerState.Input && (
-                <Segment>
+                <Segment
+                    className={
+                        classNames(
+                            "branding-card",
+                            {
+                                hidden: isGeneratingBranding
+                            }
+                        )
+                    }
+                >
                     <div className="branding-card-banner-input">
                         <Icon
                             name="dropdown"
@@ -167,7 +186,16 @@ export const BrandingAIBanner: FunctionComponent<BrandingAIBannerProps> = (
                 </Segment>
             ) }
             { bannerState === BannerState.Collapsed && (
-                <Segment>
+                <Segment
+                    className={
+                        classNames(
+                            "branding-card",
+                            {
+                                hidden: isGeneratingBranding
+                            }
+                        )
+                    }
+                >
                     <div className="branding-card-banner-collapsed">
                         <div>
                             <Header as="h3" className="branding-card-banner-collapsed-heading">
