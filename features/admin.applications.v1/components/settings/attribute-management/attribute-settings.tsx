@@ -1090,6 +1090,19 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
 
         /**
+         * Handles the error scenario of the claim configuration update by displaying claim configuration
+         * update failure alert when alternative subject identifier is not in the requested attribute.
+         */
+        const onClaimConfigUpdateWithNotAllowedSubjectAttributeError = () => {
+            dispatch(addAlert({
+                description: t("applications:notifications.updateClaimConfig" +
+                    ".genericError.description"),
+                level: AlertLevels.ERROR,
+                message: "The alternative subject identifier is not in the requested user attributes."
+            }));
+        };
+
+        /**
          * Handles the error scenario of the claim configuration update by displaying a generic claim configuration
          * update failure alert.
          */
@@ -1116,6 +1129,17 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 message: t("applications:notifications.updateClaimConfig.success.message")
             }));
         };
+
+        /**
+        * Distpatch an error alert when the alternative subject identifier value is not in the
+        * requested attribute list.
+        */
+        if(!submitValue.claimConfiguration.requestedClaims.map( (claim : RequestedClaimConfigurationInterface) =>
+            claim.claim.uri).includes(submitValue.claimConfiguration.subject.claim.uri)) {
+            onClaimConfigUpdateWithNotAllowedSubjectAttributeError();
+
+            return;
+        }
 
         const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) =>
             protocol.type === SupportedAuthProtocolTypes.OAUTH2);

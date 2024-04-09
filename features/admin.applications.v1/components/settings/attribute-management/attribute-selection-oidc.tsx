@@ -513,8 +513,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     const isSelectedSubjectAttributeIncluded = (scope: OIDCScopesClaimsListInterface) : boolean => {
 
-        return scope.claims.map((claim:ExternalClaim ) => claim.mappedLocalClaimURI).includes(selectedSubjectValue) 
-        && selectedSubjectValue !== defaultSubjectAttribute;
+        return scope.claims.map((claim:ExternalClaim ) => claim.mappedLocalClaimURI).includes(selectedSubjectValue)
+            && selectedSubjectValue !== defaultSubjectAttribute;
     };
 
     const getSelectedSubjectAttributeClaimURI = (scope: OIDCScopesClaimsListInterface) : string => {
