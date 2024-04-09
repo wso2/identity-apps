@@ -1,5 +1,29 @@
 # @wso2is/console
 
+## 2.14.15
+
+### Patch Changes
+
+- [#5930](https://github.com/wso2/identity-apps/pull/5930) [`eeba472d82`](https://github.com/wso2/identity-apps/commit/eeba472d82895a23a382095dc92d2d71234c3d48) Thanks [@brionmario](https://github.com/brionmario)! - Revert "Refactor `onSignIn` hooks"
+
+- Updated dependencies [[`eeba472d82`](https://github.com/wso2/identity-apps/commit/eeba472d82895a23a382095dc92d2d71234c3d48)]:
+  - @wso2is/features@2.14.14
+
+## 2.14.14
+
+### Patch Changes
+
+- [#5929](https://github.com/wso2/identity-apps/pull/5929) [`4d2f511ab9`](https://github.com/wso2/identity-apps/commit/4d2f511ab9cc213e1196d75e162b9e46cfa55e7d) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix roles routing issue
+
+- Updated dependencies [[`4d2f511ab9`](https://github.com/wso2/identity-apps/commit/4d2f511ab9cc213e1196d75e162b9e46cfa55e7d)]:
+  - @wso2is/features@2.14.13
+
+## 2.14.13
+
+### Patch Changes
+
+- [#5921](https://github.com/wso2/identity-apps/pull/5921) [`8c83335c09`](https://github.com/wso2/identity-apps/commit/8c83335c0999360f2e7a2930bbcf6936bf6d1e00) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix spelling issue
+
 ## 2.14.12
 
 ### Patch Changes

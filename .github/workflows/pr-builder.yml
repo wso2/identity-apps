@@ -142,6 +142,7 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
+    if: false
     needs: [ lint, typecheck ]
     runs-on: ubuntu-latest
     strategy:

@@ -204,285 +204,15 @@ const useSignIn = (): UseSignInInterface => {
      * ```
      * const { onSignIn } = useSignIn();
      * ```
+     *
      * @param response - The basic user information returned from the sign-in process.
+     * @param onTenantResolve - Callback to be triggered when tenant is resolved.
+     * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
+     * @param onAppReady - Callback to be triggered when the app is ready.
      *
      * @returns A promise.
      */
     const onSignIn = async (
-        response: BasicUserInfo,
-        onTenantResolve: (tenantDomain: string) => void,
-        onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
-        onAppReady: () => void
-    ): Promise<void> => {
-        if (legacyAuthzRuntime) {
-            legacyOnSignIn(
-                response,
-                onTenantResolve,
-                onSignInSuccessRedirect,
-                onAppReady
-            );
-
-            return;
-        }
-
-        _onSignIn(
-            response,
-            onTenantResolve,
-            onSignInSuccessRedirect,
-            onAppReady
-        );
-    };
-
-    /**
-     * Handles the sign-in process for the new authorization server.
-     *
-     * @param response - The basic user information returned from the sign-in process.
-     * @param onTenantResolve - Callback to be triggered when tenant is resolved.
-     * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
-     * @param onAppReady - Callback to be triggered when the app is ready.
-     *
-     * @returns A promise.
-     */
-    const _onSignIn = async (
-        response: BasicUserInfo,
-        onTenantResolve: (tenantDomain: string) => void,
-        onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
-        onAppReady: () => void
-    ): Promise<void> => {
-        let logoutRedirectUrl: string;
-
-        const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
-        const isPrivilegedUser: boolean =
-            idToken?.amr?.length > 0
-                ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
-                : false;
-        const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
-
-        dispatchEvent(event);
-
-        const orgIdIdToken: string = idToken.org_id;
-        const orgName: string = idToken.org_name;
-        const userOrganizationId: string = idToken.user_org;
-        const tenantDomainFromSubject: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-            response.sub
-        );
-        const isFirstLevelOrg: boolean = !idToken.user_org
-            || idToken.org_name === tenantDomainFromSubject
-            || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
-
-        const tenantDomain: string = transformTenantDomain(orgName);
-
-        const firstName: string = idToken?.given_name;
-        const lastName: string = idToken?.family_name;
-        const fullName: string = firstName ? firstName + (lastName ? " " + lastName : "") : response.email;
-
-        await dispatch(
-            setSignIn<AuthenticatedUserInfo & TenantListInterface>(
-                Object.assign(
-                    CommonAuthenticateUtils.getSignInState(
-                        response,
-                        transformTenantDomain(response.orgName)
-                    ), {
-                        associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                        defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
-                        fullName: fullName,
-                        isPrivilegedUser: isPrivilegedUser
-                    })
-            )
-        );
-
-        onTenantResolve(tenantDomain);
-
-        let orgType: OrganizationType;
-
-        // Update the organization name with the newly resolved org.
-        if (!isFirstLevelOrg) {
-            window["AppUtils"].updateOrganizationName(orgIdIdToken);
-        } else {
-            // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
-        }
-
-        if (isFirstLevelOrg && tenantDomain === AppConstants.getSuperTenant()) {
-            orgType = OrganizationType.SUPER_ORGANIZATION;
-        } else if (isFirstLevelOrg) {
-            orgType = OrganizationType.FIRST_LEVEL_ORGANIZATION;
-        } else {
-            orgType = OrganizationType.SUBORGANIZATION;
-        }
-
-        dispatch(setOrganizationType(orgType));
-        window["AppUtils"].updateOrganizationType(orgType);
-        dispatch(setUserOrganizationId(userOrganizationId));
-
-        if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
-            // We are actually getting the orgId here rather than orgName
-            const orgId: string = isFirstLevelOrg ? orgIdIdToken : window["AppUtils"].getConfig().organizationName;
-
-            // Setting a dummy object until real data comes from the API
-            dispatch(
-                setOrganization({
-                    attributes: [],
-                    created: new Date().toString(),
-                    description: "",
-                    domain: "",
-                    id: orgId,
-                    lastModified: new Date().toString(),
-                    name: orgName,
-                    parent: {
-                        id: "",
-                        ref: ""
-                    },
-                    status: "",
-                    type: ""
-                })
-            );
-
-            if (!isPrivilegedUser && orgIdIdToken != orgId) {
-                dispatch(setCurrentOrganization(orgName));
-
-                // This is to make sure the endpoints are generated with the organization path.
-                await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
-
-                // Sets the resource endpoints in the context.
-                setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
-
-                try {
-                    response = await switchOrganization(orgId);
-                } catch (e) {
-                    // TODO: Handle error
-                }
-
-                onTenantResolve(response.orgId);
-                dispatch(setCurrentOrganization(response.orgName));
-            }
-        }
-
-        dispatch(setGetOrganizationLoading(false));
-
-        const endpoints: Record<string, any> = Config.getServiceResourceEndpoints();
-
-        // Update the endpoints with tenant path.
-        await dispatch(setServiceResourceEndpoints(endpoints));
-
-        // Sets the resource endpoints in the context.
-        setResourceEndpoints(endpoints);
-
-        // When the tenant domain changes, we have to reset the auth callback in session storage.
-        // If not, it will hang and the app will be unresponsive with in the tab.
-        // We can skip clearing the callback for super tenant since we do not put it in the path.
-        if (tenantDomain !== AppConstants.getSuperTenant()) {
-            // If the auth callback already has the logged in tenant's path, we can skip the reset.
-            if (
-                !CommonAuthenticateUtils.isValidAuthenticationCallbackUrl(
-                    CommonAppConstants.CONSOLE_APP,
-                    AppConstants.getTenantPath()
-                )
-            ) {
-                CommonAuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
-            }
-        }
-
-        // Update runtime configurations.
-        ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-
-        const logoutUrl: string = window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL;
-
-        let wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
-
-        // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
-        wellKnownEndpoint = wellKnownEndpoint.replace("/o/", "/");
-        dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
-
-        onAppReady();
-
-        sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
-
-        getOIDCServiceEndpoints()
-            .then((response: OIDCEndpoints) => {
-                let authorizationEndpoint: string = response.authorizationEndpoint;
-                let oidcSessionIframeEndpoint: string = response.checkSessionIframe;
-                let tokenEndpoint: string = response.tokenEndpoint;
-
-                // If `authorize` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL) {
-                    authorizationEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
-                        authorizationEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.authorizeEndpointURL
-                    );
-                }
-
-                // If `oidc session iframe` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
-                    oidcSessionIframeEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
-                        oidcSessionIframeEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.oidcSessionIFrameEndpointURL
-                    );
-                }
-
-                // If `token` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL) {
-                    tokenEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
-                        tokenEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.tokenEndpointURL
-                    );
-                }
-
-                if (isPrivilegedUser) {
-                    logoutRedirectUrl =
-                        window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login;
-                }
-
-                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
-                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
-                sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
-
-                updateConfig({
-                    endpoints: {
-                        authorizationEndpoint: authorizationEndpoint,
-                        checkSessionIframe: oidcSessionIframeEndpoint,
-                        endSessionEndpoint: logoutUrl.split("?")[0],
-                        tokenEndpoint: tokenEndpoint
-                    },
-                    signOutRedirectURL: deriveLogoutRedirectForSubOrgLogins(
-                        logoutRedirectUrl,
-                        userOrganizationId,
-                        orgIdIdToken
-                    )
-                });
-            })
-            .catch((error: any) => {
-                throw error;
-            });
-
-        await dispatch(
-            getProfileInformation(
-                Config.getServiceResourceEndpoints().me,
-                window["AppUtils"].getConfig().clientOriginWithTenant,
-                true
-            )
-        );
-
-        if (isFirstLevelOrg) {
-            await dispatch(getServerConfigurations());
-        }
-
-        onSignInSuccessRedirect(idToken);
-        setCustomServerHost(orgType, wellKnownEndpoint);
-    };
-
-    /**
-     * Handles the sign-in process for legacy authorization server.
-     *
-     * @deprecated This is deprecated and will be removed in the next major release.
-     * @param response - The basic user information returned from the sign-in process.
-     * @param onTenantResolve - Callback to be triggered when tenant is resolved.
-     * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
-     * @param onAppReady - Callback to be triggered when the app is ready.
-     *
-     * @returns A promise.
-     */
-    const legacyOnSignIn = async (
         response: BasicUserInfo,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
@@ -531,7 +261,9 @@ const useSignIn = (): UseSignInInterface => {
             )
         );
 
-        tenantDomain = tenantDomainFromSubject;
+        if (legacyAuthzRuntime) {
+            tenantDomain = tenantDomainFromSubject;
+        }
 
         onTenantResolve(tenantDomain);
 
@@ -557,7 +289,9 @@ const useSignIn = (): UseSignInInterface => {
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
 
-        dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
+        if (legacyAuthzRuntime) {
+            dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
+        }
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
@@ -630,55 +364,64 @@ const useSignIn = (): UseSignInInterface => {
         // Update runtime configurations.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
+        // TODO: Test This properly.
         logoutUrl = window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL;
 
-        // Update post_logout_redirect_uri of logout_url with tenant qualified url
-        if (sessionStorage.getItem(LOGOUT_URL)) {
-            logoutUrl = sessionStorage.getItem(LOGOUT_URL);
+        if (legacyAuthzRuntime) {
+            // Update post_logout_redirect_uri of logout_url with tenant qualified url
+            if (sessionStorage.getItem(LOGOUT_URL)) {
+                logoutUrl = sessionStorage.getItem(LOGOUT_URL);
 
-            if (
-                !window[ "AppUtils" ].getConfig().accountApp
-                    .commonPostLogoutUrl
-            ) {
-                // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
-                if (window[ "AppUtils" ].getConfig().appBase) {
-                    logoutUrl = logoutUrl.replace(
-                        window[ "AppUtils" ].getAppBase(),
-                        window[ "AppUtils" ].getAppBaseWithTenant()
-                    );
-                    logoutRedirectUrl = window[ "AppUtils" ]
-                        .getConfig()
-                        .logoutCallbackURL.replace(
+                if (
+                    !window[ "AppUtils" ].getConfig().accountApp
+                        .commonPostLogoutUrl
+                ) {
+                    // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
+                    if (window[ "AppUtils" ].getConfig().appBase) {
+                        logoutUrl = logoutUrl.replace(
                             window[ "AppUtils" ].getAppBase(),
                             window[ "AppUtils" ].getAppBaseWithTenant()
                         );
-                } else {
-                    logoutUrl = logoutUrl.replace(
-                        window[ "AppUtils" ].getConfig().logoutCallbackURL,
-                        window[ "AppUtils" ].getConfig().clientOrigin +
-                        window[ "AppUtils" ].getConfig().routes.login
-                    );
-                    logoutRedirectUrl =
-                        window[ "AppUtils" ].getConfig().clientOrigin +
-                        window[ "AppUtils" ].getConfig().routes.login;
+                        logoutRedirectUrl = window[ "AppUtils" ]
+                            .getConfig()
+                            .logoutCallbackURL.replace(
+                                window[ "AppUtils" ].getAppBase(),
+                                window[ "AppUtils" ].getAppBaseWithTenant()
+                            );
+                    } else {
+                        logoutUrl = logoutUrl.replace(
+                            window[ "AppUtils" ].getConfig().logoutCallbackURL,
+                            window[ "AppUtils" ].getConfig().clientOrigin +
+                            window[ "AppUtils" ].getConfig().routes.login
+                        );
+                        logoutRedirectUrl =
+                            window[ "AppUtils" ].getConfig().clientOrigin +
+                            window[ "AppUtils" ].getConfig().routes.login;
+                    }
                 }
-            }
 
-            // If an override URL is defined in config, use that instead.
-            if (
-                window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL
-            ) {
-                logoutUrl = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
-                    logoutUrl,
-                    window[ "AppUtils" ].getConfig().idpConfigs
-                        .logoutEndpointURL
-                );
-            }
+                // If an override URL is defined in config, use that instead.
+                if (
+                    window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL
+                ) {
+                    logoutUrl = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
+                        logoutUrl,
+                        window[ "AppUtils" ].getConfig().idpConfigs
+                            .logoutEndpointURL
+                    );
+                }
 
-            sessionStorage.setItem(LOGOUT_URL, logoutUrl);
+                sessionStorage.setItem(LOGOUT_URL, logoutUrl);
+            }
         }
 
-        const wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
+        let wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
+
+        if (!legacyAuthzRuntime) {
+            // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
+            wellKnownEndpoint = wellKnownEndpoint.replace("/o/", "/");
+            dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
+        }
 
         onAppReady();
 
