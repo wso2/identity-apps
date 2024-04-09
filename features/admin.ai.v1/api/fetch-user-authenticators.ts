@@ -15,44 +15,72 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AuthenticatorInterface } from "features/admin.connections.v1";
-import { useGetAuthenticators } from "../../admin.connections.v1/api/authenticators";
-import { handleGetConnectionListCallError } from "../../admin.connections.v1/utils/connection-utils";
+
+import { useEffect, useState } from "react";
+import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
+import {
+    IdentityProviderManagementUtils
+} from "../../admin.identity-providers.v1/utils/identity-provider-management-utils";
 import AutheticatorsRecord from "../models/authenticators-record";
 
 const useGetAvailableAuthenticators = ():AutheticatorsRecord[]=> {
 
-    const { data: authenticatorsData, error:authenticatorsFetchRequestError } = useGetAuthenticators();
 
-    // Handle the authenticator list fetch request error.
-    if (authenticatorsFetchRequestError) {
-        handleGetConnectionListCallError(authenticatorsFetchRequestError);
-    }
+    /**
+     * State to hold the all available authenticators.
+     */
+    const [ availableAuthenticators, setAvailableAuthenticators ] = useState<AutheticatorsRecord[]>([]);
+    /**
+     * State to hold the updated authenticators.
+     */
+    const updatedAuthenticators:AutheticatorsRecord[] = [];
 
-    if (authenticatorsData){
-        const availableAuthenticators:AutheticatorsRecord[] = (authenticatorsData.map(
-            (authenticator:AuthenticatorInterface) =>{
+    /**
+     * Get all enabled authenticators.
+     */
+    useEffect(() =>{IdentityProviderManagementUtils.getAllAuthenticators()
+        .then((response: GenericAuthenticatorInterface[][]) => {
+            /**
+             * Extract the local and federated authenticators from the response.
+             */
+            const localAuthenticators: GenericAuthenticatorInterface[] = response[0];
+            const federatedAuthenticators: GenericAuthenticatorInterface[] = response[1];
 
-                if(authenticator.isEnabled){
-
-                    return {
-                        authenticator: authenticator.name,
-                        idp: authenticator.type
-                    };
-                }
-
-            })
-        );
-
-        return availableAuthenticators ;
-
-    }
-
-    return;
-
+            /**
+             * Extract required information from local and federated authenticators and set them to the state.
+             * @param authenticator - default authenticator name.
+             * @param idp - identity provider name.
+             */
 
 
+            localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
 
+                updatedAuthenticators.push({
+                    authenticator: authenticator.defaultAuthenticator.name,
+                    idp:authenticator.idp
+
+                });
+
+            });
+
+            federatedAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
+
+                updatedAuthenticators.push({
+                    authenticator: authenticator.defaultAuthenticator.name,
+                    idp:authenticator.idp
+
+                });
+
+            });
+
+        }).finally(() => {
+            setAvailableAuthenticators(updatedAuthenticators);
+        });
+
+    }, []);
+
+
+    return availableAuthenticators;
 };
 
 export default useGetAvailableAuthenticators;
