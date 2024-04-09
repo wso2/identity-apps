@@ -272,7 +272,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined,
                         setupGuide: undefined
                     },
-                    smsOtp: {
+                    "sms-otp-authenticator": {
                         learnMore: undefined
                     },
                     trustedTokenIssuer: {

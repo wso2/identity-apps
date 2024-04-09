@@ -732,15 +732,11 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             connector.id
                         )
                 }
-                { connector.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                    (
-                        <DocumentationLink
-                            link={ getLink("develop.connections.newConnection.smsOtp.learnMore") }
-                        >
-                            { t("common:learnMore") }
-                        </DocumentationLink>
-                    )
-                }
+                <DocumentationLink
+                    link={ getLink(`develop.connections.newConnection.${connector.name}.learnMore`) }
+                >
+                    { t("common:learnMore") }
+                </DocumentationLink>
             </div>
         );
     };

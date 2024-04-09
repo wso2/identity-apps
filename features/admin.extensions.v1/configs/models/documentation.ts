@@ -312,7 +312,7 @@ interface ConnectionsDocumentationLinksInterface {
         trustedTokenIssuer: {
             learnMore: string;
         };
-        smsOtp: {
+        "sms-otp-authenticator": {
             learnMore: string;
         };
     };
