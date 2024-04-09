@@ -390,6 +390,7 @@ export const applications: ApplicationsNS = {
                         hint: "Cannot retrieve these user attributes by requesting " +
                                 "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
                     },
+                    subjectAttributeSelectedHint: "<1>{{ subjectattribute }}</1> attribute in this scope is selected as alternative subject identifier.",
                     selectedScopesComponentHint: "Request these scopes from your application to retrieve " +
                         "the selected user attributes.",
                     howToUseScopesHint: "How to use Scopes",

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -71,6 +71,7 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
      * List of duplicated mapping values.
      */
      duplicatedMappingValues?: Array<string>;
+     onlyOIDCConfigured?: boolean;
 }
 
 /**
@@ -105,6 +106,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         label,
         isOIDCMapping,
         duplicatedMappingValues,
+        onlyOIDCConfigured,
         [ "data-testid" ]: testId
     } = props;
 
@@ -213,6 +215,10 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             return true;
         }
 
+        if (onlyOIDCConfigured) {
+            return (subject && mandatory) || readOnly || isOIDCMapping;
+        }
+
         return subject || readOnly || isOIDCMapping;
     };
 
@@ -295,7 +301,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     >
                         <Checkbox
                             checked={ initialRequested || requested || subject }
-                            onClick={ !readOnly && handleRequestedCheckChange }
+                            onClick={ (!readOnly && !subject) ? handleRequestedCheckChange : ()=> null }
                             disabled={ mappingOn ? !mandatory : false }
                             readOnly={ subject || readOnly || isOIDCMapping }
                         />
@@ -308,7 +314,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 { ...(!localDialect && { textAlign: "center" }) }
             >
                 <Checkbox
-                    checked={ initialMandatory || mandatory || subject }
+                    checked={ initialMandatory || mandatory || (subject && !onlyOIDCConfigured) }
                     onClick={ !isMandatoryCheckboxReadOnly() ? handleMandatoryCheckChange : () => null }
                     disabled={ mappingOn ? !requested : false }
                     readOnly={ isMandatoryCheckboxReadOnly() }

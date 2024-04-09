@@ -330,6 +330,7 @@ export interface ApplicationsNS {
                         name: string;
                         hint: string;
                     };
+                    subjectAttributeSelectedHint: string;
                     selectedScopesComponentHint: string;
                     howToUseScopesHint: string;
                     attributeComponentHint: string;

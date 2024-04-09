@@ -316,6 +316,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         setMandateLinkedLocalAccount(value);
     };
 
+    const disableAlternativeSubjectIdentifier = (value: boolean) => {
+        setShowSubjectAttribute(value);
+        setSelectedSubjectValue(defaultSubjectAttribute) ;
+    };
+
     const resolveSubjectAttributeHint = (): ReactElement => {
         if (
             technology.length === 1
@@ -425,7 +430,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 label={ t("applications:forms.advancedAttributeSettings." +
                                     "sections.subject.fields.alternateSubjectAttribute.label") }
                                 onClick={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) =>
-                                    setShowSubjectAttribute(data?.checked) }
+                                    disableAlternativeSubjectIdentifier(data?.checked)
+                                }
                                 disabled={ readOnly }
                             />
                             <Hint>
