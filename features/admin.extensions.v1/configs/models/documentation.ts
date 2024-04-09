@@ -312,6 +312,9 @@ interface ConnectionsDocumentationLinksInterface {
         trustedTokenIssuer: {
             learnMore: string;
         };
+        "sms-otp-authenticator": {
+            learnMore: string;
+        };
     };
     edit: {
         advancedSettings: {
