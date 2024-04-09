@@ -24,10 +24,10 @@ import {
     ApplicationInterface,
     AuthenticationSequenceInterface
 } from "../../../../models";
+
 /**
  * Proptypes for the sign on methods component.
  */
-
 interface SignOnMethodsWrapperPropsInterface extends SBACInterface<FeatureConfigInterface>,
     IdentifiableComponentInterface {
     /**
