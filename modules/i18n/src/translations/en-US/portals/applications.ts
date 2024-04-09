@@ -2839,6 +2839,11 @@ export const applications: ApplicationsNS = {
         }
     },
     templates: {
+        categories: {
+            default: "Application Types",
+            ssoIntegration: "SSO Integrations",
+            other: "Others"
+        },
         emptyPlaceholder: {
             action: null,
             subtitles: "Please add templates to display here.",

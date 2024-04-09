@@ -2581,6 +2581,11 @@ export interface ApplicationsNS {
         };
     };
     templates: {
+        categories: {
+            default: string;
+            ssoIntegration: string;
+            other: string;
+        }
         emptyPlaceholder: {
             action: string;
             title: string;

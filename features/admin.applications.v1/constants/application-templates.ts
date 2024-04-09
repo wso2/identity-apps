@@ -32,19 +32,19 @@ export class ApplicationTemplateConstants {
 
     public static readonly SUPPORTED_CATEGORIES_INFO: ApplicationTemplateCategoryInterface[] = [
         {
-            displayName: "Application Types",
+            displayName: "applications:templates.categories.default",
             displayOrder: 0,
             id: "DEFAULT"
         },
         {
-            displayName: "SSO Integrations",
+            displayName: "applications:templates.categories.ssoIntegration",
             displayOrder: 1,
             id: "SSO-INTEGRATION"
         }
     ];
 
     public static readonly OTHER_CATEGORY_INFO: ApplicationTemplateCategoryInterface = {
-        displayName: "Others",
+        displayName: "applications:templates.categories.other",
         displayOrder: Infinity,
         id: "OTHER"
     }

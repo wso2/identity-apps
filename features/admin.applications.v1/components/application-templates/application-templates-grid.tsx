@@ -222,8 +222,6 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
         setSelectedFilters(selectedFilters);
-        // Filter out the templates.
-        //setFilteredCategorizedTemplates(getSearchResults(query.toLocaleLowerCase(), selectedFilters));
     };
 
     /**
@@ -286,70 +284,6 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         return null;
     };
 
-    const renderApplicationTemplateGrid = (): ReactElement | ReactElement[] => {
-        let isAdvancedSearchApplied: boolean = false;
-
-        if (searchQuery || (!selectedFilters && Array.isArray(selectedFilters) && selectedFilters?.length > 0)) {
-            isAdvancedSearchApplied = true;
-        }
-
-        if (isAdvancedSearchApplied) {
-            return (
-                <ResourceGrid
-                    isEmpty={ !Array.isArray(filteredTemplates) || filteredTemplates.length <= 0 }
-                    emptyPlaceholder={ showPlaceholders(filteredTemplates) }
-                >
-                    {
-                        filteredTemplates
-                            .map((template: ApplicationTemplateListInterface) => {
-                                return (
-                                    <ApplicationTemplateCard
-                                        key={ template?.id }
-                                        onClick={ (e: MouseEvent<HTMLDivElement>) => {
-                                            handleTemplateSelection(e, template);
-                                        } }
-                                        template={ template }
-                                    />
-                                );
-                            })
-                    }
-                </ResourceGrid>
-            );
-        } else {
-            return categorizedTemplates
-                .map((category: CategorizedApplicationTemplatesInterface) => {
-                    const refinedTemplates: ApplicationTemplateListInterface[] =
-                        removeIrrelevantTemplates(category?.templates);
-
-                    return (
-                        <div key={ category?.id } className="application-template-card-group">
-                            <Typography variant="h5">
-                                { category?.displayName }
-                            </Typography>
-                            <ResourceGrid
-                                isEmpty={ !Array.isArray(categorizedTemplates) || categorizedTemplates.length <= 0 }
-                                emptyPlaceholder={ showPlaceholders(categorizedTemplates) }
-                            >
-                                {
-                                    refinedTemplates.map((template: ApplicationTemplateListInterface) => {
-                                        return (
-                                            <ApplicationTemplateCard
-                                                key={ template?.id }
-                                                onClick={ (e: MouseEvent<HTMLDivElement>) => {
-                                                    handleTemplateSelection(e, template);
-                                                } }
-                                                template={ template }
-                                            />
-                                        );
-                                    })
-                                }
-                            </ResourceGrid>
-                        </div>
-                    );
-                });
-        }
-    };
-
     return (
         <GridLayout
             search={ (
@@ -364,7 +298,71 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         >
             {
                 (categorizedTemplates && filteredTemplates && !isApplicationTemplatesRequestLoading)
-                    ? renderApplicationTemplateGrid()
+                    ? (
+                        searchQuery
+                            || (selectedFilters && Array.isArray(selectedFilters)
+                            && selectedFilters?.length > 0)
+                            ? (
+                                <ResourceGrid
+                                    isEmpty={ !Array.isArray(filteredTemplates) || filteredTemplates.length <= 0 }
+                                    emptyPlaceholder={ showPlaceholders(filteredTemplates) }
+                                >
+                                    {
+                                        filteredTemplates
+                                            .map((template: ApplicationTemplateListInterface) => {
+                                                return (
+                                                    <ApplicationTemplateCard
+                                                        key={ template?.id }
+                                                        onClick={ (e: MouseEvent<HTMLDivElement>) => {
+                                                            handleTemplateSelection(e, template);
+                                                        } }
+                                                        template={ template }
+                                                    />
+                                                );
+                                            })
+                                    }
+                                </ResourceGrid>
+                            )
+                            : categorizedTemplates
+                                .map((category: CategorizedApplicationTemplatesInterface) => {
+                                    const refinedTemplates: ApplicationTemplateListInterface[] =
+                                        removeIrrelevantTemplates(category?.templates);
+
+                                    if (refinedTemplates?.length <= 0) {
+                                        return null;
+                                    }
+
+                                    return (
+                                        <div key={ category?.id } className="application-template-card-group">
+                                            <Typography variant="h5">
+                                                { t(category?.displayName) }
+                                            </Typography>
+                                            <ResourceGrid
+                                                isEmpty={
+                                                    !Array.isArray(categorizedTemplates)
+                                                        || categorizedTemplates.length <= 0
+                                                }
+                                                emptyPlaceholder={ showPlaceholders(categorizedTemplates) }
+                                            >
+                                                {
+                                                    refinedTemplates.map(
+                                                        (template: ApplicationTemplateListInterface) => {
+                                                            return (
+                                                                <ApplicationTemplateCard
+                                                                    key={ template?.id }
+                                                                    onClick={ (e: MouseEvent<HTMLDivElement>) => {
+                                                                        handleTemplateSelection(e, template);
+                                                                    } }
+                                                                    template={ template }
+                                                                />
+                                                            );
+                                                        })
+                                                }
+                                            </ResourceGrid>
+                                        </div>
+                                    );
+                                })
+                    )
                     : <ContentLoader dimmer/>
             }
         </GridLayout>
