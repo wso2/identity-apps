@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { OrganizationType } from "../../../../admin.core.v1/constants/organization-constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -51,15 +50,16 @@ import {
     Label,
     SemanticICONS
 } from "semantic-ui-react";
-import { applicationListConfig } from "../../../../admin.extensions.v1/configs/application-list";
 import { getApplicationDetails } from "../../../../admin.applications.v1/api";
 import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
+import useApplicationTemplates from "../../../../admin.applications.v1/hooks/use-application-templates";
 import {
     ApplicationAccessTypes,
     ApplicationBasicInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
 } from "../../../../admin.applications.v1/models";
+import { ApplicationTemplateListInterface } from "../../../../admin.applications.v1/models/application-templates";
 import {
     ApplicationTemplateManagementUtils
 } from "../../../../admin.applications.v1/utils/application-template-management-utils";
@@ -73,6 +73,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../../admin.core.v1";
+import { OrganizationType } from "../../../../admin.core.v1/constants/organization-constants";
+import { applicationListConfig } from "../../../../admin.extensions.v1/configs/application-list";
 import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getConnectedApps } from "../../../api/connections";
 import {
@@ -172,6 +174,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     ] = useState<boolean>(false);
 
     const { t } = useTranslation();
+    const {
+        templates: extensionApplicationTemplates,
+        isApplicationTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+    } = useApplicationTemplates();
 
     useEffect(() => {
         setIsAppsLoading(true);
@@ -295,6 +301,18 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                     return (group.id === templateGroupId || group.templateGroup === templateGroupId);
                                 }).name;
                         }
+                    }
+
+                    /**
+                     * This condition block will help identify the applications created from templates
+                     * on the extensions management API side.
+                     */
+                    if (!templateDisplayName) {
+                        templateDisplayName = extensionApplicationTemplates.find(
+                            (template: ApplicationTemplateListInterface) => {
+                                return template?.id === app?.templateId;
+                            }
+                        )?.name;
                     }
 
                     return (
@@ -567,7 +585,11 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             ) }
             <DataTable<ConnectedAppInterface>
                 className="connected-applications-table"
-                isLoading={ isLoading || isApplicationTemplateRequestLoading }
+                isLoading={
+                    isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading
+                }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
@@ -589,7 +611,12 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ applicationListConfig.enableTableHeaders }
-                transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
+                transparent={
+                    !(isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading)
+                        && (showPlaceholders() !== null)
+                }
                 data-componentid={ `${ componentId }-data-table` }
             />
         </EmphasizedSegment>

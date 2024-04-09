@@ -45,8 +45,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { applicationConfig } from "../../admin.extensions.v1";
-import { applicationListConfig } from "../../admin.extensions.v1/configs/application-list";
 import { ConsoleSettingsModes } from "../../admin.console-settings.v1/models/ui";
 import {
     AppConstants,
@@ -57,10 +55,13 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
+import { applicationConfig } from "../../admin.extensions.v1";
+import { applicationListConfig } from "../../admin.extensions.v1/configs/application-list";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
+import useApplicationTemplates from "../hooks/use-application-templates";
 import {
     ApplicationAccessTypes,
     ApplicationInboundTypes,
@@ -68,6 +69,7 @@ import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
 } from "../models";
+import { ApplicationTemplateListInterface } from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
@@ -166,6 +168,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const { organizationType } = useGetCurrentOrganizationType();
+    const {
+        templates: extensionApplicationTemplates,
+        isApplicationTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+    } = useApplicationTemplates();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -348,6 +354,18 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 return template?.id === app?.templateId;
                             })?.name;
                         }
+                    }
+
+                    /**
+                     * This condition block will help identify the applications created from templates
+                     * on the extensions management API side.
+                     */
+                    if (!templateDisplayName) {
+                        templateDisplayName = extensionApplicationTemplates.find(
+                            (template: ApplicationTemplateListInterface) => {
+                                return template?.id === app?.templateId;
+                            }
+                        )?.name;
                     }
 
                     return (
@@ -606,7 +624,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             <DataTable<ApplicationListItemInterface>
                 className="applications-table"
                 externalSearch={ advancedSearch }
-                isLoading={ isLoading || isApplicationTemplateRequestLoading }
+                isLoading={
+                    isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading
+                }
                 actions={ !isSetStrongerAuth && resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ list?.applications }
@@ -617,7 +639,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ applicationListConfig.enableTableHeaders }
-                transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
+                transparent={
+                    !(isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading)
+                        && (showPlaceholders() !== null)
+                }
                 data-testid={ testId }
             />
             {

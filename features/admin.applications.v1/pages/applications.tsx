@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -55,7 +54,6 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import { applicationConfig } from "../../admin.extensions.v1";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,
@@ -68,6 +66,8 @@ import {
     getGeneralIcons,
     history
 } from "../../admin.core.v1";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "../../admin.extensions.v1";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
@@ -77,6 +77,7 @@ import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import { ApplicationAccessTypes, ApplicationListInterface, ApplicationListItemInterface } from "../models";
+import ApplicationTemplatesProvider from "../provider/application-templates-provider";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -533,126 +534,61 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     return (
-        <PageLayout
-            pageTitle="Applications"
-            action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
-                filteredApplicationList?.totalResults > 0) && (
-                <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            eventPublisher.publish("application-click-new-application-button");
-                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                        } }
-                        data-testid={ `${ testId }-list-layout-add-button` }
-                    >
-                        <Icon name="add" />
-                        { t("applications:list.actions.add") }
-                    </PrimaryButton>
-                </Show>
-            ) }
-            title={ t("console:develop.pages.applications.title") }
-            description={ organizationType !== OrganizationType.SUBORGANIZATION
-                ? (
-                    <p>
-                        { t("console:develop.pages.applications.subTitle") }
-                        <DocumentationLink
-                            link={ getLink("develop.applications.learnMore") }
+        <ApplicationTemplatesProvider>
+            <PageLayout
+                pageTitle="Applications"
+                action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
+                    filteredApplicationList?.totalResults > 0) && (
+                    <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                eventPublisher.publish("application-click-new-application-button");
+                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                            } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
                         >
-                            { t("common:learnMore") }
-                        </DocumentationLink>
-                    </p>
-                )
-                : (
-                    <p>
-                        { t("console:develop.pages.applications.alternateSubTitle") }
-                        <DocumentationLink
-                            link={ getLink("develop.applications.learnMore") }
-                        >
-                            { t("common:learnMore") }
-                        </DocumentationLink>
-                    </p>
-                )
-            }
-            contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
-            data-testid={ `${ testId }-page-layout` }
-        >
-            {
-                (
-                    isSAASDeployment
-                    || (
-                        !isMyAccountApplicationDataFetchRequestLoading
-                        && myAccountApplicationData?.applications?.length !== 0
-                    )
-                )
-                && renderTenantedMyAccountLink()
-            }
-            <ListLayout
-                advancedSearch={ (
-                    <AdvancedSearchWithBasicFilters
-                        onFilter={ handleApplicationFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("common:name"),
-                                value: "name"
-                            },
-                            {
-                                key: 1,
-                                text: t("common:clientId"),
-                                value: "clientId"
-                            },
-                            {
-                                key: 2,
-                                text: t("common:issuer"),
-                                value: "issuer"
-                            }
-                        ] }
-                        filterAttributePlaceholder={
-                            t("applications:advancedSearch.form" +
-                                ".inputs.filterAttribute.placeholder")
-                        }
-                        filterConditionsPlaceholder={
-                            t("applications:advancedSearch.form" +
-                                ".inputs.filterCondition.placeholder")
-                        }
-                        filterValuePlaceholder={
-                            t("applications:advancedSearch.form.inputs.filterValue" +
-                                ".placeholder")
-                        }
-                        placeholder={ t("applications:advancedSearch.placeholder") }
-                        style={ { minWidth: "425px" } }
-                        defaultSearchAttribute="name"
-                        defaultSearchOperator="co"
-                        predefinedDefaultSearchStrategy={
-                            "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
-                        }
-                        triggerClearQuery={ triggerClearQuery }
-                        data-testid={ `${ testId }-list-advanced-search` }
-                    />
+                            <Icon name="add" />
+                            { t("applications:list.actions.add") }
+                        </PrimaryButton>
+                    </Show>
                 ) }
-                currentListSize={ filteredApplicationList?.count }
-                isLoading={
-                    isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
+                title={ t("console:develop.pages.applications.title") }
+                description={ organizationType !== OrganizationType.SUBORGANIZATION
+                    ? (
+                        <p>
+                            { t("console:develop.pages.applications.subTitle") }
+                            <DocumentationLink
+                                link={ getLink("develop.applications.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </p>
+                    )
+                    : (
+                        <p>
+                            { t("console:develop.pages.applications.alternateSubTitle") }
+                            <DocumentationLink
+                                link={ getLink("develop.applications.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </p>
+                    )
                 }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                showPagination={ true }
-                showTopActionPanel={
-                    isApplicationListFetchRequestLoading
-                    || isMyAccountApplicationDataFetchRequestLoading
-                    || !(!searchQuery && filteredApplicationList?.totalResults <= 0) }
-                sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
-                sortStrategy={ listSortingStrategy }
-                totalPages={ Math.ceil(filteredApplicationList?.totalResults / listItemLimit) }
-                totalListSize={ filteredApplicationList?.totalResults }
-                paginationOptions={ {
-                    disableNextButton: !shouldShowNextPageNavigation(filteredApplicationList)
-                } }
-                data-testid={ `${ testId }-list-layout` }
+                contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
+                data-testid={ `${ testId }-page-layout` }
             >
-                <ApplicationList
+                {
+                    (
+                        isSAASDeployment
+                        || (
+                            !isMyAccountApplicationDataFetchRequestLoading
+                            && myAccountApplicationData?.applications?.length !== 0
+                        )
+                    )
+                    && renderTenantedMyAccountLink()
+                }
+                <ListLayout
                     advancedSearch={ (
                         <AdvancedSearchWithBasicFilters
                             onFilter={ handleApplicationFilter }
@@ -674,66 +610,133 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("applications:advancedSearch." +
-                                    "form.inputs.filterAttribute.placeholder")
+                                t("applications:advancedSearch.form" +
+                                    ".inputs.filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("applications:advancedSearch." +
-                                    "form.inputs.filterCondition.placeholder")
+                                t("applications:advancedSearch.form" +
+                                    ".inputs.filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("applications:advancedSearch." +
-                                    "form.inputs.filterValue.placeholder")
+                                t("applications:advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
                             }
-                            placeholder={
-                                t("applications:advancedSearch.placeholder")
-                            }
+                            placeholder={ t("applications:advancedSearch.placeholder") }
                             style={ { minWidth: "425px" } }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
                             predefinedDefaultSearchStrategy={
-                                "name co %search-value% or clientId co %search-value% or " +
-                                "issuer co %search-value%"
+                                "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
                             }
                             triggerClearQuery={ triggerClearQuery }
                             data-testid={ `${ testId }-list-advanced-search` }
                         />
                     ) }
-                    featureConfig={ featureConfig }
-                    isSetStrongerAuth={ strongAuth }
+                    currentListSize={ filteredApplicationList?.count }
                     isLoading={
                         isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
                     }
-                    list={ filteredApplicationList }
-                    onApplicationDelete={ handleApplicationDelete }
-                    onEmptyListPlaceholderActionClick={
-                        () => {
-                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleListSortingStrategyOnChange }
+                    showPagination={ true }
+                    showTopActionPanel={
+                        isApplicationListFetchRequestLoading
+                        || isMyAccountApplicationDataFetchRequestLoading
+                        || !(!searchQuery && filteredApplicationList?.totalResults <= 0) }
+                    sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
+                    sortStrategy={ listSortingStrategy }
+                    totalPages={ Math.ceil(filteredApplicationList?.totalResults / listItemLimit) }
+                    totalListSize={ filteredApplicationList?.totalResults }
+                    paginationOptions={ {
+                        disableNextButton: !shouldShowNextPageNavigation(filteredApplicationList)
+                    } }
+                    data-testid={ `${ testId }-list-layout` }
+                >
+                    <ApplicationList
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleApplicationFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("common:name"),
+                                        value: "name"
+                                    },
+                                    {
+                                        key: 1,
+                                        text: t("common:clientId"),
+                                        value: "clientId"
+                                    },
+                                    {
+                                        key: 2,
+                                        text: t("common:issuer"),
+                                        value: "issuer"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("applications:advancedSearch." +
+                                        "form.inputs.filterAttribute.placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("applications:advancedSearch." +
+                                        "form.inputs.filterCondition.placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("applications:advancedSearch." +
+                                        "form.inputs.filterValue.placeholder")
+                                }
+                                placeholder={
+                                    t("applications:advancedSearch.placeholder")
+                                }
+                                style={ { minWidth: "425px" } }
+                                defaultSearchAttribute="name"
+                                defaultSearchOperator="co"
+                                predefinedDefaultSearchStrategy={
+                                    "name co %search-value% or clientId co %search-value% or " +
+                                    "issuer co %search-value%"
+                                }
+                                triggerClearQuery={ triggerClearQuery }
+                                data-testid={ `${ testId }-list-advanced-search` }
+                            />
+                        ) }
+                        featureConfig={ featureConfig }
+                        isSetStrongerAuth={ strongAuth }
+                        isLoading={
+                            isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
                         }
-                    }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
-                    data-testid={ `${ testId }-list` }
-                    data-componentid="application"
-                />
-            </ListLayout>
-            { showWizard && (
-                <MinimalAppCreateWizard
-                    title={ CustomApplicationTemplate?.name }
-                    subTitle={ CustomApplicationTemplate?.description }
-                    closeWizard={ (): void => setShowWizard(false) }
-                    template={ CustomApplicationTemplate }
-                    showHelpPanel={ true }
-                    subTemplates={ CustomApplicationTemplate?.subTemplates }
-                    subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
-                    addProtocol={ false }
-                    templateLoadingStrategy={
-                        config.ui.applicationTemplateLoadingStrategy
-                        ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
-                    }
-                />
-            ) }
-        </PageLayout>
+                        list={ filteredApplicationList }
+                        onApplicationDelete={ handleApplicationDelete }
+                        onEmptyListPlaceholderActionClick={
+                            () => {
+                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                            }
+                        }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        data-testid={ `${ testId }-list` }
+                        data-componentid="application"
+                    />
+                </ListLayout>
+                { showWizard && (
+                    <MinimalAppCreateWizard
+                        title={ CustomApplicationTemplate?.name }
+                        subTitle={ CustomApplicationTemplate?.description }
+                        closeWizard={ (): void => setShowWizard(false) }
+                        template={ CustomApplicationTemplate }
+                        showHelpPanel={ true }
+                        subTemplates={ CustomApplicationTemplate?.subTemplates }
+                        subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
+                        addProtocol={ false }
+                        templateLoadingStrategy={
+                            config.ui.applicationTemplateLoadingStrategy
+                            ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                        }
+                    />
+                ) }
+            </PageLayout>
+        </ApplicationTemplatesProvider>
     );
 };
 
