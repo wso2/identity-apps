@@ -24,6 +24,14 @@
                 "cwd": "features",
                 "parallel": true
             }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "features",
+                "parallel": false
+            }
         }
     }
 }

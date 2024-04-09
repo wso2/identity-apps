@@ -142,8 +142,8 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
-    if: ${{ false }} # disable temporarily (https://github.com/wso2/product-is/issues/16619)
-    # needs: [ lint, typecheck ]
+    if: false
+    needs: [ lint, typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:

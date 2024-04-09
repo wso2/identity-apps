@@ -116,7 +116,7 @@
 
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
-   
+
     boolean isSmsOTPEnabled = false;
     isSmsOTPEnabled = Boolean.parseBoolean("true"); // todo:RNN: This needs to be read from the relevant place. Tenant preference is tracked by isSMSOTPBasedPasswordRecoveryEnabledByTenant variable
 
@@ -245,7 +245,7 @@
                         </div>
                         <div class="field">
                             <label for="username">
-                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %> 
+                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %>
                             </label>
                             <div class="ui fluid left icon input">
                                 <input
@@ -277,17 +277,23 @@
                         </div>
                         <div class="field">
                             <label for="username">
-                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %> 
+                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %>
                             </label>
                             <div class="ui fluid left icon input">
-                                <input
-                                    placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, usernamePlaceHolder)%>"
-                                    id="usernameUserInput"
-                                    name="usernameUserInput"
-                                    type="text"
-                                    tabindex="0"
-                                    required
-                                >
+                                <% String identifierPlaceholder=i18n(recoveryResourceBundle, customText, "password.recovery.identifier.input.placeholder" , "" , false); %>
+                                <% if (StringUtils.isNotBlank(identifierPlaceholder)) { %>
+                                    <input placeholder="<%=identifierPlaceholder%>" id="usernameUserInput" name="usernameUserInput" type="text"
+                                        tabindex="0" required>
+                                <% } else if (isMultiAttributeLoginEnabledInTenant) { %>
+                                    <input
+                                        placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, usernamePlaceHolder)%>"
+                                        id="usernameUserInput"
+                                        name="usernameUserInput"
+                                        type="text"
+                                        tabindex="0"
+                                        required
+                                    >
+                                <% } %>
                                 <i aria-hidden="true" class="user fill icon"></i>
                             </div>
                             <input id="username" name="username" type="hidden">
@@ -318,7 +324,7 @@
                             if (multipleRecoveryOptionsAvailable) {
                         %>
                         <div class="segment" style="text-align: left;">
-                            <% 
+                            <%
                                 if (isEmailRecoveryAvailable) {
                             %>
                             <div class="field">
@@ -405,7 +411,7 @@
                         <div class="mt-4">
                             <%
                                 String submitButtoni18nText = multipleRecoveryOptionsAvailable? "Submit" :
-                                            ( isEmailRecoveryAvailable? "password.recovery.button" : 
+                                            ( isEmailRecoveryAvailable? "password.recovery.button" :
                                             ( isQuestionBasedPasswordRecoveryEnabledByTenant? "Recover.with.question" :
                                             ( isSMSRecoveryAvailable ? "password.recovery.button.smsotp" :
                                             "Submit")));

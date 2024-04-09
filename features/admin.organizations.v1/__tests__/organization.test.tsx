@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,8 @@
  * under the License.
  */
 
-import { AccessControlProvider } from "@wso2is/access-control";
 import React from "react";
-import { fireEvent, render, screen, waitFor, within } from "../../../../test-configs";
-import ReduxStoreStateMock from "../../../../test-configs/__mocks__/redux/redux-store-state";
+import { fireEvent, render, screen, waitFor, within } from "../../test-configs";
 import {
     addOrganizationMockResponse,
     getOrganizationsEmptyMockResponse,
@@ -34,11 +32,11 @@ import OrganizationsPage from "../pages/organizations";
 
 /**
  * FIXME: Temporarily disabled the suite since it was causing other suites to fail.
- * 
+ *
  */
 describe.skip("UTC-1.0 - [Organization Management Feature] - Organization Page", () => {
-    const getOrganizationsMock = jest.spyOn(api, "getOrganizations");
-    const getOrganizationMock = jest.spyOn(api, "getOrganization");
+    const getOrganizationsMock: any = jest.spyOn(api, "getOrganizations");
+    const getOrganizationMock: any = jest.spyOn(api, "getOrganization");
 
     afterEach(() => {
         getOrganizationsMock.mockClear();
@@ -267,12 +265,7 @@ describe.skip("UTC-1.0 - [Organization Management Feature] - Organization Page",
 
     test("UTC-1.10 - Test if it the add organization button is functional", async () => {
         render(
-            <AccessControlProvider
-                allowedScopes={ ReduxStoreStateMock.auth.scope }
-                featureConfig={ ReduxStoreStateMock.config.ui }
-            >
-                <OrganizationsPage />
-            </AccessControlProvider>
+            <OrganizationsPage />
         );
 
         fireEvent.click(await screen.findByTestId("organizations-list-layout-add-button"));
@@ -282,12 +275,7 @@ describe.skip("UTC-1.0 - [Organization Management Feature] - Organization Page",
 
     test("UTC-1.11 - Test if it is add organization button is disabled for disabled parent", async () => {
         render(
-            <AccessControlProvider
-                allowedScopes={ ReduxStoreStateMock.auth.scope }
-                featureConfig={ ReduxStoreStateMock.config.ui }
-            >
-                <OrganizationsPage />
-            </AccessControlProvider>
+            <OrganizationsPage />
         );
 
         // Navigate to Organization seven which is a disabled organization

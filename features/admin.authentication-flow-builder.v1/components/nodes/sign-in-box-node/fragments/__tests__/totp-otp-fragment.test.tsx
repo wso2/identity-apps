@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { render, screen } from "@unit-testing";
+import "@testing-library/jest-dom";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
 import { fullPermissions } from "./__mocks__/permissions";
+import { render, screen } from "../../../../../../test-configs/utils";
 import TOTPFragment, { TOTPFragmentPropsInterface } from "../totp-fragment";
 
 describe("TOTPFragment", () => {
@@ -30,7 +30,7 @@ describe("TOTPFragment", () => {
     it("renders the TOTPFragment component", () => {
         render(<TOTPFragment { ...defaultProps } />, { allowedScopes: fullPermissions });
 
-        const totpFragment: Element = screen.getByTestId("totp-otp-fragment");
+        const totpFragment: Element = screen.getByTestId("totp-fragment");
 
         expect(totpFragment).toBeInTheDocument();
     });

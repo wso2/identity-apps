@@ -1,5 +1,50 @@
 # @wso2is/myaccount
 
+## 2.5.3
+
+### Patch Changes
+
+- Updated dependencies [[`2b039954fb`](https://github.com/wso2/identity-apps/commit/2b039954fb439d06fd461bb674d25eb9a40f1897)]:
+  - @wso2is/features@2.14.15
+
+## 2.5.2
+
+### Patch Changes
+
+- Updated dependencies [[`eeba472d82`](https://github.com/wso2/identity-apps/commit/eeba472d82895a23a382095dc92d2d71234c3d48)]:
+  - @wso2is/features@2.14.14
+
+## 2.5.1
+
+### Patch Changes
+
+- [#5929](https://github.com/wso2/identity-apps/pull/5929) [`4d2f511ab9`](https://github.com/wso2/identity-apps/commit/4d2f511ab9cc213e1196d75e162b9e46cfa55e7d) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix roles routing issue
+
+- Updated dependencies [[`4d2f511ab9`](https://github.com/wso2/identity-apps/commit/4d2f511ab9cc213e1196d75e162b9e46cfa55e7d)]:
+  - @wso2is/features@2.14.13
+
+## 2.5.0
+
+### Minor Changes
+
+- [#5915](https://github.com/wso2/identity-apps/pull/5915) [`8645d13505`](https://github.com/wso2/identity-apps/commit/8645d13505fa1582f65b7236a6f6dedfe7ba145a) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove modules/common reference from myaccount and add @wso2is/features as dependency
+
+### Patch Changes
+
+- [#5878](https://github.com/wso2/identity-apps/pull/5878) [`4dcf6d1912`](https://github.com/wso2/identity-apps/commit/4dcf6d1912bd083afeecc63907de4daef4d1cfb5) Thanks [@brionmario](https://github.com/brionmario)! - Clean up and separate out the legacy onSignIn hook in Console
+
+- Updated dependencies [[`4dcf6d1912`](https://github.com/wso2/identity-apps/commit/4dcf6d1912bd083afeecc63907de4daef4d1cfb5), [`e1ed20a208`](https://github.com/wso2/identity-apps/commit/e1ed20a208dab287ba6b9314aef4eb835c0651fe)]:
+  - @wso2is/features@2.14.11
+
+## 2.4.11
+
+### Patch Changes
+
+- [#5894](https://github.com/wso2/identity-apps/pull/5894) [`616887f5f8`](https://github.com/wso2/identity-apps/commit/616887f5f8450f86c42a98a3d5d373e20d3f5810) Thanks [@savindi7](https://github.com/savindi7)! - Add branding to Identifier in Login and Password Recovery.
+
+- Updated dependencies [[`616887f5f8`](https://github.com/wso2/identity-apps/commit/616887f5f8450f86c42a98a3d5d373e20d3f5810)]:
+  - @wso2is/i18n@2.1.7
+
 ## 2.4.10
 
 ### Patch Changes

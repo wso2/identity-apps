@@ -18,7 +18,7 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { OrganizationType } from "@wso2is/common";
+import { OrganizationType } from "../../admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -503,83 +503,76 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     /**
      * Handles the delete operation of branding preference via the API.
      */
-    const handleBrandingPreferenceDelete = (): void => {
+    const handleBrandingPreferenceDelete = async (): Promise<void> => {
 
         setIsBrandingPreferenceDeleteRequestLoading(true);
 
-        Promise.all([ deleteBrandingPreference(tenantDomain), deleteAllCustomTextPreferences() ])
-            .then(
-                (values: any) => {
-                    const [ deleteBrandingPreferenceResponse, deleteCustomTextPreferenceResponse ] = values;
+        try {
+            await deleteBrandingPreference(tenantDomain);
 
-                    const isBrandingPreferenceDeleteError: boolean =
-                    deleteBrandingPreferenceResponse instanceof IdentityAppsApiException;
-                    const isCustomTextPreferenceDeleteError: boolean =
-                    deleteCustomTextPreferenceResponse instanceof IdentityAppsApiException;
+            dispatch(addAlert<AlertInterface>({
+                description: t("extensions:develop.branding.notifications.delete.success.description",
+                    { tenant: tenantDomain }),
+                level: AlertLevels.SUCCESS,
+                message: t("extensions:develop.branding.notifications.delete.success.message")
+            }));
+        } catch (error: any) {
+            let description: string = t("extensions:develop.branding.notifications.delete.genericError" +
+            ".description", { tenant: tenantDomain });
+            let message: string = t("extensions:develop.branding.notifications.delete.genericError.message");
 
-                    if (isBrandingPreferenceDeleteError || isCustomTextPreferenceDeleteError) {
-                        dispatch(addAlert<AlertInterface>({
-                            description: t("extensions:develop.branding.notifications.delete.invalidStatus.description",
-                                { tenant: tenantDomain }),
-                            level: AlertLevels.ERROR,
-                            message: t("extensions:develop.branding.notifications.delete.invalidStatus.message")
-                        }));
+            // If branding is not configured, but user tried deleting anyway.
+            if (error.code === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
+                description = t("extensions:develop.branding.notifications.delete.notConfigured" +
+                ".description", { tenant: tenantDomain });
+                message = t("extensions:develop.branding.notifications.delete.notConfigured.message");
+            }
 
-                        return;
-                    }
+            dispatch(addAlert<AlertInterface>({
+                description: description,
+                level: AlertLevels.ERROR,
+                message: message
+            }));
+        }
 
-                    setIsBrandingConfigured(false);
-                    setBrandingPreference(DEFAULT_PREFERENCE);
-                    mutateBrandingPreferenceFetchRequest();
-                    mutateCustomTextPreferenceFetchRequest();
+        try {
+            await deleteAllCustomTextPreferences();
 
-                    // Increment the tabs component key to remount the component on branding revert.
-                    setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);
+            dispatch(addAlert<AlertInterface>({
+                description: t(
+                    "extensions:develop.branding.notifications.customTextPreferenceDelete.success.description",
+                    { tenant: tenantDomain }
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t("extensions:develop.branding.notifications.delete.success.message")
+            }));
+        } catch (error: any) {
+            const description: string = t(
+                "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError" +
+                    ".description",
+                { tenant: tenantDomain }
+            );
+            const message: string = t(
+                "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError.message"
+            );
 
-                    if(organizationType !== OrganizationType.SUBORGANIZATION) {
-                        dispatch(addAlert<AlertInterface>({
-                            description: t("extensions:develop.branding.notifications.delete.success.description",
-                                { tenant: tenantDomain }),
-                            level: AlertLevels.SUCCESS,
-                            message: t("extensions:develop.branding.notifications.delete.success.message")
-                        }));
-                    } else {
-                        dispatch(addAlert<AlertInterface>({
-                            description: t(
-                                "extensions:develop.branding.notifications.delete." +
-                                "successWaiting.description",
-                                { tenant: tenantDomain }
-                            ),
-                            level: AlertLevels.WARNING,
-                            message: t("extensions:develop.branding.notifications.delete.successWaiting.message")
-                        }));
+            dispatch(addAlert<AlertInterface>({
+                description: description,
+                level: AlertLevels.ERROR,
+                message: message
+            }));
+        }
 
-                        handleSubOrgAlerts();
-                    }
-                }
-            ).catch((error: IdentityAppsApiException) => {
+        setIsBrandingConfigured(false);
+        setBrandingPreference(DEFAULT_PREFERENCE);
+        mutateBrandingPreferenceFetchRequest();
+        mutateCustomTextPreferenceFetchRequest();
 
-                let description: string = t("extensions:develop.branding.notifications.delete.genericError" +
-                    ".description", { tenant: tenantDomain });
-                let message: string = t("extensions:develop.branding.notifications.delete.genericError.message");
+        // Increment the tabs component key to remount the component on branding revert.
+        setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);
 
-                // If branding is not configured, but user tried deleting anyway.
-                if (error.code === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
-                    description = t("extensions:develop.branding.notifications.delete.notConfigured" +
-                        ".description", { tenant: tenantDomain });
-                    message = t("extensions:develop.branding.notifications.delete.notConfigured.message");
-                }
-
-                dispatch(addAlert<AlertInterface>({
-                    description: description,
-                    level: AlertLevels.ERROR,
-                    message: message
-                }));
-            })
-            .finally(() => {
-                setIsBrandingPreferenceDeleteRequestLoading(false);
-                setShowRevertConfirmationModal(false);
-            });
+        setIsBrandingPreferenceDeleteRequestLoading(false);
+        setShowRevertConfirmationModal(false);
     };
 
     return (
@@ -736,7 +729,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => setShowRevertConfirmationModal(false) }
-                onPrimaryActionClick={ (): void => handleBrandingPreferenceDelete() }
+                onPrimaryActionClick={ handleBrandingPreferenceDelete }
                 data-componentid={ `${ componentId }-branding-preference-revert-confirmation-modal` }
                 closeOnDimmerClick={ false }
                 primaryActionLoading={ isBrandingPreferenceDeleteRequestLoading }

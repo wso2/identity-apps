@@ -1,5 +1,17 @@
 # @wso2is/identity-apps-core
 
+## 2.1.52
+
+### Patch Changes
+
+- [#5903](https://github.com/wso2/identity-apps/pull/5903) [`4eb40aa87a`](https://github.com/wso2/identity-apps/commit/4eb40aa87a8c0e32ddc91af241eb27303985a79a) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Remove legacy recaptcha check
+
+## 2.1.51
+
+### Patch Changes
+
+- [#5894](https://github.com/wso2/identity-apps/pull/5894) [`616887f5f8`](https://github.com/wso2/identity-apps/commit/616887f5f8450f86c42a98a3d5d373e20d3f5810) Thanks [@savindi7](https://github.com/savindi7)! - Add branding to Identifier in Login and Password Recovery.
+
 ## 2.1.50
 
 ### Patch Changes

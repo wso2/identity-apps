@@ -23,8 +23,6 @@ import {
     OIDCEndpoints,
     useAuthContext
 } from "@asgardeo/auth-react";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
-import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
@@ -42,6 +40,8 @@ import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { Config } from "../../admin.core.v1/configs/app";
 import { AppConstants, CommonConstants } from "../../admin.core.v1/constants";
+import useDeploymentConfig from "../../admin.core.v1/hooks/use-deployment-configs";
+import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
 import { DeploymentConfigInterface } from "../../admin.core.v1/models/config";
 import { AppState } from "../../admin.core.v1/store";
 import {
@@ -68,6 +68,21 @@ const LOGOUT_URL: string = "sign_out_url";
  * Props interface of {@link useSignIn}
  */
 export type UseSignInInterface = {
+    /**
+     * Handles the sign-in process.
+     *
+     * @example
+     * ```
+     * const { onSignIn } = useSignIn();
+     * ```
+     *
+     * @param response - The basic user information returned from the sign-in process.
+     * @param onTenantResolve - Callback to be triggered when tenant is resolved.
+     * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
+     * @param onAppReady - Callback to be triggered when the app is ready.
+     *
+     * @returns A promise.
+     */
     onSignIn: (
         response: BasicUserInfo,
         onTenantResolve: (tenantDomain: string) => void,
@@ -103,7 +118,13 @@ const useSignIn = (): UseSignInInterface => {
         removeUserOrgInLocalStorage
     } = useOrganizations();
 
-    const setCustomServerHost = (orgType: string, wellKnownEndpoint: string) => {
+    /**
+     * Resolves and sets the custom server host.
+     *
+     * @param orgType - Type of the organization. Ex: sub organization, etc.
+     * @param wellKnownEndpoint - Wellknown discovery endpoint.
+     */
+    const setCustomServerHost = (orgType: string, wellKnownEndpoint: string): void => {
         const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
 
         if (legacyAuthzRuntime && !disabledFeatures?.includes("branding.hostnameUrlBranding")) {
@@ -176,6 +197,21 @@ const useSignIn = (): UseSignInInterface => {
         }
     };
 
+    /**
+     * Handles the sign-in process.
+     *
+     * @example
+     * ```
+     * const { onSignIn } = useSignIn();
+     * ```
+     *
+     * @param response - The basic user information returned from the sign-in process.
+     * @param onTenantResolve - Callback to be triggered when tenant is resolved.
+     * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
+     * @param onAppReady - Callback to be triggered when the app is ready.
+     *
+     * @returns A promise.
+     */
     const onSignIn = async (
         response: BasicUserInfo,
         onTenantResolve: (tenantDomain: string) => void,
@@ -472,6 +508,7 @@ const useSignIn = (): UseSignInInterface => {
      * @param currentLogoutRedirect - Current logout redirect URL.
      * @param userOrg - User's org.
      * @param orgId - User's org ID.
+     *
      * @returns Derived logout redirect URL.
      */
     const deriveLogoutRedirectForSubOrgLogins = (currentLogoutRedirect: string, userOrg: string, orgId: string) => {

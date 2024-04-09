@@ -17,7 +17,7 @@
  */
 
 import { configure } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import "./__mocks__/global";
 import "./__mocks__/module";
 import "./__mocks__/window";

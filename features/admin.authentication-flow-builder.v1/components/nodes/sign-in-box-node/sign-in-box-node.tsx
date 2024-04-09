@@ -448,6 +448,21 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
     };
 
     /**
+     * Check whether the backup codes is enabled for the step
+     */
+    const isBackupCodesEnabled: boolean = useMemo(() => {
+        let isBackupCodesEnabled: boolean = false;
+
+        authenticationSequence?.steps?.[stepIndex]?.options.map((option: AuthenticatorInterface) => {
+            if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                isBackupCodesEnabled = true;
+            }
+        });
+
+        return isBackupCodesEnabled;
+    }, [ authenticationSequence ]);
+
+    /**
      * Get the visibility of the sign in step configs.
      *
      * @returns The visibility of the sign in step configs.
@@ -484,21 +499,6 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         });
 
         return [ shouldShowSubjectIdentifierCheck, shouldShowBackupCodesEnableCheck, isBackupCodesEnabled ];
-    }, [ authenticationSequence ]);
-
-    /**
-     * Check whether the backup codes is enabled for the step
-     */
-    const isBackupCodesEnabled: boolean = useMemo(() => {
-        let isBackupCodesEnabled: boolean = false;
-
-        authenticationSequence?.steps?.[stepIndex]?.options.map((option: AuthenticatorInterface) => {
-            if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
-                isBackupCodesEnabled = true;
-            }
-        });
-
-        return isBackupCodesEnabled;
     }, [ authenticationSequence ]);
 
     return (

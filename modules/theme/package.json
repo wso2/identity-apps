@@ -24,9 +24,8 @@
         "lint:all": "pnpm lint:targeted -- .",
         "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to . --max-warnings=0",
-        "test": "pnpm jest",
+        "test": "jest --passWithNoTests",
         "test:watch": "pnpm test -- --watch",
-        "jest": "pnpm jest --passWithNoTests",
         "watch": "watch \"pnpm build\" src"
     },
     "author": "WSO2",
@@ -34,7 +33,7 @@
     "devDependencies": {
         "@babel/core": "^7.11.4",
         "@babel/register": "^7.8.6",
-        "@types/jest": "^26.0.14",
+        "@types/jest": "^29.5.12",
         "@typescript-eslint/eslint-plugin": "^4.32.0",
         "@typescript-eslint/parser": "^4.32.0",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
@@ -44,7 +43,7 @@
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^4.0.0",
         "fs-extra": "^9.0.1",
-        "jest": "^26.4.2",
+        "jest": "^29.7.0",
         "less": "^3.10.3",
         "less-plugin-rewrite-variable": "0.1.0",
         "less-to-json": "^1.2.0",
@@ -54,7 +53,7 @@
         "rimraf": "^3.0.2",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-less": "^2.4.1",
-        "ts-jest": "^26.4.0",
+        "ts-jest": "^29.1.2",
         "ts-node": "^10.8.1",
         "watch": "^1.0.2"
     }

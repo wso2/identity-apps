@@ -20,7 +20,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
-} from "@wso2is/common/src/components/vertical-stepper/vertical-stepper";
+} from "../../../../admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
