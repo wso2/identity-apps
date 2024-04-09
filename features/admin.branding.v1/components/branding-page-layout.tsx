@@ -18,9 +18,14 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { BrandingAIBanner, LoadingScreen } from "features/admin.ai.v1/components";
+import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import BrandingCore from "./branding-core";
+import { AppState } from "../../admin.core.v1/store";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
@@ -33,6 +38,17 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const {
         ["data-componentid"]: componentId
     } = props;
+
+    const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const disabledFeatures: string[] = useMemo(() => {
+        return featureConfig?.branding?.disabledFeatures;
+    }, [ featureConfig ]);
+    const [ traceId, setTraceId ] = useState<string>("");
+    const { handleGenerate,
+        isGeneratingBranding,
+        mergedBrandingPreference,
+        setGeneratingBranding,
+        setOperationId } = useAIBrandingPreference();
 
     return (
         <PageLayout
@@ -58,7 +74,28 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             data-componentid={ `${ componentId }-layout` }
             className="branding-page"
         >
-            <BrandingCore />
+            { isGeneratingBranding ? (
+                <div>
+                    <LoadingScreen
+                        traceId={ traceId } />
+                </div>
+            )
+                : (
+                    <>
+                        {
+                            !disabledFeatures.includes("branding.ai1") &&
+                            (<BrandingAIBanner
+                                onGenerate={ handleGenerate }
+                                onGenerateBrandingClick={ (generatedTraceId: string, operationId: string) => {
+                                    setTraceId(generatedTraceId);
+                                    setOperationId(operationId);
+                                    setGeneratingBranding(true);
+                                } }
+                            />)
+                        }
+                        <BrandingCore brandingPreference={ mergedBrandingPreference }/>
+                    </>
+                ) }
         </PageLayout>
     );
 };

@@ -57,10 +57,6 @@ export const branding: BrandingNS = {
                 "login.heading": {
                     hint: "The heading of the login box. If not set, {{productName}} defaults are used."
                 },
-                "login.identifier.input.label": {
-                    hint: "The label of the identifier input field in the login box. If not set, {{productName}} defaults are used.",
-                    warning: "<0>IMPORTANT</0>: Customizing the login identifier label will replace the dynamic label when {{feature}} are <1>configured</1>."
-                },
                 "sms.otp.heading": {
                     hint: "The heading of the SMS OTP box. If not set, {{productName}} defaults are used."
                 },
@@ -78,10 +74,6 @@ export const branding: BrandingNS = {
                 },
                 "password.recovery.body": {
                     hint: "The body text of the password recovery box. If not set, {{productName}} defaults are used."
-                },
-                "password.recovery.identifier.input.placeholder": {
-                    hint: "The placeholder of the identifier input field in the password recovery box. If not set, {{productName}} defaults are used.",
-                    warning: "<0>IMPORTANT</0>: Customizing the password recovery identifier placeholder will replace the dynamic placeholder when {{feature}} are <1>configured</1>."
                 },
                 "password.recovery.button": {
                     hint: "The text that appears on the main action button of the password recovery box. If not set, {{productName}} defaults are used."
@@ -145,10 +137,6 @@ export const branding: BrandingNS = {
             placeholder: "Select screen"
         }
     },
-    connectors: {
-        multiAttributeLogin: "Multi Attribute Login Identifiers",
-        alternativeLoginIdentifier: "Alternative Login Identifiers"
-    },
     form: {
         actions: {
             resetAll: "Reset to Default",
@@ -167,6 +155,47 @@ export const branding: BrandingNS = {
         "sign-up": "Sign Up",
         "sms-otp": "SMS OTP",
         "totp": "TOTP"
+    },
+    ai: {
+        banner: {
+            full: {
+                heading: "Transform your branding with ease, try our new Branding AI",
+                subHeading: "Provide your website URL, and our AI will seamlessly create a branding theme that is both beautiful and brand-consistent.",
+                button: "Try Branding AI"
+            },
+            input: {
+                heading: "Generate branding with a single click using Branding AI",
+                subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach.",
+                placeholder: "Enter website URL",
+                button: "Generate Branding"
+            },
+            collapsed: {
+                heading: "Generate branding using, Branding AI",
+                subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach.",
+                button: "Try Branding AI"
+            }
+        },
+        screens: {
+            loading: {
+                heading: "Generating your branding",
+                facts: {
+                    0: "Asgardeo's advanced theming capabilities let you modify the site title, copyright information, and support email displayed on your login pages, aligning every detail with your brand identity.",
+                    1: "You can personalize your login portal even further with Asgardeo by updating links to your privacy policy, terms of service, and cookie policy, making your compliance visible and accessible.",
+                    2: "With Asgardeo's branding features, you can update your organization's logo directly in the login and registration pages, ensuring a consistent brand experience for your customers across all application touchpoints."
+                },
+                states: {
+                    0: "Initializing...",
+                    1: "Rendering Webpage...",
+                    2: "Extracting Content...",
+                    3: "Content Extracted.",
+                    4: "Generating Branding...",
+                    5: "Creating Color Palette...",
+                    6: "Defining Style Properties...",
+                    7: "Creating Branding Theme...",
+                    8: "Branding Generation Completed!"
+                }
+            }
+        }
     },
     tabs: {
         preview: {

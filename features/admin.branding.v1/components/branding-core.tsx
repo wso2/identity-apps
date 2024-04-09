@@ -18,7 +18,6 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { OrganizationType } from "../../admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -38,6 +37,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { OrganizationType } from "../../admin.core.v1";
 import { EventPublisher } from "../../admin.core.v1";
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
@@ -63,7 +63,10 @@ import { BrandingPreferenceUtils } from "../utils";
 /**
  * Prop-types for the branding core component.
  */
-type BrandingCoreInterface = IdentifiableComponentInterface;
+interface BrandingCoreInterface extends IdentifiableComponentInterface {
+
+    brandingPreference?: BrandingPreferenceInterface;
+}
 
 /**
  * Branding core.
@@ -76,6 +79,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 ): ReactElement => {
 
     const {
+        brandingPreference: overridenBrandingPreference,
         ["data-componentid"]: componentId
     } = props;
 
@@ -219,18 +223,21 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             setIsBrandingConfigured(true);
         }
 
-        setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
-            BrandingPreferenceUtils.migrateThemePreference(
-                originalBrandingPreference.preference,
+        if  (!brandingPreference)  {
+            setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
+                BrandingPreferenceUtils.migrateThemePreference(
+                    originalBrandingPreference.preference,
+                    {
+                        theme: predefinedThemes
+                    }
+                ),
                 {
-                    theme: predefinedThemes
+                    layout: predefinedLayouts
                 }
-            ),
-            {
-                layout: predefinedLayouts
-            }
-        ));
-        setSelectedLayout(originalBrandingPreference.preference.layout.activeLayout);
+            ));
+            setSelectedLayout(originalBrandingPreference.preference.layout.activeLayout);
+        }
+
     }, [ originalBrandingPreference ]);
 
     /**
@@ -281,6 +288,19 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 // Tracked here https://github.com/wso2/product-is/issues/11650.
             });
     }, [ theme ]);
+
+    useEffect(() => {
+
+        if (overridenBrandingPreference) {
+
+            console.log("Overriden branding preference detected. Overriding the default preference.");
+
+            console.log("Original preference: ", brandingPreference);
+            console.log("Overriden preference: ", overridenBrandingPreference);
+
+            setBrandingPreference(overridenBrandingPreference);
+        }
+    }, [ overridenBrandingPreference ]);
 
     /**
      * Handles preference form submit action.
