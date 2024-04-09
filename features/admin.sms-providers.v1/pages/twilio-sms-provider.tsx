@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import {
@@ -23,9 +24,9 @@ import {
     Hint,
     PrimaryButton
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
+import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SMSProviderConstants } from "../constants";
 
 interface TwilioSMSProviderPageInterface extends IdentifiableComponentInterface {
@@ -42,6 +43,24 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
         isReadOnly
     } = props;
     const { t } = useTranslation();
+    const [ isShow, setIsShow ] = useState(false);
+
+    const renderInputAdornment = (): ReactElement => {
+
+        return (
+            <InputAdornment position="end">
+                <Icon
+                    link={ true }
+                    className="list-icon reset-field-to-default-adornment"
+                    size="small"
+                    color="grey"
+                    name={ !isShow ? "eye" : "eye slash" }
+                    data-testid={ "view-button" }
+                    onClick={ () => { setIsShow(!isShow); } }
+                />
+            </InputAdornment>
+        );
+    };
 
     return (
         <EmphasizedSegment className="form-wrapper" padded={ "very" }>
@@ -90,7 +109,9 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             required={ true }
                             data-componentid={ `${componentId}-twilio-secret` }
                             name="twilioSecret"
-                            type="password"
+                            hidePassword={ t("common:hidePassword") }
+                            showPassword={ t("common:showPassword") }
+                            type={ isShow ? "text" : "password" }
                             label={ t("smsProviders:form.twilio.authToken.label") }
                             placeholder={ t("smsProviders:form.twilio.authToken.placeholder") }
                             helperText={ (
@@ -99,6 +120,9 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
+                            InputProps={ {
+                                endAdornment: renderInputAdornment()
+                            } }
                             maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                             minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                             autoComplete="new-password"
