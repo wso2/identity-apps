@@ -79,7 +79,6 @@ const useGetAvailableAuthenticators = ():AutheticatorsRecord[]=> {
 
     }, []);
 
-
     return availableAuthenticators;
 };
 
