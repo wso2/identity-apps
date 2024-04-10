@@ -61,7 +61,7 @@ Please configure ESLint in your coding environment if you haven't already done s
 ```tsx
 import { render, screen } from "@unit-testing";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { ApplicationList } from "../../../components/applications";
 
 describe("Test if the Application List is working as expected", () => {
@@ -137,7 +137,7 @@ A typical snapshot test case renders a UI component, takes a snapshot, then comp
 ```tsx
 import { render } from "@unit-testing";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { ApplicationList } from "../../../components/applications";
 
 it("<ApplicationList /> matches snapshot", () => {

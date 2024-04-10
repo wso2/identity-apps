@@ -272,6 +272,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined,
                         setupGuide: undefined
                     },
+                    "sms-otp-authenticator": {
+                        learnMore: undefined
+                    },
                     trustedTokenIssuer: {
                         learnMore: undefined
                     }
@@ -348,6 +351,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             },
             users: {
                 allUsers: {
+                    learnMore: undefined
+                },
+                bulkUsers: {
                     learnMore: undefined
                 },
                 collaboratorAccounts: {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OrganizationType } from "@wso2is/common";
+import { OrganizationType } from "../../../admin.core.v1";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, RolesInterface, SBACInterface } from "@wso2is/core/models";

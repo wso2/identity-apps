@@ -312,6 +312,9 @@ interface ConnectionsDocumentationLinksInterface {
         trustedTokenIssuer: {
             learnMore: string;
         };
+        "sms-otp-authenticator": {
+            learnMore: string;
+        };
     };
     edit: {
         advancedSettings: {
@@ -381,6 +384,9 @@ interface UsersDocumentationLinksInterface {
         learnMore: string;
     }
     newCollaboratorUser: {
+        learnMore: string;
+    }
+    bulkUsers: {
         learnMore: string;
     }
 }

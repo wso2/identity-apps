@@ -17,7 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -73,7 +73,7 @@ import {
     history,
     store
 } from "../../../admin.core.v1";
-import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/tier-limit-reach-error-modal";
+import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "../../../admin.roles.v2/constants/role-constants";

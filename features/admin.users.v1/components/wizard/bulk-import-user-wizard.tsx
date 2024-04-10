@@ -45,6 +45,7 @@ import {
     CSVFileStrategy,
     CSVResult,
     ContentLoader,
+    DocumentationLink,
     FilePicker,
     Heading,
     Hint,
@@ -54,18 +55,18 @@ import {
     PickerResult,
     Popup,
     PrimaryButton,
+    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
-import camelCase from "lodash-es/camelCase";
+import toUpper from "lodash-es/toUpper";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-import { userConfig, userstoresConfig } from "../../../admin.extensions.v1/configs";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../admin.claims.v1/api";
 import { ClaimManagementConstants } from "../../../admin.claims.v1/constants";
 import {
@@ -76,12 +77,13 @@ import {
     getCertificateIllustrations,
     history
 } from "../../../admin.core.v1";
+import { userConfig, userstoresConfig } from "../../../admin.extensions.v1/configs";
 import { getGroupList, useGroupList } from "../../../admin.groups.v1/api";
 import { GroupsInterface } from "../../../admin.groups.v1/models";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "../../../admin.roles.v2/models";
 import { getAUserStore, getUserStores } from "../../../admin.userstores.v1/api";
-import { UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
 import { useValidationConfigData } from "../../../admin.validation.v1/api";
 import { ValidationFormInterface } from "../../../admin.validation.v1/models";
 import { addBulkUsers } from "../../api";
@@ -200,11 +202,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ manualInviteAlert, setManualInviteAlert, manualInviteAlertComponent ]
         = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig.primaryUserstoreName);
     const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
     const [ fileModeTimeOutError , setFileModeTimeOutError ] = useState<boolean>(false);
 
     const { data: validationData } = useValidationConfigData();
+    const { getLink } = useDocumentation();
     const config: ValidationFormInterface = getUsernameConfiguration(validationData);
     const isAlphanumericUsername: boolean = config?.enableValidator === "true";
 
@@ -243,8 +246,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const userStoreArray: DropdownItemProps[] = [
             {
                 key: -1,
-                text: t("users:userstores.userstoreOptions.primary"),
-                value: "PRIMARY"
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreName
             }
         ];
 
@@ -597,7 +600,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const headers: string[] = userData.headers;
         const rows: string[][] = userData.items;
 
-        const requiredFields: string[] = Object.values(RequiredBulkUserImportAttributes);
+        const requiredFields: string[] = isAlphanumericUsername
+            ? Object.values(RequiredBulkUserImportAttributes)
+            : [ RequiredBulkUserImportAttributes.USERNAME ];
         const missingFields: string[] = getMissingFields(headers, requiredFields);
         const duplicateEntries: string[] = getDuplicateEntries(headers);
         const blockedAttributes: string[] = Object.values(BlockedBulkUserImportAttributes);
@@ -713,6 +718,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         ): Record<string, unknown> => {
             const dataObj: Record<string, unknown> = {};
             const schemasSet: Set<string> = new Set([ UserManagementConstants.SCIM2_USER_SCHEMA ]);
+            let emailValue: string = "";
 
             for (const attribute of filteredAttributeMapping) {
                 const scimAttribute: string = attribute.mappedSCIMAttributeURI.replace(
@@ -729,13 +735,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 // Handle username attribute.
                 if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
+                    emailValue = attributeValue;
+
                     if (isEmptyAttribute(attributeValue)) {
                         setEmptyDataFieldError(attribute.attributeName);
                         throw new Error(DATA_VALIDATION_ERROR);
                     }
 
                     dataObj[RequiredBulkUserImportAttributes.USERNAME] = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${attributeValue}`
                         : attributeValue;
 
@@ -744,6 +752,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 // Handle email attribute.
                 if (attribute.attributeName === RequiredBulkUserImportAttributes.EMAILADDRESS) {
+                    if (!isAlphanumericUsername) {
+                        continue;
+                    }
+
                     if (isEmptyAttribute(attributeValue)) {
                         setEmptyDataFieldError(attribute.attributeName);
                         throw new Error(DATA_VALIDATION_ERROR);
@@ -850,6 +862,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 }
             }
 
+            // Add the email address when the email username is enabled.
+            if (!isAlphanumericUsername) {
+                dataObj[SpecialMultiValuedComplexAttributes.Emails] =
+                    [ { primary: true, value: emailValue } ];
+            }
+
             return {
                 schema: Array.from(schemasSet),
                 ...dataObj
@@ -888,7 +906,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             uniqueCSVGroups.forEach((group: string) => {
                 if (isEmptyAttribute(group)) return;
                 const domainGroupName: string = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                     ? `${selectedUserStore}/${group}`
                     : group;
 
@@ -1053,10 +1071,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
                 ],
                 userName:
-                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${email}`
                         : email,
-                [ userstore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                [ userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                     ? UserManagementConstants.CUSTOMSCHEMA
                     : UserManagementConstants.ENTERPRISESCHEMA
                 ]: {
@@ -1547,11 +1565,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                                 "bulkImportUserWizard.wizardSummary.userstoreMessage"
                                                             }
                                                             tOptions={ {
-                                                                userstore: camelCase(userstore)
+                                                                userstore: toUpper(userstore)
                                                             } }
                                                         >
                                                             The created users will be added to
-                                                            the <b>{ camelCase(userstore) }</b> user store.
+                                                            the <b>{ toUpper(userstore) }</b> user store.
                                                         </Trans>
                                                     </Alert>
                                                 </Grid.Column>
@@ -1794,11 +1812,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         ".wizardSummary.userstoreMessage"
                                                     }
                                                     tOptions={ {
-                                                        userstore: camelCase(userstore)
+                                                        userstore: toUpper(userstore)
                                                     } }
                                                 >
                                                     The created users will be added to
-                                                    the <b>{ camelCase(userstore) }</b> user store.
+                                                    the <b>{ toUpper(userstore) }</b> user store.
                                                 </Trans>
                                             </Alert>
                                         </Grid.Column>
@@ -1944,12 +1962,22 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         <p> { t("user:modals.bulkImportUserWizard.sidePanel." +
                                 "fileFormatSampleHeading") }</p>
                         <p>
-                            <code>
-                                username,givenname,emailaddress,groups<br />
-                                user1,john,john@test.com,group1|group2<br/>
-                                user2,jake,jake@test.com,group2<br/>
-                                user3,jane,jane@test.com,group1<br/>
-                            </code>
+                            {
+                                isAlphanumericUsername ? (
+                                    <code>
+                                        username,givenname,emailaddress,groups<br />
+                                        user1,john,john@test.com,group1|group2<br/>
+                                        user2,jake,jake@test.com,group2<br/>
+                                        user3,jane,jane@test.com,group1<br/>
+                                    </code>
+                                ) : (
+                                    <code>
+                                        username,givenname,groups<br />
+                                        user1,john,group1|group2<br/>
+                                        user2,jake,group2<br/>
+                                        user3,jane,group1<br/>
+                                    </code>)
+                            }
                         </p>
                     </Suspense>
                 </ModalWithSidePanel.Content>
@@ -1978,6 +2006,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     { t("user:modals.bulkImportUserWizard.title") }
                     <Heading as="h6">
                         { t("user:modals.bulkImportUserWizard.subTitle") }
+                        <DocumentationLink
+                            link={ getLink("manage.users.bulkUsers.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
                     </Heading>
                 </ModalWithSidePanel.Header>
 

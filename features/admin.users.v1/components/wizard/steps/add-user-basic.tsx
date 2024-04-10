@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -64,6 +64,7 @@ export interface AddUserProps {
     onSubmit: (values: BasicUserDetailsInterface) => void;
     hiddenFields?: (HiddenFieldNames)[];
     requestedPasswordOption?: PasswordOptionTypes;
+    isUserstoreRequired?: boolean;
     isFirstNameRequired?: boolean;
     isLastNameRequired?: boolean;
     isEmailRequired?: boolean;
@@ -93,6 +94,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         emailVerificationEnabled,
         onSubmit,
         hiddenFields,
+        isUserstoreRequired,
         isFirstNameRequired,
         isLastNameRequired,
         isEmailRequired,
@@ -874,7 +876,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <div ref={ emailRef }/>
-                                <Form.Field required={ true }>
+                                <Form.Field required={ isUserstoreRequired }>
                                     <label>
                                         { t("user:forms.addUserForm.inputs."+
                                         "domain.placeholder") }

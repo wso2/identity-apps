@@ -17,7 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/common";
+import { VerticalStepper, VerticalStepperStepInterface } from "../../admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";

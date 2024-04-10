@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
+import useDeploymentConfig from "../../../../../admin.core.v1/hooks/use-deployment-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     EmptyPlaceholder,

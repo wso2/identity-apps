@@ -28,7 +28,7 @@ import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Divider, Icon } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { AppState } from "../../../../admin.core.v1";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "../../../../admin.extensions.v1";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
@@ -568,6 +568,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                           setSelectedSubjectType(subjectType);
                                                       } }
                                                       readOnly={ readOnly }
+                                                      data-componentId={
+                                                          `${ componentId }-subject-type-${ subjectType }-radio`
+                                                      }
                                                   />
                                               </>
                                           );
@@ -595,6 +598,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             minLength={ 3 }
                             width={ 16 }
                             initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
+                            data-componentId={ `${ componentId }-sector-identifier-uri` }
                         />
                     )
                     }

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { OrganizationType } from "@wso2is/common";
 import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
+import { OrganizationType } from "@wso2is/features/admin.organizations.v1/constants";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     DeploymentConfigInterface,
