@@ -481,7 +481,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                             if (!usernameConfig?.isAlphanumericOnly) {
                                                 regExpInvalidUsername = new RegExp(
                                                     UserManagementConstants.
-                                                    USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
+                                                        USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
                                             }
 
                                             // Check username length validations.
