@@ -72,6 +72,9 @@ Here are the steps to add text customization in the interfaces:
 10. **Add Localization in JSP Files:**
     - Add localization in JSP files using `<%=i18n(recoveryResourceBundle, customText, "password.reset.heading")%>`.
     - Ensure to add multi-line support if necessary by setting the `MULTI_LINE` metadata to `true` and adding the `new-line-support` helper class to the component.
+    
+10. **A sample PR:**   
+    - https://github.com/wso2/identity-apps/pull/5394
 
 By following these steps, you can effectively add text customization to the new interfaces.
 
