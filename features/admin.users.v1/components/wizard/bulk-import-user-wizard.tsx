@@ -63,7 +63,7 @@ import Axios,  { AxiosResponse }from "axios";
 import toUpper from "lodash-es/toUpper";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
@@ -71,6 +71,7 @@ import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../.
 import { ClaimManagementConstants } from "../../../admin.claims.v1/constants";
 import {
     AppConstants,
+    AppState,
     ModalWithSidePanel,
     UserStoreDetails,
     UserStoreProperty,
@@ -152,11 +153,6 @@ interface GroupMemberAssociation {
 }
 
 const ASK_PASSWORD_ATTRIBUTE: string = "identity/askPassword";
-const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy(
-    undefined,  // Mimetype.
-    userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
-    userConfig.bulkUserImportLimit.userCount  // Row Count.
-);
 const DATA_VALIDATION_ERROR: string = "Data validation error";
 const TIMEOUT_ERROR: string = "TIMEOUT_ERROR";
 const ADDRESS_HOME_ATTRIBUTE: string = "addresses#home";
@@ -210,6 +206,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const { getLink } = useDocumentation();
     const config: ValidationFormInterface = getUsernameConfiguration(validationData);
     const isAlphanumericUsername: boolean = config?.enableValidator === "true";
+    const fileImportTimeout: number = useSelector((state: AppState) =>
+        state.config.ui.features.bulkUserImport.fileImportTimeout);
+    const userLimit: number = useSelector((state: AppState) =>
+        state.config.ui.features.bulkUserImport.userLimit);
+    const csvFileProcessingStrategy: CSVFileStrategy = new CSVFileStrategy(
+        undefined,  // Mimetype.
+        userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
+        userLimit ? userLimit : userConfig.bulkUserImportLimit.userCount  // Row Count.
+    );
 
     const optionsArray: string[] = [];
 
@@ -1189,7 +1194,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const timeoutPromise: Promise<unknown> = new Promise((_: unknown, reject: (reason?: any) => void) => {
                 setTimeout(() => reject(
                     new Error(TIMEOUT_ERROR)
-                ), FILE_IMPORT_TIMEOUT);
+                ), fileImportTimeout ? fileImportTimeout : FILE_IMPORT_TIMEOUT);
             });
 
             const scimResponse: any = await Promise.race([ scimResponsePromise, timeoutPromise ]);
@@ -1836,7 +1841,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 <Grid.Column mobile={ 16 }>
                                     <FilePicker
                                         key={ 1 }
-                                        fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
+                                        fileStrategy={ csvFileProcessingStrategy }
                                         file={ selectedCSVFile }
                                         onChange={ (
                                             result: PickerResult<{
