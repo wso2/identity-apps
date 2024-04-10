@@ -301,7 +301,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     >
                         <Checkbox
                             checked={ initialRequested || requested || subject }
-                            onClick={ (!readOnly && !subject) ? handleRequestedCheckChange : ()=> null }
+                            onClick={ (!readOnly && !subject) ? handleRequestedCheckChange : () => null }
                             disabled={ mappingOn ? !mandatory : false }
                             readOnly={ subject || readOnly || isOIDCMapping }
                         />

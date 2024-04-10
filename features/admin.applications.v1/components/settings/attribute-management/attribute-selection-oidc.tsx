@@ -573,7 +573,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         )
                         : (
                             <Header.Content
-                                className= { isSelectedSubjectAttributeIncluded(scope)
+                                className={ isSelectedSubjectAttributeIncluded(scope)
                                     ? "align-self-center" : null }>
                                 {
                                     isSelectedSubjectAttributeIncluded(scope) && (<Hint warning={ true } popup compact>

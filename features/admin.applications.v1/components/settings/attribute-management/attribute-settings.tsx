@@ -723,7 +723,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     /**
      * Create sorted dropdown list.
      */
-    const createDropDownList = () : DropdownOptionsInterface[]=> {
+    const createDropDownList = () : DropdownOptionsInterface[] => {
         let soretdDropdownList: DropdownOptionsInterface[] = [];
 
         soretdDropdownList = createDropdownOption();
@@ -848,7 +848,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
             unfilteredExternalClaimsGroupedByScopes.map((scope: OIDCScopesClaimsListInterface) => {
                 scope?.claims.map((element: ExtendedExternalClaimInterface) => {
-                    if(element.requested) {
+                    if (element.requested) {
                         const option: DropdownOptionsInterface = {
                             key: element.claimURI,
                             text: (

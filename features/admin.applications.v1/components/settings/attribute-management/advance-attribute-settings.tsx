@@ -190,12 +190,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         checkValue: string
     ) : string => {
         const dropDownOptions: DropdownOptionsInterface[] = options as DropdownOptionsInterface[];
-        let claimURI: string = "";
+        let claimURI: string = defaultSubjectAttribute;
 
         if (showSubjectAttribute) {
-            claimURI = getDefaultDropDownValue (dropDownOptions, checkValue);
-        } else {
-            claimURI = defaultSubjectAttribute;
+            claimURI = getDefaultDropDownValue(dropDownOptions, checkValue);
         }
 
         return claimURI;
@@ -472,7 +470,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Message info>
                             <Icon name="info circle" />
                             { t("applications:forms.advancedAttributeSettings" +
-                        ".sections.subject.fields.subjectAttribute.info") }
+                            ".sections.subject.fields.subjectAttribute.info") }
                         </Message>
                     ) }
                     <Field.Dropdown
