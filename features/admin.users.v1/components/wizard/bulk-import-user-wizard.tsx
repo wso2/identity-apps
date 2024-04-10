@@ -61,7 +61,7 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
 import toUpper from "lodash-es/toUpper";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -210,11 +210,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         state.config.ui.features.bulkUserImport.fileImportTimeout);
     const userLimit: number = useSelector((state: AppState) =>
         state.config.ui.features.bulkUserImport.userLimit);
-    const csvFileProcessingStrategy: CSVFileStrategy = new CSVFileStrategy(
-        undefined,  // Mimetype.
-        userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
-        userLimit ? userLimit : userConfig.bulkUserImportLimit.userCount  // Row Count.
-    );
+    const csvFileProcessingStrategy: CSVFileStrategy = useMemo( () => {
+        return new CSVFileStrategy(
+            undefined,  // Mimetype.
+            userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
+            userLimit ? userLimit : userConfig.bulkUserImportLimit.userCount  // Row Count.
+        );
+    }, [ userLimit ]);
 
     const optionsArray: string[] = [];
 

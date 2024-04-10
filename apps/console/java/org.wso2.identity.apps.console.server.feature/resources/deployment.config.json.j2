@@ -613,6 +613,12 @@
                 "enabled": {% if console.bulk_user_import.enabled is defined %} {{ console.bulk_user_import.enabled }},
                 {% else %} true,
                 {% endif %}
+                {% if console.bulk_user_import.user_limit is defined %}
+                "userLimit": {{ console.bulk_user_import.user_limit }},
+                {% endif %}
+                {% if console.bulk_user_import.file_import_timeout is defined %}
+                "fileImportTimeout": {{ console.bulk_user_import.file_import_timeout }},
+                {% endif %}
                 "scopes": {
                     {% if console.bulk_user_import.scopes is defined %}
                     {% for operation, scopes in console.bulk_user_import.scopes.items() %}
