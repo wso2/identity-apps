@@ -18,18 +18,18 @@
 
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { SignOnMethodsWrapper } from "./components/sign-on-methods-wrapper";
-import { FeatureConfigInterface } from "../../../../admin.core.v1";
+import { SignOnMethodsCore } from "./sign-on-methods-core";
+import { FeatureConfigInterface } from "../../../../../admin.core.v1";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
-} from "../../../models";
+} from "../../../../models";
 
 /**
  * Proptypes for the sign on methods component.
  */
-
-interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
+interface SignOnMethodsWrapperPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    IdentifiableComponentInterface {
     /**
      * Editing application.
      */
@@ -68,7 +68,6 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
     hiddenAuthenticators: string[];
 }
 
-
 /**
  * Configure the different sign on strategies for an application.
  *
@@ -76,10 +75,9 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
  *
  * @returns React element.
  */
-export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
-    props: SignOnMethodsPropsInterface
+export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsInterface> = (
+    props: SignOnMethodsWrapperPropsInterface
 ): ReactElement => {
-
     const {
         application,
         appId,
@@ -94,7 +92,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     } = props;
 
     return (
-        <SignOnMethodsWrapper
+        <SignOnMethodsCore
             application={ application }
             appId={ appId }
             authenticationSequence={ authenticationSequence }
@@ -104,7 +102,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             readOnly={ readOnly }
             isSystemApplication={ isSystemApplication }
             hiddenAuthenticators={ hiddenAuthenticators }
-            data-componentid={ componentId }
+            data-componentid={ componentId  }
         />
     );
 };
@@ -112,6 +110,6 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 /**
  * Default props for the application sign-on-methods component.
  */
-SignOnMethods.defaultProps = {
-    "data-componentid": "sign-on-methods"
+SignOnMethodsWrapper.defaultProps = {
+    "data-componentid": "sign-on-methods-wrapper"
 };
