@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.14.17
+
+### Patch Changes
+
+- [#5934](https://github.com/wso2/identity-apps/pull/5934) [`06a65cb60a`](https://github.com/wso2/identity-apps/commit/06a65cb60a6e37df9ea3fdf80701cbbf1da0889e) Thanks [@brionmario](https://github.com/brionmario)! - Refactor `use-sign` hook
+
+* [#5911](https://github.com/wso2/identity-apps/pull/5911) [`dba852ecf6`](https://github.com/wso2/identity-apps/commit/dba852ecf6d93e244241d92815fc5704631d1740) Thanks [@RivinduM](https://github.com/RivinduM)! - Add missing data test ids
+
+- [#5923](https://github.com/wso2/identity-apps/pull/5923) [`cf1bddc178`](https://github.com/wso2/identity-apps/commit/cf1bddc1786dfcf1adee367ca13a3979b2e385cf) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Re-structuring sign-on-methods to add AI login flow component.
+
+- Updated dependencies [[`06a65cb60a`](https://github.com/wso2/identity-apps/commit/06a65cb60a6e37df9ea3fdf80701cbbf1da0889e), [`dba852ecf6`](https://github.com/wso2/identity-apps/commit/dba852ecf6d93e244241d92815fc5704631d1740), [`cf1bddc178`](https://github.com/wso2/identity-apps/commit/cf1bddc1786dfcf1adee367ca13a3979b2e385cf)]:
+  - @wso2is/features@2.14.16
+
 ## 2.14.16
 
 ### Patch Changes
