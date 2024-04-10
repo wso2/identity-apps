@@ -182,6 +182,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         }
     }, [ selectedSubjectValue ]);
 
+    /**
+     * To get the selected dropdown value only alternative subject identifier checkbox is checked.
+     */
     const getSelectedDropDownValue = ((
         options: DropdownOptionsInterface[],
         checkValue: string
@@ -297,6 +300,22 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     };
 
     /**
+     * This function resolves the hidden status of the info message of the subject attribute section
+     * @returns The hidden status
+     */
+    const resolveInfoSectionHiddenStatus = (): boolean => {
+        return !resolveSubjectAttributeHiddenStatus () && isEmpty(dropDownOptions);
+    };
+
+    /**
+     * This function resolves the hidden status of the sections of the subject attribute section
+     * @returns The hidden status
+     */
+    const resolveDropDownHiddenStatus = (): boolean => {
+        return resolveSubjectAttributeHiddenStatus() || isEmpty(dropDownOptions);
+    };
+
+    /**
      * This function resolves the hidden status of the subject attribute section.
      * @returns The hidden status.
      */
@@ -316,6 +335,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         setMandateLinkedLocalAccount(value);
     };
 
+    /**
+     * To revert the selected subject identifier value to the default value when the checkbox is unchecked.
+     */
     const disableAlternativeSubjectIdentifier = (value: boolean) => {
         setShowSubjectAttribute(value);
         setSelectedSubjectValue(defaultSubjectAttribute) ;
@@ -446,14 +468,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Hint>
                         </>
                     ) }
-                    { !resolveSubjectAttributeHiddenStatus () && isEmpty(dropDownOptions) && (
+                    { resolveInfoSectionHiddenStatus() && (
                         <Message info>
                             <Icon name="info circle" />
                             { t("applications:forms.advancedAttributeSettings" +
                         ".sections.subject.fields.subjectAttribute.info") }
                         </Message>
                     ) }
-
                     <Field.Dropdown
                         ariaLabel="Subject attribute"
                         name="subjectAttribute"
@@ -468,7 +489,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ claimMappingOn }
                         value={ selectedSubjectValue }
                         options={ dropDownOptions }
-                        hidden={ resolveSubjectAttributeHiddenStatus() || isEmpty(dropDownOptions) }
+                        hidden={ resolveDropDownHiddenStatus() }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
@@ -486,7 +507,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
                         hidden={ disabledFeatures?.includes("applications.attributes" +
                                         ".alternativeSubjectIdentifier")
-                            || resolveSubjectAttributeHiddenStatus() || isEmpty(dropDownOptions) }
+                            || resolveDropDownHiddenStatus() }
                         hint={
                             t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -505,7 +526,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         data-testid={ `${ componentId }-subject-include-tenant-domain-checkbox` }
                         hidden={ disabledFeatures?.includes("applications.attributes" +
                                         ".alternativeSubjectIdentifier")
-                            || resolveSubjectAttributeHiddenStatus() || isEmpty(dropDownOptions) }
+                            || resolveDropDownHiddenStatus() }
                         hint={
                             t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")

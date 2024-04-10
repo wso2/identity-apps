@@ -512,7 +512,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     };
 
     const isSelectedSubjectAttributeIncluded = (scope: OIDCScopesClaimsListInterface) : boolean => {
-
         return scope.claims.map((claim:ExternalClaim ) => claim.mappedLocalClaimURI).includes(selectedSubjectValue)
             && selectedSubjectValue !== defaultSubjectAttribute;
     };
@@ -523,7 +522,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             claim.mappedLocalClaimURI == selectedSubjectValue).localClaimDisplayName;
 
         return selectedAttributeURI.charAt(0).toUpperCase() + selectedAttributeURI.slice(1);
-
     };
 
     /**
