@@ -691,7 +691,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                             claim.localClaimDisplayName
                                         }
                                         subject={ selectedSubjectValue
-                                    === claim.mappedLocalClaimURI }
+                                        === claim.mappedLocalClaimURI &&
+                                        selectedSubjectValue !== defaultSubjectAttribute }
                                         isOIDCMapping={
                                             checkMapping(claim)
                                                 ? false
