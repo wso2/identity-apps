@@ -27,9 +27,9 @@ import {
     Grid,
     Message
 } from "semantic-ui-react";
-import { userstoresConfig } from "../../../../admin.extensions.v1/configs/userstores";
 import { AppState } from "../../../../admin.core.v1";
 import { SharedUserStoreUtils } from "../../../../admin.core.v1/utils";
+import { userstoresConfig } from "../../../../admin.extensions.v1/configs/userstores";
 import { getUsersList } from "../../../../admin.users.v1/api/users";
 import { UserListInterface } from "../../../../admin.users.v1/models/user";
 import { getConfiguration, getUsernameConfiguration } from "../../../../admin.users.v1/utils";
@@ -480,7 +480,8 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                             // Check if special characters enabled for username.
                                             if (!usernameConfig?.isAlphanumericOnly) {
                                                 regExpInvalidUsername = new RegExp(
-                                                    UserManagementConstants.USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
+                                                    UserManagementConstants.
+                                                    USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
                                             }
 
                                             // Check username length validations.

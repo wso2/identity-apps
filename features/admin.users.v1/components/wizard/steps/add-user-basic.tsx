@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -25,6 +24,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
 import { AppConstants } from "../../../../admin.core.v1/constants";
 import { history } from "../../../../admin.core.v1/helpers/history";
+import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import { EventPublisher } from "../../../../admin.core.v1/utils/event-publisher";
 import { SharedUserStoreUtils } from "../../../../admin.core.v1/utils/user-store-utils";
 import { userConfig } from "../../../../admin.extensions.v1/configs/user";
