@@ -566,7 +566,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                             label={ t("extensions:manage.accountLogin.editPage." +
                                                                 "usernameAlphanumeric") }
                                                             tabIndex={ 3 }
-                                                            hint={ !currentValues.isAlphanumericOnly ?
+                                                            hint={ !initialFormValues.isAlphanumericOnly ?
                                                                 t("extensions:manage.accountLogin.editPage." +
                                                                 "usernameSpecialCharsHint") : undefined }
                                                             listen={ (value: boolean) => setInitialFormValues(
