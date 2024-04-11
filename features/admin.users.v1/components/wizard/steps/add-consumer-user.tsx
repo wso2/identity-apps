@@ -27,9 +27,9 @@ import {
     Grid,
     Message
 } from "semantic-ui-react";
-import { userstoresConfig } from "../../../../admin.extensions.v1/configs/userstores";
 import { AppState } from "../../../../admin.core.v1";
 import { SharedUserStoreUtils } from "../../../../admin.core.v1/utils";
+import { userstoresConfig } from "../../../../admin.extensions.v1/configs/userstores";
 import { getUsersList } from "../../../../admin.users.v1/api/users";
 import { UserListInterface } from "../../../../admin.users.v1/models/user";
 import { getConfiguration, getUsernameConfiguration } from "../../../../admin.users.v1/utils";
@@ -91,6 +91,8 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
     const USERNAME_JAVA_REGEX: string = "UsernameJavaRegEx";
     const USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE: string = t("extensions:manage.features.user.addUser.validation." +
         "usernameSymbols");
+    const USERNAME_HAS_INVALID_SPECIAL_SYMBOLS_ERROR_MESSAGE: string = t("extensions:manage.features.user.addUser." +
+        "validation.usernameSpecialCharSymbols");
     const USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE: string =
         t("extensions:manage.features.user.addUser.validation.usernameLength", {
             maxLength: usernameConfig?.maxLength,
@@ -471,9 +473,16 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                             "validations.empty"
                                         ) }
                                         validation={ async (value: string, validation: Validation) => {
-                                        // Regular expression to validate having alphanumeric characters.
-                                            const regExpInvalidUsername: RegExp
-                                            = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
+                                            // Regular expression to validate having alphanumeric characters.
+                                            let regExpInvalidUsername: RegExp = new RegExp(
+                                                UserManagementConstants.USERNAME_VALIDATION_REGEX);
+
+                                            // Check if special characters enabled for username.
+                                            if (!usernameConfig?.isAlphanumericOnly) {
+                                                regExpInvalidUsername = new RegExp(
+                                                    UserManagementConstants.
+                                                        USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
+                                            }
 
                                             // Check username length validations.
                                             if (value.length < Number(usernameConfig.minLength)
@@ -484,8 +493,13 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                                 // Check username validity against userstore regex.
                                             } else if (!regExpInvalidUsername.test(value)) {
                                                 validation.isValid = false;
-                                                validation.errorMessages.push(
-                                                    USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
+                                                if (usernameConfig?.isAlphanumericOnly) {
+                                                    validation.errorMessages.push(
+                                                        USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
+                                                } else {
+                                                    validation.errorMessages.push(
+                                                        USERNAME_HAS_INVALID_SPECIAL_SYMBOLS_ERROR_MESSAGE);
+                                                }
                                             }
                                         } }
                                         type="text"
@@ -494,7 +508,12 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                         maxLength={ 60 }
                                     />
                                     <Hint>
-                                        { t("extensions:manage.features.user.addUser.validation.usernameHint", {
+                                        { usernameConfig?.isAlphanumericOnly ? t("extensions:manage.features." +
+                                                "user.addUser.validation.usernameHint", {
+                                            maxLength: usernameConfig?.maxLength,
+                                            minLength: usernameConfig?.minLength
+                                        }) : t("extensions:manage.features.user.addUser.validation" +
+                                        ".usernameSpecialCharHint", {
                                             maxLength: usernameConfig?.maxLength,
                                             minLength: usernameConfig?.minLength
                                         }) }
