@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Header } from "semantic-ui-react";
 import { PermissionMappingList } from "./permission-mapping-list";
 import { PermissionMappingListItem } from "./permission-mapping-list-item";
-import { ExtendedFeatureConfigInterface } from "../../../../../configs/models";
+import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
 import { APIResourcePermissionInterface } from "../../../models";
 
 /**
@@ -84,7 +84,7 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
 
     const { t } = useTranslation();
 
-    const [ addedPermissions, setAddedPermissions ] 
+    const [ addedPermissions, setAddedPermissions ]
         = useState<Map<string, APIResourcePermissionInterface>>(initialPermissions ? initialPermissions : new Map());
 
     /**
@@ -93,10 +93,10 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
     useEffect(() => {
         setPermissionsList(addedPermissions);
     }, [ addedPermissions ]);
-    
+
     /**
      * Update the permission map when a new permission is added or deleted.
-     * 
+     *
      * @param permission - The permission to be added or deleted.  `APIResourcePermissionInterface`
      * @param action - The action to be performed. `set` or `delete`
      */
@@ -108,12 +108,12 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
                 updatedPermissions.set(permission.name, permission);
 
                 break;
-            
+
             case "delete":
                 updatedPermissions.delete(permission.name);
 
                 break;
-        
+
             default:
                 break;
         }
@@ -145,7 +145,7 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
                                 "fields.permissionList.label") }
                         </Header>
                         <EmphasizedSegment className="mt-0">
-                            <PermissionMappingList 
+                            <PermissionMappingList
                                 addedPermissions={ addedPermissions }
                                 updatePermissions={ updatePermissions } />
                         </EmphasizedSegment>

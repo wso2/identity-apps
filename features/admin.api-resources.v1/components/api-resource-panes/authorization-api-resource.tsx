@@ -26,7 +26,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
+import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
 import {
     APIResourcePanesCommonPropsInterface
 } from "../../models";
@@ -34,7 +34,7 @@ import {
 /**
  * Prop-types for the Authorization part of the edit API Resource page component.
  */
-type AuthorizationAPIResourceInterface = SBACInterface<ExtendedFeatureConfigInterface> & 
+type AuthorizationAPIResourceInterface = SBACInterface<ExtendedFeatureConfigInterface> &
     IdentifiableComponentInterface & APIResourcePanesCommonPropsInterface;
 
 /**
@@ -73,12 +73,12 @@ export const AuthorizationAPIResource: FunctionComponent<AuthorizationAPIResourc
                                     name="authorization"
                                     label={ t("extensions:develop.apiResource.tabs.authorization.form" +
                                         ".fields.authorize.label") }
-                                    hint={ 
+                                    hint={
                                         (<>
                                             { t("extensions:develop.apiResource.tabs.authorization.form" +
                                                 ".fields.authorize.hint") }
                                             <DocumentationLink
-                                                link={ getLink("develop.apiResources.addAPIResource." + 
+                                                link={ getLink("develop.apiResources.addAPIResource." +
                                                     "requiredAuthorization.learnMore") }
                                             >
                                                 { t("extensions:common.learnMore") }
@@ -86,8 +86,8 @@ export const AuthorizationAPIResource: FunctionComponent<AuthorizationAPIResourc
                                         </>)
                                     }
                                     width={ 16 }
-                                    defaultValue={ apiResourceData.requiresAuthorization } 
-                                    readOnly={ true }          
+                                    defaultValue={ apiResourceData.requiresAuthorization }
+                                    readOnly={ true }
                                     data-componentid={ `${componentId}-authorize` }
                                 />
                             </Form>

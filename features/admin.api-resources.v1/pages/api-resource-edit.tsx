@@ -25,8 +25,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { AppState, getEmptyPlaceholderIllustrations, history } from "../../../../admin.core.v1";
-import { ExtendedFeatureConfigInterface } from "../../../configs/models";
+import { AppState, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { useAPIResourceDetails } from "../api";
 import { EditAPIResource } from "../components";
 import { APIResourcesConstants } from "../constants";
@@ -74,7 +74,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
     useEffect(() => {
         setAPIResourceIdFromPath();
     }, []);
-    
+
     /**
      * The following useEffect is used to handle if the user has the required scopes to update the API resource
      */
@@ -170,7 +170,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                             className="choreo-label"
                         >
                             { t("extensions:develop.apiResource.managedByChoreoText") }
-                        </Label> 
+                        </Label>
                     )
                 ) }
                 loadingStateOptions={ {
@@ -186,13 +186,13 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                 bottomMargin={ false }
                 pageHeaderMaxWidth={ true }
             >
-                <EditAPIResource 
-                    apiResourceData={ apiResourceData } 
-                    isAPIResourceDataLoading={ isAPIResourceDatatLoading }   
+                <EditAPIResource
+                    apiResourceData={ apiResourceData }
+                    isAPIResourceDataLoading={ isAPIResourceDatatLoading }
                     featureConfig={ featureConfig }
                     isReadOnly={ isReadOnly }
                     isManagedByChoreo={ isManagedByChoreo }
-                    mutateAPIResource={ updateAPIResource }           
+                    mutateAPIResource={ updateAPIResource }
                 />
             </TabPageLayout>)
     );

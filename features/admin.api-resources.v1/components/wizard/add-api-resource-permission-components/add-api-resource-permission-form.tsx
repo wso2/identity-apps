@@ -17,41 +17,41 @@
  */
 
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { ExtendedFeatureConfigInterface } from "../../../../../configs/models";
+import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
 import { getAPIResourcePermissions } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
-import { APIResourcePermissionInterface, PermissionMappingInterface } from "../../../models";
+import { APIResourcePermissionInterface } from "../../../models";
 
 /**
  * Prop-types for the API resources page component.
  */
-interface PermissionMappingListItemInterface extends SBACInterface<ExtendedFeatureConfigInterface>,
-    IdentifiableComponentInterface, PermissionMappingInterface {
+interface AddAPIResourceBasicInterface extends SBACInterface<ExtendedFeatureConfigInterface>,
+    IdentifiableComponentInterface {
     /**
-     * Trigger add permission form submit action.
+     * trigger submission
      */
     triggerAddPermission: boolean;
     /**
-     * Permission value loading status.
+     * Current permission validation loading status.
      */
-    isPermissionValidationLoading: boolean;
+    permissionValidationLoading: boolean;
     /**
-     * Set the trigger add permission form submit action.
+     * Add permission to the list
      */
-    setAddPermission: () => void;
+    addPermission: (permission: APIResourcePermissionInterface) => void;
     /**
-     * Set the latest permission form values.
+     * Set is submitting
      */
-    setLatestPermissionFormValues: (formValue: Map<string, FormValue>) => void;
+    setIsSubmitting: (isSubmitting: boolean) => void;
     /**
-     * Set the permission value loading status.
+     * Set current permission validation loading status.
      */
-    setPermissionValidationLoading: (status: boolean) => void;
+    setPermissionValidationLoading: (loading: boolean) => void;
 }
 
 const FORM_ID: string = "apiResource-general-details";
@@ -62,24 +62,20 @@ const FORM_ID: string = "apiResource-general-details";
  * @param props - Props injected to the component.
  * @returns API Resources Page component
  */
-export const PermissionMappingListItem: FunctionComponent<PermissionMappingListItemInterface> = (
-    props: PermissionMappingListItemInterface
+export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasicInterface> = (
+    props: AddAPIResourceBasicInterface
 ): ReactElement => {
 
     const {
-        isPermissionValidationLoading,
-        addedPermissions,
+        permissionValidationLoading,
         triggerAddPermission,
-        setAddPermission,
-        updatePermissions,
-        setLatestPermissionFormValues,
+        addPermission,
+        setIsSubmitting,
         setPermissionValidationLoading,
         ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
-    
-    const [ resetForm, setResetForm ] = useTrigger();
 
     /**
      * Prepare form values for submitting.
@@ -87,44 +83,39 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const submitNewPermission = (values: Map<string, FormValue>): void => {
+    const submitAddPermission = (values: Map<string, FormValue>): void => {
         const permission: APIResourcePermissionInterface = {
             description: values.get("description").toString(),
             displayName: values.get("displayName").toString(),
             name: values.get("identifier").toString()
         };
 
-        // Update the permissions map
-        updatePermissions(permission, "set");
-        setLatestPermissionFormValues(undefined);
+        setIsSubmitting(true);
 
-        // reset the form
-        setResetForm();
+        addPermission(permission);
     };
 
     return (
         <Forms
-            data-testid={ `${componentId}-form` }
-            onSubmit={ submitNewPermission }
+            data-componentid={ `${componentId}-form` }
+            onSubmit={ submitAddPermission }
             id={ FORM_ID }
             submitState={ triggerAddPermission }
             uncontrolledForm={ false }
-            resetState  = { resetForm }
-            onChange= { (isPure: boolean, values: Map<string, FormValue>) => setLatestPermissionFormValues(values) }
         >
             <Grid>
-                <Grid.Row columns={ 2 } padded="vertically">
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                         <Field
                             type="text"
                             name="identifier"
-                            label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
-                                "fields.permission.label") }
-                            placeholder={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions." +
-                                "form.fields.permission.placeholder") }
+                            label={ t("extensions:develop.apiResource.tabs.permissions.form.fields.permission.label") }
+                            placeholder={ t("extensions:develop.apiResource.tabs.permissions.form.fields." +
+                                "permission.placeholder") }
+                            required={ true }
+                            tabIndex={ 1 }
                             requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
                                 "permissions.form.fields.permission.emptyValidate") }
-                            loading={ isPermissionValidationLoading }
                             validation={ async (value: string, validation: Validation) => {
 
                                 setPermissionValidationLoading(true);
@@ -134,15 +125,10 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
                                             "addApiResource.steps.permissions.form.fields.permission.invalid"));
-                                    } else if (addedPermissions.has(value)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
-                                        "addApiResource.steps.permissions.form.fields.permission.uniqueValidate"));
                                     } else {
-
                                         const filter: string = "name eq " + value;
 
-                                        const response: APIResourcePermissionInterface[] = 
+                                        const response: APIResourcePermissionInterface[] =
                                             await getAPIResourcePermissions(filter);
 
                                         if (response?.length > 0) {
@@ -155,31 +141,31 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                                     setPermissionValidationLoading(false);
                                 }
                             } }
-                            required={ true }
-                            tabIndex={ 1 }
                             data-testid={ `${componentId}-identifier` }
+                            loading={ permissionValidationLoading }
                         />
                         <Hint>
-                            <Trans 
+                            <Trans
                                 i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps." +
                                     "permissions.form.fields.permission.hint" }>
-                                A unique value that acts as the scope when requesting an access token. 
+                                A unique value that acts as the scope when requesting an access token.
                                 <b>Note that the permission cannot be modified once created.</b>
                             </Trans>
                         </Hint>
                     </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                         <Field
                             type="text"
                             name="displayName"
-                            label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
-                                "fields.displayName.label") }
-                            placeholder={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions." +
-                                "form.fields.displayName.placeholder") }
-                            requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
-                                "permissions.form.fields.displayName.emptyValidate") }
+                            label={ t("extensions:develop.apiResource.tabs.permissions.form.fields.displayName.label") }
+                            placeholder={ t("extensions:develop.apiResource.tabs.permissions.form.fields." +
+                                "displayName.placeholder") }
                             required={ true }
                             tabIndex={ 2 }
+                            requiredErrorMessage={ t("extensions:develop.apiResource.tabs.permissions.form.fields." +
+                                "displayName.emptyValidate") }
                             data-testid={ `${componentId}-displayName` }
                         />
                         <Hint>
@@ -188,16 +174,14 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-
-                <Grid.Row columns={ 1 } className="pt-0 pb-0">
-                    <Grid.Column width={ 16 }>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                         <Field
                             type="text"
                             name="description"
-                            label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
-                                "fields.description.label") }
-                            placeholder={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions." +
-                                "form.fields.description.placeholder") }
+                            label={ t("extensions:develop.apiResource.tabs.permissions.form.fields.description.label") }
+                            placeholder={ t("extensions:develop.apiResource.tabs.permissions.form.fields." +
+                                "description.placeholder") }
                             tabIndex={ 3 }
                             data-testid={ `${componentId}-description` }
                         />
@@ -205,24 +189,6 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                             { t("extensions:develop.apiResource.wizard.addApiResource.steps." +
                                 "permissions.form.fields.description.hint") }
                         </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 } textAlign="right">
-                        <Field
-                            type="button"
-                            form={ FORM_ID }
-                            size="small"
-                            tabIndex={ 4 }
-                            buttonType="primary_btn"
-                            name="submit-button"
-                            icon="add"
-                            value={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
-                                "button") }
-                            loading={ isPermissionValidationLoading }
-                            data-testid={ `${componentId}-add-permission-btn` }    
-                            onClick={ setAddPermission } />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -233,6 +199,6 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
 /**
  * Default props for the component.
  */
-PermissionMappingListItem.defaultProps = {
-    "data-componentid": "permission-mapping-list-item"
+AddAPIResourcePermissionForm.defaultProps = {
+    "data-componentid": "add-api-resource-permission-form"
 };
