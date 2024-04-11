@@ -1,5 +1,12 @@
 # @wso2is/console
 
+## 2.14.18
+
+### Patch Changes
+
+- Updated dependencies [[`270b764db7`](https://github.com/wso2/identity-apps/commit/270b764db773f6c8e7ab06302718a1583bdb4505)]:
+  - @wso2is/features@2.14.17
+
 ## 2.14.17
 
 ### Patch Changes

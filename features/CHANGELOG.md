@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.14.17
+
+### Patch Changes
+
+- [#5941](https://github.com/wso2/identity-apps/pull/5941) [`270b764db7`](https://github.com/wso2/identity-apps/commit/270b764db773f6c8e7ab06302718a1583bdb4505) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add missing validation for alphanumeric special charactor username type
+
 ## 2.14.16
 
 ### Patch Changes
