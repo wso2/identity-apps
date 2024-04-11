@@ -37,7 +37,7 @@ export const commonConfig: CommonConfig = {
     extendedRoutes: () => {
         const routes: RouteInterface[] = [
             {
-                category: "console:develop.features.sidePanel.categories.applicatin",
+                category: "console:develop.features.sidePanel.categories.application",
                 children: [
                     {
                         component: lazy(() =>
