@@ -22,11 +22,11 @@ import { HttpMethods } from "@wso2is/core/models";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../admin.core.v1/hooks/use-request";
+} from "../../admin.core.v1/hooks/use-request";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../../../admin.core.v1/store";
+import { store } from "../../admin.core.v1/store";
 import { APIResourcesConstants } from "../constants";
-import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface, 
+import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface,
     UpdatedAPIResourceInterface } from "../models";
 
 /**
@@ -38,7 +38,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 /**
  * Get API resources for the identifier validation.
  * Only to be used for the identifier validation.
- * 
+ *
  * @param filter - filter.
  * @returns `Promise<APIResourcesListInterface | IdentityAppsApiException>`
  */
@@ -123,7 +123,7 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
 };
 
 /**
- * 
+ *
  * @param apiResourceId - id of the API resource
  * @returns `Promise<APIResourceInterface>`
  * @throws `IdentityAppsApiException`
@@ -162,7 +162,7 @@ export const useAPIResourceDetails = <Data = APIResourceInterface, Error = Reque
 /**
  * Get permissions of an API resource for the permission validation.
  * Only to be used for the permission validation.
- * 
+ *
  * @param filter - filter.
  * @returns `Promise<APIResourcePermissionInterface[]>`
  * @throws `IdentityAppsApiException`
@@ -220,7 +220,7 @@ export const deleteAPIResource = (apiResourceId: string): Promise<null | Identit
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.authzEndpoint}/${APIResourcesConstants.API_RESOURCE_DIR}/` + 
+        url: `${store.getState().config.endpoints.authzEndpoint}/${APIResourcesConstants.API_RESOURCE_DIR}/` +
             `${apiResourceId}`
     };
 
@@ -250,13 +250,13 @@ export const deleteAPIResource = (apiResourceId: string): Promise<null | Identit
 
 /**
  * Update an API resource.
- * 
+ *
  * @param apiResourceId - UUID of the API resource that needed to be updated.
  * @param updateAPIResourceBody - Body of the API resource that needed to be updated.
  * @returns `Promise<null | IdentityAppsApiException>`
  */
 export const updateAPIResource = (
-    apiResourceId: string, 
+    apiResourceId: string,
     updateAPIResourceBody: UpdatedAPIResourceInterface
 ): Promise<null | IdentityAppsApiException> => {
 
@@ -285,7 +285,7 @@ export const updateAPIResource = (
 
 /**
  * Create an API resource.
- * 
+ *
  * @param apiResourceBody - Body of the API resource that needed to be created.
  * @returns `Promise<null | IdentityAppsApiException>`
  */

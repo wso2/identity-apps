@@ -21,11 +21,11 @@ import { CommonUtils } from "@wso2is/core/utils";
 import {
     DataTable, EmptyPlaceholder, LinkButton, PrimaryButton, TableActionsInterface, TableColumnInterface
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
+import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 
 /**
@@ -173,17 +173,17 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
 
     /**
      * Empty placeholder for the API resource permissions list.
-     * 
+     *
      * @returns `ReactElement`
      */
     const showPlaceholders = (): ReactElement => {
         if (permissionList?.length === 0) {
-            return ( 
+            return (
                 <EmptyPlaceholder
                     subtitle = { [ t("extensions:develop.apiResource.tabs.permissions.empty.subTitle") ] }
                     title={ t("extensions:develop.apiResource.tabs.permissions.empty.title") }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
-                    action={ 
+                    action={
                         (
                             <PrimaryButton
                                 data-componentid= { `${componentId}-add-permission-button` }
@@ -213,7 +213,7 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
                 />
             );
         }
-        
+
         return null;
     };
 

@@ -28,12 +28,12 @@ import {
     ListLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
-import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
+import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 import { AddAPIResourcePermission } from "../wizard";
 
@@ -84,7 +84,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
 
     /**
      * Handles the search query change.
-     * 
+     *
      * @param event - Change event
      */
     const searchPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +133,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                 isManagedByChoreo && (
                     <Alert severity="warning">
                         <Trans i18nKey={ "extensions:develop.apiResource.tabs.choreoApiEditWarning" }>
-                            Updating this API resource will create unforeseen errors as this is an API 
+                            Updating this API resource will create unforeseen errors as this is an API
                             resource managed by Choreo. <b>Proceed with caution.</b>
                         </Trans>
                     </Alert>
@@ -217,8 +217,8 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
             </EmphasizedSegment>
             {
                 triggerAddAPIResourcePermissionModal && (
-                    <AddAPIResourcePermission 
-                        closeWizard={ () => setTriggerAddAPIResourcePermissionModal() } 
+                    <AddAPIResourcePermission
+                        closeWizard={ () => setTriggerAddAPIResourcePermissionModal() }
                         handleUpdateAPIResource={ handleUpdateAPIResource }
                     />
                 )

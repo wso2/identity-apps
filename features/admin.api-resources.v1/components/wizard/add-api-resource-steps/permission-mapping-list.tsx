@@ -23,7 +23,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Header, Label, SemanticICONS } from "semantic-ui-react";
-import { ExtendedFeatureConfigInterface } from "../../../../../configs/models";
+import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
 import { APIResourcePermissionInterface, PermissionMappingInterface } from "../../../models";
 
 /**
@@ -58,7 +58,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
     useEffect(() => {
         setPermissionsList([ ...addedPermissions.values() ].reverse());
     }, [ addedPermissions ]);
-    
+
     /**
      * Resolves data table actions.
      *
@@ -136,12 +136,12 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
 
     /**
      * Empty placeholder for the permissions list.
-     * 
+     *
      * @returns `ReactElement`
      */
     const showPlaceholders = (): ReactElement => {
         if (permissionsList?.length === 0) {
-            return ( 
+            return (
                 <>
                     <Divider className="mb-1"r hidden />
                     <EmptyPlaceholder
@@ -151,7 +151,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                 </>
             );
         }
-        
+
         return null;
     };
 

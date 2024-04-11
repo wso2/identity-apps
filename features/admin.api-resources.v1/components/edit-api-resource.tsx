@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
-import { ExtendedFeatureConfigInterface } from "../../../configs/models";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { updateAPIResource } from "../api";
 import { APIResourcesConstants } from "../constants";
 import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
@@ -33,7 +33,7 @@ import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
 /**
  * Prop-types for the API resources page component.
  */
-interface EditAPIResourceInterface extends SBACInterface<ExtendedFeatureConfigInterface>, 
+interface EditAPIResourceInterface extends SBACInterface<ExtendedFeatureConfigInterface>,
     IdentifiableComponentInterface {
     /**
      * List of API Resources
@@ -90,7 +90,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             menuItem: t("extensions:develop.apiResource.tabs.general.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <GeneralAPIResource 
+                    <GeneralAPIResource
                         apiResourceData={ apiResourceData }
                         isAPIResourceDataLoading={ isAPIResourceDataLoading }
                         featureConfig={ featureConfig }
@@ -105,7 +105,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             menuItem: t("extensions:develop.apiResource.tabs.permissions.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <PermissionAPIResource 
+                    <PermissionAPIResource
                         apiResourceData={ apiResourceData }
                         isAPIResourceDataLoading={ isAPIResourceDataLoading }
                         isSubmitting = { isSubmitting }
@@ -191,7 +191,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                                 ".invalidPayloadError.message")
                         }));
 
-                        break;   
+                        break;
 
                     default:
                         dispatch(addAlert<AlertInterface>({
@@ -205,7 +205,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             })
             .finally(() => {
                 setIsSubmitting(false);
-                
+
                 // Callback function to be executed after the update is completed.
                 callback && callback();
             });

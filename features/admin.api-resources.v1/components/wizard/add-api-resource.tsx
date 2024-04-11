@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddAPIResourceAuthorization, AddAPIResourceBasic, AddAPIResourcePermissions } from "./add-api-resource-steps";
-import { history } from "../../../../../admin.core.v1";
+import { history } from "../../../admin.core.v1";
 import { createAPIResource } from "../../api";
 import { getAPIResourceWizardStepIcons } from "../../configs";
 import { APIResourcesConstants } from "../../constants";
@@ -71,7 +71,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    //External trigger to submit the authorization step. 
+    //External trigger to submit the authorization step.
     let submitAuthorization: () => void;
 
     const [ submitBasicDetails, setSubmitBasicDetails ] = useTrigger();
