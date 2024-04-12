@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.14.19
+
+### Patch Changes
+
+- [#5940](https://github.com/wso2/identity-apps/pull/5940) [`2fbc03ad33`](https://github.com/wso2/identity-apps/commit/2fbc03ad33e5c69fc1120ff02c583bfac1c2901c) Thanks [@brionmario](https://github.com/brionmario)! - Remove unwanted `extensions` configs in `deployment.config.json`
+
+* [#5950](https://github.com/wso2/identity-apps/pull/5950) [`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `api-resources.v1` & `api-resources.v2`
+
+* Updated dependencies [[`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e), [`51195d6ce3`](https://github.com/wso2/identity-apps/commit/51195d6ce333635e769886e1fd1f8b90d4cab7b1), [`1fdd9be566`](https://github.com/wso2/identity-apps/commit/1fdd9be566b110a7cb7aa053a5433ca13043cd4d)]:
+  - @wso2is/core@2.0.39
+  - @wso2is/features@2.14.18
+  - @wso2is/access-control@2.0.24
+  - @wso2is/dynamic-forms@2.0.43
+  - @wso2is/form@2.0.44
+  - @wso2is/forms@2.0.29
+  - @wso2is/i18n@2.1.8
+  - @wso2is/react-components@2.1.14
+
 ## 2.14.18
 
 ### Patch Changes
