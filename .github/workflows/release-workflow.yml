@@ -31,6 +31,8 @@ env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
+    SHOULD_GENERATE_CHANGESET: 'true'
+    IS_HOTFIX: 'false'
 
 jobs:
     release:
@@ -157,6 +159,7 @@ jobs:
                       ${{ runner.os }}-maven-
 
             - name: 📣 Create Release Pull Request or Publish to npm
+              if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' }}
               id: changesets
               uses: changesets/action@v1
               with:
