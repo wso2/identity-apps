@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.14.20
+
+### Patch Changes
+
+- [#5951](https://github.com/wso2/identity-apps/pull/5951) [`e882bc3fdd`](https://github.com/wso2/identity-apps/commit/e882bc3fdd1ffdc9e632ea089feb621f5a899ffe) Thanks [@brionmario](https://github.com/brionmario)! - Add `apiResourcesV1` & `apiResourcesV2` to DEV config
+
+- Updated dependencies [[`e882bc3fdd`](https://github.com/wso2/identity-apps/commit/e882bc3fdd1ffdc9e632ea089feb621f5a899ffe)]:
+  - @wso2is/features@2.14.19
+
 ## 2.14.19
 
 ### Patch Changes
