@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,10 @@
  */
 
 import { FunctionComponent, SVGProps } from "react";
-import { ReactComponent as AuthorizeIcon } from 
-    "../../../../themes/default/assets/images/icons/account-policy-icon.svg";
-import { ReactComponent as DocumentIcon } from "../../../../themes/default/assets/images/icons/document-icon.svg";
-import { ReactComponent as KeyIcon } from "../../../../themes/default/assets/images/icons/key-icon.svg";
+import { ReactComponent as AuthorizeIcon } from
+    "../../themes/default/assets/images/icons/account-policy-icon.svg";
+import { ReactComponent as DocumentIcon } from "../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as KeyIcon } from "../../themes/default/assets/images/icons/key-icon.svg";
 
 export const getAPIResourceWizardStepIcons = (): {
     general: FunctionComponent<SVGProps<SVGSVGElement>>;
