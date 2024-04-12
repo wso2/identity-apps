@@ -1121,7 +1121,8 @@
         "administratorRoleDisplayName": "Administrator",
         "useRoleClaimAsGroupClaim": false,
         "legacyMode": {
-            "apiResources": true,
+            "apiResourcesV1": false,
+            "apiResourcesV2": true,
             "applicationListSystemApps": false,
             "applicationOIDCSubjectIdentifier": true,
             "applicationRequestPathAuthentication": false,
