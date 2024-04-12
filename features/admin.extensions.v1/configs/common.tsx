@@ -18,9 +18,9 @@
 
 import { UserGroupIcon } from "@oxygen-ui/react-icons";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
-import { APIResourcesConstants } from "features/admin.api-resources.v1/constants";
 import React, { lazy } from "react";
 import { CommonConfig } from "./models";
+import { APIResourcesConstants } from "../../admin.api-resources.v1/constants";
 import { getSidePanelIcons } from "../../admin.core.v1/configs/ui";
 import { AppConstants } from "../../admin.core.v1/constants";
 
@@ -240,7 +240,7 @@ export const commonConfig: CommonConfig = {
                 order: 2,
                 path: AppConstants.getPaths().get("API_RESOURCES"),
                 protected: true,
-                showOnSidePanel: legacyMode?.apiResourcesV1
+                showOnSidePanel: legacyMode?.apiResourcesV2
             });
         }
 
