@@ -1,5 +1,24 @@
 # @wso2is/features
 
+## 2.14.18
+
+### Patch Changes
+
+- [#5950](https://github.com/wso2/identity-apps/pull/5950) [`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `api-resources.v1` & `api-resources.v2`
+
+* [#5945](https://github.com/wso2/identity-apps/pull/5945) [`51195d6ce3`](https://github.com/wso2/identity-apps/commit/51195d6ce333635e769886e1fd1f8b90d4cab7b1) Thanks [@brionmario](https://github.com/brionmario)! - Rename `admin.api-resources.v1` to `admin.api-resources.v2`
+
+- [#5948](https://github.com/wso2/identity-apps/pull/5948) [`1fdd9be566`](https://github.com/wso2/identity-apps/commit/1fdd9be566b110a7cb7aa053a5433ca13043cd4d) Thanks [@brionmario](https://github.com/brionmario)! - Move fluffy `api-resources` to features -> `admin.api-resources.v1`
+
+- Updated dependencies [[`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e)]:
+  - @wso2is/core@2.0.39
+  - @wso2is/access-control@2.0.24
+  - @wso2is/dynamic-forms@2.0.43
+  - @wso2is/form@2.0.44
+  - @wso2is/forms@2.0.29
+  - @wso2is/i18n@2.1.8
+  - @wso2is/react-components@2.1.14
+
 ## 2.14.17
 
 ### Patch Changes
