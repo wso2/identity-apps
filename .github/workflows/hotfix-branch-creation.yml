@@ -91,7 +91,7 @@ jobs:
           echo "Changing the Release workflow to work with the hotfix branch."
 
           # Change the branch name in the release.yml file.
-          sed -i '/branches:/ {s/master/hotfix-'"${TAG//\//\\/}"'/}' .github/workflows/release-workflow.yml
+          sed -i '/- branches: \[ master \]/s/master/hotfix/' .github/workflows/release-workflow.yml
           sed -i 's/BRANCH: .*/BRANCH: hotfix-'"${TAG//\//\\/}"'/' .github/workflows/release-workflow.yml
 
           # Disable the changesets action step.
