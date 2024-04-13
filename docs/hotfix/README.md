@@ -23,4 +23,4 @@ git fetch upstream
 >
 > It's not needed to add changesets to a hotfix PR.
 
-4. Upon merging the PR, a hotfix release will be automatically triggered. You can find the hotfix release in the [releases](https://github.com/wso2/identity-apps/releases).
+4. Upon merging the PR, a hotfix release will be automatically triggered. You can find the created hotfix release in the [releases](https://github.com/wso2/identity-apps/releases).
