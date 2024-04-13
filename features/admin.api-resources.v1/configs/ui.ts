@@ -17,7 +17,7 @@
  */
 
 import { FunctionComponent, SVGProps } from "react";
-import { ReactComponent as AuthorizeIcon } from 
+import { ReactComponent as AuthorizeIcon } from
     "../../themes/default/assets/images/icons/account-policy-icon.svg";
 import { ReactComponent as DocumentIcon } from "../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as KeyIcon } from "../../themes/default/assets/images/icons/key-icon.svg";

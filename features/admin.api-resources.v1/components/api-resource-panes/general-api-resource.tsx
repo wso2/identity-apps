@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import { Show } from "@wso2is/access-control";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -29,12 +31,12 @@ import {
     EmphasizedSegment
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider } from "semantic-ui-react";
 import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
-import { FeatureConfigInterface, history } from "../../../admin.core.v1";
+import { history } from "../../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
 import {
@@ -47,7 +49,7 @@ import {
 /**
  * Prop-types for the API resources page component.
  */
-type GeneralAPIResourceInterface = SBACInterface<FeatureConfigInterface> &
+type GeneralAPIResourceInterface = SBACInterface<ExtendedFeatureConfigInterface> &
     IdentifiableComponentInterface & APIResourcePanesCommonPropsInterface;
 
 const FORM_ID: string = "apiResource-general-details";
@@ -64,6 +66,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
 
     const {
         isReadOnly,
+        isManagedByChoreo,
         isSubmitting,
         handleUpdateAPIResource,
         apiResourceData,
@@ -99,14 +102,40 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                 setShowDeleteConfirmationModal(false);
                 history.push(APIResourcesConstants.getPaths().get("API_RESOURCES"));
             })
-            .catch(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
-                        ".genericError.message")
-                }));
+            .catch((error: IdentityAppsApiException) => {
+                switch(error?.code) {
+                    case APIResourcesConstants.UNAUTHORIZED_ACCESS:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".unauthorizedError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".unauthorizedError.message")
+                        }));
+
+                        break;
+
+                    case APIResourcesConstants.NO_VALID_API_RESOURCE_ID_FOUND:
+                    case APIResourcesConstants.API_RESOURCE_NOT_FOUND:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".notFoundError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".notFoundError.message")
+                        }));
+
+                        break;
+
+                    default:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".genericError.message")
+                        }));
+                }
             })
             .finally(() => {
                 setDeleteAPIResourceLoading(false);
@@ -162,7 +191,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
      */
     const updateConfigurations = (values: GeneralUpdateAPIResourceInterface): void => {
         handleUpdateAPIResource({
-            name: values.displayName?.toString().trim()
+            displayName: values.displayName?.toString().trim()
         });
     };
 
@@ -195,6 +224,16 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
         !isAPIResourceDataLoading
             ? (
                 <>
+                    {
+                        isManagedByChoreo && (
+                            <Alert severity="warning">
+                                <Trans i18nKey={ "extensions:develop.apiResource.tabs.choreoApiEditWarning" }>
+                                    Updating this API resource will create unforeseen errors as this is an API
+                                    resource managed by Choreo. <b>Proceed with caution.</b>
+                                </Trans>
+                            </Alert>
+                        )
+                    }
                     <EmphasizedSegment padded="very">
                         <Form
                             data-testid={ `${componentId}-form` }
@@ -204,7 +243,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                             uncontrolledForm={ false }
                         >
                             {
-                                apiResourceData.name && (
+                                apiResourceData.displayName && (
                                     <Field.Input
                                         ariaLabel="Site title input field"
                                         inputType="name"
@@ -215,7 +254,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                                                 "general.form.fields.name.placeholder") }
                                         readOnly={ isReadOnly }
                                         required
-                                        initialValue={ apiResourceData.name }
+                                        initialValue={ apiResourceData.displayName }
                                         maxLength={ 100 }
                                         minLength={ 0 }
                                         width={ 16 }
@@ -259,7 +298,6 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                             />
                         </Form>
                     </EmphasizedSegment>
-                    <Divider hidden />
                     { resolveDangerActions() }
                     {
                         deletingAPIResource && (

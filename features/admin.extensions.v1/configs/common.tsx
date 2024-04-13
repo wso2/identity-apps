@@ -20,6 +20,7 @@ import { UserGroupIcon } from "@oxygen-ui/react-icons";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import React, { lazy } from "react";
 import { CommonConfig } from "./models";
+import { APIResourcesConstants } from "../../admin.api-resources.v1/constants";
 import { getSidePanelIcons } from "../../admin.core.v1/configs/ui";
 import { AppConstants } from "../../admin.core.v1/constants";
 
@@ -36,46 +37,6 @@ export const commonConfig: CommonConfig = {
     enableOrganizationAssociations: false,
     extendedRoutes: () => {
         const routes: RouteInterface[] = [
-            {
-                category: "console:develop.features.sidePanel.categories.applicatin",
-                children: [
-                    {
-                        component: lazy(() =>
-                            import("../../admin.api-resources.v1/pages/api-resource-edit")
-                        ),
-                        exact: true,
-                        id: "apiResources-edit",
-                        name: "extensions:develop.sidePanel.apiResources",
-                        path: AppConstants.getPaths().get("API_RESOURCE_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-                    {
-                        component: lazy(() =>
-                            import("../../admin.api-resources.v1/pages/api-resources-internal-list")
-                        ),
-                        exact: true,
-                        id: "apiResources-list",
-                        name: "extensions:develop.sidePanel.apiResources",
-                        path: AppConstants.getPaths().get("API_RESOURCES_CATEGORY"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() =>
-                    import("../../admin.api-resources.v1/pages/api-resources")
-                ),
-                exact: true,
-                icon: {
-                    icon: import("../assets/images/icons/api-resources-icon.svg")
-                },
-                id: "apiResources",
-                name: "extensions:develop.sidePanel.apiResources",
-                order: 2,
-                path: AppConstants.getPaths().get("API_RESOURCES"),
-                protected: true,
-                showOnSidePanel: legacyMode?.apiResources
-            },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
@@ -207,6 +168,81 @@ export const commonConfig: CommonConfig = {
                 showOnSidePanel: false
             }
         ];
+
+        if (legacyMode?.apiResourcesV1) {
+            routes.unshift({
+                category: "console:develop.features.sidePanel.categories.application",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../admin.api-resources.v1/pages/api-resource-edit")
+                        ),
+                        exact: true,
+                        id: "apiResources-edit",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("../../admin.api-resources.v1/pages/api-resources")
+                ),
+                exact: true,
+                icon: {
+                    icon: import("../assets/images/icons/api-resources-icon.svg")
+                },
+                id: "apiResources",
+                name: "extensions:develop.sidePanel.apiResources",
+                order: 2,
+                path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
+                protected: true,
+                showOnSidePanel: legacyMode?.apiResourcesV1
+            });
+        }
+
+        if (legacyMode?.apiResourcesV2) {
+            routes.unshift({
+                category: "console:develop.features.sidePanel.categories.application",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../admin.api-resources.v2/pages/api-resource-edit")
+                        ),
+                        exact: true,
+                        id: "apiResources-edit",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: AppConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import("../../admin.api-resources.v2/pages/api-resources-internal-list")
+                        ),
+                        exact: true,
+                        id: "apiResources-list",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: AppConstants.getPaths().get("API_RESOURCES_CATEGORY"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("../../admin.api-resources.v2/pages/api-resources")
+                ),
+                exact: true,
+                icon: {
+                    icon: import("../assets/images/icons/api-resources-icon.svg")
+                },
+                id: "apiResources",
+                name: "extensions:develop.sidePanel.apiResources",
+                order: 2,
+                path: AppConstants.getPaths().get("API_RESOURCES"),
+                protected: true,
+                showOnSidePanel: legacyMode?.apiResourcesV2
+            });
+        }
 
         if (legacyMode?.rolesV1) {
             routes.push(
