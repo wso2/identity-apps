@@ -91,7 +91,7 @@ jobs:
           echo "Changing the Release workflow to work with the hotfix branch."
 
           # Change the branch name in the release.yml file.
-          sed -i '/- branches: \[ master \]/s/master/hotfix/' .github/workflows/release-workflow.yml
+          sed -i '/branches: \[ master \]/s/master/hotfix-'"${TAG//\//\\/}"'/' .github/workflows/release-workflow.yml
           sed -i 's/BRANCH: .*/BRANCH: hotfix-'"${TAG//\//\\/}"'/' .github/workflows/release-workflow.yml
 
           # Disable the changesets action step.
@@ -104,7 +104,7 @@ jobs:
           sed -i 's|PACKAGES=.*$|PACKAGES="\"\[{\\\"name\\\":\\\"'"$PACKAGE"'\\\",\\\"version\\\":\\\"'"$VERSION"'\\\"}\]\""|' .github/workflows/release-workflow.yml
 
           # Change the branch name in the pr-builder.yml file.
-          sed -i '/branches:/ {n; s/- main/- hotfix-'"${TAG//\//\\/}"'/}' .github/workflows/pr-builder.yml
+          sed -i '/branches: \[ master \]/s/master/hotfix-'"${TAG//\//\\/}"'/' .github/workflows/pr-builder.yml
 
           # Add only modified files, hotfix-pr-creation-template.yml file, and commit changes.
           echo "Add only modified files."
