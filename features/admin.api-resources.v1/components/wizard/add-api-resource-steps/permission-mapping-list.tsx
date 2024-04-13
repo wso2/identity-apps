@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,13 +23,13 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Header, Label, SemanticICONS } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
 import { APIResourcePermissionInterface, PermissionMappingInterface } from "../../../models";
 
 /**
  * Prop-types for the API resources page component.
  */
-type PermissionMappingListInterface = SBACInterface<FeatureConfigInterface> &
+type PermissionMappingListInterface = SBACInterface<ExtendedFeatureConfigInterface> &
     IdentifiableComponentInterface & PermissionMappingInterface;
 
 /**
@@ -69,9 +69,9 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
             {
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, permission: APIResourcePermissionInterface): void => {
-                    removeAddedPermission(permission);
+                    removeAdddedPermission(permission);
                 },
-                popupText: (): string => t("apiResources:tabs.scopes.removeScopePopupText"),
+                popupText: (): string => t("extensions:develop.apiResource.tabs.permissions.removePermissionPopupText"),
                 renderer: "semantic-icon"
             }
         ];
@@ -104,7 +104,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                         </Header.Content>
                     </Header>
                 ),
-                title: t("apiResources:tabs.scopes.form.fields.permission.label")
+                title: t("extensions:develop.apiResource.tabs.permissions.form.fields.permission.label")
             },
             {
                 allowToggleVisibility: false,
@@ -120,7 +120,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                         </Header.Content>
                     </Header>
                 ),
-                title: t("apiResources:tabs.scopes.form.fields.description.label")
+                title: t("extensions:develop.apiResource.tabs.permissions.form.fields.description.label")
             },
             {
                 allowToggleVisibility: false,
@@ -128,7 +128,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("apiResources:tabs.scopes.form.fields.permission.label"),
+                title: t("extensions:develop.apiResource.tabs.permissions.form.fields.permission.label"),
                 width: 1
             }
         ];
@@ -143,9 +143,9 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
         if (permissionsList?.length === 0) {
             return (
                 <>
-                    <Divider className="mb-1" hidden />
+                    <Divider className="mb-1"r hidden />
                     <EmptyPlaceholder
-                        subtitle={ [ t("apiResources:tabs.scopes.empty.title") ] }
+                        subtitle={ [  t("extensions:develop.apiResource.tabs.permissions.empty.title") ] }
                     />
                     <Divider className="mt-1" hidden />
                 </>
@@ -156,11 +156,11 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
     };
 
     /**
-     * Handles the remove permission action.
+     * Handels the remove permission action.
      *
      * @param permission - `APIResourcePermissionInterface`
      */
-    const removeAddedPermission = (permission: APIResourcePermissionInterface): void => {
+    const removeAdddedPermission = (permission: APIResourcePermissionInterface): void => {
         updatePermissions(permission, "delete");
     };
 

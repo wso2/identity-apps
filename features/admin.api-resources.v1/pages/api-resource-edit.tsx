@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
@@ -23,10 +24,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, FeatureConfigInterface,getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
+import { Label } from "semantic-ui-react";
+import { AppState, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { useAPIResourceDetails } from "../api";
 import { EditAPIResource } from "../components";
-import { APIResourceType, APIResourcesConstants } from "../constants";
+import { APIResourcesConstants } from "../constants";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
@@ -53,12 +56,10 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
+    const [ isManagedByChoreo, setIsManagedByChoreo ] = useState<boolean>(false);
     const [ apiResourceId, setAPIResourceId ] = useState<string>(null);
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
-    const path: string[] = history.location.pathname.split("/");
-    const categoryId: string = path[path.length - 2];
+    const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const {
         data: apiResourceData,
@@ -78,16 +79,17 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
      * The following useEffect is used to handle if the user has the required scopes to update the API resource
      */
     useEffect(() => {
-        if (!apiResourceData) {
-            return;
-        }
-
-        const updateForbidden: boolean = !APIResourceUtils.isAPIResourceUpdateAllowed(featureConfig, allowedScopes);
-        const isSytemAPIResource: boolean = APIResourceUtils.isSystemAPI(apiResourceData?.type);
-
-        if (updateForbidden || isSytemAPIResource) {
+        if (!hasRequiredScopes(
+            featureConfig?.apiResources, featureConfig?.apiResources?.scopes?.update, allowedScopes)) {
             setReadOnly(true);
         }
+    }, [ apiResourceData ]);
+
+    /**
+     * The following useEffect is used to check if the API resource is managed by Choreo.
+     */
+    useEffect(() => {
+        APIResourceUtils.checkIfAPIResourceManagedByChoreo(apiResourceData?.gwName) && setIsManagedByChoreo(true);
     }, [ apiResourceData ]);
 
     /**
@@ -95,13 +97,39 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
      */
     useEffect(() => {
         if(apiResourceDataFetchRequestError) {
-            dispatch(addAlert<AlertInterface>({
-                description: t("extensions:develop.apiResource.notifications.getAPIResource" +
-                    ".genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("extensions:develop.apiResource.notifications.getAPIResource" +
-                    ".genericError.message")
-            }));
+            switch (apiResourceDataFetchRequestError.response?.data?.code) {
+                case APIResourcesConstants.UNAUTHORIZED_ACCESS:
+                    dispatch(addAlert<AlertInterface>({
+                        description: t("extensions:develop.apiResource.notifications.getAPIResource" +
+                            ".unauthorizedError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("extensions:develop.apiResource.notifications.getAPIResource" +
+                            ".unauthorizedError.message")
+                    }));
+
+                    break;
+
+                case APIResourcesConstants.NO_VALID_API_RESOURCE_ID_FOUND:
+                case APIResourcesConstants.API_RESOURCE_NOT_FOUND:
+                    dispatch(addAlert<AlertInterface>({
+                        description: t("extensions:develop.apiResource.notifications.getAPIResource" +
+                            ".notFoundError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("extensions:develop.apiResource.notifications.getAPIResource" +
+                            ".notFoundError.message")
+                    }));
+
+                    break;
+
+                default:
+                    dispatch(addAlert<AlertInterface>({
+                        description: t("extensions:develop.apiResource.notifications.getAPIResource" +
+                            ".genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("extensions:develop.apiResource.notifications.getAPIResource" +
+                            ".genericError.message")
+                    }));
+            }
         }
     }, [ apiResourceDataFetchRequestError ]);
 
@@ -119,12 +147,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
      * go back to API resources list section
      */
     const handleBackButtonClick = () => {
-        if (categoryId === APIResourceType.MANAGEMENT || categoryId === APIResourceType.ORGANIZATION) {
-            history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
-                .replace(":categoryId", categoryId));
-        } else {
-            history.push(APIResourcesConstants.getPaths().get("API_RESOURCES"));
-        }
+        history.push(APIResourcesConstants.getPaths().get("API_RESOURCES"));
     };
 
     return (
@@ -138,8 +161,18 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
             />)
             : (<TabPageLayout
                 isLoading={ isAPIResourceDatatLoading }
-                title={ apiResourceData?.name }
+                title={ apiResourceData?.displayName }
                 pageTitle={ t("extensions:develop.apiResource.tabs.title") }
+                description={ (
+                    isManagedByChoreo && (
+                        <Label
+                            size="small"
+                            className="choreo-label"
+                        >
+                            { t("extensions:develop.apiResource.managedByChoreoText") }
+                        </Label>
+                    )
+                ) }
                 loadingStateOptions={ {
                     count: 5,
                     imageType: "circular"
@@ -147,11 +180,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                 backButton={ {
                     "data-testid": `${componentId}-back-button`,
                     onClick: handleBackButtonClick,
-                    text: categoryId === APIResourceType.MANAGEMENT
-                        ? t("pages:rolesEdit.backButton", { type: "Management APIs" })
-                        : categoryId === APIResourceType.ORGANIZATION
-                            ? t("pages:rolesEdit.backButton", { type: "Organization APIs" })
-                            : t("pages:rolesEdit.backButton", { type: "APIs" })
+                    text: t("extensions:develop.apiResource.tabs.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
@@ -162,6 +191,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                     isAPIResourceDataLoading={ isAPIResourceDatatLoading }
                     featureConfig={ featureConfig }
                     isReadOnly={ isReadOnly }
+                    isManagedByChoreo={ isManagedByChoreo }
                     mutateAPIResource={ updateAPIResource }
                 />
             </TabPageLayout>)

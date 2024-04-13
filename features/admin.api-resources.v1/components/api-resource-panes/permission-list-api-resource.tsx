@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,16 +21,17 @@ import { CommonUtils } from "@wso2is/core/utils";
 import {
     DataTable, EmptyPlaceholder, LinkButton, PrimaryButton, TableActionsInterface, TableColumnInterface
 } from "@wso2is/react-components";
+import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 
 /**
  * Prop-types for the API resources page component.
  */
-interface PermissionListAPIResourceInterface extends SBACInterface<FeatureConfigInterface>,
+interface PermissionListAPIResourceInterface extends SBACInterface<ExtendedFeatureConfigInterface>,
     IdentifiableComponentInterface, APIResourcePanesCommonPropsInterface {
     /**
      * List of API resource permissions
@@ -95,8 +96,8 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
                 },
                 popupText: (permission: APIResourcePermissionInterface): string => {
                     return clickedPermission?.name === permission.name
-                        ? t("apiResources:tabs.scopes.copiedPopupText")
-                        : t("apiResources:tabs.scopes.copyPopupText");
+                        ? t("extensions:develop.apiResource.tabs.permissions.copiedPopupText")
+                        : t("extensions:develop.apiResource.tabs.permissions.copyPopupText");
                 },
                 renderer: "semantic-icon"
             },
@@ -107,7 +108,7 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
                 onClick: (e: SyntheticEvent, permission: APIResourcePermissionInterface): void => {
                     removePermission(permission);
                 },
-                popupText: (): string => t("apiResources:tabs.scopes.removeScopePopupText"),
+                popupText: (): string => t("extensions:develop.apiResource.tabs.permissions.removePermissionPopupText"),
                 renderer: "semantic-icon"
             }
         ];
@@ -179,8 +180,8 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
         if (permissionList?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    subtitle = { [ t("apiResources:tabs.scopes.empty.subTitle") ] }
-                    title={ t("apiResources:tabs.scopes.empty.title") }
+                    subtitle = { [ t("extensions:develop.apiResource.tabs.permissions.empty.subTitle") ] }
+                    title={ t("extensions:develop.apiResource.tabs.permissions.empty.title") }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     action={
                         (
@@ -188,7 +189,7 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
                                 data-componentid= { `${componentId}-add-permission-button` }
                                 onClick={ setTriggerAddAPIResourcePermissionModal }>
                                 <Icon name="add" />
-                                { t("apiResources:tabs.scopes.button") }
+                                { t("extensions:develop.apiResource.tabs.permissions.button") }
                             </PrimaryButton>
                         )
                     }
@@ -199,13 +200,13 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
         if (serachedPermissionList?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    subtitle={ [ t("apiResources:tabs.scopes.emptySearch.subTitle.0"),
-                        t("apiResources:tabs.scopes.emptySearch.subTitle.1") ] }
-                    title={ t("apiResources:tabs.scopes.emptySearch.title") }
+                    subtitle={ [ t("extensions:develop.apiResource.tabs.permissions.emptySearch.subTitle.0"),
+                        t("extensions:develop.apiResource.tabs.permissions.emptySearch.subTitle.1") ] }
+                    title={ t("extensions:develop.apiResource.tabs.permissions.emptySearch.title") }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     action={
                         (<LinkButton onClick={ clearSearchPermission }>
-                            { t("apiResources:tabs.scopes.emptySearch.viewAll") }
+                            { t("extensions:develop.apiResource.tabs.permissions.emptySearch.viewAll") }
                         </LinkButton>)
                     }
                     imageSize="tiny"

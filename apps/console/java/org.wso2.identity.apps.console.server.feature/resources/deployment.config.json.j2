@@ -1783,7 +1783,8 @@
         {% endif %}
         "legacyMode": {
             {% if legacy_mode.enable == true %}
-            "apiResources": false,
+            "apiResourcesV1": false,
+            "apiResourcesV2": false,
             "applicationListSystemApps": true,
             "applicationOIDCSubjectIdentifier": true,
             "applicationRequestPathAuthentication": true,

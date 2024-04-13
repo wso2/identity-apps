@@ -58,60 +58,7 @@
         "logout": "/logout"
     },
     "extensions": {
-        "layoutStoreURL": "",
-        "features": {
-            "apiResources": {
-                "scopes": "{update=[internal_application_mgt_update], create=[internal_application_mgt_create], read=[internal_application_mgt_view], delete=[internal_application_mgt_update]}",
-                "disabled_features": [],
-                "enabled": "false"
-            },
-            "applicationRoles": {
-                "enabled": "false",
-                "scopes": "{update=[], read=[], create=[], delete=[]}",
-                "disabled_features": []
-            },
-            "branding": {
-                "scopes": "{update=[internal_application_mgt_update], delete=[internal_application_mgt_update], read=[internal_application_mgt_view], create=[internal_application_mgt_update]}",
-                "disabled_features": [],
-                "enabled": "true"
-            },
-            "eventPublishing": {
-                "enabled": "true",
-                "disabled_features": [],
-                "scopes": "{update=[internal_event_config_update], delete=[internal_event_config_update], read=[internal_event_config_view], create=[internal_event_config_update]}"
-            },
-            "accountLogin": {
-                "scopes": "{update=[internal_config_mgt_update]}",
-                "enabled": "true",
-                "disabled_features": []
-            },
-            "tryIt": {
-                "scopes": "{delete=[internal_application_mgt_delete], update=[internal_application_mgt_update], read=[internal_cors_origins_view, internal_application_mgt_view, internal_claim_meta_view, internal_role_mgt_view, internal_userstore_view, internal_idp_view], create=[internal_application_mgt_create]}",
-                "enabled": "true",
-                "disabled_features": []
-            }
-        },
-        "subscriptionApiPath": "",
-        "applicationInsightsProxyEndpoint": "",
-        "applicationInsightsInstrumentationKey": "",
-        "applicationInsightsEnabled": false,
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
-        "deploymentRegion": "US",
-        "asgardeoReservedAppRegex": "(^Asgardeo Try It$)|(WSO2_.+)",
-        "collaboratorUsernameRegex": "^[\\u00C0-\\u00FFa-zA-Z0-9.+\\-_]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,10}$",
-        "asgardeoTryItURL": "",
-        "applicationInsightsCookiePostfix": "",
-        "upgradeButtonUrl": "",
-        "applicationInsightsCookieDomain": "",
-        "upgradeButtonEnabled": false,
-        "regionQualifiedConsoleUrl": "",
-        "community": "https://discord.gg/Xa5VubmThw",
-        "feedbackEndPoint": "",
-        "authzServiceHost": "",
-        "userStoreAgentUrl": "",
-        "helpCenterUrl": "",
-        "supportEmail": "",
-        "billingPortalUrl": "",
         "emailTemplates": [
             {
                 "id": "cmVzZW5kUGFzc3dvcmRSZXNldA",
@@ -1174,7 +1121,8 @@
         "administratorRoleDisplayName": "Administrator",
         "useRoleClaimAsGroupClaim": false,
         "legacyMode": {
-            "apiResources": true,
+            "apiResourcesV1": false,
+            "apiResourcesV2": true,
             "applicationListSystemApps": false,
             "applicationOIDCSubjectIdentifier": true,
             "applicationRequestPathAuthentication": false,

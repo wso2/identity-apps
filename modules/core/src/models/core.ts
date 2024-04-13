@@ -211,7 +211,8 @@ export interface SVGRLoadedInterface {
 }
 
 export interface LegacyModeInterface {
-    apiResources: boolean;
+    apiResourcesV1: boolean;
+    apiResourcesV2: boolean;
     applicationListSystemApps: boolean;
     applicationOIDCSubjectIdentifier: boolean;
     applicationRequestPathAuthentication: boolean;

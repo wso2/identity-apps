@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -24,17 +25,18 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
-    LinkButton,
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
+import { AppState, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { deleteAPIResource } from "../api";
 import { APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
@@ -43,7 +45,7 @@ import { APIResourceUtils } from "../utils/api-resource-utils";
 /**
  * Prop types for the API resources list component.
  */
-interface APIResourcesListProps extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
+interface APIResourcesListProps extends SBACInterface<ExtendedFeatureConfigInterface>, IdentifiableComponentInterface {
     /**
      * List of API Resources
      */
@@ -52,6 +54,10 @@ interface APIResourcesListProps extends SBACInterface<FeatureConfigInterface>, I
      * show if API resources list is still loading
      */
     isAPIResourcesListLoading: boolean;
+    /**
+     * Show add API wizard.
+     */
+    setShowAddAPIWizard: (show: boolean) => void;
     /**
      * On API resource delete callback.
      */
@@ -64,22 +70,6 @@ interface APIResourcesListProps extends SBACInterface<FeatureConfigInterface>, I
      * Show list item actions.
      */
     showListItemActions?: boolean;
-    /**
-     * API Category
-     */
-    categoryId: string
-    /**
-     * Search query for the list.
-     */
-    searchQuery?: string;
-    /**
-     * Callback for the search query clear action.
-     */
-    onSearchQueryClear?: () => void;
-    /**
-     * Callback to be fired when the empty list placeholder action is clicked.
-     */
-    onEmptyListPlaceholderActionClicked?: () => void;
 }
 
 /**
@@ -91,15 +81,12 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
     props: APIResourcesListProps): ReactElement => {
     const {
         apiResourcesList,
-        categoryId,
         featureConfig,
         isAPIResourcesListLoading,
+        setShowAddAPIWizard,
         onAPIResourceDelete,
         onListItemClick,
-        onSearchQueryClear,
-        searchQuery,
         showListItemActions,
-        onEmptyListPlaceholderActionClicked,
         ["data-componentid"]: componentId
     } = props;
 
@@ -125,11 +112,14 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                 key: "name",
                 render: (apiResource: APIResourceInterface): ReactNode => {
 
-                    const displayName: string = apiResource ? apiResource.name : "";
+                    const displayName: string = apiResource ? apiResource.displayName : "";
+                    const gwName: string = apiResource ? apiResource.gwName : "";
                     let shownName: string;
 
                     if (displayName && displayName !== "") {
                         shownName = displayName;
+                    } else if (gwName && gwName !== "") {
+                        shownName = gwName;
                     } else {
                         shownName = "";
                     }
@@ -154,6 +144,18 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                             />
                             <Header.Content>
                                 { shownName }
+                                <Header.Subheader>
+                                    {
+                                        APIResourceUtils.checkIfAPIResourceManagedByChoreo(apiResource.gwName) && (
+                                            <Label
+                                                size="mini"
+                                                className="choreo-label ml-0"
+                                            >
+                                                { t("extensions:develop.apiResource.managedByChoreoText") }
+                                            </Label>
+                                        )
+                                    }
+                                </Header.Subheader>
                             </Header.Content>
                         </Header>
                     );
@@ -222,42 +224,38 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
             {
                 "data-componentid": `${componentId}-item-edit-button`,
                 hidden: () => {
-                    const readForbidden: boolean = !APIResourceUtils.isAPIResourceReadAllowed(
-                        featureConfig, allowedScopes);
-                    const updateForbidden: boolean = !APIResourceUtils.isAPIResourceUpdateAllowed(
-                        featureConfig, allowedScopes);
+                    const hasScopesRead: boolean = !hasRequiredScopes(featureConfig?.apiResources,
+                        featureConfig?.apiResources?.scopes?.read, allowedScopes);
 
-                    return readForbidden && updateForbidden;
+                    const hasScopesUpdate: boolean = !hasRequiredScopes(featureConfig?.apiResources,
+                        featureConfig?.apiResources?.scopes?.update, allowedScopes);
+
+                    return hasScopesUpdate || hasScopesRead;
                 },
-                icon: (apiResource: APIResourceInterface): SemanticICONS => {
-                    const updateAllowed: boolean = APIResourceUtils.isAPIResourceUpdateAllowed(
-                        featureConfig, allowedScopes);
-                    const isSystemAPIResource: boolean = APIResourceUtils.isSystemAPI(apiResource?.type);
-                    const canUpdate: boolean = !isSystemAPIResource && updateAllowed;
-
-                    return canUpdate ? "pencil alternate" : "eye";
+                icon: (): SemanticICONS => {
+                    return !hasRequiredScopes(featureConfig?.applications,
+                        featureConfig?.applications?.scopes?.update, allowedScopes)
+                        ? "eye"
+                        : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, apiResource: APIResourceInterface): void => {
                     handleAPIResourceEdit(apiResource, e);
                 },
-                popupText: (apiResource: APIResourceInterface): string => {
-                    const updateAllowed: boolean = APIResourceUtils.isAPIResourceUpdateAllowed(
-                        featureConfig, allowedScopes);
-                    const isSystemAPIResource: boolean = APIResourceUtils.isSystemAPI(apiResource?.type);
-                    const canUpdate: boolean = !isSystemAPIResource && updateAllowed;
-
-                    return canUpdate ? t("common:edit") : t("common:view");
+                popupText: (): string => {
+                    return !hasRequiredScopes(featureConfig?.applications,
+                        featureConfig?.applications?.scopes?.update, allowedScopes)
+                        ? t("common:view")
+                        : t("common:edit");
                 },
                 renderer: "semantic-icon"
             },
             {
                 "data-componentid": `${componentId}-item-delete-button`,
-                hidden: (apiResource: APIResourceInterface) => {
-                    const deleteForbidden: boolean = !APIResourceUtils.isAPIResourceDeleteAllowed(
-                        featureConfig, allowedScopes);
-                    const isSystemAPIResource: boolean = APIResourceUtils.isSystemAPI(apiResource?.type);
+                hidden: () => {
+                    const hasScopes: boolean = !hasRequiredScopes(featureConfig?.apiResources,
+                        featureConfig?.apiResources?.scopes?.delete, allowedScopes);
 
-                    return deleteForbidden || isSystemAPIResource;
+                    return hasScopes;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, apiResource: APIResourceInterface): void => {
@@ -276,45 +274,22 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
      * @returns React element.
      */
     const showPlaceholders = (): ReactElement => {
-        // When the search returns empty.
-        if (searchQuery && (apiResourcesList && apiResourcesList.length === 0)) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ onSearchQueryClear }>
-                            { t("console:develop.placeholders.emptySearchResult.action") }
-                        </LinkButton>
-                    ) }
-                    image={ getEmptyPlaceholderIllustrations().emptySearch }
-                    imageSize="tiny"
-                    title={ t("console:develop.placeholders.emptySearchResult.title") }
-                    subtitle={ [
-                        t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
-                        t("console:develop.placeholders.emptySearchResult.subtitles.1")
-                    ] }
-                    data-testid={ `${ componentId }-empty-search-placeholder-icon` }
-                />
-            );
-        }
-
         if ((!apiResourcesList) || (apiResourcesList && apiResourcesList.length === 0)) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptyList }
+                    action={ (
+                        <PrimaryButton
+                            data-testid={ `${ componentId }-empty-placeholder-add-api-resource-button` }
+                            onClick={ () => setShowAddAPIWizard(true) }
+                        >
+                            <Icon name="add" />
+                            { t("extensions:develop.apiResource.addApiResourceButton") }
+                        </PrimaryButton>
+                    ) }
                     imageSize="tiny"
                     subtitle={ [ t("extensions:develop.apiResource.empty") ] }
-                    data-testid={ `${ componentId }-empty-search-placeholder-icon` }
-                    action={ APIResourceUtils.isAPIResourceCreateAllowed(featureConfig, allowedScopes) &&
-                        onEmptyListPlaceholderActionClicked
-                        ? (
-                            <PrimaryButton
-                                onClick={ () => onEmptyListPlaceholderActionClicked() }
-                                data-testid={ `${componentId}-add-api-resources-button` }
-                            >
-                                <Icon name="add" />
-                                { t("extensions:develop.apiResource.addApiResourceButton") }
-                            </PrimaryButton>
-                        ) : null }
+                    data-testid={ `${componentId}-empty-search-placeholder-icon` }
                 />
             );
         }
@@ -344,14 +319,40 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                     onAPIResourceDelete();
                 }
             })
-            .catch(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
-                        ".genericError.message")
-                }));
+            .catch((error: IdentityAppsApiException) => {
+                switch (error?.code) {
+                    case APIResourcesConstants.UNAUTHORIZED_ACCESS:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".unauthorizedError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".unauthorizedError.message")
+                        }));
+
+                        break;
+
+                    case APIResourcesConstants.NO_VALID_API_RESOURCE_ID_FOUND:
+                    case APIResourcesConstants.API_RESOURCE_NOT_FOUND:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".notFoundError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".notFoundError.message")
+                        }));
+
+                        break;
+
+                    default:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
+                                ".genericError.message")
+                        }));
+                }
             })
             .finally(() => {
                 setLoading(false);
@@ -364,9 +365,7 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
      *
      */
     const handleAPIResourceEdit = (apiResource: APIResourceInterface, e: SyntheticEvent<Element, Event>): void => {
-        history.push(APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT")
-            .replace(":categoryId", categoryId)
-            .replace(":id", apiResource.id));
+        history.push(APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT").replace(":id", apiResource.id));
         onListItemClick && onListItemClick(e, apiResource);
     };
 

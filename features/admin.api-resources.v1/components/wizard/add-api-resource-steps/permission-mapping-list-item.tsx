@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
 import { getAPIResourcePermissions } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
 import { APIResourcePermissionInterface, PermissionMappingInterface } from "../../../models";
@@ -30,7 +30,7 @@ import { APIResourcePermissionInterface, PermissionMappingInterface } from "../.
 /**
  * Prop-types for the API resources page component.
  */
-interface PermissionMappingListItemInterface extends SBACInterface<FeatureConfigInterface>,
+interface PermissionMappingListItemInterface extends SBACInterface<ExtendedFeatureConfigInterface>,
     IdentifiableComponentInterface, PermissionMappingInterface {
     /**
      * Trigger add permission form submit action.
@@ -118,12 +118,12 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                         <Field
                             type="text"
                             name="identifier"
-                            label={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
+                            label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
                                 "fields.permission.label") }
-                            placeholder={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
-                                "fields.permission.placeholder") }
-                            requiredErrorMessage={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
-                                "fields.permission.emptyValidate") }
+                            placeholder={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions." +
+                                "form.fields.permission.placeholder") }
+                            requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
+                                "permissions.form.fields.permission.emptyValidate") }
                             loading={ isPermissionValidationLoading }
                             validation={ async (value: string, validation: Validation) => {
 
@@ -132,12 +132,12 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                                 if (value) {
                                     if (!APIResourcesConstants.checkValidPermissionIdentifier(value)) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("apiResources:wizard.addApiResource." +
-                                            "steps.scopes.form.fields.permission.invalid"));
+                                        validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
+                                            "addApiResource.steps.permissions.form.fields.permission.invalid"));
                                     } else if (addedPermissions.has(value)) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("apiResources:wizard.addApiResource." +
-                                            "steps.scopes.form.fields.permission.uniqueValidate"));
+                                        validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
+                                        "addApiResource.steps.permissions.form.fields.permission.uniqueValidate"));
                                     } else {
 
                                         const filter: string = "name eq " + value;
@@ -147,8 +147,8 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
 
                                         if (response?.length > 0) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("apiResources:wizard." +
-                                                "addApiResource.steps.scopes.form.fields.permission.uniqueValidate"));
+                                            validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
+                                            "addApiResource.steps.permissions.form.fields.permission.uniqueValidate"));
                                         }
                                     }
 
@@ -161,8 +161,8 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                         />
                         <Hint>
                             <Trans
-                                i18nKey= { "apiResources:wizard.addApiResource.steps." +
-                                    "scopes.form.fields.permission.hint" }>
+                                i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps." +
+                                    "permissions.form.fields.permission.hint" }>
                                 A unique value that acts as the scope when requesting an access token.
                                 <b>Note that the permission cannot be modified once created.</b>
                             </Trans>
@@ -172,19 +172,19 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                         <Field
                             type="text"
                             name="displayName"
-                            label={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
+                            label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
                                 "fields.displayName.label") }
-                            placeholder={ t("apiResources:wizard.addApiResource.steps.scopes." +
+                            placeholder={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions." +
                                 "form.fields.displayName.placeholder") }
-                            requiredErrorMessage={ t("apiResources:wizard.addApiResource.steps." +
-                                "scopes.form.fields.displayName.emptyValidate") }
+                            requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
+                                "permissions.form.fields.displayName.emptyValidate") }
                             required={ true }
                             tabIndex={ 2 }
                             data-testid={ `${componentId}-displayName` }
                         />
                         <Hint>
-                            { t("apiResources:wizard.addApiResource.steps." +
-                                "scopes.form.fields.displayName.hint") }
+                            { t("extensions:develop.apiResource.wizard.addApiResource.steps." +
+                                "permissions.form.fields.displayName.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -194,16 +194,16 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                         <Field
                             type="text"
                             name="description"
-                            label={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
+                            label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
                                 "fields.description.label") }
-                            placeholder={ t("apiResources:wizard.addApiResource.steps.scopes." +
+                            placeholder={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions." +
                                 "form.fields.description.placeholder") }
                             tabIndex={ 3 }
                             data-testid={ `${componentId}-description` }
                         />
                         <Hint>
-                            { t("apiResources:wizard.addApiResource.steps.scopes." +
-                                "form.fields.description.hint") }
+                            { t("extensions:develop.apiResource.wizard.addApiResource.steps." +
+                                "permissions.form.fields.description.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -218,7 +218,7 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                             buttonType="primary_btn"
                             name="submit-button"
                             icon="add"
-                            value={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
+                            value={ t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
                                 "button") }
                             loading={ isPermissionValidationLoading }
                             data-testid={ `${componentId}-add-permission-btn` }
