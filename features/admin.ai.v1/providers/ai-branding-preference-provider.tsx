@@ -42,7 +42,7 @@ import { Dispatch } from "redux";
 // import { AppState } from "../../core/store";
 // import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 // import { OrganizationResponseInterface } from "../../organizations/models/organizations";
-import generateBrandingPreference from "../api/generate-branding-preference";
+import generateBrandingPreference from "../api/generate-ai-branding-preference";
 import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 import AIFeatureContext from "../context/ai-branding-feature-context";
 import { BannerState } from "../models/types";
@@ -112,7 +112,7 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
         return generateBrandingPreference(website_url, tenant)
             .then(
                 (data: GenerateBrandingAPIResponseInterface) => {
-                    setOperationId(data.operationId);
+                    setOperationId(data.operation_id);
                     dispatch(
                         addAlert<AlertInterface>({
                             description: t("branding:brandingCustomText.notifications.updateSuccess.description"),

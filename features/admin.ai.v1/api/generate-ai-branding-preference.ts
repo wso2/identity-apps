@@ -48,7 +48,7 @@ const generateBrandingPreference = (
         },
         method: HttpMethods.POST,
         // url: `${store.getState().config.endpoints.brandingPreference}/generate`
-        url: `http://localhost:8080/t/cryd1/api/server/v1/branding-preference/generate`
+        url: "http://localhost:8080/t/cryd1/api/server/v1/branding-preference/generate"
     };
 
     return httpClient(requestConfig)

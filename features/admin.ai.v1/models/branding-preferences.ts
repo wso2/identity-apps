@@ -26,14 +26,31 @@ export interface GenerateBrandingAPIResponseInterface {
     /**
      * Operation ID of the branding generation.
      */
-    operationId: string;
+    // operationId: string;
+    operation_id: string;
 }
 
 export interface BrandingGenerationStatusAPIResponseInterface {
     /**
      * Status of the branding generation.
      */
-    status: string;
+    status: {
+        render_webpage: boolean;
+        extract_webpage_content: boolean;
+        webpage_extraction_completed: boolean;
+        generate_branding: boolean;
+        branding_generation_status: {
+            color_palette: boolean;
+            style_properties: boolean;
+        };
+        branding_generation_completed_status: {
+            color_palette: boolean;
+            style_properties: boolean;
+        };
+        create_branding_theme: boolean;
+        branding_generation_completed: boolean;
+    };
+    operation_id: string;
 }
 
 export interface BrandingGenerationResultAPIResponseInterface {

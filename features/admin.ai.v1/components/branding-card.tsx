@@ -21,16 +21,14 @@ import {
     DocumentationLink,
     GenericIcon
 } from "@wso2is/react-components";
-import axios from "axios";
+import classNames from "classnames";
 import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 import useGenerateAIBrandingPreference,
 { GenerateAIBrandingPreferenceFunc } from "features/admin.ai.v1/hooks/use-generate-ai-branding-preference";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import classNames from "classnames";
 import { Header, Icon, Input, Segment } from "semantic-ui-react";
 
-import { v4 as uuidv4 } from "uuid";
 import { ReactComponent as AIIcon }
     from "../../../modules/theme/src/themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
 import "./branding-card.scss";
@@ -41,24 +39,18 @@ enum BannerState {
     Collapsed = "banner-collapsed",
 }
 interface BrandingAIBannerProps {
-    onGenerateBrandingClick: (traceId: string, operationId: string) => void;
     onGenerate: (response: any) => void;
 }
 
 export const BrandingAIBanner: FunctionComponent<BrandingAIBannerProps> = (
-    { onGenerateBrandingClick, onGenerate }: BrandingAIBannerProps
+    { onGenerate }: BrandingAIBannerProps
 ): ReactElement => {
 
     const { t } = useTranslation();
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.Full);
     const [ websiteUrl, setWebsiteUrl ] = useState<string>("https://console.choreo.dev/login");
 
-    const { handleGenerate,
-        isGeneratingBranding,
-        mergedBrandingPreference,
-        setGeneratingBranding,
-        operationId,
-        setOperationId } = useAIBrandingPreference();
+    const { isGeneratingBranding } = useAIBrandingPreference();
 
     const generateAIBrandingPreference: GenerateAIBrandingPreferenceFunc = useGenerateAIBrandingPreference();
 
@@ -71,28 +63,7 @@ export const BrandingAIBanner: FunctionComponent<BrandingAIBannerProps> = (
     };
 
     const handleGenerateClick = async () => {
-        const traceId: string = uuidv4();
-        // setGeneratingBranding(true);
-
-        try {
-            // const response: any = await
-            // axios.post("http://0.0.0.0:8080/t/cryd1/api/server/v1/branding-preference/generate", {
-            // // const response: any = await axios.post("http://localhost:3000/generate", {
-
-            //     website_url: websiteUrl
-            // }, {
-            //     headers: {
-            //         "trace-id": traceId
-            //     }
-            // });
-
-            // const operationId: string = response.data.operation_id;
-            // setOperationId(operationId);
-            await generateAIBrandingPreference(websiteUrl, "carbon.super");
-            onGenerateBrandingClick(traceId, operationId);
-        } catch (error) {
-            // console.error("Error:", error);
-        }
+        await generateAIBrandingPreference(websiteUrl, "carbon.super");
     };
 
     return (

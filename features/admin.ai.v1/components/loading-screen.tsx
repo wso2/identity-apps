@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
     from "../../../modules/theme/src/themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 
-export const LoadingScreen = ( { traceId }: { traceId: string} ): JSX.Element => {
+export const LoadingScreen = (): JSX.Element => {
     const { t } = useTranslation();
     // const [ currentStatus, setCurrentStatus ] = useState("Initializing...");
     const [ progress, setProgress ] = useState(0);
@@ -37,7 +37,7 @@ export const LoadingScreen = ( { traceId }: { traceId: string} ): JSX.Element =>
         t("branding:ai.screens.loading.facts.1"),
         t("branding:ai.screens.loading.facts.2")
     ];
-    const [ currentStatus, setCurrentStatus ] = useState("Initializing...");
+    const [ currentStatus, setCurrentStatus ] = useState("branding:ai.screens.loading.states.0");
 
     const { handleGenerate,
         isGeneratingBranding,
@@ -109,7 +109,6 @@ export const LoadingScreen = ( { traceId }: { traceId: string} ): JSX.Element =>
             const response: AxiosResponse<any> = await axios.get(
                 `http://0.0.0.0:8080/t/cryd1/api/server/v1/branding-preference/status/${operationId}`,
                 // "http://localhost:3000/status",
-                { headers: { "correlation-id": traceId } }
             );
 
             // const response = await axios.get('http://localhost:3000/status', { headers: { 'trace-id': 'custom' } });
@@ -131,7 +130,7 @@ export const LoadingScreen = ( { traceId }: { traceId: string} ): JSX.Element =>
         try {
             const response: AxiosResponse<any> = await axios.get(
                 `http://0.0.0.0:8080/t/cryd1/api/server/v1/branding-preference/result/${operationId}`,
-                { headers: { "correlation-id": traceId } }
+                // { headers: { "correlation-id": traceId } }
             );
             // console.log("Branding preference: ", response.data.data);
             return response.data.data;

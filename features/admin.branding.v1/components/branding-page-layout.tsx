@@ -48,9 +48,6 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         handleGenerate,
         isGeneratingBranding,
         mergedBrandingPreference,
-        operationId,
-        setGeneratingBranding,
-        setOperationId
     } = useAIBrandingPreference();
 
     return (
@@ -81,18 +78,12 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                 !disabledFeatures.includes("branding.ai1") && (
                     <BrandingAIBanner
                         onGenerate={ handleGenerate }
-                        onGenerateBrandingClick={ (generatedTraceId: string, operationId: string) => {
-                            setTraceId(generatedTraceId);
-                            setOperationId(operationId);
-                            setGeneratingBranding(true);
-                        } }
                     />
                 )
             }
             { isGeneratingBranding ? (
                 <div>
-                    <LoadingScreen
-                        traceId={ traceId } />
+                    <LoadingScreen/>
                 </div>
             )
                 : <BrandingCore brandingPreference={ mergedBrandingPreference }/>

@@ -17,8 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { BrandingGenerationStatusAPIResponseInterface } from "../../admin.ai.v1/models/branding-preferences";
-import { I18nConstants } from "../../admin.core.v1/constants/i18n-constants";
+import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding-preferences";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -28,17 +27,11 @@ import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 
-
-const useGetBrandingGenerationStatus =
+const useGetAIBrandingGenerationStatus =
 <Data = BrandingGenerationStatusAPIResponseInterface, Error = RequestErrorInterface>(
-        name: string,
-        locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
+        operationId: string
     ): RequestResultInterface<Data, Error> => {
     const { organizationType } = useGetCurrentOrganizationType();
-
-    const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
-        ? store.getState()?.organization?.organization?.id
-        : name;
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -47,10 +40,11 @@ const useGetBrandingGenerationStatus =
         },
         method: HttpMethods.GET,
         params: {
-            locale,
-            name: tenantDomain
+            operation_id: operationId
         },
         url: organizationType === OrganizationType.SUBORGANIZATION
+            // ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
+            // : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
             ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status`
             : `${store.getState().config.endpoints.brandingPreference}/status`
     };
@@ -68,4 +62,4 @@ const useGetBrandingGenerationStatus =
     };
 };
 
-export default useGetBrandingGenerationStatus;
+export default useGetAIBrandingGenerationStatus;

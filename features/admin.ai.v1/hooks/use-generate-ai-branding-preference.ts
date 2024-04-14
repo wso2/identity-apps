@@ -22,7 +22,7 @@ import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import generateBrandingPreference from "../api/generate-branding-preference";
+import generateBrandingPreference from "../api/generate-ai-branding-preference";
 import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 
 export type GenerateAIBrandingPreferenceFunc = (website_url: string, tenant: string) => Promise<void>;
@@ -32,24 +32,26 @@ const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { setOperationId } = useAIBrandingPreference();
+    const { setGeneratingBranding,
+        setOperationId } = useAIBrandingPreference();
 
-    const generateAIBrandingPreference = (
+    const generateAIBrandingPreference = async (
         website_url: string,
         tenant: string
     ): Promise<void> => {
 
-        return generateBrandingPreference(website_url, tenant)
+        return await generateBrandingPreference(website_url, tenant)
             .then(
                 (data: GenerateBrandingAPIResponseInterface) => {
-                    setOperationId(data.operationId);
-                    dispatch(
-                        addAlert<AlertInterface>({
-                            description: t("branding:brandingCustomText.notifications.updateSuccess.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("branding:brandingCustomText.notifications.updateSuccess.message")
-                        })
-                    );
+                    setOperationId(data.operation_id);
+                    setGeneratingBranding(true);
+                    // dispatch(
+                    //     addAlert<AlertInterface>({
+                    //         description: t("branding:brandingCustomText.notifications.updateSuccess.description"),
+                    //         level: AlertLevels.SUCCESS,
+                    //         message: t("branding:brandingCustomText.notifications.updateSuccess.message")
+                    //     })
+                    // );
                 }
             )
             .catch(() => {
