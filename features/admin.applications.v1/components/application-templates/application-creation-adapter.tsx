@@ -25,6 +25,7 @@ import { ApplicationTemplateManagementUtils } from "../..//utils/application-tem
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationTemplateListItemInterface } from "../../models";
 import { ApplicationTemplateCategories, ApplicationTemplateListInterface } from "../../models/application-templates";
+import { ApplicationCreateWizard } from "../dynamic-forms/application-create-wizard";
 import { MinimalAppCreateWizard } from "../wizard/minimal-application-create-wizard";
 
 /**
@@ -100,7 +101,12 @@ const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPr
 
         switch(template?.category) {
             case ApplicationTemplateCategories.SSO_INTEGRATION:
-                return <ContentLoader dimmer/>;
+                return (
+                    <ApplicationCreateWizard
+                        template={ template }
+                        onClose={ onClose }
+                    />
+                );
             default:
                 return (
                     <MinimalAppCreateWizard

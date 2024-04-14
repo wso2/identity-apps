@@ -17,10 +17,10 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CheckboxFieldAdapter, FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { CheckboxFieldAdapter, FinalFormField, FormApi, TextFieldAdapter } from "@wso2is/form";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
 import { DynamicFieldInterface, DynamicInputFieldTypes } from "../../models/dynamic-fields";
-import validateField from "../../utils/dynamic-field-validation";
 
 /**
  * Prop types for the dynamic input fields of the application form.
@@ -30,6 +30,10 @@ export interface ApplicationFormDynamicFieldPropsInterface extends IdentifiableC
      * Field configs.
      */
     field: DynamicFieldInterface;
+    /**
+     * Form state from the form library.
+     */
+    form: FormApi<Record<string, any>>;
 }
 
 /**
@@ -41,6 +45,8 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
     ApplicationFormDynamicFieldPropsInterface
 >> = (props: PropsWithChildren<ApplicationFormDynamicFieldPropsInterface>): ReactElement => {
     const { ["data-componentid"]: componentId, field, ...rest } = props;
+
+    const { validate } = useDynamicFieldValidations();
 
     const getDynamicFieldAdapter = (type: DynamicInputFieldTypes): ReactElement => {
         switch (type) {
@@ -59,7 +65,7 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field.label }
                         placeholder={ field.placeholder }
                         component={ CheckboxFieldAdapter }
-                        validate={ (value: string) => validateField(value, field?.validations) }
+                        validate={ (value: string) => validate(value, field?.validations) }
                     />
                 );
             case DynamicInputFieldTypes.TEXT:
@@ -79,7 +85,7 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         component={ TextFieldAdapter }
                         maxLength={ field.maxLength }
                         minLength={ field.minLength }
-                        validate={ (value: string) => validateField(value, field?.validations) }
+                        validate={ (value: string) => validate(value, field?.validations) }
                     />
                 );
             default:
@@ -99,7 +105,7 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         component={ TextFieldAdapter }
                         maxLength={ field.maxLength }
                         minLength={ field.minLength }
-                        validate={ (value: string) => validateField(value, field?.validations) }
+                        validate={ (value: string) => validate(value, field?.validations) }
                     />
                 );
         }

@@ -97,7 +97,7 @@ export enum DynamicInputFieldTypes {
 }
 
 /**
- * Representation of the validation rules for dyanmic input field.
+ * Representation of the validation rules for dynamic input field.
  */
 export interface ValidationRule {
     /**
@@ -107,12 +107,13 @@ export interface ValidationRule {
     /**
      * Error message to be displayed when validation fails.
      */
-    errorMessage: string;
+    errorMessage?: string;
 }
 
 /**
  * Supported validation rule types for dynamic input fields.
  */
 export enum ValidationRuleTypes {
-    DOMAIN_NAME = "domainName"
+    DOMAIN_NAME = "domainName",
+    APPLICATION_NAME = "applicationName"
 }

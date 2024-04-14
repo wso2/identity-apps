@@ -93,6 +93,14 @@ export interface ApplicationTemplateMetadataInterface {
             fields: DynamicFieldInterface[];
         };
         /**
+         * Indicates whether the application is sharable with sub orgs.
+         */
+        isApplicationSharable: boolean;
+        /**
+         * Documentation link.
+         */
+        docLink?: string;
+        /**
          * Application creation guide metadata.
          */
         guide: {
