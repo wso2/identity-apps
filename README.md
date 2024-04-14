@@ -20,8 +20,8 @@ End-user apps in WSO2 Identity Server
     + [Make Applications Editable](#make-applications-editable)
     + [Configure Callback URLs for System Applications (for WSO2 IS v7.0 and above)](#configure-callback-urls-for-system-applications-for-wso2-is-v70-and-above)
     + [Start the Identity Server](#start-the-identity-server)
-    + [Go to Management Console](#go-to-management-console)
-    + [Configure Callback URLs](#configure-callback-urls)
+    + [Configure Callback URLs for System Applications (for WSO2 IS below v7.0)
+](#configure-callback-urls-for-system-applications-for-wso2-is-below-v70)
 - [Build & Run](#build--run)
   * [Build](#build)
     + [For Console & My Account](#for-console--my-account)
@@ -123,31 +123,33 @@ Now you can go ahead and start WSO2 Identity Server that was downloaded in the [
 
 For instructions on startup, [read the docs](https://is.docs.wso2.com/en/latest/deploy/get-started/run-the-product/).
 
-#### Go to Management Console
-
-Navigate to the Management Console i.e `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
-
-> 💡 Find out the default password details at [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
-
-#### Configure Callback URLs
+#### Configure Callback URLs for System Applications (for WSO2 IS below v7.0)
 
 > ℹ️ Note
 > 
 > This step is only applicable for WSO2 Identity Server versions below v7.0. 
 
-In the Management Console, navigate to `Service Providers -> List` from left side panel. And then go to `Edit` option in the application that you want to configure in dev mode (ex: `MY_ACCOUNT`). Then click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` field with below corresponding values.
+1. Navigate to the Management Console i.e `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
 
-- Console
+> 💡 Find out the default password details at [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
 
-```shell
-regexp=(https://localhost:9443/console|https://localhost:9443/t/(.*)/console|https://localhost:9443/console/login|https://localhost:9443/t/(.*)/console/login|https://localhost:9001/console|https://localhost:9001/t/(.*)/console|https://localhost:9001/console/login|https://localhost:9001/t/(.*)/console/login|https://localhost:9443/o/(.*)/console|https://localhost:9001/o/(.*)/console|https://localhost:9001/o/(.*)/console/login)
-```
+2. In the Management Console,
+   - navigate to `Service Providers -> List` from left side panel.
+   - Then go to `Edit` option in the application that you want to configure in dev mode (ex: `MY_ACCOUNT`).
+   - Click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`.
+   - Update the `Callback Url` field with below corresponding values.
 
-- My Account
+     - Console
 
-```shell
-regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount|https://localhost:9443/myaccount/login|https://localhost:9443/t/(.*)/myaccount/login|https://localhost:9000/myaccount|https://localhost:9000/t/(.*)/myaccount|https://localhost:9000/myaccount/login|https://localhost:9000/t/(.*)/myaccount/login)
-```
+        ```shell
+        regexp=(https://localhost:9443/console|https://localhost:9443/t/(.*)/console|https://localhost:9443/console/login|https://localhost:9443/t/(.*)/console/login|https://localhost:9001/console|https://localhost:9001/t/(.*)/console|https://localhost:9001/console/login|https://localhost:9001/t/(.*)/console/login|https://localhost:9443/o/(.*)/console|https://localhost:9001/o/(.*)/console|https://localhost:9001/o/(.*)/console/login)
+        ```
+
+     - My Account
+
+        ```shell
+        regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount|https://localhost:9443/myaccount/login|https://localhost:9443/t/(.*)/myaccount/login|https://localhost:9000/myaccount|https://localhost:9000/t/(.*)/myaccount|https://localhost:9000/myaccount/login|https://localhost:9000/t/(.*)/myaccount/login)
+        ```
 
 ## Build & Run
 
