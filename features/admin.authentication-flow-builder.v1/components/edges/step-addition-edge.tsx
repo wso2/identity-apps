@@ -98,6 +98,8 @@ const StepAdditionEdge = (props: StepAdditionEdgePropsInterface): ReactElement =
 /**
  * Default props for the component.
  */
-StepAdditionEdge.defaultProps = {};
+StepAdditionEdge.defaultProps = {
+    "data-componentid": "step-addition-edge"
+};
 
 export default StepAdditionEdge;

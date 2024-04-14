@@ -60,7 +60,7 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
 > = (
     props: PredefinedSocialFlowHandlerModalFactoryPropsInterface
 ) => {
-    const { selectedSequence, onSelect } = props;
+    const { selectedSequence, onSelect, ["data-componentid"]: componentId } = props;
 
     const { authenticators } = useAuthenticationFlow();
 

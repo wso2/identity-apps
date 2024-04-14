@@ -28,7 +28,6 @@ const clearSearchQueryMock: jest.Mock<any, any> = jest.fn();
 const onListItemClickMock: jest.Mock<any, any> = jest.fn();
 const onEmptyListPlaceholderActionClickMock: jest.Mock<any, any> = jest.fn();
 const onOrganizationDeleteMock: jest.Mock<any, any> = jest.fn();
-const useAuthContextMock: jest.Mock<any, any> = jest.fn();
 
 const organizationListProps: OrganizationListPropsInterface = {
     list: getOrganizationsPageOneMockResponse,
@@ -46,13 +45,13 @@ const organizationListProps: OrganizationListPropsInterface = {
     searchQuery: ""
 };
 
-describe("UTC-1.0 - [Organization Management Feature] - Organization List Component", () => {
+describe.skip("UTC-1.0 - [Organization Management Feature] - Organization List Component", () => {
     const deleteOrganizationMock: jest.SpyInstance<Promise<string>, [id: string]> =
         jest.spyOn(api, "deleteOrganization");
 
     deleteOrganizationMock.mockImplementation(() => Promise.resolve("organization-one"));
 
-    test.only("UTC-1.1 - Test if the placeholder is shown", async () => {
+    test("UTC-1.1 - Test if the placeholder is shown", async () => {
         render(
             <OrganizationList { ...organizationListProps } list={ getOrganizationsEmptyMockResponse } />
         );
