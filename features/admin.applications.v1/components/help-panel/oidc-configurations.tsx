@@ -155,30 +155,34 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.authorize }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-authorize-label` }>
-                            { t("applications:helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.authorize") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.authorizeEndpoint }
-                            data-testid={ `${ testId }-authorize-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { (
+                    templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                ) && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
+                            <GenericIcon
+                                icon={ getHelpPanelIcons().endpoints.authorize }
+                                size="micro"
+                                square
+                                transparent
+                                inline
+                                className="left-icon"
+                                verticalAlign="middle"
+                                spaced="right"
+                            />
+                            <label data-testid={ `${ testId }-authorize-label` }>
+                                { t("applications:helpPanel.tabs.start.content." +
+                                    "oidcConfigurations.labels.authorize") }
+                            </label>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                            <CopyInputField
+                                value={ oidcConfigurations?.authorizeEndpoint }
+                                data-testid={ `${ testId }-authorize-readonly-input` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
@@ -203,30 +207,34 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.userInfo }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-userInfo-label` }>
-                            { t("applications:helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.userInfo") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.userEndpoint }
-                            data-testid={ `${ testId }-userInfo-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { (
+                    templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                ) && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
+                            <GenericIcon
+                                icon={ getHelpPanelIcons().endpoints.userInfo }
+                                size="micro"
+                                square
+                                transparent
+                                inline
+                                className="left-icon"
+                                verticalAlign="middle"
+                                spaced="right"
+                            />
+                            <label data-testid={ `${ testId }-userInfo-label` }>
+                                { t("applications:helpPanel.tabs.start.content." +
+                                    "oidcConfigurations.labels.userInfo") }
+                            </label>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                            <CopyInputField
+                                value={ oidcConfigurations?.userEndpoint }
+                                data-testid={ `${ testId }-userInfo-readonly-input` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
@@ -251,30 +259,34 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.jwks }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-jwks-label` }>
-                            { t("applications:helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.jwks") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.jwksEndpoint }
-                            data-testid={ `${ testId }-jwks-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { (
+                    templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                ) && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
+                            <GenericIcon
+                                icon={ getHelpPanelIcons().endpoints.jwks }
+                                size="micro"
+                                square
+                                transparent
+                                inline
+                                className="left-icon"
+                                verticalAlign="middle"
+                                spaced="right"
+                            />
+                            <label data-testid={ `${ testId }-jwks-label` }>
+                                { t("applications:helpPanel.tabs.start.content." +
+                                    "oidcConfigurations.labels.jwks") }
+                            </label>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                            <CopyInputField
+                                value={ oidcConfigurations?.jwksEndpoint }
+                                data-testid={ `${ testId }-jwks-readonly-input` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
@@ -299,54 +311,54 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.logout }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-logout-label` }>
-                            { t("applications:helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.endSession") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.endSessionEndpoint  }
-                            data-testid={ `${ testId }-logout-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.par }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-pushed-authorization-request-label` }>
-                            { t("applications:helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.pushedAuthorizationRequest") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.pushedAuthorizationRequestEndpoint  }
-                            data-testid={ `${ testId }-pushed-authorization-request-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { (
+                    templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                ) && (
+                    <><Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
+                            <GenericIcon
+                                icon={ getHelpPanelIcons().endpoints.logout }
+                                size="micro"
+                                square
+                                transparent
+                                inline
+                                className="left-icon"
+                                verticalAlign="middle"
+                                spaced="right" />
+                            <label data-testid={ `${testId}-logout-label` }>
+                                { t("applications:helpPanel.tabs.start.content." +
+                                    "oidcConfigurations.labels.endSession") }
+                            </label>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                            <CopyInputField
+                                value={ oidcConfigurations?.endSessionEndpoint }
+                                data-testid={ `${testId}-logout-readonly-input` } />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
+                            <GenericIcon
+                                icon={ getHelpPanelIcons().endpoints.par }
+                                size="micro"
+                                square
+                                transparent
+                                inline
+                                className="left-icon"
+                                verticalAlign="middle"
+                                spaced="right" />
+                            <label data-testid={ `${testId}-pushed-authorization-request-label`}>
+                                { t("applications:helpPanel.tabs.start.content." +
+                                        "oidcConfigurations.labels.pushedAuthorizationRequest")}
+                            </label>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                            <CopyInputField
+                                value={ oidcConfigurations?.pushedAuthorizationRequestEndpoint }
+                                data-testid={ `${testId}-pushed-authorization-request-readonly-input` } />
+                        </Grid.Column>
+                    </Grid.Row></>
+                ) }
                 {
                     featureConfig?.server?.enabled && (
                         <>
