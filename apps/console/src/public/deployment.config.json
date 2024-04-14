@@ -35,7 +35,7 @@
     "idpConfigs": {
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",
         "oidcSessionIFrameEndpointURL": "${serverOrigin}/oidc/checksession",
-        "baseUrls": [],
+        "baseUrls": ["http://localhost:8080/t/cryd1/api/server/v1/branding-preference/generate"],
         "clockTolerance": 300,
         "storage": "webWorker",
         "periodicTokenRefresh": false,

@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import useBrandingPreference from "features/admin.branding.v1/hooks/use-branding-preference";
 import { BrandingPreferenceInterface } from "features/admin.branding.v1/models";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -36,11 +38,12 @@ import React,
     useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-// import { Dispatch } from "redux";
+import { Dispatch } from "redux";
 // import { AppState } from "../../core/store";
 // import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 // import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import generateBrandingPreference from "../api/generate-branding-preference";
+import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 import AIFeatureContext from "../context/ai-branding-feature-context";
 import { BannerState } from "../models/types";
 
@@ -51,35 +54,27 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     props: AIBrandingPreferenceProviderProps
 ): ReactElement => {
     const { children } = props;
+    const dispatch: Dispatch = useDispatch();
     const { preference } = useBrandingPreference();
-    const [ currentStatus, setCurrentStatus ] = useState("Initializing...");
-    const [ progress, setProgress ] = useState(0);
     const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
     const [ operationId, setOperationId ] = useState<string>(null);
+    const { t } = useTranslation();
 
     function removeEmptyKeys(obj: Record<string, any>): Record<string, any> {
         return transform(obj, (result: Record<string, any>, value: any, key: string) => {
-            // If the value is an object, recursively remove empty keys from it.
             if (isObject(value)) {
                 const newValue: Record<string, any> = removeEmptyKeys(value);
 
-                // If the new value is not empty, add it to the result.
                 if (!isEmpty(newValue)) {
                     result[key] = newValue;
                 }
             }
-            // If the value is not an object and it is not empty, add it to the result.
             else if (!isEmpty(value)) {
                 result[key] = value;
             }
         });
     }
-
-    useEffect(() => {
-        console.log("########## operationId ##########\n", operationId);
-    }, [ operationId ]);
-
 
     const handleGenerate = (data: any) => {
 
@@ -107,6 +102,33 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
         console.log("########## merged preference ##########\n", mergedBrandingPreference);
 
         return mergedBrandingPreference;
+    };
+
+    const _generateAIBrandingPreference = (
+        website_url: string,
+        tenant: string
+    ): Promise<void> => {
+
+        return generateBrandingPreference(website_url, tenant)
+            .then(
+                (data: GenerateBrandingAPIResponseInterface) => {
+                    setOperationId(data.operationId);
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("branding:brandingCustomText.notifications.updateSuccess.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("branding:brandingCustomText.notifications.updateSuccess.message")
+                        })
+                    );
+                }
+            )
+            .catch(() => {
+                addAlert<AlertInterface>({
+                    description: t("branding:brandingCustomText.notifications.updateError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("branding:brandingCustomText.notifications.updateError.message")
+                });
+            });
     };
 
     return (

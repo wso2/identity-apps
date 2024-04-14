@@ -159,19 +159,19 @@ export const branding: BrandingNS = {
     ai: {
         banner: {
             full: {
-                heading: "Transform your branding with ease, try our new Branding AI",
-                subHeading: "Provide your website URL, and our AI will seamlessly create a branding theme that is both beautiful and brand-consistent.",
+                heading: "Simplify branding setup with Branding AI",
+                subHeading: "Elevate your organization's branding effortlessly with BrandingAI, simply by providing your website URL.",
                 button: "Try Branding AI"
             },
             input: {
-                heading: "Generate branding with a single click using Branding AI",
-                subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach.",
+                heading: "Configure branding with Branding AI",
+                subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
                 placeholder: "Enter website URL",
                 button: "Generate Branding"
             },
             collapsed: {
-                heading: "Generate branding using, Branding AI",
-                subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach.",
+                heading: "Configure branding with Branding AI",
+                subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
                 button: "Try Branding AI"
             }
         },
@@ -179,19 +179,19 @@ export const branding: BrandingNS = {
             loading: {
                 heading: "Generating your branding",
                 facts: {
-                    0: "Asgardeo's advanced theming capabilities let you modify the site title, copyright information, and support email displayed on your login pages, aligning every detail with your brand identity.",
-                    1: "You can personalize your login portal even further with Asgardeo by updating links to your privacy policy, terms of service, and cookie policy, making your compliance visible and accessible.",
-                    2: "With Asgardeo's branding features, you can update your organization's logo directly in the login and registration pages, ensuring a consistent brand experience for your customers across all application touchpoints."
+                    0: "Asgardeo's advanced theming capabilities let you customize your site title, copyright info, and support email on login pages to match your brand identity",
+                    1: "You can enhance your login portal by updating links to your privacy policy, terms of service, and cookie policy for visible compliance with Asgardeo.",
+                    2: "With Asgardeo's branding features, you can ensure a consistent branding experience across all your applications."
                 },
                 states: {
-                    0: "Initializing...",
-                    1: "Rendering Webpage...",
-                    2: "Extracting Content...",
-                    3: "Content Extracted.",
-                    4: "Generating Branding...",
-                    5: "Creating Color Palette...",
-                    6: "Defining Style Properties...",
-                    7: "Creating Branding Theme...",
+                    0: "Getting things started",
+                    1: "Analyzing your webpage...",
+                    2: "Analyzing your webpage...",
+                    3: "Gathering visual elements...",
+                    4: "Gathering visual elements...",
+                    5: "Creating your branding theme...",
+                    6: "Creating your branding theme...",
+                    7: "Applying final touches...",
                     8: "Branding Generation Completed!"
                 }
             }

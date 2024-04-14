@@ -121,7 +121,8 @@ export class AuthenticateUtils {
             if (!baseUrls.includes(serverOrigin)) {
                 baseUrls = [ ...baseUrls, serverOrigin ];
             }
-
+            console.log("###################################");
+            console.log("Base URLs:" + baseUrls);
             return baseUrls;
         }
 

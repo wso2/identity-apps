@@ -24,9 +24,9 @@ export interface GenerateBrandingAPIInterface {
 
 export interface GenerateBrandingAPIResponseInterface {
     /**
-     * Generated branding preference.
+     * Operation ID of the branding generation.
      */
-    brandingPreference: string;
+    operationId: string;
 }
 
 export interface BrandingGenerationStatusAPIResponseInterface {

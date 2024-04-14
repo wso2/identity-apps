@@ -20,9 +20,9 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { BrandingPreferenceAPIResponseInterface } from "../../admin.branding.v1/models";
 import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
+import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 
 /**
  * Get an axios instance.
@@ -33,32 +33,36 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 const generateBrandingPreference = (
     website_url: string,
     name: string
-): Promise<BrandingPreferenceAPIResponseInterface> => {
-    const tenantDomain: string = store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION
-        ? store.getState()?.organization?.organization?.id
-        : name;
+): Promise<GenerateBrandingAPIResponseInterface> => {
+    const isSuborganization: boolean =
+    store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION;
+    const tenantDomain: string = isSuborganization ? store.getState().organization.organization.id : name;
+
     const requestConfig: AxiosRequestConfig = {
         data: {
-            name: tenantDomain,
+            // tenant_domain: tenantDomain,
             website_url: website_url
         },
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.brandingPreference}/generate`
+        // url: `${store.getState().config.endpoints.brandingPreference}/generate`
+        url: `http://localhost:8080/t/cryd1/api/server/v1/branding-preference/generate`
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<BrandingPreferenceAPIResponseInterface>) => {
-            if (response.status !== 200) {
-                throw new Error("Failed to generate branding preference.");
+        .then((response: AxiosResponse<GenerateBrandingAPIResponseInterface>) => {
+            if (response.status !== 202) {
+                throw new Error("Failed to generate branding preference: ${response.statusText}");
             }
 
-            return Promise.resolve(response.data);
+            return response.data;
         }).catch((error: AxiosError) => {
+            const errorMessage: string = error.response?.data?.message || "Unknown error occurred";
+
             throw new IdentityAppsApiException(
-                "error message",
+                errorMessage,
                 error.stack,
                 error.response?.data?.code,
                 error.request,
