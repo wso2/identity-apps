@@ -284,7 +284,7 @@
                                 <% if (StringUtils.isNotBlank(identifierPlaceholder)) { %>
                                     <input placeholder="<%=identifierPlaceholder%>" id="usernameUserInput" name="usernameUserInput" type="text"
                                         tabindex="0" required>
-                                <% } else if (isMultiAttributeLoginEnabledInTenant) { %>
+                                <% } else { %>
                                     <input
                                         placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, usernamePlaceHolder)%>"
                                         id="usernameUserInput"
