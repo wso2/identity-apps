@@ -1295,7 +1295,7 @@
 
     <script>
         const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
-        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^_.{|}~-]+$/;
+        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^.{|}~-]+$/;  
         var registrationDataKey = "registrationData";
         var passwordField = $("#passwordUserInput");
         var $registerForm = $("#register");
