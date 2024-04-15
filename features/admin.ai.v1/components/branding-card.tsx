@@ -25,7 +25,7 @@ import classNames from "classnames";
 import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 import useGenerateAIBrandingPreference,
 { GenerateAIBrandingPreferenceFunc } from "features/admin.ai.v1/hooks/use-generate-ai-branding-preference";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Header, Icon, Input, Segment } from "semantic-ui-react";
 
@@ -61,62 +61,101 @@ export const BrandingAIBanner = (
 
     const handleGenerateClick = async () => {
         await generateAIBrandingPreference(websiteUrl, "carbon.super");
+        setBannerState(BannerState.Collapsed);
     };
 
     return (
         <>
-            { bannerState === BannerState.Full && (
-                <Segment
-                    basic
-                    className={
-                        classNames(
-                            "branding-card",
-                            {
-                                hidden: isGeneratingBranding
-                            },
-                            "branding-card-banner-full"
-                        )
-                    }
-                >
-                    <div className="branding-card-banner-full-heading">
-                        <div>
-                            <Header as="h3">{ t("branding:ai.banner.full.heading") }</Header>
-                            <p>{ t("branding:ai.banner.full.subHeading") }</p>
-                        </div>
-                        <Button onClick={ handleExpandClick } color="secondary" variant="outlined">
-                            <GenericIcon
-                                icon={ AIIcon }
-                                className="branding-card-banner-full-button"
-                            />
-                            { t("branding:ai.banner.full.button") }
-                        </Button>
-                    </div>
-                </Segment>
-            ) }
-            { bannerState === BannerState.Input && (
-                <Segment
-                    className={
-                        classNames(
-                            "branding-card",
-                            {
-                                hidden: isGeneratingBranding
-                            }
-                        )
-                    }
-                >
-                    <div className="branding-card-banner-input">
-                        <Icon
-                            name="dropdown"
-                            onClick={ handleCollapseClick }
-                            className="branding-card-banner-input-icon"
-                        />
+            <div
+                className={
+                    classNames(
+                        "branding-card",
+                        {
+                            hidden: isGeneratingBranding
+                        },
+                        "branding-card-banner-full"
+                    )
+                }>
 
-                        <div className="branding-card-banner-input-content">
+                { bannerState === BannerState.Full && (
+                    <Segment
+                        basic
+                    >
+                        <div className="branding-card-banner-full-heading">
                             <div>
-                                <Header as="h3" className="branding-card-banner-input-heading">
-                                    { t("branding:ai.banner.input.heading") }
-                                </Header>
-                                <p>{ t("branding:ai.banner.input.subHeading") }
+                                <Header as="h3">{ t("branding:ai.banner.full.heading") }</Header>
+                                <p>{ t("branding:ai.banner.full.subHeading") }</p>
+                            </div>
+                            <Button onClick={ handleExpandClick } color="secondary" variant="outlined">
+                                <GenericIcon
+                                    icon={ AIIcon }
+                                    className="branding-card-banner-full-button"
+                                />
+                                { t("branding:ai.banner.full.button") }
+                            </Button>
+                        </div>
+                    </Segment>
+                ) }
+                { bannerState === BannerState.Input && (
+                    <Segment>
+                        <div className="branding-card-banner-input">
+                            <Icon
+                                name="dropdown"
+                                onClick={ handleCollapseClick }
+                                className="branding-card-banner-input-icon"
+                            />
+
+                            <div className="branding-card-banner-input-content">
+                                <div>
+                                    <Header as="h3" className="branding-card-banner-input-heading">
+                                        { t("branding:ai.banner.input.heading") }
+                                    </Header>
+                                    <p>{ t("branding:ai.banner.input.subHeading") }
+                                        <DocumentationLink
+                                            link={ "develop.applications.editApplication.asgardeoTryitApplication" +
+                                    ".general.learnMore" }
+                                            isLinkRef = { true }
+                                        >
+                                            <Trans
+                                                i18nKey={ "extensions:common.learnMore" }
+                                            >
+                                            Learn More
+                                            </Trans>
+                                        </DocumentationLink>
+                                    </p>
+                                </div>
+                                <div className="branding-card-banner-input-actions">
+                                    <Input
+                                        className="branding-input-field"
+                                        placeholder={ t("branding:ai.banner.input.placeholder") }
+                                        value={ websiteUrl }
+                                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                            setWebsiteUrl(e.target.value) }
+                                    />
+                                    <Button
+                                        onClick={ handleGenerateClick }
+                                        color="secondary"
+                                        variant="outlined"
+                                        style={ { marginLeft: "auto" } }
+                                    >
+                                        <GenericIcon
+                                            className="branding-card-banner-input-button"
+                                            icon={ AIIcon }
+                                        />
+                                        { t("branding:ai.banner.input.button") }
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </Segment>
+                ) }
+                { bannerState === BannerState.Collapsed && (
+                    <Segment>
+                        <div className="branding-card-banner-collapsed">
+                            <div>
+                                <Header as="h3" className="branding-card-banner-collapsed-heading">
+                                    { t("branding:ai.banner.input.heading") }</Header>
+                                <p>{ t("branding:ai.banner.collapsed.subHeading") }
                                     <DocumentationLink
                                         link={ "develop.applications.editApplication.asgardeoTryitApplication" +
                                     ".general.learnMore" }
@@ -125,79 +164,26 @@ export const BrandingAIBanner = (
                                         <Trans
                                             i18nKey={ "extensions:common.learnMore" }
                                         >
-                                            Learn More
+                                        Learn More
                                         </Trans>
                                     </DocumentationLink>
                                 </p>
                             </div>
-                            <div className="branding-card-banner-input-actions">
-                                <Input
-                                    className="branding-input-field"
-                                    placeholder={ t("branding:ai.banner.input.placeholder") }
-                                    value={ websiteUrl }
-                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                        setWebsiteUrl(e.target.value) }
+                            <Button
+                                onClick={ () => setBannerState(BannerState.Input) }
+                                color="secondary"
+                                variant="outlined"
+                            >
+                                <GenericIcon
+                                    className="branding-card-banner-collapsed-button"
+                                    icon={ AIIcon }
                                 />
-                                <Button
-                                    onClick={ handleGenerateClick }
-                                    color="secondary"
-                                    variant="outlined"
-                                    style={ { marginLeft: "auto" } }
-                                >
-                                    <GenericIcon
-                                        className="branding-card-banner-input-button"
-                                        icon={ AIIcon }
-                                    />
-                                    { t("branding:ai.banner.input.button") }
-                                </Button>
-                            </div>
+                                { t("branding:ai.banner.collapsed.button") }
+                            </Button>
                         </div>
-                    </div>
-                </Segment>
-            ) }
-            { bannerState === BannerState.Collapsed && (
-                <Segment
-                    className={
-                        classNames(
-                            "branding-card",
-                            {
-                                hidden: isGeneratingBranding
-                            }
-                        )
-                    }
-                >
-                    <div className="branding-card-banner-collapsed">
-                        <div>
-                            <Header as="h3" className="branding-card-banner-collapsed-heading">
-                                { t("branding:ai.banner.input.heading") }</Header>
-                            <p>{ t("branding:ai.banner.collapsed.subHeading") }
-                                <DocumentationLink
-                                    link={ "develop.applications.editApplication.asgardeoTryitApplication" +
-                                    ".general.learnMore" }
-                                    isLinkRef = { true }
-                                >
-                                    <Trans
-                                        i18nKey={ "extensions:common.learnMore" }
-                                    >
-                                        Learn More
-                                    </Trans>
-                                </DocumentationLink>
-                            </p>
-                        </div>
-                        <Button
-                            onClick={ () => setBannerState(BannerState.Input) }
-                            color="secondary"
-                            variant="outlined"
-                        >
-                            <GenericIcon
-                                className="branding-card-banner-collapsed-button"
-                                icon={ AIIcon }
-                            />
-                            { t("branding:ai.banner.collapsed.button") }
-                        </Button>
-                    </div>
-                </Segment>
-            ) }
+                    </Segment>
+                ) }
+            </div>
         </>
     );};
 

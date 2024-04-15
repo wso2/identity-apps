@@ -26,12 +26,10 @@ import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
     from "../../../modules/theme/src/themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 import useGetAIBrandingGenerationStatus from "../api/use-get-branding-generation-status";
-import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
-
+import "./loading-screen.scss";
 
 export const LoadingScreen = (): JSX.Element => {
     const { t } = useTranslation();
-    const [ progress, setProgress ] = useState(0);
     const [ factIndex, setFactIndex ] = useState(0);
     const facts: string[] = [
         t("branding:ai.screens.loading.facts.0"),
@@ -39,9 +37,9 @@ export const LoadingScreen = (): JSX.Element => {
         t("branding:ai.screens.loading.facts.2")
     ];
 
-    const { operationId, brandingGenerationCompleted } = useAIBrandingPreference();
+    const { operationId } = useAIBrandingPreference();
 
-    const { data, isLoading, error } = useGetAIBrandingGenerationStatus(operationId);
+    const { data, isLoading } = useGetAIBrandingGenerationStatus(operationId);
 
     const statusLabels: Record<string, string> = {
         branding_generation_completed: t("branding:ai.screens.loading.states.8"),
@@ -65,27 +63,6 @@ export const LoadingScreen = (): JSX.Element => {
         webpage_extraction_completed: 30
     };
 
-    const initialProgress: number = 5;
-    const increment: number = 0.5;
-
-    useEffect(() => {
-        const increaseProgress = () => {
-            setProgress((prevProgress: number) => {
-                if (prevProgress < initialProgress) {
-                    const updatedProgress: number = prevProgress + increment;
-
-                    setTimeout(increaseProgress, 300);
-
-                    return updatedProgress;
-                }
-
-                return prevProgress;
-            });
-        };
-
-        increaseProgress();
-    }, []);
-
     useEffect(() => {
         const interval: NodeJS.Timeout = setInterval(() => {
             setFactIndex((factIndex + 1) % facts.length);
@@ -99,7 +76,7 @@ export const LoadingScreen = (): JSX.Element => {
         // Find the last completed status based on the predefined progress mapping
         let maxProgress: number = 0;
 
-        Object.entries(data.status).forEach(([ key, value ]) => {
+        Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
             if (value && statusProgress[key] > maxProgress) {
                 maxProgress = statusProgress[key];
             }
@@ -112,7 +89,7 @@ export const LoadingScreen = (): JSX.Element => {
         if (!data) return t("branding:ai.screens.loading.states.0");
         let currentStatusLabel: string = "branding:ai.screens.loading.states.0";
 
-        Object.entries(data.status).forEach(([ key, value ]) => {
+        Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
             if (value && statusLabels[key]) {
                 currentStatusLabel = statusLabels[key];
             }
@@ -121,93 +98,32 @@ export const LoadingScreen = (): JSX.Element => {
         return t(currentStatusLabel);
     };
 
-
-    // return (
-    //     <Box className="loading-screen-container">
-    //         <Box className="loading-screen-content">
-    //             <Box className="loading-screen-row">
-    //                 <Box className="loading-screen-facts">
-    //                     <Box className="loading-screen-facts-content">
-    //                         <Typography variant="h5" className="loading-screen-facts-text">
-    //                             Did you know?
-    //                         </Typography>
-    //                         <Typography
-    //                             variant="body1"
-    //                             align="justify"
-    //                             className="loading-screen-facts-detail">
-    //                             { facts[factIndex] }
-    //                         </Typography>
-    //                     </Box>
-    //                 </Box>
-    //                 <Box className="loading-screen-placeholder">
-    //                     <LoadingPlaceholder />
-    //                 </Box>
-    //             </Box>
-    //             <Box className="loading-screen-progress">
-    //                 <LinearProgress variant="determinate" value={ progress } />
-    //             </Box>
-    //             <Box className="loading-screen-status">
-    //                 { polling && <CircularProgress size={ 20 } className="loading-screen-status-progress" /> }
-    //                 <Typography variant="h6">
-    //                     { currentStatus }
-    //                 </Typography>
-    //             </Box>
-    //         </Box>
-    //     </Box>
-    // );
-
-
     return (
-        // <Box className="loading-screen-container">
-        <Box
-            sx={ {
-                alignItems: "center",
-                display: "flex",
-                justifyContent: "center"
-            } }>
-            <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", width: "75%" } }>
-                <Box
-                    sx={ {
-                        alignItems: "center",
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        marginBottom: "20px"
-                    } }>
-                    <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", mt: 2 } }>
-                        <Box sx={ { alignItems: "left", display: "flex", flexDirection: "column", maxWidth: "75%" } }>
-                            <Typography variant="h5" sx={ { color: "rgba(0, 0, 0, 0.6)", fontWeight: "bold" } }>
+        <Box className="loading-screen-container">
+            <Box className="loading-screen-content">
+                <Box className="loading-screen-row">
+                    <Box className="loading-screen-facts">
+                        <Box className="loading-screen-facts-content">
+                            <Typography variant="h5" className="loading-screen-facts-text">
                                 Did you know?
                             </Typography>
                             <Typography
                                 variant="body1"
                                 align="justify"
-                                sx={ {
-                                    color: "#757575",
-                                    height: "150px",
-                                    mt: 2,
-                                    overflow: "auto"
-                                } }>
+                                className="loading-screen-facts-detail">
                                 { facts[factIndex] }
                             </Typography>
                         </Box>
                     </Box>
-                    <Box sx={ { display: "flex", justifyContent: "left" } }>
+                    <Box className="loading-screen-placeholder">
                         <LoadingPlaceholder />
                     </Box>
                 </Box>
-                <Box sx={ { width: "100%" } }>
+                <Box className="loading-screen-progress">
                     <LinearProgress variant="determinate" value={ getProgress() } />
                 </Box>
-                <Box
-                    sx={ {
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        mt: 2,
-                        width: "100%"
-                    } }>
-                    { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
+                <Box className="loading-screen-status">
+                    { isLoading && <CircularProgress size={ 20 } className="loading-screen-status-progress" /> }
                     <Typography variant="h6">
                         { getCurrentStatus() }
                     </Typography>
@@ -215,5 +131,4 @@ export const LoadingScreen = (): JSX.Element => {
             </Box>
         </Box>
     );
-
 };

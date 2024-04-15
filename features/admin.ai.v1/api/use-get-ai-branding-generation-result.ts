@@ -17,7 +17,6 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 import { useEffect, useState } from "react";
 import useRequest, {
     RequestConfigInterface,
@@ -36,8 +35,6 @@ export const useGetAIBrandingGenerationResult = (
 
     const { organizationType } = useGetCurrentOrganizationType();
 
-    // const { brandingGenerationCompleted } = useAIBrandingPreference();
-
     const [ isLoading, setIsLoading ] = useState(true);
 
     const requestConfig: RequestConfigInterface = {
@@ -54,7 +51,8 @@ export const useGetAIBrandingGenerationResult = (
     };
 
     const { data, error, isValidating, mutate } =
-    useRequest<BrandingGenerationResultAPIResponseInterface, RequestErrorInterface>(brandingGenerationCompleted ? requestConfig : null, {
+    useRequest<BrandingGenerationResultAPIResponseInterface, RequestErrorInterface>
+    (brandingGenerationCompleted ? requestConfig : null, {
         shouldRetryOnError: false
     });
 
@@ -65,7 +63,6 @@ export const useGetAIBrandingGenerationResult = (
         }
     }, [ brandingGenerationCompleted ]);
 
-    console.log("data (hook)", data);
     return {
         data,
         error,

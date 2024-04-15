@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import useBrandingPreference from "features/admin.branding.v1/hooks/use-branding-preference";
 import { BrandingPreferenceInterface } from "features/admin.branding.v1/models";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -30,22 +27,11 @@ import React,
 { FunctionComponent,
     PropsWithChildren,
     ReactElement,
-    ReactNode,
-    createContext,
-    useCallback,
-    useContext,
     useEffect,
     useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-// import { AppState } from "../../core/store";
-// import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
-// import { OrganizationResponseInterface } from "../../organizations/models/organizations";
-import generateBrandingPreference from "../api/generate-ai-branding-preference";
 import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
 import AIFeatureContext from "../context/ai-branding-feature-context";
-import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 
 type AIBrandingPreferenceProviderProps = PropsWithChildren;
 
@@ -53,8 +39,8 @@ type AIBrandingPreferenceProviderProps = PropsWithChildren;
 const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProviderProps> = (
     props: AIBrandingPreferenceProviderProps
 ): ReactElement => {
+
     const { children } = props;
-    const dispatch: Dispatch = useDispatch();
     const { preference } = useBrandingPreference();
     const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
@@ -79,25 +65,23 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
 
     const { data, error } = useGetAIBrandingGenerationResult(operationId, brandingGenerationCompleted);
 
-
     useEffect(() => {
         if (brandingGenerationCompleted && !error && data) {
-            console.log("########## AI generated ##########\n", data.data);
             handleGenerate(data.data);
         }
     }, [ data, brandingGenerationCompleted ]);
 
     const handleGenerate = (data: any) => {
 
-        setGeneratingBranding(false);
         const newBrandingPreference: BrandingPreferenceInterface = getMergedBrandingPreference(data);
 
         setMergedBrandingPreference(newBrandingPreference);
+        setBrandingGenerationCompleted(false);
+        setGeneratingBranding(false);
     };
 
     const getMergedBrandingPreference = (data: any): BrandingPreferenceInterface => {
 
-        setGeneratingBranding(false);
         const { theme } = removeEmptyKeys(data);
         const { activeTheme, LIGHT } = theme;
 
@@ -113,33 +97,6 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
         console.log("########## merged preference ##########\n", mergedBrandingPreference);
 
         return mergedBrandingPreference;
-    };
-
-    const _generateAIBrandingPreference = (
-        website_url: string,
-        tenant: string
-    ): Promise<void> => {
-
-        return generateBrandingPreference(website_url, tenant)
-            .then(
-                (data: GenerateBrandingAPIResponseInterface) => {
-                    setOperationId(data.operation_id);
-                    dispatch(
-                        addAlert<AlertInterface>({
-                            description: t("branding:brandingCustomText.notifications.updateSuccess.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("branding:brandingCustomText.notifications.updateSuccess.message")
-                        })
-                    );
-                }
-            )
-            .catch(() => {
-                addAlert<AlertInterface>({
-                    description: t("branding:brandingCustomText.notifications.updateError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("branding:brandingCustomText.notifications.updateError.message")
-                });
-            });
     };
 
     return (
