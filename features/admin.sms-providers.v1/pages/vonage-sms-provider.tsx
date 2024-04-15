@@ -46,22 +46,19 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
     const { t } = useTranslation();
     const [ isShow, setIsShow ] = useState(false);
 
-    const renderInputAdornment = (): ReactElement => {
-
-        return (
-            <InputAdornment position="end">
-                <Icon
-                    link={ true }
-                    className="list-icon reset-field-to-default-adornment"
-                    size="small"
-                    color="grey"
-                    name={ !isShow ? "eye" : "eye slash" }
-                    data-testid={ "view-button" }
-                    onClick={ () => { setIsShow(!isShow); } }
-                />
-            </InputAdornment>
-        );
-    };
+    const renderInputAdornment = (): ReactElement => (
+        <InputAdornment position="end">
+            <Icon
+                link={ true }
+                className="list-icon reset-field-to-default-adornment"
+                size="small"
+                color="grey"
+                name={ !isShow ? "eye" : "eye slash" }
+                data-testid={ "view-button" }
+                onClick={ () => { setIsShow(!isShow); } }
+            />
+        </InputAdornment>
+    );
 
     return (
         <EmphasizedSegment className="form-wrapper" padded={ "very" }>
