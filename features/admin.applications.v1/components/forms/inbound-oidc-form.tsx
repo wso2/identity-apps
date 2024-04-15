@@ -17,7 +17,7 @@
  */
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { CheckboxChild, Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
@@ -97,7 +97,7 @@ import { ApplicationCertificateWrapper } from "../settings/certificate";
 /**
  * Proptypes for the inbound OIDC form component.
  */
-interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
+interface InboundOIDCFormPropsInterface extends TestableComponentInterface, IdentifiableComponentInterface {
     onUpdate: (id: string) => void;
     application: ApplicationInterface;
     /**
@@ -182,7 +182,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         containerRef,
         isDefaultApplication,
         isSystemApplication,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -1914,6 +1915,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     getAllowedList(metadata?.fapiMetadata?.tokenEndpointAuthMethod)
                                                     : getAllowedList(metadata?.tokenEndpointAuthMethod) }
                                                 readOnly={ readOnly }
+                                                data-componentId={ `${ componentId }-client-auth-method-dropdown` }
                                             />
                                             <Hint>
                                                 { t("applications:forms.inboundOIDC.sections" +
@@ -1951,6 +1953,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms) :
                                                 getAllowedList(metadata?.tokenEndpointSignatureAlgorithm) }
                                             readOnly={ readOnly }
+                                            data-componentId={
+                                                `${ componentId }-client-auth-signing-algorithm-dropdown` }
                                         />
                                         <Hint>
                                             { t("applications:forms.inboundOIDC.sections" +
@@ -1987,6 +1991,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 .APP_NAME_MAX_LENGTH }
                                             minLength={ 3 }
                                             width={ 16 }
+                                            data-componentId={ `${ componentId }-client-auth-subject-dn` }
                                         />
                                         <Hint>
                                             { t("applications:forms.inboundOIDC.sections" +
@@ -2033,6 +2038,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                 ] }
                                 readOnly={ readOnly }
+                                data-componentId={ `${ componentId }-pushed-authorization-checkbox` }
                             />
                             <Hint>
                                 { t("applications:forms.inboundOIDC.sections" +
@@ -2082,6 +2088,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms)
                                         : getAllowedList(metadata?.requestObjectSignatureAlgorithm) }
                                     readOnly={ readOnly }
+                                    data-componentId={ `${ componentId }-request-object-signing-algorithm-dropdown` }
                                 />
                                 <Hint>
                                     <Trans
@@ -2120,6 +2127,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         getAllowedList(metadata?.fapiMetadata?.allowedEncryptionAlgorithms) :
                                         getAllowedList(metadata?.requestObjectEncryptionAlgorithm) }
                                     readOnly={ readOnly }
+                                    data-componentId={ `${ componentId }-request-object-encryption-algorithm-dropdown` }
                                 />
                                 <Hint>
                                     <Trans
@@ -2156,6 +2164,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     children={ getAllowedList(metadata?.requestObjectEncryptionMethod) }
                                     readOnly={ readOnly }
+                                    data-componentId={ `${ componentId }-request-object-encryption-method-dropdown` }
                                 />
                                 <Hint>
                                     <Trans
@@ -2929,6 +2938,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms) :
                                     getAllowedList(metadata?.idTokenSignatureAlgorithm) }
                                 readOnly={ readOnly }
+                                data-componentId={ `${ componentId }-id_token-response-signing-algorithm-dropdown` }
                             />
                             <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
                                 <Trans
@@ -3847,6 +3857,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
  * Default props for the Inbound OIDC form component.
  */
 InboundOIDCForm.defaultProps = {
+    "data-componentid": "inbound-oidc-form",
     "data-testid": "inbound-oidc-form",
     initialValues: {
         accessToken: undefined,

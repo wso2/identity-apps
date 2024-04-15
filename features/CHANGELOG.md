@@ -1,5 +1,65 @@
 # @wso2is/features
 
+## 2.14.20
+
+### Patch Changes
+
+- [#5879](https://github.com/wso2/identity-apps/pull/5879) [`b200392022`](https://github.com/wso2/identity-apps/commit/b200392022cf0644c9f85239e89e62313c0f901c) Thanks [@sandushi](https://github.com/sandushi)! - Fix subject identifier issues
+
+* [#5935](https://github.com/wso2/identity-apps/pull/5935) [`033a193622`](https://github.com/wso2/identity-apps/commit/033a193622835b690531b540d152384a4623df38) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add eye icon to secret input fields in sms providers
+
+- [#5879](https://github.com/wso2/identity-apps/pull/5879) [`8261a2cc41`](https://github.com/wso2/identity-apps/commit/8261a2cc411b6ce0838943309cadb35ed4339943) Thanks [@sandushi](https://github.com/sandushi)! - Fix the alternative subject identifier drop down issues
+
+- Updated dependencies [[`8261a2cc41`](https://github.com/wso2/identity-apps/commit/8261a2cc411b6ce0838943309cadb35ed4339943)]:
+  - @wso2is/i18n@2.1.9
+
+## 2.14.19
+
+### Patch Changes
+
+- [#5951](https://github.com/wso2/identity-apps/pull/5951) [`e882bc3fdd`](https://github.com/wso2/identity-apps/commit/e882bc3fdd1ffdc9e632ea089feb621f5a899ffe) Thanks [@brionmario](https://github.com/brionmario)! - Add `apiResourcesV1` & `apiResourcesV2` to DEV config
+
+## 2.14.18
+
+### Patch Changes
+
+- [#5950](https://github.com/wso2/identity-apps/pull/5950) [`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `api-resources.v1` & `api-resources.v2`
+
+* [#5945](https://github.com/wso2/identity-apps/pull/5945) [`51195d6ce3`](https://github.com/wso2/identity-apps/commit/51195d6ce333635e769886e1fd1f8b90d4cab7b1) Thanks [@brionmario](https://github.com/brionmario)! - Rename `admin.api-resources.v1` to `admin.api-resources.v2`
+
+- [#5948](https://github.com/wso2/identity-apps/pull/5948) [`1fdd9be566`](https://github.com/wso2/identity-apps/commit/1fdd9be566b110a7cb7aa053a5433ca13043cd4d) Thanks [@brionmario](https://github.com/brionmario)! - Move fluffy `api-resources` to features -> `admin.api-resources.v1`
+
+- Updated dependencies [[`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e)]:
+  - @wso2is/core@2.0.39
+  - @wso2is/access-control@2.0.24
+  - @wso2is/dynamic-forms@2.0.43
+  - @wso2is/form@2.0.44
+  - @wso2is/forms@2.0.29
+  - @wso2is/i18n@2.1.8
+  - @wso2is/react-components@2.1.14
+
+## 2.14.17
+
+### Patch Changes
+
+- [#5941](https://github.com/wso2/identity-apps/pull/5941) [`270b764db7`](https://github.com/wso2/identity-apps/commit/270b764db773f6c8e7ab06302718a1583bdb4505) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add missing validation for alphanumeric special charactor username type
+
+## 2.14.16
+
+### Patch Changes
+
+- [#5934](https://github.com/wso2/identity-apps/pull/5934) [`06a65cb60a`](https://github.com/wso2/identity-apps/commit/06a65cb60a6e37df9ea3fdf80701cbbf1da0889e) Thanks [@brionmario](https://github.com/brionmario)! - Refactor `use-sign` hook
+
+* [#5911](https://github.com/wso2/identity-apps/pull/5911) [`dba852ecf6`](https://github.com/wso2/identity-apps/commit/dba852ecf6d93e244241d92815fc5704631d1740) Thanks [@RivinduM](https://github.com/RivinduM)! - Add missing data test ids
+
+- [#5923](https://github.com/wso2/identity-apps/pull/5923) [`cf1bddc178`](https://github.com/wso2/identity-apps/commit/cf1bddc1786dfcf1adee367ca13a3979b2e385cf) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Re-structuring sign-on-methods to add AI login flow component.
+
+## 2.14.15
+
+### Patch Changes
+
+- [#5926](https://github.com/wso2/identity-apps/pull/5926) [`2b039954fb`](https://github.com/wso2/identity-apps/commit/2b039954fb439d06fd461bb674d25eb9a40f1897) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the SMS OTP description
+
 ## 2.14.14
 
 ### Patch Changes

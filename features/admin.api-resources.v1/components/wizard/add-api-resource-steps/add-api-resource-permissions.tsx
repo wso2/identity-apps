@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,13 +24,13 @@ import { useTranslation } from "react-i18next";
 import { Grid, Header } from "semantic-ui-react";
 import { PermissionMappingList } from "./permission-mapping-list";
 import { PermissionMappingListItem } from "./permission-mapping-list-item";
-import { FeatureConfigInterface } from "../../../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
 import { APIResourcePermissionInterface } from "../../../models";
 
 /**
  * Prop-types for the API resources page component.
  */
-interface AddAPIResourcePermissionsInterface extends SBACInterface<FeatureConfigInterface>,
+interface AddAPIResourcePermissionsInterface extends SBACInterface<ExtendedFeatureConfigInterface>,
     IdentifiableComponentInterface {
     /**
      * Initial permission list.
@@ -141,7 +141,7 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
                             as="h5"
                             className="bold-text mb-2"
                         >
-                            { t("apiResources:wizard.addApiResource.steps.scopes.form." +
+                            { t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
                                 "fields.permissionList.label") }
                         </Header>
                         <EmphasizedSegment className="mt-0">

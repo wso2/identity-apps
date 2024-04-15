@@ -1,5 +1,18 @@
 # @wso2is/i18n
 
+## 2.1.9
+
+### Patch Changes
+
+- [#5879](https://github.com/wso2/identity-apps/pull/5879) [`8261a2cc41`](https://github.com/wso2/identity-apps/commit/8261a2cc411b6ce0838943309cadb35ed4339943) Thanks [@sandushi](https://github.com/sandushi)! - Fix the alternative subject identifier drop down issues
+
+## 2.1.8
+
+### Patch Changes
+
+- Updated dependencies [[`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e)]:
+  - @wso2is/core@2.0.39
+
 ## 2.1.7
 
 ### Patch Changes
