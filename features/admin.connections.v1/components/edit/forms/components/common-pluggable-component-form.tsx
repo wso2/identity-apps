@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import isUndefined from "lodash-es/isUndefined";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "../../../../../admin.core.v1";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { AuthenticatorSettingsFormModes } from "../../../../models/authenticators";
 import {
@@ -58,6 +60,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     } = props;
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     // Used for field elements which needs to listen for any onChange events in the form.
     const [ dynamicValues, setDynamicValues ] = useState<CommonPluggableComponentInterface>(undefined);
@@ -419,7 +422,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         return (
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                    <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                         <Button
                             primary
                             type="submit"

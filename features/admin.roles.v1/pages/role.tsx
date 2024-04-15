@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import {
     AlertInterface,
     AlertLevels,
@@ -30,10 +30,10 @@ import { AxiosResponse } from "axios";
 import find from "lodash-es/find";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants } from "../../admin.core.v1";
+import { AdvancedSearchWithBasicFilters, AppState, FeatureConfigInterface, UIConstants } from "../../admin.core.v1";
 import { getUserStoreList } from "../../admin.userstores.v1/api";
 import { deleteRoleById, getRolesList, searchRoleList } from "../api/roles";
 import { RoleList } from "../components/role-list";
@@ -85,6 +85,7 @@ const filterOptions: DropdownItemProps[] = [
 const RolesPage = (): ReactElement => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -319,7 +320,7 @@ const RolesPage = (): ReactElement => {
             action={
                 (isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0))
                 && (
-                    <Show when={ AccessControlConstants.ROLE_WRITE }>
+                    <Show when={ featureConfig?.userRoles?.scopes?.create }>
                         <PrimaryButton
                             data-testid="role-mgt-roles-list-add-button"
                             onClick={ () => setShowWizard(true) }

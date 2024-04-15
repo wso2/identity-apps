@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
@@ -29,12 +29,12 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
-import { attributeConfig } from "../../admin.extensions.v1";
 import { getAllExternalClaims } from "../../admin.claims.v1/api";
-import { AppConstants, history, sortList } from "../../admin.core.v1";
+import { AppConstants, AppState, FeatureConfigInterface, history, sortList } from "../../admin.core.v1";
+import { attributeConfig } from "../../admin.extensions.v1";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
 import { ClaimManagementConstants } from "../constants";
@@ -92,6 +92,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
@@ -339,7 +341,9 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
-                            <Show when={ AccessControlConstants.SCOPE_DELETE }>
+                            <Show
+                                when={ featureConfig?.oidcScopes?.scopes?.delete }
+                            >
                                 <DangerZoneGroup
                                     sectionHeader={ t("common:dangerZone") }
                                     data-testid={ `${ testId }-danger-zone-group` }

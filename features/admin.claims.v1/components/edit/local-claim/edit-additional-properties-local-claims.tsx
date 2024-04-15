@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
@@ -158,7 +158,9 @@ export const EditAdditionalPropertiesLocalClaims:
                     </Grid.Row>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 6 }>
-                            <Show when={ AccessControlConstants.ATTRIBUTE_EDIT }>
+                            <Show
+                                when={ featureConfig?.attributeDialects?.scopes?.update }
+                            >
                                 <PrimaryButton
                                     onClick={ () => {
                                         setSubmit();

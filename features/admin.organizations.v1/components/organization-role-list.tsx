@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -364,7 +364,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={
                         onEmptyListPlaceholderActionClick && (
-                            <Show when={ AccessControlConstants.ORGANIZATION_ROLES_WRITE }>
+                            <Show when={ featureConfig?.organizationsRoles?.scopes?.create }>
                                 <PrimaryButton
                                     onClick={ () => {
                                         // eventPublisher.publish(componentId + "-click-new-organization-button");

@@ -34,7 +34,6 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import {
     AppConstants,
     AppState,
@@ -180,7 +179,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 <EmptyPlaceholder
                     className="list-placeholder"
                     action={ onEmptyListPlaceholderActionClick && (
-                        <Show when={ AccessControlConstants.IDVP_WRITE }>
+                        <Show when={ featureConfig?.identityVerificationProviders?.scopes?.create }>
                             <PrimaryButton
                                 onClick={ onEmptyListPlaceholderActionClick }
                             >

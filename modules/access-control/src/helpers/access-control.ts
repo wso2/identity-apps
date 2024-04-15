@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,18 @@
  */
 
 import isEmpty from "lodash-es/isEmpty";
-import { FeatureAccessConfigInterface } from "../models";
-import { OrganizationType } from "../models/organization";
-import { AuthenticateUtils } from "../utils";
+import { FeatureAccessConfigInterface, OrganizationType } from "../models/access-control";
+
+/**
+ * Checks if the logged in user has a specific scope.
+ *
+ * @returns `boolean` True or false.
+ */
+const hasScope = (scope: string, allowedScopes: string): boolean => {
+    const scopes: string[] = allowedScopes?.split(" ");
+
+    return scopes?.includes(scope);
+};
 
 /**
  * Checks if the feature is enabled.
@@ -52,7 +61,6 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
 /**
  * Checks if the required scopes are available to perform the desired CRUD operation.
  *
- * @param feature - `FeatureAccessConfigInterface` Evaluating feature.
  * @param scopes - `string[]` Set of scopes to check.
  * @param allowedScopes - `string` Set of allowed scopes.
  * @param organzationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
@@ -60,31 +68,21 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  * @param isLegacyRuntimeDisabled - `boolean` Is legacy runtime disabled. This is used to ensure backward compatibility.
  *
  * @returns `boolean` True is scopes are enough and false if not.
- * @deprecated This function is deprecated. Use the `useRequiredScopes` hook instead.
  */
 export const hasRequiredScopes = (
-    feature: FeatureAccessConfigInterface,
     scopes: string[],
     allowedScopes: string,
-    organzationType?: string,
-    isLegacyRuntimeEnabled?: boolean
+    organzationType: string,
+    isLegacyRuntimeEnabled: boolean
 ): boolean => {
-    const isDefined: boolean = feature?.scopes && !isEmpty(feature.scopes) && scopes && !isEmpty(scopes);
+    const isDefined: boolean = scopes && !isEmpty(scopes);
 
     if (!isDefined) {
         return true;
     }
 
-    // TODO: Remove these variables once the hasRequiredScopes() function is moved as a hook.
-    // Use window org type if the org type is not passed as a parameter.
-    // This was added as workaround to fix the issue with the delay to update the window object.
-    // TODO: Remove the reliance on the window object to provide a consistent experience.
-    const orgType: string = organzationType ?? window["AppUtils"].getOrganizationType();
-
-    const windowLegacyAuthzRuntime: boolean = window["AppUtils"]?.getConfig()?.legacyAuthzRuntime;
-
     if (scopes instanceof Array) {
-        if (!windowLegacyAuthzRuntime && orgType === OrganizationType.SUBORGANIZATION) {
+        if (!isLegacyRuntimeEnabled && organzationType === OrganizationType.SUBORGANIZATION) {
             /**
              * If the organization type is `SUBORGANIZATION`, the `internal_` scopes should be replaced with
              * `internal_org_` scopes.
@@ -106,7 +104,7 @@ export const hasRequiredScopes = (
                     scope = scope.replace(consolePrefix, consoleOrgPrefix);
                 }
 
-                return AuthenticateUtils.hasScope(scope, allowedScopes);
+                return hasScope(scope, allowedScopes);
             });
         }
 
@@ -116,7 +114,7 @@ export const hasRequiredScopes = (
             organzationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
             organzationType === OrganizationType.TENANT) {
 
-            return scopes.every((scope: string) => AuthenticateUtils.hasScope(scope, allowedScopes));
+            return scopes.every((scope: string) => hasScope(scope, allowedScopes));
         }
     }
 
@@ -153,11 +151,12 @@ export const isPortalAccessGranted = <T = unknown>(
     for (const value of Object.values(featureConfig)) {
         const feature: FeatureAccessConfigInterface = value;
 
-        if (hasRequiredScopes(feature,
+        if (hasRequiredScopes(
             feature?.scopes?.read,
             allowedScopes,
             organzationType,
-            isLegacyRuntimeDisabled)) {
+            isLegacyRuntimeDisabled
+        )) {
             isAllowed = true;
 
             break;

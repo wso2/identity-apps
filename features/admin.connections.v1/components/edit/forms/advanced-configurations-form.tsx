@@ -16,13 +16,16 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
+import { FeatureConfigInterface } from "../../../../admin.core.v1/models/config";
+import { AppState } from "../../../../admin.core.v1/store";
 import { ConnectionAdvanceInterface } from "../../../models/connection";
 
 /**
@@ -68,6 +71,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
     } = props;
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     /**
      * Prepare form values for submitting.
@@ -138,7 +142,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Show when={ AccessControlConstants.IDP_EDIT }>
+                        <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                             <Button
                                 primary
                                 type="submit"

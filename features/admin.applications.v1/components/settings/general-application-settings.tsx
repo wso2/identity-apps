@@ -33,9 +33,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { applicationConfig } from "../../../admin.extensions.v1";
-import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
 import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../admin.core.v1";
+import { applicationConfig } from "../../../admin.extensions.v1";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import {
     ApplicationInterface,
@@ -255,7 +254,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         if (!application?.advancedConfigurations?.fragment) {
             return (
                 <Show
-                    when={ AccessControlConstants.APPLICATION_DELETE }
+                    when={ featureConfig?.applications?.scopes?.delete }
                 >
                     <DangerZoneGroup
                         sectionHeader={ t("applications:dangerZoneGroup.header") }
@@ -330,73 +329,73 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         primaryActionLoading={ isDeletionInProgress }
                         data-testid={ `${ componentId }-application-delete-confirmation-modal` }
                     >
-                        
+
                         {
                             ApplicationManagementUtils.isChoreoApplication(application)
-                                ? ( 
+                                ? (
                                     <>
                                         <ConfirmationModal.Header
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-header` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-header`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteChoreoApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
                                             attached
                                             negative
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-message` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-message`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteChoreoApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-content` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-content`
                                             }
                                         >
-                                            <Trans 
-                                                i18nKey= { "applications:confirmations." + 
+                                            <Trans
+                                                i18nKey= { "applications:confirmations." +
                                                 "deleteChoreoApplication.content" }>
-                                                Deleting this application will break the authentication flows and cause 
+                                                Deleting this application will break the authentication flows and cause
                                                 the associated Choreo application to be unusable with its credentials.
                                                 <b>Proceed at your own risk.</b>
                                             </Trans>
                                         </ConfirmationModal.Content>
-                                    </> 
+                                    </>
                                 )
-                                : ( 
+                                : (
                                     <>
                                         <ConfirmationModal.Header
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-header` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-header`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
                                             attached
                                             negative
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-message` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-message`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-content` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-content`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteApplication.content") }
                                         </ConfirmationModal.Content>
-                                    </> 
+                                    </>
                                 )
                         }
                     </ConfirmationModal>

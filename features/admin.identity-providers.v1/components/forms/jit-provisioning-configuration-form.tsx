@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,18 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Code, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../admin.extensions.v1";
 import { SimpleUserStoreListItemInterface } from "../../../admin.applications.v1/models";
+import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
+import { identityProviderConfig } from "../../../admin.extensions.v1";
 import {
     IdentityProviderInterface,
     JITProvisioningResponseInterface,
@@ -75,6 +77,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
 
@@ -104,10 +107,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
      * Create user store options.
      */
     const getUserStoreOption = () => {
-        const allowedOptions = [];
+        const allowedOptions: any[] = [];
 
         if (useStoreList) {
-            useStoreList?.map((userStore) => {
+            useStoreList?.map((userStore: SimpleUserStoreListItemInterface) => {
                 allowedOptions.push({
                     key: useStoreList.indexOf(userStore),
                     text: userStore?.name,
@@ -125,7 +128,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         }
     }, [ initialValues ]);
 
-    const supportedProvisioningSchemes = [ {
+    const supportedProvisioningSchemes: {
+        label: string;
+        value: SupportedJITProvisioningSchemes;
+    }[] = [ {
         label: t("authenticationProvider:" +
             "forms.jitProvisioning.provisioningScheme.children.0"),
         value: SupportedJITProvisioningSchemes.PROMPT_USERNAME_PASSWORD_CONSENT
@@ -143,7 +149,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
     } ];
 
-    const ProxyModeConflictMessage = (
+    const ProxyModeConflictMessage: ReactElement = (
         <div
             style={ { animationDuration: "350ms" } }
             className={ classNames("ui image warning scale transition", {
@@ -175,7 +181,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     );
 
     return (
-        <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
+        <Forms onSubmit={ (values: Map<string, FormValue>) => onSubmit(updateConfiguration(values)) }>
             <Grid>
                 {
                     identityProviderConfig?.jitProvisioningSettings?.enableJitProvisioningField?.show
@@ -193,7 +199,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                             : []
                                     }
                                     type="checkbox"
-                                    listen={ (values) => {
+                                    listen={ (values: Map<string, FormValue>) => {
                                         setIsJITProvisioningEnabled(
                                             values
                                                 .get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
@@ -319,7 +325,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
-                        <Show when={ AccessControlConstants.IDP_EDIT }>
+                        <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                             <Button
                                 primary
                                 type="submit"

@@ -26,7 +26,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import { ClaimManagementConstants } from "../../admin.claims.v1/constants";
 import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../admin.core.v1";
 import { useOIDCScopesList } from "../api";
@@ -145,18 +144,18 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const handleSortStrategyChange = (_event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortByStrategy(SORT_BY.filter(
             (option: { key: number; text: string; value: string; }) => option.value === data.value)[ 0 ]);
-    }; 
+    };
 
     /**
-     * This the the function which is called when the user types 
+     * This the the function which is called when the user types
      * in the search box and hits enter.
-     * 
+     *
      * @param event - Keyboard event of the search input.
      */
     const handleEnterKeyInSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             event.preventDefault();
-          
+
             if (searchQuery.length > 0) {
                 const result: OIDCScopesListInterface[] = scopeList.filter((item: OIDCScopesListInterface) =>
                     item.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1);
@@ -177,7 +176,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                 !isScopeListFetchRequestLoading &&
                 (
                     <Show
-                        when={ AccessControlConstants.APPLICATION_WRITE }
+                        when={ featureConfig?.applications?.scopes?.create }
                     >
                         <PrimaryButton
                             disabled={ isScopeListFetchRequestLoading }
@@ -240,8 +239,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                     onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                     data-testid={ `${ testId }-list` }
                     searchResult={ filteredScopeList?.length }
-                    clearSearchQuery={ () => { 
-                        setSearchQuery(""); 
+                    clearSearchQuery={ () => {
+                        setSearchQuery("");
                         setFilteredScopeList(undefined);
                     } }
                 />

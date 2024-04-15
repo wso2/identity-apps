@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,8 +26,8 @@ import React, {
     ReactNode,
     useContext
 } from "react";
-import { useAccess } from "react-access-control";
-import { FeatureGateContext } from "../context";
+import FeatureGateContext from "../context/feature-gate-context";
+import { useRequiredScopes } from "../hooks";
 import { FeatureGateContextPropsInterface, FeatureStatus } from "../models/feature-gate";
 
 /**
@@ -37,19 +37,15 @@ export interface AccessControlShowInterface {
     /**
      * Permissions needed to render child elements
      */
-    when: string | string[];
+    when?: string[];
     /**
      * Permissions which will hide the child elemements
      */
-    notWhen?: string |string[];
+    notWhen?: string[];
     /**
      * Fallback elements which will be rendered if permission is not matched.
      */
     fallback?: ReactNode;
-    /**
-     * Granular level resource permissions.
-     */
-    resource?: Record<string, any>;
     /**
      * Feature ID of the feature which is used to check the feature status.
      */
@@ -66,40 +62,53 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
     props: PropsWithChildren<AccessControlShowInterface>
 ): ReactElement<any, any> | null => {
 
-    const { hasPermission } = useAccess();
-
     const {
         when,
         notWhen,
         fallback,
         featureId,
-        resource,
         children
     } = props;
 
     const featureStatusPath: string = `${ featureId }.status`;
     const features: FeatureGateContextPropsInterface = useContext(FeatureGateContext);
-    const isFeatureEnabledForThisPath:boolean = get(features?.features, featureStatusPath) === FeatureStatus.ENABLED;
+    const isFeatureEnabledForThisPath: boolean = get(features?.features, featureStatusPath) === FeatureStatus.ENABLED;
 
-    const show = hasPermission(when, { resource });
-    let hideOn = false;
+    const hasScopesToShow: boolean = useRequiredScopes(when);
+    const hasScopesToHide: boolean = useRequiredScopes(notWhen);
 
-    if (notWhen && notWhen.length > 0) {
-        hideOn = hasPermission(notWhen, { resource });
+    let showOn: boolean = false;
+    let hideOn: boolean = false;
+
+    // If `when` is defined, use the hook to check if the user has the required scopes.
+    if (when && when.length > 0) {
+        showOn = hasScopesToShow;
     }
 
-    if ((isEmpty(featureId) || isFeatureEnabledForThisPath) && show) {
+    // If `notWhen` is defined, use the hook to check if the user has the required scopes.
+    if (notWhen && notWhen.length > 0) {
+        hideOn = hasScopesToHide;
+    }
+
+    if ((isEmpty(featureId) || isFeatureEnabledForThisPath) && showOn) {
         if (hideOn) {
             return null;
         } else {
             return (
-                <Fragment>
+                <>
                     { children }
-                </Fragment>
+                </>
             );
         }
-
     }
 
-    return <Fragment>{ fallback }</Fragment> || null;
+    if (fallback) {
+        return (
+            <>
+                { fallback }
+            </>
+        );
+    }
+
+    return null;
 };

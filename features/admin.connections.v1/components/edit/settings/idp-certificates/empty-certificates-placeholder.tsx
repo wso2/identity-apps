@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,18 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import React, { FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon, Segment } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1";
+import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1";
 
 // Component constants.
 
-const AUTH_PROV_PLACEHOLDER_EMPTY_I18N_KEY = "authenticationProvider:" +
+const AUTH_PROV_PLACEHOLDER_EMPTY_I18N_KEY: string = "authenticationProvider:" +
     "placeHolders.emptyCertificateList";
 
 /**
@@ -40,8 +41,6 @@ export interface EmptyCertificatesPlaceholderProps extends IdentifiableComponent
  * The placeholder component when there's no certificates added to a
  * given IdP or Application instance. I
  *
- * @param props {@link EmptyCertificatesPlaceholderProps}
- * @constructor
  */
 export const EmptyCertificatesPlaceholder: FC<EmptyCertificatesPlaceholderProps> = (
     props: EmptyCertificatesPlaceholderProps
@@ -50,6 +49,7 @@ export const EmptyCertificatesPlaceholder: FC<EmptyCertificatesPlaceholderProps>
     const { ["data-componentid"]: testId, onAddCertificateClicked } = props;
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     return (
         <Segment>
@@ -62,7 +62,7 @@ export const EmptyCertificatesPlaceholder: FC<EmptyCertificatesPlaceholderProps>
                 ] }
                 imageSize="tiny"
                 action={ (
-                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                    <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                         <PrimaryButton
                             onClick={ onAddCertificateClicked }
                             data-testid={ `${ testId }-emptyPlaceholder-add-certificate-button` }

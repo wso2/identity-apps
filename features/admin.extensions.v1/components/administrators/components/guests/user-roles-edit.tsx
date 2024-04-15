@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -790,7 +790,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         && authenticatedUser !== user?.userName) && (
                                         <Grid.Row>
                                             <Grid.Column>
-                                                <Show when={ AccessControlConstants.USER_WRITE }>
+                                                <Show when={ featureConfig?.users?.scopes?.create }>
                                                     <PrimaryButton
                                                         data-testid="user-mgt-update-roles-modal-save-button"
                                                         floated="left"
