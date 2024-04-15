@@ -64,7 +64,6 @@ import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
 
-
 // TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
 const CrossIcon = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElement => (
     <svg xmlns="http://www.w3.org/2000/svg" height="14px" viewBox="0 0 384 512" className="cross-icon" { ...rest }>
