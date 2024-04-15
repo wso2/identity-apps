@@ -38,17 +38,14 @@ enum BannerState {
     Input = "banner-input",
     Collapsed = "banner-collapsed",
 }
-interface BrandingAIBannerProps {
-    onGenerate: (response: any) => void;
-}
 
-export const BrandingAIBanner: FunctionComponent<BrandingAIBannerProps> = (
-    { onGenerate }: BrandingAIBannerProps
+
+export const BrandingAIBanner = (
 ): ReactElement => {
 
     const { t } = useTranslation();
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.Full);
-    const [ websiteUrl, setWebsiteUrl ] = useState<string>("https://console.choreo.dev/login");
+    const [ websiteUrl, setWebsiteUrl ] = useState<string>("https://drogo-nft-demo.web.app/");
 
     const { isGeneratingBranding } = useAIBrandingPreference();
 

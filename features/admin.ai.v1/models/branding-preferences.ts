@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { BrandingPreferenceInterface } from "features/admin.branding.v1/models/branding-preferences";
 export interface GenerateBrandingAPIInterface {
     /**
      * Website URL of the page to generate the branding preference from.
@@ -55,9 +56,14 @@ export interface BrandingGenerationStatusAPIResponseInterface {
 
 export interface BrandingGenerationResultAPIResponseInterface {
     /**
-     * Result of the branding generation.
+     * Status of the branding generation.
      */
-    result: string;
+    status: string;
+
+    /**
+     * Generated branding preference.
+     */
+    data: BrandingPreferenceInterface;
 }
 
 export interface RegenerateBrandingAPIInterface {

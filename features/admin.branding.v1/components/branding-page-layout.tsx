@@ -76,9 +76,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         >
             {
                 !disabledFeatures.includes("branding.ai1") && (
-                    <BrandingAIBanner
-                        onGenerate={ handleGenerate }
-                    />
+                    <BrandingAIBanner/>
                 )
             }
             { isGeneratingBranding ? (

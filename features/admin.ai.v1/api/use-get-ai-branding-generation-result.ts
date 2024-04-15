@@ -17,6 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
+import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 import { useEffect, useState } from "react";
 import useRequest, {
     RequestConfigInterface,
@@ -26,16 +27,16 @@ import useRequest, {
 import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding-preferences";
-import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
+import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
 
-export const useGetAIBrandingGenerationStatus = (
-    operationId: string
-): RequestResultInterface<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface> => {
+export const useGetAIBrandingGenerationResult = (
+    operationId: string,
+    brandingGenerationCompleted: boolean
+): RequestResultInterface<BrandingGenerationResultAPIResponseInterface, RequestErrorInterface> => {
 
     const { organizationType } = useGetCurrentOrganizationType();
 
-    const { setBrandingGenerationCompleted } = useAIBrandingPreference();
+    // const { brandingGenerationCompleted } = useAIBrandingPreference();
 
     const [ isLoading, setIsLoading ] = useState(true);
 
@@ -49,32 +50,22 @@ export const useGetAIBrandingGenerationStatus = (
         //     ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
         //     : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
 
-        url: `http://localhost:8080/t/cryd1/api/server/v1/branding-preference/status/${operationId}`
+        url: `http://localhost:8080/t/cryd1/api/server/v1/branding-preference/result/${operationId}`
     };
 
     const { data, error, isValidating, mutate } =
-    useRequest<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface>(requestConfig, {
+    useRequest<BrandingGenerationResultAPIResponseInterface, RequestErrorInterface>(brandingGenerationCompleted ? requestConfig : null, {
         shouldRetryOnError: false
     });
 
     useEffect(() => {
-        const interval: NodeJS.Timeout = setInterval(() => {
-            if (!isValidating && !data?.status?.branding_generation_completed) {
-                mutate();
-            }
-        }, 1000);
-
-        if (data?.status?.branding_generation_completed) {
-            setIsLoading(false);
-            clearInterval(interval);
-            setBrandingGenerationCompleted(true);
-        } else {
-            setIsLoading(true);
+        if (brandingGenerationCompleted) {
+            // If brandingGenerationCompleted is true, re-fetch the data
+            mutate();
         }
+    }, [ brandingGenerationCompleted ]);
 
-        return () => clearInterval(interval);
-    }, [ data, isValidating, mutate ]);
-
+    console.log("data (hook)", data);
     return {
         data,
         error,
@@ -84,4 +75,4 @@ export const useGetAIBrandingGenerationStatus = (
     };
 };
 
-export default useGetAIBrandingGenerationStatus;
+export default useGetAIBrandingGenerationResult;

@@ -26,6 +26,8 @@ import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
     from "../../../modules/theme/src/themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 import useGetAIBrandingGenerationStatus from "../api/use-get-branding-generation-status";
+import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
+
 
 export const LoadingScreen = (): JSX.Element => {
     const { t } = useTranslation();
@@ -36,9 +38,8 @@ export const LoadingScreen = (): JSX.Element => {
         t("branding:ai.screens.loading.facts.1"),
         t("branding:ai.screens.loading.facts.2")
     ];
-    const [ currentStatus, setCurrentStatus ] = useState("branding:ai.screens.loading.states.0");
 
-    const { operationId } = useAIBrandingPreference();
+    const { operationId, brandingGenerationCompleted } = useAIBrandingPreference();
 
     const { data, isLoading, error } = useGetAIBrandingGenerationStatus(operationId);
 

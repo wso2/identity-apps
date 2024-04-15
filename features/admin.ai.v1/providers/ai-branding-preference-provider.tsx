@@ -43,9 +43,9 @@ import { Dispatch } from "redux";
 // import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 // import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import generateBrandingPreference from "../api/generate-ai-branding-preference";
-import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
+import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
 import AIFeatureContext from "../context/ai-branding-feature-context";
-import { BannerState } from "../models/types";
+import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 
 type AIBrandingPreferenceProviderProps = PropsWithChildren;
 
@@ -58,7 +58,8 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     const { preference } = useBrandingPreference();
     const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
-    const [ operationId, setOperationId ] = useState<string>(null);
+    const [ operationId, setOperationId ] = useState<string>("null");
+    const [ brandingGenerationCompleted, setBrandingGenerationCompleted ] = useState(false);
     const { t } = useTranslation();
 
     function removeEmptyKeys(obj: Record<string, any>): Record<string, any> {
@@ -75,6 +76,16 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
             }
         });
     }
+
+    const { data, error } = useGetAIBrandingGenerationResult(operationId, brandingGenerationCompleted);
+
+
+    useEffect(() => {
+        if (brandingGenerationCompleted && !error && data) {
+            console.log("########## AI generated ##########\n", data.data);
+            handleGenerate(data.data);
+        }
+    }, [ data, brandingGenerationCompleted ]);
 
     const handleGenerate = (data: any) => {
 
@@ -134,10 +145,12 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     return (
         <AIFeatureContext.Provider
             value={ {
+                brandingGenerationCompleted,
                 handleGenerate,
                 isGeneratingBranding,
                 mergedBrandingPreference,
                 operationId,
+                setBrandingGenerationCompleted,
                 setGeneratingBranding,
                 setOperationId
             } }

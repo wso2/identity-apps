@@ -24,10 +24,12 @@ import { Context, createContext } from "react";
  */
 export interface AIBrandingFeatureContextProps {
 
+    brandingGenerationCompleted: boolean;
     handleGenerate: (data: any) => void;
     isGeneratingBranding: boolean;
     mergedBrandingPreference: BrandingPreferenceInterface;
     operationId: string;
+    setBrandingGenerationCompleted: (status: boolean) => void;
     setGeneratingBranding: (status: boolean) => void;
     setOperationId: (id: string) => void;
 }
