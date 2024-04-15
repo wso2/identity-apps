@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,14 +19,15 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../admin.core.v1/hooks/use-request";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../admin.core.v1/store";
-import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface, UpdatedAPIResourceInterface }
-    from "../models";
+import { APIResourcesConstants } from "../constants";
+import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface,
+    UpdatedAPIResourceInterface } from "../models";
 
 /**
  * Get an axios instance.
@@ -54,7 +55,7 @@ export const getAPIResourcesForIdenitifierValidation = (
         params: {
             filter
         },
-        url: `${store.getState().config.endpoints.apiResources}`
+        url: `${store.getState().config.endpoints.authzEndpoint}/${APIResourcesConstants.API_RESOURCE_DIR}`
     };
 
     return httpClient(requestConfig)
@@ -87,16 +88,13 @@ export const getAPIResourcesForIdenitifierValidation = (
  *
  * @param after - after.
  * @param before - before.
- * @param filter - filter.
- * @param shouldFetch - whether to fetch or not.
  * @returns `Promise<APIResourcesListInterface>`
  * @throws `IdentityAppsApiException`
  */
 export const useAPIResources = <Data = APIResourcesListInterface, Error = RequestErrorInterface>(
     after?: string,
     before?: string,
-    filter?: string,
-    shouldFetch: boolean = true
+    filter?: string
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -110,10 +108,10 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
             before,
             filter
         },
-        url: `${store.getState().config.endpoints.apiResources}`
+        url: `${store.getState().config.endpoints.authzEndpoint}/${APIResourcesConstants.API_RESOURCE_DIR}`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 
     return {
         data,
@@ -140,7 +138,11 @@ export const useAPIResourceDetails = <Data = APIResourceInterface, Error = Reque
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}`
+        url: `${
+            store.getState().config.endpoints.authzEndpoint
+        }/${
+            APIResourcesConstants.API_RESOURCE_DIR
+        }/${apiResourceId}`
     };
 
     /**
@@ -175,7 +177,7 @@ export const getAPIResourcePermissions = (
         },
         method: HttpMethods.GET,
         params: { filter },
-        url: `${store.getState().config.endpoints.scopes}`
+        url: `${store.getState().config.endpoints.authzEndpoint}/permissions`
     };
 
     return httpClient(requestConfig)
@@ -218,7 +220,8 @@ export const deleteAPIResource = (apiResourceId: string): Promise<null | Identit
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}`
+        url: `${store.getState().config.endpoints.authzEndpoint}/${APIResourcesConstants.API_RESOURCE_DIR}/` +
+            `${apiResourceId}`
     };
 
     return httpClient(requestConfig)
@@ -260,7 +263,9 @@ export const updateAPIResource = (
     const requestConfig: AxiosRequestConfig = {
         data: updateAPIResourceBody,
         method: HttpMethods.PATCH,
-        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}`
+        url: `${
+            store.getState().config.endpoints.authzEndpoint
+        }/${APIResourcesConstants.API_RESOURCE_DIR}/${apiResourceId}`
     };
 
     return httpClient(requestConfig)
@@ -291,39 +296,7 @@ export const createAPIResource = (
     const requestConfig: AxiosRequestConfig = {
         data: apiResourceBody,
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.apiResources}`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            return Promise.resolve(response.data);
-        })
-        .catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                error.message,
-                error.stack,
-                error.response?.data?.code,
-                error.request,
-                error.response,
-                error.config);
-        });
-};
-
-/**
- * Delete a scope from an API resource.
- *
- * @param apiResourceId - UUID of the API resource.
- * @param deleteScopeName - Name of the scope that needs to be deleted.
- * @returns `Promise<null | IdentityAppsApiException>`
- */
-export const deleteScopeFromAPIResource = (
-    apiResourceId: string,
-    deletingScopeName: string
-): Promise<null | IdentityAppsApiException> => {
-
-    const requestConfig: AxiosRequestConfig = {
-        method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}/scopes/${deletingScopeName}`
+        url: `${ store.getState().config.endpoints.authzEndpoint }/${APIResourcesConstants.API_RESOURCE_DIR}`
     };
 
     return httpClient(requestConfig)

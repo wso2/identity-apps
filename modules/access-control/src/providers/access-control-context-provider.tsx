@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,16 @@
  * under the License.
  */
 
-import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect } from "react";
-import { useAccess } from "react-access-control";
-import { PermissionsInterface } from "../models";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import AccessControlContext from "../context/access-control-context";
 
 /**
  * Interface to store Access Control Context props
  */
 export interface AccessControlContextInterface {
     allowedScopes: string;
-    permissions: PermissionsInterface
+    isLegacyRuntimeEnabled: boolean;
+    organizationType: string;
 }
 
 /**
@@ -36,34 +35,28 @@ export interface AccessControlContextInterface {
  * @param props - component props
  * @returns
  */
-const AccessControlContext: FunctionComponent<PropsWithChildren<AccessControlContextInterface>> = (
+const AccessControlContextProvider: FunctionComponent<PropsWithChildren<AccessControlContextInterface>> = (
     props: PropsWithChildren<AccessControlContextInterface>
 ): ReactElement => {
-
-    const { isLoaded, define } = useAccess();
 
     const {
         allowedScopes,
         children,
-        permissions
+        isLegacyRuntimeEnabled,
+        organizationType
     } = props;
 
-    useEffect(() => {
-
-        if (isEmpty(allowedScopes)) {
-            return;
-        }
-
-        if (isLoaded) {
-            return;
-        }
-
-        define({
-            permissions: permissions
-        });
-    }, [ allowedScopes ]);
-
-    return (<> { children } </>);
+    return (
+        <AccessControlContext.Provider
+            value={ {
+                allowedScopes,
+                isLegacyRuntimeEnabled,
+                organizationType
+            } }
+        >
+            { children }
+        </AccessControlContext.Provider>
+    );
 };
 
-export default AccessControlContext;
+export default AccessControlContextProvider;

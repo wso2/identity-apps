@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, AttributeMapping, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -199,7 +199,9 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 8 }>
-                        <Show when={ AccessControlConstants.ATTRIBUTE_EDIT }>
+                        <Show
+                            when={ featureConfig?.attributeDialects?.scopes?.update }
+                        >
                             <PrimaryButton
                                 onClick={ () => {
                                     setSubmit();

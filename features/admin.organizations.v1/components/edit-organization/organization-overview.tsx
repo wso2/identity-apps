@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AlertLevels,
@@ -105,6 +105,10 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state?.organization?.organization
+    );
 
     const editableFields: Array<string> = [ "name", "description" ];
 
@@ -113,10 +117,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
         showOrgDeleteConfirmation,
         setShowOrgDeleteConfirmationModal
     ] = useState(false);
-
-    const currentOrganization: OrganizationResponseInterface = useSelector(
-        (state: AppState) => state?.organization?.organization
-    );
 
     const handleSubmit: (values: OrganizationResponseInterface) => Promise<void> = useCallback(
         async (values: OrganizationResponseInterface): Promise<void> => {
@@ -613,13 +613,13 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
             <Divider hidden />
             <Show
                 when={
-                    AccessControlConstants.ORGANIZATION_DELETE ||
-                    AccessControlConstants.ORGANIZATION_EDIT
+                    featureConfig?.organizations?.scopes?.delete ||
+                    featureConfig?.organizations?.scopes?.update
                 }
             >
                 { !isReadOnly && currentOrganization.id !== organization.id && (
                     <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                        <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
+                        <Show when={ featureConfig?.organizations?.scopes?.update }>
                             <DangerZone
                                 actionTitle={ t(
                                     "organizations:edit.dangerZone.disableOrganization" +
@@ -644,7 +644,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                         { !isReadOnly && (
                             <Show
                                 when={
-                                    AccessControlConstants.ORGANIZATION_DELETE
+                                    featureConfig?.organizations?.scopes?.delete
                                 }
                             >
                                 <DangerZone

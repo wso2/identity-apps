@@ -1,5 +1,106 @@
 # @wso2is/console
 
+## 2.14.23
+
+### Patch Changes
+
+- [#5901](https://github.com/wso2/identity-apps/pull/5901) [`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor access control methods to use React hooks
+
+- Updated dependencies [[`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50)]:
+  - @wso2is/access-control@3.0.0
+  - @wso2is/core@2.0.41
+  - @wso2is/features@2.14.22
+  - @wso2is/dynamic-forms@2.0.45
+  - @wso2is/form@2.0.46
+  - @wso2is/forms@2.0.31
+  - @wso2is/i18n@2.1.11
+  - @wso2is/react-components@2.1.16
+  - @wso2is/validation@2.0.4
+
+## 2.14.22
+
+### Patch Changes
+
+- [#5959](https://github.com/wso2/identity-apps/pull/5959) [`01cbd72c8e`](https://github.com/wso2/identity-apps/commit/01cbd72c8e03868146e0a9fdc4353be1e53ea145) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Enable alphanumeric special character username feature.
+
+* [#5927](https://github.com/wso2/identity-apps/pull/5927) [`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide backup code enable option in login flow in sub organizations
+
+* Updated dependencies [[`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372), [`012424a0bb`](https://github.com/wso2/identity-apps/commit/012424a0bbfe3f8c2625a1e15689d0452bdecee8)]:
+  - @wso2is/core@2.0.40
+  - @wso2is/features@2.14.21
+  - @wso2is/access-control@2.0.25
+  - @wso2is/dynamic-forms@2.0.44
+  - @wso2is/form@2.0.45
+  - @wso2is/forms@2.0.30
+  - @wso2is/i18n@2.1.10
+  - @wso2is/react-components@2.1.15
+
+## 2.14.21
+
+### Patch Changes
+
+- [#5935](https://github.com/wso2/identity-apps/pull/5935) [`033a193622`](https://github.com/wso2/identity-apps/commit/033a193622835b690531b540d152384a4623df38) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add eye icon to secret input fields in sms providers
+
+- Updated dependencies [[`b200392022`](https://github.com/wso2/identity-apps/commit/b200392022cf0644c9f85239e89e62313c0f901c), [`033a193622`](https://github.com/wso2/identity-apps/commit/033a193622835b690531b540d152384a4623df38), [`8261a2cc41`](https://github.com/wso2/identity-apps/commit/8261a2cc411b6ce0838943309cadb35ed4339943)]:
+  - @wso2is/features@2.14.20
+  - @wso2is/i18n@2.1.9
+
+## 2.14.20
+
+### Patch Changes
+
+- [#5951](https://github.com/wso2/identity-apps/pull/5951) [`e882bc3fdd`](https://github.com/wso2/identity-apps/commit/e882bc3fdd1ffdc9e632ea089feb621f5a899ffe) Thanks [@brionmario](https://github.com/brionmario)! - Add `apiResourcesV1` & `apiResourcesV2` to DEV config
+
+- Updated dependencies [[`e882bc3fdd`](https://github.com/wso2/identity-apps/commit/e882bc3fdd1ffdc9e632ea089feb621f5a899ffe)]:
+  - @wso2is/features@2.14.19
+
+## 2.14.19
+
+### Patch Changes
+
+- [#5940](https://github.com/wso2/identity-apps/pull/5940) [`2fbc03ad33`](https://github.com/wso2/identity-apps/commit/2fbc03ad33e5c69fc1120ff02c583bfac1c2901c) Thanks [@brionmario](https://github.com/brionmario)! - Remove unwanted `extensions` configs in `deployment.config.json`
+
+* [#5950](https://github.com/wso2/identity-apps/pull/5950) [`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `api-resources.v1` & `api-resources.v2`
+
+* Updated dependencies [[`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e), [`51195d6ce3`](https://github.com/wso2/identity-apps/commit/51195d6ce333635e769886e1fd1f8b90d4cab7b1), [`1fdd9be566`](https://github.com/wso2/identity-apps/commit/1fdd9be566b110a7cb7aa053a5433ca13043cd4d)]:
+  - @wso2is/core@2.0.39
+  - @wso2is/features@2.14.18
+  - @wso2is/access-control@2.0.24
+  - @wso2is/dynamic-forms@2.0.43
+  - @wso2is/form@2.0.44
+  - @wso2is/forms@2.0.29
+  - @wso2is/i18n@2.1.8
+  - @wso2is/react-components@2.1.14
+
+## 2.14.18
+
+### Patch Changes
+
+- Updated dependencies [[`270b764db7`](https://github.com/wso2/identity-apps/commit/270b764db773f6c8e7ab06302718a1583bdb4505)]:
+  - @wso2is/features@2.14.17
+
+## 2.14.17
+
+### Patch Changes
+
+- [#5934](https://github.com/wso2/identity-apps/pull/5934) [`06a65cb60a`](https://github.com/wso2/identity-apps/commit/06a65cb60a6e37df9ea3fdf80701cbbf1da0889e) Thanks [@brionmario](https://github.com/brionmario)! - Refactor `use-sign` hook
+
+* [#5911](https://github.com/wso2/identity-apps/pull/5911) [`dba852ecf6`](https://github.com/wso2/identity-apps/commit/dba852ecf6d93e244241d92815fc5704631d1740) Thanks [@RivinduM](https://github.com/RivinduM)! - Add missing data test ids
+
+- [#5923](https://github.com/wso2/identity-apps/pull/5923) [`cf1bddc178`](https://github.com/wso2/identity-apps/commit/cf1bddc1786dfcf1adee367ca13a3979b2e385cf) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Re-structuring sign-on-methods to add AI login flow component.
+
+- Updated dependencies [[`06a65cb60a`](https://github.com/wso2/identity-apps/commit/06a65cb60a6e37df9ea3fdf80701cbbf1da0889e), [`dba852ecf6`](https://github.com/wso2/identity-apps/commit/dba852ecf6d93e244241d92815fc5704631d1740), [`cf1bddc178`](https://github.com/wso2/identity-apps/commit/cf1bddc1786dfcf1adee367ca13a3979b2e385cf)]:
+  - @wso2is/features@2.14.16
+
+## 2.14.16
+
+### Patch Changes
+
+- [#5926](https://github.com/wso2/identity-apps/pull/5926) [`2b039954fb`](https://github.com/wso2/identity-apps/commit/2b039954fb439d06fd461bb674d25eb9a40f1897) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the SMS OTP description
+
+- Updated dependencies [[`2b039954fb`](https://github.com/wso2/identity-apps/commit/2b039954fb439d06fd461bb674d25eb9a40f1897)]:
+  - @wso2is/features@2.14.15
+
 ## 2.14.15
 
 ### Patch Changes

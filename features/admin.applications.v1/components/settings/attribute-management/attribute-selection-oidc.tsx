@@ -17,6 +17,7 @@
  */
 
 import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -31,8 +32,6 @@ import {
     SegmentedAccordionTitleActionInterface,
     useDocumentation
 } from "@wso2is/react-components";
-import { OIDCScopesClaimsListInterface } from "../../../../admin.oidc-scopes.v1";
-import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import React, {
     ChangeEvent,
     Fragment,
@@ -54,7 +53,6 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { applicationConfig } from "../../../../admin.extensions.v1";
 import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
 import {
     AppConstants,
@@ -63,6 +61,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../../admin.core.v1";
+import { applicationConfig } from "../../../../admin.extensions.v1";
+import { OIDCScopesClaimsListInterface } from "../../../../admin.oidc-scopes.v1";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
@@ -511,6 +511,19 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         );
     };
 
+    const isSelectedSubjectAttributeIncluded = (scope: OIDCScopesClaimsListInterface) : boolean => {
+        return scope.claims.map((claim:ExternalClaim ) => claim.mappedLocalClaimURI).includes(selectedSubjectValue)
+            && selectedSubjectValue !== defaultSubjectAttribute;
+    };
+
+    const getSelectedSubjectAttributeClaimURI = (scope: OIDCScopesClaimsListInterface) : string => {
+
+        const selectedAttributeURI: string = scope.claims.find((claim:ExternalClaim ) =>
+            claim.mappedLocalClaimURI == selectedSubjectValue).localClaimDisplayName;
+
+        return selectedAttributeURI.charAt(0).toUpperCase() + selectedAttributeURI.slice(1);
+    };
+
     /**
      * Resolves the Scope list item component
      *
@@ -519,6 +532,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @returns React component
      */
     const resolveScopeListItem = (scope: OIDCScopesClaimsListInterface): ReactElement => {
+
         return (
             <Header
                 image
@@ -558,7 +572,23 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                             </Header.Content>
                         )
                         : (
-                            <Header.Content>
+                            <Header.Content
+                                className={ isSelectedSubjectAttributeIncluded(scope)
+                                    ? "align-self-center" : null }>
+                                {
+                                    isSelectedSubjectAttributeIncluded(scope) && (<Hint warning={ true } popup compact>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:edit.sections.attributes" +
+                                                        ".selection.subjectAttributeSelectedHint"
+                                            }
+                                            tOptions={ {
+                                                subjectattribute:  getSelectedSubjectAttributeClaimURI(scope)
+                                            } }
+                                        >
+                                        </Trans>
+                                    </Hint>)
+                                }
                                 { scope.displayName }
                                 <Header.Subheader>
                                     <Code withBackground>{ scope.name }</Code>
@@ -661,13 +691,14 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                             claim.localClaimDisplayName
                                         }
                                         subject={ selectedSubjectValue
-                                    === claim.mappedLocalClaimURI &&
-                                    !onlyOIDCConfigured }
+                                        === claim.mappedLocalClaimURI &&
+                                        selectedSubjectValue !== defaultSubjectAttribute }
                                         isOIDCMapping={
                                             checkMapping(claim)
                                                 ? false
                                                 : true
                                         }
+                                        onlyOIDCConfigured = { onlyOIDCConfigured }
                                     />
                                 );
                             })
@@ -697,7 +728,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         return [ {
             checked: scope.selected,
             defaultChecked: scope.selected,
-            disabled: false,
+            disabled: isSelectedSubjectAttributeIncluded(scope),
             onChange: handleSelectedScopeCheckChange,
             popoverText: scope.selected
                 ? t("applications:edit" +

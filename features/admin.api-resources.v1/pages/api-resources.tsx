@@ -16,16 +16,12 @@
  * under the License.
  */
 
-import { BuildingGearIcon, ChevronRightIcon, HierarchyIcon } from "@oxygen-ui/react-icons";
-import Grid from "@oxygen-ui/react/Grid";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     DocumentationLink,
-    EmphasizedSegment,
     EmptyPlaceholder,
-    GenericIcon,
     ListLayout,
     PageLayout,
     PrimaryButton,
@@ -35,20 +31,14 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Icon, List, PaginationProps } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
+import { Icon, PaginationProps } from "semantic-ui-react";
+import { AppState, getEmptyPlaceholderIllustrations } from "../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";
-import { APIResourceType, APIResourcesConstants } from "../constants";
+import { APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
-import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
  * Prop-types for the API resources page component.
@@ -73,27 +63,25 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
 
-    const [ activePage, setActivePage ] = useState<number>(1);
+    const [ activePage, setActivePage ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ apiResourcesList, setAPIResourcesList ] = useState<APIResourceInterface[]>([]);
+    const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
     const [ after, setAfter ] = useState<string>(undefined);
     const [ before, setBefore ] = useState<string>(undefined);
+    const [ currentAfter, setCurrentAfter ] = useState<string>(undefined);
+    const [ currentBefore, setCurrentBefore ] = useState<string>(undefined);
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
-    const [ filter, setFilter ] = useState<string>(`type eq ${ APIResourcesConstants.BUSINESS }`);
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const {
         data: apiResourcesListData,
         isLoading: isAPIResourcesListLoading,
         error: apiResourcesFetchRequestError,
         mutate: mutateAPIResourcesFetchRequest
-    } = useAPIResources(after, before, filter);
+    } = useAPIResources(after, before);
 
     /**
      * Update the API resources list.
@@ -115,18 +103,20 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             const apiResourceList: APIResourceInterface[] = apiResourcesListData.apiResources.map(
                 (apiResource: APIResourceInterface) => apiResource);
 
-            setNextAfter(undefined);
-            setNextBefore(undefined);
-            if (apiResourcesListData.links && apiResourcesListData.links.length !== 0) {
+            if (apiResourcesListData.links && apiResourcesListData.links.length === 0) {
+                setNextAfter(undefined);
+                setNextBefore(undefined);
+            } else {
                 apiResourcesListData.links?.forEach((value: LinkInterface) => {
+
                     switch (value.rel) {
-                        case APIResourcesConstants.NEXT_REL:
-                            setNextAfter(value.href.split(`${APIResourcesConstants.AFTER}=`)[1]);
+                        case APIResourcesConstants.AFTER_REL:
+                            setNextAfter(value.href.split(`${APIResourcesConstants.AFTER_REL}=`)[1]);
 
                             break;
 
-                        case APIResourcesConstants.PREVIOUS_REL:
-                            setNextBefore(value.href.split(`${APIResourcesConstants.BEFORE}=`)[1]);
+                        case APIResourcesConstants.BEFORE_REL:
+                            setNextBefore(value.href.split(`${APIResourcesConstants.BEFORE_REL}=`)[1]);
 
                             break;
 
@@ -145,13 +135,27 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      */
     useEffect(() => {
         if (apiResourcesFetchRequestError) {
-            dispatch(addAlert<AlertInterface>({
-                description: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.message")
-            }));
+            switch (apiResourcesFetchRequestError.response?.data?.code) {
+                case APIResourcesConstants.UNAUTHORIZED_ACCESS:
+                    dispatch(addAlert<AlertInterface>({
+                        description: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                            ".unauthorizedError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                            ".unauthorizedError.message")
+                    }));
+
+                    break;
+
+                default:
+                    dispatch(addAlert<AlertInterface>({
+                        description: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                            ".genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                            ".genericError.message")
+                    }));
+            }
         }
     }, [ apiResourcesFetchRequestError ]);
 
@@ -166,23 +170,14 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     }, [ isListUpdated ]);
 
     /**
-     * The following useEffect is used to update the filter value
-     */
-    useEffect(() => {
-        const typeFilter: string = `type eq ${ APIResourcesConstants.BUSINESS }`;
-
-        if (searchQuery) {
-            setFilter(`${ searchQuery } and ${ typeFilter }`);
-        } else {
-            setFilter(typeFilter);
-        }
-    }, [ searchQuery ]);
-
-    /**
      * edit the API resources list once a API resource is deleted
      */
     const onAPIResourceDelete = (): void => {
-        setMutateAPIResourcesList();
+        if (apiResourcesList?.length === 1) {
+            setMutateAPIResourcesList();
+        } else {
+            setMutateAPIResourcesList(currentAfter, currentBefore);
+        }
     };
 
     /**
@@ -196,6 +191,9 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         setAfter(afterValue);
         setBefore(beforeValue);
 
+        // update the current after and before values
+        setCurrentAfter(nextAfter);
+        setCurrentBefore(nextBefore);
         setListUpdated(true);
     };
 
@@ -216,38 +214,18 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         setActivePage(newPage);
     };
 
-    /**
-     * Handles the `onFilter` callback action from the
-     * api search component.
-     *
-     * @param query - Search query.
-     */
-    const handleApiFilter = (query: string): void => {
-        setSearchQuery(query);
-    };
-
-    /**
-     * Handles the `onSearchQueryClear` callback action.
-     */
-    const handleSearchQueryClear = (): void => {
-        setSearchQuery("");
-        setTriggerClearQuery(!triggerClearQuery);
-    };
-
     return (
         <PageLayout
             action={
-                APIResourceUtils.isAPIResourceCreateAllowed(featureConfig, allowedScopes)
-                    && apiResourcesList?.length > 0
-                    && (
-                        <PrimaryButton
-                            data-testid={ `${componentId}-add-api-resources-button` }
-                            onClick={ () => setShowWizard(true) }
-                        >
-                            <Icon name="add" />
-                            { t("extensions:develop.apiResource.addApiResourceButton") }
-                        </PrimaryButton>
-                    )
+                !apiResourcesFetchRequestError && apiResourcesList?.length > 0 && (
+                    <PrimaryButton
+                        data-testid= { `${componentId}-add-api-resources-button` }
+                        onClick={ () => setShowWizard(true) }
+                    >
+                        <Icon name="add" />
+                        { t("extensions:develop.apiResource.addApiResourceButton") }
+                    </PrimaryButton>
+                )
             }
             pageTitle={ t("extensions:develop.apiResource.pageHeader.title") }
             title={ t("extensions:develop.apiResource.pageHeader.title") }
@@ -261,130 +239,15 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                     </DocumentationLink>
                 </>
             ) }
-            data-componentid={ `${ componentId }-page-layout` }
-            data-testid={ `${ componentId }-page-layout` }
+            data-componentid={ `${componentId}-page-layout` }
+            data-testid={ `${componentId}-page-layout` }
             headingColumnWidth="11"
             actionColumnWidth="5"
         >
-            <EmphasizedSegment
-                onClick={ () => {
-                    history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
-                        .replace(":categoryId", APIResourceType.MANAGEMENT));
-                } }
-                className="clickable"
-                data-componentid={ `${ componentId }-management-api-container` }
-            >
-                <List>
-                    <List.Item>
-                        <Grid container direction="row" xs={ 12 } alignItems="center">
-                            <Grid xs={ 10 } alignContent="center">
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <BuildingGearIcon size="medium" /> }
-                                    spaced="right"
-                                    floated="left"
-                                    className="mt-1"
-                                />
-                                <List.Header>
-                                    { t("extensions:develop.apiResource.managementAPI.header") }
-                                </List.Header>
-                                <List.Description>
-                                    { t("extensions:develop.apiResource.managementAPI.description") }
-                                </List.Description>
-                            </Grid>
-                            <Grid xs={ 2 }>
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <ChevronRightIcon /> }
-                                    spaced="right"
-                                    floated="right"
-                                />
-                            </Grid>
-                        </Grid>
-                    </List.Item>
-                </List>
-            </EmphasizedSegment>
-            <EmphasizedSegment
-                onClick={ () => {
-                    history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
-                        .replace(":categoryId", APIResourceType.ORGANIZATION));
-                } }
-                className="clickable"
-                data-componentid={ `${ componentId }-organization-api-container` }
-            >
-                <List>
-                    <List.Item>
-                        <Grid container direction="row" xs={ 12 } alignItems="center">
-                            <Grid xs={ 10 } alignContent="center">
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <HierarchyIcon size="medium" /> }
-                                    spaced="right"
-                                    floated="left"
-                                    className="mt-1"
-                                />
-                                <List.Header>
-                                    { t("extensions:develop.apiResource.organizationAPI.header") }
-                                </List.Header>
-                                <List.Description>
-                                    { t("extensions:develop.apiResource.organizationAPI.description") }
-                                </List.Description>
-                            </Grid>
-                            <Grid xs={ 2 }>
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <ChevronRightIcon /> }
-                                    spaced="right"
-                                    floated="right"
-                                />
-                            </Grid>
-                        </Grid>
-                    </List.Item>
-                </List>
-            </EmphasizedSegment>
-            <Divider hidden/>
             <ListLayout
-                advancedSearch={ (
-                    <AdvancedSearchWithBasicFilters
-                        onFilter={ handleApiFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("common:name"),
-                                value: "name"
-                            }
-                        ] }
-                        filterAttributePlaceholder={
-                            t("applications:advancedSearch.form" +
-                                ".inputs.filterAttribute.placeholder")
-                        }
-                        filterConditionsPlaceholder={
-                            t("applications:advancedSearch.form" +
-                                ".inputs.filterCondition.placeholder")
-                        }
-                        filterValuePlaceholder={
-                            t("applications:advancedSearch.form.inputs.filterValue" +
-                                ".placeholder")
-                        }
-                        placeholder={ "Search APIs by name" }
-                        style={ { minWidth: "425px" } }
-                        defaultSearchAttribute="name"
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ triggerClearQuery }
-                        data-componentid={ `${ componentId }-list-advanced-search` }
-                    />
-                ) }
-                showTopActionPanel={ (!!searchQuery || apiResourcesList?.length > 0) }
-                data-componentid={ `${ componentId }-api-resources-list-layout` }
-                data-testid={ `${ componentId }-api-resources-list-layout` }
+                showTopActionPanel={ false }
+                data-componentid={ `${componentId}-api-resources-list-layout` }
+                data-testid={ `${componentId}-api-resources-list-layout` }
                 onPageChange={ handlePaginationChange }
                 showPagination={ true }
                 totalPages={ APIResourcesConstants.DEFAULT_TOTAL_PAGES }
@@ -395,8 +258,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                 paginationOptions={ {
                     disableNextButton: !nextAfter,
                     disablePreviousButton: !nextBefore
-                } }
-            >
+                } }>
                 {
                     apiResourcesFetchRequestError
                         ? (<EmptyPlaceholder
@@ -411,22 +273,19 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             isAPIResourcesListLoading={ isAPIResourcesListLoading }
                             featureConfig={ featureConfig }
                             onAPIResourceDelete={ onAPIResourceDelete }
-                            onSearchQueryClear={ handleSearchQueryClear }
-                            searchQuery={ searchQuery }
-                            categoryId="custom"
-                            onEmptyListPlaceholderActionClicked={ () => setShowWizard(true) }
+                            setShowAddAPIWizard={ setShowWizard }
                         />)
 
                 }
+                {
+                    showWizard && (
+                        <AddAPIResource
+                            data-testid= { `${componentId}-add-api-resource-wizard-modal` }
+                            closeWizard={ () => setShowWizard(false) }
+                        />
+                    )
+                }
             </ListLayout>
-            {
-                showWizard && (
-                    <AddAPIResource
-                        data-testid= { `${componentId}-add-api-resource-wizard-modal` }
-                        closeWizard={ () => setShowWizard(false) }
-                    />
-                )
-            }
         </PageLayout>
     );
 };

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -1444,7 +1444,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                 saasFeatureStatus === FeatureStatus.ENABLED && isOrgConfigRequestLoading
                     ? <div />
                     : (
-                        <Show when={ AccessControlConstants.USER_WRITE }>
+                        <Show when={ featureConfig?.users?.scopes?.create }>
                             { saasFeatureStatus === FeatureStatus.ENABLED && !isAdvancedUserManagementDisabled &&
                                 (
                                     <Button

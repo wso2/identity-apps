@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Button, ContentLoader, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon, List } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { AppConstants } from "../../../../admin.core.v1/constants";
 import { EventPublisher } from "../../../../admin.core.v1/utils";
 import { getUserDetails } from "../../../../admin.users.v1/api";
@@ -47,6 +49,7 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
     } = props;
 
     const { t } = useTranslation();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ addedUserList, setAddedUserList ] = useState<string[]>([]);
@@ -85,7 +88,7 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
                 </Trans>
             </Text>
             <Show
-                when={ AccessControlConstants.USER_WRITE }
+                when={ featureConfig?.users?.scopes?.create }
             >
                 <Text>
                     <Trans i18nKey="extensions:console.application.quickStart.addUserOption.hint">
@@ -138,7 +141,7 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
             </Show>
             <Show
                 when={ [] }
-                notWhen={ AccessControlConstants.USER_WRITE }
+                notWhen={ featureConfig?.users?.scopes?.create }
             >
                 <Text compact>
                     { t("extensions:console.application.quickStart.addUserOption.message") }

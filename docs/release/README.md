@@ -15,11 +15,7 @@ This repository uses [🦋 Changesets](https://github.com/changesets/changesets)
 pnpm changeset
 ```
 
-2. This will open a prompt to select the packages that have changed. Select **the changed packages and the dependents of the changed packages**, and press <kbd>Enter</kbd>.
-
-> ℹ️ Info:
-> 
-> To find out the dependent packages of a changed package, open a new terminal and run `pnpm nx graph` from the `identity-apps` root. Refer to https://nx.dev/features/explore-graph#explore-the-project-graph for more details.
+2. This will open a prompt to select the packages that have changed. Select **the changed packages**, and press <kbd>Enter</kbd>.
 
 ![changesets-001](../assets/images/develop/release/changesets-changed-packages-001.png)
 

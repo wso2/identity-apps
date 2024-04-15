@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,19 +19,21 @@
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
-import { FeatureConfigInterface } from "../../admin.core.v1";
-import { deleteScopeFromAPIResource, updateAPIResource } from "../api";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
+import { updateAPIResource } from "../api";
+import { APIResourcesConstants } from "../constants";
 import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
 
 /**
  * Prop-types for the API resources page component.
  */
-interface EditAPIResourceInterface extends SBACInterface<FeatureConfigInterface>,
+interface EditAPIResourceInterface extends SBACInterface<ExtendedFeatureConfigInterface>,
     IdentifiableComponentInterface {
     /**
      * List of API Resources
@@ -45,6 +47,10 @@ interface EditAPIResourceInterface extends SBACInterface<FeatureConfigInterface>
      * is read only
      */
     isReadOnly: boolean;
+    /**
+     * is managed by Choreo
+     */
+    isManagedByChoreo: boolean;
     /**
      * Update API Resource once it has been updated
      */
@@ -64,6 +70,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
     const {
         featureConfig,
         isReadOnly,
+        isManagedByChoreo,
         apiResourceData,
         isAPIResourceDataLoading,
         mutateAPIResource
@@ -88,13 +95,14 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                         isAPIResourceDataLoading={ isAPIResourceDataLoading }
                         featureConfig={ featureConfig }
                         isReadOnly={ isReadOnly }
+                        isManagedByChoreo={ isManagedByChoreo }
                         isSubmitting = { isSubmitting }
                         handleUpdateAPIResource = { handleUpdateAPIResource } />
                 </ResourceTab.Pane>
             )
         },
         {
-            menuItem: t("apiResources:tabs.scopes.label"),
+            menuItem: t("extensions:develop.apiResource.tabs.permissions.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <PermissionAPIResource
@@ -102,8 +110,8 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                         isAPIResourceDataLoading={ isAPIResourceDataLoading }
                         isSubmitting = { isSubmitting }
                         isReadOnly={ isReadOnly }
-                        handleUpdateAPIResource = { handleUpdateAPIResource }
-                        handleDeleteAPIScope = { handleDeleteAPIScope } />
+                        isManagedByChoreo={ isManagedByChoreo }
+                        handleUpdateAPIResource = { handleUpdateAPIResource }/>
                 </ResourceTab.Pane>
             )
         },
@@ -120,7 +128,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
     ]);
 
     /**
-     * Handles API Resource update actions.
+     * Handles form submit action.
      *
      * @param updatedDetails - Form values.
      * @param callback - Callback function to be executed after the update is completed.
@@ -138,50 +146,62 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                 }));
                 mutateAPIResource();
             })
-            .catch(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.apiResource.notifications.updateAPIResource" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("extensions:develop.apiResource.notifications.updateAPIResource" +
-                        ".genericError.message")
-                }));
-            })
-            .finally(() => {
-                setIsSubmitting(false);
+            .catch((error: AxiosError) => {
+                switch (error?.code) {
+                    case APIResourcesConstants.UNAUTHORIZED_ACCESS:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                                ".unauthorizedError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                                ".unauthorizedError.message")
+                        }));
 
-                // Callback function to be executed after the update is completed.
-                callback && callback();
-            });
-    };
+                        break;
 
-    /**
-     * Handles API scope delete action.
-     *
-     * @param deletingScopeName - Name of the scope that needs to be deleted.
-     * @param callback - Callback function to be executed after the update is completed.
-     */
-    const handleDeleteAPIScope = (deletingScopeName: string, callback?: () => void): void => {
-        setIsSubmitting(true);
+                    case APIResourcesConstants.NO_VALID_API_RESOURCE_ID_FOUND:
+                    case APIResourcesConstants.API_RESOURCE_NOT_FOUND:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                                ".notFoundError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                                ".notFoundError.message")
+                        }));
 
-        deleteScopeFromAPIResource(apiResourceData.id, deletingScopeName)
-            .then(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.apiResource.notifications.updateAPIResource.success" +
-                        ".description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message")
-                }));
-                mutateAPIResource();
-            })
-            .catch(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.apiResource.notifications.updateAPIResource" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("extensions:develop.apiResource.notifications.updateAPIResource" +
-                        ".genericError.message")
-                }));
+                        break;
+
+                    case APIResourcesConstants.PERMISSION_ALREADY_EXISTS:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".permissionAlreadyExistsError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".permissionAlreadyExistsError.message")
+                        }));
+
+                        break;
+
+                    case APIResourcesConstants.INVALID_REQUEST_PAYLOAD:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                                ".invalidPayloadError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                                ".invalidPayloadError.message")
+                        }));
+
+                        break;
+
+                    default:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                                ".genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                                ".genericError.message")
+                        }));
+                }
             })
             .finally(() => {
                 setIsSubmitting(false);

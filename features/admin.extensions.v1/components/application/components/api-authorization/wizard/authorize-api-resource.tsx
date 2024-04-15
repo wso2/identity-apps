@@ -39,9 +39,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Grid, Header, Modal } from "semantic-ui-react";
 import { AppState } from "../../../../../../admin.core.v1/store";
-import { useAPIResources } from "../../../../api-resources/api";
-import { APIResourcesConstants } from "../../../../api-resources/constants";
-import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../api-resources/models";
+import { useAPIResources } from "../../../../../../admin.api-resources.v1/api";
+import { APIResourcesConstants } from "../../../../../../admin.api-resources.v1/constants";
+import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../../../admin.api-resources.v1/models";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants";
 import { AuthorizedAPIListItemInterface } from "../../../models";
 
@@ -123,7 +123,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     }, [ currentAPIResourcesFetchRequestError ]);
 
     /**
-     * Assign all the API resources to the dropdown options if the after value is not null. 
+     * Assign all the API resources to the dropdown options if the after value is not null.
      */
     useEffect(() => {
         if (!isAPIResourcesListLoading) {
@@ -404,9 +404,9 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                     verticalAlign="bottom"
                                                 >
                                                     <label>
-                                                        <Text 
-                                                            size={ 13 } 
-                                                            className="mb-1" 
+                                                        <Text
+                                                            size={ 13 }
+                                                            className="mb-1"
                                                             muted={ !selectedAPIResource }
                                                         >
                                                             { t("extensions:develop.applications.edit.sections." +
@@ -437,8 +437,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                             onClick={ () => handleBulkDropdownChange(true) }
                                                         >
                                                             {
-                                                                t("extensions:develop.applications.edit.sections" + 
-                                                                    ".apiAuthorization.sections.apiSubscriptions." + 
+                                                                t("extensions:develop.applications.edit.sections" +
+                                                                    ".apiAuthorization.sections.apiSubscriptions." +
                                                                     "scopesSection.selectNone")
                                                             }
                                                         </Button>
@@ -475,7 +475,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         <Popup
                                             content={ t("extensions:develop.applications.edit.sections." +
                                                 "apiAuthorization.sections.apiSubscriptions.wizards." +
-                                                "authorizeAPIResource.rbacPolicyMessage", 
+                                                "authorizeAPIResource.rbacPolicyMessage",
                                             { productName }) }
                                             disabled={ !selectedAPIResource
                                                 || !selectedAPIResourceRequiresAuthorization }

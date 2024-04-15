@@ -330,6 +330,7 @@ export interface ApplicationsNS {
                         name: string;
                         hint: string;
                     };
+                    subjectAttributeSelectedHint: string;
                     selectedScopesComponentHint: string;
                     howToUseScopesHint: string;
                     attributeComponentHint: string;
@@ -782,6 +783,8 @@ export interface ApplicationsNS {
                             validations: {
                                 empty: string;
                             };
+                            placeholder: string;
+                            info: string;
                         };
                         subjectIncludeTenantDomain: {
                             hint: string;
@@ -2338,6 +2341,10 @@ export interface ApplicationsNS {
             };
         };
         updateClaimConfig: {
+            mistmatchAlternativesubjectIdentifierError: {
+                message: string;
+                description: string;
+            }
             error: {
                 message: string;
                 description: string;

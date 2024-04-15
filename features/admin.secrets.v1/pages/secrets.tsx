@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,17 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout, PrimaryButton } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "../../admin.core.v1";
 import { getSecretList } from "../api/secret";
 import AddSecretWizard from "../components/add-secret-wizard";
 import SecretsList from "../components/secrets-list";
@@ -40,8 +42,6 @@ export type SecretsPageProps = IdentifiableComponentInterface;
  * There are couple of things missing in this component:
  * The secrets list of page.
  *
- * @param props {SecretsPageProps}
- * @constructor
  */
 const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElement => {
 
@@ -49,11 +49,12 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
         ["data-componentid"]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     /**
-     * List of secrets for the selected {@code secretType}. It can hold secrets of
+     * List of secrets for the selected secretType. It can hold secrets of
      * either a custom one or the static type "ADAPTIVE_AUTH_CALL_CHOREO"
      */
     const [ secretList, setSecretList ] = useState<SecretModel[]>([]);
@@ -74,7 +75,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
             params: { secretType: selectedSecretType }
         }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
             setSecretList(axiosResponse.data);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             if (error.response && error.response.data && error.response.data.description) {
                 dispatch(addAlert({
                     description: error.response.data?.description,
@@ -101,7 +102,6 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
     };
 
     /**
-     * @event-handler of Add Secret Button
      */
     const onAddNewSecretButtonClick = (): void => {
         setShowAddSecretModal(true);
@@ -110,7 +110,6 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
     /**
      * This will be called when secret add wizard closed.
      * It will tell us to refresh the secret list or not.
-     * @param shouldRefresh {boolean}
      */
     const whenAddNewSecretModalClosed = (shouldRefresh: boolean): void => {
         setShowAddSecretModal(false);
@@ -122,8 +121,6 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
     /**
      * This will be called when a secret is deleted from the list.
      * It will also tell us whether we should refresh the secret list or not.
-     * @param deletedSecret {SecretModel}
-     * @param shouldRefresh {boolean}
      */
     const whenSecretDeleted = (deletedSecret: SecretModel, shouldRefresh: boolean): void => {
         if (shouldRefresh) {
@@ -132,12 +129,12 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
     };
 
     return (
-        
+
         <PageLayout
             action={
                 (!isLoading && !(secretList?.length <= 0))
             && (
-                <Show when={ AccessControlConstants.SECRET_WRITE }>
+                <Show when={ featureConfig?.secretsManagement?.scopes?.create }>
                     <PrimaryButton
                         onClick={ onAddNewSecretButtonClick }
                         data-testid={ `${ testId }-add-button` }>
@@ -146,14 +143,13 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
                     </PrimaryButton>
                 </Show>
             ) }
-            
             isLoading={ isSecretListLoading }
             title={ t("secrets:page.title") }
             pageTitle={ t("secrets:page.title") }
             description={ t("secrets:page.description") }
         >
-               
-            <Show when={ AccessControlConstants.SECRET_READ }>
+
+            <Show when={ featureConfig?.secretsManagement?.scopes?.read }>
                 <SecretsList
                     whenSecretDeleted={ whenSecretDeleted }
                     isSecretListLoading={ isSecretListLoading }

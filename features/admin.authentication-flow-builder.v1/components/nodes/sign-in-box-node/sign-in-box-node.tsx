@@ -51,11 +51,16 @@ import EmailOTPFragment from "./fragments/email-otp-fragment";
 import IdentifierFirstFragment from "./fragments/identifier-first-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
-import { AuthenticationSequenceInterface, AuthenticatorInterface } from "../../../../admin.applications.v1/models/application";
+import {
+    AuthenticationSequenceInterface,
+    AuthenticatorInterface
+} from "../../../../admin.applications.v1/models/application";
+import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import {
     IdentityProviderManagementConstants
 } from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
+import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
 
@@ -189,6 +194,10 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
     const { t } = useTranslation();
 
     const { updateVisualEditorFlowNodeMeta } = useAuthenticationFlow();
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const { UIConfig } = useUIConfig();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -494,7 +503,13 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                     IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
                 ].includes(option.authenticator)
             ) {
-                shouldShowBackupCodesEnableCheck = true;
+                // Disabling backup codes option for suborganization users until the IS7 migration is completed.
+                if (
+                    !isSubOrganization()
+                    || (isSubOrganization() && UIConfig?.legacyMode?.backupCodesForSubOrganizations)
+                ) {
+                    shouldShowBackupCodesEnableCheck = true;
+                }
             }
         });
 

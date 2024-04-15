@@ -17,7 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -45,8 +45,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { applicationConfig } from "../../admin.extensions.v1";
-import { applicationListConfig } from "../../admin.extensions.v1/configs/application-list";
 import { ConsoleSettingsModes } from "../../admin.console-settings.v1/models/ui";
 import {
     AppConstants,
@@ -57,6 +55,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
+import { applicationConfig } from "../../admin.extensions.v1";
+import { applicationListConfig } from "../../admin.extensions.v1/configs/application-list";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { deleteApplication } from "../api";
@@ -576,7 +576,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     action={ (onEmptyListPlaceholderActionClick
                         && organizationType !== OrganizationType.SUBORGANIZATION)
                         && (
-                            <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                            <Show
+                                when={ featureConfig?.applications?.scopes?.create }
+                            >
                                 <PrimaryButton
                                     onClick={ () => {
                                         eventPublisher.publish(componentId + "-click-new-application-button");

@@ -16,18 +16,20 @@
  * under the License.
  */
 
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
+import { Message } from "@wso2is/react-components/src";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
+import { Checkbox, CheckboxProps, Divider, Icon } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
-import { applicationConfig } from "../../../../admin.extensions.v1";
 import { AppState } from "../../../../admin.core.v1";
+import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "../../../../admin.extensions.v1";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
@@ -181,6 +183,23 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     }, [ selectedSubjectValue ]);
 
     /**
+     * To get the selected dropdown value only alternative subject identifier checkbox is checked.
+     */
+    const getSelectedDropDownValue = ((
+        options: DropdownOptionsInterface[],
+        checkValue: string
+    ) : string => {
+        const dropDownOptions: DropdownOptionsInterface[] = options as DropdownOptionsInterface[];
+        let claimURI: string = defaultSubjectAttribute;
+
+        if (showSubjectAttribute) {
+            claimURI = getDefaultDropDownValue(dropDownOptions, checkValue);
+        }
+
+        return claimURI;
+    });
+
+    /**
      * Check whether initial value is exist in dropdown list.
      */
     const getDefaultDropDownValue = ((
@@ -232,7 +251,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 mappings: []
             },
             subject: {
-                claim: getDefaultDropDownValue(dropDownOptions, values.subjectAttribute),
+                claim: getSelectedDropDownValue(dropDownOptions, values.subjectAttribute),
                 includeTenantDomain: !!values.subjectIncludeTenantDomain,
                 includeUserDomain: !!values.subjectIncludeUserDomain,
                 mappedLocalSubjectMandatory: mandateLinkedLocalAccount,
@@ -279,6 +298,22 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     };
 
     /**
+     * This function resolves the hidden status of the info message of the subject attribute section
+     * @returns The hidden status
+     */
+    const resolveInfoSectionHiddenStatus = (): boolean => {
+        return !resolveSubjectAttributeHiddenStatus () && isEmpty(dropDownOptions);
+    };
+
+    /**
+     * This function resolves the hidden status of the sections of the subject attribute section
+     * @returns The hidden status
+     */
+    const resolveDropDownHiddenStatus = (): boolean => {
+        return resolveSubjectAttributeHiddenStatus() || isEmpty(dropDownOptions);
+    };
+
+    /**
      * This function resolves the hidden status of the subject attribute section.
      * @returns The hidden status.
      */
@@ -296,6 +331,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const mandateLinkedAccountCheckboxHandler = (value: boolean) => {
         setMandateLinkedLocalAccount(value);
+    };
+
+    /**
+     * To revert the selected subject identifier value to the default value when the checkbox is unchecked.
+     */
+    const disableAlternativeSubjectIdentifier = (value: boolean) => {
+        setShowSubjectAttribute(value);
+        setSelectedSubjectValue(defaultSubjectAttribute) ;
     };
 
     const resolveSubjectAttributeHint = (): ReactElement => {
@@ -407,7 +450,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 label={ t("applications:forms.advancedAttributeSettings." +
                                     "sections.subject.fields.alternateSubjectAttribute.label") }
                                 onClick={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) =>
-                                    setShowSubjectAttribute(data?.checked) }
+                                    disableAlternativeSubjectIdentifier(data?.checked)
+                                }
                                 disabled={ readOnly }
                             />
                             <Hint>
@@ -422,6 +466,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Hint>
                         </>
                     ) }
+                    { resolveInfoSectionHiddenStatus() && (
+                        <Message info>
+                            <Icon name="info circle" />
+                            { t("applications:forms.advancedAttributeSettings" +
+                            ".sections.subject.fields.subjectAttribute.info") }
+                        </Message>
+                    ) }
                     <Field.Dropdown
                         ariaLabel="Subject attribute"
                         name="subjectAttribute"
@@ -429,10 +480,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectAttribute.label")
                         }
+                        placeholder = {
+                            t("applications:forms.advancedAttributeSettings" +
+                                ".sections.subject.fields.subjectAttribute.placeholder")
+                        }
                         required={ claimMappingOn }
                         value={ selectedSubjectValue }
                         options={ dropDownOptions }
-                        hidden={ resolveSubjectAttributeHiddenStatus() }
+                        hidden={ resolveDropDownHiddenStatus() }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
@@ -448,8 +503,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
-                            || resolveSubjectAttributeHiddenStatus() }
+                        hidden={ disabledFeatures?.includes("applications.attributes" +
+                                        ".alternativeSubjectIdentifier")
+                            || resolveDropDownHiddenStatus() }
                         hint={
                             t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -466,8 +522,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-include-tenant-domain-checkbox` }
-                        hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
-                            || resolveSubjectAttributeHiddenStatus() }
+                        hidden={ disabledFeatures?.includes("applications.attributes" +
+                                        ".alternativeSubjectIdentifier")
+                            || resolveDropDownHiddenStatus() }
                         hint={
                             t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
@@ -509,6 +566,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                           setSelectedSubjectType(subjectType);
                                                       } }
                                                       readOnly={ readOnly }
+                                                      data-componentId={
+                                                          `${ componentId }-subject-type-${ subjectType }-radio`
+                                                      }
                                                   />
                                               </>
                                           );
@@ -536,6 +596,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             minLength={ 3 }
                             width={ 16 }
                             initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
+                            data-componentId={ `${ componentId }-sector-identifier-uri` }
                         />
                     )
                     }

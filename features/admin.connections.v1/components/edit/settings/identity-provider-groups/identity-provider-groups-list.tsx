@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
@@ -35,14 +35,14 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, 
-{ 
+import React,
+{
     ChangeEvent,
-    FunctionComponent, 
-    ReactElement, 
-    ReactNode, 
-    SyntheticEvent, 
-    useEffect, 
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,7 +51,7 @@ import { Dispatch } from "redux";
 import { Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
 import { CreateIdPGroupWizard } from "./create-identity-provider-group-wizard";
 import { FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1";
-import { useConnectionGroups, updateConnectionGroup } from "../../../../api/connections";
+import { updateConnectionGroup, useConnectionGroups } from "../../../../api/connections";
 import { ConnectionGroupInterface } from "../../../../models/connection";
 
 /**
@@ -79,10 +79,10 @@ interface IdentityProviderGroupsPropsInterface extends SBACInterface<FeatureConf
 
 /**
  * Identity provider groups list component.
- * 
+ *
  * @param props - Props related to identity provider groups list component.
  */
-export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroupsPropsInterface> = ( 
+export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroupsPropsInterface> = (
     props: IdentityProviderGroupsPropsInterface
 ): ReactElement => {
 
@@ -116,14 +116,14 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
         if (originalIdentityProviderGroups instanceof IdentityAppsApiException
                 || identityProviderGroupsFetchRequestError) {
             handleRetrieveError();
-            
+
             return;
         }
-        
+
         if (!originalIdentityProviderGroups) {
             return;
         }
-        
+
         setGroupsList(originalIdentityProviderGroups);
     }, [ originalIdentityProviderGroups ]);
 
@@ -162,7 +162,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
      * Handles the delete group action.
      */
     const handleDeleteGroup = (): Promise<any> => {
-        const newIdpGroupList: ConnectionGroupInterface[] = [ 
+        const newIdpGroupList: ConnectionGroupInterface[] = [
             ...groupsList.filter((group: ConnectionGroupInterface) => group.id !== deleteGroup.id)
         ];
 
@@ -264,7 +264,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
         }
 
         return null;
-    }; 
+    };
 
     /**
      * Resolves data table actions.
@@ -364,20 +364,20 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                             size="small"
                             transparent
                         />
-                        {
-                            (<Show when={ AccessControlConstants.GROUP_WRITE }>
-                                <PrimaryButton
-                                    data-testid="user-mgt-roles-list-update-button"
-                                    size="medium"
-                                    icon={ <Icon name="add" /> }
-                                    floated="right"
-                                    onClick={ () => setShowWizard(true) }
-                                >
-                                    <Icon name="add" />
-                                    { t("extensions:console.identityProviderGroups.groupsList.newGroup") }
-                                </PrimaryButton>
-                            </Show>)
-                        }
+                        <Show
+                            when={ featureConfig?.groups?.scopes?.create }
+                        >
+                            <PrimaryButton
+                                data-testid="user-mgt-roles-list-update-button"
+                                size="medium"
+                                icon={ <Icon name="add" /> }
+                                floated="right"
+                                onClick={ () => setShowWizard(true) }
+                            >
+                                <Icon name="add" />
+                                { t("extensions:console.identityProviderGroups.groupsList.newGroup") }
+                            </PrimaryButton>
+                        </Show>
                     </div>
                 ) }
             >
@@ -425,7 +425,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                     { t("extensions:develop.emailProviders.confirmationModal.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
-                    data-componentid={ 
+                    data-componentid={
                         `${ componentId }-delete-confirmation-modal-message`
                     }
                     attached
@@ -434,7 +434,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                     { t("extensions:console.identityProviderGroups.groupsList.confirmation.deleteGroup.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("extensions:console.identityProviderGroups.groupsList.confirmation.deleteGroup.content", 
+                    { t("extensions:console.identityProviderGroups.groupsList.confirmation.deleteGroup.content",
                         { groupName: deleteGroup?.name }) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>

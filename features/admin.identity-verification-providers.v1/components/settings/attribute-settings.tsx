@@ -23,11 +23,11 @@ import { EmphasizedSegment } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributesSelection } from "./attribute-management/attribute-selection";
-import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
+import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
 import {
     IDVPClaimMappingInterface,
     IDVPClaimsInterface,
@@ -99,6 +99,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     // Selected local claims in claim mapping.
     const [ selectedClaimsWithMapping, setSelectedClaimsWithMapping ] = useState<IDVPClaimMappingInterface[]>([]);
@@ -166,7 +167,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     <Divider hidden/>
                     <Grid.Row>
                         <Grid.Column>
-                            <Show when={ AccessControlConstants.IDVP_EDIT }>
+                            <Show when={ featureConfig?.identityVerificationProviders?.scopes?.update }>
                                 <Button
                                     primary
                                     size="small"

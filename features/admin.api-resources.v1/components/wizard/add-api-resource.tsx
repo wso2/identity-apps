@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -141,10 +142,11 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
         setIsSubmitting(true);
 
         const apiResourceBody: APIResourceInterface = {
+            displayName: basicDetails.displayName,
+            gwName: APIResourcesConstants.EMPTY_STRING,
             identifier: basicDetails.identifier,
-            name: basicDetails.displayName,
-            requiresAuthorization: requiresAuthorization,
-            scopes: [ ...permissions.values() ]
+            permissions: [ ...permissions.values() ],
+            requiresAuthorization: requiresAuthorization
         };
 
         createAPIResource(apiResourceBody)
@@ -159,14 +161,61 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                 // Open the created API resource.
                 history.push(APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT").replace(":id", apiResource.id));
             })
-            .catch(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.apiResource.notifications.addAPIResource" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("extensions:develop.apiResource.notifications.addAPIResource" +
-                        ".genericError.message")
-                }));
+            .catch((error: AxiosError) => {
+                switch (error?.code) {
+                    case APIResourcesConstants.UNAUTHORIZED_ACCESS:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".unauthorizedError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".unauthorizedError.message")
+                        }));
+
+                        break;
+
+                    case APIResourcesConstants.API_RESOURCE_ALREADY_EXISTS:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".alreadyExistsError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".alreadyExistsError.message")
+                        }));
+
+                        break;
+
+                    case APIResourcesConstants.PERMISSION_ALREADY_EXISTS:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".permissionAlreadyExistsError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".permissionAlreadyExistsError.message")
+                        }));
+
+                        break;
+
+                    case APIResourcesConstants.INVALID_REQUEST_PAYLOAD:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".invalidPayloadError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".invalidPayloadError.message")
+                        }));
+
+                        break;
+
+                    default:
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.apiResource.notifications.addAPIResource" +
+                                ".genericError.message")
+                        }));
+                }
             })
             .finally(() => {
                 setIsSubmitting(false);
@@ -208,7 +257,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                 />
             ),
             icon: getAPIResourceWizardStepIcons().permissions,
-            title: t("apiResources:wizard.addApiResource.steps.scopes.stepTitle")
+            title: t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.stepTitle")
         },
         {
             addAPIResourceWizardStepsFormType: AddAPIResourceWizardStepsFormTypes.AUTHORIZATION,

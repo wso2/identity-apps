@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import {
@@ -23,9 +24,9 @@ import {
     Hint,
     PrimaryButton
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
+import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SMSProviderConstants } from "../constants";
 
 interface VonageSMSProviderPageInterface extends IdentifiableComponentInterface {
@@ -43,6 +44,21 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const [ isShow, setIsShow ] = useState(false);
+
+    const renderInputAdornment = (): ReactElement => (
+        <InputAdornment position="end">
+            <Icon
+                link={ true }
+                className="list-icon reset-field-to-default-adornment"
+                size="small"
+                color="grey"
+                name={ !isShow ? "eye" : "eye slash" }
+                data-testid={ "view-button" }
+                onClick={ () => { setIsShow(!isShow); } }
+            />
+        </InputAdornment>
+    );
 
     return (
         <EmphasizedSegment className="form-wrapper" padded={ "very" }>
@@ -81,6 +97,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                     </Grid.Column>
                     <Grid.Column>
                         <FinalFormField
+                            className="addon-field-wrapper"
                             key="vonageSecret"
                             width={ 16 }
                             FormControlProps={ {
@@ -92,7 +109,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-vonage-secret` }
                             name="vonageSecret"
                             inputType="password"
-                            type="password"
+                            type={ isShow ? "text" : "password" }
                             label={ t("smsProviders:form.vonage.authToken.label") }
                             placeholder={ t("smsProviders:form.vonage.authToken.placeholder") }
                             helperText={ (
@@ -104,6 +121,9 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                             minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                             autoComplete="new-password"
+                            InputProps={ {
+                                endAdornment: renderInputAdornment()
+                            } }
                         />
                     </Grid.Column>
                 </Grid.Row>
