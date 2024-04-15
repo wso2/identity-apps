@@ -1,5 +1,22 @@
 # @wso2is/features
 
+## 2.14.21
+
+### Patch Changes
+
+- [#5927](https://github.com/wso2/identity-apps/pull/5927) [`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide backup code enable option in login flow in sub organizations
+
+* [#5959](https://github.com/wso2/identity-apps/pull/5959) [`012424a0bb`](https://github.com/wso2/identity-apps/commit/012424a0bbfe3f8c2625a1e15689d0452bdecee8) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Enable alphanumeric special character username feature.
+
+* Updated dependencies [[`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372)]:
+  - @wso2is/core@2.0.40
+  - @wso2is/access-control@2.0.25
+  - @wso2is/dynamic-forms@2.0.44
+  - @wso2is/form@2.0.45
+  - @wso2is/forms@2.0.30
+  - @wso2is/i18n@2.1.10
+  - @wso2is/react-components@2.1.15
+
 ## 2.14.20
 
 ### Patch Changes
