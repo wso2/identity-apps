@@ -186,7 +186,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                 // Disabling backup codes option for suborganization users until the IS7 migration is completed.
                 if (
                     !isSubOrganization()
-                    || (isSubOrganization() && UIConfig?.legacyMode?.enablingBackupCodesForB2BUsers)
+                    || (isSubOrganization() && UIConfig?.legacyMode?.backupCodesForSubOrganizations)
                 ) {
                     isBackupCodeSupportedAuthenticator = true;
                 }
