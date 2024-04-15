@@ -19,7 +19,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { CopyInputField, DocumentationLink, EmphasizedSegment, PageLayout, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Field, Form, FinalForm } from "@wso2is/form";
+import { Field, Form } from "@wso2is/form";
 import {
     AppConstants,
     history,
@@ -56,10 +56,6 @@ interface ApplicationsSettingsPropsInterface extends IdentifiableComponentInterf
      * Is fapi complience enforced for the dcr apps.
      */
     enableFapiEnforcement?:boolean
-    /**
-     * Specifies if the form is submitting.
-     */
-    isSubmitting?: boolean;
 }
 
 /**
@@ -113,7 +109,6 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
         ssaJwks,
         dcrEndpoint,
         enableFapiEnforcement,
-        isSubmitting,
         ["data-componentid"]: componentId 
     } = props;
    
@@ -126,13 +121,11 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     const [ isEnableFapiEnforcement, setEnableFapiEnforcement ] = useState<boolean>(enableFapiEnforcement);
     const [ ssaJwksState, setSsaJwks ] = useState<string>(ssaJwks);
     const [ dcrEndpointState, setDCREndpoint ] = useState<string>(dcrEndpoint);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
 
     const {
         data: dcrConfigs,
-        isLoading: isDCRConfigsFetchRequestLoading,
-        error: getDCRConfigsError,
-        mutate: mutateApplicationListFetchRequest
     } = useGetDCRConfigurations();
 
     // set initial values
@@ -218,6 +211,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
      * @returns Sanitized form values.
      */
     const updateConfigurations = (values: ApplicationsSettingsFormValuesInterface) => {
+        setIsSubmitting(true);
         const updateData: any = [
             {
                 operation: "REPLACE",
@@ -246,11 +240,17 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
             )
         }
 
-        updateDCRConfigurations(updateData).then(() => {
+        updateDCRConfigurations(updateData)
+        .then(() => {
             handleUpdateSuccess();
-        }).catch((error: AxiosError) => {
+        })
+        .catch((error: AxiosError) => {
             handleUpdateError(error);
+        })
+        .finally(() => {
+            setIsSubmitting(false);
         });
+
     };
 
     /**
