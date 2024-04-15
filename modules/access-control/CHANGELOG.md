@@ -1,5 +1,12 @@
 # @wso2is/access-control
 
+## 2.0.25
+
+### Patch Changes
+
+- Updated dependencies [[`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372)]:
+  - @wso2is/core@2.0.40
+
 ## 2.0.24
 
 ### Patch Changes
