@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, history } from "../../../../../admin.core.v1";
+import { AppState, FeatureConfigInterface, history } from "../../../admin.core.v1";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
 import {
