@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding-preferences";
+import { useEffect, useState } from "react";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -26,12 +26,15 @@ import useRequest, {
 import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding-preferences";
 
-const useGetAIBrandingGenerationStatus =
-<Data = BrandingGenerationStatusAPIResponseInterface, Error = RequestErrorInterface>(
-        operationId: string
-    ): RequestResultInterface<Data, Error> => {
+export const useGetAIBrandingGenerationStatus = (
+    operationId: string
+): RequestResultInterface<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface> => {
+
     const { organizationType } = useGetCurrentOrganizationType();
+
+    const [ isLoading, setIsLoading ] = useState(true);
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -39,24 +42,39 @@ const useGetAIBrandingGenerationStatus =
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: {
-            operation_id: operationId
-        },
-        url: organizationType === OrganizationType.SUBORGANIZATION
-            // ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
-            // : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
-            ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status`
-            : `${store.getState().config.endpoints.brandingPreference}/status`
+        // url: organizationType === OrganizationType.SUBORGANIZATION
+        //     ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
+        //     : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
+
+        url: `http://localhost:8080/t/cryd1/api/server/v1/branding-preference/status/${operationId}`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
+    const { data, error, isValidating, mutate } =
+    useRequest<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface>(requestConfig, {
         shouldRetryOnError: false
     });
+
+    useEffect(() => {
+        const interval: NodeJS.Timeout = setInterval(() => {
+            if (!isValidating && !data?.status?.branding_generation_completed) {
+                mutate();
+            }
+        }, 1000);
+
+        if (data?.status?.branding_generation_completed) {
+            setIsLoading(false);
+            clearInterval(interval);
+        } else {
+            setIsLoading(true);
+        }
+
+        return () => clearInterval(interval);
+    }, [ data, isValidating, mutate ]);
 
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate
     };
