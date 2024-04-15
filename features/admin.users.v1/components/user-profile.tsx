@@ -25,7 +25,6 @@ import {
     MultiValueAttributeInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface,
-    SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -69,7 +68,7 @@ import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValue
 /**
  * Prop types for the basic details component.
  */
-interface UserProfilePropsInterface extends TestableComponentInterface, SBACInterface<FeatureConfigInterface> {
+interface UserProfilePropsInterface extends TestableComponentInterface {
     /**
      * System admin username
      */
@@ -141,7 +140,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         handleUserUpdate,
         isReadOnly,
         allowDeleteOnly,
-        featureConfig,
         connectorProperties,
         isReadOnlyUserStoresLoading,
         isReadOnlyUserStore,
@@ -165,6 +163,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
