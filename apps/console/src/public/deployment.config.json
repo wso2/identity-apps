@@ -1128,7 +1128,7 @@
             "applicationRequestPathAuthentication": false,
             "applicationSystemAppsSettings": false,
             "certificates": false,
-            "enablingBackupCodesForB2BUsers": true,
+            "backupCodesForSubOrganizations": true,
             "loginAndRegistrationEmailDomainDiscovery": true,
             "organizations": true,
             "rolesV1": false,
