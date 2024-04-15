@@ -26,6 +26,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
 import {
+    ContentLoader,
     Heading,
     LinkButton,
     Markdown,
@@ -33,9 +34,10 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import useDynamicFieldValidations from "features/admin.applications.v1/hooks/use-dynamic-field-validation";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
-import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -46,19 +48,18 @@ import { ModalWithSidePanel } from "../../../admin.core.v1/components/modals/mod
 import { AppConstants } from "../../../admin.core.v1/constants/app-constants";
 import { history } from "../../../admin.core.v1/helpers/history";
 import { EventPublisher } from "../../../admin.core.v1/utils/event-publisher";
-import { createApplication } from "../../api";
+import { createApplication, useApplicationList } from "../../api";
 import useGetApplicationTemplate from "../../api/use-get-application-template";
 import useGetApplicationTemplateMetadata from "../../api/use-get-application-template-metadata";
 import { ApplicationManagementConstants } from "../../constants";
 import useApplicationSharingEligibility from "../../hooks/use-application-sharing-eligibility";
-import { MainApplicationInterface, URLFragmentTypes } from "../../models";
+import { ApplicationListItemInterface, MainApplicationInterface, URLFragmentTypes } from "../../models";
 import { ApplicationTemplateListInterface } from "../../models/application-templates";
 import { DynamicFieldInterface } from "../../models/dynamic-fields";
 import {
     ApplicationCreateWizardFormInitialValuesInterface,
     ApplicationCreateWizardFormValuesInterface
 } from "../../models/form";
-import buildCallBackUrlsWithRegExp from "../../utils/build-callback-urls-with-regexp";
 import { ApplicationShareModal } from "../modals/application-share-modal";
 import "./application-create-wizard.scss";
 
@@ -86,10 +87,24 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 ): ReactElement => {
     const { ["data-componentid"]: componentId, template, onClose, ...rest } = props;
 
-    const { data: templateData } = useGetApplicationTemplate(template?.id);
-    const { data: templateMetadata } = useGetApplicationTemplateMetadata(template?.id);
+    const {
+        data: templateData,
+        isLoading: isTemplateDataFetchRequestLoading,
+        error: templateDataFetchRequestError
+    } = useGetApplicationTemplate(template?.id);
+    const {
+        data: templateMetadata,
+        isLoading: isTemplateMetadataFetchRequestLoading,
+        error: templateMetadataFetchRequestError
+    } = useGetApplicationTemplateMetadata(template?.id);
     const isApplicationSharable: boolean = useApplicationSharingEligibility();
+    const { validate } = useDynamicFieldValidations();
     const [ alert, setAlert, notification ] = useWizardAlert();
+    const {
+        data: possibleListOfDuplicateApplications,
+        isLoading: isApplicationsFetchRequestLoading,
+        error: applicationsFetchRequestError
+    } = useApplicationList(null, null, null, "name sw " + templateData?.payload?.name, !!templateData?.payload?.name);
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -104,6 +119,129 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         state?.config?.ui?.isClientSecretHashEnabled);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    /**
+     * Handle errors that occur during the application list fetch request.
+     */
+    useEffect(() => {
+        if (!applicationsFetchRequestError) {
+            return;
+        }
+
+        if (applicationsFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: applicationsFetchRequestError?.response?.data?.description,
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications.fetchApplications.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("applications:notifications." +
+                "fetchApplications.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications." +
+                "fetchApplications.genericError.message")
+        }));
+    }, [ applicationsFetchRequestError ]);
+
+    /**
+     * Handle errors that occur during the application template data fetch request.
+     */
+    useEffect(() => {
+        if (!templateDataFetchRequestError) {
+            return;
+        }
+
+        if (templateDataFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: templateDataFetchRequestError?.response?.data?.description,
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications.fetchTemplate.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("applications:notifications.fetchTemplate" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications." +
+                "fetchTemplate.genericError.message")
+        }));
+    }, [ templateDataFetchRequestError ]);
+
+    /**
+     * Handle errors that occur during the application template meta data fetch request.
+     */
+    useEffect(() => {
+        if (!templateMetadataFetchRequestError) {
+            return;
+        }
+
+        if (templateMetadataFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: templateMetadataFetchRequestError?.response?.data?.description,
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications.fetchTemplateMetadata.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("applications:notifications.fetchTemplateMetadata" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications." +
+                "fetchTemplateMetadata.genericError.message")
+        }));
+    }, [ templateMetadataFetchRequestError ]);
+
+    /**
+     * Generate the next unique name by appending 1-based index number to the provided initial value.
+     *
+     * @param initialApplicationName - Initial value for the Application name.
+     * @returns A unique name from the provided list of names.
+     */
+    const generateUniqueApplicationName = (initialApplicationName: string): string => {
+
+        let appName: string = initialApplicationName;
+
+        if (possibleListOfDuplicateApplications?.totalResults > 0) {
+            const applicationNameList: string[] = possibleListOfDuplicateApplications?.applications?.map(
+                (item: ApplicationListItemInterface) => item?.name);
+
+            for (let i: number = 2; ; i++) {
+                if (!applicationNameList?.includes(appName)) {
+                    break;
+                }
+
+                appName = initialApplicationName + " " +  i;
+            }
+        }
+
+        return appName;
+    };
+
+    /**
+     * Prepare the initial values before assigning them to the form fields.
+     *
+     * @param initialValues - Initial values defined in template.
+     * @returns Moderated initial values.
+     */
+    const moderateInitialValues = (
+        initialValues: ApplicationCreateWizardFormInitialValuesInterface)
+    : ApplicationCreateWizardFormInitialValuesInterface => {
+        if (initialValues) {
+            initialValues.name = generateUniqueApplicationName(initialValues?.name);
+        }
+
+        return initialValues;
+    };
 
     /**
      * After the application is created, the user will be redirected to the
@@ -147,13 +285,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         const formValues: Record<string, any> = cloneDeep(values);
 
         const application: MainApplicationInterface = merge(templateData?.payload, formValues);
-
-        // Moderate Values to match API restrictions.
-        if (application.inboundProtocolConfiguration?.oidc?.callbackURLs) {
-            application.inboundProtocolConfiguration.oidc.callbackURLs = buildCallBackUrlsWithRegExp(
-                application.inboundProtocolConfiguration.oidc.callbackURLs
-            );
-        }
 
         createApplication(application)
             .then((response: AxiosResponse) => {
@@ -273,6 +404,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     return (
         <ModalWithSidePanel
+            open={ !openLimitReachedModal && !showApplicationShareModal }
             className="wizard application-create-wizard"
             dimmer="blurring"
             closeOnDimmerClick={ false }
@@ -288,64 +420,107 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     {
-                        alert && (
-                            <div id="notification-div" className="wizard-error">
-                                { notification }
-                            </div>
-                        )
-                    }
-                    <FinalForm
-                        initialValues={ templateData?.payload }
-                        onSubmit={ onSubmit }
-                        mutators={ {
-                            setFormAttribute: (
-                                [ fieldName, fieldVal ]: [ fieldName: string, fieldVal: any ],
-                                state: MutableState<
-                                    ApplicationCreateWizardFormValuesInterface,
-                                    ApplicationCreateWizardFormInitialValuesInterface
-                                >,
-                                { changeValue }: Tools<
-                                    ApplicationCreateWizardFormValuesInterface,
-                                    ApplicationCreateWizardFormInitialValuesInterface
-                                >
-                            ) => {
-                                changeValue(state, fieldName, () => fieldVal);
-                            }
-                        } }
-                        render={ ({ form, handleSubmit }: FormRenderProps) => {
-                            formSubmit = handleSubmit;
+                        isTemplateDataFetchRequestLoading
+                            || isTemplateMetadataFetchRequestLoading
+                            || (templateData?.payload?.name && isApplicationsFetchRequestLoading)
+                            ? <ContentLoader />
+                            : (
+                                <>
+                                    { alert && (
+                                        <Grid>
+                                            <Grid.Row columns={ 1 } id="notification-div">
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                                    { notification }
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    ) }
+                                    <FinalForm
+                                        initialValues={ moderateInitialValues(templateData?.payload) }
+                                        onSubmit={ onSubmit }
+                                        mutators={ {
+                                            setFormAttribute: (
+                                                [ fieldName, fieldVal ]: [ fieldName: string, fieldVal: any ],
+                                                state: MutableState<
+                                                    ApplicationCreateWizardFormValuesInterface,
+                                                    ApplicationCreateWizardFormInitialValuesInterface
+                                                >,
+                                                { changeValue }: Tools<
+                                                    ApplicationCreateWizardFormValuesInterface,
+                                                    ApplicationCreateWizardFormInitialValuesInterface
+                                                >
+                                            ) => {
+                                                changeValue(state, fieldName, () => fieldVal);
+                                            }
+                                        } }
+                                        validate={
+                                            (formValues: ApplicationCreateWizardFormValuesInterface) =>
+                                                validate(formValues, templateMetadata?.create?.form?.fields)
+                                        }
+                                        render={ ({ form, handleSubmit }: FormRenderProps) => {
+                                            formSubmit = handleSubmit;
 
-                            return (
-                                <form id={ `${templateData?.id}-form` } onSubmit={ handleSubmit }>
-                                    { templateMetadata?.create?.form?.fields.map((field: DynamicFieldInterface) => {
-                                        return (
-                                            <ApplicationFormDynamicField
-                                                key={ field?.id }
-                                                field={ field }
-                                                form={ form }
-                                            />
-                                        );
-                                    }) }
-                                </form>
-                            );
-                        } }
-                    />
-                    { templateMetadata?.create?.isApplicationSharable && isApplicationSharable && (
-                        <FormControl component="fieldset" variant="standard" margin="dense">
-                            <FormControlLabel
-                                control={ (
-                                    <Checkbox
-                                        color="primary"
-                                        checked={ isApplicationSharingEnabled }
-                                        onChange={ (e: ChangeEvent<HTMLInputElement>) => {
-                                            setIsApplicationSharingEnabled(e.target.checked);
+                                            return (
+                                                <form id={ `${templateData?.id}-form` } onSubmit={ handleSubmit }>
+                                                    <Grid>
+                                                        { templateMetadata?.create?.form?.fields.map(
+                                                            (field: DynamicFieldInterface) => {
+                                                                return (
+                                                                    <Grid.Row
+                                                                        key={ field?.id }
+                                                                        columns={ 1 }
+                                                                        className=
+                                                                            "application-create-wizard-dynamic-fields"
+                                                                    >
+                                                                        <Grid.Column
+                                                                            mobile={ 16 }
+                                                                            tablet={ 16 }
+                                                                            computer={ 14 }
+                                                                        >
+                                                                            <ApplicationFormDynamicField
+                                                                                field={ field }
+                                                                                form={ form }
+                                                                            />
+                                                                        </Grid.Column>
+                                                                    </Grid.Row>
+                                                                );
+                                                            })
+                                                        }
+                                                    </Grid>
+                                                </form>
+                                            );
                                         } }
                                     />
-                                ) }
-                                label={ t("applications:forms.generalDetails.fields.isSharingEnabled.label") }
-                            />
-                        </FormControl>
-                    ) }
+                                    { templateMetadata?.create?.isApplicationSharable && isApplicationSharable && (
+                                        <Grid>
+                                            <Grid.Row columns={ 1 } className="application-share-field">
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                                    <FormControl component="fieldset" variant="standard" margin="dense">
+                                                        <FormControlLabel
+                                                            control={ (
+                                                                <Checkbox
+                                                                    color="primary"
+                                                                    checked={ isApplicationSharingEnabled }
+                                                                    onChange={ (e: ChangeEvent<HTMLInputElement>) => {
+                                                                        setIsApplicationSharingEnabled(
+                                                                            e.target.checked
+                                                                        );
+                                                                    } }
+                                                                />
+                                                            ) }
+                                                            label={
+                                                                t("applications:forms.generalDetails.fields" +
+                                                                    ".isSharingEnabled.label")
+                                                            }
+                                                        />
+                                                    </FormControl>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    ) }
+                                </>
+                            )
+                    }
                 </ModalWithSidePanel.Content>
                 <ModalWithSidePanel.Actions>
                     <Grid>
@@ -379,7 +554,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         { Array.isArray(templateMetadata?.create?.guide) && (
                             <>
                                 <Markdown
-                                    source={ templateMetadata.create.guide[installGuideActivePage - 1].content }
+                                    source={ templateMetadata.create.guide[installGuideActivePage - 1] }
                                 />
                                 { templateMetadata.create.guide.length > 1 && (
                                     <div className="installation-guide-stepper">

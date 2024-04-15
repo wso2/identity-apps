@@ -19,7 +19,6 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CheckboxFieldAdapter, FinalFormField, FormApi, TextFieldAdapter } from "@wso2is/form";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
 import { DynamicFieldInterface, DynamicInputFieldTypes } from "../../models/dynamic-fields";
 
 /**
@@ -46,8 +45,6 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
 >> = (props: PropsWithChildren<ApplicationFormDynamicFieldPropsInterface>): ReactElement => {
     const { ["data-componentid"]: componentId, field, ...rest } = props;
 
-    const { validate } = useDynamicFieldValidations();
-
     const getDynamicFieldAdapter = (type: DynamicInputFieldTypes): ReactElement => {
         switch (type) {
             case DynamicInputFieldTypes.CHECKBOX:
@@ -58,14 +55,12 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                             margin: "dense"
                         } }
                         ariaLabel={ field.ariaLabel }
-                        required={ field.required }
                         data-componentid={ field["data-componentid"] }
                         name={ field.name }
                         type={ field.type }
                         label={ field.label }
                         placeholder={ field.placeholder }
                         component={ CheckboxFieldAdapter }
-                        validate={ (value: string) => validate(value, field?.validations) }
                     />
                 );
             case DynamicInputFieldTypes.TEXT:
@@ -76,7 +71,6 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                             margin: "dense"
                         } }
                         ariaLabel={ field.ariaLabel }
-                        required={ field.required }
                         data-componentid={ field["data-componentid"] }
                         name={ field.name }
                         type={ field.type }
@@ -85,7 +79,6 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         component={ TextFieldAdapter }
                         maxLength={ field.maxLength }
                         minLength={ field.minLength }
-                        validate={ (value: string) => validate(value, field?.validations) }
                     />
                 );
             default:
@@ -96,7 +89,6 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                             margin: "dense"
                         } }
                         ariaLabel={ field.ariaLabel }
-                        required={ field.required }
                         data-componentid={ field["data-componentid"] }
                         name={ field.name }
                         type={ field.type }
@@ -105,7 +97,6 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         component={ TextFieldAdapter }
                         maxLength={ field.maxLength }
                         minLength={ field.minLength }
-                        validate={ (value: string) => validate(value, field?.validations) }
                     />
                 );
         }

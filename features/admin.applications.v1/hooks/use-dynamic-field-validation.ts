@@ -19,6 +19,10 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
+import get from "lodash-es/get";
+import set from "lodash-es/set";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -26,7 +30,13 @@ import { AppState } from "../../admin.core.v1";
 import { getApplicationList } from "../api/application";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationListInterface } from "../models";
-import { ValidationRule, ValidationRuleTypes } from "../models/dynamic-fields";
+import {
+    ApplicationNameValidationCache,
+    DynamicFieldInterface,
+    ValidationRule,
+    ValidationRuleTypes
+} from "../models/dynamic-fields";
+import { ApplicationCreateWizardFormValuesInterface } from "../models/form";
 
 /**
  * Custom hook for dynamic field validations.
@@ -34,7 +44,10 @@ import { ValidationRule, ValidationRuleTypes } from "../models/dynamic-fields";
  * @returns A validation function for the field.
  */
 const useDynamicFieldValidations = (): {
-    validate: (value: any, validations: ValidationRule[]) => Promise<string | null> } => {
+    validate: (
+        formValues: ApplicationCreateWizardFormValuesInterface,
+        fields: DynamicFieldInterface[]
+    ) => Promise<{ [key in keyof ApplicationCreateWizardFormValuesInterface]: string }> } => {
     const { t, i18n } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
@@ -42,6 +55,11 @@ const useDynamicFieldValidations = (): {
     const reservedAppNamePattern: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
     });
+
+    const [
+        applicationNameValidationCache,
+        setApplicationNameValidationCache
+    ] = useState<ApplicationNameValidationCache>(null);
 
     /**
      * Search for applications and retrieve a list for the given app name.
@@ -117,13 +135,72 @@ const useDynamicFieldValidations = (): {
         for (const validation of validations) {
             const { type, errorMessage } = validation;
 
+            let validationResult: string = null;
+
             switch (type) {
                 case ValidationRuleTypes.DOMAIN_NAME:
-                    return handleErrorMessage(validateDomainName(value), errorMessage);
+                    validationResult = handleErrorMessage(validateDomainName(value), errorMessage);
+
+                    break;
                 case ValidationRuleTypes.APPLICATION_NAME:
-                    return handleErrorMessage(await validateApplicationName(value), errorMessage);
+                    validationResult = handleErrorMessage(await validateApplicationName(value), errorMessage);
+
+                    break;
+                case ValidationRuleTypes.REQUIRED:
+                    validationResult = handleErrorMessage(requiredField(value), errorMessage);
+
+                    break;
+            }
+
+            if (validationResult) {
+                return validationResult;
             }
         }
+
+        return null;
+    };
+
+    /**
+     * Validate all provided fields according to their respective validation rules.
+     *
+     * @param formValues - Current values of all form fields.
+     * @param fields - Metadata associated with each field.
+     * @returns An error object containing error messages for each provided field.
+     */
+    const validateAllFields = async (
+        formValues: ApplicationCreateWizardFormValuesInterface,
+        fields: DynamicFieldInterface[]
+    ): Promise<{ [key in keyof ApplicationCreateWizardFormValuesInterface]: string }> => {
+        const errorObject: { [key in keyof ApplicationCreateWizardFormValuesInterface]: string } = {};
+
+        for (const field of fields) {
+            let validations: ValidationRule[] = [ ...field?.validations ];
+
+            if (field?.required) {
+                validations = [ { type: ValidationRuleTypes.REQUIRED }, ...field?.validations ];
+            }
+
+            const value: any = get(formValues, field?.name);
+            const error: string = await validateField(value, validations);
+
+            set(errorObject, field?.name, error);
+        }
+
+        return errorObject;
+    };
+
+    /**
+     * Check if the field is filled with a value.
+     *
+     * value - The value needs validation.
+     * @returns Whether the provided value is a non empty value.
+     */
+    const requiredField = (value: any): string | null => {
+        if (!value) {
+            return "applications:forms.dynamicApplicationCreateWizard.common.validations.required";
+        }
+
+        return null;
     };
 
     /**
@@ -134,46 +211,65 @@ const useDynamicFieldValidations = (): {
      */
     const validateDomainName = (value: string): string | null => {
         // Regular expression to validate domain name.
-        const domainRegex: RegExp = /^((?!-)[A-Za-z0-9-]{1, 63}(?<!-)\\.)+[A-Za-z]{2, 6}$/;
+        const domainRegex: RegExp =
+            /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(?:\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*\.(?:[A-Za-z]{2,6})$/;
 
         // Test if the provided value matches the domain name regex.
         if (!domainRegex.test(value)) {
-            return "applications:dynamicFieldValidation.invalidDomainName";
+            return "applications:forms.dynamicApplicationCreateWizard.domainName.validations.invalid";
         }
 
         return null;
     };
 
     /**
+     * Checks whether the application name is reserved.
+     *
+     * @param name - Name of the application.
+     */
+    const isAppNameReserved = (name: string) => {
+        if(!reservedAppNamePattern) {
+            return false;
+        }
+        const reservedAppRegex: RegExp = new RegExp(reservedAppNamePattern);
+
+        return name && reservedAppRegex.test(name);
+    };
+
+    /**
+     * Checks whether the application name is valid.
+     *
+     * @param name - Name of the application.
+     */
+    const isNameValid = (name: string) => {
+        return name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
+    };
+
+    /**
+     * Check if there is any application with the given name.
+     *
+     * @param name - Name of the application.
+     */
+    const isApplicationNameAlreadyExist: DebouncedFunc<(name: string) => Promise<void>> = debounce(
+        async (name: string) => {
+            if (applicationNameValidationCache?.value !== name) {
+                const response: ApplicationListInterface = await getApplications(name);
+
+                setApplicationNameValidationCache({
+                    state: response?.totalResults > 0,
+                    value: name
+                });
+            }
+        },
+        500
+    );
+
+    /**
      * Checks whether the application name is valid.
      *
      * @param name - Application name.
      */
-    const validateApplicationName = async (name: string): Promise<string> => {
-
-        /**
-         * Checks whether the application name is reserved.
-         *
-         * @param name - Name of the application.
-         */
-        const isAppNameReserved = (name: string) => {
-            if(!reservedAppNamePattern) {
-                return false;
-            }
-            const reservedAppRegex: RegExp = new RegExp(reservedAppNamePattern);
-
-            return name && reservedAppRegex.test(name);
-        };
-
-        /**
-         * Checks whether the application name is valid.
-         *
-         * @param name - Name of the application.
-         */
-        const isNameValid = (name: string) => {
-            return name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
-        };
-
+    const validateApplicationName = async (name: string): Promise<string | null> => {
         const appName: string = name.toString().trim();
 
         if (!isNameValid(appName)) {
@@ -190,9 +286,9 @@ const useDynamicFieldValidations = (): {
             });
         }
 
-        const response: ApplicationListInterface = await getApplications(appName);
+        await isApplicationNameAlreadyExist(appName);
 
-        if (response?.applications?.length > 0) {
+        if (applicationNameValidationCache?.state) {
             return t("applications:forms.generalDetails.fields.name.validations.duplicate");
         }
 
@@ -200,8 +296,11 @@ const useDynamicFieldValidations = (): {
     };
 
     return {
-        validate:
-            (value: any, validations: ValidationRule[]): Promise<string | null> => validateField(value, validations)
+        validate: (
+            formValues: ApplicationCreateWizardFormValuesInterface,
+            fields: DynamicFieldInterface[]
+        ): Promise<{ [key in keyof ApplicationCreateWizardFormValuesInterface]: string }> =>
+            validateAllFields(formValues, fields)
     };
 };
 

@@ -17,8 +17,14 @@
  */
 
 .application-create-wizard {
-    .wizard-error {
-        width: 100%;
+    .application-create-wizard-dynamic-fields {
+        &:not(:first-child) {
+            padding-top: 0;
+        }
+    }
+
+    .application-share-field {
+        padding-top: 0;
     }
 
     .installation-guide-content {

@@ -97,22 +97,9 @@ export interface ApplicationTemplateMetadataInterface {
          */
         isApplicationSharable: boolean;
         /**
-         * Documentation link.
-         */
-        docLink?: string;
-        /**
          * Application creation guide metadata.
          */
-        guide: {
-            /**
-             * Application creation guide content.
-             */
-            content: string;
-            /**
-             * Application creation guide content type.
-             */
-            contentType: "md" | "html" | string;
-        }[];
+        guide: string[];
     }
 }
 

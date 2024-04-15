@@ -2107,6 +2107,18 @@ export const applications: ApplicationsNS = {
                 },
                 urlDeepLinkError: "The entered URL is not a deep link."
             }
+        },
+        dynamicApplicationCreateWizard: {
+            common: {
+                validations: {
+                    required: "This is a required field."
+                }
+            },
+            domainName: {
+                validations: {
+                    invalid: "Invalid domain name. Please enter a valid domain name."
+                }
+            }
         }
     },
     helpPanel: {
@@ -2561,6 +2573,16 @@ export const applications: ApplicationsNS = {
             success: {
                 description: "Successfully retrieved the IDP configurations for the SAML application.",
                 message: "Retrieval successful"
+            }
+        },
+        fetchTemplateMetadata: {
+            error: {
+                description: "{{description}}",
+                message: "Retrieval error"
+            },
+            genericError: {
+                description: "An error occurred while retrieving application template meta data.",
+                message: "Something went wrong"
             }
         },
         fetchTemplate: {

@@ -1804,6 +1804,18 @@ export interface ApplicationsNS {
                 urlDeepLinkError: string;
             };
         };
+        dynamicApplicationCreateWizard: {
+            common: {
+                validations: {
+                    required: string;
+                }
+            },
+            domainName: {
+                validations: {
+                    invalid: string;
+                }
+            }
+        }
     };
     helpPanel: {
         tabs: {
@@ -2213,6 +2225,16 @@ export interface ApplicationsNS {
                 description: string;
             };
             success: {
+                message: string;
+                description: string;
+            };
+        };
+        fetchTemplateMetadata: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
                 message: string;
                 description: string;
             };

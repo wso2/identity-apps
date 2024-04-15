@@ -29,7 +29,7 @@ import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hook
  * @returns A boolean value indicating eligibility.
  */
 const useApplicationSharingEligibility = (): boolean => {
-    const { isFirstLevelOrganization, isSubOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const applicationFeatureAccessConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
@@ -40,8 +40,7 @@ const useApplicationSharingEligibility = (): boolean => {
 
     return (isOrganizationManagementEnabled
         && organizationEnabled
-        && applicationConfig.editApplication.showApplicationShare
-        && isFirstLevelOrganization()
+        && applicationConfig?.editApplication?.showApplicationShare
         && hasRequiredScopes(
             applicationFeatureAccessConfig, applicationFeatureAccessConfig?.scopes?.update, allowedScopes
         )
