@@ -1128,6 +1128,7 @@
             "applicationRequestPathAuthentication": false,
             "applicationSystemAppsSettings": false,
             "certificates": false,
+            "backupCodesForSubOrganizations": true,
             "loginAndRegistrationEmailDomainDiscovery": true,
             "organizations": true,
             "rolesV1": false,
