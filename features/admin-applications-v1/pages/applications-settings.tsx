@@ -16,7 +16,7 @@
  * under the License.
  */
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DocumentationLink, EmphasizedSegment, PageLayout, useDocumentation } from "@wso2is/react-components";
+import { CopyInputField, DocumentationLink, EmphasizedSegment, PageLayout, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Field, Form, FinalForm } from "@wso2is/form";
@@ -303,11 +303,10 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
             data-componentid={ `${ componentId }-page-layout` }
         >
             <EmphasizedSegment padded="very">
+            
                 <Form
                     id={ FORM_ID }
-                    // ref={ "ref" }
                     uncontrolledForm={ false }
-                    
                     onSubmit={ (values: ApplicationsSettingsFormValuesInterface) => {
                         updateConfigurations(values);
                     } }
@@ -337,7 +336,11 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                         width={ 16 }
                         listen={ null }
                         data-componentid={ `${componentId}-dcr-endpoint-url` }
-                    />
+                    >
+                        <CopyInputField
+                            value={ dcrEndpointState }
+                        />
+                    </Field.Input>
                     <Field.Checkbox
                         ariaLabel="Require Authentication"
                         name="authenticationRequired"
