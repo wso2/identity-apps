@@ -572,7 +572,6 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                             listen={ (value: boolean) => setInitialFormValues(
                                                                 { ...currentValues, isAlphanumericOnly: value }
                                                             ) }
-                                                            readOnly={ true }
                                                             width={ 16 }
                                                             defaultValue={ initialFormValues }
                                                             data-componentid={ `${componentId}-is-alphanumeric-only` }
