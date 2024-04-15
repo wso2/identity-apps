@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
@@ -35,7 +35,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Header, Icon, Image, List, Placeholder } from "semantic-ui-react";
-import { attributeConfig } from "../../admin.extensions.v1";
 import { getDialects } from "../../admin.claims.v1/api";
 import {
     AppConstants,
@@ -45,6 +44,7 @@ import {
     getTechnologyLogos,
     history
 } from "../../admin.core.v1";
+import { attributeConfig } from "../../admin.extensions.v1";
 import { AddDialect } from "../components";
 import { ClaimManagementConstants } from "../constants";
 
@@ -459,7 +459,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             >
                                 {
                                     attributeConfig.addAttributeMapping && (
-                                        <Show when={ AccessControlConstants.ATTRIBUTE_WRITE }>
+                                        <Show
+                                            when={ featureConfig?.attributeDialects?.scopes?.create }
+                                        >
                                             <PrimaryButton
                                                 disabled={ isLoading }
                                                 loading={ isLoading }

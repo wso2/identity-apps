@@ -25,13 +25,14 @@ import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import InvitedAdministratorsTable from "./invited-administrators-table";
-import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations
 } from "../../../../admin.core.v1";
@@ -96,6 +97,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -250,7 +252,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                     />) : null
             }
             topActionPanelExtension={ (
-                <Show when={ AccessControlConstants.USER_WRITE }>
+                <Show when={ featureConfig?.users?.scopes?.create }>
                     <PrimaryButton
                         data-componentid={ `${ componentId }-add-button` }
                         onClick={ () => setShowInviteNewAdministratorModal(true) }

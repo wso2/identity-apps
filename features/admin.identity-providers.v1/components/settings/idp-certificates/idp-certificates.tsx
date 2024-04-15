@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,7 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -42,8 +42,8 @@ import { Icon, Segment } from "semantic-ui-react";
 import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
+import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { commonConfig } from "../../../../admin.extensions.v1/configs";
-import { AppState, ConfigReducerStateInterface } from "../../../../admin.core.v1";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderConstants } from "../../../constants";
 import { CertificatePatchRequestInterface, IdentityProviderInterface } from "../../../models";
@@ -145,6 +145,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     } = props;
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ selectedConfigurationMode, setSelectedConfigurationMode ] = useState<CertificateConfigurationMode>();
     const [ addCertificateModalOpen, setAddCertificateModalOpen ] = useState<boolean>(false);
@@ -296,7 +297,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 name="jwks_endpoint"
             />
 
-            <Show when={ AccessControlConstants.IDP_EDIT }>
+            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                 <Field.Button
                     form={ FORM_ID }
                     data-testid={ `${ testId }-save-button` }
@@ -331,7 +332,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     <Segment>
                         <Grid direction="column" container spacing={ 2 }>
                             <Grid xs={ 12 }>
-                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                     <PrimaryButton
                                         floated="right"
                                         onClick={ openAddCertificatesWizard }

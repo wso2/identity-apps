@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -45,10 +45,10 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
 import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
+import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { UserBasicInterface } from "../../../admin.users.v1/models/user";
 import { updateGroupDetails } from "../../api";
 import { CreateGroupMemberInterface, GroupsInterface, PatchGroupDataInterface } from "../../models";
@@ -80,6 +80,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     const dispatch: ReduxDispatch = useDispatch();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ originalUserList, setOriginalUserList ] = useState<UserBasicInterface[]>(users);
     const [ selectedUserList, setSelectedUserList ] = useState<UserBasicInterface[]>(selectedUsers);
@@ -381,7 +383,9 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     </Header>
                 </Table.Cell>
                 <Table.Cell textAlign="right">
-                    <Show when={ AccessControlConstants.GROUP_EDIT }>
+                    <Show
+                        when={ featureConfig?.groups?.scopes?.update }
+                    >
                         <Popup
                             trigger={ (
                                 <Icon

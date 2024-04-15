@@ -18,7 +18,7 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -34,7 +34,6 @@ import {
     SwitcherOptionProps
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { IdentityProviderManagementConstants } from "../../../../../admin.identity-providers.v1/constants";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,8 +42,9 @@ import { Icon, Segment } from "semantic-ui-react";
 import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
+import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../../admin.core.v1";
 import { commonConfig } from "../../../../../admin.extensions.v1/configs";
-import { AppState, ConfigReducerStateInterface } from "../../../../../admin.core.v1";
+import { IdentityProviderManagementConstants } from "../../../../../admin.identity-providers.v1/constants";
 import { updateIDPCertificate } from "../../../../api/connections";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";
@@ -146,6 +146,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     } = props;
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ selectedConfigurationMode, setSelectedConfigurationMode ] = useState<CertificateConfigurationMode>();
     const [ addCertificateModalOpen, setAddCertificateModalOpen ] = useState<boolean>(false);
@@ -298,7 +299,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 disabled={ isReadOnly }
             />
 
-            <Show when={ AccessControlConstants.IDP_EDIT }>
+            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                 <Field.Button
                     form={ FORM_ID }
                     data-testid={ `${ testId }-save-button` }
@@ -333,7 +334,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     <Segment>
                         <Grid direction="column" container spacing={ 2 }>
                             <Grid xs={ 12 }>
-                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                     <PrimaryButton
                                         floated="right"
                                         onClick={ openAddCertificatesWizard }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
+
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,12 +24,14 @@ import { EmphasizedSegment, Message } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributeSelection, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
 import { getAllLocalClaims } from "../../../../admin.claims.v1/api";
+import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
+import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import {
     ConnectionClaimInterface,
     ConnectionClaimMappingInterface,
@@ -149,6 +151,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const { t } = useTranslation();
 
     const { UIConfig } = useUIConfig();
+
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     // Manage available local claims.
     const [ availableLocalClaims, setAvailableLocalClaims ] = useState<ConnectionClaimInterface[]>([]);
@@ -459,7 +463,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     <Divider hidden/>
                     <Grid.Row>
                         <Grid.Column>
-                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                 <Button
                                     primary
                                     size="small"

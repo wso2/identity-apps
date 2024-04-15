@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,11 +37,11 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } fro
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import {
     AppConstants,
     AppState,
     EventPublisher,
+    FeatureConfigInterface,
     UIConstants,
     history
 } from "../../admin.core.v1";
@@ -119,9 +119,10 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+    const organizationDiscoveryFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.organizationDiscovery;
     });
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -201,14 +202,14 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean =>
                     !isFeatureEnabled(
-                        featureConfig,
+                        organizationDiscoveryFeatureConfig,
                         OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get( "ORGANIZATION_DISCOVERY_UPDATE")
                     ),
                 icon: (): SemanticICONS => {
 
                     return !hasRequiredScopes(
-                        featureConfig,
-                        featureConfig?.scopes?.update,
+                        organizationDiscoveryFeatureConfig,
+                        organizationDiscoveryFeatureConfig?.scopes?.update,
                         allowedScopes
                     )
                         ? "eye"
@@ -219,8 +220,8 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                 popupText: (): string => {
 
                     return !hasRequiredScopes(
-                        featureConfig,
-                        featureConfig?.scopes?.update,
+                        organizationDiscoveryFeatureConfig,
+                        organizationDiscoveryFeatureConfig?.scopes?.update,
                         allowedScopes
                     )
                         ? t("common:view")
@@ -268,7 +269,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
                         onEmptyListPlaceholderActionClick && (
-                            <Show when={ AccessControlConstants.ORGANIZATION_DISCOVERY_WRITE }>
+                            <Show when={ featureConfig?.organizationDiscovery?.scopes?.create }>
                                 <PrimaryButton
                                     onClick={ () => {
                                         eventPublisher.publish(componentId + "-click-assign-email-domain-button");

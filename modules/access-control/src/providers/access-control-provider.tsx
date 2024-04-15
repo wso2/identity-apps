@@ -17,10 +17,8 @@
  */
 
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useReducer } from "react";
-import { AccessProvider } from "react-access-control";
-import AccessControlContext  from "./access-control-context-provider";
-import { FeatureGateContext } from "../context";
-import { PermissionsInterface } from "../models";
+import AccessControlContextProvider  from "./access-control-context-provider";
+import FeatureGateContext from "../context/feature-gate-context";
 import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from "../models/feature-gate";
 
 /**
@@ -29,7 +27,8 @@ import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from 
 export interface AccessControlProviderInterface {
     allowedScopes: string;
     features: FeatureGateInterface;
-    permissions: PermissionsInterface
+    isLegacyRuntimeEnabled: boolean;
+    organizationType: string;
 }
 
 export const featureGateReducer = (
@@ -59,7 +58,8 @@ const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlPr
         allowedScopes,
         children,
         features,
-        permissions
+        isLegacyRuntimeEnabled,
+        organizationType
     } = props;
 
     const [ , dispatch ] = useReducer(featureGateReducer, features);
@@ -69,16 +69,15 @@ const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlPr
     }, [ features ]);
 
     return (
-        <AccessProvider>
-            <FeatureGateContext.Provider value={ { dispatch, features } }>
-                <AccessControlContext
-                    allowedScopes={ allowedScopes }
-                    permissions={ permissions }
-                >
-                    { children }
-                </AccessControlContext>
-            </FeatureGateContext.Provider>
-        </AccessProvider>
+        <FeatureGateContext.Provider value={ { dispatch, features } }>
+            <AccessControlContextProvider
+                allowedScopes={ allowedScopes }
+                isLegacyRuntimeEnabled={ isLegacyRuntimeEnabled }
+                organizationType={ organizationType }
+            >
+                { children }
+            </AccessControlContextProvider>
+        </FeatureGateContext.Provider>
     );
 };
 

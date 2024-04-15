@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,5 +16,13 @@
  * under the License.
  */
 
-export * from "./access-control";
-export * from "./feature-gate";
+import { Context, createContext } from "react";
+import { AccessControlContextPropsInterface } from "../models/access-control";
+
+/**
+ * Context object for access control module.
+ */
+const AccessControlContext: Context<AccessControlContextPropsInterface>  =
+    createContext<AccessControlContextPropsInterface>(undefined);
+
+export default AccessControlContext;

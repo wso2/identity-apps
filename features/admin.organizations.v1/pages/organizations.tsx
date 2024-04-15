@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -483,7 +483,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     !isOrganizationListRequestLoading && !isAuthorizedOrganizationListRequestLoading &&
                     !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
                     (
-                        <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                        <Show when={ featureConfig?.organizations?.scopes?.create }>
                             <PrimaryButton
                                 disabled={ isOrganizationListRequestLoading }
                                 loading={ isOrganizationListRequestLoading }

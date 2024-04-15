@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Icon, Placeholder } from "semantic-ui-react";
+import { AppConstants, AppState, FeatureConfigInterface, getMiscellaneousIcons, history } from "../../../admin.core.v1";
 import { organizationConfigs } from "../../../admin.extensions.v1";
-import { AppConstants, getMiscellaneousIcons, history } from "../../../admin.core.v1";
 import { GenericOrganization } from "../../models";
 import { OrganizationUtils } from "../../utils";
 
@@ -55,6 +56,7 @@ const OrganizationListItem = (
     } = props;
 
     const { t } = useTranslation();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     return (
         <Grid.Row
@@ -121,7 +123,7 @@ const OrganizationListItem = (
                 </Grid.Column>
             ) }
             { !OrganizationUtils.isSuperOrganization(organization) && showEdit && (
-                <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
+                <Show when={ featureConfig?.organizations?.scopes?.update }>
                     <Grid.Column
                         width={ 2 }
                         verticalAlign="middle"
