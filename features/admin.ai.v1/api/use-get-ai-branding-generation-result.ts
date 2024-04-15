@@ -35,7 +35,7 @@ export const useGetAIBrandingGenerationResult = (
 
     const { organizationType } = useGetCurrentOrganizationType();
 
-    const [ isLoading, setIsLoading ] = useState(true);
+    const [ isLoading ] = useState(true);
 
     const requestConfig: RequestConfigInterface = {
         headers: {

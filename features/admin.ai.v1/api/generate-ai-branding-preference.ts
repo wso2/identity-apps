@@ -40,6 +40,7 @@ const generateBrandingPreference = (
 
     const requestConfig: AxiosRequestConfig = {
         data: {
+            tenant_domain: tenantDomain,
             website_url: website_url
         },
         headers: {

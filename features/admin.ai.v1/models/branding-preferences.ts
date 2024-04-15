@@ -16,6 +16,7 @@
  * under the License.
  */
 import { BrandingPreferenceInterface } from "features/admin.branding.v1/models/branding-preferences";
+
 export interface GenerateBrandingAPIInterface {
     /**
      * Website URL of the page to generate the branding preference from.

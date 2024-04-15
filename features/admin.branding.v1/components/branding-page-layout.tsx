@@ -45,7 +45,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     }, [ featureConfig ]);
     const {
         isGeneratingBranding,
-        mergedBrandingPreference,
+        mergedBrandingPreference
     } = useAIBrandingPreference();
 
     return (
@@ -73,7 +73,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             className="branding-page"
         >
             {
-                !disabledFeatures.includes("branding.ai1") && (
+                !disabledFeatures.includes("branding.ai") && (
                     <BrandingAIBanner/>
                 )
             }
