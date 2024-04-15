@@ -40,15 +40,13 @@ const generateBrandingPreference = (
 
     const requestConfig: AxiosRequestConfig = {
         data: {
-            // tenant_domain: tenantDomain,
             website_url: website_url
         },
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        // url: `${store.getState().config.endpoints.brandingPreference}/generate`
-        url: "http://localhost:8080/t/cryd1/api/server/v1/branding-preference/generate"
+        url: `${store.getState().config.endpoints.brandingPreference}/generate`
     };
 
     return httpClient(requestConfig)

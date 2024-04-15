@@ -45,21 +45,14 @@ const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => 
                 (data: GenerateBrandingAPIResponseInterface) => {
                     setOperationId(data.operation_id);
                     setGeneratingBranding(true);
-                    // dispatch(
-                    //     addAlert<AlertInterface>({
-                    //         description: t("branding:brandingCustomText.notifications.updateSuccess.description"),
-                    //         level: AlertLevels.SUCCESS,
-                    //         message: t("branding:brandingCustomText.notifications.updateSuccess.message")
-                    //     })
-                    // );
                 }
             )
             .catch(() => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("branding:brandingCustomText.notifications.updateError.description"),
+                        description: t("branding:ai.notifications.generateError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("branding:brandingCustomText.notifications.updateError.message")
+                        message: t("branding:ai.notifications.generateError.message")
                     }));
             });
     };

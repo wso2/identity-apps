@@ -35,7 +35,7 @@
     "idpConfigs": {
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",
         "oidcSessionIFrameEndpointURL": "${serverOrigin}/oidc/checksession",
-        "baseUrls": ["http://localhost:8080/t/cryd1/api/server/v1/branding-preference/generate", "http://localhost:8080/t/cryd1/api/server/v1/branding-preference/status", "http://localhost:8080/t/cryd1/api/server/v1/branding-preference/result"],
+        "baseUrls": [],
         "clockTolerance": 300,
         "storage": "webWorker",
         "periodicTokenRefresh": false,
@@ -147,10 +147,10 @@
         ]
     },
     "session": {
-        "sessionRefreshTimeOut": 30000.0,
-        "userIdleWarningTimeOut": 58000.0,
+        "sessionRefreshTimeOut": 300.0,
+        "userIdleWarningTimeOut": 580.0,
         "checkSessionInterval": 3.0,
-        "userIdleTimeOut": 60000.0
+        "userIdleTimeOut": 600.0
     },
     "getProfileInfoFromIDToken": false,
     "superTenantProxy": "",

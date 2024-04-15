@@ -43,11 +43,10 @@ export const useGetAIBrandingGenerationResult = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        // url: organizationType === OrganizationType.SUBORGANIZATION
-        //     ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
-        //     : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
+        url: organizationType === OrganizationType.SUBORGANIZATION
+            ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
+            : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
 
-        url: `http://localhost:8080/t/cryd1/api/server/v1/branding-preference/result/${operationId}`
     };
 
     const { data, error, isValidating, mutate } =
@@ -58,7 +57,6 @@ export const useGetAIBrandingGenerationResult = (
 
     useEffect(() => {
         if (brandingGenerationCompleted) {
-            // If brandingGenerationCompleted is true, re-fetch the data
             mutate();
         }
     }, [ brandingGenerationCompleted ]);

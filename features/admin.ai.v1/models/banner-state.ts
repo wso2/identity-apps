@@ -21,5 +21,4 @@ export enum BannerState {
     Full = "banner-full",
     Input = "banner-input",
     Collapsed = "banner-collapsed",
-    Null= "null",
 }

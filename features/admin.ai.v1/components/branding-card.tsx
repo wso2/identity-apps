@@ -28,17 +28,10 @@ import useGenerateAIBrandingPreference,
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Header, Icon, Input, Segment } from "semantic-ui-react";
-
 import { ReactComponent as AIIcon }
     from "../../../modules/theme/src/themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
+import { BannerState } from "../models";
 import "./branding-card.scss";
-
-enum BannerState {
-    Full = "banner-full",
-    Input = "banner-input",
-    Collapsed = "banner-collapsed",
-}
-
 
 export const BrandingAIBanner = (
 ): ReactElement => {

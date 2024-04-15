@@ -17,6 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
+import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 import { useEffect, useState } from "react";
 import useRequest, {
     RequestConfigInterface,
@@ -27,7 +28,6 @@ import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding-preferences";
-import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 
 export const useGetAIBrandingGenerationStatus = (
     operationId: string
@@ -45,11 +45,9 @@ export const useGetAIBrandingGenerationStatus = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        // url: organizationType === OrganizationType.SUBORGANIZATION
-        //     ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
-        //     : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
-
-        url: `http://localhost:8080/t/cryd1/api/server/v1/branding-preference/status/${operationId}`
+        url: organizationType === OrganizationType.SUBORGANIZATION
+            ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
+            : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
     };
 
     const { data, error, isValidating, mutate } =

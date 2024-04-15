@@ -29,7 +29,6 @@ import React,
     ReactElement,
     useEffect,
     useState } from "react";
-import { useTranslation } from "react-i18next";
 import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
 import AIFeatureContext from "../context/ai-branding-feature-context";
 
@@ -46,7 +45,6 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
     const [ operationId, setOperationId ] = useState<string>("null");
     const [ brandingGenerationCompleted, setBrandingGenerationCompleted ] = useState(false);
-    const { t } = useTranslation();
 
     function removeEmptyKeys(obj: Record<string, any>): Record<string, any> {
         return transform(obj, (result: Record<string, any>, value: any, key: string) => {
@@ -85,16 +83,12 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
         const { theme } = removeEmptyKeys(data);
         const { activeTheme, LIGHT } = theme;
 
-        console.log("########## existing branding preference ##########\n", preference);
-        console.log("########## AI generated ##########\n", data);
         const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(preference.preference), {
             theme: {
                 ...preference.preference.theme,
                 LIGHT: LIGHT
             }
         });
-
-        console.log("########## merged preference ##########\n", mergedBrandingPreference);
 
         return mergedBrandingPreference;
     };

@@ -291,12 +291,6 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     useEffect(() => {
 
         if (overridenBrandingPreference) {
-
-            console.log("Overriden branding preference detected. Overriding the default preference.");
-
-            console.log("Original preference: ", brandingPreference);
-            console.log("Overriden preference: ", overridenBrandingPreference);
-
             setBrandingPreference(overridenBrandingPreference);
         }
     }, [ overridenBrandingPreference ]);
