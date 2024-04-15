@@ -527,7 +527,7 @@ importers:
         specifier: ^2.0.43
         version: link:../../modules/dynamic-forms
       '@wso2is/features':
-        specifier: ^2.14.19
+        specifier: ^2.14.20
         version: link:../../features
       '@wso2is/form':
         specifier: ^2.0.44
@@ -536,7 +536,7 @@ importers:
         specifier: ^2.0.29
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.1.8
+        specifier: ^2.1.9
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.1.14
@@ -864,13 +864,13 @@ importers:
         specifier: ^2.0.39
         version: link:../../modules/core
       '@wso2is/features':
-        specifier: ^2.14.19
+        specifier: ^2.14.20
         version: link:../../features
       '@wso2is/forms':
         specifier: ^2.0.29
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.1.8
+        specifier: ^2.1.9
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.1.14
@@ -1141,7 +1141,7 @@ importers:
         specifier: ^2.0.29
         version: link:../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.1.8
+        specifier: ^2.1.9
         version: link:../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.1.14
