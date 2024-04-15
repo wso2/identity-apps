@@ -18,13 +18,17 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.governance.IdentityGovernanceService" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Optional" %>
 <%@ page import="org.wso2.carbon.identity.local.auth.smsotp.authenticator.util.AuthenticatorUtils" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -38,6 +42,9 @@
 
 <%!
     private static final String LOCAL_SMS_OTP_AUTHENTICATOR_ID = "sms-otp-authenticator";
+    private static final String RECOVERY_CONNECTOR = "account-recovery";
+    private static final String ACCOUNT_MANAGEMENT_GOVERNANCE_DOMAIN = "Account Management";
+    private static final String PROP_ACCOUNT_RECOVERY_SMS_OTP_REGEX = "Recovery.Notification.Password.smsOtp.Regex";
 %>
 
 <%
@@ -48,7 +55,14 @@
 
     int otpLength = 6;
     try {
-        otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
+        Optional<String> optionalOtpRegex = new PreferenceRetrievalClient().getPropertyValue(
+            "carbon.super", 
+            ACCOUNT_MANAGEMENT_GOVERNANCE_DOMAIN, 
+            RECOVERY_CONNECTOR, 
+            PROP_ACCOUNT_RECOVERY_SMS_OTP_REGEX);
+        otpLength = optionalOtpRegex.map(otpRegex ->
+                    Integer.parseInt(otpRegex.replaceAll(".*[{]", "").replaceAll("}", ""))
+            ).orElse(otpLength);
     } catch (Exception e) {
         // Exception is caught and ignored. otpLength will be kept as 6.
     }
@@ -183,7 +197,7 @@
                                         <% } %>
                                     </div>
                                 <% } else { %>
-                                    <div class="ui fluid icon input addon-wrapper">
+                                    <div class="ui fluid icon input addon-wrapper mt-3">
                                         <input type="text" id='OTPCode' name="OTPcode" size='30'/>
                                         <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                                     </div>
