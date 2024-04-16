@@ -105,7 +105,7 @@ export const LoadingScreen = (): JSX.Element => {
                     <Box className="loading-screen-facts">
                         <Box className="loading-screen-facts-content">
                             <Typography variant="h5" className="loading-screen-facts-text">
-                                Did you know?
+                                { t("branding:ai.screens.loading.didYouKnow") }
                             </Typography>
                             <Typography
                                 variant="body1"

@@ -112,7 +112,7 @@ export const BrandingAIBanner = (
                                             <Trans
                                                 i18nKey={ "extensions:common.learnMore" }
                                             >
-                                            Learn More
+                                                { t("extensions:common.learnMore") }
                                             </Trans>
                                         </DocumentationLink>
                                     </p>

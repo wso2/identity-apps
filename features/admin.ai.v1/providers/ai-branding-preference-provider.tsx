@@ -81,12 +81,14 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     const getMergedBrandingPreference = (data: any): BrandingPreferenceInterface => {
 
         const { theme } = removeEmptyKeys(data);
-        const { LIGHT } = theme;
+        const { activeTheme ,LIGHT, DARK } = theme;
 
         const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(preference.preference), {
             theme: {
                 ...preference.preference.theme,
-                LIGHT: LIGHT
+                DARK: DARK,
+                LIGHT: LIGHT,
+                activeTheme: activeTheme
             }
         });
 

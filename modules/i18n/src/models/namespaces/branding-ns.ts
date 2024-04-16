@@ -178,6 +178,7 @@ export interface BrandingNS {
         screens: {
             loading: {
                 heading: string;
+                didYouKnow: string;
                 facts: {
                     0: string;
                     1: string;

@@ -178,6 +178,7 @@ export const branding: BrandingNS = {
         screens: {
             loading: {
                 heading: "Generating your branding",
+                didYouKnow: "Did you know?",
                 facts: {
                     0: "Asgardeo's advanced theming capabilities let you customize your site title, copyright info, and support email on login pages to match your brand identity",
                     1: "You can enhance your login portal by updating links to your privacy policy, terms of service, and cookie policy for visible compliance with Asgardeo.",
