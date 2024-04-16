@@ -173,6 +173,13 @@ export const extensions: Extensions = {
                             idpUrl: "IdP URL"
                         }
                     }
+                },
+                m2m: {
+                    customConfig: {
+                        tokenEndpoint: "Token Endpoint",
+                        tokenRequest: "Token Request",
+                        configurations: "Configurations"
+                    }
                 }
             }
         },
@@ -1316,6 +1323,20 @@ export const extensions: Extensions = {
                             "Note the <1>skipURIs</1> property. This property defines the web pages in your " +
                             "application that should not be secured, and do not require authentication. Multiple " +
                             "URIs can be set using <3>comma separated</3> values."
+                    }
+                },
+                m2m: {
+                    configurations: {
+                        clientId: {
+                            hint: "The Client ID generated when registering the application in {{ productName }}."
+                        },
+                        clientSecret: {
+                            hint: "The Client Secret generated when registering the application in {{ productName }}."
+                        },
+                        tokenRequest: "The API request used by the application to obtain an access token from {{ productName }}.",
+                        tokenEndpoint: "The token endpoint of {{ productName }}.",
+                        scopes: "The list of authorized scopes." +
+                                "Include required scopes by authorizing APIs through the <1>API Authorization</1> tab"
                     }
                 }
             }
