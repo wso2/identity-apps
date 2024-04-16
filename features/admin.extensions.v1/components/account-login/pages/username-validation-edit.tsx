@@ -569,7 +569,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                             hint={ !currentValues.isAlphanumericOnly ?
                                                                 t("extensions:manage.accountLogin.editPage." +
                                                                 "usernameSpecialCharsHint") : undefined }
-                                                            listen={ (value: boolean) => setInitialFormValues(
+                                                            listen={ (value: boolean) => setCurrentValues(
                                                                 { ...currentValues, isAlphanumericOnly: value }
                                                             ) }
                                                             width={ 16 }
