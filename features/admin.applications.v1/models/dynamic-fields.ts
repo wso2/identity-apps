@@ -53,10 +53,6 @@ export interface DynamicFieldInterface {
      */
     placeholder: string;
     /**
-     * Initial value of the input field.
-     */
-    initialValue: string;
-    /**
      * The data component id for the input field.
      */
     dataComponentId: string;
@@ -117,18 +113,4 @@ export enum ValidationRuleTypes {
     DOMAIN_NAME = "domainName",
     APPLICATION_NAME = "applicationName",
     REQUIRED = "required"
-}
-
-/**
- * Interface representing the cache for Application name validation results.
- */
-export interface ApplicationNameValidationCache {
-    /**
-     * The previously validated Application name.
-     */
-    value: string;
-    /**
-     * Indicates whether the above Application name is already taken.
-     */
-    state: boolean;
 }

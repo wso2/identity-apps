@@ -28,8 +28,7 @@ export const getApplicationsResourceEndpoints = (serverHost: string): Applicatio
     const serverHostWithoutOPath: string = serverHost.replace("/o/", "/");
 
     return {
-        applicationTemplate: `${serverHost}/api/server/v1/extensions/applications/{{id}}`,
-        applicationTemplateCategories: `${serverHost}/api/server/v1/extensions/applications/categories`,
+        applicationTemplate: `${serverHost}/api/server/v1/extensions/applications/{{id}}/template`,
         applicationTemplateMetadata: `${serverHost}/api/server/v1/extensions/applications/{{id}}/metadata`,
         applicationTemplates: `${serverHost}/api/server/v1/extensions/applications`,
         applications: `${ serverHost }/api/server/v1/applications`,

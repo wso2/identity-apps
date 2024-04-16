@@ -37,7 +37,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import useDynamicFieldValidations from "features/admin.applications.v1/hooks/use-dynamic-field-validation";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
-import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -60,6 +60,7 @@ import {
     ApplicationCreateWizardFormInitialValuesInterface,
     ApplicationCreateWizardFormValuesInterface
 } from "../../models/form";
+import buildCallBackUrlsWithRegExp from "../../utils/build-callback-urls-with-regexp";
 import { ApplicationShareModal } from "../modals/application-share-modal";
 import "./application-create-wizard.scss";
 
@@ -119,6 +120,14 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         state?.config?.ui?.isClientSecretHashEnabled);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const formInitialValues: ApplicationCreateWizardFormInitialValuesInterface = useMemo(() => {
+        if (templateData?.payload) {
+            return cloneDeep(templateData?.payload);
+        }
+
+        return null;
+    }, [ templateData?.payload ]);
 
     /**
      * Handle errors that occur during the application list fetch request.
@@ -234,13 +243,13 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @returns Moderated initial values.
      */
     const moderateInitialValues = (
-        initialValues: ApplicationCreateWizardFormInitialValuesInterface)
+        templatePayload: ApplicationCreateWizardFormInitialValuesInterface)
     : ApplicationCreateWizardFormInitialValuesInterface => {
-        if (initialValues) {
-            initialValues.name = generateUniqueApplicationName(initialValues?.name);
+        if (formInitialValues) {
+            formInitialValues.name = generateUniqueApplicationName(templatePayload?.name);
         }
 
-        return initialValues;
+        return formInitialValues;
     };
 
     /**
@@ -285,6 +294,13 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         const formValues: Record<string, any> = cloneDeep(values);
 
         const application: MainApplicationInterface = merge(templateData?.payload, formValues);
+
+        // Moderate Values to match API restrictions.
+        if (application.inboundProtocolConfiguration?.oidc?.callbackURLs) {
+            application.inboundProtocolConfiguration.oidc.callbackURLs = buildCallBackUrlsWithRegExp(
+                application.inboundProtocolConfiguration.oidc.callbackURLs
+            );
+        }
 
         createApplication(application)
             .then((response: AxiosResponse) => {
@@ -534,7 +550,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 <PrimaryButton
                                     onClick={ (e: MouseEvent<HTMLButtonElement>) => formSubmit(e) }
                                     floated="right"
-                                    data-componentid={ `${componentId}-next-button` }
+                                    data-componentid={ `${componentId}-create-button` }
                                 >
                                     { t("common:create") }
                                 </PrimaryButton>

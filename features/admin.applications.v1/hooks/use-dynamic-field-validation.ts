@@ -22,7 +22,7 @@ import { AxiosError } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import get from "lodash-es/get";
 import set from "lodash-es/set";
-import { useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -31,7 +31,6 @@ import { getApplicationList } from "../api/application";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationListInterface } from "../models";
 import {
-    ApplicationNameValidationCache,
     DynamicFieldInterface,
     ValidationRule,
     ValidationRuleTypes
@@ -56,10 +55,11 @@ const useDynamicFieldValidations = (): {
         return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
     });
 
+    const previouslyValidatedApplicationName: MutableRefObject<string> = useRef(null);
     const [
-        applicationNameValidationCache,
-        setApplicationNameValidationCache
-    ] = useState<ApplicationNameValidationCache>(null);
+        isApplicationNameAlreadyReserved,
+        setIsApplicationNameAlreadyReserved
+    ] = useState<boolean>(false);
 
     /**
      * Search for applications and retrieve a list for the given app name.
@@ -183,7 +183,9 @@ const useDynamicFieldValidations = (): {
             const value: any = get(formValues, field?.name);
             const error: string = await validateField(value, validations);
 
-            set(errorObject, field?.name, error);
+            if (error) {
+                set(errorObject, field?.name, error);
+            }
         }
 
         return errorObject;
@@ -252,13 +254,12 @@ const useDynamicFieldValidations = (): {
      */
     const isApplicationNameAlreadyExist: DebouncedFunc<(name: string) => Promise<void>> = debounce(
         async (name: string) => {
-            if (applicationNameValidationCache?.value !== name) {
+            if (previouslyValidatedApplicationName?.current !== name) {
+                previouslyValidatedApplicationName.current = name;
+
                 const response: ApplicationListInterface = await getApplications(name);
 
-                setApplicationNameValidationCache({
-                    state: response?.totalResults > 0,
-                    value: name
-                });
+                setIsApplicationNameAlreadyReserved(response?.totalResults > 0);
             }
         },
         500
@@ -288,7 +289,7 @@ const useDynamicFieldValidations = (): {
 
         await isApplicationNameAlreadyExist(appName);
 
-        if (applicationNameValidationCache?.state) {
+        if (isApplicationNameAlreadyReserved) {
             return t("applications:forms.generalDetails.fields.name.validations.duplicate");
         }
 
