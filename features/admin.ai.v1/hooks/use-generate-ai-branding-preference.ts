@@ -18,14 +18,17 @@
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import useAIBrandingPreference from "./use-ai-branding-preference";
+import { AppConstants } from "../../admin.core.v1";
+import { store } from "../../admin.core.v1/store";
+import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import generateBrandingPreference from "../api/generate-ai-branding-preference";
 import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 
-export type GenerateAIBrandingPreferenceFunc = (website_url: string, tenant: string) => Promise<void>;
+export type GenerateAIBrandingPreferenceFunc = (website_url: string) => Promise<void>;
 
 const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => {
 
@@ -35,12 +38,16 @@ const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => 
     const { setGeneratingBranding,
         setOperationId } = useAIBrandingPreference();
 
+    const isSuborganization: boolean =
+    store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION;
+    const tenantDomain: string =
+    isSuborganization ? store.getState().organization.organization.id : AppConstants.getTenant();
+
     const generateAIBrandingPreference = async (
-        website_url: string,
-        tenant: string
+        websiteUrl: string
     ): Promise<void> => {
 
-        return await generateBrandingPreference(website_url, tenant)
+        return generateBrandingPreference(websiteUrl, tenantDomain)
             .then(
                 (data: GenerateBrandingAPIResponseInterface) => {
                     setOperationId(data.operation_id);

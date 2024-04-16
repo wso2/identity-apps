@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./branding-card";
-export * from "./loading-screen";
+export * from "./branding-ai-banner";
+export * from "./branding-ai-loading-screen";

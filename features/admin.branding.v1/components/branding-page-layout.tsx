@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import BrandingCore from "./branding-core";
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
+import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
@@ -40,9 +41,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     } = props;
 
     const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const disabledFeatures: string[] = useMemo(() => {
-        return featureConfig?.branding?.disabledFeatures;
-    }, [ featureConfig ]);
+    const disabledFeatures: string[] = useMemo(() =>
+        featureConfig?.branding?.disabledFeatures, [ featureConfig ]);
     const {
         isGeneratingBranding,
         mergedBrandingPreference
@@ -73,16 +73,15 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             className="branding-page"
         >
             {
-                !disabledFeatures.includes("branding.ai") && (
+                !disabledFeatures.includes(AI_BRANDING_FEATURE_ID) && (
                     <BrandingAIBanner/>
                 )
             }
-            { isGeneratingBranding ? (
-                <div>
+            {
+                isGeneratingBranding ? (
                     <LoadingScreen/>
-                </div>
-            )
-                : <BrandingCore brandingPreference={ mergedBrandingPreference }/>
+                )
+                    : <BrandingCore brandingPreference={ mergedBrandingPreference }/>
             }
         </PageLayout>
     );

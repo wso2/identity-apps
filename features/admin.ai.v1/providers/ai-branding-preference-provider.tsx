@@ -31,10 +31,15 @@ import React,
     useState } from "react";
 import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
 import AIFeatureContext from "../context/ai-branding-feature-context";
+import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
 
 type AIBrandingPreferenceProviderProps = PropsWithChildren;
 
-
+/**
+ * Provider for the AI branding preference context.
+ * @param props - Props injected to the component.
+ * @returns AI branding preference provider.
+ */
 const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProviderProps> = (
     props: AIBrandingPreferenceProviderProps
 ): ReactElement => {
@@ -43,10 +48,15 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     const { preference } = useBrandingPreference();
     const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
-    const [ operationId, setOperationId ] = useState<string>("null");
+    const [ operationId, setOperationId ] = useState<string>();
     const [ brandingGenerationCompleted, setBrandingGenerationCompleted ] = useState(false);
 
-    function removeEmptyKeys(obj: Record<string, any>): Record<string, any> {
+    /**
+     * Removes empty keys from an object.
+     * @param obj - Object to be processed.
+     * @returns Object with empty keys removed.
+     */
+    const removeEmptyKeys = (obj: Record<string, any>): Record<string, any> => {
         return transform(obj, (result: Record<string, any>, value: any, key: string) => {
             if (isObject(value)) {
                 const newValue: Record<string, any> = removeEmptyKeys(value);
@@ -59,29 +69,42 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
                 result[key] = value;
             }
         });
-    }
+    };
 
+    /**
+     * Custom hook to get the branding generation result.
+     */
     const { data, error } = useGetAIBrandingGenerationResult(operationId, brandingGenerationCompleted);
 
     useEffect(() => {
         if (brandingGenerationCompleted && !error && data) {
-            handleGenerate(data.data);
+            handleGenerate(data);
         }
     }, [ data, brandingGenerationCompleted ]);
 
-    const handleGenerate = (data: any) => {
+    /**
+     * Function to process the API response and generate the merged branding preference.
+     * @param data - Data from the API response.
+     */
+    const handleGenerate = (data: BrandingGenerationResultAPIResponseInterface) => {
 
-        const newBrandingPreference: BrandingPreferenceInterface = getMergedBrandingPreference(data);
+        const newBrandingPreference: BrandingPreferenceInterface = getMergedBrandingPreference(data.data);
 
         setMergedBrandingPreference(newBrandingPreference);
         setBrandingGenerationCompleted(false);
         setGeneratingBranding(false);
+        data = null;
     };
 
-    const getMergedBrandingPreference = (data: any): BrandingPreferenceInterface => {
+    /**
+     * Function to merge the branding preference.
+     * @param data - Data from the API response.
+     * @returns Merged branding preference.
+     */
+    const getMergedBrandingPreference = (data: BrandingPreferenceInterface): BrandingPreferenceInterface => {
 
         const { theme } = removeEmptyKeys(data);
-        const { activeTheme ,LIGHT, DARK } = theme;
+        const { activeTheme, LIGHT, DARK } = theme;
 
         const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(preference.preference), {
             theme: {

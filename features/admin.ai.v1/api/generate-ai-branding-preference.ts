@@ -20,8 +20,6 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1/store";
-import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 
 /**
@@ -30,18 +28,18 @@ import { GenerateBrandingAPIResponseInterface } from "../models/branding-prefere
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
+/**
+ * Generate branding preference via Branding Preferences API.
+ */
 const generateBrandingPreference = (
-    website_url: string,
-    name: string
+    websiteUrl: string,
+    tenantDomain: string
 ): Promise<GenerateBrandingAPIResponseInterface> => {
-    const isSuborganization: boolean =
-    store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION;
-    const tenantDomain: string = isSuborganization ? store.getState().organization.organization.id : name;
 
     const requestConfig: AxiosRequestConfig = {
         data: {
             tenant_domain: tenantDomain,
-            website_url: website_url
+            website_url: websiteUrl
         },
         headers: {
             "Content-Type": "application/json"

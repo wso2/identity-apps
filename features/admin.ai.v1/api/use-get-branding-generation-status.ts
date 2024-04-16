@@ -17,7 +17,6 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 import { useEffect, useState } from "react";
 import useRequest, {
     RequestConfigInterface,
@@ -27,8 +26,13 @@ import useRequest, {
 import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
 import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding-preferences";
 
+/**
+ * Hook to get the AI branding generation status from the API.
+ * @param operationId - Operation ID of the branding generation process.
+ */
 export const useGetAIBrandingGenerationStatus = (
     operationId: string
 ): RequestResultInterface<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface> => {

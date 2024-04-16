@@ -187,9 +187,9 @@ export const branding: BrandingNS = {
                 states: {
                     0: "Getting things started",
                     1: "Analyzing your webpage...",
-                    2: "Analyzing your webpage...",
+                    2: "Gathering visual elements...",
                     3: "Gathering visual elements...",
-                    4: "Gathering visual elements...",
+                    4: "Creating your branding theme...",
                     5: "Creating your branding theme...",
                     6: "Creating your branding theme...",
                     7: "Applying final touches...",

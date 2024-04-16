@@ -20,60 +20,68 @@ import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Typography from "@oxygen-ui/react/Typography";
-import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
-import React, { useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
     from "../../../modules/theme/src/themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 import useGetAIBrandingGenerationStatus from "../api/use-get-branding-generation-status";
-import "./loading-screen.scss";
+import {
+    FACTS_ROTATION_DELAY,
+    PROGRESS_UPDATE_INTERVAL,
+    STATUS_PROGRESS,
+    useGetFacts,
+    useGetStatusLabels } from "../constants/ai-branding-constants";
+import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
+import "./branding-ai-loading-screen.scss";
 
-export const LoadingScreen = (): JSX.Element => {
+export const LoadingScreen: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
-    const [ factIndex, setFactIndex ] = useState(0);
-    const facts: string[] = [
-        t("branding:ai.screens.loading.facts.0"),
-        t("branding:ai.screens.loading.facts.1"),
-        t("branding:ai.screens.loading.facts.2")
-    ];
+    const [ factIndex, setFactIndex ] = useState<number>(0);
+    const [ currentProgress, setCurrentProgress ] = useState<number>(0);
 
     const { operationId } = useAIBrandingPreference();
 
     const { data, isLoading } = useGetAIBrandingGenerationStatus(operationId);
 
-    const statusLabels: Record<string, string> = {
-        branding_generation_completed: t("branding:ai.screens.loading.states.8"),
-        color_palette: t("branding:ai.screens.loading.states.5"),
-        create_branding_theme: t("branding:ai.screens.loading.states.7"),
-        extract_webpage_content: t("branding:ai.screens.loading.states.2"),
-        generate_branding: t("branding:ai.screens.loading.states.4"),
-        render_webpage: t("branding:ai.screens.loading.states.1"),
-        style_properties: t("branding:ai.screens.loading.states.6"),
-        webpage_extraction_completed: t("branding:ai.screens.loading.states.3")
-    };
+    const facts: string[] = useGetFacts();
+    const statusLabels: Record<string, string> = useGetStatusLabels();
 
-    const statusProgress: Record<string, number> = {
-        branding_generation_completed: 100,
-        color_palette: 75,
-        create_branding_theme: 97,
-        extract_webpage_content: 25,
-        generate_branding: 50,
-        render_webpage: 10,
-        style_properties: 95,
-        webpage_extraction_completed: 30
-    };
+    const statusProgress: Record<string, number> = STATUS_PROGRESS;
+
+    useEffect(() => {
+
+        const targetProgress: number = getProgress();
+
+        const interval: NodeJS.Timeout = setInterval(() => {
+            setCurrentProgress((prevProgress: number) => {
+                if (prevProgress >= targetProgress) {
+                    clearInterval(interval);
+
+                    return targetProgress;
+                } else {
+                    return prevProgress + 1;
+                }
+            });
+        }, PROGRESS_UPDATE_INTERVAL);
+
+        return () => clearInterval(interval);
+    }, [ data ]);
 
     useEffect(() => {
         const interval: NodeJS.Timeout = setInterval(() => {
             setFactIndex((factIndex + 1) % facts.length);
-        }, 8000);
+        }, FACTS_ROTATION_DELAY);
 
         return () => clearInterval(interval);
     }, [ factIndex ]);
 
+    /**
+     * Get the current progress based on the status.
+     * @returns The current progress based on the status.
+     */
     const getProgress = () => {
         if (!data) return 0;
-        // Find the last completed status based on the predefined progress mapping
+        // Find the last completed status based on the predefined progress mapping.
         let maxProgress: number = 0;
 
         Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
@@ -85,6 +93,10 @@ export const LoadingScreen = (): JSX.Element => {
         return maxProgress;
     };
 
+    /**
+     * Get the current status based on the status object in the API response.
+     * @returns The current status.
+     */
     const getCurrentStatus = () => {
         if (!data) return t("branding:ai.screens.loading.states.0");
         let currentStatusLabel: string = "branding:ai.screens.loading.states.0";
@@ -120,7 +132,7 @@ export const LoadingScreen = (): JSX.Element => {
                     </Box>
                 </Box>
                 <Box className="loading-screen-progress">
-                    <LinearProgress variant="determinate" value={ getProgress() } />
+                    <LinearProgress variant="determinate" value={ currentProgress } />
                 </Box>
                 <Box className="loading-screen-status">
                     { isLoading && <CircularProgress size={ 20 } className="loading-screen-status-progress" /> }

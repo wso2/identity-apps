@@ -28,14 +28,17 @@ import { OrganizationType } from "../../admin.organizations.v1/constants/organiz
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
 
+/**
+ * Hook to get the AI branding generation result from the API.
+ * @param operationId - Operation ID of the branding generation process.
+ * @param brandingGenerationCompleted - Flag to determine if the branding generation is completed.
+ */
 export const useGetAIBrandingGenerationResult = (
     operationId: string,
     brandingGenerationCompleted: boolean
 ): RequestResultInterface<BrandingGenerationResultAPIResponseInterface, RequestErrorInterface> => {
 
     const { organizationType } = useGetCurrentOrganizationType();
-
-    const [ isLoading ] = useState(true);
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -64,7 +67,6 @@ export const useGetAIBrandingGenerationResult = (
     return {
         data,
         error,
-        isLoading,
         isValidating,
         mutate
     };
