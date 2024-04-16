@@ -1134,9 +1134,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         * Distpatch an error alert when the alternative subject identifier value is not in the
         * requested attribute list.
         */
-        if( onlyOIDCConfigured && !submitValue.claimConfiguration.requestedClaims.map(
-            (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
-            .includes(submitValue.claimConfiguration.subject.claim.uri)) {
+        if( onlyOIDCConfigured && submitValue.claimConfiguration.subject.claim.uri !== DefaultSubjectAttribute
+            && !submitValue.claimConfiguration.requestedClaims.map(
+                (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
+                .includes(submitValue.claimConfiguration.subject.claim.uri)) {
             onClaimConfigUpdateWithNotAllowedSubjectAttributeError();
 
             return;
