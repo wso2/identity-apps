@@ -39,8 +39,8 @@ describe("M2MApplicationQuickStart", () => {
     it("renders the M2MApplicationQuickStart component", () => {
         render(<M2MApplicationQuickStart { ...defaultProps } />, { });
 
-        const M2Mguide: Element = screen.getByTestId("m2m-app-quick-start");
+        const m2mGuide: Element = screen.getByTestId("m2m-app-quick-start");
 
-        expect(M2Mguide).toBeInTheDocument();
+        expect(m2mGuide).toBeInTheDocument();
     });
 });

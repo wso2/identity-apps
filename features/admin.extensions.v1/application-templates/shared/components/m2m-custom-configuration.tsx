@@ -159,6 +159,8 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
         onTriggerTabUpdate(protocolTabIndex);
     };
 
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
+
     // eslint-disable-next-line max-len
     let tokenRequest: string = `curl --location '${sdkConfig?.tokenEndpoint}' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Authorization: Basic '${btoa(sdkConfig?.clientId.concat(":", sdkConfig?.clientSecret))}'' -d 'grant_type=client_credentials'`;
 
@@ -177,7 +179,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
-                            Use the following configurations to integrate your application with Asgardeo.
+                            Use the following configurations to integrate your application with  { productName }.
                             For more details on configurations, go to the
                             <a
                                 className="link pointing"
@@ -201,7 +203,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                         <Hint className="mt-0 mb-0" popup>
                                             {
                                                 t("extensions:develop.applications.quickstart" +
-                                                ".m2m.configurations.clientId.hint")
+                                                ".m2m.configurations.clientId.hint", { productName })
                                             }
                                         </Hint>
                                     </label>
@@ -219,7 +221,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                         <Hint className="mt-0 mb-0" popup>
                                             {
                                                 t("extensions:develop.applications.quickstart" +
-                                                ".m2m.configurations.clientSecret.hint")
+                                                ".m2m.configurations.clientSecret.hint", { productName })
                                             }
                                         </Hint>
                                     </label>
@@ -238,7 +240,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                         <Hint className="mt-0 mb-0" popup>
                                             {
                                                 t("extensions:develop.applications.quickstart" +
-                                                ".m2m.configurations.tokenEndpoint")
+                                                ".m2m.configurations.tokenEndpoint", { productName })
                                             }
                                         </Hint>
                                     </label>
@@ -287,7 +289,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                         <Hint className="mt-0 mb-0" popup>
                                             {
                                                 t("extensions:develop.applications.quickstart" +
-                                                    ".m2m.configurations.tokenRequest")
+                                                    ".m2m.configurations.tokenRequest", { productName })
                                             }
                                         </Hint>
                                     </label>
