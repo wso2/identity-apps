@@ -179,7 +179,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
-                            Use the following configurations to integrate your application with  { productName }.
+                            Use the following configurations to integrate your application with Asgardeo.
                             For more details on configurations, go to the
                             <a
                                 className="link pointing"
