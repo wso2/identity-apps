@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Header, Icon, Input, Segment } from "semantic-ui-react";
 import { ReactComponent as AIIcon }
-    from "../../../modules/theme/src/themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
+    from "../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
 import useGenerateAIBrandingPreference,
 { GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
@@ -43,10 +43,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
     const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
 
     const { isGeneratingBranding } = useAIBrandingPreference();
-
-    /**
-     * Use the hook to call the API to generate AI branding.
-     */
     const generateAIBrandingPreference: GenerateAIBrandingPreferenceFunc = useGenerateAIBrandingPreference();
 
     /**
@@ -165,13 +161,13 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                                         <p>{ t("branding:ai.banner.collapsed.subHeading") }
                                             <DocumentationLink
                                                 link={ "develop.applications.editApplication.asgardeoTryitApplication" +
-                                    ".general.learnMore" }
+                                                        ".general.learnMore" }
                                                 isLinkRef
                                             >
                                                 <Trans
                                                     i18nKey={ "extensions:common.learnMore" }
                                                 >
-                                        Learn More
+                                                    Learn More
                                                 </Trans>
                                             </DocumentationLink>
                                         </p>
@@ -194,7 +190,3 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
             }
         </>
     );};
-
-BrandingAIBanner.defaultProps = {
-
-};

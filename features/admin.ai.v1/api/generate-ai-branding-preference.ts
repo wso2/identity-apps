@@ -31,6 +31,10 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 
 /**
  * Generate branding preference via Branding Preferences API.
+ *
+ * @param websiteUrl - website URL given by the end user.
+ * @param tenantDomain -  tenant domain.
+ * @returns generated branding API response.
  */
 const generateBrandingPreference = (
     websiteUrl: string,
@@ -43,6 +47,7 @@ const generateBrandingPreference = (
             website_url: websiteUrl
         },
         headers: {
+            "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,

@@ -30,6 +30,7 @@ import { BrandingGenerationResultAPIResponseInterface } from "../models/branding
 
 /**
  * Hook to get the AI branding generation result from the API.
+ *
  * @param operationId - Operation ID of the branding generation process.
  * @param brandingGenerationCompleted - Flag to determine if the branding generation is completed.
  */

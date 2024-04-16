@@ -31,6 +31,7 @@ import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding
 
 /**
  * Hook to get the AI branding generation status from the API.
+ *
  * @param operationId - Operation ID of the branding generation process.
  */
 export const useGetAIBrandingGenerationStatus = (
@@ -38,7 +39,6 @@ export const useGetAIBrandingGenerationStatus = (
 ): RequestResultInterface<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface> => {
 
     const { organizationType } = useGetCurrentOrganizationType();
-
     const { setBrandingGenerationCompleted } = useAIBrandingPreference();
 
     const [ isLoading, setIsLoading ] = useState(true);
@@ -55,9 +55,9 @@ export const useGetAIBrandingGenerationStatus = (
     };
 
     const { data, error, isValidating, mutate } =
-    useRequest<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface>(requestConfig, {
-        shouldRetryOnError: false
-    });
+        useRequest<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface>(requestConfig, {
+            shouldRetryOnError: false
+        });
 
     useEffect(() => {
         const interval: NodeJS.Timeout = setInterval(() => {

@@ -1,3 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2024, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
 <svg width="458" height="464" viewBox="0 0 407 412" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path opacity="0.1" d="M131.837 114.657C166.326 90.891 195.183 52.7823 230.147 57.4783C265.103 62.2502 312.596 86.6532 333.614 121.517C354.641 156.303 362.184 199.881 352.858 234.064C343.473 268.158 293.654 249.334 264.728 281.74C235.812 314.068 215.179 325.544 197.838 331.657C180.498 337.769 131.034 355.508 91.8378 311.656C52.6417 267.805 47.4651 250.501 46.6935 217.943C49.5751 140.941 97.3561 138.345 131.837 114.657Z" fill="url(#paint0_linear_2373_75)"/>
     <path d="M277.109 63.6565L231.838 75.3032L240.666 109.656L285.937 98.0098L277.109 63.6565Z" fill="url(#paint1_linear_2373_75)"/>
@@ -108,4 +128,3 @@
     </linearGradient>
     </defs>
     </svg>
-    

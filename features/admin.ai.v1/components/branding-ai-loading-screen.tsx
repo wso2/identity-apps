@@ -23,33 +23,35 @@ import Typography from "@oxygen-ui/react/Typography";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
-    from "../../../modules/theme/src/themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
+    from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 import useGetAIBrandingGenerationStatus from "../api/use-get-branding-generation-status";
 import {
     FACTS_ROTATION_DELAY,
     PROGRESS_UPDATE_INTERVAL,
-    STATUS_PROGRESS,
+    STATUS_PROGRESS_MAP,
     useGetFacts,
     useGetStatusLabels } from "../constants/ai-branding-constants";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
 import "./branding-ai-loading-screen.scss";
 
+/**
+ * AI branding loading screen component.
+ *
+ * @returns ReactElement containing the AI branding loading screen.
+ */
 export const LoadingScreen: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
     const [ factIndex, setFactIndex ] = useState<number>(0);
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
 
     const { operationId } = useAIBrandingPreference();
-
     const { data, isLoading } = useGetAIBrandingGenerationStatus(operationId);
-
     const facts: string[] = useGetFacts();
     const statusLabels: Record<string, string> = useGetStatusLabels();
 
-    const statusProgress: Record<string, number> = STATUS_PROGRESS;
+    const statusProgress: Record<string, number> = STATUS_PROGRESS_MAP;
 
     useEffect(() => {
-
         const targetProgress: number = getProgress();
 
         const interval: NodeJS.Timeout = setInterval(() => {
@@ -77,10 +79,12 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
 
     /**
      * Get the current progress based on the status.
+     *
      * @returns The current progress based on the status.
      */
     const getProgress = () => {
         if (!data) return 0;
+
         // Find the last completed status based on the predefined progress mapping.
         let maxProgress: number = 0;
 
@@ -95,6 +99,7 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
 
     /**
      * Get the current status based on the status object in the API response.
+     *
      * @returns The current status.
      */
     const getCurrentStatus = () => {

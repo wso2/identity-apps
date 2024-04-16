@@ -27,6 +27,8 @@ import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import generateBrandingPreference from "../api/generate-ai-branding-preference";
 import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+
 
 export type GenerateAIBrandingPreferenceFunc = (website_url: string) => Promise<void>;
 
@@ -35,14 +37,23 @@ const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { setGeneratingBranding,
-        setOperationId } = useAIBrandingPreference();
+    const { organizationType } = useGetCurrentOrganizationType();
 
-    const isSuborganization: boolean =
-    store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION;
-    const tenantDomain: string =
-    isSuborganization ? store.getState().organization.organization.id : AppConstants.getTenant();
+    const {
+        setGeneratingBranding,
+        setOperationId
+    } = useAIBrandingPreference();
 
+    const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
+        ? store.getState().organization.organization.id
+        : AppConstants.getTenant();
+
+    /**
+     * Generate AI branding preference API call function.
+     * 
+     * @param websiteUrl - Website URL.
+     * @returns a promise containing the operation ID.
+     */
     const generateAIBrandingPreference = async (
         websiteUrl: string
     ): Promise<void> => {

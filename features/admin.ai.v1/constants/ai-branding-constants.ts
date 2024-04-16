@@ -15,16 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { AppState } from "../../admin.core.v1";
 
 export const useGetFacts = (): string[] => {
     const { t } = useTranslation();
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     return [
-        t("branding:ai.screens.loading.facts.0"),
+        t("branding:ai.screens.loading.facts.0", { productName }),
         t("branding:ai.screens.loading.facts.1"),
-        t("branding:ai.screens.loading.facts.2")
+        t("branding:ai.screens.loading.facts.2", { productName })
     ];
 };
 
@@ -46,7 +48,7 @@ export const useGetStatusLabels = (): Record<string, string> => {
 export const FACTS_ROTATION_DELAY: number = 8000;
 export const PROGRESS_UPDATE_INTERVAL: number = 100;
 
-export const STATUS_PROGRESS: Record<string, number> = {
+export const STATUS_PROGRESS_MAP: Record<string, number> = {
     branding_generation_completed: 100,
     color_palette: 95,
     create_branding_theme: 99,

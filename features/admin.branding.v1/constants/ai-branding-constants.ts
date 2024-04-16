@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export const AI_BRANDING_FEATURE_ID: string = "branding.ai";
+export const AI_BRANDING_FEATURE_ID: string = "branding.ai1";

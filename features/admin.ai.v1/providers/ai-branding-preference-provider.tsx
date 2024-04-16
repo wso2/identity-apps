@@ -23,12 +23,13 @@ import isEmpty from "lodash-es/isEmpty";
 import isObject from "lodash-es/isObject";
 import merge from "lodash-es/merge";
 import transform from "lodash-es/transform";
-import React,
-{ FunctionComponent,
+import React, {
+    FunctionComponent,
     PropsWithChildren,
     ReactElement,
     useEffect,
-    useState } from "react";
+    useState
+} from "react";
 import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
 import AIFeatureContext from "../context/ai-branding-feature-context";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
@@ -37,6 +38,7 @@ type AIBrandingPreferenceProviderProps = PropsWithChildren;
 
 /**
  * Provider for the AI branding preference context.
+ *
  * @param props - Props injected to the component.
  * @returns AI branding preference provider.
  */
@@ -45,7 +47,9 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
 ): ReactElement => {
 
     const { children } = props;
+
     const { preference } = useBrandingPreference();
+
     const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
     const [ operationId, setOperationId ] = useState<string>();
@@ -53,6 +57,7 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
 
     /**
      * Removes empty keys from an object.
+     *
      * @param obj - Object to be processed.
      * @returns Object with empty keys removed.
      */
@@ -84,6 +89,7 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
 
     /**
      * Function to process the API response and generate the merged branding preference.
+     *
      * @param data - Data from the API response.
      */
     const handleGenerate = (data: BrandingGenerationResultAPIResponseInterface) => {
@@ -98,6 +104,7 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
 
     /**
      * Function to merge the branding preference.
+     *
      * @param data - Data from the API response.
      * @returns Merged branding preference.
      */
