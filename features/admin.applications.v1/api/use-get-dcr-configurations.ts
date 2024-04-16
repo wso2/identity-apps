@@ -21,8 +21,8 @@ import { AxiosRequestConfig } from "axios";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin-core-v1/hooks/use-request";
-import { store } from "../../admin-core-v1/store";
+} from "../../admin.core.v1/hooks/use-request";
+import { store } from "../../admin.core.v1/store";
 import { ApplicationsSettingsFormValuesInterface } from "../pages/applications-settings";
 
 /**

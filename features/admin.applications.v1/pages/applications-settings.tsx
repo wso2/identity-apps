@@ -23,7 +23,7 @@ import { Field, Form } from "@wso2is/form";
 import {
     AppConstants,
     history,
-} from "../../admin-core-v1";
+} from "../../admin.core.v1";
 import { useGetDCRConfigurations } from "../api/use-get-dcr-configurations";
 import { updateDCRConfigurations } from "../api/applications-settings";
 import { AxiosError } from "axios";

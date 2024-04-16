@@ -235,7 +235,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../admin-applications-v1/pages/applications-settings")),
+                                component: lazy(() => import("../../admin.applications.v1/pages/applications-settings")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
