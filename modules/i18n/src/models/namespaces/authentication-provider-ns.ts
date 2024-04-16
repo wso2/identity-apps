@@ -101,6 +101,12 @@ export interface AuthenticationProviderNS {
                 tabName: string;
             };
         };
+        oidc: {
+            shareFederatedToken:{
+                description: string;
+                displayName: string;
+            };
+        };
     };
     forms: {
         advancedConfigs: {

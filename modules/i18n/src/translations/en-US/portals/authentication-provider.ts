@@ -113,6 +113,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
             smsProvider:{
                 tabName: "SMS Provider <1>(Coming Soon)</1>"
             }
+        },
+        oidc: {
+            shareFederatedToken:{
+                displayName: "Share the federated access token with the applications.",
+                description: "Enable to the share the access token issued by the third-party connection with the applications."
+            }
         }
     },
     forms: {
