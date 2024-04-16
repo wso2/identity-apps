@@ -544,7 +544,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 filteredApplicationList?.totalResults > 0) ? (
                 <>
                     {/* TODO : Check tenant admin access control */}
-                    <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                    <Show when={ featureConfig?.applications?.scopes?.create }>
                         <Button
                             data-componentid={ `${ componentId }-applications-settings-button` }
                             icon="setting"
@@ -569,7 +569,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 </>
             ) : (
                   // TODO : Check tenant admin access control
-                  <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                  <Show when={ featureConfig?.applications?.scopes?.create }>
                       <Button
                           data-componentid={ `${ componentId }-applications-settings-button` }
                           icon="setting"
