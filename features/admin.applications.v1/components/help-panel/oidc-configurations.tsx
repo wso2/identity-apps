@@ -347,9 +347,9 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 className="left-icon"
                                 verticalAlign="middle"
                                 spaced="right" />
-                            <label data-testid={ `${testId}-pushed-authorization-request-label`}>
+                            <label data-testid={ `${testId}-pushed-authorization-request-label` }>
                                 { t("applications:helpPanel.tabs.start.content." +
-                                        "oidcConfigurations.labels.pushedAuthorizationRequest")}
+                                        "oidcConfigurations.labels.pushedAuthorizationRequest") }
                             </label>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
