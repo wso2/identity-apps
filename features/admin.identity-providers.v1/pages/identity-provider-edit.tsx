@@ -42,7 +42,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin.extensions.v1/configs";
+import ApplicationTemplatesProvider from "../../admin.applications.v1/provider/application-templates-provider";
 import {
     AppConstants,
     AppState,
@@ -50,6 +50,7 @@ import {
     FeatureConfigInterface,
     history
 } from "../../admin.core.v1";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin.extensions.v1/configs";
 import { getIdentityProviderDetail, getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api";
 import { EditMultiFactorAuthenticator } from "../components/edit-multi-factor-authenticator";
 import { EditIdentityProvider } from "../components/identity-provider-edit";
@@ -178,7 +179,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     /**
      * Checks if the user needs to go to a specific tab index.
-     */    
+     */
     useEffect(() => {
         const tabName: string =  location.state as string;
 
@@ -274,7 +275,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         setConnectorDetailFetchRequestLoading(true);
 
         getIdentityProviderDetail(id)
-            .then((response: IdentityProviderInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface) => 
+            .then((response: IdentityProviderInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface) =>
             {
                 setConnector(response);
             })
@@ -589,74 +590,78 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     };
 
     return (
-        <TabPageLayout
-            pageTitle="Edit Connection" 
-            isLoading={ isConnectorDetailsFetchRequestLoading }
-            loadingStateOptions={ {
-                count: 5,
-                imageType: "square"
-            } }
-            title={ resolveConnectorName(connector) }
-            contentTopMargin={ true }
-            description={ resolveConnectorDescription(connector) }
-            image={ resolveConnectorImage(connector) }
-            backButton={ {
-                "data-testid": `${ testId }-page-back-button`,
-                onClick: handleBackButtonClick,
-                text: useNewConnectionsView
-                    ? t("console:develop.pages.authenticationProviderTemplate.backButton")
-                    : t("console:develop.pages.idpTemplate.backButton")
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            data-testid={ `${ testId }-page-layout` }
-        >
-            {
-                IdentityProviderManagementUtils.isConnectorIdentityProvider(connector)
-                    ? (
-                        <EditIdentityProvider
-                            identityProvider={ connector }
-                            isLoading={ isConnectorDetailsFetchRequestLoading }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleIdentityProviderUpdate }
-                            isGoogle={
-                                (identityProviderTemplate?.name === undefined)
-                                    ? undefined
-                                    : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
-                            }
-                            isSaml={
-                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                                    ? undefined
-                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
-                                        === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
-                            }
-                            isOidc={
-                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                                    ? undefined
-                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
-                                        === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
-                            }
-                            data-testid={ testId }
-                            template={ identityProviderTemplate }
-                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
-                            type={ identityProviderTemplate?.id }
-                            isReadOnly={ isReadOnly }
-                            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
-                            tabIdentifier={ tabIdentifier }
-                        />
-                    )
-                    : (
-                        <EditMultiFactorAuthenticator
-                            authenticator={ connector }
-                            isLoading={ isConnectorDetailsFetchRequestLoading }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            type={ connector?.id }
-                            isReadOnly={ isReadOnly }
-                        />
-                    )
-            }
-        </TabPageLayout>
+        <ApplicationTemplatesProvider>
+            <TabPageLayout
+                pageTitle="Edit Connection"
+                isLoading={ isConnectorDetailsFetchRequestLoading }
+                loadingStateOptions={ {
+                    count: 5,
+                    imageType: "square"
+                } }
+                title={ resolveConnectorName(connector) }
+                contentTopMargin={ true }
+                description={ resolveConnectorDescription(connector) }
+                image={ resolveConnectorImage(connector) }
+                backButton={ {
+                    "data-testid": `${ testId }-page-back-button`,
+                    onClick: handleBackButtonClick,
+                    text: useNewConnectionsView
+                        ? t("console:develop.pages.authenticationProviderTemplate.backButton")
+                        : t("console:develop.pages.idpTemplate.backButton")
+                } }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                data-testid={ `${ testId }-page-layout` }
+            >
+                {
+                    IdentityProviderManagementUtils.isConnectorIdentityProvider(connector)
+                        ? (
+                            <EditIdentityProvider
+                                identityProvider={ connector }
+                                isLoading={ isConnectorDetailsFetchRequestLoading }
+                                onDelete={ handleIdentityProviderDelete }
+                                onUpdate={ handleIdentityProviderUpdate }
+                                isGoogle={
+                                    (identityProviderTemplate?.name === undefined)
+                                        ? undefined
+                                        : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
+                                }
+                                isSaml={
+                                    (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                                        ? undefined
+                                        : (connector.federatedAuthenticators.defaultAuthenticatorId
+                                            === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
+                                }
+                                isOidc={
+                                    (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                                        ? undefined
+                                        : (connector.federatedAuthenticators.defaultAuthenticatorId
+                                            === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
+                                }
+                                data-testid={ testId }
+                                template={ identityProviderTemplate }
+                                isTabExtensionsAvailable={
+                                    (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable)
+                                }
+                                type={ identityProviderTemplate?.id }
+                                isReadOnly={ isReadOnly }
+                                isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+                                tabIdentifier={ tabIdentifier }
+                            />
+                        )
+                        : (
+                            <EditMultiFactorAuthenticator
+                                authenticator={ connector }
+                                isLoading={ isConnectorDetailsFetchRequestLoading }
+                                onDelete={ handleIdentityProviderDelete }
+                                onUpdate={ handleMultiFactorAuthenticatorUpdate }
+                                type={ connector?.id }
+                                isReadOnly={ isReadOnly }
+                            />
+                        )
+                }
+            </TabPageLayout>
+        </ApplicationTemplatesProvider>
     );
 };
 

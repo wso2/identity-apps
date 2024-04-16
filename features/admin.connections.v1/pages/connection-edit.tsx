@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -46,16 +45,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import {
-    AuthenticatorExtensionsConfigInterface,
-    identityProviderConfig
-} from "../../admin.extensions.v1/configs";
+import ApplicationTemplatesProvider from "../../admin.applications.v1/provider/application-templates-provider";
 import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
     history
 } from "../../admin.core.v1";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import {
+    AuthenticatorExtensionsConfigInterface,
+    identityProviderConfig
+} from "../../admin.extensions.v1/configs";
 import {
     EditMultiFactorAuthenticator
 } from "../../admin.identity-providers.v1/components/edit-multi-factor-authenticator";
@@ -734,76 +735,78 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     };
 
     return (
-        <TabPageLayout
-            pageTitle="Edit Connection"
-            isLoading={ isConnectorDetailsFetchRequestLoading }
-            loadingStateOptions={ {
-                count: 5,
-                imageType: "square"
-            } }
-            title={ resolveConnectorName(connector) }
-            contentTopMargin={ true }
-            description={ resolveConnectorDescription(connector) }
-            image={ resolveConnectorImage(connector) }
-            backButton={ {
-                "data-testid": `${ testId }-page-back-button`,
-                onClick: handleBackButtonClick,
-                text: t("console:develop.pages.authenticationProviderTemplate.backButton")
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            data-testid={ `${ testId }-page-layout` }
-        >
-            {
-                ConnectionsManagementUtils.isConnectorIdentityProvider(connector)
-                    ? (
-                        <EditConnection
-                            connectionSettingsMetaData={ connectionSettings }
-                            identityProvider={ connector }
-                            isLoading={
-                                isConnectorDetailsFetchRequestLoading ||
-                                isConnectorMetaDataFetchRequestLoading
-                            }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleIdentityProviderUpdate }
-                            isGoogle={
-                                (identityProviderTemplate?.name === undefined)
-                                    ? undefined
-                                    : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
-                            }
-                            isSaml={
-                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                                    ? undefined
-                                    : (connector?.federatedAuthenticators?.defaultAuthenticatorId
-                                        === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID)
-                            }
-                            isOidc={
-                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                                    ? undefined
-                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
-                                        === AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID)
-                            }
-                            data-testid={ testId }
-                            template={ identityProviderTemplate }
-                            type={ identityProviderTemplate?.id }
-                            isReadOnly={ isReadOnly }
-                            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
-                            setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
-                            tabIdentifier={ tabIdentifier }
-                        />
-                    )
-                    : (
-                        <EditMultiFactorAuthenticator
-                            authenticator={ connector }
-                            isLoading={ isConnectorDetailsFetchRequestLoading }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            type={ connector?.id }
-                            isReadOnly={ isReadOnly }
-                        />
-                    )
-            }
-        </TabPageLayout>
+        <ApplicationTemplatesProvider>
+            <TabPageLayout
+                pageTitle="Edit Connection"
+                isLoading={ isConnectorDetailsFetchRequestLoading }
+                loadingStateOptions={ {
+                    count: 5,
+                    imageType: "square"
+                } }
+                title={ resolveConnectorName(connector) }
+                contentTopMargin={ true }
+                description={ resolveConnectorDescription(connector) }
+                image={ resolveConnectorImage(connector) }
+                backButton={ {
+                    "data-testid": `${ testId }-page-back-button`,
+                    onClick: handleBackButtonClick,
+                    text: t("console:develop.pages.authenticationProviderTemplate.backButton")
+                } }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                data-testid={ `${ testId }-page-layout` }
+            >
+                {
+                    ConnectionsManagementUtils.isConnectorIdentityProvider(connector)
+                        ? (
+                            <EditConnection
+                                connectionSettingsMetaData={ connectionSettings }
+                                identityProvider={ connector }
+                                isLoading={
+                                    isConnectorDetailsFetchRequestLoading ||
+                                    isConnectorMetaDataFetchRequestLoading
+                                }
+                                onDelete={ handleIdentityProviderDelete }
+                                onUpdate={ handleIdentityProviderUpdate }
+                                isGoogle={
+                                    (identityProviderTemplate?.name === undefined)
+                                        ? undefined
+                                        : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
+                                }
+                                isSaml={
+                                    (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                                        ? undefined
+                                        : (connector?.federatedAuthenticators?.defaultAuthenticatorId
+                                            === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID)
+                                }
+                                isOidc={
+                                    (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                                        ? undefined
+                                        : (connector.federatedAuthenticators.defaultAuthenticatorId
+                                            === AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID)
+                                }
+                                data-testid={ testId }
+                                template={ identityProviderTemplate }
+                                type={ identityProviderTemplate?.id }
+                                isReadOnly={ isReadOnly }
+                                isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+                                setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
+                                tabIdentifier={ tabIdentifier }
+                            />
+                        )
+                        : (
+                            <EditMultiFactorAuthenticator
+                                authenticator={ connector }
+                                isLoading={ isConnectorDetailsFetchRequestLoading }
+                                onDelete={ handleIdentityProviderDelete }
+                                onUpdate={ handleMultiFactorAuthenticatorUpdate }
+                                type={ connector?.id }
+                                isReadOnly={ isReadOnly }
+                            />
+                        )
+                }
+            </TabPageLayout>
+        </ApplicationTemplatesProvider>
     );
 };
 

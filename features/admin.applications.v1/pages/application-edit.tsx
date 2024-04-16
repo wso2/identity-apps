@@ -35,7 +35,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { applicationConfig } from "../../admin.extensions.v1/configs/application";
 import {
     AppConstants,
     AppState,
@@ -46,6 +45,7 @@ import {
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
 } from "../../admin.core.v1";
+import { applicationConfig } from "../../admin.extensions.v1/configs/application";
 import { IdentityProviderConstants } from "../../admin.identity-providers.v1/constants";
 import { useGetApplication } from "../api/use-get-application";
 import { EditApplication } from "../components/edit-application";
@@ -64,7 +64,7 @@ import { ApplicationManagementUtils } from "../utils/application-management-util
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
 /**
- * Proptypes for the applications edit page component.
+ * Prop types for the applications edit page component.
  */
 interface ApplicationEditPageInterface extends IdentifiableComponentInterface, RouteComponentProps {
 }
