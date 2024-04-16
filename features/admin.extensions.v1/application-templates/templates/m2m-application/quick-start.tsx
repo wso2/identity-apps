@@ -70,24 +70,26 @@ const M2MApplicationQuickStart:
         return (
             <ResourceTab.Pane controlledSegmentation>
                 <Grid data-componentid={ componentId } className="ml-0 mr-0">
-                    <Grid.Column computer={ 10 } widescreen={ 8 } className="custom-config-container p-0">
-                        <M2MCustomConfiguration
-                            onTriggerTabUpdate={ onTriggerTabUpdate }
-                            protocolTabIndex={ PROTOCOL_TAB_INDEX }
-                            APIAuthorizationTabIndex= { API_Authorization_INDEX }
-                            inboundProtocolConfig={ inboundProtocolConfig }
-                            icons={ [
-                            ] }
-                            data-componentid={ `${ componentId }-custom-configuration` }
-                            documentationLink={
-                                getLink(
-                                    "develop.applications.editApplication." +
-                                        "oidcApplication.quickStart.m2mApp." +
-                                        "learnMore"
-                                )
-                            }
-                        />
-                    </Grid.Column>
+                    <Grid.Row className="technology-selection-wrapper single-page-qsg">
+                        <Grid.Column computer={ 10 } widescreen={ 8 } className="custom-config-container p-0">
+                            <M2MCustomConfiguration
+                                onTriggerTabUpdate={ onTriggerTabUpdate }
+                                protocolTabIndex={ PROTOCOL_TAB_INDEX }
+                                APIAuthorizationTabIndex= { API_Authorization_INDEX }
+                                inboundProtocolConfig={ inboundProtocolConfig }
+                                icons={ [
+                                ] }
+                                data-componentid={ `${ componentId }-custom-configuration` }
+                                documentationLink={
+                                    getLink(
+                                        "develop.applications.editApplication." +
+                                            "oidcApplication.quickStart.m2mApp." +
+                                            "learnMore"
+                                    )
+                                }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
                 </Grid>
             </ResourceTab.Pane>
         );
