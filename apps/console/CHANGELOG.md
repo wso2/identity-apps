@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.15.0
+
+### Minor Changes
+
+- [#5850](https://github.com/wso2/identity-apps/pull/5850) [`3b8d17c06b`](https://github.com/wso2/identity-apps/commit/3b8d17c06ba9cfe400300e1d75f38a2840b0b61b) Thanks [@asha15](https://github.com/asha15)! - Add Quickstart guide for M2M application
+
+### Patch Changes
+
+- [#5973](https://github.com/wso2/identity-apps/pull/5973) [`f21d0c7f14`](https://github.com/wso2/identity-apps/commit/f21d0c7f14fcdcfed978546da56cbe8f504a3198) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix minor bug
+
+- Updated dependencies [[`f21d0c7f14`](https://github.com/wso2/identity-apps/commit/f21d0c7f14fcdcfed978546da56cbe8f504a3198)]:
+  - @wso2is/features@2.14.26
+
 ## 2.14.26
 
 ### Patch Changes
