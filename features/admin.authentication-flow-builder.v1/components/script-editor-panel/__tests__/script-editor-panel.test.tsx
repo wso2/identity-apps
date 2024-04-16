@@ -19,7 +19,6 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { ResourceEndpointsContext } from "../../../../admin.core.v1/context/resource-endpoints-context";
 import ResourceEndpointsProvider from "../../../../admin.core.v1/providers/resource-enpoints-provider";
 import UserPreferenceProvider from "../../../../admin.core.v1/providers/user-preferences-provider";
 import { render, screen } from "../../../../test-configs/utils";

@@ -33,7 +33,7 @@ describe.skip("SecretDeleteConfirmationModal", () => {
             secretId: "342234-5f41-46c3-a646-53187e091b1e",
             secretName: "NPM_TOKEN",
             type: "ADAPTIVE_AUTH_CALL_CHOREO"
-        },
+        }
         // unable to pass `open` prop for some reason
         // open: true
     };

@@ -32,8 +32,8 @@ describe.skip("DuplicateSocialAuthenticatorSelectionModal", () => {
                 "authenticators":[
                     {
                         "authenticatorId":"RmFjZWJvb2tBdXRoZW50aWNhdG9y",
-                        "name":"FacebookAuthenticator",
                         "isEnabled":true,
+                        "name":"FacebookAuthenticator",
                         "tags":[
                             "Social-Login"
                         ]
@@ -41,8 +41,8 @@ describe.skip("DuplicateSocialAuthenticatorSelectionModal", () => {
                 ],
                 "defaultAuthenticator":{
                     "authenticatorId":"RmFjZWJvb2tBdXRoZW50aWNhdG9y",
-                    "name":"FacebookAuthenticator",
                     "isEnabled":true,
+                    "name":"FacebookAuthenticator",
                     "tags":[
                         "Social-Login"
                     ]
@@ -51,12 +51,14 @@ describe.skip("DuplicateSocialAuthenticatorSelectionModal", () => {
                 "displayName":"FB",
                 "id":"61fa094e-sdsd-4a7c-a9c4-604c3a09906d",
                 "idp":"FB",
-                "image":"https://dev.console.asgardeo.io/app/libs/themes/default/assets/images/identity-providers/facebook-idp-illustration.svg",
+                "image":
+                    "https://dev.console.asgardeo.io/app/libs/themes/default/assets/" +
+                        "images/identity-providers/facebook-idp-illustration.svg",
                 "isEnabled":true,
                 "name":"FB"
             }
         ],
-        onSelect: jest.fn(),
+        onSelect: jest.fn()
         // need to pass `open` prop
     };
     /* eslint-enable max-len */
@@ -65,7 +67,7 @@ describe.skip("DuplicateSocialAuthenticatorSelectionModal", () => {
         render(<DuplicateSocialAuthenticatorSelectionModal { ...defaultProps } />, { allowedScopes: fullPermissions });
 
         const duplicateSocialAuthenticatorSelectionModal: Element = screen.getByTestId(
-            "duplicate-social-authenticator-selection-modal",
+            "duplicate-social-authenticator-selection-modal"
         );
 
         await waitFor(() => {
