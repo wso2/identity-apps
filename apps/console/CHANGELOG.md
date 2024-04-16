@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.14.25
+
+### Patch Changes
+
+- [#5939](https://github.com/wso2/identity-apps/pull/5939) [`21d83bc92f`](https://github.com/wso2/identity-apps/commit/21d83bc92fc8ffae606aabd2398bc68c0ba3c60d) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Make bulk user import user limit and timeout configurable
+
+- Updated dependencies [[`21d83bc92f`](https://github.com/wso2/identity-apps/commit/21d83bc92fc8ffae606aabd2398bc68c0ba3c60d), [`6a2e4407e3`](https://github.com/wso2/identity-apps/commit/6a2e4407e3d62f9998ff531534d81353bf39f782)]:
+  - @wso2is/features@2.14.24
+
 ## 2.14.24
 
 ### Patch Changes
