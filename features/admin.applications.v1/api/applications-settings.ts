@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../admin.core.v1/store";
-import { ApplicationsSettingsFormValuesInterface } from "../pages/applications-settings";
+import { ApplicationsSettingsFormValuesInterface, DCRConfigUpdateType } from "../models/applications-settings";
 
 /**
  * Get an axios instance.
@@ -36,14 +36,13 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @returns A promise containing the response.
  */
 export const updateDCRConfigurations = (
-    updateData: ApplicationsSettingsFormValuesInterface
+    updateData: Array<DCRConfigUpdateType>
 ): Promise<ApplicationsSettingsFormValuesInterface | void> => {
 
     const requestConfig: AxiosRequestConfig = {
         data: updateData,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,

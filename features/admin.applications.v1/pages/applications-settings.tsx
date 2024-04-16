@@ -16,7 +16,7 @@
  * under the License.
  */
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CopyInputField, DocumentationLink, EmphasizedSegment, PageLayout, useDocumentation } from "@wso2is/react-components";
+import { ContentLoader, CopyInputField, DocumentationLink, EmphasizedSegment, PageLayout, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Field, Form } from "@wso2is/form";
@@ -31,13 +31,14 @@ import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { getOIDCApplicationConfigurations } from "../api/application";
+import { ApplicationsSettingsFormValuesInterface, DCRConfigUpdateType } from "../models/applications-settings";
 
 /**
  * Proptypes for the applications settings form component.
  */
 interface ApplicationsSettingsPropsInterface extends IdentifiableComponentInterface {
     /**
-     * Is the mandateSSA enabled.
+     * Is the SSA(Software Statement Assertion) mandated.
      */
     mandateSSA?: boolean;
     /**
@@ -45,7 +46,7 @@ interface ApplicationsSettingsPropsInterface extends IdentifiableComponentInterf
      */
     authenticationRequired?: boolean;
     /**
-     * JWKS Endpoint Url.
+     * JWKS Endpoint Url to validate SSA(Software Statement Assertion).
      */
     ssaJwks?: string;
     /**
@@ -53,29 +54,7 @@ interface ApplicationsSettingsPropsInterface extends IdentifiableComponentInterf
      */
     dcrEndpoint?: string;
     /**
-     * Is fapi complience enforced for the dcr apps.
-     */
-    enableFapiEnforcement?:boolean
-}
-
-/**
- * Form values interface.
- */
-export interface ApplicationsSettingsFormValuesInterface {
-    /**
-     * Is the mandateSSA enabled.
-     */
-    mandateSSA?: boolean;
-    /**
-     * Is the requireAuthentication enabled.
-     */
-    authenticationRequired?: boolean;
-    /**
-     * JWKS Endpoint Url.
-     */
-    ssaJwks?: string;
-    /**
-     * Is fapi complience enforced for the dcr apps.
+     * Is fapi compliance enforced for the DCR apps.
      */
     enableFapiEnforcement?:boolean
 }
@@ -91,8 +70,6 @@ export interface ApplicationsSettingsFormErrorValidationsInterface {
 }
 
 const FORM_ID: string = "applications-settings";
-
-
 /**
  * Form to edit applications settings.
  *
@@ -122,13 +99,27 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     const [ ssaJwksState, setSsaJwks ] = useState<string>(ssaJwks);
     const [ dcrEndpointState, setDCREndpoint ] = useState<string>(dcrEndpoint);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isLoading, setIsLoading ] = useState<boolean>(undefined);
 
-
+    /**
+     * Get initial DCR Configurations.
+     */
     const {
         data: dcrConfigs,
-    } = useGetDCRConfigurations();
+        error: getDCRConfigsRequestError,
+        isLoading: isGetDCRConfigsRequestLoading,
+    } = useGetDCRConfigurations()
 
-    // set initial values
+    /**
+     * Sets the internal state of the application loading status when the SWR `isLoading` state changes.
+     */
+    useEffect(() => {
+        setIsLoading(isGetDCRConfigsRequestLoading);
+    }, [ isGetDCRConfigsRequestLoading ]);
+    
+    /**
+     * Set initial values for the form.
+     */
     useEffect(() => {
         if (dcrConfigs) {
             setMandateSSA(dcrConfigs?.mandateSSA);
@@ -138,12 +129,43 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
         }
     }, [ dcrConfigs ]);
 
+    /**
+     * Handles the DCR Configurations GET request error.
+     */
+    useEffect(() => {
+        if (!getDCRConfigsRequestError) {
+            return;
+        }
+
+        if (getDCRConfigsRequestError.response?.data?.description) {
+            dispatch(addAlert({
+                description: getDCRConfigsRequestError.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("console:develop.pages.applicationsSettings.notifications.genericError.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert(addAlert({
+            description: t(
+                "console:develop.pages.applicationsSettings.notifications.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: t(
+                "console:develop.pages.applicationsSettings.notifications.genericError.message"
+            )
+        })));
+    }, [ getDCRConfigsRequestError ]);
+
+    /**
+     * Fetch DCR endpoint from the OIDCApplicationConfigurations.
+     */
     useEffect(() => {
         if (dcrEndpoint !== undefined) {
             return;
         }
 
-        // Fetch the server endpoints for OIDC applications.
         getOIDCApplicationConfigurations()
             .then((response) => {
                 setDCREndpoint(response.dynamicClientRegistrationEndpoint);
@@ -157,6 +179,9 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
             });
     });
 
+    /**
+     * Handles the success scenario of the update.
+     */
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({
@@ -169,7 +194,10 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
         );
     };
 
-    const resolveConnectorUpdateErrorMessage = (error: AxiosError): string => {
+    /**
+     * Resolve the error message when the update fails.
+     */
+    const resolveUpdateErrorMessage = (error: AxiosError): string => {
         
         return (
             t("console:develop.pages.applicationsSettings.notifications.error.description",
@@ -177,11 +205,14 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
         );
     };
 
+    /**
+     * Handles the error scenario of the update.
+     */
     const handleUpdateError = (error: AxiosError) => {
-        if (error.response && error.response.data && error.response.data.detail) {
+        if (error?.response?.data?.detail) {
             dispatch(
                 addAlert({
-                    description: resolveConnectorUpdateErrorMessage(error),
+                    description: resolveUpdateErrorMessage(error),
                     level: AlertLevels.ERROR,
                     message: t(
                         "console:develop.pages.applicationsSettings.notifications.error.message"
@@ -189,7 +220,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                 })
             );
         } else {
-            // Generic error message
+            // Generic error message.
             dispatch(
                 addAlert({
                     description: t(
@@ -208,11 +239,10 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     * @returns Sanitized form values.
      */
     const updateConfigurations = (values: ApplicationsSettingsFormValuesInterface) => {
         setIsSubmitting(true);
-        const updateData: any = [
+        const updateData: Array<DCRConfigUpdateType> = [
             {
                 operation: "REPLACE",
                 path: "/authenticationRequired",
@@ -250,7 +280,6 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
         .finally(() => {
             setIsSubmitting(false);
         });
-
     };
 
     /**
@@ -272,6 +301,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
 
         return errors;
     };
+
     /**
      * This handles back button navigation
      */
@@ -280,143 +310,144 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     };
 
     return (
-        <PageLayout
-            title={ t("console:develop.pages.applicationsSettings.title") }
-            description={ (
-                <>
-                    { t("console:develop.pages.applicationsSettings.subTitle") }
-                    <DocumentationLink
-                        link={ getLink("develop.applications.applicationsSettings.dcr.learnMore") }
-                    >
-                        { t("console:develop.pages.applicationsSettings.learnMore") }
-                    </DocumentationLink>
-                </>
-            ) }
-            backButton={ {
-                "data-componentid": `${ componentId }-page-back-button`,
-                onClick:  handleBackButtonClick,
-                text: t("console:develop.pages.applicationsSettings.backButton")
-            } }
-            bottomMargin={ false }
-            contentTopMargin={ true }
-            pageHeaderMaxWidth={ true }
-            data-componentid={ `${ componentId }-page-layout` }
-        >
-            <EmphasizedSegment padded="very">
-            
-                <Form
-                    id={ FORM_ID }
-                    uncontrolledForm={ false }
-                    onSubmit={ (values: ApplicationsSettingsFormValuesInterface) => {
-                        updateConfigurations(values);
-                    } }
-                    initialValues={ {
-                        ssaJwks: ssaJwksState,
-                        authenticationRequired: isAuthenticationRequired,
-                        mandateSSA: isMandateSSA,
-                        enableFapiEnforcement: isEnableFapiEnforcement,
-                        dcrEndpoint: dcrEndpointState
-
-                    } }
-                    validate={ validateForm }
-                    data-componentid={ `${ componentId }-form` }
-                >
+        !isLoading?
+            (<PageLayout
+                title={ t("console:develop.pages.applicationsSettings.title") }
+                description={ (
+                    <>
+                        { t("console:develop.pages.applicationsSettings.subTitle") }
+                        <DocumentationLink
+                            link={ getLink("develop.applications.applicationsSettings.dcr.learnMore") }
+                        >
+                            { t("console:develop.pages.applicationsSettings.learnMore") }
+                        </DocumentationLink>
+                    </>
+                ) }
+                backButton={ {
+                    "data-componentid": `${ componentId }-page-back-button`,
+                    onClick:  handleBackButtonClick,
+                    text: t("console:develop.pages.applicationsSettings.backButton")
+                } }
+                bottomMargin={ false }
+                contentTopMargin={ true }
+                pageHeaderMaxWidth={ true }
+                data-componentid={ `${ componentId }-page-layout` }
+            >
+                <EmphasizedSegment padded="very">
                 
-                    <Field.Input
-                        ariaLabel="DCR Endpoint"
-                        inputType="text"
-                        name="dcrEndpoint"
-                        label={ t("applications:forms.applicationsSettings.fields.dcrEndpoint.label") }
-                        placeholder={ t("applications:forms.applicationsSettings.fields.dcrEndpoint.placeholder") }
-                        hint={ t("applications:forms.applicationsSettings.fields.dcrEndpoint.hint") }
-                        required={ false }
-                        readOnly={ true }
-                        maxLength={ 150 }
-                        minLength={ 10 }
-                        width={ 16 }
-                        listen={ null }
-                        data-componentid={ `${componentId}-dcr-endpoint-url` }
+                    <Form
+                        id={ FORM_ID }
+                        uncontrolledForm={ false }
+                        onSubmit={ (values: ApplicationsSettingsFormValuesInterface) => {
+                            updateConfigurations(values);
+                        } }
+                        initialValues={ {
+                            ssaJwks: ssaJwksState,
+                            authenticationRequired: isAuthenticationRequired,
+                            mandateSSA: isMandateSSA,
+                            enableFapiEnforcement: isEnableFapiEnforcement,
+                            dcrEndpoint: dcrEndpointState
+                        } }
+                        validate={ validateForm }
+                        data-componentid={ `${ componentId }-form` }
                     >
-                        <CopyInputField
-                            value={ dcrEndpointState }
-                        />
-                    </Field.Input>
-                    <Field.Checkbox
-                        ariaLabel="Require Authentication"
-                        name="authenticationRequired"
-                        label={ t("applications:forms.applicationsSettings.fields.authenticationRequired.label") }
-                        hint={ (
-                            <>
-                                { t("applications:forms.applicationsSettings.fields.authenticationRequired.hint") }
-                                <DocumentationLink
-                                    link={ getLink("develop.applications.applicationsSettings.dcr.authenticationRequired.learnMore") }
-                                >
-                                    { t("console:develop.pages.applicationsSettings.learnMore") }
-                                </DocumentationLink>
-                            </>
-                        ) }
-                        tabIndex={ 3 }
-                        width={ 16 }
-                        listen={ 
-                            function (value: boolean) {
-                                setAuthenticationRequired(value);
-                                if (!value) {
-                                    setMandateSSA(true);
+                    
+                        <Field.Input
+                            ariaLabel="DCR Endpoint"
+                            inputType="text"
+                            name="dcrEndpoint"
+                            label={ t("applications:forms.applicationsSettings.fields.dcrEndpoint.label") }
+                            hint={ t("applications:forms.applicationsSettings.fields.dcrEndpoint.hint") }
+                            required={ false }
+                            readOnly={ true }
+                            maxLength={ 150 }
+                            minLength={ 10 }
+                            width={ 16 }
+                            listen={ null }
+                            data-componentid={ `${componentId}-dcr-endpoint-url` }
+                        >
+                            <CopyInputField
+                                value={ dcrEndpointState }
+                            />
+                        </Field.Input>
+                        <Field.Checkbox
+                            ariaLabel="Require Authentication"
+                            name="authenticationRequired"
+                            label={ t("applications:forms.applicationsSettings.fields.authenticationRequired.label") }
+                            hint={ (
+                                <>
+                                    { t("applications:forms.applicationsSettings.fields.authenticationRequired.hint") }
+                                    <DocumentationLink
+                                        link={ getLink("develop.applications.applicationsSettings.dcr.authenticationRequired.learnMore") }
+                                    >
+                                        { t("console:develop.pages.applicationsSettings.learnMore") }
+                                    </DocumentationLink>
+                                </>
+                            ) }
+                            tabIndex={ 3 }
+                            width={ 16 }
+                            listen={ (value: boolean) => {
+                                    setAuthenticationRequired(value);
+                                    if (!value) {
+                                        setMandateSSA(true);
+                                    }
                                 }
                             }
-                        }
-                        data-componentid={ `${ componentId }-authenticationRequired-checkbox` }
-                    />
-                    <Field.Checkbox
-                        ariaLabel="Mandate SSA"
-                        name="mandateSSA"
-                        label={ t("applications:forms.applicationsSettings.fields.mandateSSA.label") }
-                        hint={ t("applications:forms.applicationsSettings.fields.mandateSSA.hint") }
-                        tabIndex={ 3 }
-                        width={ 16 }
-                        data-testid={ `${ componentId }-applications-settings-mandateSSA-checkbox` }
-                        readOnly={ !isAuthenticationRequired }
-                        listen={ (value: boolean) => setMandateSSA(value) }
-                        data-componentid={ `${ componentId }-mandateSSA-checkbox` }
-                    />
-                    <Field.Input
-                        ariaLabel="JWKS Endpoint "
-                        inputType="url"
-                        name="ssaJwks"
-                        label={ t("applications:forms.applicationsSettings.fields.ssaJwks.label") }
-                        placeholder={ t("applications:forms.applicationsSettings.fields.ssaJwks.placeholder") }
-                        hint={ t("applications:forms.applicationsSettings.fields.ssaJwks.hint") }
-                        required={ isMandateSSA || !isAuthenticationRequired}
-                        maxLength={ 150 }
-                        minLength={ 10 }
-                        width={ 16 }
-                        data-componentid={ `${ componentId }-ssaJwks-checkbox` }
-                    />
-                    <Field.Checkbox
-                        ariaLabel="Enforce Fapi"
-                        name="enableFapiEnforcement"
-                        label={ t("applications:forms.applicationsSettings.fields.enforceFapi.label")}
-                        hint={ t("applications:forms.applicationsSettings.fields.enforceFapi.hint") }
-                        tabIndex={ 3 }
-                        width={ 16 }
-                        listen={ (value: boolean) => setEnableFapiEnforcement(value) }
-                        data-componentid={ `${ componentId }-enableFapiEnforcement-checkbox` }
-                    />
-                    <Field.Button
-                        form={ FORM_ID }
-                        size="small"
-                        buttonType="primary_btn"
-                        ariaLabel="DCR Configuration update button"
-                        name="update-button"
-                        disabled={ isSubmitting }
-                        loading={ isSubmitting }
-                        label={ t("common:update") }
-                        hidden={ null }
-                        data-componentid={ `${ componentId }-submit-button` }
-                    />
-                </Form>
-            </EmphasizedSegment>
-        </PageLayout>
+                            data-componentid={ `${ componentId }-authenticationRequired-checkbox` }
+                        />
+                        <Field.Checkbox
+                            ariaLabel="Mandate SSA"
+                            name="mandateSSA"
+                            label={ t("applications:forms.applicationsSettings.fields.mandateSSA.label") }
+                            hint={ t("applications:forms.applicationsSettings.fields.mandateSSA.hint") }
+                            tabIndex={ 3 }
+                            width={ 16 }
+                            readOnly={ !isAuthenticationRequired }
+                            listen={ (value: boolean) => setMandateSSA(value) }
+                            data-componentid={ `${ componentId }-mandateSSA-checkbox` }
+                        />
+                        <Field.Input
+                            ariaLabel="JWKS Endpoint"
+                            inputType="url"
+                            name="ssaJwks"
+                            label={ t("applications:forms.applicationsSettings.fields.ssaJwks.label") }
+                            placeholder={ t("applications:forms.applicationsSettings.fields.ssaJwks.placeholder") }
+                            hint={ t("applications:forms.applicationsSettings.fields.ssaJwks.hint") }
+                            required={ isMandateSSA || !isAuthenticationRequired}
+                            maxLength={ 150 }
+                            minLength={ 10 }
+                            width={ 16 }
+                            data-componentid={ `${ componentId }-ssaJwks-checkbox` }
+                        />
+                        <Field.Checkbox
+                            ariaLabel="Enforce Fapi"
+                            name="enableFapiEnforcement"
+                            label={ t("applications:forms.applicationsSettings.fields.enforceFapi.label")}
+                            hint={ t("applications:forms.applicationsSettings.fields.enforceFapi.hint") }
+                            tabIndex={ 3 }
+                            width={ 16 }
+                            listen={ (value: boolean) => setEnableFapiEnforcement(value) }
+                            data-componentid={ `${ componentId }-enableFapiEnforcement-checkbox` }
+                        />
+                        <Field.Button
+                            form={ FORM_ID }
+                            size="small"
+                            buttonType="primary_btn"
+                            ariaLabel="DCR Configuration update button"
+                            name="update-button"
+                            disabled={ isSubmitting }
+                            loading={ isSubmitting }
+                            label={ t("common:update") }
+                            data-componentid={ `${ componentId }-submit-button` }
+                        />
+                    </Form>
+                </EmphasizedSegment>
+            </PageLayout>):
+            (
+                <EmphasizedSegment padded="very">
+                    <ContentLoader inline="centered" active/>
+                </EmphasizedSegment>
+            )
     );
 };
 

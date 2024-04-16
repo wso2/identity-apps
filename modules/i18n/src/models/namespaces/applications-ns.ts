@@ -991,7 +991,6 @@ export interface ApplicationsNS {
             fields :{
                 dcrEndpoint: {
                     label: string,
-                    placeholder: string,
                     hint: string
                 };
                 ssaJwks: {

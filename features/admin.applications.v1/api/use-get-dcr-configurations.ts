@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,7 @@ import useRequest, {
     RequestResultInterface
 } from "../../admin.core.v1/hooks/use-request";
 import { store } from "../../admin.core.v1/store";
-import { ApplicationsSettingsFormValuesInterface } from "../pages/applications-settings";
+import { ApplicationsSettingsFormValuesInterface } from "../models/applications-settings";
 
 /**
  * Hook to get the dcr configurations from the API.

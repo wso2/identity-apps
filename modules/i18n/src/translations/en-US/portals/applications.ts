@@ -1186,7 +1186,6 @@ export const applications: ApplicationsNS = {
             fields: {
                 dcrEndpoint: {
                     label: "DCR Endpoint",
-                    placeholder: "https://dev.api.asgardeo.io/t/john/api/identity/oauth2/dcr/v1.1/register",
                     hint: "The DCR endpoint allows OAuth clients to be registered as applications in an authorization server."
                 },
                 ssaJwks: {
