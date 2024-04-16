@@ -108,6 +108,7 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
 
 const OIDC_CLIENT_ID_SECRET_MAX_LENGTH: number = 100;
 const URL_MAX_LENGTH: number = 2048;
+const SHARE_FEDERATED_TOKEN: string = "ShareFederatedToken";
 /**
  * The backend response includes both of the following keys
  * for different connections.
@@ -998,6 +999,31 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     };
 
                     authenticator.meta.properties.push(logoutUrlMeta);
+                }
+
+                // Sharing federated token is allowed only for the OIDC connections.
+                if (!authenticator.meta.properties?.find(
+                    (prop: CommonPluggableComponentMetaPropertyInterface) => prop.key === SHARE_FEDERATED_TOKEN)) {
+
+                    const shareFederatedTokenData: CommonPluggableComponentPropertyInterface = {
+                        key: SHARE_FEDERATED_TOKEN
+                    };
+
+                    authenticator.data.properties.push(shareFederatedTokenData);
+
+                    const shareFederatedTokenMeta: CommonPluggableComponentMetaPropertyInterface = {
+                        description: t("authenticationProvider:edit.oidc.shareFederatedToken.description"),
+                        displayName: t("authenticationProvider:edit.oidc.shareFederatedToken.displayName"),
+                        displayOrder: 20,
+                        isConfidential: false,
+                        isMandatory: false,
+                        key: SHARE_FEDERATED_TOKEN,
+                        options: [],
+                        subProperties: [],
+                        type: "boolean"
+                    };
+
+                    authenticator.meta.properties.push(shareFederatedTokenMeta);
                 }
             }
 
