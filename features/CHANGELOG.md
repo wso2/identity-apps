@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.14.26
+
+### Patch Changes
+
+- [#5973](https://github.com/wso2/identity-apps/pull/5973) [`f21d0c7f14`](https://github.com/wso2/identity-apps/commit/f21d0c7f14fcdcfed978546da56cbe8f504a3198) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix minor bug
+
 ## 2.14.25
 
 ### Patch Changes
