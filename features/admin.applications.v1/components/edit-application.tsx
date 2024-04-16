@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -44,7 +44,6 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import { applicationConfig } from "../../admin.extensions.v1";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -53,6 +52,8 @@ import {
     getCORSOrigins,
     history
 } from "../../admin.core.v1";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "../../admin.extensions.v1";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getInboundProtocolConfig } from "../api";
@@ -72,6 +73,7 @@ import {
     SupportedAuthProtocolTypes,
     URLFragmentTypes
 } from "../models";
+import { ApplicationTemplateListInterface } from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**
@@ -110,6 +112,13 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * Application template.
      */
     template?: ApplicationTemplateInterface;
+    /**
+     * Template that exists in the Extension Management API.
+     *
+     * This will be populated if the current application is created using
+     * an application template from the Extension Management API.
+     */
+    extensionTemplate?: ApplicationTemplateListInterface;
     /**
      * Make the form read only.
      */

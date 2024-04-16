@@ -18,13 +18,30 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import useResourceEndpoints from "@wso2is/features/admin.core.v1/hooks/use-resource-endpoints";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { setI18nConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
 import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
+import { AccessControlUtils } from "@wso2is/features/admin.access-control.v1/configs/access-control";
+import { EventPublisher, PreLoader } from "@wso2is/features/admin.core.v1";
+import { ProtectedRoute } from "@wso2is/features/admin.core.v1/components";
+import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/features/admin.core.v1/configs";
+import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
+import { history } from "@wso2is/features/admin.core.v1/helpers";
+import useResourceEndpoints from "@wso2is/features/admin.core.v1/hooks/use-resource-endpoints";
+import {
+    ConfigReducerStateInterface,
+    DocumentationLinksInterface,
+    FeatureConfigInterface,
+    ServiceResourceEndpointsInterface
+} from "@wso2is/features/admin.core.v1/models";
+import { AppState, store } from "@wso2is/features/admin.core.v1/store";
+import { commonConfig } from "@wso2is/features/admin.extensions.v1";
+import { useGetAllFeatures } from "@wso2is/features/admin.extensions.v1/components/feature-gate/api/feature-gate";
+import { featureGateConfig } from "@wso2is/features/admin.extensions.v1/configs/feature-gate";
+import { OrganizationUtils } from "@wso2is/features/admin.organizations.v1/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
@@ -46,25 +63,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import { commonConfig } from "@wso2is/features/admin.extensions.v1";
-import { useGetAllFeatures } from "@wso2is/features/admin.extensions.v1/components/feature-gate/api/feature-gate";
-import { featureGateConfig } from "@wso2is/features/admin.extensions.v1/configs/feature-gate";
-import { AccessControlUtils } from "@wso2is/features/admin.access-control.v1/configs/access-control";
-import { EventPublisher, PreLoader } from "@wso2is/features/admin.core.v1";
-import { ProtectedRoute } from "@wso2is/features/admin.core.v1/components";
-import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/features/admin.core.v1/configs";
-import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
-import { history } from "@wso2is/features/admin.core.v1/helpers";
-import {
-    ConfigReducerStateInterface,
-    DocumentationLinksInterface,
-    FeatureConfigInterface,
-    ServiceResourceEndpointsInterface
-} from "@wso2is/features/admin.core.v1/models";
-import { AppState, store } from "@wso2is/features/admin.core.v1/store";
+import CommonFeatureProviders from "../../../features/admin.core.v1/components/common-feature-provider";
 import "moment/locale/si";
 import "moment/locale/fr";
-import { OrganizationUtils } from "@wso2is/features/admin.organizations.v1/utils";
 
 /**
  * Main App component.
@@ -485,46 +486,48 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 </Trans>)
                                             }
                                         />
-                                        <Switch>
-                                            <Redirect
-                                                exact
-                                                from="/"
-                                                to={ AppConstants.getAppHomePath() }
-                                            />
-                                            {
-                                                baseRoutes.map((route: RouteInterface, index: number) => {
-                                                    return (
-                                                        route.protected ?
-                                                            (
-                                                                <ProtectedRoute
-                                                                    component={ route.component }
-                                                                    path={ route.path }
-                                                                    key={ index }
-                                                                    exact={ route.exact }
-                                                                />
-                                                            )
-                                                            :
-                                                            (
-                                                                <Route
-                                                                    path={ route.path }
-                                                                    render={
-                                                                        (props:  RouteComponentProps<
-                                                                            { [p: string]: string },
-                                                                            StaticContext, unknown
-                                                                        >) => {
-                                                                            return (<route.component
-                                                                                { ...props }
-                                                                            />);
+                                        <CommonFeatureProviders>
+                                            <Switch>
+                                                <Redirect
+                                                    exact
+                                                    from="/"
+                                                    to={ AppConstants.getAppHomePath() }
+                                                />
+                                                {
+                                                    baseRoutes.map((route: RouteInterface, index: number) => {
+                                                        return (
+                                                            route.protected ?
+                                                                (
+                                                                    <ProtectedRoute
+                                                                        component={ route.component }
+                                                                        path={ route.path }
+                                                                        key={ index }
+                                                                        exact={ route.exact }
+                                                                    />
+                                                                )
+                                                                :
+                                                                (
+                                                                    <Route
+                                                                        path={ route.path }
+                                                                        render={
+                                                                            (props:  RouteComponentProps<
+                                                                                { [p: string]: string },
+                                                                                StaticContext, unknown
+                                                                            >) => {
+                                                                                return (<route.component
+                                                                                    { ...props }
+                                                                                />);
+                                                                            }
                                                                         }
-                                                                    }
-                                                                    key={ index }
-                                                                    exact={ route.exact }
-                                                                />
-                                                            )
-                                                    );
-                                                })
-                                            }
-                                        </Switch>
+                                                                        key={ index }
+                                                                        exact={ route.exact }
+                                                                    />
+                                                                )
+                                                        );
+                                                    })
+                                                }
+                                            </Switch>
+                                        </CommonFeatureProviders>
                                     </>
                                 </SessionManagementProvider>
                             </AccessControlProvider>

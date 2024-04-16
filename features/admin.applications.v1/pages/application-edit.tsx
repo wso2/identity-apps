@@ -62,6 +62,7 @@ import {
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
+import { ApplicationTemplateListInterface } from "../models/application-templates";
 
 /**
  * Prop types for the applications edit page component.
@@ -104,6 +105,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const [ applicationId, setApplicationId ] = useState<string>(undefined);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
+    const [
+        extensionApplicationTemplate,
+        setExtensionApplicationTemplate
+    ] = useState<ApplicationTemplateListInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);

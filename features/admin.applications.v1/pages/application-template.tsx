@@ -27,7 +27,6 @@ import {
 import ApplicationCreationAdapter from "../components/application-templates/application-creation-adapter";
 import ApplicationTemplateGrid from "../components/application-templates/application-templates-grid";
 import { ApplicationTemplateListInterface } from "../models/application-templates";
-import ApplicationTemplatesProvider from "../provider/application-templates-provider";
 
 /**
  * Props for the Applications templates page.
@@ -62,37 +61,35 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     };
 
     return (
-        <ApplicationTemplatesProvider>
-            <PageLayout
-                pageTitle="Register New Application"
-                title={ t("console:develop.pages.applicationTemplate.title") }
-                contentTopMargin={ true }
-                description={ t("console:develop.pages.applicationTemplate.subTitle") }
-                backButton={ {
-                    "data-testid": `${ testId }-page-back-button`,
-                    onClick: handleBackButtonClick,
-                    text: t("console:develop.pages.applicationTemplate.backButton")
+        <PageLayout
+            pageTitle="Register New Application"
+            title={ t("console:develop.pages.applicationTemplate.title") }
+            contentTopMargin={ true }
+            description={ t("console:develop.pages.applicationTemplate.subTitle") }
+            backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:develop.pages.applicationTemplate.backButton")
+            } }
+            titleTextAlign="left"
+            bottomMargin={ false }
+            showBottomDivider
+            data-testid={ `${ testId }-page-layout` }
+            headingColumnWidth={ 13 }
+            actionColumnWidth={ 3 }
+        >
+            <ApplicationTemplateGrid
+                onTemplateSelect={ (template: ApplicationTemplateListInterface) => {
+                    setSelectedTemplate(template);
+                    setShowWizard(true);
                 } }
-                titleTextAlign="left"
-                bottomMargin={ false }
-                showBottomDivider
-                data-testid={ `${ testId }-page-layout` }
-                headingColumnWidth={ 13 }
-                actionColumnWidth={ 3 }
-            >
-                <ApplicationTemplateGrid
-                    onTemplateSelect={ (template: ApplicationTemplateListInterface) => {
-                        setSelectedTemplate(template);
-                        setShowWizard(true);
-                    } }
-                />
-                <ApplicationCreationAdapter
-                    template={ selectedTemplate }
-                    showWizard={ showWizard }
-                    onClose={ () => setShowWizard(false) }
-                />
-            </PageLayout>
-        </ApplicationTemplatesProvider>
+            />
+            <ApplicationCreationAdapter
+                template={ selectedTemplate }
+                showWizard={ showWizard }
+                onClose={ () => setShowWizard(false) }
+            />
+        </PageLayout>
     );
 };
 
