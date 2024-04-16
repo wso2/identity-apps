@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.14.23
+
+### Patch Changes
+
+- [#5962](https://github.com/wso2/identity-apps/pull/5962) [`343cb2a59a`](https://github.com/wso2/identity-apps/commit/343cb2a59a9b2190ab35c28aa311999070a38360) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove unsupported \_ char from special character username regex.
+
 ## 2.14.22
 
 ### Patch Changes
