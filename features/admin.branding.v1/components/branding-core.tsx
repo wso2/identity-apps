@@ -156,7 +156,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const {
-        mutate: mutateCustomTextPreferenceFetchRequest
+        mutateMultiple: mutateCustomTextPreferenceFetchRequests
     } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
 
     const isBrandingPageLoading: boolean = useMemo(
@@ -565,7 +565,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         setIsBrandingConfigured(false);
         setBrandingPreference(DEFAULT_PREFERENCE);
         mutateBrandingPreferenceFetchRequest();
-        mutateCustomTextPreferenceFetchRequest();
+        mutateCustomTextPreferenceFetchRequests();
 
         // Increment the tabs component key to remount the component on branding revert.
         setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);

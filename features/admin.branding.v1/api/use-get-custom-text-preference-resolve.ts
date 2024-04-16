@@ -17,6 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
+import { mutate as swrMutate } from "swr";
 import { I18nConstants } from "../../admin.core.v1/constants/i18n-constants";
 import useRequest, {
     RequestConfigInterface,
@@ -53,6 +54,10 @@ const useGetCustomTextPreferenceResolve = <
     ): RequestResultInterface<Data, Error> => {
     const { organizationType } = useGetCurrentOrganizationType();
 
+    const endpointUrl: string = organizationType === OrganizationType.SUBORGANIZATION
+        ? `${store.getState().config.endpoints.brandingTextPreferenceSubOrg}/resolve`
+        : `${store.getState().config.endpoints.brandingTextPreference}/resolve`;
+
     const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
         ? store.getState()?.organization?.organization?.id
         : name;
@@ -69,9 +74,7 @@ const useGetCustomTextPreferenceResolve = <
             screen,
             type
         },
-        url: organizationType === OrganizationType.SUBORGANIZATION
-            ? `${store.getState().config.endpoints.brandingTextPreferenceSubOrg}/resolve`
-            : `${store.getState().config.endpoints.brandingTextPreference}/resolve`
+        url: endpointUrl
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {
@@ -89,12 +92,23 @@ const useGetCustomTextPreferenceResolve = <
         };
     }
 
+    const mutateMultiple = () => {
+        swrMutate(
+            (key: string) => {
+                return typeof key === "string" && key.includes(endpointUrl);
+            },
+            undefined,
+            { revalidate: false }
+        );
+    };
+
     return {
         data,
         error,
         isLoading: !error && !data,
         isValidating,
-        mutate
+        mutate,
+        mutateMultiple
     };
 };
 
