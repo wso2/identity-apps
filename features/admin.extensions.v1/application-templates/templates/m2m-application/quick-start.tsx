@@ -23,8 +23,7 @@ import {
 } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    ReactElement,
-    ReactNode
+    ReactElement
 } from "react";
 import { Grid } from "semantic-ui-react";
 import {
