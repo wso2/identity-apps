@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,11 +24,12 @@ import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@
 import { AxiosError } from "axios";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
 import { getApplicationDetails } from "../../../admin.applications.v1/api";
 import { ApplicationBasicInterface } from "../../../admin.applications.v1/models";
+import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
 import {
     deleteIdentityProvider,
     getIDPConnectedApps,
@@ -120,6 +121,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ loading, setLoading ] = useState(false);
@@ -291,11 +293,14 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     />
                     <Divider hidden />
                     { !(IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(editingIDP.name)) && (
-                        <Show when={ AccessControlConstants.IDP_EDIT || AccessControlConstants.IDP_DELETE }>
+                        <Show
+                            when={ featureConfig?.identityProviders?.scopes?.update ||
+                                featureConfig?.identityProviders?.scopes?.delete }
+                        >
                             <DangerZoneGroup
                                 sectionHeader={ t("authenticationProvider:" +
                                 "dangerZoneGroup.header") }>
-                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                     <DangerZone
                                         actionTitle={ t("authenticationProvider:" +
                                             "dangerZoneGroup.disableIDP.actionTitle",
@@ -315,7 +320,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                         data-testid={ `${ testId }-disable-idp-danger-zone` }
                                     />
                                 </Show>
-                                <Show when={ AccessControlConstants.IDP_DELETE }>
+                                <Show when={ featureConfig?.identityProviders?.scopes?.delete }>
                                     <DangerZone
                                         actionTitle={ t("authenticationProvider:" +
                                             "dangerZoneGroup.deleteIDP.actionTitle") }

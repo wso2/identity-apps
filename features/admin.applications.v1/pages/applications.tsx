@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -55,7 +54,6 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import { applicationConfig } from "../../admin.extensions.v1";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,
@@ -68,6 +66,8 @@ import {
     getGeneralIcons,
     history
 } from "../../admin.core.v1";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "../../admin.extensions.v1";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
@@ -542,32 +542,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             pageTitle="Applications"
             action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
                 filteredApplicationList?.totalResults > 0) ? (
-                    <>
-                        {/* TODO : Check tenant admin access control */}
-                        <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                            <Button
-                                data-componentid={ `${ componentId }-applications-settings-button` }
-                                icon="setting"
-                                onClick={ handleSettingsButton }
-                            >
-                            </Button>
-                        </Show>
-                        <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                            <PrimaryButton
-                                onClick={ (): void => {
-                                    eventPublisher.publish("application-click-new-application-button");
-                                    history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                                } }
-                                data-testid={ `${ testId }-list-layout-add-button` }
-                            >
-                                <Icon name="add" />
-                                { t("applications:list.actions.add") }
-                            </PrimaryButton>
-                        </Show>
-                    </>
-
-                ) : (
-                    // TODO : Check tenant admin access control
+                <>
+                    {/* TODO : Check tenant admin access control */}
                     <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                         <Button
                             data-componentid={ `${ componentId }-applications-settings-button` }
@@ -576,8 +552,33 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         >
                         </Button>
                     </Show>
+                    <Show
+                        when={ featureConfig?.applications?.scopes?.create }
+                    >
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                eventPublisher.publish("application-click-new-application-button");
+                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                            } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <Icon name="add" />
+                            { t("applications:list.actions.add") }
+                        </PrimaryButton>
+                    </Show>
+                </>
+            ) : (
+                  // TODO : Check tenant admin access control
+                  <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                      <Button
+                          data-componentid={ `${ componentId }-applications-settings-button` }
+                          icon="setting"
+                          onClick={ handleSettingsButton }
+                      >
+                      </Button>
+                  </Show>
 
-                )}
+              )}
             title={ t("console:develop.pages.applications.title") }
             description={ organizationType !== OrganizationType.SUBORGANIZATION
                 ? (

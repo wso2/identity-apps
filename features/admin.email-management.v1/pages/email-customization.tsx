@@ -39,9 +39,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import BrandingPreferenceProvider from "../../admin.branding.v1/providers/branding-preference-provider";
-import { AppState, I18nConstants } from "../../admin.core.v1";
+import { AppState, FeatureConfigInterface, I18nConstants } from "../../admin.core.v1";
 import {
     createNewEmailTemplate,
     deleteEmailTemplate,
@@ -82,9 +81,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];
     const enableCustomEmailTemplates: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.enableCustomEmailTemplates);
-    const featureConfig: FeatureAccessConfigInterface = useSelector(
+    const emailTemplatesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.emailTemplates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -92,25 +92,25 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(
-            featureConfig,
+            emailTemplatesFeatureConfig,
             EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_UPDATE")
         ) || !hasRequiredScopes(
-            featureConfig,
-            featureConfig?.scopes?.update,
+            emailTemplatesFeatureConfig,
+            emailTemplatesFeatureConfig?.scopes?.update,
             allowedScopes
         );
-    }, [ featureConfig, allowedScopes ]);
+    }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
     const hasEmailTemplateCreatePermissions: boolean = useMemo(() => {
         return isFeatureEnabled(
-            featureConfig,
+            emailTemplatesFeatureConfig,
             EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_CREATE")
         ) && hasRequiredScopes(
-            featureConfig,
-            featureConfig?.scopes?.create,
+            emailTemplatesFeatureConfig,
+            emailTemplatesFeatureConfig?.scopes?.create,
             allowedScopes
         );
-    }, [ featureConfig, allowedScopes ]);
+    }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
     const {
         data: emailTemplatesList,
@@ -427,7 +427,9 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     data-componentid={ `${ componentId }-forms` }
                 />
 
-                <Show when={ AccessControlConstants.EMAIL_TEMPLATES_EDIT }>
+                <Show
+                    when={ featureConfig?.emailTemplates?.scopes?.update }
+                >
                     {
                         (!isTemplateNotAvailable || hasEmailTemplateCreatePermissions) && (
                             <EmailCustomizationFooter

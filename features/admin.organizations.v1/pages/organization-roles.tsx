@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -269,7 +270,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     /**
      * Handles the organization role create action.
      */
-    const handleOrganizationRoleCreate: (roleData: CreateRoleInterface) 
+    const handleOrganizationRoleCreate: (roleData: CreateRoleInterface)
     => void = useCallback((roleData: CreateRoleInterface) => {
         // Setting up the data model for organization role creation (temp)
         roleData.groups.forEach((group: CreateGroupMemberInterface) => {
@@ -360,7 +361,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 action={
                     !isLoading &&
                     !(!searchQuery && (isEmpty(organizationRoles) || organizationRoles.length <= 0)) && (
-                        <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                        <Show when={ featureConfig?.organizations?.scopes?.create }>
                             <PrimaryButton
                                 disabled={ isOrganizationRoleListRequestLoading }
                                 loading={ isOrganizationRoleListRequestLoading }

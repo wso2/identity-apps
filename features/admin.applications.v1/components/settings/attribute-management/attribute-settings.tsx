@@ -41,7 +41,6 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
-import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../admin.claims.v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { applicationConfig } from "../../../../admin.extensions.v1";
@@ -1135,9 +1134,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         * Distpatch an error alert when the alternative subject identifier value is not in the
         * requested attribute list.
         */
-        if( onlyOIDCConfigured && !submitValue.claimConfiguration.requestedClaims.map(
-            (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
-            .includes(submitValue.claimConfiguration.subject.claim.uri)) {
+        if( onlyOIDCConfigured && submitValue.claimConfiguration.subject.claim.uri !== DefaultSubjectAttribute
+            && !submitValue.claimConfiguration.requestedClaims.map(
+                (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
+                .includes(submitValue.claimConfiguration.subject.claim.uri)) {
             onClaimConfigUpdateWithNotAllowedSubjectAttributeError();
 
             return;
@@ -1353,7 +1353,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                 !readOnly
                                 && (
                                     <Show
-                                        when={ AccessControlConstants.APPLICATION_EDIT }
+                                        when={ featureConfig?.applications?.scopes?.update }
                                     >
                                         <Divider hidden/>
                                         <Grid.Row>

@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+
+import { Show } from "@wso2is/access-control";
 import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -31,7 +32,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { commonConfig } from "../../admin.extensions.v1/configs";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -42,6 +42,7 @@ import {
     getAUserStore,
     getEmptyPlaceholderIllustrations
 } from "../../admin.core.v1";
+import { commonConfig } from "../../admin.extensions.v1/configs";
 import { RootOnlyComponent } from "../../admin.organizations.v1/components";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../admin.userstores.v1/api";
@@ -288,7 +289,9 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             action={
                 (!isGroupsListRequestLoading && paginatedGroups?.length > 0)
                 && (
-                    <Show when={ AccessControlConstants.GROUP_WRITE }>
+                    <Show
+                        when={ featureConfig?.groups?.scopes?.create }
+                    >
                         <PrimaryButton
                             data-testid="group-mgt-groups-list-add-button"
                             onClick={ () => setShowWizard(true) }

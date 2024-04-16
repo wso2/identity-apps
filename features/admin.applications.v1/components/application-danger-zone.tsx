@@ -17,23 +17,29 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { AppConstants, AppState, EventPublisher, FeatureConfigInterface, UIConfigInterface, history } from "../../admin.core.v1";
+import {
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConfigInterface,
+    history
+} from "../../admin.core.v1";
 import { deleteApplication } from "../api";
-   
+
 /**
  * Prop types of the  ApplicationDangerZone component.
- */ 
-interface ApplicationDangerZonePropsInterface extends 
+ */
+interface ApplicationDangerZonePropsInterface extends
     SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
         /**
          * Currently editing application id.
@@ -52,12 +58,12 @@ interface ApplicationDangerZonePropsInterface extends
          */
         content?: string;
     }
-    
+
 /**
  * Application Danger Zone component
- * 
+ *
  * @param props - Props injected to the component.
- * 
+ *
  * @returns ApplicationDangerZoneComponent.
  */
 export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDangerZonePropsInterface> = (
@@ -77,10 +83,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
- 
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
- 
+
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     /**
      * Deletes an application.
@@ -96,12 +102,12 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                     level: AlertLevels.SUCCESS,
                     message: t("applications:notifications.deleteApplication.success.message")
                 }));
- 
+
                 setShowDeleteConfirmationModal(false);
                 onDelete();
 
                 eventPublisher.publish(
-                    "application-delete", 
+                    "application-delete",
                     { "client-id": clientId }
                 );
             })
@@ -114,10 +120,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                         message: t("applications:notifications.deleteApplication.error" +
                             ".message")
                     }));
- 
+
                     return;
                 }
- 
+
                 dispatch(addAlert({
                     description: t("applications:notifications.deleteApplication" +
                         ".genericError.description"),
@@ -126,19 +132,19 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                         ".message")
                 }));
                 eventPublisher.publish(
-                    "application-delete-error", 
+                    "application-delete-error",
                     { "client-id": clientId }
                 );
             });
     };
- 
+
     /**
      * Called when an application is deleted.
      */
     const onDelete = (): void => {
         history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
- 
+
     /**
      * Resolves the danger actions.
      *
@@ -149,14 +155,14 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
             featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)) {
             return null;
         }
- 
+
         if (UIConfig.systemAppsIdentifiers.includes(name)) {
             return null;
         }
- 
+
         return (
             <Show
-                when={ AccessControlConstants.APPLICATION_DELETE }
+                when={ featureConfig?.applications?.scopes?.delete }
             >
                 <DangerZoneGroup
                     sectionHeader={ t("applications:dangerZoneGroup.header") }
@@ -182,7 +188,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
             </Show>
         );
     };
-     
+
     return (
         <>
             { resolveDangerActions() }
@@ -215,7 +221,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
                     data-componentid={ `${ componentId }-application-delete-confirmation-modal-content` }
-                >   
+                >
                     { t("applications:confirmations.deleteApplication.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>

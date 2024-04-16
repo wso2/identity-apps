@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,17 +17,17 @@
  */
 
 import { PlusIcon } from "@oxygen-ui/react-icons";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert, setTenants } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, Grid, Icon, Input, Item, Loader, Segment } from "semantic-ui-react";
-import { getMiscellaneousIcons } from "../../../../../admin.core.v1";
+import { AppState, FeatureConfigInterface, getMiscellaneousIcons } from "../../../../../admin.core.v1";
 import OrganizationSwitcherList from
     "../../../../../admin.organizations.v1/components/organization-switch/organization-switch-list";
 import { OrganizationManagementConstants } from "../../../../../admin.organizations.v1/constants";
@@ -49,6 +49,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ filteredOrganizations, setFilteredOrganizations ] = useState<OrganizationInterface[]>([]);
@@ -235,7 +236,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                                         <h5> Organizations </h5>
                                     </Grid.Column>
                                     <Grid.Column width={ 4 }>
-                                        <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                                        <Show when={ featureConfig?.organizations?.scopes?.create }>
                                             <Button
                                                 basic
                                                 floated="right"

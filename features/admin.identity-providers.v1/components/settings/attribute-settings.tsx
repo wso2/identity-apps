@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,9 +24,10 @@ import { EmphasizedSegment } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "./../../../admin.core.v1";
 import { AttributeSelection, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
 import { getAllLocalClaims } from "../../../admin.claims.v1/api";
@@ -142,6 +143,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     // Manage available local claims.
     const [ availableLocalClaims, setAvailableLocalClaims ] = useState<IdentityProviderClaimInterface[]>([]);
@@ -354,10 +356,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     <Grid.Row columns={ 1 }>
                         <Grid.Column>
                             <AttributesSelectionV2
-                                onAttributesSelected={ 
+                                onAttributesSelected={
                                     (mappingsToBeAdded : IdentityProviderCommonClaimMappingInterface[]) => {
                                         setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
-                                    } 
+                                    }
                                 }
                                 attributeList={
                                     hideIdentityClaimAttributes
@@ -371,8 +373,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         </Grid.Column>
                     </Grid.Row>
                     <Divider hidden/>
-
-                    { 
+                    {
                         selectedClaimsWithMapping && (
                             <UriAttributesSettings
                                 dropDownOptions={
@@ -392,7 +393,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
                                 isSaml={ isSaml }
                             />
-                        ) 
+                        )
                     }
                     <Divider hidden/>
 
@@ -429,7 +430,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     <Divider hidden/>
                     <Grid.Row>
                         <Grid.Column>
-                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                 <Button
                                     primary
                                     size="small"

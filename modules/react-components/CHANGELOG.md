@@ -1,5 +1,21 @@
 # @wso2is/react-components
 
+## 2.1.17
+
+### Patch Changes
+
+- Updated dependencies [[`1c8757adf6`](https://github.com/wso2/identity-apps/commit/1c8757adf6539b13621c656bb91ab7d8f56e0494)]:
+  - @wso2is/theme@2.0.72
+
+## 2.1.16
+
+### Patch Changes
+
+- [#5901](https://github.com/wso2/identity-apps/pull/5901) [`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor access control methods to use React hooks
+
+- Updated dependencies [[`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50)]:
+  - @wso2is/core@2.0.41
+
 ## 2.1.15
 
 ### Patch Changes

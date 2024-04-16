@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,8 +19,10 @@
 export * from "./components";
 export * from "./configs";
 export * from "./constants";
-export * from "./context";
-export * from "./models";
+export * from "./context/access-control-context";
+export * from "./context/feature-gate-context";
+export * from "./models/access-control";
+export * from "./models/feature-gate";
 export * from "./hooks";
 export * from "./providers";
-export * from "./utils";
+export * from "./utils/access-control-util";

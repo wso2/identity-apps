@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
@@ -529,9 +529,9 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 }
                 <EmphasizedSegment className="padded">
                     <ListLayout
-                        rightActionPanel={ !OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name) 
+                        rightActionPanel={ !OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name)
                             && (
-                                <Show when={ AccessControlConstants.SCOPE_WRITE }>
+                                <Show when={ featureConfig?.oidcScopes?.scopes?.create }>
                                     <PrimaryButton
                                         data-testid="user-mgt-roles-list-update-button"
                                         size="medium"
@@ -544,7 +544,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                                 "claimList.addClaim") }
                                     </PrimaryButton>
                                 </Show>
-                            ) 
+                            )
                         }
                         showTopActionPanel={ !isScopeRequestLoading || !(scope.claims?.length == 0) }
                         listItemLimit={ listItemLimit }
