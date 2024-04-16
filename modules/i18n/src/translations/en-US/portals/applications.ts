@@ -390,6 +390,7 @@ export const applications: ApplicationsNS = {
                         hint: "Cannot retrieve these user attributes by requesting " +
                                 "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
                     },
+                    subjectAttributeSelectedHint: "<1>{{ subjectattribute }}</1> attribute in this scope is selected as alternative subject identifier.",
                     selectedScopesComponentHint: "Request these scopes from your application to retrieve " +
                         "the selected user attributes.",
                     howToUseScopesHint: "How to use Scopes",
@@ -972,7 +973,9 @@ export const applications: ApplicationsNS = {
                             label: "Subject attribute",
                             validations: {
                                 empty: "Select the subject attribute"
-                            }
+                            },
+                            placeholder: "Select an attribute",
+                            info: "Alternate subject identifier's can be assigned only if user attributes are selected."
                         },
                         subjectIncludeTenantDomain: {
                             hint: "This option will append the organization name to the local subject " +
@@ -2729,6 +2732,10 @@ export const applications: ApplicationsNS = {
             }
         },
         updateClaimConfig: {
+            mistmatchAlternativesubjectIdentifierError: {
+                description: "The alternative subject identifier is not in the requested user attributes.",
+                message: "Something went wrong"
+            },
             error: {
                 description: "Mapped user attributes cannot be duplicated.",
                 message: "Update error"

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { OrganizationType } from "@wso2is/common";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { OrganizationType } from "@wso2is/features/admin.organizations.v1/constants";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect } from "react";

@@ -1,5 +1,17 @@
 # @wso2is/core
 
+## 2.0.40
+
+### Patch Changes
+
+- [#5927](https://github.com/wso2/identity-apps/pull/5927) [`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide backup code enable option in login flow in sub organizations
+
+## 2.0.39
+
+### Patch Changes
+
+- [#5950](https://github.com/wso2/identity-apps/pull/5950) [`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `api-resources.v1` & `api-resources.v2`
+
 ## 2.0.38
 
 ### Patch Changes

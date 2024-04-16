@@ -16,47 +16,26 @@
  * under the License.
  */
 
-import { AuthParams, AuthProvider, ResponseMode, SPAUtils } from "@asgardeo/auth-react";
+import { AuthProvider } from "@asgardeo/auth-react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
-import { AppConfigProvider } from "@wso2is/common/src/providers/app-config-provider";
-import { ContextUtils, StringUtils } from "@wso2is/core/utils";
-import axios, { AxiosResponse } from "axios";
+import { AppConfigProvider } from "@wso2is/features/admin.core.v1/providers/app-config-provider";
+import { ContextUtils } from "@wso2is/core/utils";
 import * as React from "react";
 import { ReactElement } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AsgardeoTheme } from "./branding/theme";
-import { AuthenticateUtils } from "@wso2is/features/admin-authentication-v1";
-import { Config, PreLoader, store } from "@wso2is/features/admin-core-v1";
-import { UserPreferencesInterface } from "@wso2is/features/admin-core-v1/models/user-preferences";
-import AppSettingsProvider from "@wso2is/features/admin-core-v1/providers/app-settings-provider";
-import UserPreferencesProvider from "@wso2is/features/admin-core-v1/providers/user-preferences-provider";
-import OrganizationsProvider from "@wso2is/features/admin-organizations-v1/providers/organizations-provider";
+import { AuthenticateUtils } from "@wso2is/features/admin.authentication.v1";
+import { Config, PreLoader, store } from "@wso2is/features/admin.core.v1";
+import { UserPreferencesInterface } from "@wso2is/features/admin.core.v1/models/user-preferences";
+import AppSettingsProvider from "@wso2is/features/admin.core.v1/providers/app-settings-provider";
+import UserPreferencesProvider from "@wso2is/features/admin.core.v1/providers/user-preferences-provider";
+import OrganizationsProvider from "@wso2is/features/admin.organizations.v1/providers/organizations-provider";
 import { ProtectedApp } from "./protected-app";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-
-const getAuthParams = (): Promise<AuthParams> => {
-    if (!SPAUtils.hasAuthSearchParamsInURL()
-        && Config.getDeploymentConfig()?.idpConfigs?.responseMode === ResponseMode.formPost) {
-
-        const contextPath: string = window[ "AppUtils" ].getConfig().appBase
-            ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
-            : "";
-
-        return axios.get(contextPath + "/auth").then((response: AxiosResponse ) => {
-            return Promise.resolve({
-                authorizationCode: response?.data?.authCode,
-                sessionState: response?.data?.sessionState,
-                state: response?.data?.state
-            });
-        });
-    }
-
-    return;
-};
 
 /**
  * Render root component with configs.
@@ -90,7 +69,7 @@ const RootWithConfig = (): ReactElement => {
                             <AuthProvider
                                 config={ AuthenticateUtils.getInitializeConfig() }
                                 fallback={ <PreLoader /> }
-                                getAuthParams={ getAuthParams }
+                                getAuthParams={ AuthenticateUtils.getAuthParams }
                             >
                                 <AppConfigProvider>
                                     <OrganizationsProvider>

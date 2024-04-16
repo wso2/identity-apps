@@ -1,5 +1,31 @@
 # @wso2is/i18n
 
+## 2.1.10
+
+### Patch Changes
+
+- Updated dependencies [[`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372)]:
+  - @wso2is/core@2.0.40
+
+## 2.1.9
+
+### Patch Changes
+
+- [#5879](https://github.com/wso2/identity-apps/pull/5879) [`8261a2cc41`](https://github.com/wso2/identity-apps/commit/8261a2cc411b6ce0838943309cadb35ed4339943) Thanks [@sandushi](https://github.com/sandushi)! - Fix the alternative subject identifier drop down issues
+
+## 2.1.8
+
+### Patch Changes
+
+- Updated dependencies [[`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e)]:
+  - @wso2is/core@2.0.39
+
+## 2.1.7
+
+### Patch Changes
+
+- [#5894](https://github.com/wso2/identity-apps/pull/5894) [`616887f5f8`](https://github.com/wso2/identity-apps/commit/616887f5f8450f86c42a98a3d5d373e20d3f5810) Thanks [@savindi7](https://github.com/savindi7)! - Add branding to Identifier in Login and Password Recovery.
+
 ## 2.1.6
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,6 @@
  */
 
 /**
- * @fileoverview Worker API Mocks.
- *
  * @remarks If you had to mock a certain Worker API,
  * document the reason and any references clearly in this file.
  */
@@ -31,20 +29,43 @@
  * Mock Reference @see {@link https://github.com/facebook/jest/issues/3449#issuecomment-347337666}
  */
 class WorkerMock {
-    constructor(stringUrl) {
-        // @ts-ignore
+    private url: string | URL;
+
+    constructor(stringUrl: string | URL) {
         this.url = stringUrl;
-        // @ts-ignore
-        this.onmessage = () => { };
     }
 
-    postMessage(msg) {
-        // @ts-ignore
+    onmessage(this: Worker, _ev: MessageEvent<any>){
+        return "";
+    }
+
+    postMessage(msg: MessageEvent<any>) {
         this.onmessage(msg);
+    }
+
+    onmessageerror(this: Worker, _ev: MessageEvent<any>) {
+        return "";
+    }
+
+    terminate() {
+
+    }
+
+    addEventListener() {
+
+    }
+
+    removeEventListener() {
+
+    }
+
+    dispatchEvent() {
+        return true;
+    }
+
+    onerror() {
+
     }
 }
 
-// @ts-ignore
 window.Worker = WorkerMock;
-
-/* eslint-enable @typescript-eslint/ban-ts-comment,  @typescript-eslint/no-empty-function */

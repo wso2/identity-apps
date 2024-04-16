@@ -29,9 +29,12 @@ on:
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+    SHOULD_GENERATE_CHANGESET: 'true'
+    BRANCH: master
+    IS_HOTFIX: 'false'
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
-
+    
 jobs:
     release:
         name: 🚀 Release
@@ -157,6 +160,7 @@ jobs:
                       ${{ runner.os }}-maven-
 
             - name: 📣 Create Release Pull Request or Publish to npm
+              if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' }}
               id: changesets
               uses: changesets/action@v1
               with:
@@ -166,6 +170,11 @@ jobs:
                   commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
+
+            - name: 👷 Build Project
+              if: ${{ env.IS_HOTFIX == 'true' }}
+              id: build-project
+              run:  pnpm build
 
             - name: 🚀 Perform Release
               id: perform-release

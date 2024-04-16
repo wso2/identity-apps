@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,8 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
         consoleAppOrigin: process.env.NODE_ENV === "production" ? undefined : "https://localhost:9001",
         contextPath: contextPathGlobal,
+        isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable,
+        isOrganizationManagementEnabled: isOrganizationManagementEnabled,
         serverOrigin: serverOriginGlobal,
         superTenant: superTenantGlobal,
         tenantPrefix: tenantPrefixGlobal
@@ -134,7 +136,7 @@ if (new UAParser().getBrowser().name === "IE") {
     }, 1000);
 } else {
     const worker: any = new TimerWorker();
-    
+
     worker.onmessage = () => {
         _idleSecondsCounter++;
         _sessionAgeCounter++;

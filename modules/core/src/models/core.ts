@@ -211,13 +211,15 @@ export interface SVGRLoadedInterface {
 }
 
 export interface LegacyModeInterface {
-    apiResources: boolean;
+    apiResourcesV1: boolean;
+    apiResourcesV2: boolean;
     applicationListSystemApps: boolean;
     applicationOIDCSubjectIdentifier: boolean;
     applicationRequestPathAuthentication: boolean;
     applicationSystemAppsSettings: boolean;
     approvals: boolean;
     certificates: boolean;
+    backupCodesForSubOrganizations: boolean;
     loginAndRegistrationEmailDomainDiscovery: boolean;
     organizations: boolean;
     rolesV1: boolean;

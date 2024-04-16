@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test if the Getting Started page is working as expected <GettingStartedPage /> matches snapshot 1`] = `
+<div>
+  <div
+    class="layout page-layout getting-started-page"
+    data-componentid="getting-started-page-layout"
+    data-testid="page-layout"
+  >
+    <div
+      class="layout-content"
+    >
+      <div
+        class="advance-user-view-cards-wrapper"
+      >
+        <div
+          class="greeting"
+        >
+          <h1
+            class="ui header heading bold-500 compact ellipsis"
+            data-componentid="welcome-greeting-header"
+            data-suppress=""
+            data-testid="welcome-greeting-header"
+          >
+            <div
+              class="ui placeholder"
+              data-componentid="welcome-greeting-placeholder"
+              data-testid="welcome-greeting-placeholder"
+            >
+              <div
+                class="header"
+              >
+                <div
+                  class="line very long"
+                />
+              </div>
+            </div>
+          </h1>
+        </div>
+        <div
+          class="ui stackable grid"
+        >
+          <div
+            class="two column row"
+          >
+            <div
+              class="stretched ten wide computer ten wide large screen sixteen wide mobile sixteen wide tablet ten wide widescreen column"
+            >
+              <div
+                class="ui stackable grid"
+              >
+                <div
+                  class="two column row"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
