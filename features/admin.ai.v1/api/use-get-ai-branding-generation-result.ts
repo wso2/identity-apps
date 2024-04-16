@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,

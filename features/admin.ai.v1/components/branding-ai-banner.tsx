@@ -40,7 +40,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
-    const [ websiteUrl, setWebsiteUrl ] = useState<string>("https://drogo-nft-demo.web.app/");
+    const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
 
     const { isGeneratingBranding } = useAIBrandingPreference();
 
@@ -120,8 +120,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                                             </Header>
                                             <p>{ t("branding:ai.banner.input.subHeading") }
                                                 <DocumentationLink
-                                                    link={ "develop.applications.editApplication" +
-                                                    ".asgardeoTryitApplication.general.learnMore" }
+                                                    link={ "develop.ai.branding.learnMore" }
                                                     isLinkRef = { true }
                                                 >
                                                     <Trans
