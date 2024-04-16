@@ -278,7 +278,9 @@
                         "internal_role_mgt_view"
                     ],
                     "delete": []
-                }
+                },
+                "userLimit": 50,
+                "fileImportTimeout": 90000
             },
             "eventPublishing": {
                 "disabledFeatures": [],
