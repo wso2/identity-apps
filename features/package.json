@@ -77,7 +77,7 @@
         "slashes": "^2.0.2",
         "styled-components": "^4.4.1",
         "swr": "^2.0.0",
-        "ua-parser-js": "0.7.28",
+        "ua-parser-js": "0.7.33",
         "uuid": "^8.3.0"
     },
     "devDependencies": {
