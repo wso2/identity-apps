@@ -111,6 +111,9 @@
         {% endif %}
     },
     {% endif %}
+    {% if myaccount.is_fronted_with_platform_idp is defined %}
+    "isFrontedWithPlatformIdP" : "{{ myaccount.is_fronted_with_platform_idp }}",
+    {% endif %}
     {% if myaccount.is_saas is defined %}
     "isSaas": {{ myaccount.is_saas }},
     {% elif legacy_mode.enabled is defined %}

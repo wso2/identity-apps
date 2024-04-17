@@ -97,6 +97,11 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      */
     idpConfigs: IdpConfigInterface<T, S>;
     /**
+     * Is the application fronted with a platform IdP.
+     * @remarks If this is enabled, the sign-in logic will have a few extensions.
+     */
+    isFrontedWithPlatformIdP: boolean;
+    /**
      * Callback to directed on successful login.
      * ex: `/sample-portal/login`
      */

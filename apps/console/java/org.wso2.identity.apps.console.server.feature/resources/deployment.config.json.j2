@@ -77,6 +77,9 @@
     },
     {% endif %}
     "i18nResourcePath": "{{ console.i18n_resource_path }}",
+    {% if console.is_fronted_with_platform_idp is defined %}
+    "isFrontedWithPlatformIdP" : "{{ console.is_fronted_with_platform_idp }}",
+    {% endif %}
     {% if console.is_saas is defined %}
     "isSaas": {{ console.is_saas }},
     {% elif legacy_mode.enabled is defined %}

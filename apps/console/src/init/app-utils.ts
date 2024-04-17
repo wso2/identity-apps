@@ -296,6 +296,7 @@ export const AppUtils: any = (function() {
                 extensions: _config.extensions,
                 getProfileInfoFromIDToken: _config.getProfileInfoFromIDToken,
                 idpConfigs: this.resolveIdpConfigs(),
+                isFrontedWithPlatformIdP: _config.isFrontedWithPlatformIdP,
                 isSaas: this.isSaas(),
                 legacyAuthzRuntime: _config.legacyAuthzRuntime,
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
