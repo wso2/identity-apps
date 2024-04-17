@@ -29,7 +29,6 @@ import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hook
 import generateBrandingPreference from "../api/generate-ai-branding-preference";
 import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 
-
 export type GenerateAIBrandingPreferenceFunc = (website_url: string) => Promise<void>;
 
 const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => {
