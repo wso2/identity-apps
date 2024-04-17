@@ -601,7 +601,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                     isReadOnly={ isReadOnly }
                                                     onSubmit={ handleSubmit }
                                                     data-componentid={ "custom-sms-provider" }
-                                                    data-testid={ "custom-sms-provider" }
                                                 />
                                                 { smsProviderConfig.renderAlternativeSmsProviderOptions() }
                                             </>
@@ -612,7 +611,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                 isReadOnly={ isReadOnly }
                                                 onSubmit={ handleSubmit }
                                                 data-componentid={ "twilio-sms-provider" }
-                                                data-testid={ "twilio-sms-provider" }
                                             />
                                         ) }
                                         { smsProviderSettings?.selectedProvider ===
@@ -621,7 +619,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                 isReadOnly={ isReadOnly }
                                                 onSubmit={ handleSubmit }
                                                 data-componentid={ "vonage-sms-provider" }
-                                                data-testid={ "vonage-sms-provider" }
                                             />
                                         ) }
 

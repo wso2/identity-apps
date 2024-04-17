@@ -30,8 +30,7 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SMSProviderConstants } from "../constants";
 
 interface TwilioSMSProviderPageInterface extends IdentifiableComponentInterface {
-    ["data-componentid"]: string;
-    ["data-testid"]: string;
+    "data-componentid": string;
     isReadOnly: boolean;
     onSubmit: (values: any) => void;
 }
@@ -182,8 +181,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
 };
 
 TwilioSMSProvider.defaultProps = {
-    ["data-componentid"]: "twilio-sms-provider",
-    ["data-testid"]: "twilio-sms-provider"
+    "data-componentid": "twilio-sms-provider"
 };
 
 export default TwilioSMSProvider;
