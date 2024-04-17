@@ -883,6 +883,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
             onUpdate={ onUpdate }
             isLoading={ isAuthenticatorsFetchRequestLoading }
             readOnly={ readOnly }
+            authenticationSequence={ moderatedAuthenticationSequence }
         >
             <AuthenticationFlowBuilder
                 legacyBuilder={ (
