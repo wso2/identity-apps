@@ -114,7 +114,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         featureConfig?.server?.enabled && isFirstLevelOrg &&
         hasGovernanceConnectorsReadScope);
 
-
     /**
      * Set the deployment configs in redux state.
      */
