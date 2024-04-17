@@ -3040,12 +3040,16 @@ export interface Extensions {
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
                             smsOtpExpiryTime: FormAttributes;
-                            smsOtpUseUppercase: FormAttributes;
-                            smsOtpUseLowercase: FormAttributes;
-                            smsOtpUseNumeric: FormAttributes;
-                            smsOtpLength: FormAttributes;
+                            passwordRecoveryOtpUseUppercase: FormAttributes;
+                            passwordRecoveryOtpUseLowercase: FormAttributes;
+                            passwordRecoveryOtpUseNumeric: FormAttributes;
+                            passwordRecoveryOtpLength: FormAttributes;
                         };
                     };
+                    recoveryOptionSubHeadingEmailLink: string;
+                    recoveryOptionSubHeadingSMS: string;
+                    recoveryOptionHeading: string;
+                    otpConfigHeading: string;
                     connectorDescription: string;
                     heading: string;
                     notification: {

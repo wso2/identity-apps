@@ -3579,39 +3579,39 @@ export const extensions: Extensions = {
                                 label: "Notify on successful recovery"
                             },
                             smsOtpExpiryTime: {
-                                hint: "SMS OTP expiry time in minutes.",
-                                label: "SMS OTP expiry time",
+                                hint: "Password recovery OTP expiry time in minutes.",
+                                label: "Password recovery OTP expiry time",
                                 placeholder: "Enter expiry time",
                                 validations: {
-                                    invalid: "SMS OTP expiry time should be an integer.",
-                                    empty: "SMS OTP expiry time cannot be empty.",
+                                    invalid: "Password recovery OTP expiry time should be an integer.",
+                                    empty: "Password recovery OTP expiry time cannot be empty.",
                                     range:
-                                        "SMS OTP expiry time should be between 1 minute & 1440 minutes " +
+                                        "Password recovery OTP expiry time should be between 1 minute & 1440 minutes " +
                                         "(1 day).",
                                     maxLengthReached:
-                                        "SMS OTP expiry time should be a number with 4 or less digits."
+                                        "Password recovery OTP expiry time should be a number with 4 or less digits."
                                 }
                             },
-                            smsOtpUseUppercase: {
-                                hint: "This specifies whether to use upper case characters in the sms otp code.",
+                            passwordRecoveryOtpUseUppercase: {
+                                hint: "This specifies whether to use upper case characters in the password recovery otp code.",
                                 label: "Use upper case letters",
                             },
-                            smsOtpUseLowercase: {
-                                hint: "This specifies whether to use lower case characters in the sms otp code.",
+                            passwordRecoveryOtpUseLowercase: {
+                                hint: "This specifies whether to use lower case characters in the password recovery otp code.",
                                 label: "Use lower case letters",
                             },
-                            smsOtpUseNumeric: {
-                                hint: "This specifies whether to use numeric characters in the sms otp code.",
+                            passwordRecoveryOtpUseNumeric: {
+                                hint: "This specifies whether to use numeric characters in the password recovery otp code.",
                                 label: "Use numeric characters",
                             },
-                            smsOtpLength: {
-                                hint: "SMS OTP length should be between 6 and 10",
-                                label: "SMS OTP code length",
-                                placeholder: "Enter length",
+                            passwordRecoveryOtpLength: {
+                                hint: "Password recovery OTP length in characters",
+                                label: "Password recovery OTP code length",
+                                placeholder: "Enter OTP code length",
                                 validations: {
-                                    empty: "SMS OTP length cannot be empty.",
+                                    empty: "Password recovery OTP length cannot be empty.",
                                     maxLengthReached:
-                                        "SMS OTP length should be between 6 and 10 characters."
+                                        "Password recovery OTP length should be between 6 and 10 characters."
                                 }
                             },
                             enableEmailBasedRecovery: {
@@ -3620,6 +3620,10 @@ export const extensions: Extensions = {
                             },
                         }
                     },
+                    recoveryOptionSubHeadingEmailLink: "Email Link",
+                    recoveryOptionSubHeadingSMS: "SMS OTP",
+                    recoveryOptionHeading: "Recovery Option Selection",
+                    otpConfigHeading: "OTP Code Configuration",
                     connectorDescription: "Enable self-service password recovery for users " + "on the login page.",
                     heading: "Password Recovery",
                     notification: {
