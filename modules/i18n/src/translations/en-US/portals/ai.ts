@@ -23,42 +23,51 @@ export const ai: aiNS = {
         banner:{
             collapsed:{
                 button: "Try Login AI",
-                heading: "Craft your login flow effortlessly with Login AI",
+                heading: "Configure login flow with Login AI",
                 subheading: "Simple and effortless login flow configuration experience."
             },
             full:{
                 button: "Try Login AI",
-                heading: "Configure your login flow with ease, try our new Login AI",
-                subheading1: "Create your login sequence effortlessly wiht our intuitive AI.",
+                heading: "Generate your login flow with a single click using Login AI",
+                subheading1: "Create your login sequence effortlessly with our intuitive AI.",
                 subheading2: "Enjoy simple and hassle-free configuration experience."
             },
             input:{
                 button: "Generate Login Flow",
-                heading: "Generate your login flow with a single click using Login AI",
-                placeholder: "Enter your required login flow here",
+                heading: "Configure login flow with Login AI",
+                placeholder: "Example prompt:  Users should be prompted with a username-password login. " +
+                "Once they successfully login, I want the system to check if they belong to either the 'manager' " +
+                "or 'employee' group. If they're not part of any of these groups, I need them to be redirected to " +
+                "an error page with an error message",
                 subheading:
-                "Generating tailored login flows is now easier than ever with AI powered login flow generation. "
+                "Simple and effortless login flow configuration experience."
             }
         },
         screens:{
             loading:{
                 facts:{
-                    0:"Fact 1",
-                    1:"Fact 2",
-                    2:"Fact 3"
+                    0:"WSO2 Adaptive Authentication supports adaptive multi-factor authentication," +
+                    " allowing organizations to dynamically adjust the level of authentication required based" +
+                    " on risk factors such as user location, device, and behavior.",
+                    1:"WSO2 Adaptive Authentication seamlessly integrates with various identity providers,"+
+                    " allowing organizations to leverage existing authentication mechanisms while"+
+                    " enhancing security with adaptive capabilities.",
+                    2:"WSO2 Adaptive Authentication features a flexible policy engine that enables organizations"+
+                    " to define custom authentication policies based on their specific security requirements and"+
+                    " regulatory compliance needs."
                 },
                 heading: "Generating your login flow",
                 states:{
                     0: "Initalizing.....",
                     1: "Optimizing your input.....",
-                    10: "Login flow generation complete.....",
-                    2: "Optimization complete.....",
-                    3: "Retrieving data from vector database.....",
-                    4: "Data retrieval complete.....",
-                    5: "Generating login flow script.....",
-                    6: "Login flow script generation complete.....",
-                    7: "Generating login flow authentication steps.....",
-                    8: "Login flow authentication steps generation complete.....",
+                    10: "Login Flow Generated Successfully",
+                    2: "Optimizing your input.....",
+                    3: "Gathering data.....",
+                    4: "Gathering data.....",
+                    5: "Generating login flow started.....",
+                    6: "Generating login flow in progress.....",
+                    7: "Generating login flow in progress.....",
+                    8: "Generating login flow completed.....",
                     9: "Optimizing final output....."
                 }
             }
