@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { OrganizationType } from "../../admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -31,6 +30,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, u
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { OrganizationType } from "../../admin.core.v1";
 import { AppState } from "../../admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "../../admin.organizations.v1/models/organizations";
