@@ -243,7 +243,7 @@ export class I18nConstants {
     /**
     * AI namespace.
     */
-    public static readonly AI_NAMESPACE: string = "ai";
+    public static readonly AI_NAMESPACE: string = I18nModuleConstants.AI_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.

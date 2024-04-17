@@ -69,6 +69,5 @@ export const ai: aiNS = {
                 }
             }
         }
-
     }
 };
