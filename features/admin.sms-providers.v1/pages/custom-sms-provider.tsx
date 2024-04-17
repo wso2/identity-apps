@@ -30,6 +30,8 @@ import { SMSProviderConstants } from "../constants";
 
 interface CustomSMSProviderPageInterface extends IdentifiableComponentInterface {
     isReadOnly: boolean;
+    ["data-componentid"]: string;
+    ["data-testid"]: string;
     onSubmit: (values: any) => void;
 }
 
@@ -234,6 +236,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
             </Grid>
         </EmphasizedSegment>
     );
+};
+
+CustomSMSProvider.defaultProps = {
+    ["data-componentid"]: "custom-sms-provider",
+    ["data-testid"]: "custom-sms-provider"
 };
 
 export default CustomSMSProvider;

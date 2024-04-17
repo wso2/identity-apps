@@ -179,4 +179,9 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
     );
 };
 
+TwilioSMSProvider.defaultProps = {
+    ["data-componentid"]: "twilio-sms-provider",
+    ["data-testid"]: "twilio-sms-provider"
+};
+
 export default TwilioSMSProvider;

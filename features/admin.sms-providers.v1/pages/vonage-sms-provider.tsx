@@ -179,4 +179,9 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
     );
 };
 
+VonageSMSProvider.defaultProps = {
+    ["data-componentid"]: "vonage-sms-provider",
+    ["data-testid"]: "vonage-sms-provider"
+};
+
 export default VonageSMSProvider;
