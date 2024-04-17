@@ -25,9 +25,9 @@ import useAIBrandingPreference from "./use-ai-branding-preference";
 import { AppConstants } from "../../admin.core.v1";
 import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import generateBrandingPreference from "../api/generate-ai-branding-preference";
 import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 
 
 export type GenerateAIBrandingPreferenceFunc = (website_url: string) => Promise<void>;
@@ -50,7 +50,7 @@ const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => 
 
     /**
      * Generate AI branding preference API call function.
-     * 
+     *
      * @param websiteUrl - Website URL.
      * @returns a promise containing the operation ID.
      */

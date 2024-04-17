@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { BrandingPreferenceInterface } from "../../admin.branding.v1/models";
 import { Context, createContext } from "react";
+import { BrandingPreferenceInterface } from "../../admin.branding.v1/models";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
 
 /**
