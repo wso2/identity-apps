@@ -1,5 +1,27 @@
 # @wso2is/features
 
+## 2.15.0
+
+### Minor Changes
+
+- [#5961](https://github.com/wso2/identity-apps/pull/5961) [`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b) Thanks [@chamathns](https://github.com/chamathns)! - add branding AI implementation
+
+### Patch Changes
+
+- [#5938](https://github.com/wso2/identity-apps/pull/5938) [`da7b19acf5`](https://github.com/wso2/identity-apps/commit/da7b19acf5cc5b926ddfcf02b1c2e6af55a25838) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add authenticationSequence prop to authentication-flow-provider. This modification is done to pass the AI generated login flow to authentication-flow-builder through authentication-flow-provider.
+
+* [#5978](https://github.com/wso2/identity-apps/pull/5978) [`94b6c88a84`](https://github.com/wso2/identity-apps/commit/94b6c88a8486fd2e450bb5ce2f0f25a7e34a9316) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues with access control module
+
+- [#5972](https://github.com/wso2/identity-apps/pull/5972) [`2c11ff7422`](https://github.com/wso2/identity-apps/commit/2c11ff74226d8787462fa83049a488efed80017c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix updated custom text preferences not being reflected in UI immediately after branding is reverted
+
+- Updated dependencies [[`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b), [`94b6c88a84`](https://github.com/wso2/identity-apps/commit/94b6c88a8486fd2e450bb5ce2f0f25a7e34a9316)]:
+  - @wso2is/i18n@2.1.12
+  - @wso2is/theme@2.0.73
+  - @wso2is/access-control@3.0.1
+  - @wso2is/react-components@2.1.18
+  - @wso2is/dynamic-forms@2.0.47
+  - @wso2is/form@2.0.48
+
 ## 2.14.27
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.1.12
+
+### Patch Changes
+
+- [#5961](https://github.com/wso2/identity-apps/pull/5961) [`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b) Thanks [@chamathns](https://github.com/chamathns)! - add branding AI implementation
+
 ## 2.1.11
 
 ### Patch Changes
