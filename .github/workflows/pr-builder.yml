@@ -145,7 +145,6 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
-    if: false
     needs: [ lint, typecheck ]
     runs-on: ubuntu-latest
     strategy:
@@ -193,7 +192,9 @@ jobs:
 
       - name: 🃏 Run Jest & Collect Coverage
         id: run-jest-test-and-coverage
-        run: pnpm test:unit:coverage
+        # TODO: update the command to "test:unit:coverage" once the coverage command related issues
+        # are sorted out
+        run: pnpm test:unit
 
       - name: 🤖 Aggregate Test Coverage
         id: aggregate-coverage-reports
