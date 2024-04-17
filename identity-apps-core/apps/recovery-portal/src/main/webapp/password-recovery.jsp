@@ -411,7 +411,7 @@
                         <div class="mt-4">
                             <%
                                 String submitButtoni18nText = multipleRecoveryOptionsAvailable? "Submit" :
-                                            ( isEmailRecoveryAvailable? "password.recovery.button" :
+                                            ( isEmailRecoveryAvailable? "password.recovery.button.email.link" :
                                             ( isQuestionBasedPasswordRecoveryEnabledByTenant? "Recover.with.question" :
                                             ( isSMSRecoveryAvailable ? "password.recovery.button.smsotp" :
                                             "Submit")));
