@@ -325,7 +325,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                 </Grid.Column>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Heading as="h4">
-                                        { "Application native authentication" }
+                                        { "App-Native Authentication" }
                                     </Heading>
 
                                     {
