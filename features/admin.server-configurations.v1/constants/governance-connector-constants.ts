@@ -62,8 +62,10 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MIN_VALUE: number;
         SMS_OTP_EXPIRY_TIME_MAX_LENGTH: number;
         SMS_OTP_EXPIRY_TIME_MAX_VALUE: number;
-        SMS_OTP_REGEX_MAX_LENGTH: number;
-        SMS_OTP_REGEX_MIN_LENGTH: number;
+        SMS_OTP_CODE_LENGTH_MAX_LENGTH: number;
+        SMS_OTP_CODE_LENGTH_MAX_VALUE: number;
+        SMS_OTP_CODE_LENGTH_MIN_LENGTH: number;
+        SMS_OTP_CODE_LENGTH_MIN_VALUE: number;
     } = {
 
         EXPIRY_TIME_MAX_LENGTH: 5,
@@ -72,8 +74,10 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MIN_VALUE: 1,
         SMS_OTP_EXPIRY_TIME_MAX_LENGTH: 4,
         SMS_OTP_EXPIRY_TIME_MAX_VALUE: 1440,
-        SMS_OTP_REGEX_MAX_LENGTH: 20,
-        SMS_OTP_REGEX_MIN_LENGTH: 8
+        SMS_OTP_CODE_LENGTH_MAX_LENGTH: 2,
+        SMS_OTP_CODE_LENGTH_MAX_VALUE: 10,
+        SMS_OTP_CODE_LENGTH_MIN_LENGTH: 1,
+        SMS_OTP_CODE_LENGTH_MIN_VALUE: 6
     };
 
     /**

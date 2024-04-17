@@ -3040,7 +3040,10 @@ export interface Extensions {
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
                             smsOtpExpiryTime: FormAttributes;
-                            smsOtpRegex: FormAttributes;
+                            smsOtpUseUppercase: FormAttributes;
+                            smsOtpUseLowercase: FormAttributes;
+                            smsOtpUseNumeric: FormAttributes;
+                            smsOtpLength: FormAttributes;
                         };
                     };
                     connectorDescription: string;

@@ -3592,15 +3592,26 @@ export const extensions: Extensions = {
                                         "SMS OTP expiry time should be a number with 4 or less digits."
                                 }
                             },
-                            smsOtpRegex: {
-                                hint: "Regex for SMS OTP in format [allowed characters]{length}. " +
-                                "Supported character ranges are a-z, A-Z, 0-9. Minimum OTP length is 4.",
-                                label: "SMS OTP Regex",
-                                placeholder: "Enter Regex",
+                            smsOtpUseUppercase: {
+                                hint: "This specifies whether to use upper case characters in the sms otp code.",
+                                label: "Use upper case letters",
+                            },
+                            smsOtpUseLowercase: {
+                                hint: "This specifies whether to use lower case characters in the sms otp code.",
+                                label: "Use lower case letters",
+                            },
+                            smsOtpUseNumeric: {
+                                hint: "This specifies whether to use numeric characters in the sms otp code.",
+                                label: "Use numeric characters",
+                            },
+                            smsOtpLength: {
+                                hint: "SMS OTP length should be between 6 and 10",
+                                label: "SMS OTP code length",
+                                placeholder: "Enter length",
                                 validations: {
-                                    empty: "SMS OTP regex cannot be empty.",
+                                    empty: "SMS OTP length cannot be empty.",
                                     maxLengthReached:
-                                        "SMS OTP expiry time should be a string with 20 or less characters."
+                                        "SMS OTP length should be between 6 and 10 characters."
                                 }
                             },
                             enableEmailBasedRecovery: {
