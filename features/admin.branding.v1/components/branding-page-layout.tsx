@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
-import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
+import useAIBrandingPreference from "../../admin.ai.v1/hooks/use-ai-branding-preference";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
