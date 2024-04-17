@@ -155,8 +155,11 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     const { t } = useTranslation();
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<PasswordRecoveryFormInitialValuesInterface>(undefined);
-    const [ isEmailRecoveryEnabled, setIsEmailRecoveryEnabled ] = useState<boolean>(false);
+        const [ isEmailRecoveryEnabled, setIsEmailRecoveryEnabled ] = useState<boolean>(false);
     const [ isSMSRecoveryEnabled, setIsSMSRecoveryEnabled ] = useState<boolean>(false);
+    const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
+    const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
+    const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -222,6 +225,10 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
         setInitialConnectorValues(resolvedInitialValues);
         setIsEmailRecoveryEnabled(resolvedInitialValues?.enableEmailBasedRecovery);
         setIsSMSRecoveryEnabled(resolvedInitialValues?.enableSMSBasedRecovery);
+        setIsUpperCaseEnabled(resolvedInitialValues?.passwordRecoveryOtpUseUppercase);
+        setIsLowerCaseEnabled(resolvedInitialValues?.passwordRecoveryOtpUseLowercase);
+        setIsNumericEnabled(resolvedInitialValues?.passwordRecoveryOtpUseNumeric);
+        
     }, [ initialValues ]);
 
     /**
@@ -533,7 +540,10 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    disabled={ !isSMSRecoveryEnabled }
+                    // Disabling the last enabled option is not allowed
+                    disabled={ !isConnectorEnabled 
+                        || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)} 
+                    listen={ (value: boolean) => setIsUpperCaseEnabled(value) }
                     data-testid={ `${testId}-sms-otp-uppercase` }
                 />
                 <Hint className={ "mb-5" }>
@@ -550,7 +560,10 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    disabled={ !isSMSRecoveryEnabled }
+                    // Disabling the last enabled option is not allowed
+                    disabled={ !isConnectorEnabled 
+                        || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)} 
+                    listen={ (value: boolean) => setIsLowerCaseEnabled(value) }
                     data-testid={ `${testId}-sms-otp-lowercase` }
                 />
                 <Hint className={ "mb-5" }>
@@ -567,7 +580,10 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    disabled={ !isSMSRecoveryEnabled }
+                    // Disabling the last enabled option is not allowed
+                    disabled={ !isConnectorEnabled 
+                        || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)} 
+                    listen={ (value: boolean) => setIsNumericEnabled(value) }
                     data-testid={ `${testId}-sms-otp-numeric` }
                 />
                 <Hint className={ "mb-5" }>
@@ -603,7 +619,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     readOnly={ readOnly }
                     width={ 10 }
                     labelPosition="right"
-                    disabled={ !isSMSRecoveryEnabled }
+                    disabled={ !isConnectorEnabled }
                     data-testid={ `${testId}-otp-length` }
                 >
                     <input/>
