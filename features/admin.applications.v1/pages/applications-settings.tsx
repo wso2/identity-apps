@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,21 +16,28 @@
  * under the License.
  */
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, CopyInputField, DocumentationLink, EmphasizedSegment, PageLayout, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
-    AppConstants,
-    history,
-} from "../../admin.core.v1";
-import { useGetDCRConfigurations } from "../api/use-get-dcr-configurations";
-import { updateDCRConfigurations } from "../api/applications-settings";
+    ContentLoader,
+    CopyInputField,
+    DocumentationLink,
+    EmphasizedSegment,
+    PageLayout,
+    useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import { Dispatch } from "redux";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
+import { Dispatch } from "redux";
+import {
+    AppConstants,
+    history
+} from "../../admin.core.v1";
 import { getOIDCApplicationConfigurations } from "../api/application";
+import { updateDCRConfigurations } from "../api/applications-settings";
+import { useGetDCRConfigurations } from "../api/use-get-dcr-configurations";
+import { OIDCApplicationConfigurationInterface } from "../models/application";
 import { ApplicationsSettingsFormValuesInterface, DCRConfigUpdateType } from "../models/applications-settings";
 
 /**
@@ -56,7 +63,7 @@ interface ApplicationsSettingsPropsInterface extends IdentifiableComponentInterf
     /**
      * Is fapi compliance enforced for the DCR apps.
      */
-    enableFapiEnforcement?:boolean
+    enableFapiEnforcement?: boolean
 }
 
 /**
@@ -70,6 +77,7 @@ export interface ApplicationsSettingsFormErrorValidationsInterface {
 }
 
 const FORM_ID: string = "applications-settings";
+
 /**
  * Form to edit applications settings.
  *
@@ -79,21 +87,21 @@ const FORM_ID: string = "applications-settings";
 export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInterface> = (
     props: ApplicationsSettingsPropsInterface
 ): ReactElement => {
-    
-    const { 
+
+    const {
         mandateSSA,
         authenticationRequired,
         ssaJwks,
         dcrEndpoint,
         enableFapiEnforcement,
-        ["data-componentid"]: componentId 
+        ["data-componentid"]: componentId
     } = props;
-   
+
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const [ isAuthenticationRequired = true , setAuthenticationRequired ] = useState<boolean>(authenticationRequired);
+    const [ isAuthenticationRequired = true, setAuthenticationRequired ] = useState<boolean>(authenticationRequired);
     const [ isMandateSSA = !isAuthenticationRequired, setMandateSSA ] = useState<boolean>(mandateSSA);
     const [ isEnableFapiEnforcement, setEnableFapiEnforcement ] = useState<boolean>(enableFapiEnforcement);
     const [ ssaJwksState, setSsaJwks ] = useState<string>(ssaJwks);
@@ -107,8 +115,8 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     const {
         data: dcrConfigs,
         error: getDCRConfigsRequestError,
-        isLoading: isGetDCRConfigsRequestLoading,
-    } = useGetDCRConfigurations()
+        isLoading: isGetDCRConfigsRequestLoading
+    } = useGetDCRConfigurations();
 
     /**
      * Sets the internal state of the application loading status when the SWR `isLoading` state changes.
@@ -116,7 +124,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     useEffect(() => {
         setIsLoading(isGetDCRConfigsRequestLoading);
     }, [ isGetDCRConfigsRequestLoading ]);
-    
+
     /**
      * Set initial values for the form.
      */
@@ -167,7 +175,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
         }
 
         getOIDCApplicationConfigurations()
-            .then((response) => {
+            .then((response: OIDCApplicationConfigurationInterface) => {
                 setDCREndpoint(response.dynamicClientRegistrationEndpoint);
             })
             .catch(() => {
@@ -198,7 +206,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
      * Resolve the error message when the update fails.
      */
     const resolveUpdateErrorMessage = (error: AxiosError): string => {
-        
+
         return (
             t("console:develop.pages.applicationsSettings.notifications.error.description",
                 { description: error.response.data.description })
@@ -257,7 +265,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                 operation: "REPLACE",
                 path: "/mandateSSA",
                 value: values.mandateSSA
-            },
+            }
         ];
 
         if (values.ssaJwks != undefined) {
@@ -267,19 +275,19 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                     path: "/ssaJwks",
                     value: values.ssaJwks
                 }
-            )
+            );
         }
 
         updateDCRConfigurations(updateData)
-        .then(() => {
-            handleUpdateSuccess();
-        })
-        .catch((error: AxiosError) => {
-            handleUpdateError(error);
-        })
-        .finally(() => {
-            setIsSubmitting(false);
-        });
+            .then(() => {
+                handleUpdateSuccess();
+            })
+            .catch((error: AxiosError) => {
+                handleUpdateError(error);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     /**
@@ -310,7 +318,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     };
 
     return (
-        !isLoading?
+        !isLoading ?
             (<PageLayout
                 title={ t("console:develop.pages.applicationsSettings.title") }
                 description={ (
@@ -324,17 +332,17 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                     </>
                 ) }
                 backButton={ {
-                    "data-componentid": `${ componentId }-page-back-button`,
-                    onClick:  handleBackButtonClick,
+                    "data-componentid": `${componentId}-page-back-button`,
+                    onClick: handleBackButtonClick,
                     text: t("console:develop.pages.applicationsSettings.backButton")
                 } }
                 bottomMargin={ false }
                 contentTopMargin={ true }
                 pageHeaderMaxWidth={ true }
-                data-componentid={ `${ componentId }-page-layout` }
+                data-componentid={ `${componentId}-page-layout` }
             >
                 <EmphasizedSegment padded="very">
-                
+
                     <Form
                         id={ FORM_ID }
                         uncontrolledForm={ false }
@@ -342,16 +350,16 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                             updateConfigurations(values);
                         } }
                         initialValues={ {
-                            ssaJwks: ssaJwksState,
                             authenticationRequired: isAuthenticationRequired,
-                            mandateSSA: isMandateSSA,
+                            dcrEndpoint: dcrEndpointState,
                             enableFapiEnforcement: isEnableFapiEnforcement,
-                            dcrEndpoint: dcrEndpointState
+                            mandateSSA: isMandateSSA,
+                            ssaJwks: ssaJwksState
                         } }
                         validate={ validateForm }
-                        data-componentid={ `${ componentId }-form` }
+                        data-componentid={ `${componentId}-form` }
                     >
-                    
+
                         <Field.Input
                             ariaLabel="DCR Endpoint"
                             inputType="text"
@@ -378,7 +386,8 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                                 <>
                                     { t("applications:forms.applicationsSettings.fields.authenticationRequired.hint") }
                                     <DocumentationLink
-                                        link={ getLink("develop.applications.applicationsSettings.dcr.authenticationRequired.learnMore") }
+                                        link={ getLink("develop.applications.applicationsSettings.dcr" +
+                                        ".authenticationRequired.learnMore") }
                                     >
                                         { t("console:develop.pages.applicationsSettings.learnMore") }
                                     </DocumentationLink>
@@ -387,13 +396,13 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                             tabIndex={ 3 }
                             width={ 16 }
                             listen={ (value: boolean) => {
-                                    setAuthenticationRequired(value);
-                                    if (!value) {
-                                        setMandateSSA(true);
-                                    }
+                                setAuthenticationRequired(value);
+                                if (!value) {
+                                    setMandateSSA(true);
                                 }
                             }
-                            data-componentid={ `${ componentId }-authenticationRequired-checkbox` }
+                            }
+                            data-componentid={ `${componentId}-authenticationRequired-checkbox` }
                         />
                         <Field.Checkbox
                             ariaLabel="Mandate SSA"
@@ -404,7 +413,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                             width={ 16 }
                             readOnly={ !isAuthenticationRequired }
                             listen={ (value: boolean) => setMandateSSA(value) }
-                            data-componentid={ `${ componentId }-mandateSSA-checkbox` }
+                            data-componentid={ `${componentId}-mandateSSA-checkbox` }
                         />
                         <Field.Input
                             ariaLabel="JWKS Endpoint"
@@ -413,21 +422,21 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                             label={ t("applications:forms.applicationsSettings.fields.ssaJwks.label") }
                             placeholder={ t("applications:forms.applicationsSettings.fields.ssaJwks.placeholder") }
                             hint={ t("applications:forms.applicationsSettings.fields.ssaJwks.hint") }
-                            required={ isMandateSSA || !isAuthenticationRequired}
+                            required={ isMandateSSA || !isAuthenticationRequired }
                             maxLength={ 150 }
                             minLength={ 10 }
                             width={ 16 }
-                            data-componentid={ `${ componentId }-ssaJwks-checkbox` }
+                            data-componentid={ `${componentId}-ssaJwks-checkbox` }
                         />
                         <Field.Checkbox
                             ariaLabel="Enforce Fapi"
                             name="enableFapiEnforcement"
-                            label={ t("applications:forms.applicationsSettings.fields.enforceFapi.label")}
+                            label={ t("applications:forms.applicationsSettings.fields.enforceFapi.label") }
                             hint={ t("applications:forms.applicationsSettings.fields.enforceFapi.hint") }
                             tabIndex={ 3 }
                             width={ 16 }
                             listen={ (value: boolean) => setEnableFapiEnforcement(value) }
-                            data-componentid={ `${ componentId }-enableFapiEnforcement-checkbox` }
+                            data-componentid={ `${componentId}-enableFapiEnforcement-checkbox` }
                         />
                         <Field.Button
                             form={ FORM_ID }
@@ -438,14 +447,14 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                             disabled={ isSubmitting }
                             loading={ isSubmitting }
                             label={ t("common:update") }
-                            data-componentid={ `${ componentId }-submit-button` }
+                            data-componentid={ `${componentId}-submit-button` }
                         />
                     </Form>
                 </EmphasizedSegment>
-            </PageLayout>):
+            </PageLayout>) :
             (
                 <EmphasizedSegment padded="very">
-                    <ContentLoader inline="centered" active/>
+                    <ContentLoader inline="centered" active />
                 </EmphasizedSegment>
             )
     );

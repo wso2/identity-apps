@@ -55,10 +55,10 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 },
                 applicationsSettings: {
                     dcr: {
-                        learnMore: undefined,
                         authenticationRequired: {
                             learnMore: undefined
                         },
+                        learnMore: undefined
                     }
                 },
                 editApplication: {

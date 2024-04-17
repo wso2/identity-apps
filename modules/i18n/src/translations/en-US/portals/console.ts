@@ -2665,8 +2665,7 @@ export const console: ConsoleNS = {
                         description: "Successfully updated DCR configurations.",
                         message: "Update successful"
                     }
-                },
-
+                }
             },
             authenticationProvider: {
                 subTitle: "Create and manage connections to use in the login flow of your applications.",
