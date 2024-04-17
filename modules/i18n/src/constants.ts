@@ -275,7 +275,7 @@ export class I18nModuleConstants {
      * Applications namespace.
      */
     public static readonly APPLICATIONS_NAMESPACE: string = "applications";
-  
+
     /**
      * Identity Provider namespace.
      */
