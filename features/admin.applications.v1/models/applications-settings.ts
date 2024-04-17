@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 
 /**
  * Form values interface.
@@ -55,4 +56,40 @@ export interface DCRConfigUpdateType {
      * Value type.
      */
     value:  string | boolean;
+}
+
+/**
+ * Proptypes for the applications settings form component.
+ */
+export interface ApplicationsSettingsPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Is the SSA(Software Statement Assertion) mandated.
+     */
+    mandateSSA?: boolean;
+    /**
+     * Is the requireAuthentication enabled.
+     */
+    authenticationRequired?: boolean;
+    /**
+     * JWKS Endpoint Url to validate SSA(Software Statement Assertion).
+     */
+    ssaJwks?: string;
+    /**
+     * DCR Endpoint Url.
+     */
+    dcrEndpoint?: string;
+    /**
+     * Is fapi compliance enforced for the DCR apps.
+     */
+    enableFapiEnforcement?: boolean
+}
+
+/**
+ * Proptypes for the applications settings form error messages.
+ */
+export interface ApplicationsSettingsFormErrorValidationsInterface {
+    /**
+     *  Error message for the JWKS URL.
+     */
+    ssaJwks?: string;
 }

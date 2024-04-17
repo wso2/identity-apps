@@ -24,11 +24,9 @@ import { ApplicationsSettingsFormValuesInterface, DCRConfigUpdateType } from "..
 
 /**
  * Get an axios instance.
- *
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Updates the DCR Configurations.

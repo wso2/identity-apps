@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+
+import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -38,43 +39,10 @@ import { getOIDCApplicationConfigurations } from "../api/application";
 import { updateDCRConfigurations } from "../api/applications-settings";
 import { useGetDCRConfigurations } from "../api/use-get-dcr-configurations";
 import { OIDCApplicationConfigurationInterface } from "../models/application";
-import { ApplicationsSettingsFormValuesInterface, DCRConfigUpdateType } from "../models/applications-settings";
-
-/**
- * Proptypes for the applications settings form component.
- */
-interface ApplicationsSettingsPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * Is the SSA(Software Statement Assertion) mandated.
-     */
-    mandateSSA?: boolean;
-    /**
-     * Is the requireAuthentication enabled.
-     */
-    authenticationRequired?: boolean;
-    /**
-     * JWKS Endpoint Url to validate SSA(Software Statement Assertion).
-     */
-    ssaJwks?: string;
-    /**
-     * DCR Endpoint Url.
-     */
-    dcrEndpoint?: string;
-    /**
-     * Is fapi compliance enforced for the DCR apps.
-     */
-    enableFapiEnforcement?: boolean
-}
-
-/**
- * Proptypes for the applications settings form error messages.
- */
-export interface ApplicationsSettingsFormErrorValidationsInterface {
-    /**
-     *  Error message for the JWKS URL.
-     */
-    ssaJwks?: string;
-}
+import { ApplicationsSettingsFormErrorValidationsInterface,
+    ApplicationsSettingsFormValuesInterface,
+    ApplicationsSettingsPropsInterface,
+    DCRConfigUpdateType } from "../models/applications-settings";
 
 const FORM_ID: string = "applications-settings";
 
