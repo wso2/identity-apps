@@ -23,52 +23,49 @@ export const ai: aiNS = {
         banner:{
             collapsed:{
                 button: "Try Login AI",
-                heading: "Configure login flow with Login AI",
-                subheading: "Simple and effortless login flow configuration experience."
+                heading: "Configure your login flow with Login AI",
+                subheading: "Enter your ideal login sequence; "+
+                "our AI adapts authenticators and context to configure the flow."
             },
             full:{
                 button: "Try Login AI",
-                heading: "Generate your login flow with a single click using Login AI",
-                subheading1: "Create your login sequence effortlessly with our intuitive AI.",
-                subheading2: "Enjoy simple and hassle-free configuration experience."
+                heading: "Simplify authentication flow Setup with Login AI",
+                subheading1: "Configure your application's login flow effortlessly with Login AI, "+
+                "by describing your desired authentication sequence, ",
+                subheading2: "including authenticators and conditional authentication."
             },
             input:{
                 button: "Generate Login Flow",
-                heading: "Configure login flow with Login AI",
-                placeholder: "Example prompt:  Users should be prompted with a username-password login. " +
-                "Once they successfully login, I want the system to check if they belong to either the 'manager' " +
-                "or 'employee' group. If they're not part of any of these groups, I need them to be redirected to " +
-                "an error page with an error message",
-                subheading:
-                "Simple and effortless login flow configuration experience."
+                heading: "Configure your login flow with Login AI",
+                placeholder: "Input your login flow eg: have username and password as first step,"+
+                " and prompt for TOTP second factor if the user has ‘manager’ role.",
+                subheading: "AI-powered login configurations crafted to align with your application's"+
+                " environment and authenticators."
             }
         },
         screens:{
             loading:{
                 facts:{
-                    0:"WSO2 Adaptive Authentication supports adaptive multi-factor authentication," +
-                    " allowing organizations to dynamically adjust the level of authentication required based" +
-                    " on risk factors such as user location, device, and behavior.",
-                    1:"WSO2 Adaptive Authentication seamlessly integrates with various identity providers,"+
-                    " allowing organizations to leverage existing authentication mechanisms while"+
-                    " enhancing security with adaptive capabilities.",
-                    2:"WSO2 Adaptive Authentication features a flexible policy engine that enables organizations"+
-                    " to define custom authentication policies based on their specific security requirements and"+
-                    " regulatory compliance needs."
+                    0:"Asgardeo features a visual editor that simplifies authentication flow configuration by allowing"+
+                    " intuitive placement of authenticators and conditional elements, enhancing design efficiency.",
+                    1:"ou can create dynamic authentication sequences with conditional scripts for versatile "+
+                    "login flows.",
+                    2:"You can use Asgardeo's authentication script editor to create tailored authentication scripts"+
+                    " to meet your authentication requirements."
                 },
                 heading: "Generating your login flow",
                 states:{
-                    0: "Initalizing.....",
-                    1: "Optimizing your input.....",
-                    10: "Login Flow Generated Successfully",
-                    2: "Optimizing your input.....",
-                    3: "Gathering data.....",
-                    4: "Gathering data.....",
-                    5: "Generating login flow started.....",
-                    6: "Generating login flow in progress.....",
-                    7: "Generating login flow in progress.....",
-                    8: "Generating login flow completed.....",
-                    9: "Optimizing final output....."
+                    0: "Getting things started...",
+                    1: "Getting things started...",
+                    10: "Applying final touches...",
+                    2: "Getting things started...",
+                    3: "Gathering essential data for your login flow...",
+                    4: "Gathering essential data for your login flow...",
+                    5: "Crafting the login flow script...",
+                    6: "Crafting the login flow script...",
+                    7: "Assembling authentication steps...",
+                    8: "Assembling authentication steps...",
+                    9: "Applying final touches..."
                 }
             }
         }
