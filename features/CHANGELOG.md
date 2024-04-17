@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.14.27
+
+### Patch Changes
+
+- [#5974](https://github.com/wso2/identity-apps/pull/5974) [`d995f0752e`](https://github.com/wso2/identity-apps/commit/d995f0752e48cf204c9e7bbb5eccf75caeb97d94) Thanks [@sandushi](https://github.com/sandushi)! - Add name to the alternative subject identifier checkbox
+
 ## 2.14.26
 
 ### Patch Changes
