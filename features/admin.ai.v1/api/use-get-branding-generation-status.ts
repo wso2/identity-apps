@@ -32,7 +32,7 @@ import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding
 /**
  * Hook to get the AI branding generation status from the API.
  *
- * @param operationId - Operation ID of the branding generation process.
+ * @param operationId - A unique identifier for the branding generation operation status.
  */
 export const useGetAIBrandingGenerationStatus = (
     operationId: string
