@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -26,9 +26,6 @@ import {
     Popup,
     TabPageLayout
 } from "@wso2is/react-components";
-import cloneDeep from "lodash-es/cloneDeep";
-import get from "lodash-es/get";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,12 +35,8 @@ import { Label } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    AppUtils,
     FeatureConfigInterface,
-    PortalDocumentationStructureInterface,
-    history,
-    setHelpPanelDocsContentURL,
-    toggleHelpPanelVisibility
+    history
 } from "../../admin.core.v1";
 import { applicationConfig } from "../../admin.extensions.v1/configs/application";
 import { IdentityProviderConstants } from "../../admin.identity-providers.v1/constants";
@@ -53,6 +46,9 @@ import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbo
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
+import CustomProtocolApplicationTemplate
+    from "../data/application-templates/templates/custom-protocol-application/custom-protocol-application.json";
+import useApplicationTemplates from "../hooks/use-application-templates";
 import {
     ApplicationAccessTypes,
     ApplicationTemplateListItemInterface,
@@ -60,9 +56,9 @@ import {
     SupportedAuthProtocolTypes,
     idpInfoTypeInterface
 } from "../models";
+import { ApplicationTemplateListInterface } from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
-import { ApplicationTemplateListInterface } from "../models/application-templates";
 
 /**
  * Prop types for the applications edit page component.
@@ -87,7 +83,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     } = props;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
-    const applicationHelpShownStatusKey: string = "isApplicationHelpShown";
 
     const { t } = useTranslation();
 
@@ -95,9 +90,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
+    const {
+        templates: extensionApplicationTemplates,
+        isApplicationTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+    } = useApplicationTemplates();
+
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
-        (state: AppState) => state.helpPanel.docStructure);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -200,42 +198,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          *  For more additional context please refer comment:
          *  @see https://github.com/wso2/identity-apps/pull/3028#issuecomment-1123847668
          */
-        if (appDescElement || isApplicationRequestLoading) {
+        if (appDescElement) {
             const nativeElement: HTMLDivElement = appDescElement?.current;
 
             if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
                 setIsDescTruncated(true);
             }
         }
-    }, [ appDescElement, isApplicationRequestLoading ]);
-
-    /**
-     * Get whether to show the help panel
-     * Help panel only shows for the first time
-     */
-    const showHelpPanel = (): boolean => {
-
-        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
-
-        return !isEmpty(userPreferences) &&
-            !userPreferences.identityAppsSettings?.devPortal?.[ applicationHelpShownStatusKey ];
-    };
-
-    /**
-     * Set status of first time help panel is shown
-     */
-    const setHelpPanelShown = (): void => {
-        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
-
-        if (isEmpty(userPreferences) || !userPreferences?.identityAppsSettings?.devPortal) {
-            return;
-        }
-
-        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
-
-        newPref.identityAppsSettings.devPortal[ applicationHelpShownStatusKey ] = true;
-        AppUtils.setUserPreferences(newPref);
-    };
+    }, [ appDescElement, isApplicationRequestLoading, isExtensionApplicationTemplatesRequestLoading ]);
 
     /**
      * Fetch the application details on initial component load.
@@ -243,11 +213,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     useEffect(() => {
         const path: string[] = history.location.pathname?.split("/");
         const id: string = path[ path?.length - 1 ];
-
-        if (showHelpPanel()) {
-            dispatch(toggleHelpPanelVisibility(true));
-            setHelpPanelShown();
-        }
 
         setApplicationId(id);
     }, []);
@@ -307,7 +272,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         determineApplicationTemplate();
 
-    }, [ applicationTemplates, application ]);
+    }, [ applicationTemplates, extensionApplicationTemplates, application ]);
 
     useEffect(() => {
 
@@ -340,7 +305,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             }
         }
 
-    }, [ isApplicationRequestLoading, application ]);
+    }, [ isApplicationRequestLoading, application, isExtensionApplicationTemplatesRequestLoading ]);
 
     /**
      * Push to 404 if application edit feature is disabled.
@@ -357,28 +322,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
     }, [ featureConfig ]);
 
-    /**
-     * Set the default doc content URL for the tab.
-     */
-    useEffect(() => {
-        if (!applicationTemplate) {
-            return;
-        }
-
-        const editApplicationDocs: PortalDocumentationStructureInterface[] = get(helpPanelDocStructure,
-            ApplicationManagementConstants.EDIT_APPLICATIONS_DOCS_KEY);
-
-        if (!editApplicationDocs) {
-            return;
-        }
-
-        dispatch(
-            setHelpPanelDocsContentURL(editApplicationDocs[
-                ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-                    .get(applicationTemplate.id)]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW])
-        );
-    }, [ applicationTemplate, helpPanelDocStructure ]);
-
     const determineApplicationTemplate = () => {
 
         let template: ApplicationTemplateListItemInterface = applicationTemplates?.find(
@@ -391,6 +334,36 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
             template = applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
                 template.id === CustomApplicationTemplate.id);
+        }
+
+        /**
+         * This condition block will help identify the applications created from templates
+         * on the extensions management API side.
+         */
+        if (!template) {
+            const extensionTemplate: ApplicationTemplateListInterface = extensionApplicationTemplates?.find(
+                (template: ApplicationTemplateListInterface) => {
+                    return template?.id === application.templateId;
+                }
+            );
+
+            if (extensionTemplate) {
+                setExtensionApplicationTemplate(extensionTemplate);
+
+                const relatedLegacyTemplateId: string = InboundProtocolDefaultFallbackTemplates.get(
+                    application.inboundProtocols[ 0 /*We pick the first*/ ].type
+                ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
+
+                if (relatedLegacyTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || relatedLegacyTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+                    || relatedLegacyTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                    template = applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
+                        template.id === CustomApplicationTemplate?.id);
+                } else {
+                    template = applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
+                        template.id === CustomProtocolApplicationTemplate?.id);
+                }
+            }
         }
 
         setApplicationTemplate(template);
@@ -510,6 +483,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             );
         }
 
+        if (extensionApplicationTemplate?.name) {
+            return <Label size="small">{ extensionApplicationTemplate?.name }</Label>;
+        }
+
         if (applicationTemplate?.name) {
             return <Label size="small">{ applicationTemplate.name }</Label>;
         }
@@ -579,7 +556,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 count: 5,
                 imageType: "square"
             } }
-            isLoading={ isApplicationRequestLoading }
+            isLoading={ isApplicationRequestLoading || isExtensionApplicationTemplatesRequestLoading }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
@@ -606,11 +583,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             <EditApplication
                 application={ application }
                 featureConfig={ featureConfig }
-                isLoading={ isApplicationRequestLoading }
+                isLoading={ isApplicationRequestLoading || isExtensionApplicationTemplatesRequestLoading }
                 setIsLoading={ setApplicationRequestLoading }
                 onDelete={ handleApplicationDelete }
                 onUpdate={ handleApplicationUpdate }
                 template={ applicationTemplate }
+                extensionTemplate={ extensionApplicationTemplate }
                 data-componentid={ componentId }
                 urlSearchParams={ urlSearchParams }
                 getConfiguredInboundProtocolsList={ (list: string[]) => {

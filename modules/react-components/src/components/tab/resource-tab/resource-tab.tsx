@@ -46,12 +46,13 @@ export interface ResourceTabSubComponentsInterface {
  * Interface for the resource tab pane components.
  */
 export interface ResourceTabPaneInterface {
-    pane?: SemanticShorthandItem<TabPaneProps>
-    menuItem?: any
-    render?: () => React.ReactNode
-    "data-tabid"?: string
-    componentId?: string
-    index?: number
+    id?: string;
+    pane?: SemanticShorthandItem<TabPaneProps>;
+    menuItem?: any;
+    render?: () => React.ReactNode;
+    "data-tabid"?: string;
+    componentId?: string;
+    index?: number;
 }
 
 /**

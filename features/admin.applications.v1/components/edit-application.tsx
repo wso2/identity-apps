@@ -53,10 +53,11 @@ import {
     history
 } from "../../admin.core.v1";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../admin.extensions.v1";
+import { ApplicationTabIDs, applicationConfig } from "../../admin.extensions.v1";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getInboundProtocolConfig } from "../api";
+import useGetApplicationTemplateMetadata from "../api/use-get-application-template-metadata";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -73,7 +74,11 @@ import {
     SupportedAuthProtocolTypes,
     URLFragmentTypes
 } from "../models";
-import { ApplicationTemplateListInterface } from "../models/application-templates";
+import {
+    ApplicationEditTabContentTypes,
+    ApplicationEditTabMetadataInterface,
+    ApplicationTemplateListInterface
+} from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**
@@ -150,15 +155,21 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         onDelete,
         onUpdate,
         template,
+        extensionTemplate,
         readOnly,
         urlSearchParams,
         [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSuperOrganization, isSubOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
     const { UIConfig } = useUIConfig();
+    const {
+        data: extensionTemplateMetadata,
+        isLoading: isExtensionTemplateMetadataFetchRequestLoading,
+        error: extensionTemplateMetadataFetchRequestError
+    } = useGetApplicationTemplateMetadata(extensionTemplate?.id, !!extensionTemplate);
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
@@ -201,7 +212,32 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
     const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
+    /**
+     * Handle errors that occur during the application template meta data fetch request.
+     */
+    useEffect(() => {
+        if (!extensionTemplateMetadataFetchRequestError) {
+            return;
+        }
+
+        if (extensionTemplateMetadataFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: extensionTemplateMetadataFetchRequestError?.response?.data?.description,
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications.fetchTemplateMetadata.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("applications:notifications.fetchTemplateMetadata" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications." +
+                "fetchTemplateMetadata.genericError.message")
+        }));
+    }, [ extensionTemplateMetadataFetchRequestError ]);
 
     /**
      * Called when an application updates.
@@ -245,6 +281,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     )) {
                     panes.push({
                         componentId: "general",
+                        id: ApplicationTabIDs.GENERAL,
                         menuItem:
                                  <Menu.Item data-tourid="general">
                                      { t("applications:edit.sections.general.tabName") }
@@ -274,6 +311,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ) &&
                 panes.push({
                     componentId: "protocol",
+                    id: ApplicationTabIDs.PROTOCOL,
                     menuItem: t("applications:edit.sections.access.tabName"),
                     render: ApplicationSettingsTabPane
                 });
@@ -289,6 +327,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
                 panes.push({
                     componentId: "user-attributes",
+                    id: ApplicationTabIDs.USER_ATTRIBUTES,
                     menuItem:
                         <Menu.Item data-tourid="attributes">
                             { t("applications:edit.sections.attributes.tabName") }
@@ -314,6 +353,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD, tenantDomain) &&
                   panes.push({
                       componentId: "sign-in-method",
+                      id: ApplicationTabIDs.SIGN_IN_METHODS,
                       menuItem:
                           <Menu.Item data-tourid="sign-in-methods">
                               { t("applications:edit.sections.signOnMethod.tabName") }
@@ -333,6 +373,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
                 panes.push({
                     componentId: "provisioning",
+                    id: ApplicationTabIDs.PROVISIONING,
                     menuItem: t("applications:edit.sections.provisioning.tabName"),
                     render: ProvisioningSettingsTabPane
                 });
@@ -349,6 +390,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         inboundProtocolConfig?.oidc?.clientId , ApplicationTabTypes.ADVANCED, tenantDomain) &&
                   panes.push({
                       componentId: "advanced",
+                      id: ApplicationTabIDs.ADVANCED,
                       menuItem: (
                           <Menu.Item data-tourid="advanced">
                               { t("applications:edit.sections.advanced.tabName") }
@@ -376,6 +418,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     UIConfig?.legacyMode?.organizations &&
                     panes.push({
                         componentId: "shared-access",
+                        id: ApplicationTabIDs.SHARED_ACCESS,
                         menuItem: t("applications:edit.sections.sharedAccess.tabName"),
                         render: SharedAccessTabPane
                     });
@@ -392,6 +435,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     ) &&
                  panes.push({
                      componentId: "info",
+                     id: ApplicationTabIDs.INFO,
                      menuItem: {
                          content: t("applications:edit.sections.info.tabName"),
                          icon: "info circle grey"
@@ -412,41 +456,49 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         return [
             {
                 componentId: "general",
+                id: ApplicationTabIDs.GENERAL,
                 menuItem: t("applications:edit.sections.general.tabName"),
                 render: GeneralApplicationSettingsTabPane
             },
             {
                 componentId: "protocol",
+                id: ApplicationTabIDs.PROTOCOL,
                 menuItem: t("applications:edit.sections.access.tabName"),
                 render: ApplicationSettingsTabPane
             },
             {
                 componentId: "user-attributes",
+                id: ApplicationTabIDs.USER_ATTRIBUTES,
                 menuItem: t("applications:edit.sections.attributes.tabName"),
                 render: AttributeSettingTabPane
             },
             {
                 componentId: "sign-in-method",
+                id: ApplicationTabIDs.SIGN_IN_METHODS,
                 menuItem: t("applications:edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
             applicationConfig.editApplication.showProvisioningSettings && {
                 componentId: "provisioning",
+                id: ApplicationTabIDs.PROVISIONING,
                 menuItem: t("applications:edit.sections.provisioning.tabName"),
                 render: ProvisioningSettingsTabPane
             },
             {
                 componentId: "advanced",
+                id: ApplicationTabIDs.ADVANCED,
                 menuItem: t("applications:edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
             },
             {
                 componentId: "shared-access",
+                id: ApplicationTabIDs.SHARED_ACCESS,
                 menuItem: t("applications:edit.sections.sharedAccess.tabName"),
                 render: SharedAccessTabPane
             },
             {
                 componentId: "info",
+                id: ApplicationTabIDs.INFO,
                 menuItem: {
                     content: t("applications:edit.sections.info.tabName"),
                     icon: "info circle grey"
@@ -456,11 +508,85 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         ];
     };
 
-    const renderedTabPanes: ResourceTabPaneInterface[] = useMemo(
-        () => resolveTabPanes(), [
-            tabPaneExtensions,
-            application?.templateId
-        ]);
+    /**
+     * Filter the available tabs based on metadata defined in the extension template.
+     *
+     * @param tabs - All available templates.
+     * @returns Filtered tabs list.
+     */
+    const filterTabsBasedOnExtensionTemplateMetadata = (
+        tabs: ResourceTabPaneInterface[]
+    ): ResourceTabPaneInterface[] => {
+        const filteredTabs: ResourceTabPaneInterface[] = [];
+
+        /**
+         * Check the existence of predefined tab based on the given tab ID and
+         * add it to the filtered list.
+         *
+         * @param currentTab - Metadata for the tab defined in the template.
+         */
+        const addPredefineTab = (currentTab: ApplicationEditTabMetadataInterface) => {
+            const predefineTab: ResourceTabPaneInterface =
+                        tabs.find((item: ResourceTabPaneInterface) => item?.id === currentTab?.id);
+
+            if (predefineTab) {
+                if (currentTab?.displayName) {
+                    predefineTab.menuItem = currentTab?.displayName;
+                }
+
+                filteredTabs.push(predefineTab);
+            }
+        };
+
+        extensionTemplateMetadata?.edit?.tabs.forEach((tab: ApplicationEditTabMetadataInterface) => {
+            switch (tab?.contentType) {
+                case ApplicationEditTabContentTypes.GUIDE:
+                    if (tab?.guide) {
+                        // TOD: Add created markdown tab into filteredTabs list
+                    }
+
+                    break;
+                case ApplicationEditTabContentTypes.FORM:
+                    if (tab?.form && Array.isArray(tab?.form) && tab?.form?.length > 0) {
+                        // TOD: Add created dynamic form tab into filteredTabs list
+                    }
+
+                    break;
+                default:
+                    addPredefineTab(tab);
+            }
+        });
+
+        return filteredTabs?.length > 0 ? filteredTabs : tabs;
+    };
+
+    /**
+     * Generate the final rendered tab list based on template metadata.
+     */
+    const renderedTabPanes: ResourceTabPaneInterface[] = useMemo(() => {
+        const availableTabs: ResourceTabPaneInterface[] = resolveTabPanes();
+
+        if (!extensionTemplate) {
+            return availableTabs;
+        }
+
+        if (isExtensionTemplateMetadataFetchRequestLoading) {
+            return [];
+        }
+
+        if (extensionTemplateMetadata?.edit?.tabs
+                && Array.isArray(extensionTemplateMetadata?.edit?.tabs)
+                && extensionTemplateMetadata?.edit?.tabs?.length > 0) {
+            return filterTabsBasedOnExtensionTemplateMetadata(availableTabs);
+        }
+
+        return availableTabs;
+    },[
+        tabPaneExtensions,
+        application?.templateId,
+        extensionTemplateMetadata,
+        isExtensionTemplateMetadataFetchRequestLoading
+    ]);
 
     /**
      * Set the defaultTabIndex when the application template updates.
@@ -1147,12 +1273,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             ? (
                 <>
                     <ResourceTab
-                        isLoading={ isLoading }
+                        isLoading={ isLoading || (extensionTemplate && isExtensionTemplateMetadataFetchRequestLoading) }
                         activeIndex={ activeTabIndex }
                         data-componentid={ `${ componentId }-resource-tabs` }
                         defaultActiveIndex={ defaultActiveIndex }
                         onTabChange={ handleTabChange }
-                        panes={ resolveTabPanes() }
+                        panes={ renderedTabPanes }
                         onInitialize={ ({ panesLength }: { panesLength: number }) => {
                             setTotalTabs(panesLength);
                         } }

@@ -34,7 +34,8 @@ import {
  * @returns A promise containing the response.
  */
 const useGetApplicationTemplateMetadata = <Data = ApplicationTemplateMetadataInterface, Error = RequestErrorInterface>(
-    id: string
+    id: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -46,7 +47,7 @@ const useGetApplicationTemplateMetadata = <Data = ApplicationTemplateMetadataInt
         url: store?.getState()?.config?.endpoints?.applicationTemplateMetadata?.replace("{{id}}", id)
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,

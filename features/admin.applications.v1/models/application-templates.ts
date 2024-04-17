@@ -85,22 +85,64 @@ export interface ApplicationTemplateMetadataInterface {
     /**
      * Application creation related metadata.
      */
-    create: {
+    create?: {
         /**
          * Dynamic input fields should be rendered in the application create wizard.
          */
-        form: {
+        form?: {
             fields: DynamicFieldInterface[];
         };
         /**
          * Indicates whether the application is sharable with sub orgs.
          */
-        isApplicationSharable: boolean;
+        isApplicationSharable?: boolean;
         /**
          * Application creation guide metadata.
          */
-        guide: string[];
+        guide?: string[];
     }
+    /**
+     * Application editing section related metadata.
+     */
+    edit?: {
+        tabs: ApplicationEditTabMetadataInterface[]
+    }
+}
+
+/**
+ * Possible Content Types for application editing tabs.
+ */
+export enum ApplicationEditTabContentTypes {
+    FORM = "form",
+    GUIDE = "guide"
+}
+
+/**
+ * Interface to generate a tab in the application editing section.
+ */
+export interface ApplicationEditTabMetadataInterface {
+    /**
+     * Unique identifier for the tab.
+     */
+    id: string;
+    /**
+     * Display name of the tab.
+     */
+    displayName?: string;
+    /**
+     * Content Types for current tab.
+     */
+    contentType?: ApplicationEditTabContentTypes;
+    /**
+     * Dynamic input fields should be rendered in the current tab.
+     */
+    form?: {
+        fields: DynamicFieldInterface[];
+    };
+    /**
+     * Guide content for application editing section.
+     */
+    guide?: string;
 }
 
 /**
