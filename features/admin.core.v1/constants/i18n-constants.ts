@@ -73,7 +73,8 @@ export class I18nConstants {
     /**
      * JWT private key configuration namespace.
      */
-    public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = I18nModuleConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE;
+    public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string =
+    I18nModuleConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE;
 
     /**
      * transferList namespace.
@@ -93,7 +94,8 @@ export class I18nConstants {
     /**
      * governanceConnectors namespace.
      */
-    public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string = I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
+    public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string =
+    I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
 
     /**
      * Groups namespace.
@@ -118,7 +120,8 @@ export class I18nConstants {
     /**
      * Parent org invitations namespace.
      */
-    public static readonly PARENT_ORG_INVITATIONS_NAMESPACE: string = I18nModuleConstants.PARENT_ORG_INVITATIONS_NAMESPACE;
+    public static readonly PARENT_ORG_INVITATIONS_NAMESPACE: string =
+    I18nModuleConstants.PARENT_ORG_INVITATIONS_NAMESPACE;
 
     /**
      * OIDC scopes namespace.
@@ -133,7 +136,8 @@ export class I18nConstants {
     /**
      * Organization discovery namespace.
      */
-    public static readonly ORGANIZATION_DISCOVERY_NAMESPACE: string = I18nModuleConstants.ORGANIZATION_DISCOVERY_NAMESPACE;
+    public static readonly ORGANIZATION_DISCOVERY_NAMESPACE: string =
+      I18nModuleConstants.ORGANIZATION_DISCOVERY_NAMESPACE;
 
     /**
      * Organizations namespace.
@@ -237,6 +241,11 @@ export class I18nConstants {
       I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
 
     /**
+    * AI namespace.
+    */
+    public static readonly AI_NAMESPACE: string = "ai";
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -280,7 +289,8 @@ export class I18nConstants {
         [ I18nConstants.GROUPS_NAMESPACE, "portals" ],
         [ I18nConstants.APPLICATIONS_NAMESPACE, "portals" ],
         [ I18nConstants.IDP_NAMESPACE, "portals" ],
-        [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ]
+        [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ],
+        [ I18nConstants.AI_NAMESPACE, "portals" ]
     ]);
 
     /**
