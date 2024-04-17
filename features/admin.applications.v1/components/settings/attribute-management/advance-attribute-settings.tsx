@@ -443,6 +443,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         !disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")) && (
                         <>
                             <Checkbox
+                                name= "enableAlternativeSubjectIdentifier"
                                 ariaLabel={ t("applications:forms.advancedAttributeSettings." +
                                     "sections.subject.fields.alternateSubjectAttribute.label") }
                                 data-componentid={ `${ componentId }-reassign-subject-attribute-checkbox` }
