@@ -62,7 +62,7 @@ import {
 } from "../../admin.roles.v2/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../admin.server-configurations.v1";
 import { updateUserInfo } from "../api";
-import { AdminAccountTypes, UserManagementConstants } from "../constants";
+import { AdminAccountTypes, UserManagementConstants, LocaleJoiningSymbol } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
 /**
@@ -516,6 +516,22 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * The function returns the normalized format of locale
+     * 
+     * @param locale - locale value 
+     * @param localeJoiningSymbol - symbol used to join language and region parts of locale
+     */
+    const  normalizeLocaleFormat = (locale: string, localeJoiningSymbol: LocaleJoiningSymbol): string => {
+        if (!locale) {
+            return locale;
+        }
+        let [language, region] = locale.split(/[-_]/);
+        language = language.toLowerCase();
+        region = region.toUpperCase();
+        return `${language}${localeJoiningSymbol}${region}`;
+    };
+
+    /**
      * This function returns the ID of the administrator role.
      *
      */
@@ -688,7 +704,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 } else {
                                     opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS")
-                                        ? { emails: [ values.get(schema.name) ] }
+                                        ? { emails: [ values.get(schema.name) ] } 
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("LOCALE") 
+                                        ? { [schemaNames[0]]: normalizeLocaleFormat(values.get(schemaNames[0]) as string, LocaleJoiningSymbol.UNDERSCORE) } 
                                         : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
@@ -819,6 +837,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS")
                                         ? { emails: [ values.get(schema.name) ] }
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("LOCALE") 
+                                        ? { [schemaNames[0]]: normalizeLocaleFormat(values.get(schemaNames[0]) as string, LocaleJoiningSymbol.UNDERSCORE) }
                                         : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
@@ -1273,7 +1293,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             { fieldName })
                     }
                     type="dropdown"
-                    value={ profileInfo.get(schema?.name) }
+                    value={ normalizeLocaleFormat(profileInfo.get(schema?.name), LocaleJoiningSymbol.HYPHEN) }
                     children={ [ {
                         "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
                         key: "empty-locale" as string,
