@@ -275,7 +275,7 @@ export class I18nModuleConstants {
      * Applications namespace.
      */
     public static readonly APPLICATIONS_NAMESPACE: string = "applications";
-  
+
     /**
      * Identity Provider namespace.
      */
@@ -288,4 +288,12 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly API_RESOURCES_NAMESPACE: string = "apiResources";
+
+    /**
+     * AI namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly AI_NAMESPACE: string = "ai";
 }
