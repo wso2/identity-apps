@@ -105,8 +105,13 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             isSystemApplication={ isSystemApplication }
             hiddenAuthenticators={ hiddenAuthenticators }
             data-componentid={ componentId }
-
-
         />
     );
+};
+
+/**
+ * Default props for the application sign-on-methods component.
+ */
+SignOnMethods.defaultProps = {
+    "data-componentid": "sign-on-methods"
 };
