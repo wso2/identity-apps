@@ -44,7 +44,7 @@
     private static final String LOCAL_SMS_OTP_AUTHENTICATOR_ID = "sms-otp-authenticator";
     private static final String RECOVERY_CONNECTOR = "account-recovery";
     private static final String ACCOUNT_MANAGEMENT_GOVERNANCE_DOMAIN = "Account Management";
-    private static final String PROP_ACCOUNT_RECOVERY_SMS_OTP_REGEX = "Recovery.Notification.Password.smsOtp.Regex";
+    private static final String PROP_ACCOUNT_PASSWORD_RECOVERY_OTP_LENGTH = "Recovery.Notification.Password.OTP.OTPLength";
 %>
 
 <%
@@ -55,14 +55,12 @@
 
     int otpLength = 6;
     try {
-        Optional<String> optionalOtpRegex = new PreferenceRetrievalClient().getPropertyValue(
+        Optional<String> optionalOtpLength = new PreferenceRetrievalClient().getPropertyValue(
             "carbon.super", 
             ACCOUNT_MANAGEMENT_GOVERNANCE_DOMAIN, 
             RECOVERY_CONNECTOR, 
-            PROP_ACCOUNT_RECOVERY_SMS_OTP_REGEX);
-        otpLength = optionalOtpRegex.map(otpRegex ->
-                    Integer.parseInt(otpRegex.replaceAll(".*[{]", "").replaceAll("}", ""))
-            ).orElse(otpLength);
+            PROP_ACCOUNT_PASSWORD_RECOVERY_OTP_LENGTH);
+        otpLength = Integer.parseInt(optionalOtpLength.get());
     } catch (Exception e) {
         // Exception is caught and ignored. otpLength will be kept as 6.
     }
