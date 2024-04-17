@@ -18,12 +18,13 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
-import { BrandingAIBanner, LoadingScreen } from "features/admin.ai.v1/components";
 import useAIBrandingPreference from "features/admin.ai.v1/hooks/use-ai-branding-preference";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import BrandingCore from "./branding-core";
+import { BrandingAIBanner } from "../../admin.ai.v1/components/branding-ai-banner";
+import { LoadingScreen } from "../../admin.ai.v1/components/branding-ai-loading-screen";
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";

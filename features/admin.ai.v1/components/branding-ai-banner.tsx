@@ -30,7 +30,7 @@ import { ReactComponent as AIIcon }
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
 import useGenerateAIBrandingPreference,
 { GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
-import { BannerState } from "../models";
+import { BannerState } from "../models/types";
 import "./branding-ai-banner.scss";
 
 /**
