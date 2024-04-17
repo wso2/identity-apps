@@ -63,7 +63,7 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  *
  * @param scopes - `string[]` Set of scopes to check.
  * @param allowedScopes - `string` Set of allowed scopes.
- * @param organzationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
+ * @param organizationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
  * `modules/common/src/constants/organization-constants.ts`.
  * @param isLegacyRuntimeDisabled - `boolean` Is legacy runtime disabled. This is used to ensure backward compatibility.
  *
@@ -72,7 +72,7 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
 export const hasRequiredScopes = (
     scopes: string[],
     allowedScopes: string,
-    organzationType: string,
+    organizationType: string,
     isLegacyRuntimeEnabled: boolean
 ): boolean => {
     const isDefined: boolean = scopes && !isEmpty(scopes);
@@ -82,7 +82,7 @@ export const hasRequiredScopes = (
     }
 
     if (scopes instanceof Array) {
-        if (!isLegacyRuntimeEnabled && organzationType === OrganizationType.SUBORGANIZATION) {
+        if (!isLegacyRuntimeEnabled && organizationType === OrganizationType.SUBORGANIZATION) {
             /**
              * If the organization type is `SUBORGANIZATION`, the `internal_` scopes should be replaced with
              * `internal_org_` scopes.
@@ -109,10 +109,10 @@ export const hasRequiredScopes = (
         }
 
         if (isLegacyRuntimeEnabled ||
-            !organzationType ||
-            organzationType === OrganizationType.SUPER_ORGANIZATION ||
-            organzationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-            organzationType === OrganizationType.TENANT) {
+            !organizationType ||
+            organizationType === OrganizationType.SUPER_ORGANIZATION ||
+            organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            organizationType === OrganizationType.TENANT) {
 
             return scopes.every((scope: string) => hasScope(scope, allowedScopes));
         }

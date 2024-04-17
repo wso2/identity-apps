@@ -17,36 +17,38 @@
  */
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
-import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { setI18nConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
 import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
-import useAuthorization from "@wso2is/features/admin.authorization.v1/hooks/use-authorization";
 import { EventPublisher, PreLoader } from "@wso2is/features/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/features/admin.core.v1/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/features/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
 import { history } from "@wso2is/features/admin.core.v1/helpers";
 import useResourceEndpoints from "@wso2is/features/admin.core.v1/hooks/use-resource-endpoints";
+import useRoutes from "@wso2is/features/admin.core.v1/hooks/use-routes";
 import {
     ConfigReducerStateInterface,
     DocumentationLinksInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface
 } from "@wso2is/features/admin.core.v1/models";
-import { AppState, store } from "@wso2is/features/admin.core.v1/store";
+import { AppState } from "@wso2is/features/admin.core.v1/store";
 import { commonConfig } from "@wso2is/features/admin.extensions.v1";
-import { useGetAllFeatures } from "@wso2is/features/admin.extensions.v1/components/feature-gate/api/feature-gate";
-import { featureGateConfig } from "@wso2is/features/admin.extensions.v1/configs/feature-gate";
-import { OrganizationUtils } from "@wso2is/features/admin.organizations.v1/utils";
+import {
+    GovernanceCategoryForOrgsInterface,
+    useGovernanceConnectorCategories
+} from "@wso2is/features/admin.server-configurations.v1";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
     DocumentationProvider,
+    GovernanceConnectorProvider,
     MediaContextProvider,
     NetworkErrorModal,
     SessionManagementProvider,
@@ -54,7 +56,6 @@ import {
 } from "@wso2is/react-components";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
-import set from "lodash-es/set";
 import * as moment from "moment";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -72,81 +73,47 @@ import "moment/locale/fr";
  * @returns App Root component.
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
-    const featureGateConfigUpdated : FeatureGateInterface = { ...featureGateConfig };
 
     const dispatch: Dispatch<any> = useDispatch();
+
+    const { filterRoutes } = useRoutes();
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const { trySignInSilently, getDecodedIDToken, signOut, state } = useAuthContext();
+
+    const { setResourceEndpoints } = useResourceEndpoints();
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
-    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    const { trySignInSilently, getDecodedIDToken, signOut, state } = useAuthContext();
-    const { setResourceEndpoints } = useResourceEndpoints();
-    const { legacyAuthzRuntime }  = useAuthorization();
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state.organization.isFirstLevelOrganization
+    );
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features
+    );
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
-    const [ orgId, setOrgId ] = useState<string>();
-    const [ featureGateConfigData, setFeatureGateConfigData ] =
-        useState<FeatureGateInterface | null>(featureGateConfigUpdated);
+    const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
+    const [ governanceConnectors, setGovernanceConnectors ] = useState<GovernanceCategoryForOrgsInterface[]>([]);
+
+    const hasGovernanceConnectorsReadScope: boolean = useRequiredScopes(
+        featureConfig?.governanceConnectors?.scopes?.read);
 
     const {
-        data: allFeatures,
-        error: featureGateAPIException
-    } = useGetAllFeatures(orgId, state.isAuthenticated);
+        data: originalConnectorCategories,
+        error: connectorCategoriesFetchRequestError
+    } = useGovernanceConnectorCategories(
+        featureConfig?.server?.enabled && isFirstLevelOrg &&
+        hasGovernanceConnectorsReadScope);
 
-    useEffect(() => {
-        if(state.isAuthenticated) {
-            if (OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
-            || store.getState().organization.isFirstLevelOrganization) {
-                getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
-                    const orgName: string = response.org_name;
-                    // Set org_name instead of org_uuid as the API expects org_name
-                    // as it resolves tenant uuid from it.
-
-                    setOrgId(orgName);
-                });
-            } else {
-                // Set the sub org id to the current organization id.
-                setOrgId(store.getState().organization.organization.id);
-            }
-        }
-    }, [ state ]);
-
-    useEffect(() => {
-        if (allFeatures instanceof IdentityAppsApiException || featureGateAPIException) {
-            return;
-        }
-
-        if (!allFeatures) {
-            return;
-        }
-
-        if (allFeatures?.length > 0) {
-            allFeatures.forEach((feature: AllFeatureInterface )=> {
-                // converting the identifier to path.
-                const path: string = feature.featureIdentifier.replace(/-/g, ".");
-                // Obtain the status and set it to the feature gate config.
-                const featureStatusPath: string = `${ path }.status`;
-
-                set(featureGateConfigUpdated,featureStatusPath, feature.featureStatus);
-
-                const featureTagPath: string = `${ path }.tags`;
-
-                set(featureGateConfigUpdated,featureTagPath, feature.featureTags);
-
-                setFeatureGateConfigData(featureGateConfigUpdated);
-            });
-        }
-    }, [ allFeatures ]);
 
     /**
      * Set the deployment configs in redux state.
@@ -263,6 +230,24 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         eventPublisher.publish("page-visit-console-landing-page");
     }, [ uuid ]);
 
+    useEffect(() => {
+        if (!state.isAuthenticated) {
+            return;
+        }
+
+        filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
+    }, [ filterRoutes, governanceConnectors, state.isAuthenticated, isFirstLevelOrg ]);
+
+    useEffect(() => {
+        if (!originalConnectorCategories ||
+            originalConnectorCategories instanceof IdentityAppsApiException ||
+            connectorCategoriesFetchRequestError) {
+            return;
+        }
+
+        setGovernanceConnectors(originalConnectorCategories);
+    }, [ originalConnectorCategories ]);
+
     /**
      * Set the value of Session Timed Out.
      */
@@ -327,22 +312,17 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             });
     };
 
-    if (isEmpty(config?.deployment) || isEmpty(config?.endpoints)) {
+    if (!routesFiltered || isEmpty(config?.deployment) || isEmpty(config?.endpoints)) {
         return <PreLoader/>;
     }
 
     return (
         <Router history={ history }>
             <div className="container-fluid">
-                <DocumentationProvider<DocumentationLinksInterface> links={ DocumentationLinks }>
-                    <Suspense fallback={ <PreLoader /> }>
-                        <MediaContextProvider>
-                            <AccessControlProvider
-                                allowedScopes={ allowedScopes }
-                                features={ featureGateConfigData }
-                                isLegacyRuntimeEnabled={ legacyAuthzRuntime }
-                                organizationType={ organizationType }
-                            >
+                <GovernanceConnectorProvider connectorCategories={ governanceConnectors }>
+                    <DocumentationProvider<DocumentationLinksInterface> links={ DocumentationLinks }>
+                        <Suspense fallback={ <PreLoader /> }>
+                            <MediaContextProvider>
                                 <SessionManagementProvider
                                     onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                     onSessionLogout={ handleSessionLogout }
@@ -529,10 +509,10 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                         </Switch>
                                     </>
                                 </SessionManagementProvider>
-                            </AccessControlProvider>
-                        </MediaContextProvider>
-                    </Suspense>
-                </DocumentationProvider>
+                            </MediaContextProvider>
+                        </Suspense>
+                    </DocumentationProvider>
+                </GovernanceConnectorProvider>
             </div>
         </Router>
     );
