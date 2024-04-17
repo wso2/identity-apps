@@ -29,11 +29,6 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
-import { useOIDCScopesList } from "../../../../admin.oidc-scopes.v1/api/oidc-scopes";
-import {
-    OIDCScopesClaimsListInterface,
-    OIDCScopesListInterface
-} from "../../../../admin.oidc-scopes.v1/models/oidc-scopes";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
@@ -46,11 +41,15 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
-import { applicationConfig } from "../../../../admin.extensions.v1";
-import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../admin.claims.v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../admin.core.v1";
+import { applicationConfig } from "../../../../admin.extensions.v1";
 import { SubjectAttributeListItem } from "../../../../admin.identity-providers.v1/components/settings";
+import { useOIDCScopesList } from "../../../../admin.oidc-scopes.v1/api/oidc-scopes";
+import {
+    OIDCScopesClaimsListInterface,
+    OIDCScopesListInterface
+} from "../../../../admin.oidc-scopes.v1/models/oidc-scopes";
 import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/";
 import {
     AppClaimInterface,
@@ -721,6 +720,27 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     };
 
     /**
+     * Create sorted dropdown list.
+     */
+    const createDropDownList = () : DropdownOptionsInterface[] => {
+        let soretdDropdownList: DropdownOptionsInterface[] = [];
+
+        soretdDropdownList = createDropdownOption();
+
+        if (onlyOIDCConfigured) {
+            const defaultSubjectClaimIndex: number =
+            soretdDropdownList.findIndex(
+                (option: DropdownOptionsInterface) => option?.value === DefaultSubjectAttribute
+            );
+
+            soretdDropdownList = soretdDropdownList.filter((item:DropdownOptionsInterface,
+                index:number) => index !== defaultSubjectClaimIndex);
+        }
+
+        return soretdDropdownList;
+    };
+
+    /**
      * Create dropdown options
      */
     const createDropdownOption = (): DropdownOptionsInterface[] => {
@@ -825,24 +845,28 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         } else {
             let usernameAdded: boolean = false;
 
-            selectedExternalClaims.map((element: ExtendedExternalClaimInterface) => {
-                const option: DropdownOptionsInterface = {
-                    key: element.claimURI,
-                    text: (
-                        <SubjectAttributeListItem
-                            key={ element.id }
-                            displayName={ element.localClaimDisplayName }
-                            claimURI={ element.claimURI }
-                            value={ element.mappedLocalClaimURI }
-                        />
-                    ),
-                    value: element.mappedLocalClaimURI
-                };
+            unfilteredExternalClaimsGroupedByScopes.map((scope: OIDCScopesClaimsListInterface) => {
+                scope?.claims.map((element: ExtendedExternalClaimInterface) => {
+                    if (element.requested) {
+                        const option: DropdownOptionsInterface = {
+                            key: element.claimURI,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ element.id }
+                                    displayName={ element.localClaimDisplayName }
+                                    claimURI={ element.claimURI }
+                                    value={ element.mappedLocalClaimURI }
+                                />
+                            ),
+                            value: element.mappedLocalClaimURI
+                        };
 
-                options.push(option);
-                if (element.mappedLocalClaimURI === DefaultSubjectAttribute) {
-                    usernameAdded = true;
-                }
+                        options.push(option);
+                        if (element.mappedLocalClaimURI === DefaultSubjectAttribute) {
+                            usernameAdded = true;
+                        }
+                    }
+                });
             });
             if (!usernameAdded) {
                 const allExternalClaims: ExtendedExternalClaimInterface[] = [
@@ -1065,6 +1089,20 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
 
         /**
+         * Handles the error scenario of the claim configuration update by displaying claim configuration
+         * update failure alert when alternative subject identifier is not in the requested attribute.
+         */
+        const onClaimConfigUpdateWithNotAllowedSubjectAttributeError = () => {
+            dispatch(addAlert({
+                description: t("applications:notifications.updateClaimConfig" +
+                    ".mistmatchAlternativesubjectIdentifierError.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications.updateClaimConfig.mistmatchAlternativesubjectIdentifierError" +
+                ".message")
+            }));
+        };
+
+        /**
          * Handles the error scenario of the claim configuration update by displaying a generic claim configuration
          * update failure alert.
          */
@@ -1091,6 +1129,19 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 message: t("applications:notifications.updateClaimConfig.success.message")
             }));
         };
+
+        /**
+        * Distpatch an error alert when the alternative subject identifier value is not in the
+        * requested attribute list.
+        */
+        if( onlyOIDCConfigured && submitValue.claimConfiguration.subject.claim.uri !== DefaultSubjectAttribute
+            && !submitValue.claimConfiguration.requestedClaims.map(
+                (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
+                .includes(submitValue.claimConfiguration.subject.claim.uri)) {
+            onClaimConfigUpdateWithNotAllowedSubjectAttributeError();
+
+            return;
+        }
 
         const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) =>
             protocol.type === SupportedAuthProtocolTypes.OAUTH2);
@@ -1219,7 +1270,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <AdvanceAttributeSettings
-                                        dropDownOptions={ createDropdownOption() }
+                                        dropDownOptions={ createDropDownList() }
                                         triggerSubmission={ (submitFunction: () => void) => {
                                             submitAdvanceForm = submitFunction;
                                         } }
@@ -1302,7 +1353,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                 !readOnly
                                 && (
                                     <Show
-                                        when={ AccessControlConstants.APPLICATION_EDIT }
+                                        when={ featureConfig?.applications?.scopes?.update }
                                     >
                                         <Divider hidden/>
                                         <Grid.Row>

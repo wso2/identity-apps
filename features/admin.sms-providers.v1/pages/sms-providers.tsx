@@ -39,7 +39,6 @@ import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import { AuthenticatorManagementConstants } from "../../admin.connections.v1/constants/autheticator-constants";
 import {
     AppConstants,
@@ -631,7 +630,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             {
                 !isLoading && !isSMSProviderConfigFetchRequestLoading && (
                     <Show
-                        when={ AccessControlConstants.NOTIFICATION_SENDERS_DELETE }
+                        when={ featureConfig?.notificationChannels?.scopes?.delete }
                     >
                         <Divider hidden />
                         <DangerZoneGroup

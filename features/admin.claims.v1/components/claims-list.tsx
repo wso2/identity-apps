@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
@@ -62,7 +62,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Header, Icon, ItemHeader, SemanticICONS } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
-import { attributeConfig } from "../../admin.extensions.v1";
 import {
     AppConstants,
     AppState,
@@ -71,6 +70,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
+import { attributeConfig } from "../../admin.extensions.v1";
 import { getProfileSchemas } from "../../admin.users.v1/api";
 import { getUserStores } from "../../admin.userstores.v1/api/user-stores";
 import { UserStoreListItem } from "../../admin.userstores.v1/models/user-stores";
@@ -619,7 +619,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ attributeConfig.attributesPlaceholderAddButton(attributeType)
                         && (
-                            <Show when={ AccessControlConstants.SCOPE_WRITE }>
+                            <Show when={ featureConfig?.oidcScopes?.scopes?.create }>
                                 <PrimaryButton
                                     onClick={ onEmptyListPlaceholderActionClick }
                                 >

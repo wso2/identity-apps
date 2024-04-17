@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,8 +22,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
-import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
+import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
 import { deleteIDVP } from "../../api";
 import { IdentityVerificationProviderInterface } from "../../models";
 import {
@@ -89,6 +90,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ loading, setLoading ] = useState(false);
@@ -161,7 +163,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     { (isDeletePermitted || !isReadOnly) &&(
                         <DangerZoneGroup
                             sectionHeader={ t("idvp:dangerZoneGroup.header") }>
-                            <Show when={ AccessControlConstants.IDVP_EDIT }>
+                            <Show when={ featureConfig?.identityVerificationProviders?.scopes?.update }>
                                 <DangerZone
                                     actionTitle={
                                         t("idvp:dangerZoneGroup.disableIDVP.actionTitle",
@@ -184,7 +186,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                     data-componentid={ `${ componentId }-disable-idvp-danger-zone` }
                                 />
                             </Show>
-                            <Show when={ AccessControlConstants.IDVP_DELETE }>
+                            <Show when={ featureConfig?.identityVerificationProviders?.scopes?.delete }>
                                 <DangerZone
                                     actionTitle={ t("idvp:dangerZoneGroup" +
                                         ".deleteIDVP.actionTitle") }

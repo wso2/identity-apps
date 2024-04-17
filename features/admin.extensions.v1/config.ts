@@ -83,6 +83,14 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                     resource: "./application-templates/templates/mobile-application/mobile-application.json"
                 },
                 {
+                    content: {
+                        quickStart: "./application-templates/templates/m2m-application/quick-start.tsx"
+                    },
+                    enabled: true,
+                    id: "m2m-application",
+                    resource: "./application-templates/templates/m2m-application/m2m-application.json"
+                },
+                {
                     enabled: true,
                     id: "choreo-apim-application-oidc",
                     resource: "./application-templates/templates/choreo-apim-application-oidc/" +

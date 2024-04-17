@@ -122,79 +122,89 @@ const useSignIn = (): UseSignInInterface => {
      * Resolves and sets the custom server host.
      *
      * @param orgType - Type of the organization. Ex: sub organization, etc.
+     */
+    const setCustomServerHost = (orgType: string): void => {
+        // In case of failure customServerHost is set to the serverHost.
+        let customServerHost: string = Config?.getDeploymentConfig()?.serverHost;
+
+        const isSuperTenant: boolean = window["AppUtils"]?.isSuperTenant();
+        const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
+            window["AppUtils"]?.getConfig()?.organizationName.length > 0;
+
+        if (!window["AppUtils"]?.getConfig()?.requireSuperTenantInUrls && isSuperTenant) {
+            // Removing super tenant from the server host.
+            const customServerHostSplit: string[] = customServerHost?.split("/t/");
+
+            if (customServerHostSplit?.length > 0) {
+                customServerHost = customServerHostSplit[0];
+            }
+        }
+
+        if (isSubOrganization) {
+            customServerHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
+                window["AppUtils"]?.getConfig()?.organizationPrefix}/${
+                window["AppUtils"]?.getConfig()?.organizationName}`;
+        }
+
+        window["AppUtils"]?.updateCustomServerHost(customServerHost);
+
+        // Update store with custom server host.
+        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
+
+        // Set the deployment configs in the context.
+        setDeploymentConfig(Config?.getDeploymentConfig());
+
+        // Update runtime configurations.
+        ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
+    };
+
+    /**
+     * Resolves and sets the custom server host.
+     *
+     * @deprecated Use `setCustomServerHost()` instead.
+     * @param orgType - Type of the organization. Ex: sub organization, etc.
      * @param wellKnownEndpoint - Wellknown discovery endpoint.
      */
-    const setCustomServerHost = (orgType: string, wellKnownEndpoint: string): void => {
+    const setLegacyCustomServerHost = (orgType: string, wellKnownEndpoint: string): void => {
         const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
 
-        if (legacyAuthzRuntime && !disabledFeatures?.includes("branding.hostnameUrlBranding")) {
-            // Set configurations related to hostname branding.
-            axios
-                .get(wellKnownEndpoint)
-                .then((response: AxiosResponse) => {
-                    // Use token endpoint to extract the host url.
-                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
-
-                    let serverHost: string = splitted?.slice(0, -2)?.join("/");
-
-                    if (orgType === OrganizationType.SUBORGANIZATION) {
-                        serverHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
-                            window["AppUtils"]?.getConfig()?.organizationPrefix
-                        }/${window["AppUtils"]?.getConfig()?.organizationName}`;
-                    }
-
-                    window["AppUtils"]?.updateCustomServerHost(serverHost);
-                })
-                .catch((error: any) => {
-                    // In case of failure customServerHost is set to the serverHost.
-                    window["AppUtils"]?.updateCustomServerHost(Config?.getDeploymentConfig()?.serverHost);
-
-                    throw error;
-                })
-                .finally(() => {
-                    // Update store with custom server host.
-                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
-
-                    // Set the deployment configs in the context.
-                    setDeploymentConfig(Config?.getDeploymentConfig());
-
-                    // Update runtime configurations.
-                    ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
-                });
-        } else {
-            // In case of failure customServerHost is set to the serverHost.
-            let customServerHost: string = Config?.getDeploymentConfig()?.serverHost;
-
-            const isSuperTenant: boolean = window["AppUtils"]?.isSuperTenant();
-            const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
-                window["AppUtils"]?.getConfig()?.organizationName.length > 0;
-
-            if (!window["AppUtils"]?.getConfig()?.requireSuperTenantInUrls && isSuperTenant) {
-                // Removing super tenant from the server host.
-                const customServerHostSplit: string[] = customServerHost?.split("/t/");
-
-                if (customServerHostSplit?.length > 0) {
-                    customServerHost = customServerHostSplit[0];
-                }
-            }
-
-            if (isSubOrganization) {
-                customServerHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
-                    window["AppUtils"]?.getConfig()?.organizationPrefix}/${
-                    window["AppUtils"]?.getConfig()?.organizationName}`;
-            }
-
-            window["AppUtils"]?.updateCustomServerHost(customServerHost);
-
-            // Update store with custom server host.
-            dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
-
-            // Set the deployment configs in the context.
-            setDeploymentConfig(Config?.getDeploymentConfig());
-
-            // Update runtime configurations.
-            ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
+        if (disabledFeatures?.includes("branding.hostnameUrlBranding")) {
+            return;
         }
+
+        // Set configurations related to hostname branding.
+        axios
+            .get(wellKnownEndpoint)
+            .then((response: AxiosResponse) => {
+                // Use token endpoint to extract the host url.
+                const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
+
+                let serverHost: string = splitted?.slice(0, -2)?.join("/");
+
+                if (orgType === OrganizationType.SUBORGANIZATION) {
+                    serverHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
+                        window["AppUtils"]?.getConfig()?.organizationPrefix
+                    }/${window["AppUtils"]?.getConfig()?.organizationName}`;
+                }
+
+                window["AppUtils"]?.updateCustomServerHost(serverHost);
+            })
+            .catch((error: any) => {
+                // In case of failure customServerHost is set to the serverHost.
+                window["AppUtils"]?.updateCustomServerHost(Config?.getDeploymentConfig()?.serverHost);
+
+                throw error;
+            })
+            .finally(() => {
+                // Update store with custom server host.
+                dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
+
+                // Set the deployment configs in the context.
+                setDeploymentConfig(Config?.getDeploymentConfig());
+
+                // Update runtime configurations.
+                ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
+            });
     };
 
     /**
@@ -204,7 +214,11 @@ const useSignIn = (): UseSignInInterface => {
      * ```
      * const { onSignIn } = useSignIn();
      * ```
+     *
      * @param response - The basic user information returned from the sign-in process.
+     * @param onTenantResolve - Callback to be triggered when tenant is resolved.
+     * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
+     * @param onAppReady - Callback to be triggered when the app is ready.
      *
      * @returns A promise.
      */
@@ -215,7 +229,7 @@ const useSignIn = (): UseSignInInterface => {
         onAppReady: () => void
     ): Promise<void> => {
         if (legacyAuthzRuntime) {
-            legacyOnSignIn(
+            await legacyOnSignIn(
                 response,
                 onTenantResolve,
                 onSignInSuccessRedirect,
@@ -225,7 +239,7 @@ const useSignIn = (): UseSignInInterface => {
             return;
         }
 
-        _onSignIn(
+        await _onSignIn(
             response,
             onTenantResolve,
             onSignInSuccessRedirect,
@@ -388,10 +402,6 @@ const useSignIn = (): UseSignInInterface => {
 
         const logoutUrl: string = window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL;
 
-        let wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
-
-        // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
-        wellKnownEndpoint = wellKnownEndpoint.replace("/o/", "/");
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
         onAppReady();
@@ -468,7 +478,7 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         onSignInSuccessRedirect(idToken);
-        setCustomServerHost(orgType, wellKnownEndpoint);
+        setCustomServerHost(orgType);
     };
 
     /**
@@ -556,7 +566,6 @@ const useSignIn = (): UseSignInInterface => {
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
-
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
@@ -678,8 +687,6 @@ const useSignIn = (): UseSignInInterface => {
             sessionStorage.setItem(LOGOUT_URL, logoutUrl);
         }
 
-        const wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
-
         onAppReady();
 
         sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
@@ -730,11 +737,7 @@ const useSignIn = (): UseSignInInterface => {
                         endSessionEndpoint: logoutUrl.split("?")[0],
                         tokenEndpoint: tokenEndpoint
                     },
-                    signOutRedirectURL: deriveLogoutRedirectForSubOrgLogins(
-                        logoutRedirectUrl,
-                        userOrganizationId,
-                        orgIdIdToken
-                    )
+                    signOutRedirectURL: logoutRedirectUrl
                 });
             })
             .catch((error: any) => {
@@ -754,7 +757,7 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         onSignInSuccessRedirect(idToken);
-        setCustomServerHost(orgType, wellKnownEndpoint);
+        setLegacyCustomServerHost(orgType, Config.getServiceResourceEndpoints().wellKnown);
     };
 
     /**
@@ -769,10 +772,6 @@ const useSignIn = (): UseSignInInterface => {
      * @returns Derived logout redirect URL.
      */
     const deriveLogoutRedirectForSubOrgLogins = (currentLogoutRedirect: string, userOrg: string, orgId: string) => {
-        if (legacyAuthzRuntime) {
-            return currentLogoutRedirect;
-        }
-
         let logoutRedirectUrl: string = currentLogoutRedirect;
 
         // When a first level tenant login happens, `user_org` is undefined.

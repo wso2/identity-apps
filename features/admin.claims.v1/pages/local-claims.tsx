@@ -28,8 +28,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { attributeConfig } from "../../admin.extensions.v1";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import { getAllLocalClaims } from "../../admin.claims.v1/api";
 import {
     AdvancedSearchWithBasicFilters,
@@ -41,6 +39,7 @@ import {
     history,
     sortList
 } from "../../admin.core.v1";
+import { attributeConfig } from "../../admin.extensions.v1";
 import { getADialect } from "../api";
 import { AddLocalClaims, ClaimsList, ListType } from "../components";
 
@@ -305,7 +304,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                     (isLoading || !(!searchQuery && filteredClaims?.length <= 0))
                     && attributeConfig.attributes.addAttribute && (
                         <Show
-                            when={ AccessControlConstants.ATTRIBUTE_WRITE }
+                            when={ featureConfig?.attributeDialects?.scopes?.create }
                         >
                             <PrimaryButton
                                 onClick={ () => {

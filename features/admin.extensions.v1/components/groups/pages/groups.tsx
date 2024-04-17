@@ -36,7 +36,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -459,7 +458,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 && originalGroupList.totalResults > 0
                 && (
                     <Show
-                        when={ AccessControlConstants.GROUP_WRITE }
+                        when={ featureConfig?.groups?.scopes?.create }
                     >
                         <PrimaryButton
                             data-testid="group-mgt-groups-list-add-button"

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
 import { IdentityProviderAdvanceInterface } from "../../models";
 
 /**
@@ -50,8 +52,8 @@ interface AdvanceConfigurationsFormPropsInterface extends IdentityProviderAdvanc
 /**
  * Advance configurations form component.
  *
- * @param {AdvanceConfigurationsFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Advance configurations form component.
  */
 export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsFormPropsInterface> = (
     props: AdvanceConfigurationsFormPropsInterface
@@ -66,12 +68,13 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
     } = props;
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     /**
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfiguration = (values: any): any => {
         return {
@@ -82,7 +85,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
     };
 
     return (
-        <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
+        <Forms onSubmit={ (values:  Map<string, FormValue>) => onSubmit(updateConfiguration(values)) }>
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -92,7 +95,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             required={ false }
                             requiredErrorMessage={ t("authenticationProvider:forms.common." +
                                 "requiredErrorMessage") }
-                            value={ config?.isFederationHub ? ["federationHub"] : [] }
+                            value={ config?.isFederationHub ? [ "federationHub" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -158,7 +161,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Show when={ AccessControlConstants.IDP_EDIT }>
+                        <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                             <Button
                                 primary
                                 type="submit"

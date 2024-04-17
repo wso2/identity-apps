@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
@@ -477,8 +477,8 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                             <Show
                                 when={
                                     [
-                                        AccessControlConstants.APPLICATION_WRITE,
-                                        AccessControlConstants.APPLICATION_READ
+                                        ...featureConfig?.applications?.scopes?.create,
+                                        ...featureConfig?.applications?.scopes?.read
                                     ]
                                 }
                             >
@@ -510,17 +510,17 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                     >
                         <Grid stackable>
                             <Grid.Row columns={ 2 }>
-                                <Show when={ AccessControlConstants.USER_READ }>
+                                <Show when={ featureConfig?.users?.scopes?.read }>
                                     { renderManageUsersCard() }
                                 </Show>
-                                <Show when={ AccessControlConstants.IDP_READ }>
+                                <Show when={ featureConfig?.identityProviders?.scopes?.read }>
                                     { renderConnectionsCard() }
                                 </Show>
                             </Grid.Row>
                             {
                                 organizationType !== OrganizationType.SUBORGANIZATION && (
                                     <Show
-                                        when={ AccessControlConstants.APPLICATION_WRITE }
+                                        when={ featureConfig?.applications?.scopes?.create }
                                         featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }
                                     >
                                         { featureConfig.tryIt?.enabled && renderTryItCard() }

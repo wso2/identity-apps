@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -34,16 +34,17 @@ import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, use
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin.extensions.v1/configs";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
+    FeatureConfigInterface,
     UIConstants,
     history
 } from "../../admin.core.v1";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin.extensions.v1/configs";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
@@ -115,7 +116,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(true);
     const [
         isAuthenticatorFetchRequestRequestLoading,
-        setIsAuthenticatorFetchRequestRequestLoading 
+        setIsAuthenticatorFetchRequestRequestLoading
     ] = useState<boolean>(true);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
@@ -123,6 +124,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     const [ showFilteredList, setShowFilteredList ] = useState<boolean>(false);
     const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -483,9 +486,9 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
             action={ (
                 (!isIdPListRequestLoading || !isAuthenticatorFetchRequestRequestLoading) &&
                 !(!searchQuery && idpList?.identityProviders?.length <= 0)) &&
-                identityProviderConfig.useNewConnectionsView !== undefined && 
+                identityProviderConfig.useNewConnectionsView !== undefined &&
                 (
-                    <Show when={ AccessControlConstants.IDP_WRITE }>
+                    <Show when={ featureConfig?.identityProviders?.scopes?.create }>
                         <PrimaryButton
                             onClick={ (): void => {
                                 eventPublisher.publish("connections-click-new-connection-button");
@@ -507,7 +510,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                     : t("console:develop.pages.idp.title")
             }
             description={
-                identityProviderConfig.useNewConnectionsView 
+                identityProviderConfig.useNewConnectionsView
                     ? (
                         <>
                             { t("console:develop.pages.authenticationProvider.subTitle") }
@@ -682,7 +685,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                                         ".placeholder"
                                     ) }
                                     placeholder={ t(
-                                        "authenticationProvider:" + 
+                                        "authenticationProvider:" +
                                         "advancedSearch.placeholder"
                                     ) }
                                     defaultSearchAttribute="name"

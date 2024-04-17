@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -32,9 +33,11 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Header, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import { getApplicationDetails } from "../../admin.applications.v1/api";
@@ -130,7 +133,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
@@ -165,34 +168,36 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         getIDPConnectedApps(idpId)
             .then(async (response: ConnectedAppsInterface) => {
                 if (response.count === 0) {
-                    setDeletingIDP(list.identityProviders.find(idp => idp.id === idpId));
+                    setDeletingIDP(list.identityProviders.find((idp: IdentityProviderInterface) => idp.id === idpId));
                     setShowDeleteConfirmationModal(true);
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
-                    const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
-                        return getApplicationDetails(app.appId);
-                    });
+                    const appRequests: Promise<ApplicationBasicInterface>[] = response.connectedApps
+                        .map((app: ConnectedAppInterface) => {
+                            return getApplicationDetails(app.appId);
+                        });
 
                     const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map(response => response.catch(error => {
-                            dispatch(addAlert({
-                                description: error?.description
-                                    || "Error occurred while trying to retrieve connected applications.",
-                                level: AlertLevels.ERROR,
-                                message: error?.message || "Error Occurred."
-                            }));
-                        }))
-                    );
+                        appRequests.map((response: Promise<ApplicationBasicInterface>) =>
+                            response.catch((error: IdentityAppsError) => {
+                                dispatch(addAlert({
+                                    description: error?.description
+                                        || "Error occurred while trying to retrieve connected applications.",
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message || "Error Occurred."
+                                }));
+                            }))
+                    ) as ApplicationBasicInterface[];
 
                     const appNames: string[] = [];
 
-                    results.forEach((app) => {
+                    results.forEach((app: ApplicationBasicInterface) => {
                         appNames.push(app.name);
                     });
                     setConnectedApps(appNames);
                 }
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
                         || "Error occurred while trying to retrieve connected applications.",
@@ -221,7 +226,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     message: t("idp:notifications.deleteIDP.success.message")
                 }));
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 handleIDPDeleteError(error);
             })
             .finally(() => {
@@ -263,7 +268,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 <EmptyPlaceholder
                     className="list-placeholder"
                     action={ onEmptyListPlaceholderActionClick && (
-                        <Show when={ AccessControlConstants.IDP_WRITE }>
+                        <Show when={ featureConfig?.identityProviders?.scopes?.create }>
                             <PrimaryButton
                                 onClick={ onEmptyListPlaceholderActionClick }
                             >
@@ -494,7 +499,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                     isAppsLoading ? (
                                         <ContentLoader/>
                                     ) :
-                                        connectedApps?.map((app, index) => {
+                                        connectedApps?.map((app: string, index: number) => {
                                             return (
                                                 <List.Item key={ index }>{ app }</List.Item>
                                             );

@@ -17,8 +17,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { OrganizationType } from "../../admin.core.v1";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -38,7 +37,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { EventPublisher } from "../../admin.core.v1";
+import { EventPublisher, OrganizationType } from "../../admin.core.v1";
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
@@ -157,7 +156,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const {
-        mutate: mutateCustomTextPreferenceFetchRequest
+        mutateMultiple: mutateCustomTextPreferenceFetchRequests
     } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
 
     const isBrandingPageLoading: boolean = useMemo(
@@ -566,7 +565,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         setIsBrandingConfigured(false);
         setBrandingPreference(DEFAULT_PREFERENCE);
         mutateBrandingPreferenceFetchRequest();
-        mutateCustomTextPreferenceFetchRequest();
+        mutateCustomTextPreferenceFetchRequests();
 
         // Increment the tabs component key to remount the component on branding revert.
         setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);
@@ -684,7 +683,9 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-            <Show when={ AccessControlConstants.BRANDING_DELETE }>
+            <Show
+                when={ featureConfig?.branding?.scopes?.delete }
+            >
                 <DangerZoneGroup sectionHeader={ t("extensions:develop.branding.dangerZoneGroup.header") }>
                     { brandingPreference.configs?.isBrandingEnabled && (
                         <DangerZone

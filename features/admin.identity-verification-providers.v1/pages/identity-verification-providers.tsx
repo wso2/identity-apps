@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,9 +21,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { AppConstants, UIConstants, history } from "../../admin.core.v1";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../admin.core.v1";
 import { useIDVPTemplateTypeMetadataList, useIdentityVerificationProviderList } from "../api";
 import { IdentityVerificationProviderList } from "../components";
 import { IdentityVerificationProviderConstants } from "../constants";
@@ -40,6 +40,8 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     const { ["data-componentid"]: componentId } = props;
 
     const { t } = useTranslation();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const {
@@ -112,7 +114,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
             action={
                 (!isIDVPListRequestLoading && (idvpList?.identityVerificationProviders?.length > 0)) &&
                 (
-                    <Show when={ AccessControlConstants.IDVP_WRITE }>
+                    <Show when={ featureConfig?.identityVerificationProviders?.scopes?.create }>
                         <PrimaryButton
                             onClick={ (): void => {
                                 history.push(AppConstants.getPaths().get(

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -37,9 +36,15 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../admin.extensions.v1";
-import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
+import {
+    AppState,
+    ConfigReducerStateInterface,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations
+} from "../../../../admin.core.v1";
 import { AuthenticatorAccordion } from "../../../../admin.core.v1/components";
+import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
+import { identityProviderConfig } from "../../../../admin.extensions.v1";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
@@ -148,6 +153,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const { UIConfig } = useUIConfig();
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const identityProviderTemplates: ConnectionTemplateItemInterface[] = UIConfig?.connectionTemplates;
 
@@ -1013,7 +1019,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             return (
                 <EmptyPlaceholder
                     action={ (
-                        <Show when={ AccessControlConstants.IDP_EDIT }>
+                        <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                             <PrimaryButton
                                 onClick={ handleAddAuthenticator }
                                 loading={ isIdPTemplateFetchRequestLoading }

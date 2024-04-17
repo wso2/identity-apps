@@ -60,6 +60,7 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  * @param isLegacyRuntimeDisabled - `boolean` Is legacy runtime disabled. This is used to ensure backward compatibility.
  *
  * @returns `boolean` True is scopes are enough and false if not.
+ * @deprecated This function is deprecated. Use the `useRequiredScopes` hook instead.
  */
 export const hasRequiredScopes = (
     feature: FeatureAccessConfigInterface,

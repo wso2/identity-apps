@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { FeatureConfigInterface } from "../../admin.core.v1";
-import { APIResourceCategories, APIResourcesConstants } from "../constants/api-resources-constants";
+import { APIResourcesConstants } from "../constants/api-resources-constants";
 
 export class APIResourceUtils {
 
@@ -29,112 +27,11 @@ export class APIResourceUtils {
     private constructor() { }
 
     /**
-     * Check whether the API resource read is allowed.
-     *
-     * @param featureConfig - Feature config.
-     * @param allowedScopes - Allowed scopes.
-     * @returns True if the API resource read is allowed.
+     * Checks if the API resource is managed by Choreo.
+     * 
+     * @param apiResourceGWName - API resource gateway name.
+     * @returns - `true` if the API resource is managed by Choreo and `false` otherwise.
      */
-    public static isAPIResourceReadAllowed(featureConfig: FeatureConfigInterface,
-        allowedScopes: string): boolean {
-
-        return hasRequiredScopes(featureConfig?.apiResources,
-            featureConfig?.apiResources?.scopes?.read, allowedScopes);
-    }
-
-    /**
-     * Check whether the API resource update is allowed.
-     *
-     * @param featureConfig - Feature config.
-     * @param allowedScopes - Allowed scopes.
-     * @returns True if the API resource update is allowed.
-     */
-    public static isAPIResourceUpdateAllowed(featureConfig: FeatureConfigInterface,
-        allowedScopes: string): boolean {
-
-        return hasRequiredScopes(featureConfig?.apiResources,
-            featureConfig?.apiResources?.scopes?.update, allowedScopes);
-    }
-
-    /**
-     * Check whether the API resource create is allowed.
-     *
-     * @param featureConfig - Feature config.
-     * @param allowedScopes - Allowed scopes.
-     * @returns True if the API resource create is allowed.
-     */
-    public static isAPIResourceCreateAllowed(featureConfig: FeatureConfigInterface,
-        allowedScopes: string): boolean {
-
-        return hasRequiredScopes(featureConfig?.apiResources,
-            featureConfig?.apiResources?.scopes?.create, allowedScopes);
-    }
-
-    /**
-     * Check whether the API resource delete is allowed.
-     *
-     * @param featureConfig - Feature config.
-     * @param allowedScopes - Allowed scopes.
-     * @returns True if the API resource delete is allowed.
-     */
-    public static isAPIResourceDeleteAllowed(featureConfig: FeatureConfigInterface,
-        allowedScopes: string): boolean {
-
-        return hasRequiredScopes(featureConfig?.apiResources,
-            featureConfig?.apiResources?.scopes?.delete, allowedScopes);
-    }
-
-    /**
-     * Check whether the API resource is a system API.
-     *
-     * @param type - API Resource type.
-     * @returns True if the API resource is a system API.
-     */
-    public static isSystemAPI(type: string): boolean {
-
-        return type !== APIResourcesConstants.BUSINESS;
-    }
-
-    public static resolveApiResourceGroup = (groupName: string): string => {
-        switch (groupName) {
-            case APIResourceCategories.TENANT:
-                return "Management APIs";
-            case APIResourceCategories.ORGANIZATION:
-                return "Organization APIs";
-            case APIResourceCategories.BUSINESS:
-                return "Business APIs";
-            default:
-                return groupName;
-        }
-    };
-
-    public static resolveApiResourceGroupDisplayName = (groupName: string): string => {
-        switch (groupName) {
-            case APIResourceCategories.ORGANIZATION:
-                return "Organization API";
-            case APIResourceCategories.TENANT:
-                return "Management API";
-            case APIResourceCategories.CONSOLE_FEATURE:
-                return "Console Feature";
-            case APIResourceCategories.BUSINESS:
-                return "Business API";
-            default:
-                return groupName;
-        }
-    };
-
-    public static resolveApiResourceGroupDescription = (groupName: string): string => {
-        switch (groupName) {
-            case APIResourceCategories.ORGANIZATION:
-                return "extensions:develop.apiResource.organizationAPI.description";
-            case APIResourceCategories.TENANT:
-                return "extensions:develop.apiResource.managementAPI.description";
-            case APIResourceCategories.CONSOLE_FEATURE:
-                return "extensions:develop.apiResource.consoleFeature.description";
-            case APIResourceCategories.BUSINESS:
-                return "extensions:develop.apiResource.businessAPI.description";
-            default:
-                return groupName;
-        }
-    };
+    public static checkIfAPIResourceManagedByChoreo = (apiResourceGWName: string): boolean =>
+        apiResourceGWName === APIResourcesConstants.CHOREO_GW_NAME;
 }

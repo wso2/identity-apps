@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -30,11 +31,16 @@ import {
 import { AxiosError } from "axios";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
-import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
+import {
+    AppState,
+    AuthenticatorAccordion,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations
+} from "../../../admin.core.v1";
 import { RootOnlyComponent } from "../../../admin.organizations.v1/components";
 import {
     getOutboundProvisioningConnector,
@@ -110,6 +116,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -379,7 +386,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 <Grid>
                                     <Grid.Row>
                                         <Grid.Column>
-                                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                                 <PrimaryButton
                                                     floated="right"
                                                     onClick={ () => setShowWizard(true) }
@@ -471,7 +478,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                         ] }
                                         imageSize="tiny"
                                         action={ (
-                                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                                 <PrimaryButton
                                                     onClick={ () => setShowWizard(true) }
                                                     data-testid={ `${ testId }-add-connector-button` }>

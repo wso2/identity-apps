@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,18 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Code, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, DropdownItemProps, Grid } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../admin.extensions.v1";
 import { SimpleUserStoreListItemInterface } from "../../../../admin.applications.v1/models";
+import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
+import { identityProviderConfig } from "../../../../admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectionInterface,
@@ -78,6 +80,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
 
@@ -330,7 +333,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
-                        <Show when={ AccessControlConstants.IDP_EDIT }>
+                        <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                             <Button
                                 primary
                                 type="submit"
