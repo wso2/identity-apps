@@ -15,10 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { aiNS } from "../../../models";
 
 export const ai: aiNS = {
-
     aiLoginFlow:{
         banner:{
             collapsed:{
