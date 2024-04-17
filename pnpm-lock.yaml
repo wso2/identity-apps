@@ -515,34 +515,34 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/access-control':
-        specifier: ^2.0.24
+        specifier: ^3.0.0
         version: link:../../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.39
+        specifier: ^2.0.41
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
-        specifier: ^2.0.43
+        specifier: ^2.0.46
         version: link:../../modules/dynamic-forms
       '@wso2is/features':
-        specifier: ^2.14.20
+        specifier: ^2.14.27
         version: link:../../features
       '@wso2is/form':
-        specifier: ^2.0.44
+        specifier: ^2.0.47
         version: link:../../modules/form
       '@wso2is/forms':
-        specifier: ^2.0.29
+        specifier: ^2.0.31
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.1.9
+        specifier: ^2.1.11
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.14
+        specifier: ^2.1.17
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.71
+        specifier: ^2.0.72
         version: link:../../modules/theme
       '@wso2is/validation':
-        specifier: ^2.0.3
+        specifier: ^2.0.4
         version: link:../../modules/validation
       axios:
         specifier: ^0.19.2
@@ -659,8 +659,8 @@ importers:
         specifier: ^4.4.1
         version: 4.4.1(react-dom@18.2.0)(react@18.2.0)
       swr:
-        specifier: ^1.3.0
-        version: 1.3.0(react@18.2.0)
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.2.0)
       ua-parser-js:
         specifier: 0.7.28
         version: 0.7.28
@@ -855,28 +855,28 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/access-control':
-        specifier: ^2.0.24
+        specifier: ^3.0.0
         version: link:../../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.39
+        specifier: ^2.0.41
         version: link:../../modules/core
       '@wso2is/features':
-        specifier: ^2.14.20
+        specifier: ^2.14.27
         version: link:../../features
       '@wso2is/forms':
-        specifier: ^2.0.29
+        specifier: ^2.0.31
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.1.9
+        specifier: ^2.1.11
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.14
+        specifier: ^2.1.17
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.71
+        specifier: ^2.0.72
         version: link:../../modules/theme
       '@wso2is/validation':
-        specifier: ^2.0.3
+        specifier: ^2.0.4
         version: link:../../modules/validation
       axios:
         specifier: ^0.19.2
@@ -945,8 +945,8 @@ importers:
         specifier: ^2.1.3
         version: 2.1.3(react-dom@18.2.0)(react@18.2.0)
       swr:
-        specifier: ^1.3.0
-        version: 1.3.0(react@18.2.0)
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.2.0)
       ua-parser-js:
         specifier: 0.7.28
         version: 0.7.28
@@ -1123,31 +1123,31 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/access-control':
-        specifier: ^2.0.24
+        specifier: ^3.0.0
         version: link:../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.39
+        specifier: ^2.0.41
         version: link:../modules/core
       '@wso2is/dynamic-forms':
-        specifier: ^2.0.43
+        specifier: ^2.0.46
         version: link:../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.0.44
+        specifier: ^2.0.47
         version: link:../modules/form
       '@wso2is/forms':
-        specifier: ^2.0.29
+        specifier: ^2.0.31
         version: link:../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.1.9
+        specifier: ^2.1.11
         version: link:../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.14
+        specifier: ^2.1.17
         version: link:../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.71
+        specifier: ^2.0.72
         version: link:../modules/theme
       '@wso2is/validation':
-        specifier: ^2.0.3
+        specifier: ^2.0.4
         version: link:../modules/validation
       axios:
         specifier: ^0.19.2
@@ -1264,8 +1264,8 @@ importers:
         specifier: ^4.4.1
         version: 4.4.1(react-dom@18.2.0)(react@18.2.0)
       swr:
-        specifier: ^1.3.0
-        version: 1.3.0(react@18.2.0)
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.2.0)
       ua-parser-js:
         specifier: 0.7.28
         version: 0.7.28
@@ -1430,7 +1430,7 @@ importers:
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
-        specifier: ^2.0.71
+        specifier: ^2.0.72
         version: link:../modules/theme
       rimraf:
         specifier: ^3.0.2
@@ -1439,7 +1439,7 @@ importers:
   modules/access-control:
     dependencies:
       '@wso2is/core':
-        specifier: ^2.0.39
+        specifier: ^2.0.41
         version: link:../core
       jest:
         specifier: ^29.7.0
@@ -1594,13 +1594,13 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.14.10)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/core':
-        specifier: ^2.0.39
+        specifier: ^2.0.41
         version: link:../core
       '@wso2is/react-components':
-        specifier: ^2.1.14
+        specifier: ^2.1.17
         version: link:../react-components
       '@wso2is/validation':
-        specifier: ^2.0.3
+        specifier: ^2.0.4
         version: link:../validation
       final-form:
         specifier: ^4.20.9
@@ -1682,13 +1682,13 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.14.10)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/core':
-        specifier: ^2.0.39
+        specifier: ^2.0.41
         version: link:../core
       '@wso2is/react-components':
-        specifier: ^2.1.14
+        specifier: ^2.1.17
         version: link:../react-components
       '@wso2is/validation':
-        specifier: ^2.0.3
+        specifier: ^2.0.4
         version: link:../validation
       final-form:
         specifier: ^4.20.2
@@ -1758,7 +1758,7 @@ importers:
   modules/forms:
     dependencies:
       '@wso2is/core':
-        specifier: ^2.0.39
+        specifier: ^2.0.41
         version: link:../core
       classnames:
         specifier: ^2.2.6
@@ -1831,7 +1831,7 @@ importers:
         specifier: ^29.5.12
         version: 29.5.12
       '@wso2is/core':
-        specifier: ^2.0.39
+        specifier: ^2.0.41
         version: link:../core
       babel-jest:
         specifier: ^26.3.0
@@ -1928,10 +1928,10 @@ importers:
         specifier: ^6.5.9
         version: 6.5.10(react-dom@18.2.0)(react@18.2.0)
       '@wso2is/core':
-        specifier: ^2.0.39
+        specifier: ^2.0.41
         version: link:../core
       '@wso2is/theme':
-        specifier: ^2.0.71
+        specifier: ^2.0.72
         version: link:../theme
       classnames:
         specifier: ^2.2.6
@@ -30433,12 +30433,14 @@ packages:
       picocolors: 1.0.0
       stable: 0.1.8
 
-  /swr@1.3.0(react@18.2.0):
-    resolution: {integrity: sha512-dkghQrOl2ORX9HYrMDtPa7LTVHJjCTeZoB1dqTbnnEDlSvN8JEKpYIYurDfvbQFUUS8Cg8PceFVZNkW0KNNYPw==}
+  /swr@2.0.0(react@18.2.0):
+    resolution: {integrity: sha512-IhUx5yPkX+Fut3h0SqZycnaNLXLXsb2ECFq0Y29cxnK7d8r7auY2JWNbCW3IX+EqXUg3rwNJFlhrw5Ye/b6k7w==}
+    engines: {pnpm: '7'}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
+      use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
   /symbol-observable@1.2.0:

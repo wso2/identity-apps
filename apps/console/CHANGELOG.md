@@ -1,5 +1,89 @@
 # @wso2is/console
 
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies [[`d995f0752e`](https://github.com/wso2/identity-apps/commit/d995f0752e48cf204c9e7bbb5eccf75caeb97d94)]:
+  - @wso2is/features@2.14.27
+
+## 2.15.0
+
+### Minor Changes
+
+- [#5850](https://github.com/wso2/identity-apps/pull/5850) [`3b8d17c06b`](https://github.com/wso2/identity-apps/commit/3b8d17c06ba9cfe400300e1d75f38a2840b0b61b) Thanks [@asha15](https://github.com/asha15)! - Add Quickstart guide for M2M application
+
+### Patch Changes
+
+- [#5973](https://github.com/wso2/identity-apps/pull/5973) [`f21d0c7f14`](https://github.com/wso2/identity-apps/commit/f21d0c7f14fcdcfed978546da56cbe8f504a3198) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix minor bug
+
+- Updated dependencies [[`f21d0c7f14`](https://github.com/wso2/identity-apps/commit/f21d0c7f14fcdcfed978546da56cbe8f504a3198)]:
+  - @wso2is/features@2.14.26
+
+## 2.14.26
+
+### Patch Changes
+
+- Updated dependencies [[`1c8757adf6`](https://github.com/wso2/identity-apps/commit/1c8757adf6539b13621c656bb91ab7d8f56e0494)]:
+  - @wso2is/theme@2.0.72
+  - @wso2is/features@2.14.25
+  - @wso2is/react-components@2.1.17
+  - @wso2is/dynamic-forms@2.0.46
+  - @wso2is/form@2.0.47
+
+## 2.14.25
+
+### Patch Changes
+
+- [#5939](https://github.com/wso2/identity-apps/pull/5939) [`21d83bc92f`](https://github.com/wso2/identity-apps/commit/21d83bc92fc8ffae606aabd2398bc68c0ba3c60d) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Make bulk user import user limit and timeout configurable
+
+- Updated dependencies [[`21d83bc92f`](https://github.com/wso2/identity-apps/commit/21d83bc92fc8ffae606aabd2398bc68c0ba3c60d), [`6a2e4407e3`](https://github.com/wso2/identity-apps/commit/6a2e4407e3d62f9998ff531534d81353bf39f782)]:
+  - @wso2is/features@2.14.24
+
+## 2.14.24
+
+### Patch Changes
+
+- [#5962](https://github.com/wso2/identity-apps/pull/5962) [`343cb2a59a`](https://github.com/wso2/identity-apps/commit/343cb2a59a9b2190ab35c28aa311999070a38360) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove unsupported \_ char from special character username regex.
+
+- Updated dependencies [[`343cb2a59a`](https://github.com/wso2/identity-apps/commit/343cb2a59a9b2190ab35c28aa311999070a38360)]:
+  - @wso2is/features@2.14.23
+
+## 2.14.23
+
+### Patch Changes
+
+- [#5901](https://github.com/wso2/identity-apps/pull/5901) [`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor access control methods to use React hooks
+
+- Updated dependencies [[`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50)]:
+  - @wso2is/access-control@3.0.0
+  - @wso2is/core@2.0.41
+  - @wso2is/features@2.14.22
+  - @wso2is/dynamic-forms@2.0.45
+  - @wso2is/form@2.0.46
+  - @wso2is/forms@2.0.31
+  - @wso2is/i18n@2.1.11
+  - @wso2is/react-components@2.1.16
+  - @wso2is/validation@2.0.4
+
+## 2.14.22
+
+### Patch Changes
+
+- [#5959](https://github.com/wso2/identity-apps/pull/5959) [`01cbd72c8e`](https://github.com/wso2/identity-apps/commit/01cbd72c8e03868146e0a9fdc4353be1e53ea145) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Enable alphanumeric special character username feature.
+
+* [#5927](https://github.com/wso2/identity-apps/pull/5927) [`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide backup code enable option in login flow in sub organizations
+
+* Updated dependencies [[`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372), [`012424a0bb`](https://github.com/wso2/identity-apps/commit/012424a0bbfe3f8c2625a1e15689d0452bdecee8)]:
+  - @wso2is/core@2.0.40
+  - @wso2is/features@2.14.21
+  - @wso2is/access-control@2.0.25
+  - @wso2is/dynamic-forms@2.0.44
+  - @wso2is/form@2.0.45
+  - @wso2is/forms@2.0.30
+  - @wso2is/i18n@2.1.10
+  - @wso2is/react-components@2.1.15
+
 ## 2.14.21
 
 ### Patch Changes

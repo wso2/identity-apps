@@ -242,7 +242,7 @@
                 }
             },
             "branding": {
-                "disabledFeatures": [ "branding.hostnameUrlBranding" ],
+                "disabledFeatures": [ "branding.hostnameUrlBranding", "branding.ai" ],
                 "enabled": true,
                 "scopes": {
                     "feature": [
@@ -278,7 +278,9 @@
                         "internal_role_mgt_view"
                     ],
                     "delete": []
-                }
+                },
+                "userLimit": 50,
+                "fileImportTimeout": 90000
             },
             "eventPublishing": {
                 "disabledFeatures": [],

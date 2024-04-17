@@ -62,7 +62,10 @@ import { BrandingPreferenceUtils } from "../utils";
 /**
  * Prop-types for the branding core component.
  */
-type BrandingCoreInterface = IdentifiableComponentInterface;
+interface BrandingCoreInterface extends IdentifiableComponentInterface {
+
+    brandingPreference?: BrandingPreferenceInterface;
+}
 
 /**
  * Branding core.
@@ -75,6 +78,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 ): ReactElement => {
 
     const {
+        brandingPreference: overridenBrandingPreference,
         ["data-componentid"]: componentId
     } = props;
 
@@ -156,7 +160,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const {
-        mutate: mutateCustomTextPreferenceFetchRequest
+        mutateMultiple: mutateCustomTextPreferenceFetchRequests
     } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
 
     const isBrandingPageLoading: boolean = useMemo(
@@ -218,18 +222,21 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             setIsBrandingConfigured(true);
         }
 
-        setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
-            BrandingPreferenceUtils.migrateThemePreference(
-                originalBrandingPreference.preference,
+        if  (!brandingPreference)  {
+            setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
+                BrandingPreferenceUtils.migrateThemePreference(
+                    originalBrandingPreference.preference,
+                    {
+                        theme: predefinedThemes
+                    }
+                ),
                 {
-                    theme: predefinedThemes
+                    layout: predefinedLayouts
                 }
-            ),
-            {
-                layout: predefinedLayouts
-            }
-        ));
-        setSelectedLayout(originalBrandingPreference.preference.layout.activeLayout);
+            ));
+            setSelectedLayout(originalBrandingPreference.preference.layout.activeLayout);
+        }
+
     }, [ originalBrandingPreference ]);
 
     /**
@@ -280,6 +287,13 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 // Tracked here https://github.com/wso2/product-is/issues/11650.
             });
     }, [ theme ]);
+
+    useEffect(() => {
+
+        if (overridenBrandingPreference) {
+            setBrandingPreference(overridenBrandingPreference);
+        }
+    }, [ overridenBrandingPreference ]);
 
     /**
      * Handles preference form submit action.
@@ -565,7 +579,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         setIsBrandingConfigured(false);
         setBrandingPreference(DEFAULT_PREFERENCE);
         mutateBrandingPreferenceFetchRequest();
-        mutateCustomTextPreferenceFetchRequest();
+        mutateCustomTextPreferenceFetchRequests();
 
         // Increment the tabs component key to remount the component on branding revert.
         setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);

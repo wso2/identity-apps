@@ -1,5 +1,11 @@
 # @wso2is/validation
 
+## 2.0.4
+
+### Patch Changes
+
+- [#5901](https://github.com/wso2/identity-apps/pull/5901) [`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor access control methods to use React hooks
+
 ## 2.0.3
 
 ### Patch Changes

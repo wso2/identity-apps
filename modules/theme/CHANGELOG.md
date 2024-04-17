@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.72
+
+### Patch Changes
+
+- [#5963](https://github.com/wso2/identity-apps/pull/5963) [`1c8757adf6`](https://github.com/wso2/identity-apps/commit/1c8757adf6539b13621c656bb91ab7d8f56e0494) Thanks [@brionmario](https://github.com/brionmario)! - Move `apiResources` & `userRoles` to route config
+
 ## 2.0.71
 
 ### Patch Changes

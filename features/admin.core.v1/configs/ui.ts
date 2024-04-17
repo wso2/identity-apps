@@ -17,6 +17,7 @@
  */
 
 import { FunctionComponent, ReactNode } from "react";
+import { ServerConfigurationsConstants } from "../../admin.server-configurations.v1/constants";
 import { ReactComponent as AlertIcon } from "../../themes/default/assets/images/icons/alert-icon.svg";
 import {
     ReactComponent as ApplicationRolesIcon
@@ -62,6 +63,9 @@ import {
 import {
     ReactComponent as BriefcaseIcon
 } from "../../themes/default/assets/images/icons/outline-icons/briefcase-outline.svg";
+import {
+    ReactComponent as CloudConnectionOutlineIcon
+} from "../../themes/default/assets/images/icons/outline-icons/cloud-connection-outline.svg";
 import { ReactComponent as HomeIcon } from "../../themes/default/assets/images/icons/outline-icons/home-outline.svg";
 import {
     ReactComponent as IDPOutlineIcon
@@ -168,7 +172,6 @@ import { ReactComponent as PythonLogo } from "../../themes/default/assets/images
 import { ReactComponent as ReactLogo } from "../../themes/default/assets/images/technologies/react-logo.svg";
 import { ReactComponent as VueLogo } from "../../themes/default/assets/images/technologies/vue-logo.svg";
 import { ReactComponent as WindowsLogo } from "../../themes/default/assets/images/technologies/windows-logo.svg";
-import { ServerConfigurationsConstants } from "../../admin.server-configurations.v1/constants";
 
 /**
  * Typed interface of {@link getTechnologyLogos}
@@ -244,6 +247,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
  */
 export type GetSidePanelIconsInterface = {
     adminAdvisoryBanner: FunctionComponent | ReactNode,
+    apiResources: FunctionComponent | ReactNode,
     applicationRoles: FunctionComponent | ReactNode,
     appLogs: FunctionComponent | ReactNode,
     applications: FunctionComponent | ReactNode,
@@ -285,6 +289,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
 
     return {
         adminAdvisoryBanner: AdminAdvisoryBannerIcon,
+        apiResources: CloudConnectionOutlineIcon,
         appLogs: IDPMetadataIcon,
         applicationRoles: ApplicationRolesIcon,
         applications: ApplicationsOutlineIcon,
