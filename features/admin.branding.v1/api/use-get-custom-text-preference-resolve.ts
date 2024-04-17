@@ -92,6 +92,15 @@ const useGetCustomTextPreferenceResolve = <
         };
     }
 
+    /**
+     * This function is used to mutate the request cache of custom text preference retrieval requests
+     * across all screens.
+     *
+     * @remarks
+     *
+     * If you want to mutate the request cache of a custom text preference retrieval
+     * request for a specific screen, use 'mutate' instead.
+     */
     const mutateMultiple = () => {
         swrMutate(
             (key: string) => {
