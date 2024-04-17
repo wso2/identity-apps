@@ -60,7 +60,6 @@ export interface BrandingGenerationResultAPIResponseInterface {
      * Status of the branding generation.
      */
     status: string;
-
     /**
      * Generated branding preference.
      */

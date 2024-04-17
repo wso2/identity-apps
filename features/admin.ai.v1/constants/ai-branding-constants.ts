@@ -25,7 +25,7 @@ export const useGetFacts = (): string[] => {
 
     return [
         t("branding:ai.screens.loading.facts.0", { productName }),
-        t("branding:ai.screens.loading.facts.1"),
+        t("branding:ai.screens.loading.facts.1", { productName }),
         t("branding:ai.screens.loading.facts.2", { productName })
     ];
 };

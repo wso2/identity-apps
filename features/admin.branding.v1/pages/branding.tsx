@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import AIBrandingPreferenceProvider from "features/admin.ai.v1/providers/ai-branding-preference-provider";
+import AIBrandingPreferenceProvider from "../../admin.ai.v1/providers/ai-branding-preference-provider";
 import React, { FunctionComponent, ReactElement } from "react";
 import BrandingPageLayout from "../components/branding-page-layout";
 import BrandingPreferenceProvider from "../providers/branding-preference-provider";
