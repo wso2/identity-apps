@@ -515,31 +515,31 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/access-control':
-        specifier: ^3.0.0
+        specifier: ^3.0.1
         version: link:../../modules/access-control
       '@wso2is/core':
         specifier: ^2.0.41
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../../modules/dynamic-forms
       '@wso2is/features':
-        specifier: ^2.14.27
+        specifier: ^2.15.0
         version: link:../../features
       '@wso2is/form':
-        specifier: ^2.0.47
+        specifier: ^2.0.48
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.0.31
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.1.11
+        specifier: ^2.1.12
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.17
+        specifier: ^2.1.18
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.72
+        specifier: ^2.0.73
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -855,25 +855,25 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/access-control':
-        specifier: ^3.0.0
+        specifier: ^3.0.1
         version: link:../../modules/access-control
       '@wso2is/core':
         specifier: ^2.0.41
         version: link:../../modules/core
       '@wso2is/features':
-        specifier: ^2.14.27
+        specifier: ^2.15.0
         version: link:../../features
       '@wso2is/forms':
         specifier: ^2.0.31
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.1.11
+        specifier: ^2.1.12
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.17
+        specifier: ^2.1.18
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.72
+        specifier: ^2.0.73
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -1123,28 +1123,28 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/access-control':
-        specifier: ^3.0.0
+        specifier: ^3.0.1
         version: link:../modules/access-control
       '@wso2is/core':
         specifier: ^2.0.41
         version: link:../modules/core
       '@wso2is/dynamic-forms':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.0.47
+        specifier: ^2.0.48
         version: link:../modules/form
       '@wso2is/forms':
         specifier: ^2.0.31
         version: link:../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.1.11
+        specifier: ^2.1.12
         version: link:../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.17
+        specifier: ^2.1.18
         version: link:../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.72
+        specifier: ^2.0.73
         version: link:../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -1430,7 +1430,7 @@ importers:
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
-        specifier: ^2.0.72
+        specifier: ^2.0.73
         version: link:../modules/theme
       rimraf:
         specifier: ^3.0.2
@@ -1597,7 +1597,7 @@ importers:
         specifier: ^2.0.41
         version: link:../core
       '@wso2is/react-components':
-        specifier: ^2.1.17
+        specifier: ^2.1.18
         version: link:../react-components
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -1685,7 +1685,7 @@ importers:
         specifier: ^2.0.41
         version: link:../core
       '@wso2is/react-components':
-        specifier: ^2.1.17
+        specifier: ^2.1.18
         version: link:../react-components
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -1931,7 +1931,7 @@ importers:
         specifier: ^2.0.41
         version: link:../core
       '@wso2is/theme':
-        specifier: ^2.0.72
+        specifier: ^2.0.73
         version: link:../theme
       classnames:
         specifier: ^2.2.6
