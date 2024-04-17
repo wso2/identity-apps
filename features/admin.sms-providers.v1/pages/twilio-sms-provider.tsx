@@ -30,6 +30,8 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SMSProviderConstants } from "../constants";
 
 interface TwilioSMSProviderPageInterface extends IdentifiableComponentInterface {
+    ["data-componentid"]: string;
+    ["data-testid"]: string;
     isReadOnly: boolean;
     onSubmit: (values: any) => void;
 }
