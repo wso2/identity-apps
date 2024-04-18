@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.4
+
+### Patch Changes
+
+- [#5994](https://github.com/wso2/identity-apps/pull/5994) [`3052092135`](https://github.com/wso2/identity-apps/commit/3052092135a00302899f73e4295e00bc921bd4fe) Thanks [@sandushi](https://github.com/sandushi)! - Fix the alternative subject identifier option reverting issue
+
 ## 2.15.3
 
 ### Patch Changes
