@@ -991,6 +991,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     /**
      * Get the final value of includeUserDomain
+     *
      * @param advanceSettingValues - Advanced settings values for submit
      */
     const getIncludeOrgNameFinalValue = ((advanceSettingValues : AdvanceSettingsSubmissionInterface) => {
