@@ -22,7 +22,7 @@ name: Release
 
 on:
     push:
-        branches: [ master ]
+        branches: [ support-@wso2is/console@2.15.4.x-full ]
         paths-ignore:
             - "LICENSE"
         workflow_dispatch:
@@ -34,7 +34,7 @@ env:
     IS_HOTFIX: 'false'
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
-    
+
 jobs:
     release:
         name: 🚀 Release
