@@ -1001,7 +1001,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             && typeof advanceSettingValues?.subject?.claim === "string"
             && advanceSettingValues?.subject?.claim === DefaultSubjectAttribute
         ) {
-
             includeTenantDomain = false;
         }
 
