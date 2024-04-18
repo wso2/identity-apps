@@ -30,6 +30,7 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SMSProviderConstants } from "../constants";
 
 interface VonageSMSProviderPageInterface extends IdentifiableComponentInterface {
+    "data-componentid": string;
     isReadOnly: boolean;
     onSubmit: (values: any) => void;
 }
@@ -177,6 +178,10 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
             </Grid>
         </EmphasizedSegment>
     );
+};
+
+VonageSMSProvider.defaultProps = {
+    "data-componentid": "vonage-sms-provider"
 };
 
 export default VonageSMSProvider;
