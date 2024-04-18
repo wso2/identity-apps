@@ -323,7 +323,7 @@
                                                     || isSMSRecoveryAvailable && isQuestionBasedPasswordRecoveryEnabledByTenant;
                             if (multipleRecoveryOptionsAvailable) {
                         %>
-                        <div class="segment" style="text-align: left;">
+                        <div class="segment" style="text-align: left;" data-testid="password-recovery-page-multi-option-radio">
                             <%
                                 if (isEmailRecoveryAvailable) {
                             %>

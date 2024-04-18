@@ -166,6 +166,7 @@
                                             id="OTPCode"
                                             name="OTPcode"
                                             class="form-control"
+                                            data-testid="recovery-otp-page-segmented-otp-input"
                                             placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "verification.code")%>"
                                         >
                                         <% for (int index = 1; index <= otpLength;) {
@@ -196,7 +197,13 @@
                                     </div>
                                 <% } else { %>
                                     <div class="ui fluid icon input addon-wrapper mt-3">
-                                        <input type="text" id='OTPCode' name="OTPcode" size='30'/>
+                                        <input 
+                                            type="text" 
+                                            id='OTPCode'
+                                            name="OTPcode" 
+                                            size='30'
+                                            data-testid="recovery-otp-page-non-segmented-otp-input"
+                                        />
                                         <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                                     </div>
                                 <% } %>
