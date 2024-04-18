@@ -47,7 +47,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
     const { t } = useTranslation();
 
     return (
-        <EmphasizedSegment className="form-wrapper" padded={ "very" }>
+        <EmphasizedSegment
+            className="form-wrapper"
+            padded={ "very" }
+            data-componentid={ `${componentId}-tab` }
+        >
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column>
