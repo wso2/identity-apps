@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.15.5
+
+### Patch Changes
+
+- [#5991](https://github.com/wso2/identity-apps/pull/5991) [`a0ccd7f19d`](https://github.com/wso2/identity-apps/commit/a0ccd7f19d9339560178bc8f8a7051519b0df1a9) Thanks [@brionmario](https://github.com/brionmario)! - Update invite-flow callback URL
+
 ## 2.15.4
 
 ### Patch Changes
