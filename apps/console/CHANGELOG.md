@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.15.4
+
+### Patch Changes
+
+- [#5986](https://github.com/wso2/identity-apps/pull/5986) [`d5e69a971a`](https://github.com/wso2/identity-apps/commit/d5e69a971ae7d97d1adb66bf97c48112728c20d3) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Update console dependencies
+
+* [#5988](https://github.com/wso2/identity-apps/pull/5988) [`965a123468`](https://github.com/wso2/identity-apps/commit/965a123468d8c76e2188bb96588f83bb3ec01e7e) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Add data-componentid for provider tabs.
+
+* Updated dependencies [[`965a123468`](https://github.com/wso2/identity-apps/commit/965a123468d8c76e2188bb96588f83bb3ec01e7e)]:
+  - @wso2is/features@2.15.2
+
 ## 2.15.3
 
 ### Patch Changes
