@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.2
+
+### Patch Changes
+
+- [#5988](https://github.com/wso2/identity-apps/pull/5988) [`965a123468`](https://github.com/wso2/identity-apps/commit/965a123468d8c76e2188bb96588f83bb3ec01e7e) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Add data-componentid for provider tabs.
+
 ## 2.15.1
 
 ### Patch Changes
