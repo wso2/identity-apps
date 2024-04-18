@@ -1081,13 +1081,13 @@ export const applications: ApplicationsNS = {
             },
             sections: {
                 applicationNativeAuthentication: {
-                    heading: "Application native authentication",
+                    heading: "App-Native Authentication",
                     alerts: {
-                        clientAttestation: "For client attestation to work, the application native authentication API must be enabled."
+                        clientAttestation: "For client attestation to work, the app-native authentication API must be enabled."
                     },
                     fields: {
                         enableAPIBasedAuthentication: {
-                            hint: "Select to authorize application to perform browserless, in-app authentication via application native authentication API.",
+                            hint: "Select to authorize application to perform browserless, in-app authentication via app-native authentication API.",
                             label: "Enable app-native authentication API"
                         },
                         enableClientAttestation: {

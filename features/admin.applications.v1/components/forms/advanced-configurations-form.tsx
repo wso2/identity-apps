@@ -17,7 +17,6 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -37,8 +36,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { applicationConfig } from "../../../admin.extensions.v1";
 import { AppState, FeatureConfigInterface, getTechnologyLogos } from "../../../admin.core.v1";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "../../../admin.extensions.v1";
 import { ApplicationManagementConstants } from "../../constants";
 import SAMLWebApplicationTemplate from
     "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
@@ -325,7 +325,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                 </Grid.Column>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Heading as="h4">
-                                        { "Application native authentication" }
+                                        { "App-Native Authentication" }
                                     </Heading>
 
                                     {
