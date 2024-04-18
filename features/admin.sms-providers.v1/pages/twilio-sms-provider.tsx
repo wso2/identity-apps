@@ -62,7 +62,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
 
 
     return (
-        <EmphasizedSegment 
+        <EmphasizedSegment
             className="form-wrapper"
             padded={ "very" }
             data-componentid={ `${componentId}-tab` }
