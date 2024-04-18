@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.3
+
+### Patch Changes
+
+- [#5990](https://github.com/wso2/identity-apps/pull/5990) [`783396c123`](https://github.com/wso2/identity-apps/commit/783396c12348d2f8021643b40bdb0797da7da656) Thanks [@chamathns](https://github.com/chamathns)! - Skip applying default branding preference upon change
+
 ## 2.15.2
 
 ### Patch Changes
