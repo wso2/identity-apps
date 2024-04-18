@@ -53,16 +53,16 @@
         tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     }
 
-    int otpLength = 6;
+    int otpLength = 10;
     try {
         Optional<String> optionalOtpLength = new PreferenceRetrievalClient().getPropertyValue(
-            "carbon.super", 
-            ACCOUNT_MANAGEMENT_GOVERNANCE_DOMAIN, 
-            RECOVERY_CONNECTOR, 
+            tenantDomain,
+            ACCOUNT_MANAGEMENT_GOVERNANCE_DOMAIN,
+            RECOVERY_CONNECTOR,
             PROP_ACCOUNT_PASSWORD_RECOVERY_OTP_LENGTH);
         otpLength = Integer.parseInt(optionalOtpLength.get());
     } catch (Exception e) {
-        // Exception is caught and ignored. otpLength will be kept as 6.
+        // Exception is caught and ignored. otpLength will be kept as 10 to trigger the full input field.
     }
 
     String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry");
@@ -145,7 +145,7 @@
                               <div class="ui divider hidden"></div>
                               <% }
                               } %>
-                            
+
                             <div class="field">
                                 <% if (request.getAttribute("screenValue") != null) { %>
                                     <label for="password">
