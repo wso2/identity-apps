@@ -970,14 +970,18 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
 
     /**
-     *  Get the final value of includeUserDomain
+     * Get the final value of includeUserDomain
+     * @param advanceSettingValues - Advanced settings values for submit
      */
     const getIncludeUserDomainFinalValue = ((advanceSettingValues : AdvanceSettingsSubmissionInterface) => {
 
         let includeUserDomain: boolean = advanceSettingValues?.subject.includeUserDomain;
 
-        if (onlyOIDCConfigured && (typeof advanceSettingValues?.subject?.claim === "string" &&
-        advanceSettingValues?.subject?.claim === DefaultSubjectAttribute)) {
+        if (
+            onlyOIDCConfigured
+            && typeof advanceSettingValues?.subject?.claim === "string"
+            && advanceSettingValues?.subject?.claim === DefaultSubjectAttribute
+        ) {
             includeUserDomain = false;
         }
 
@@ -985,14 +989,19 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     });
 
     /**
-     *  Get the final value of includeUserDomain
+     * Get the final value of includeUserDomain
+     * @param advanceSettingValues - Advanced settings values for submit
      */
     const getIncludeOrgNameFinalValue = ((advanceSettingValues : AdvanceSettingsSubmissionInterface) => {
 
         let includeTenantDomain: boolean = advanceSettingValues?.subject.includeTenantDomain;
 
-        if (onlyOIDCConfigured && (typeof advanceSettingValues?.subject?.claim === "string" &&
-        advanceSettingValues?.subject?.claim === DefaultSubjectAttribute)) {
+        if (
+            onlyOIDCConfigured
+            && typeof advanceSettingValues?.subject?.claim === "string"
+            && advanceSettingValues?.subject?.claim === DefaultSubjectAttribute
+        ) {
+
             includeTenantDomain = false;
         }
 
