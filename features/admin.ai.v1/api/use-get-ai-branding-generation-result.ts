@@ -48,8 +48,8 @@ export const useGetAIBrandingGenerationResult = (
         },
         method: HttpMethods.GET,
         url: organizationType === OrganizationType.SUBORGANIZATION
-            ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
-            : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
+            ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/result/${operationId}`
+            : `${store.getState().config.endpoints.brandingPreference}/result/${operationId}`
 
     };
 
