@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.56
+
+### Patch Changes
+
+- [#5999](https://github.com/wso2/identity-apps/pull/5999) [`008a23396e`](https://github.com/wso2/identity-apps/commit/008a23396e3b9a1ec5767ae0bef3fa5f9db1c5f6) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Mark portal apps as system reserved apps
+
 ## 2.1.55
 
 ### Patch Changes
