@@ -19,12 +19,12 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { Hint, Heading } from "@wso2is/react-components";
+import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Label, Divider } from "semantic-ui-react";
+import { Divider, Label } from "semantic-ui-react";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
@@ -287,12 +287,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             // Check for invalid range.
             errors.smsOtpExpiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
                 "passwordRecovery.form.fields.smsOtpExpiryTime.validations.range");
-        } else if (values.smsOtpExpiryTime &&
-            !FormValidation.isLengthValid(values.smsOtpExpiryTime as string, GovernanceConnectorConstants
-                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_EXPIRY_TIME_MAX_LENGTH)) {
-            // Check for invalid input length.
-            errors.smsOtpExpiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
-                "passwordRecovery.form.fields.smsOtpExpiryTime.validations.maxLengthReached");
         } else if (!values.smsOtpLength) {
             // Check for required error
             errors.smsOtpLength = t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -302,7 +296,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             parseInt(values.smsOtpLength, 10) > GovernanceConnectorConstants
             .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_CODE_LENGTH_MAX_VALUE) {
             // Check for invalid input length.
-            console.log("INVALID OTP LENGTH");
             errors.smsOtpLength = t("extensions:manage.serverConfigurations.accountRecovery." +
                 "passwordRecovery.form.fields.smsOtpLength.validations.maxLengthReached");
         }
