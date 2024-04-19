@@ -58,7 +58,7 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     const { preference } = useBrandingPreference();
 
     const brandingPreference: BrandingPreferenceInterface = preference?.preference ??
-    BrandingPreferenceUtils.getDefaultBrandingPreference();
+        BrandingPreferenceUtils.getDefaultBrandingPreference();
 
     /**
      * Removes empty keys from an object.
