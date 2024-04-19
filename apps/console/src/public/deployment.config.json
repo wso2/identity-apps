@@ -1,4 +1,8 @@
 {
+    "__experimental__platformIdP": {
+        "enabled": false,
+        "homeRealmId": ""
+    },
     "accountApp": {
         "path": "/myaccount/overview"
     },

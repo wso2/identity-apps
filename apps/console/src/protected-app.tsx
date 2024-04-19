@@ -51,10 +51,12 @@ import {
     store
 } from "@wso2is/features/admin.core.v1";
 import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
+import { MultitenantConstants } from "@wso2is/features/admin.core.v1/constants/multitenant-constants";
 import { history } from "@wso2is/features/admin.core.v1/helpers";
 import useRoutes from "@wso2is/features/admin.core.v1/hooks/use-routes";
 import useUIConfig from "@wso2is/features/admin.core.v1/hooks/use-ui-configs";
 import { commonConfig } from "@wso2is/features/admin.extensions.v1";
+import { CONSUMER_USERSTORE } from "@wso2is/features/admin.extensions.v1/components/administrators/constants/users";
 import useTenantTier from "@wso2is/features/admin.extensions.v1/components/subscription/api/subscription";
 import { TenantTier } from "@wso2is/features/admin.extensions.v1/components/subscription/models/subscription";
 import { SubscriptionProvider }
@@ -185,17 +187,34 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
          */
         if (commonConfig?.enableOrganizationAssociations) {
 
-            const isPrivilegedUser: boolean =
+            let isPrivilegedUser: boolean =
                 idToken?.amr?.length > 0
                     ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
                     : false;
 
             let isOrgSwitch: boolean = false;
+            let isNotPlatformIdPFederatedUser: boolean = true;
 
             if (has(idToken, "org_id") && has(idToken, "user_org")) {
                 isOrgSwitch = (idToken?.org_id !== idToken?.user_org);
             }
-            if (has(idToken, "associated_tenants") || isPrivilegedUser || isOrgSwitch) {
+
+            const __experimental__platformIdP: {
+                enabled: boolean;
+                homeRealmId: string;
+            } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
+            if (__experimental__platformIdP?.enabled) {
+                isPrivilegedUser = idToken?.sub?.startsWith(`${ CONSUMER_USERSTORE }/`);
+                isNotPlatformIdPFederatedUser = idToken?.org_name !== MultitenantConstants.SUPER_TENANT_DISPLAY_NAME;
+            }
+
+            if (
+                has(idToken, "associated_tenants") ||
+                isPrivilegedUser ||
+                isOrgSwitch ||
+                isNotPlatformIdPFederatedUser
+            ) {
                 // If there is an association, the user should be redirected to console landing page.
                 const location: string =
                     !AuthenticationCallbackUrl ||

@@ -25,8 +25,21 @@ import { SessionStorageUtils } from "@wso2is/core/utils";
  * @param tenantName - Name of the tenant being switched to.
  */
 export const handleTenantSwitch = (tenantName: string): void => {
-    const newTenantedPath: string = window["AppUtils"].getConfig().clientOrigin + "/t/" + tenantName + "/" +
-        window[ "AppUtils" ].getConfig().appBase + "?disable_silent_sign_in=true&switch_tenant=true";
+    const newTenantedPath: URL = new URL(
+        `${window["AppUtils"].getConfig().clientOrigin}/${window["AppUtils"].getConfig().tenantPrefix}/${tenantName}/${
+            window["AppUtils"].getConfig().appBase
+        }`
+    );
+
+    newTenantedPath.searchParams.set("disable_silent_sign_in", "true");
+    newTenantedPath.searchParams.set("switch_tenant", "true");
+
+    if (window["AppUtils"].getConfig()?.__experimental__platformIdP?.enabled) {
+        newTenantedPath.searchParams.set(
+            "fidp",
+            window["AppUtils"].getConfig().__experimental__platformIdP.homeRealmId
+        );
+    }
 
     // Clear the callback url of the previous tenant.
     SessionStorageUtils.clearItemFromSessionStorage("auth_callback_url_console");

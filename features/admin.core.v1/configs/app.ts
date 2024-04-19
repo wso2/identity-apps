@@ -113,6 +113,7 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
+            __experimental__platformIdP: window[ "AppUtils" ]?.getConfig()?.__experimental__platformIdP,
             accountApp: window[ "AppUtils" ]?.getConfig()?.accountApp,
             adminApp: window[ "AppUtils" ]?.getConfig()?.adminApp,
             allowMultipleAppProtocols: window[ "AppUtils" ]?.getConfig()?.allowMultipleAppProtocols,
@@ -124,6 +125,7 @@ export class Config {
             clientHost: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             clientID: window[ "AppUtils" ]?.getConfig()?.clientID,
             clientOrigin: window[ "AppUtils" ]?.getConfig()?.clientOrigin,
+            clientOriginWithTenant: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             customServerHost: window[ "AppUtils" ]?.getConfig()?.customServerHost,
             developerApp: window[ "AppUtils" ]?.getConfig()?.developerApp,
             docSiteURL: window[ "AppUtils" ]?.getConfig()?.docSiteUrl,
