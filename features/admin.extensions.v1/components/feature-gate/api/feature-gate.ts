@@ -47,7 +47,7 @@ export const useGetAllFeatures = <Data = AllFeatureInterface[], Error = RequestE
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: shouldSendRequest ? `${store.getState().config.endpoints.allFeatures.replace("{org-uuid}", org_id)}` : ""
+        url: shouldSendRequest ? `${store?.getState()?.config?.endpoints?.allFeatures?.replace("{org-uuid}", org_id)}` : ""
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
