@@ -187,6 +187,24 @@ export interface BrandingNS {
                 button: string;
             };
         };
+        notifications: {
+            generateError: {
+                description: string;
+                message: string;
+            };
+            regenerateError: {
+                description: string;
+                message: string;
+            };
+            resetSuccess: {
+                description: string;
+                message: string;
+            };
+            renderingError: {
+                description: string;
+                message: string;
+            };
+        };
         screens: {
             loading: {
                 heading: string;
