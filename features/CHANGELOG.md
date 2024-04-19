@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.5
+
+### Patch Changes
+
+- [#5998](https://github.com/wso2/identity-apps/pull/5998) [`98c2550dec`](https://github.com/wso2/identity-apps/commit/98c2550dec5d0e0b15d6c8c219bf20c2277abd30) Thanks [@brionmario](https://github.com/brionmario)! - Fix NPEs
+
 ## 2.15.4
 
 ### Patch Changes
