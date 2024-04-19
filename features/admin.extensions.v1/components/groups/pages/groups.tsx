@@ -455,7 +455,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     userStoreOption === CONSUMER_USERSTORE
                     || userStoreOption === GroupConstants.ALL_GROUPS
                 )
-                && originalGroupList.totalResults > 0
+                && originalGroupList?.totalResults > 0
                 && (
                     <Show
                         when={ featureConfig?.groups?.scopes?.create }
