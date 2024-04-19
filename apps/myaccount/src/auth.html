@@ -159,6 +159,26 @@
             };
         </script>
         <script>
+            var applicationDomain = window.location.origin;
+            var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
+
+            if (isSignOutSuccess && userTenant) {
+                if (startupConfig.legacyAuthzRuntime) {
+                    if (startupConfig.subdomainApplication) {
+                        window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
+                    } else {
+                        window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/<%= htmlWebpackPlugin.options.basename %>";
+                    }
+                }
+            }
+
+            var urlParams = new URLSearchParams(window.location.search);
+
+            var serverOrigin = startupConfig.serverUrl;
+            var authorizationCode = urlParams.get("code");
+            var authSessionState = urlParams.get("session_state");
+            var authIdPs = urlParams.get("AuthenticatedIdPs");
+
             function authenticateWithSDK() {
                 if(!authorizationCode) {
                     function getTenantName() {
