@@ -24,6 +24,7 @@ import { Config, PreLoader, store } from "@wso2is/features/admin.core.v1";
 import { UserPreferencesInterface } from "@wso2is/features/admin.core.v1/models/user-preferences";
 import { AppConfigProvider } from "@wso2is/features/admin.core.v1/providers/app-config-provider";
 import AppSettingsProvider from "@wso2is/features/admin.core.v1/providers/app-settings-provider";
+import  GlobalVariablesProvider from "@wso2is/features/admin.core.v1/providers/global-variables-provider";
 import UserPreferencesProvider from "@wso2is/features/admin.core.v1/providers/user-preferences-provider";
 import OrganizationsProvider from "@wso2is/features/admin.organizations.v1/providers/organizations-provider";
 import React, { ReactElement, useEffect, useState } from "react";
@@ -60,27 +61,29 @@ const RootWithConfig = (): ReactElement => {
     }
 
     return (
-        <AppSettingsProvider>
-            <ThemeProvider theme={ AsgardeoTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
-                <Provider store={ store }>
-                    <UserPreferencesProvider<UserPreferencesInterface>>
-                        <BrowserRouter>
-                            <AuthProvider
-                                config={ AuthenticateUtils.getInitializeConfig() }
-                                fallback={ <PreLoader /> }
-                                getAuthParams={ AuthenticateUtils.getAuthParams }
-                            >
-                                <AppConfigProvider>
-                                    <OrganizationsProvider>
-                                        <ProtectedApp />
-                                    </OrganizationsProvider>
-                                </AppConfigProvider>
-                            </AuthProvider>
-                        </BrowserRouter>
-                    </UserPreferencesProvider>
-                </Provider>
-            </ThemeProvider>
-        </AppSettingsProvider>
+        <GlobalVariablesProvider >
+            <AppSettingsProvider>
+                <ThemeProvider theme={ AsgardeoTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
+                    <Provider store={ store }>
+                        <UserPreferencesProvider<UserPreferencesInterface>>
+                            <BrowserRouter>
+                                <AuthProvider
+                                    config={ AuthenticateUtils.getInitializeConfig() }
+                                    fallback={ <PreLoader /> }
+                                    getAuthParams={ AuthenticateUtils.getAuthParams }
+                                >
+                                    <AppConfigProvider>
+                                        <OrganizationsProvider>
+                                            <ProtectedApp />
+                                        </OrganizationsProvider>
+                                    </AppConfigProvider>
+                                </AuthProvider>
+                            </BrowserRouter>
+                        </UserPreferencesProvider>
+                    </Provider>
+                </ThemeProvider>
+            </AppSettingsProvider>
+        </GlobalVariablesProvider>
     );
 };
 

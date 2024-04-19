@@ -23,6 +23,7 @@ import isEmpty from "lodash-es/isEmpty";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
+import { useGlobalVariablesContext } from "../../admin.core.v1/context/global-variables-context";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getAppViewRoutes } from "../configs/routes";
 import { AppConstants } from "../constants/app-constants";
@@ -48,7 +49,7 @@ export type useRoutesInterface = {
  */
 const useRoutes = (): useRoutesInterface => {
     const dispatch: Dispatch = useDispatch();
-
+    const { isOrganizationManagementEnabled } = useGlobalVariablesContext();
     const { legacyAuthzRuntime }  = useAuthorization();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
 

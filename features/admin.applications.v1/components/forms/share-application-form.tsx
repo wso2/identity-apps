@@ -53,6 +53,7 @@ import {
     Radio
 } from "semantic-ui-react";
 import { AppState } from "../../../admin.core.v1";
+import { useGlobalVariablesContext } from "../../../admin.core.v1/context/global-variables-context";
 import {
     getOrganizations,
     getSharedOrganizations,
@@ -120,6 +121,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
     const [ sharedWithAll, setSharedWithAll ] = useState<boolean>(false);
     const [ filter, setFilter ] = useState<string>();
+    const { isOrganizationManagementEnabled } = useGlobalVariablesContext();
 
     useEffect(() => setTempOrganizationList(subOrganizationList || []),
         [ subOrganizationList ]

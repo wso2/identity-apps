@@ -72,6 +72,8 @@ import {
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
 import "./sign-in-method-customization.scss";
+// eslint-disable-next-line import/order
+import { useGlobalVariablesContext } from "../../../../admin.core.v1/context/global-variables-context";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -166,6 +168,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         state?.organization?.organizationType);
 
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(undefined);
+    const { isAdaptiveAuthenticationAvailable } = useGlobalVariablesContext();
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
     const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);

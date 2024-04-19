@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,7 +37,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { identityProviderConfig } from "../../admin.extensions.v1/configs";
 import {
     AppConstants,
     AppState,
@@ -46,6 +45,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
+import { useGlobalVariablesContext } from "../../admin.core.v1/context/global-variables-context";
+import { identityProviderConfig } from "../../admin.extensions.v1/configs";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards/authenticator-create-wizard-factory";
 import { getIdPIcons } from "../configs/ui";
 import { IdentityProviderManagementConstants, ORG_ENTERPRISE_IDP_ID } from "../constants";
@@ -83,7 +84,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const dispatch: Dispatch = useDispatch();
-
+    const { isOrganizationManagementEnabled } = useGlobalVariablesContext();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 

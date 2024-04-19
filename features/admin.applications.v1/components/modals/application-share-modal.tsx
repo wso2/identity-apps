@@ -55,6 +55,7 @@ import {
     Transition
 } from "semantic-ui-react";
 import { AppState, EventPublisher } from "../../../admin.core.v1";
+import { useGlobalVariablesContext } from "../../../admin.core.v1/context/global-variables-context";
 import {
     getOrganizations,
     getSharedOrganizations,
@@ -117,7 +118,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ filter, setFilter ] = useState<string>();
-
+    const { isOrganizationManagementEnabled } = useGlobalVariablesContext();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => setTempOrganizationList(subOrganizationList || []), [

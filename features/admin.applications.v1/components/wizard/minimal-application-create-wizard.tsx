@@ -71,6 +71,7 @@ import {
     store
 } from "../../../admin.core.v1";
 import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { useGlobalVariablesContext } from "../../../admin.core.v1/context/global-variables-context";
 import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "../../../admin.extensions.v1";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
@@ -162,7 +163,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
     const { UIConfig } = useUIConfig();
-
+    const { isOrganizationManagementEnabled } = useGlobalVariablesContext();
     const tenantName: string = store.getState().config.deployment.tenant;
 
     const [ submit, setSubmit ] = useTrigger();
