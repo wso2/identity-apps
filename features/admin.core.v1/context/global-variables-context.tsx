@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { createContext, useContext } from "react";
+import { Context, createContext, useContext } from "react";
 
 export interface GlobalContextType {
   isAdaptiveAuthenticationAvailable: boolean;
@@ -28,10 +28,10 @@ export const defaultValues: GlobalContextType = {
     isOrganizationManagementEnabled: true
 };
 
-const GlobalVariablesContext = createContext<GlobalContextType>(defaultValues);
+const GlobalVariablesContext : Context<GlobalContextType>= createContext<GlobalContextType>(defaultValues);
 
-export const useGlobalVariablesContext = () => {
-    const context = useContext(GlobalVariablesContext);
+export const useGlobalVariablesContext = () : GlobalContextType => {
+    const context : GlobalContextType= useContext(GlobalVariablesContext);
 
     if (!context) {
         throw new Error("useGlobalContext must be used within a GlobalProvider");

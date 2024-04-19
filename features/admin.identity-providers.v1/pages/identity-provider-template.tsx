@@ -489,7 +489,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
                                                         showSetupGuideButton={ getLink(template.docLink) !== undefined }
-                                                        resourceDocumentationLink={ 
+                                                        resourceDocumentationLink={
                                                             getLink(template.docLink)
                                                         }
                                                         resourceImage={
@@ -500,11 +500,11 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                         onClick={ (e: SyntheticEvent) => {
                                                             handleTemplateSelection(e, template.id);
                                                         } }
-                                                        showTooltips={ 
-                                                            { 
-                                                                description: true, 
-                                                                header: false 
-                                                            } 
+                                                        showTooltips={
+                                                            {
+                                                                description: true,
+                                                                header: false
+                                                            }
                                                         }
                                                         data-testid={ `${ testId }-${ template.name }` }
                                                     />

@@ -24,7 +24,7 @@ interface GlobalProviderProps {
   children: React.ReactNode;
 }
 
-const GlobalVariablesProvider: React.FC<GlobalProviderProps> = ({ children, value = {} }) => {
+const GlobalVariablesProvider: React.FC<GlobalProviderProps> = ({ children, value = {} }: GlobalProviderProps) => {
     const mergedValues: GlobalContextType = {
         ...defaultValues,
         ...value
