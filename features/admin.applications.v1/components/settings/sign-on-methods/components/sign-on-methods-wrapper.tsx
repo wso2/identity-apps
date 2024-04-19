@@ -94,7 +94,6 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
 
     return (
         <>
-            <LoginFlowAIBanner/>
             <SignOnMethodsCore
                 application={ application }
                 appId={ appId }

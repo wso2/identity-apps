@@ -23,7 +23,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
-    from "../../themes/wso2is/assets/images/ai/ai-loading-screen-placeholder.svg";
+    from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 import { useAILoginFlowGenerationStatus } from "../api/use-ai-login-flow-generation-status";
 import {
     FACTS_ROTATION_DELAY,

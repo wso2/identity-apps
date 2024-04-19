@@ -18,8 +18,12 @@
 
 
 import React, {  PropsWithChildren, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
+import { AppState } from "../../admin.core.v1";
 import { useAILoginFlowGenerationResult } from "../api/use-ai-login-flow-generation-result";
+import LoginFlowAIBanner from "../components/login-flow-ai-banner";
+import LoginFlowAILoadingScreen from "../components/login-flow-ai-loading-screen";
 import AILoginFlowContext from "../context/ai-login-flow-context";
 
 export type AILoginFlowProviderProps = unknown;
@@ -32,6 +36,9 @@ export type AILoginFlowProviderProps = unknown;
  */
 const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>): React.ReactElement=>{
     const { children } = props;
+
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.applications?.disabledFeatures);
 
     const [ aiGeneratedLoginFlow, setAiGeneratedLoginFlow ] = useState<AuthenticationSequenceInterface>(undefined);
     const [ operationId, setOperationId ] = useState<string>();
@@ -73,7 +80,20 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
                 setOperationId
             } }
         >
-            { children }
+            {
+                isGeneratingLoginFlow ? (
+                    <LoginFlowAILoadingScreen traceId={ operationId }/>
+                ) : (
+                    <>
+                        {
+                            !disabledFeatures?.includes("application.loginflow.ai") && (
+                                <LoginFlowAIBanner/>
+                            )
+                        }
+                        { children }
+                    </>
+                )
+            }
         </AILoginFlowContext.Provider>
     );
 };
