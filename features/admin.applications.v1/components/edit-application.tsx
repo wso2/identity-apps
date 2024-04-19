@@ -942,6 +942,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const handleDefaultTabIndexChange = (defaultActiveIndex: number): void => {
 
+        if (extensionTemplate && extensionTemplateMetadata?.edit?.defaultActiveTab) {
+            const tabIndex: number = renderedTabPanes.findIndex(
+                (pane: ResourceTabPaneInterface) => pane?.id === extensionTemplateMetadata?.edit?.defaultActiveTab);
+
+            if (tabIndex !== -1) {
+                handleActiveTabIndexChange(tabIndex);
+
+                return;
+            }
+        }
+
         if (template.id === CustomApplicationTemplate.id && defaultActiveIndex > 0) {
             handleActiveTabIndexChange(defaultActiveIndex - 1);
 
@@ -987,7 +998,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 handleActiveTabIndexChange(signInMethodtabIndex);
             }
         }
-    },[ template, renderedTabPanes ]);
+    },[ template, extensionTemplate, extensionTemplateMetadata, renderedTabPanes ]);
 
     /**
      * Check whether the application is an M2M Application.

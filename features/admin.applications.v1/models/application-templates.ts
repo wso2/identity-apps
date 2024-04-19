@@ -103,7 +103,14 @@ export interface ApplicationTemplateMetadataInterface {
      * Application editing section related metadata.
      */
     edit?: {
-        tabs: ApplicationEditTabMetadataInterface[]
+        /**
+         * The metadata for tabs needs to be rendered on the edit page.
+         */
+        tabs: ApplicationEditTabMetadataInterface[],
+        /**
+         * ID of the default active tab.
+         */
+        defaultActiveTab?: string;
     }
 }
 

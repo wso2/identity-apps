@@ -29,13 +29,12 @@ import { Dispatch } from "redux";
 import { AppState } from "../../admin.core.v1";
 import { getApplicationList } from "../api/application";
 import { ApplicationManagementConstants } from "../constants";
-import { ApplicationListInterface } from "../models";
+import { ApplicationListInterface, MainApplicationInterface } from "../models";
 import {
     DynamicFieldInterface,
     ValidationRule,
     ValidationRuleTypes
 } from "../models/dynamic-fields";
-import { ApplicationCreateWizardFormValuesInterface } from "../models/form";
 
 /**
  * Custom hook for dynamic field validations.
@@ -44,9 +43,9 @@ import { ApplicationCreateWizardFormValuesInterface } from "../models/form";
  */
 const useDynamicFieldValidations = (): {
     validate: (
-        formValues: ApplicationCreateWizardFormValuesInterface,
+        formValues: MainApplicationInterface,
         fields: DynamicFieldInterface[]
-    ) => Promise<{ [key in keyof ApplicationCreateWizardFormValuesInterface]: string }> } => {
+    ) => Promise<{ [key in keyof Partial<MainApplicationInterface>]: string }> } => {
     const { t, i18n } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
@@ -128,7 +127,7 @@ const useDynamicFieldValidations = (): {
      * @returns An error message if validation fails, or `null` if validation succeeds.
      */
     const validateField = async (
-        values: ApplicationCreateWizardFormValuesInterface,
+        values: MainApplicationInterface,
         field: DynamicFieldInterface,
         validations: ValidationRule[]
     ): Promise<string | null> => {
@@ -172,10 +171,10 @@ const useDynamicFieldValidations = (): {
      * @returns An error object containing error messages for each provided field.
      */
     const validateAllFields = async (
-        formValues: ApplicationCreateWizardFormValuesInterface,
+        formValues: MainApplicationInterface,
         fields: DynamicFieldInterface[]
-    ): Promise<{ [key in keyof ApplicationCreateWizardFormValuesInterface]: string }> => {
-        const errorObject: { [key in keyof ApplicationCreateWizardFormValuesInterface]: string } = {};
+    ): Promise<{ [key in keyof Partial<MainApplicationInterface>]: string }> => {
+        const errorObject: { [key in keyof Partial<MainApplicationInterface>]: string } = {};
 
         for (const field of fields) {
             let validations: ValidationRule[] = [];
@@ -207,7 +206,7 @@ const useDynamicFieldValidations = (): {
      * @returns Whether the provided value is a non empty value.
      */
     const requiredField = (
-        values: ApplicationCreateWizardFormValuesInterface,
+        values: MainApplicationInterface,
         field: DynamicFieldInterface
     ): string | null => {
         const value: any = get(values, field?.name);
@@ -226,7 +225,7 @@ const useDynamicFieldValidations = (): {
      * @returns Whether the provided value is a valid domain name or not.
      */
     const validateDomainName = (
-        values: ApplicationCreateWizardFormValuesInterface,
+        values: MainApplicationInterface,
         field: DynamicFieldInterface
     ): string | null => {
         const value: any = get(values, field?.name);
@@ -291,7 +290,7 @@ const useDynamicFieldValidations = (): {
      * @param name - Application name.
      */
     const validateApplicationName = async (
-        values: ApplicationCreateWizardFormValuesInterface,
+        values: MainApplicationInterface,
         field: DynamicFieldInterface
     ): Promise<string | null> => {
         const appName: string = get(values, field?.name)?.toString()?.trim();
@@ -321,9 +320,9 @@ const useDynamicFieldValidations = (): {
 
     return {
         validate: (
-            formValues: ApplicationCreateWizardFormValuesInterface,
+            formValues: MainApplicationInterface,
             fields: DynamicFieldInterface[]
-        ): Promise<{ [key in keyof ApplicationCreateWizardFormValuesInterface]: string }> =>
+        ): Promise<{ [key in keyof Partial<MainApplicationInterface>]: string }> =>
             validateAllFields(formValues, fields)
     };
 };

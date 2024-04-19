@@ -38,7 +38,6 @@ import useDynamicFieldValidations from "features/admin.applications.v1/hooks/use
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import has from "lodash-es/has";
-import merge from "lodash-es/merge";
 import set from "lodash-es/set";
 import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -58,11 +57,7 @@ import { ApplicationManagementConstants } from "../../constants";
 import useApplicationSharingEligibility from "../../hooks/use-application-sharing-eligibility";
 import { ApplicationListItemInterface, MainApplicationInterface, URLFragmentTypes } from "../../models";
 import { ApplicationTemplateListInterface } from "../../models/application-templates";
-import { DynamicFieldInterface } from "../../models/dynamic-fields";
-import {
-    ApplicationCreateWizardFormInitialValuesInterface,
-    ApplicationCreateWizardFormValuesInterface
-} from "../../models/form";
+import { DynamicFieldAutoSubmitPropertyInterface, DynamicFieldInterface } from "../../models/dynamic-fields";
 import buildCallBackUrlsWithRegExp from "../../utils/build-callback-urls-with-regexp";
 import { ApplicationShareModal } from "../modals/application-share-modal";
 import "./application-create-wizard.scss";
@@ -158,9 +153,9 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @returns Moderated initial values.
      */
     const moderateInitialValues = (
-        initialValues: ApplicationCreateWizardFormInitialValuesInterface,
-        templatePayload: ApplicationCreateWizardFormInitialValuesInterface
-    ): ApplicationCreateWizardFormInitialValuesInterface => {
+        initialValues: MainApplicationInterface,
+        templatePayload: MainApplicationInterface
+    ): MainApplicationInterface => {
         if (initialValues) {
             initialValues.name = generateUniqueApplicationName(templatePayload?.name);
         }
@@ -168,12 +163,12 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         return initialValues;
     };
 
-    const formInitialValues: ApplicationCreateWizardFormInitialValuesInterface = useMemo(() => {
+    const formInitialValues: MainApplicationInterface = useMemo(() => {
         if (!templateData?.payload) {
             return null;
         }
 
-        const initialValues: ApplicationCreateWizardFormInitialValuesInterface = cloneDeep(templateData?.payload);
+        const initialValues: MainApplicationInterface = cloneDeep(templateData?.payload);
 
         return moderateInitialValues(initialValues, templateData?.payload);
     }, [ templateData?.payload, possibleListOfDuplicateApplications ]);
@@ -302,19 +297,20 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      *
      * @param values - Submission values from the form fields.
      */
-    const onSubmit = (values: ApplicationCreateWizardFormValuesInterface): void => {
-        const formValues: ApplicationCreateWizardFormValuesInterface = cloneDeep(values);
+    const onSubmit = (values: MainApplicationInterface): void => {
+        setIsSubmitting(true);
+        const formValues: MainApplicationInterface = cloneDeep(values);
 
         /**
          * Make sure that cleared text fields are set to an empty string.
          * Additionally, include the auto-submit properties in the form submission.
          */
         templateMetadata?.create?.form?.fields?.forEach((field: DynamicFieldInterface) => {
-            if (!has(values, field?.name)) {
+            if (!has(formValues, field?.name)) {
                 const initialValue: any = get(formInitialValues, field?.name);
 
                 if (initialValue && typeof initialValue === "string") {
-                    set(values, field?.name, "");
+                    set(formValues, field?.name, "");
                 }
             }
 
@@ -323,21 +319,19 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 && field?.meta?.autoSubmitProperties?.length > 0) {
                 field?.meta?.autoSubmitProperties.forEach(
                     (property: DynamicFieldAutoSubmitPropertyInterface) =>
-                        set(values, property?.path, property?.value)
+                        set(formValues, property?.path, property?.value)
                 );
             }
         });
 
-        const application: MainApplicationInterface = merge(templateData?.payload, formValues);
-
         // Moderate Values to match API restrictions.
-        if (application.inboundProtocolConfiguration?.oidc?.callbackURLs) {
-            application.inboundProtocolConfiguration.oidc.callbackURLs = buildCallBackUrlsWithRegExp(
-                application.inboundProtocolConfiguration.oidc.callbackURLs
+        if (formValues.inboundProtocolConfiguration?.oidc?.callbackURLs) {
+            formValues.inboundProtocolConfiguration.oidc.callbackURLs = buildCallBackUrlsWithRegExp(
+                formValues.inboundProtocolConfiguration.oidc.callbackURLs
             );
         }
 
-        createApplication(application)
+        createApplication(formValues)
             .then((response: AxiosResponse) => {
                 eventPublisher.compute(() => {
                     eventPublisher.publish("application-register-new-application", {
@@ -404,7 +398,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     )
                 });
                 scrollToNotification();
-            });
+            })
+            .finally(() => setIsSubmitting(false));
     };
 
     let formSubmit: (e: MouseEvent<HTMLButtonElement>) => void;
@@ -493,19 +488,19 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                             setFormAttribute: (
                                                 [ fieldName, fieldVal ]: [ fieldName: string, fieldVal: any ],
                                                 state: MutableState<
-                                                    ApplicationCreateWizardFormValuesInterface,
-                                                    ApplicationCreateWizardFormInitialValuesInterface
+                                                    Partial<MainApplicationInterface>,
+                                                    Partial<MainApplicationInterface>
                                                 >,
                                                 { changeValue }: Tools<
-                                                    ApplicationCreateWizardFormValuesInterface,
-                                                    ApplicationCreateWizardFormInitialValuesInterface
+                                                    Partial<MainApplicationInterface>,
+                                                    Partial<MainApplicationInterface>
                                                 >
                                             ) => {
                                                 changeValue(state, fieldName, () => fieldVal);
                                             }
                                         } }
                                         validate={
-                                            (formValues: ApplicationCreateWizardFormValuesInterface) =>
+                                            (formValues: MainApplicationInterface) =>
                                                 validate(formValues, templateMetadata?.create?.form?.fields)
                                         }
                                         render={ ({ form, handleSubmit }: FormRenderProps) => {
@@ -586,6 +581,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                     onClick={ (e: MouseEvent<HTMLButtonElement>) => formSubmit(e) }
                                     floated="right"
                                     data-componentid={ `${componentId}-create-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:create") }
                                 </PrimaryButton>

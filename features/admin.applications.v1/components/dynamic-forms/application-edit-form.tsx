@@ -27,6 +27,7 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import useDynamicFieldValidations from "features/admin.applications.v1/hooks/use-dynamic-field-validation";
+import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import has from "lodash-es/has";
 import pick from "lodash-es/pick";
@@ -105,17 +106,18 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
      */
     const onSubmit = (values: ApplicationInterface): void => {
         setIsSubmitting(true);
+        const formValues: ApplicationInterface = cloneDeep(values);
 
         /**
          * Make sure that cleared text fields are set to an empty string.
          * Additionally, include the auto-submit properties in the form submission.
          */
         tab?.form?.fields?.forEach((field: DynamicFieldInterface) => {
-            if (!has(values, field?.name)) {
+            if (!has(formValues, field?.name)) {
                 const initialValue: any = get(application, field?.name);
 
                 if (initialValue && typeof initialValue === "string") {
-                    set(values, field?.name, "");
+                    set(formValues, field?.name, "");
                 }
             }
 
@@ -124,12 +126,12 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                 && field?.meta?.autoSubmitProperties?.length > 0) {
                 field?.meta?.autoSubmitProperties.forEach(
                     (property: DynamicFieldAutoSubmitPropertyInterface) =>
-                        set(values, property?.path, property?.value)
+                        set(formValues, property?.path, property?.value)
                 );
             }
         });
 
-        updateApplicationDetails(values)
+        updateApplicationDetails(formValues)
             .then(() => {
                 dispatch(addAlert({
                     description: t("applications:notifications.updateApplication.success" +
