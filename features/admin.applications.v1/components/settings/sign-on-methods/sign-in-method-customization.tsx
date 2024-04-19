@@ -51,6 +51,7 @@ import {
     FeatureConfigInterface,
     history
 } from "../../../../admin.core.v1";
+import useGlobalVariables from "../../../../admin.core.v1/hooks/use-global-variables";
 import { getMultiFactorAuthenticatorDetails } from "../../../../admin.identity-providers.v1/api";
 import {
     IdentityProviderManagementConstants
@@ -72,8 +73,6 @@ import {
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
 import "./sign-in-method-customization.scss";
-// eslint-disable-next-line import/order
-import { useGlobalVariablesContext } from "../../../../admin.core.v1/hooks/use-global-variables";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -168,7 +167,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         state?.organization?.organizationType);
 
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(undefined);
-    const { isAdaptiveAuthenticationAvailable } = useGlobalVariablesContext();
+    const { isAdaptiveAuthenticationAvailable } = useGlobalVariables();
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
     const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);

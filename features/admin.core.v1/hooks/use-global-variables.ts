@@ -19,7 +19,7 @@
 import { useContext } from "react";
 import GlobalVariablesContext, { GlobalContextType } from "../context/global-variables-context";
 
-export const useGlobalVariablesContext = (): GlobalContextType => {
+const useGlobalVariables = (): GlobalContextType => {
     const context: GlobalContextType = useContext(GlobalVariablesContext);
 
     if (!context) {
@@ -28,3 +28,5 @@ export const useGlobalVariablesContext = (): GlobalContextType => {
 
     return context;
 };
+
+export default useGlobalVariables;

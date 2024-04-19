@@ -45,7 +45,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
-import { useGlobalVariablesContext } from "../../admin.core.v1/hooks/use-global-variables";
+import useGlobalVariables from "../../admin.core.v1/hooks/use-global-variables";
 import { identityProviderConfig } from "../../admin.extensions.v1/configs";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards/authenticator-create-wizard-factory";
 import { getIdPIcons } from "../configs/ui";
@@ -84,7 +84,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const dispatch: Dispatch = useDispatch();
-    const { isOrganizationManagementEnabled } = useGlobalVariablesContext();
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 

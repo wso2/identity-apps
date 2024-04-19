@@ -57,7 +57,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../admin.core.v1";
-import { useGlobalVariablesContext } from "../../../admin.core.v1/hooks/use-global-variables";
+import useGlobalVariables from "../../../admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "../../../admin.extensions.v1";
 import { getSharedOrganizations } from "../../../admin.organizations.v1/api";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
@@ -201,7 +201,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.config?.ui?.features?.applications?.disabledFeatures);
 
     const { isFAPIApplication } = initialValues;
-    const { isOrganizationManagementEnabled } = useGlobalVariablesContext();
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ isPublicClient, setPublicClient ] = useState<boolean>(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");

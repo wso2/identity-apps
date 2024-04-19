@@ -16,8 +16,6 @@
  * under the License.
  */
 
-// GlobalVariablesContext.tsx
-
 import { Context, createContext } from "react";
 
 export interface GlobalContextType {
@@ -30,7 +28,7 @@ export const defaultValues: GlobalContextType = {
     isOrganizationManagementEnabled: true
 };
 
-const GlobalVariablesContext : Context<GlobalContextType>= createContext<GlobalContextType>(defaultValues);
+const GlobalVariablesContext: Context<GlobalContextType>= createContext<GlobalContextType>(defaultValues);
 
 export default GlobalVariablesContext;
 
