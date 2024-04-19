@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.7
+
+### Patch Changes
+
+- [#6004](https://github.com/wso2/identity-apps/pull/6004) [`20dc92d7cb`](https://github.com/wso2/identity-apps/commit/20dc92d7cb30b303ea45e46abc8ff03b05cd8743) Thanks [@chamathns](https://github.com/chamathns)! - Use default preference when preference is undefined
+
 ## 2.15.6
 
 ### Patch Changes
