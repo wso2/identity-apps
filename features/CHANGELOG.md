@@ -1,5 +1,16 @@
 # @wso2is/features
 
+## 2.15.9
+
+### Patch Changes
+
+- [#6007](https://github.com/wso2/identity-apps/pull/6007) [`46ad47e34a`](https://github.com/wso2/identity-apps/commit/46ad47e34a47fd1390998940b5d3fae7ab63a224) Thanks [@chamathns](https://github.com/chamathns)! - Add improvement for branding AI
+
+* [#6006](https://github.com/wso2/identity-apps/pull/6006) [`e7cee27745`](https://github.com/wso2/identity-apps/commit/e7cee277453b1d334ee79cdae912365375f3f13d) Thanks [@chamathns](https://github.com/chamathns)! - Add improvement for branding AI
+
+* Updated dependencies [[`46ad47e34a`](https://github.com/wso2/identity-apps/commit/46ad47e34a47fd1390998940b5d3fae7ab63a224)]:
+  - @wso2is/i18n@2.2.1
+
 ## 2.15.8
 
 ### Patch Changes
