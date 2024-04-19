@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useBrandingPreference from "features/admin.branding.v1/hooks/use-branding-preference";
 import { BrandingPreferenceInterface } from "features/admin.branding.v1/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
@@ -30,6 +29,9 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { useSelector } from "react-redux";
+import useGetBrandingPreferenceResolve from "../../admin.branding.v1/api/use-get-branding-preference-resolve";
+import { AppState } from "../../admin.core.v1/store";
 import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
 import AIFeatureContext from "../context/ai-branding-feature-context";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
@@ -48,12 +50,16 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
 
     const { children } = props;
 
-    const { preference } = useBrandingPreference();
-
     const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
     const [ operationId, setOperationId ] = useState<string>();
     const [ brandingGenerationCompleted, setBrandingGenerationCompleted ] = useState(false);
+
+    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+
+    const {
+        data: brandingPreference
+    } = useGetBrandingPreferenceResolve(tenantDomain);
 
     /**
      * Removes empty keys from an object.
@@ -113,9 +119,9 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
         const { theme } = removeEmptyKeys(data);
         const { activeTheme, LIGHT, DARK } = theme;
 
-        const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(preference.preference), {
+        const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(brandingPreference.preference), {
             theme: {
-                ...preference.preference.theme,
+                ...brandingPreference.preference.theme,
                 DARK: DARK,
                 LIGHT: LIGHT,
                 activeTheme: activeTheme
