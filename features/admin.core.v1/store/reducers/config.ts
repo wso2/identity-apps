@@ -58,6 +58,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientHost: "",
             clientID: "",
             clientOrigin: "",
+            clientOriginWithTenant: "",
             customServerHost: "",
             developerApp: {
                 basePath: "",
