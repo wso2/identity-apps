@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/myaccount",
-    "version": "2.5.20",
+    "version": "2.5.21",
     "description": "WSO2 Identity Server My Account",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -50,7 +50,7 @@
         "@wso2is/react-components": "^2.1.18",
         "@wso2is/theme": "^2.0.73",
         "@wso2is/validation": "^2.0.4",
-        "@wso2is/features": "^2.15.4",
+        "@wso2is/features": "^2.15.5",
         "axios": "^0.19.2",
         "history": "^4.9.0",
         "i18next": "^21.9.1",
