@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -47,7 +47,9 @@ export const useGetAllFeatures = <Data = AllFeatureInterface[], Error = RequestE
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: shouldSendRequest ? `${store?.getState()?.config?.endpoints?.allFeatures?.replace("{org-uuid}", org_id)}` : ""
+        url: shouldSendRequest
+            ? `${store?.getState()?.config?.endpoints?.allFeatures?.replace("{org-uuid}", org_id)}`
+            : ""
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
