@@ -45,7 +45,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { OrganizationType } from "../../admin.core.v1";
-import { useGlobalVariablesContext } from "../../admin.core.v1/context/global-variables-context";
+import { useGlobalVariablesContext } from "../../admin.core.v1/hooks/use-global-variables";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { organizationConfigs } from "../../admin.extensions.v1";
 import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";

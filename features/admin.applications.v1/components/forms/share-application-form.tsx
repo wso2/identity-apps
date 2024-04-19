@@ -53,7 +53,7 @@ import {
     Radio
 } from "semantic-ui-react";
 import { AppState } from "../../../admin.core.v1";
-import { useGlobalVariablesContext } from "../../../admin.core.v1/context/global-variables-context";
+import { useGlobalVariablesContext } from "../../../admin.core.v1/hooks/use-global-variables";
 import {
     getOrganizations,
     getSharedOrganizations,

@@ -40,7 +40,7 @@ import { AuthenticatorManagementConstants } from "../../admin.connections.v1/con
 import { AuthenticatorMeta } from "../../admin.connections.v1/meta/authenticator-meta";
 import { ConnectionInterface } from "../../admin.connections.v1/models/connection";
 import { ConnectionsManagementUtils } from "../../admin.connections.v1/utils/connection-utils";
-import { useGlobalVariablesContext } from "../../admin.core.v1/context/global-variables-context";
+import { useGlobalVariablesContext } from "../../admin.core.v1/hooks/use-global-variables";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "../../admin.core.v1/store";
 import { applicationConfig } from "../../admin.extensions.v1";

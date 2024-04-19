@@ -73,7 +73,7 @@ import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
 import "./sign-in-method-customization.scss";
 // eslint-disable-next-line import/order
-import { useGlobalVariablesContext } from "../../../../admin.core.v1/context/global-variables-context";
+import { useGlobalVariablesContext } from "../../../../admin.core.v1/hooks/use-global-variables";
 
 /**
  * Proptypes for the sign in methods customization entry point component.

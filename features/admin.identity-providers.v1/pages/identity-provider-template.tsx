@@ -45,7 +45,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
-import { useGlobalVariablesContext } from "../../admin.core.v1/context/global-variables-context";
+import { useGlobalVariablesContext } from "../../admin.core.v1/hooks/use-global-variables";
 import { identityProviderConfig } from "../../admin.extensions.v1/configs";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards/authenticator-create-wizard-factory";
 import { getIdPIcons } from "../configs/ui";

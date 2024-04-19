@@ -16,21 +16,15 @@
  * under the License.
  */
 
-// GlobalVariablesContext.tsx
+import { useContext } from "react";
+import GlobalVariablesContext, { GlobalContextType } from "../context/global-variables-context";
 
-import { Context, createContext } from "react";
+export const useGlobalVariablesContext = (): GlobalContextType => {
+    const context: GlobalContextType = useContext(GlobalVariablesContext);
 
-export interface GlobalContextType {
-  isAdaptiveAuthenticationAvailable: boolean;
-  isOrganizationManagementEnabled: boolean;
-}
+    if (!context) {
+        throw new Error("useGlobalVariablesContext must be used within a GlobalVariablesProvider");
+    }
 
-export const defaultValues: GlobalContextType = {
-    isAdaptiveAuthenticationAvailable: true,
-    isOrganizationManagementEnabled: true
+    return context;
 };
-
-const GlobalVariablesContext : Context<GlobalContextType>= createContext<GlobalContextType>(defaultValues);
-
-export default GlobalVariablesContext;
-

@@ -71,7 +71,7 @@ import {
     store
 } from "../../../admin.core.v1";
 import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
-import { useGlobalVariablesContext } from "../../../admin.core.v1/context/global-variables-context";
+import { useGlobalVariablesContext } from "../../../admin.core.v1/hooks/use-global-variables";
 import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "../../../admin.extensions.v1";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
