@@ -225,6 +225,7 @@ export const AppUtils: AppUtilsInterface = (function() {
             }
 
             return {
+                __experimental__platformIdP: _config.__experimental__platformIdP,
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
                 appBaseWithTenant: this.getAppBaseWithTenantAndOrganization(),

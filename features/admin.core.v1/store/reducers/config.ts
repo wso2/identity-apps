@@ -36,6 +36,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
     UIConfigInterface> = {
 
         deployment: {
+            __experimental__platformIdP: null,
             accountApp: {
                 basePath: "",
                 displayName: "",

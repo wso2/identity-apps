@@ -42,6 +42,7 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
+            __experimental__platformIdP: window[ "AppUtils" ]?.getConfig()?.__experimental__platformIdP,
             appBaseName: window["AppUtils"]?.getConfig()?.appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"]?.getConfig()?.appBase,
             appHomePath: window["AppUtils"]?.getConfig()?.routes?.home,

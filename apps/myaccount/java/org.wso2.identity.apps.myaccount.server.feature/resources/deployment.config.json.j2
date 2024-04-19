@@ -1,4 +1,9 @@
 {
+    {% if myaccount.__experimental__platform_idp is defined %}
+    "__experimental__platformIdP" : {
+        "enabled": {{ myaccount.__experimental__platform_idp.enabled }},
+        "homeRealmId": "{{ myaccount.__experimental__platform_idp.homeRealmId }}"
+    },
     "consoleApp": {
         {% if myaccount.applications.console_app.configs is defined %}
         {% for key, value in myaccount.applications.console_app.configs.items() %}
