@@ -222,7 +222,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             setIsBrandingConfigured(true);
         }
 
-        if  (!brandingPreference)  {
+        if  (!overridenBrandingPreference)  {
             setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
                 BrandingPreferenceUtils.migrateThemePreference(
                     originalBrandingPreference.preference,

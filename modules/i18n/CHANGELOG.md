@@ -1,5 +1,21 @@
 # @wso2is/i18n
 
+## 2.2.0
+
+### Minor Changes
+
+- [#5979](https://github.com/wso2/identity-apps/pull/5979) [`5d00c6baa6`](https://github.com/wso2/identity-apps/commit/5d00c6baa608408a0b913dfababd5d683b51afb5) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Adding a new i18n namespace for AI features.
+
+### Patch Changes
+
+- [#5981](https://github.com/wso2/identity-apps/pull/5981) [`8a00958d2c`](https://github.com/wso2/identity-apps/commit/8a00958d2c155a548afa297d73a8f47bba8065f4) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Improve app-native authentication feature title
+
+## 2.1.12
+
+### Patch Changes
+
+- [#5961](https://github.com/wso2/identity-apps/pull/5961) [`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b) Thanks [@chamathns](https://github.com/chamathns)! - add branding AI implementation
+
 ## 2.1.11
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/access-control
 
+## 3.0.1
+
+### Patch Changes
+
+- [#5978](https://github.com/wso2/identity-apps/pull/5978) [`94b6c88a84`](https://github.com/wso2/identity-apps/commit/94b6c88a8486fd2e450bb5ce2f0f25a7e34a9316) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues with access control module
+
 ## 3.0.0
 
 ### Major Changes

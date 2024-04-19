@@ -103,7 +103,8 @@ export class UserManagementConstants {
         .set("USERNAME", "userName")
         .set("NAME", "name")
         .set("DISPLAY_NAME", "displayName")
-        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User");
+        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User")
+        .set("LOCALE", "locale");
 
     /**
      * Set of SCIM2 enterprise attributes.
@@ -294,4 +295,14 @@ export enum InvitationStatus {
     ACCEPTED = "Accepted",
     PENDING = "Pending",
     EXPIRED = "Expired"
+}
+
+/**
+ * Enum for locale joining symbol.
+ *
+ * @readonly
+ */
+export enum LocaleJoiningSymbol {
+    HYPHEN = "-",
+    UNDERSCORE = "_"
 }

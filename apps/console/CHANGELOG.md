@@ -1,5 +1,78 @@
 # @wso2is/console
 
+## 2.15.8
+
+### Patch Changes
+
+- Updated dependencies [[`98c2550dec`](https://github.com/wso2/identity-apps/commit/98c2550dec5d0e0b15d6c8c219bf20c2277abd30)]:
+  - @wso2is/features@2.15.5
+
+## 2.15.7
+
+### Patch Changes
+
+- Updated dependencies [[`3052092135`](https://github.com/wso2/identity-apps/commit/3052092135a00302899f73e4295e00bc921bd4fe)]:
+  - @wso2is/features@2.15.4
+
+## 2.15.6
+
+### Patch Changes
+
+- Updated dependencies [[`783396c123`](https://github.com/wso2/identity-apps/commit/783396c12348d2f8021643b40bdb0797da7da656)]:
+  - @wso2is/features@2.15.3
+
+## 2.15.5
+
+### Patch Changes
+
+- [#5991](https://github.com/wso2/identity-apps/pull/5991) [`a0ccd7f19d`](https://github.com/wso2/identity-apps/commit/a0ccd7f19d9339560178bc8f8a7051519b0df1a9) Thanks [@brionmario](https://github.com/brionmario)! - Update invite-flow callback URL
+
+## 2.15.4
+
+### Patch Changes
+
+- [#5986](https://github.com/wso2/identity-apps/pull/5986) [`d5e69a971a`](https://github.com/wso2/identity-apps/commit/d5e69a971ae7d97d1adb66bf97c48112728c20d3) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Update console dependencies
+
+* [#5988](https://github.com/wso2/identity-apps/pull/5988) [`965a123468`](https://github.com/wso2/identity-apps/commit/965a123468d8c76e2188bb96588f83bb3ec01e7e) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Add data-componentid for provider tabs.
+
+* Updated dependencies [[`965a123468`](https://github.com/wso2/identity-apps/commit/965a123468d8c76e2188bb96588f83bb3ec01e7e)]:
+  - @wso2is/features@2.15.2
+
+## 2.15.3
+
+### Patch Changes
+
+- [#5982](https://github.com/wso2/identity-apps/pull/5982) [`9423e27c87`](https://github.com/wso2/identity-apps/commit/9423e27c873c9bd15b49ab738426a5b04433060e) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Add default data component id and data test id
+
+* [#5985](https://github.com/wso2/identity-apps/pull/5985) [`34d83c6ca1`](https://github.com/wso2/identity-apps/commit/34d83c6ca11512b83d015108d915b327023e66ba) Thanks [@chamathns](https://github.com/chamathns)! - Update branding AI result endpoint
+
+- [#5980](https://github.com/wso2/identity-apps/pull/5980) [`4d9a61c3ab`](https://github.com/wso2/identity-apps/commit/4d9a61c3ab5ef4b06b1e91359df22ba486542831) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix locale display issue in console
+
+- Updated dependencies [[`9423e27c87`](https://github.com/wso2/identity-apps/commit/9423e27c873c9bd15b49ab738426a5b04433060e), [`8a00958d2c`](https://github.com/wso2/identity-apps/commit/8a00958d2c155a548afa297d73a8f47bba8065f4), [`9a2b1db7c8`](https://github.com/wso2/identity-apps/commit/9a2b1db7c8dbada90d02332677a8e83bd5afee85), [`5d00c6baa6`](https://github.com/wso2/identity-apps/commit/5d00c6baa608408a0b913dfababd5d683b51afb5), [`34d83c6ca1`](https://github.com/wso2/identity-apps/commit/34d83c6ca11512b83d015108d915b327023e66ba), [`4d9a61c3ab`](https://github.com/wso2/identity-apps/commit/4d9a61c3ab5ef4b06b1e91359df22ba486542831)]:
+  - @wso2is/features@2.15.1
+  - @wso2is/i18n@2.2.0
+
+## 2.15.2
+
+### Patch Changes
+
+- [#5961](https://github.com/wso2/identity-apps/pull/5961) [`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b) Thanks [@chamathns](https://github.com/chamathns)! - add branding AI implementation
+
+* [#5938](https://github.com/wso2/identity-apps/pull/5938) [`da7b19acf5`](https://github.com/wso2/identity-apps/commit/da7b19acf5cc5b926ddfcf02b1c2e6af55a25838) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add authenticationSequence prop to authentication-flow-provider. This modification is done to pass the AI generated login flow to authentication-flow-builder through authentication-flow-provider.
+
+- [#5978](https://github.com/wso2/identity-apps/pull/5978) [`94b6c88a84`](https://github.com/wso2/identity-apps/commit/94b6c88a8486fd2e450bb5ce2f0f25a7e34a9316) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues with access control module
+
+* [#5972](https://github.com/wso2/identity-apps/pull/5972) [`2c11ff7422`](https://github.com/wso2/identity-apps/commit/2c11ff74226d8787462fa83049a488efed80017c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix updated custom text preferences not being reflected in UI immediately after branding is reverted
+
+* Updated dependencies [[`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b), [`da7b19acf5`](https://github.com/wso2/identity-apps/commit/da7b19acf5cc5b926ddfcf02b1c2e6af55a25838), [`94b6c88a84`](https://github.com/wso2/identity-apps/commit/94b6c88a8486fd2e450bb5ce2f0f25a7e34a9316), [`2c11ff7422`](https://github.com/wso2/identity-apps/commit/2c11ff74226d8787462fa83049a488efed80017c)]:
+  - @wso2is/i18n@2.1.12
+  - @wso2is/features@2.15.0
+  - @wso2is/theme@2.0.73
+  - @wso2is/access-control@3.0.1
+  - @wso2is/react-components@2.1.18
+  - @wso2is/dynamic-forms@2.0.47
+  - @wso2is/form@2.0.48
+
 ## 2.15.1
 
 ### Patch Changes
