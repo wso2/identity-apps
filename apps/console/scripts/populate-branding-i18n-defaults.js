@@ -33,7 +33,8 @@ const DEFAULT_LANGUAGE = "en-US";
 
 const META_FLAGS = Object.freeze({
     EDITABLE: "EDITABLE",
-    SCREEN: "SCREEN"
+    SCREEN: "SCREEN",
+    VARIATIONS: "VARIATIONS"
 });
 
 const RESOURCE_FILE_CONTAINING_META = "Resources.properties";
@@ -270,13 +271,23 @@ async function saveJsonFiles(data, outputDirectory) {
         await fs.ensureDir(outputDirectory);
         const universalMeta = {
             locales: [],
-            screens: []
+            screens: {}
         };
 
         for (const [ screen, bundles ] of Object.entries(data.translations)) {
-            const screenDirectory = path.join(outputDirectory, "screens", screen);
+            const uniqueScreenVariations = new Set();
+        
+            Object.values(bundles["meta"]).forEach(metaValue => {
+                if (metaValue["VARIATIONS"]) {
+                    metaValue["VARIATIONS"].split(" ").forEach(val => {
+                        uniqueScreenVariations.add(val);
+                    });
+                }
+            });
+        
+            universalMeta.screens[screen] = Array.from(uniqueScreenVariations);
 
-            universalMeta["screens"] = [ ...universalMeta["screens"], screen ];
+            const screenDirectory = path.join(outputDirectory, "screens", screen);
 
             await fs.ensureDir(screenDirectory);
 
