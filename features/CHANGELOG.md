@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.8
+
+### Patch Changes
+
+- [#5976](https://github.com/wso2/identity-apps/pull/5976) [`b586a4d264`](https://github.com/wso2/identity-apps/commit/b586a4d264d9c26e5fe993765f29396dba9db9c4) Thanks [@brionmario](https://github.com/brionmario)! - New runtime migration groundwork
+
 ## 2.15.7
 
 ### Patch Changes
