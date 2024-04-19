@@ -4,6 +4,7 @@
         "enabled": {{ myaccount.__experimental__platform_idp.enabled }},
         "homeRealmId": "{{ myaccount.__experimental__platform_idp.homeRealmId }}"
     },
+    {% endif %}
     "consoleApp": {
         {% if myaccount.applications.console_app.configs is defined %}
         {% for key, value in myaccount.applications.console_app.configs.items() %}
@@ -115,9 +116,6 @@
         {% endfor %}
         {% endif %}
     },
-    {% endif %}
-    {% if myaccount.is_fronted_with_platform_idp is defined %}
-    "isFrontedWithPlatformIdP" : "{{ myaccount.is_fronted_with_platform_idp }}",
     {% endif %}
     {% if myaccount.is_saas is defined %}
     "isSaas": {{ myaccount.is_saas }},

@@ -11,7 +11,6 @@
             "dependencyTrackingEnabled": false
         }
     },
-    "isFrontedWithPlatformIdP": true,
     "isSaas": false,
     "appBaseName": "console",
     "clientID": "CONSOLE",

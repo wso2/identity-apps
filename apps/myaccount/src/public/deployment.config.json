@@ -35,7 +35,6 @@
         "responseMode": "query",
         "enableOIDCSessionManagement": false
     },
-    "isFrontedWithPlatformIdP": false,
     "session": {
         "userIdleWarningTimeOut": 580.0,
         "sessionRefreshTimeOut": 300.0,

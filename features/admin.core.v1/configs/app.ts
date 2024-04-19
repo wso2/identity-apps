@@ -149,7 +149,6 @@ export class Config {
             },
             extensions: window[ "AppUtils" ]?.getConfig()?.extensions,
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
-            isFrontedWithPlatformIdP: window[ "AppUtils" ]?.getConfig()?.isFrontedWithPlatformIdP,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
             organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
             serverHost: window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant,

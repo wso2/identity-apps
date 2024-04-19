@@ -241,7 +241,6 @@ export const AppUtils: AppUtilsInterface = (function() {
                 debug: _config.debug,
                 extensions: _config.extensions,
                 idpConfigs: this.resolveIdpConfigs(),
-                isFrontedWithPlatformIdP: _config.isFrontedWithPlatformIdP,
                 isSaas: this.isSaas(),
                 legacyAuthzRuntime: _config.legacyAuthzRuntime,
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
