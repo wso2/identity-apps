@@ -51,6 +51,7 @@ export class Config {
             clientHost: window["AppUtils"]?.getConfig()?.clientOriginWithTenant,
             clientID: window["AppUtils"]?.getConfig()?.clientID,
             clientOrigin: window["AppUtils"]?.getConfig()?.clientOrigin,
+            clientOriginWithTenant: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             consoleApp: window["AppUtils"]?.getConfig()?.consoleApp,
             customServerHost: window["AppUtils"]?.getConfig()?.customServerHost,
             idpConfigs: window["AppUtils"]?.getConfig()?.idpConfigs,

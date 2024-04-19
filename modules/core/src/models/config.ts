@@ -104,6 +104,11 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      */
     clientOrigin: string;
     /**
+     * Origin of the client application with the tenant domain.
+     * ex: `https://localhost:9001/t/wso2.com/console`
+     */
+    clientOriginWithTenant: string;
+    /**
      * Portal Documentation configs.
      */
     documentation?: DocumentationInterface;
