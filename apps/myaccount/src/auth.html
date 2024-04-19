@@ -159,76 +159,193 @@
             };
         </script>
         <script>
-            function onAuthScriptLoad() {
-                var applicationDomain = window.location.origin;
-                var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
+            function authenticateWithSDK() {
+                if(!authorizationCode) {
+                    function getTenantName() {
+                        var path = window.location.pathname;
+                        var pathChunks = path.split("/");
+                        var tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
 
-                if(isSignOutSuccess && userTenant) {
-                    if (startupConfig.subdomainApplication) {
-                        window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
-                    } else {
-                        window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/<%= htmlWebpackPlugin.options.basename %>";
-                    }
-                }
-
-                var urlParams = new URLSearchParams(window.location.search);
-
-                var serverOrigin = startupConfig.serverUrl;
-                var authorizationCode = urlParams.get("code");
-                var authSessionState = urlParams.get("session_state");
-                var authIdPs = urlParams.get("AuthenticatedIdPs");
-
-                function authenticateWithSDK() {
-                    function getApiPath(path) {
-                        if(path) {
-                            return serverOrigin + path;
+                        if (tenantPrefixIndex !== -1) {
+                            return pathChunks[ tenantPrefixIndex + 1 ];
                         }
 
-                        return serverOrigin;
+                        return "";
+                    }
+
+                    function getTenantPath() {
+                        return getTenantName() !== ""
+                            ? "/" + startupConfig.tenantPrefix + "/" + getTenantName()
+                            : "";
+                    };
+
+                    function getApiPath(path) {
+                        if (startupConfig.legacyAuthzRuntime) {
+                            if (path) {
+                                return serverOrigin + path;
+                            }
+
+                            return serverOrigin;
+                        }
+
+                        var basePath = serverOrigin;
+                        var tenantDomain = getTenantName();
+
+                        if (tenantDomain) {
+                            basePath = serverOrigin + getTenantPath();
+                        }
+
+                        if (path) {
+                            return basePath + path;
+                        }
+
+                        return basePath;
+                    }
+
+                    /**
+                     * Get the organization name.
+                     *
+                     * @returns {string}
+                     */
+                     function getOrganizationName() {
+                        var path = window.location.pathname;
+                        var pathChunks = path.split("/");
+
+                        var orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
+
+                        if (orgPrefixIndex !== -1) {
+                            return pathChunks[ orgPrefixIndex + 1 ];
+                        }
+
+                        return "";
+                    };
+
+                    /**
+                     * Get the organization path.
+                     *
+                     * @returns {string}
+                     */
+                    function getOrganizationPath() {
+                        return getOrganizationName() !== ""
+                            ? "/" + startupConfig.orgPrefix + "/" + getOrganizationName()
+                            : "";
+                    };
+
+                    /**
+                     * Construct the sign-in redirect URL.
+                     *
+                     * @returns {string} Contructed URL.
+                     */
+                    function signInRedirectURL() {
+                        if (getTenantName() === startupConfig.superTenant) {
+                            return applicationDomain.replace(/\/+$/, '')
+                                + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                        }
+
+                        return applicationDomain.replace(/\/+$/, '') + getTenantPath()
+                            + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                    }
+
+                    /**
+                     * Construct the sign-out redirect URL.
+                     *
+                     * @returns {string} Contructed URL.
+                     */
+                    function getSignOutRedirectURL() {
+                        if (getTenantName() === startupConfig.superTenant) {
+                            return applicationDomain.replace(/\/+$/, '');
+                        }
+
+                        return applicationDomain.replace(/\/+$/, '') + getTenantPath();
+                    }
+
+                    /**
+                     * Construct the auth params for organization login `authorize` requets.
+                     *
+                     * @remarks This only applies to the new authz runtime.
+                     *
+                     * @params orginalPrams - Original auth params.
+                     * @returns {string} Contructed auth params.
+                     */
+                    function getAuthParamsForOrganizationLogins(orginalPrams) {
+                        if (startupConfig.legacyAuthzRuntime) {
+                            return orginalPrams;
+                        }
+
+                        var authParams = Object.assign({}, orginalPrams);
+
+                        if (getOrganizationPath()) {
+                            var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
+                            var orgIdInLocalStorage = localStorage.getItem("org-id");
+
+                            if (orgIdInLocalStorage) {
+                                if (orgIdInLocalStorage === getOrganizationName() && initialUserOrgInLocalStorage !== "undefined") {
+                                    authParams["fidp"] = "OrganizationSSO";
+                                    authParams["orgId"] = getOrganizationName();
+                                }
+                            } else {
+                                authParams["fidp"] = "OrganizationSSO";
+                                authParams["orgId"] = getOrganizationName();
+                            }
+                        }
+
+                        return authParams;
                     }
 
                     var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
-                    var basePath = applicationDomain.replace(/\/+$/, '');
-                    var baseRedirectURL = "<%= htmlWebpackPlugin.options.basename%>" ? basePath + '/' + "<%= htmlWebpackPlugin.options.basename%>" : basePath;
 
                     var authConfig = {
-                        signInRedirectURL: baseRedirectURL,
-                        signOutRedirectURL: baseRedirectURL,
-                        clientID: "MY_ACCOUNT",
+                        signInRedirectURL: signInRedirectURL(),
+                        signOutRedirectURL: getSignOutRedirectURL(),
+                        clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                         baseUrl: getApiPath(),
                         responseMode: "query",
                         scope: ["openid SYSTEM"],
                         storage: "webWorker",
                         endpoints: {
-                            authorizationEndpoint: userTenant
-                                ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize")
-                                : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"),
+                            authorizationEndpoint: getApiPath("/oauth2/authorize"),
                             clockTolerance: 300,
                             jwksEndpointURL: undefined,
-                            logoutEndpointURL: userTenant
-                                ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout")
-                                : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"),
-                            oidcSessionIFrameEndpointURL: userTenant
-                                ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession")
-                                : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"),
+                            logoutEndpointURL: getApiPath("/oidc/logout"),
+                            oidcSessionIFrameEndpointURL: getApiPath("/oidc/checksession"),
                             tokenEndpointURL: undefined,
                             tokenRevocationEndpointURL: undefined,
                         },
                         enablePKCE: true
                     }
 
-                    auth.initialize(authConfig);
-                    auth.signIn();
-                }
+                    if (startupConfig.legacyAuthzRuntime) {
+                        authConfig.signInRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath()
+                            + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                        authConfig.signOutRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
+                        authConfig.endpoints.authorizationEndpoint = getApiPath(
+                            userTenant
+                                ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                                : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"
+                        );
+                        authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout");
+                        authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession");
+                    }
 
-                authenticateWithSDK();
+                    auth.initialize(authConfig);
+                    auth.signIn(getAuthParamsForOrganizationLogins({}));
+                }
             }
         </script>
-        <script
-            async
-            onload="onAuthScriptLoad();"
-            src="/<%= htmlWebpackPlugin.options.basename ? htmlWebpackPlugin.options.basename + '/' : '' %>auth-spa-3.0.1.min.js"
-        ></script>
+        <script>
+            if(!authorizationCode) {
+                var authSPAJS = document.createElement("script");
+                var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-3.0.1.min.js' : '/auth-spa-3.0.1.min.js'%>";
+
+                authSPAJS.setAttribute("src", authScriptSrc);
+                authSPAJS.setAttribute("async", "false");
+
+                var head = document.head;
+                head.insertBefore(authSPAJS, head.firstElementChild);
+
+                authSPAJS.addEventListener("load", authenticateWithSDK, false);
+            }
+        </script>
 
         <!-- Start of custom stylesheets -->
         <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.publicPath %>extensions/stylesheet.css"/>
@@ -238,7 +355,7 @@
 
         <!-- Temporarily commenting the extension scripts due to https://github.com/wso2/product-is/issues/19479#issuecomment-2003061880 -->
         <!-- <script defer type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script> -->
-        
+
         <!-- End of custom scripts added to the head -->
     </head>
     <body onload="preLoaderResolver()">
@@ -285,7 +402,7 @@
 
         <!-- Temporarily commenting the extension scripts due to https://github.com/wso2/product-is/issues/19479#issuecomment-2003061880 -->
         <!-- <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/body-script.js"></script> -->
-        
+
         <!-- End of custom scripts added to the body -->
     </body>
 </html>
