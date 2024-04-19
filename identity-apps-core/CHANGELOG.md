@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.57
+
+### Patch Changes
+
+- [#6011](https://github.com/wso2/identity-apps/pull/6011) [`5dbe369d55`](https://github.com/wso2/identity-apps/commit/5dbe369d5584ce66fd6ca7e7f0931e037330ad55) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove enterprise IDP logics
+
 ## 2.1.56
 
 ### Patch Changes
