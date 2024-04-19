@@ -21,6 +21,10 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 20px;
+    gap: 25px;
     margin-bottom: 30px;
+
+    .application-template-card-group-description {
+        margin-top: -20px;
+    }
 }

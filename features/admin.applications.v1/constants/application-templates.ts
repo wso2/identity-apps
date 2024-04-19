@@ -32,11 +32,14 @@ export class ApplicationTemplateConstants {
 
     public static readonly SUPPORTED_CATEGORIES_INFO: ApplicationTemplateCategoryInterface[] = [
         {
+            description: "Integrate applications based on technology and platform.",
             displayName: "applications:templates.categories.default",
             displayOrder: 0,
             id: "DEFAULT"
         },
         {
+            description: "Configure single sign-on seamlessly across SaaS services such as"
+                + " Google Workspace, Salesforce, and more.",
             displayName: "applications:templates.categories.ssoIntegration",
             displayOrder: 1,
             id: "SSO-INTEGRATION"

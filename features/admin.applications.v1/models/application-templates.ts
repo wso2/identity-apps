@@ -17,7 +17,7 @@
  */
 
 import { MainApplicationInterface } from "./application";
-import { DynamicFieldInterface } from "./dynamic-fields";
+import { DynamicFormInterface } from "./dynamic-fields";
 
 export interface ApplicationTemplateCommonInterface {
     /**
@@ -89,9 +89,7 @@ export interface ApplicationTemplateMetadataInterface {
         /**
          * Dynamic input fields should be rendered in the application create wizard.
          */
-        form?: {
-            fields: DynamicFieldInterface[];
-        };
+        form?: DynamicFormInterface;
         /**
          * Indicates whether the application is sharable with sub orgs.
          */
@@ -136,9 +134,7 @@ export interface ApplicationEditTabMetadataInterface {
     /**
      * Dynamic input fields should be rendered in the current tab.
      */
-    form?: {
-        fields: DynamicFieldInterface[];
-    };
+    form?: DynamicFormInterface;
     /**
      * Guide content for application editing section.
      */

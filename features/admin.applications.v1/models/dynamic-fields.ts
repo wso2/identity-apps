@@ -17,13 +17,23 @@
  */
 
 /**
+ * Interface to define a dynamic form.
+ */
+export interface DynamicFormInterface {
+    /**
+     * Dynamic field data needs to be rendered on the form.
+     */
+    fields: DynamicFieldInterface[],
+    /**
+     * Should the form only submit the fields defined above.
+     */
+    submitDefinedFieldsOnly?: boolean;
+}
+
+/**
  * Data types required to render the dynamic input fields.
  */
 export interface DynamicFieldInterface {
-    /**
-     * The index of the field.
-     */
-    index: number;
     /**
      * Unique identifier for the input field.
      */
@@ -31,7 +41,7 @@ export interface DynamicFieldInterface {
     /**
      * Aria label of the input field.
      */
-    ariaLabel: string;
+    "aria-label": string;
     /**
      * Name of the input field.
      */
@@ -57,25 +67,37 @@ export interface DynamicFieldInterface {
      */
     dataComponentId: string;
     /**
-     * The maximum length of the field's input.
-     */
-    maxLength: string;
-    /**
-     * The minimu length of the field's input.
-     */
-    minLength: string;
-    /**
-     * The width of the input field.
-     */
-    width: string;
-    /**
      * Array of validation rules for the field's input.
      */
     validations?: ValidationRule[];
     /**
-     * Additional custom attributes need to decorate the dynamic input field.
+     * Additional meta data need to decorate the dynamic input field.
      */
-    additionalAttributes?: any;
+    meta?: DynamicFieldMetadataInterface;
+}
+
+/**
+ * Interface for the metadata of dynamic fields.
+ */
+export interface DynamicFieldMetadataInterface {
+    /**
+     * Properties that should automatically submit along with the current property.
+     */
+    autoSubmitProperties?: DynamicFieldAutoSubmitPropertyInterface[];
+}
+
+/**
+ * Interface for defining an auto-submitting property.
+ */
+export interface DynamicFieldAutoSubmitPropertyInterface {
+    /**
+     * The path for the property that should be included in the final form submit payload.
+     */
+    path: string;
+    /**
+     * The value to be assigned to the specified path.
+     */
+    value: any;
 }
 
 /**
@@ -89,7 +111,11 @@ export enum DynamicInputFieldTypes {
     /**
      * Checkbox field.
      */
-    CHECKBOX = "checkbox"
+    CHECKBOX = "checkbox",
+    /**
+     * Text Area.
+     */
+    TEXTAREA = "textarea"
 }
 
 /**

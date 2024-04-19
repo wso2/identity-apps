@@ -123,11 +123,15 @@ const useDynamicFieldValidations = (): {
     /**
      * Validates a field based on its validation rules.
      *
-     * @param value - The field's value to be validated.
+     * @param values - The form values to be validated.
      * @param validations - An array of validation rules for the field.
      * @returns An error message if validation fails, or `null` if validation succeeds.
      */
-    const validateField = async (value: any, validations: ValidationRule[]): Promise<string | null> => {
+    const validateField = async (
+        values: ApplicationCreateWizardFormValuesInterface,
+        field: DynamicFieldInterface,
+        validations: ValidationRule[]
+    ): Promise<string | null> => {
         if (!validations) {
             return null;
         }
@@ -139,15 +143,15 @@ const useDynamicFieldValidations = (): {
 
             switch (type) {
                 case ValidationRuleTypes.DOMAIN_NAME:
-                    validationResult = handleErrorMessage(validateDomainName(value), errorMessage);
+                    validationResult = handleErrorMessage(validateDomainName(values, field), errorMessage);
 
                     break;
                 case ValidationRuleTypes.APPLICATION_NAME:
-                    validationResult = handleErrorMessage(await validateApplicationName(value), errorMessage);
+                    validationResult = handleErrorMessage(await validateApplicationName(values, field), errorMessage);
 
                     break;
                 case ValidationRuleTypes.REQUIRED:
-                    validationResult = handleErrorMessage(requiredField(value), errorMessage);
+                    validationResult = handleErrorMessage(requiredField(values, field), errorMessage);
 
                     break;
             }
@@ -174,17 +178,22 @@ const useDynamicFieldValidations = (): {
         const errorObject: { [key in keyof ApplicationCreateWizardFormValuesInterface]: string } = {};
 
         for (const field of fields) {
-            let validations: ValidationRule[] = [ ...field?.validations ];
+            let validations: ValidationRule[] = [];
 
-            if (field?.required) {
-                validations = [ { type: ValidationRuleTypes.REQUIRED }, ...field?.validations ];
+            if (field?.validations && Array.isArray(field?.validations) && field?.validations?.length > 0) {
+                validations = [ ...field?.validations ];
             }
 
-            const value: any = get(formValues, field?.name);
-            const error: string = await validateField(value, validations);
+            if (field?.required) {
+                validations = [ { type: ValidationRuleTypes.REQUIRED }, ...validations ];
+            }
 
-            if (error) {
-                set(errorObject, field?.name, error);
+            if (validations?.length > 0) {
+                const error: string = await validateField(formValues, field, validations);
+
+                if (error) {
+                    set(errorObject, field?.name, error);
+                }
             }
         }
 
@@ -197,7 +206,12 @@ const useDynamicFieldValidations = (): {
      * value - The value needs validation.
      * @returns Whether the provided value is a non empty value.
      */
-    const requiredField = (value: any): string | null => {
+    const requiredField = (
+        values: ApplicationCreateWizardFormValuesInterface,
+        field: DynamicFieldInterface
+    ): string | null => {
+        const value: any = get(values, field?.name);
+
         if (!value) {
             return "applications:forms.dynamicApplicationCreateWizard.common.validations.required";
         }
@@ -211,7 +225,12 @@ const useDynamicFieldValidations = (): {
      * value - The value needs validation.
      * @returns Whether the provided value is a valid domain name or not.
      */
-    const validateDomainName = (value: string): string | null => {
+    const validateDomainName = (
+        values: ApplicationCreateWizardFormValuesInterface,
+        field: DynamicFieldInterface
+    ): string | null => {
+        const value: any = get(values, field?.name);
+
         // Regular expression to validate domain name.
         const domainRegex: RegExp =
             /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(?:\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*\.(?:[A-Za-z]{2,6})$/;
@@ -252,14 +271,15 @@ const useDynamicFieldValidations = (): {
      *
      * @param name - Name of the application.
      */
-    const isApplicationNameAlreadyExist: DebouncedFunc<(name: string) => Promise<void>> = debounce(
-        async (name: string) => {
+    const isApplicationNameAlreadyExist: DebouncedFunc<(name: string, appId: string) => Promise<void>> = debounce(
+        async (name: string, appId: string) => {
             if (previouslyValidatedApplicationName?.current !== name) {
                 previouslyValidatedApplicationName.current = name;
 
                 const response: ApplicationListInterface = await getApplications(name);
 
-                setIsApplicationNameAlreadyReserved(response?.totalResults > 0);
+                setIsApplicationNameAlreadyReserved(
+                    response?.totalResults > 0 && response?.applications[0]?.id !== appId);
             }
         },
         500
@@ -270,8 +290,11 @@ const useDynamicFieldValidations = (): {
      *
      * @param name - Application name.
      */
-    const validateApplicationName = async (name: string): Promise<string | null> => {
-        const appName: string = name.toString().trim();
+    const validateApplicationName = async (
+        values: ApplicationCreateWizardFormValuesInterface,
+        field: DynamicFieldInterface
+    ): Promise<string | null> => {
+        const appName: string = get(values, field?.name)?.toString()?.trim();
 
         if (!isNameValid(appName)) {
             return t("applications:forms." +
@@ -287,7 +310,7 @@ const useDynamicFieldValidations = (): {
             });
         }
 
-        await isApplicationNameAlreadyExist(appName);
+        await isApplicationNameAlreadyExist(appName, values?.id);
 
         if (isApplicationNameAlreadyReserved) {
             return t("applications:forms.generalDetails.fields.name.validations.duplicate");

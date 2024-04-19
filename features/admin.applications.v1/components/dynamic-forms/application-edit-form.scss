@@ -16,13 +16,10 @@
  * under the License.
  */
 
-.text-field-adapter {
-    .MuiInputBase-root {
-        padding: 0;
-
-        &.Mui-readOnly {
-            cursor: default;
-            background-color: #e9ecef!important;
+.application-dynamic-edit-form {
+    .application-edit-form-dynamic-fields {
+        &:not(:first-child) {
+            padding-top: 0;
         }
     }
 }

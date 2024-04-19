@@ -19,11 +19,11 @@
 import { MainApplicationInterface } from "./application";
 
 /**
- * Interface for the application create wizard form values.
+ * Interface for the dynamic application create wizard form values.
  */
 export type ApplicationCreateWizardFormValuesInterface = Partial<MainApplicationInterface>;
 
 /**
- * Interface for the application create wizard form initial values.
+ * Interface for the dynamic application create wizard form initial values.
  */
 export type ApplicationCreateWizardFormInitialValuesInterface = Partial<MainApplicationInterface>;

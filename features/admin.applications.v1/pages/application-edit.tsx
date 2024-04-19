@@ -26,7 +26,8 @@ import {
     Popup,
     TabPageLayout
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import cloneDeep from "lodash-es/cloneDeep";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -46,11 +47,10 @@ import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbo
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
-import CustomProtocolApplicationTemplate
-    from "../data/application-templates/templates/custom-protocol-application/custom-protocol-application.json";
 import useApplicationTemplates from "../hooks/use-application-templates";
 import {
     ApplicationAccessTypes,
+    ApplicationInterface,
     ApplicationTemplateListItemInterface,
     State,
     SupportedAuthProtocolTypes,
@@ -91,8 +91,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const {
-        templates: extensionApplicationTemplates,
-        isApplicationTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+        templates: extensionApplicationTemplates
     } = useApplicationTemplates();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -120,17 +119,147 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const {
         data: application,
         mutate: mutateApplicationGetRequest,
-        isLoading: isApplicationGetRequestLoading,
         error: applicationGetRequestError
     } = useGetApplication(applicationId, !!applicationId);
 
     /**
-     * Sets the internal state of the application loading status when the SWR `isLoading` state changes.
-     * TODO: Remove this once `setIsLoading` is removed from the nested components.
+     * Load the template that the application is built on.
      */
     useEffect(() => {
-        setApplicationRequestLoading(isApplicationGetRequestLoading);
-    }, [ isApplicationGetRequestLoading ]);
+
+        if (!(applicationTemplates
+                && applicationTemplates instanceof Array
+                && applicationTemplates.length > 0)) {
+
+            /**
+             * What's this?
+             *
+             * When navigating to an application using the direct url i.e.,
+             * /t/foo/develop/applications/:id#tab=1 this component will be
+             * mounted. But you see this {@link applicationTemplates}?; it is
+             * loaded elsewhere. For some reason, requesting the state from
+             * {@link useSelector} always returns `undefined` when
+             * directly navigating or refreshing the page. Therefore; it hangs
+             * without doing anything. It will show a overlay loader but
+             * that's it. Nothing happens afterwards.
+             *
+             * So, as a workaround; if for some reason, the {@link useSelector}
+             * return no data, we will manually emit the event
+             * {@link ApplicationActionTypes.SET_APPLICATION_TEMPLATES}. So, doing
+             * that ensures we load the application templates again.
+             *
+             * Consider this as a **failsafe workaround**. We shouldn't rely
+             * on this. This may get removed in the future.
+             */
+            ApplicationTemplateManagementUtils
+                .getApplicationTemplates()
+                .finally();
+
+            return;
+        }
+
+    }, [ applicationTemplates ]);
+
+    /**
+     * Fetch the application details on initial component load.
+     */
+    useEffect(() => {
+        const path: string[] = history.location.pathname?.split("/");
+        const id: string = path[ path?.length - 1 ];
+
+        setApplicationId(id);
+    }, []);
+
+    const determineApplicationTemplate = (applicationData: ApplicationInterface): ApplicationInterface => {
+
+        let template: ApplicationTemplateListItemInterface = applicationTemplates?.find(
+            (template: ApplicationTemplateListItemInterface) => {
+                return template.id === applicationData.templateId;
+            });
+
+        if (applicationData.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || applicationData.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            || applicationData.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+            template = applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
+                template.id === CustomApplicationTemplate.id);
+        }
+
+        /**
+         * This condition block will help identify the applications created from templates
+         * on the extensions management API side.
+         */
+        if (!template) {
+            const extensionTemplate: ApplicationTemplateListInterface = extensionApplicationTemplates?.find(
+                (template: ApplicationTemplateListInterface) => {
+                    return template?.id === applicationData.templateId;
+                }
+            );
+
+            if (extensionTemplate) {
+                setExtensionApplicationTemplate(extensionTemplate);
+
+                const relatedLegacyTemplateId: string = InboundProtocolDefaultFallbackTemplates.get(
+                    applicationData.inboundProtocols[ 0 /*We pick the first*/ ].type
+                ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
+
+                applicationData.templateId = relatedLegacyTemplateId;
+            }
+        }
+
+        setApplicationTemplate(template);
+
+        return applicationData;
+    };
+
+    const moderatedApplicationData: ApplicationInterface = useMemo(() => {
+        if (!isApplicationRequestLoading) {
+            setApplicationRequestLoading(true);
+        }
+
+        if (!applicationTemplates || !extensionApplicationTemplates || !application) {
+            return null;
+        }
+
+        const clonedApplication: ApplicationInterface = cloneDeep(application);
+
+        /**
+         * If there's no application {@link ApplicationInterface.templateId}
+         * in the application instance, then we manually bind a templateId. You
+         * may ask why templateId is null at this point? Well, one reason
+         * is that, if you create an application via the API, the templateId
+         * is an optional property in the model instance.
+         *
+         *      So, if someone creates one without it, we don't have a template
+         * to bootstrap the model. When that happens the edit view will not
+         * work properly.
+         *
+         * We have added a mapping for application's inbound protocol
+         * {@link InboundProtocolDefaultFallbackTemplates} to pick a default
+         * template if none is present. One caveat is that, if we couldn't
+         * find any template from the fallback mapping, we always assign
+         * {@link ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC} to it.
+         * Additionally @see InboundFormFactory.
+         */
+        if (!clonedApplication?.advancedConfigurations?.fragment && !clonedApplication?.templateId) {
+            if (clonedApplication?.inboundProtocols?.length > 0) {
+                clonedApplication.templateId = InboundProtocolDefaultFallbackTemplates.get(
+                    clonedApplication.inboundProtocols[ 0 /*We pick the first*/ ].type
+                ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
+
+                return determineApplicationTemplate(clonedApplication);
+            }
+
+            return clonedApplication;
+        }
+
+        setApplicationRequestLoading(false);
+
+        return determineApplicationTemplate(clonedApplication);
+    }, [
+        applicationTemplates,
+        extensionApplicationTemplates,
+        application
+    ]);
 
     /**
      * Handles the application get request error.
@@ -205,17 +334,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 setIsDescTruncated(true);
             }
         }
-    }, [ appDescElement, isApplicationRequestLoading, isExtensionApplicationTemplatesRequestLoading ]);
-
-    /**
-     * Fetch the application details on initial component load.
-     */
-    useEffect(() => {
-        const path: string[] = history.location.pathname?.split("/");
-        const id: string = path[ path?.length - 1 ];
-
-        setApplicationId(id);
-    }, []);
+    }, [ appDescElement, isApplicationRequestLoading ]);
 
     /**
     * Fetch the identity provider id & name when calling the app edit through connected apps
@@ -234,80 +353,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     });
 
     /**
-     * Load the template that the application is built on.
-     */
-    useEffect(() => {
-
-        if (!application
-            || !(applicationTemplates
-                && applicationTemplates instanceof Array
-                && applicationTemplates.length > 0)) {
-
-            /**
-             * What's this?
-             *
-             * When navigating to an application using the direct url i.e.,
-             * /t/foo/develop/applications/:id#tab=1 this component will be
-             * mounted. But you see this {@link applicationTemplates}?; it is
-             * loaded elsewhere. For some reason, requesting the state from
-             * {@link useSelector} always returns `undefined` when
-             * directly navigating or refreshing the page. Therefore; it hangs
-             * without doing anything. It will show a overlay loader but
-             * that's it. Nothing happens afterwards.
-             *
-             * So, as a workaround; if for some reason, the {@link useSelector}
-             * return no data, we will manually emit the event
-             * {@link ApplicationActionTypes.SET_APPLICATION_TEMPLATES}. So, doing
-             * that ensures we load the application templates again.
-             *
-             * Consider this as a **failsafe workaround**. We shouldn't rely
-             * on this. This may get removed in the future.
-             */
-            ApplicationTemplateManagementUtils
-                .getApplicationTemplates()
-                .finally();
-
-            return;
-        }
-
-        determineApplicationTemplate();
-
-    }, [ applicationTemplates, extensionApplicationTemplates, application ]);
-
-    useEffect(() => {
-
-        /**
-         * If there's no application {@link ApplicationInterface.templateId}
-         * in the application instance, then we manually bind a templateId. You
-         * may ask why templateId is null at this point? Well, one reason
-         * is that, if you create an application via the API, the templateId
-         * is an optional property in the model instance.
-         *
-         *      So, if someone creates one without it, we don't have a template
-         * to bootstrap the model. When that happens the edit view will not
-         * work properly.
-         *
-         * We have added a mapping for application's inbound protocol
-         * {@link InboundProtocolDefaultFallbackTemplates} to pick a default
-         * template if none is present. One caveat is that, if we couldn't
-         * find any template from the fallback mapping, we always assign
-         * {@link ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC} to it.
-         * Additionally @see InboundFormFactory.
-         */
-        if (!application?.advancedConfigurations?.fragment && !application?.templateId) {
-            if (application?.inboundProtocols?.length > 0) {
-                // FIXME: `application` object is directly mutated here causing unpredictable side effects.
-                // Tracker: https://github.com/wso2/product-is/issues/20016
-                application.templateId = InboundProtocolDefaultFallbackTemplates.get(
-                    application.inboundProtocols[ 0 /*We pick the first*/ ].type
-                ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
-                determineApplicationTemplate();
-            }
-        }
-
-    }, [ isApplicationRequestLoading, application, isExtensionApplicationTemplatesRequestLoading ]);
-
-    /**
      * Push to 404 if application edit feature is disabled.
      */
     useEffect(() => {
@@ -321,53 +366,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             history.push(AppConstants.getPaths().get("PAGE_NOT_FOUND"));
         }
     }, [ featureConfig ]);
-
-    const determineApplicationTemplate = () => {
-
-        let template: ApplicationTemplateListItemInterface = applicationTemplates?.find(
-            (template: ApplicationTemplateListItemInterface) => {
-                return template.id === application.templateId;
-            });
-
-        if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-            template = applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
-                template.id === CustomApplicationTemplate.id);
-        }
-
-        /**
-         * This condition block will help identify the applications created from templates
-         * on the extensions management API side.
-         */
-        if (!template) {
-            const extensionTemplate: ApplicationTemplateListInterface = extensionApplicationTemplates?.find(
-                (template: ApplicationTemplateListInterface) => {
-                    return template?.id === application.templateId;
-                }
-            );
-
-            if (extensionTemplate) {
-                setExtensionApplicationTemplate(extensionTemplate);
-
-                const relatedLegacyTemplateId: string = InboundProtocolDefaultFallbackTemplates.get(
-                    application.inboundProtocols[ 0 /*We pick the first*/ ].type
-                ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
-
-                if (relatedLegacyTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                    || relatedLegacyTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-                    || relatedLegacyTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-                    template = applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
-                        template.id === CustomApplicationTemplate?.id);
-                } else {
-                    template = applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
-                        template.id === CustomProtocolApplicationTemplate?.id);
-                }
-            }
-        }
-
-        setApplicationTemplate(template);
-    };
 
     /**
      * Handles the back button click event.
@@ -464,7 +462,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const resolveReadOnlyState = (): boolean => {
 
         return urlSearchParams.get(ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY) === "true"
-            || application?.access === ApplicationAccessTypes.READ
+            || moderatedApplicationData?.access === ApplicationAccessTypes.READ
             || !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update,
                 allowedScopes);
     };
@@ -475,7 +473,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * @returns Template label.
      */
     const resolveTemplateLabel = (): ReactElement => {
-        if (application?.advancedConfigurations?.fragment) {
+        if (moderatedApplicationData?.advancedConfigurations?.fragment) {
             return (
                 <Label size="small">
                     { t("applications:list.labels.fragment") }
@@ -499,7 +497,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             pageTitle="Edit Application"
             title={ (
                 <>
-                    <span>{ application?.name }</span>
+                    <span>{ moderatedApplicationData?.name }</span>
                     { /*TODO - Application status is not shown until the backend support for disabling is given
                         @link https://github.com/wso2/product-is/issues/11453
                         { resolveApplicationStatusLabel() }*/ }
@@ -513,7 +511,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         <div className="with-label ellipsis" ref={ appDescElement }>
                             { resolveTemplateLabel() }
                             {
-                                ApplicationManagementUtils.isChoreoApplication(application)
+                                ApplicationManagementUtils.isChoreoApplication(moderatedApplicationData)
                                     && (<Label
                                         size="small"
                                         className="choreo-label no-margin-left"
@@ -523,9 +521,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             }
                             <Popup
                                 disabled={ !isDescTruncated }
-                                content={ application?.description }
+                                content={ moderatedApplicationData?.description }
                                 trigger={ (
-                                    <span>{ application?.description }</span>
+                                    <span>{ moderatedApplicationData?.description }</span>
                                 ) }
                             />
                         </div>
@@ -535,17 +533,17 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 applicationConfig.editApplication.getOverriddenImage(inboundProtocolConfigs?.oidc?.clientId,
                     tenantDomain)
                 ?? (
-                    application?.imageUrl
+                    moderatedApplicationData?.imageUrl
                         ? (
                             <AppAvatar
-                                name={ application?.name }
-                                image={ application?.imageUrl }
+                                name={ moderatedApplicationData?.name }
+                                image={ moderatedApplicationData?.imageUrl }
                                 size="tiny"
                             />
                         )
                         : (
                             <AnimatedAvatar
-                                name={ application?.name }
+                                name={ moderatedApplicationData?.name }
                                 size="tiny"
                                 floated="left"
                             />
@@ -556,7 +554,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 count: 5,
                 imageType: "square"
             } }
-            isLoading={ isApplicationRequestLoading || isExtensionApplicationTemplatesRequestLoading }
+            isLoading={ isApplicationRequestLoading }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
@@ -581,9 +579,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ) }
         >
             <EditApplication
-                application={ application }
+                application={ moderatedApplicationData }
                 featureConfig={ featureConfig }
-                isLoading={ isApplicationRequestLoading || isExtensionApplicationTemplatesRequestLoading }
+                isLoading={ isApplicationRequestLoading }
                 setIsLoading={ setApplicationRequestLoading }
                 onDelete={ handleApplicationDelete }
                 onUpdate={ handleApplicationUpdate }

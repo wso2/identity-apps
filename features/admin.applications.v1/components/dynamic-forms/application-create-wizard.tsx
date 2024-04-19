@@ -36,7 +36,10 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import useDynamicFieldValidations from "features/admin.applications.v1/hooks/use-dynamic-field-validation";
 import cloneDeep from "lodash-es/cloneDeep";
+import get from "lodash-es/get";
+import has from "lodash-es/has";
 import merge from "lodash-es/merge";
+import set from "lodash-es/set";
 import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -115,19 +118,65 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const [ lastCreatedApplicationId, setLastCreatedApplicationId ] = useState<string>(null);
     const [ isApplicationSharingEnabled, setIsApplicationSharingEnabled ] = useState<boolean>(false);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isClientSecretHashEnabled);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const formInitialValues: ApplicationCreateWizardFormInitialValuesInterface = useMemo(() => {
-        if (templateData?.payload) {
-            return cloneDeep(templateData?.payload);
+    /**
+     * Generate the next unique name by appending 1-based index number to the provided initial value.
+     *
+     * @param initialApplicationName - Initial value for the Application name.
+     * @returns A unique name from the provided list of names.
+     */
+    const generateUniqueApplicationName = (initialApplicationName: string): string => {
+
+        let appName: string = initialApplicationName;
+
+        if (possibleListOfDuplicateApplications?.totalResults > 0) {
+            const applicationNameList: string[] = possibleListOfDuplicateApplications?.applications?.map(
+                (item: ApplicationListItemInterface) => item?.name);
+
+            for (let i: number = 2; ; i++) {
+                if (!applicationNameList?.includes(appName)) {
+                    break;
+                }
+
+                appName = initialApplicationName + " " +  i;
+            }
         }
 
-        return null;
-    }, [ templateData?.payload ]);
+        return appName;
+    };
+
+    /**
+     * Prepare the initial values before assigning them to the form fields.
+     *
+     * @param initialValues - Initial values defined in template.
+     * @returns Moderated initial values.
+     */
+    const moderateInitialValues = (
+        initialValues: ApplicationCreateWizardFormInitialValuesInterface,
+        templatePayload: ApplicationCreateWizardFormInitialValuesInterface
+    ): ApplicationCreateWizardFormInitialValuesInterface => {
+        if (initialValues) {
+            initialValues.name = generateUniqueApplicationName(templatePayload?.name);
+        }
+
+        return initialValues;
+    };
+
+    const formInitialValues: ApplicationCreateWizardFormInitialValuesInterface = useMemo(() => {
+        if (!templateData?.payload) {
+            return null;
+        }
+
+        const initialValues: ApplicationCreateWizardFormInitialValuesInterface = cloneDeep(templateData?.payload);
+
+        return moderateInitialValues(initialValues, templateData?.payload);
+    }, [ templateData?.payload, possibleListOfDuplicateApplications ]);
 
     /**
      * Handle errors that occur during the application list fetch request.
@@ -211,48 +260,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     }, [ templateMetadataFetchRequestError ]);
 
     /**
-     * Generate the next unique name by appending 1-based index number to the provided initial value.
-     *
-     * @param initialApplicationName - Initial value for the Application name.
-     * @returns A unique name from the provided list of names.
-     */
-    const generateUniqueApplicationName = (initialApplicationName: string): string => {
-
-        let appName: string = initialApplicationName;
-
-        if (possibleListOfDuplicateApplications?.totalResults > 0) {
-            const applicationNameList: string[] = possibleListOfDuplicateApplications?.applications?.map(
-                (item: ApplicationListItemInterface) => item?.name);
-
-            for (let i: number = 2; ; i++) {
-                if (!applicationNameList?.includes(appName)) {
-                    break;
-                }
-
-                appName = initialApplicationName + " " +  i;
-            }
-        }
-
-        return appName;
-    };
-
-    /**
-     * Prepare the initial values before assigning them to the form fields.
-     *
-     * @param initialValues - Initial values defined in template.
-     * @returns Moderated initial values.
-     */
-    const moderateInitialValues = (
-        templatePayload: ApplicationCreateWizardFormInitialValuesInterface)
-    : ApplicationCreateWizardFormInitialValuesInterface => {
-        if (formInitialValues) {
-            formInitialValues.name = generateUniqueApplicationName(templatePayload?.name);
-        }
-
-        return formInitialValues;
-    };
-
-    /**
      * After the application is created, the user will be redirected to the
      * edit page using this function.
      *
@@ -290,8 +297,36 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         document.getElementById("notification-div")?.scrollIntoView({ behavior: "smooth" });
     };
 
+    /**
+     * Callback function triggered when clicking the form submit button.
+     *
+     * @param values - Submission values from the form fields.
+     */
     const onSubmit = (values: ApplicationCreateWizardFormValuesInterface): void => {
-        const formValues: Record<string, any> = cloneDeep(values);
+        const formValues: ApplicationCreateWizardFormValuesInterface = cloneDeep(values);
+
+        /**
+         * Make sure that cleared text fields are set to an empty string.
+         * Additionally, include the auto-submit properties in the form submission.
+         */
+        templateMetadata?.create?.form?.fields?.forEach((field: DynamicFieldInterface) => {
+            if (!has(values, field?.name)) {
+                const initialValue: any = get(formInitialValues, field?.name);
+
+                if (initialValue && typeof initialValue === "string") {
+                    set(values, field?.name, "");
+                }
+            }
+
+            if (field?.meta?.autoSubmitProperties
+                && Array.isArray(field?.meta?.autoSubmitProperties)
+                && field?.meta?.autoSubmitProperties?.length > 0) {
+                field?.meta?.autoSubmitProperties.forEach(
+                    (property: DynamicFieldAutoSubmitPropertyInterface) =>
+                        set(values, property?.path, property?.value)
+                );
+            }
+        });
 
         const application: MainApplicationInterface = merge(templateData?.payload, formValues);
 
@@ -452,7 +487,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                         </Grid>
                                     ) }
                                     <FinalForm
-                                        initialValues={ moderateInitialValues(templateData?.payload) }
+                                        initialValues={ formInitialValues }
                                         onSubmit={ onSubmit }
                                         mutators={ {
                                             setFormAttribute: (

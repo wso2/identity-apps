@@ -20,6 +20,7 @@ import { Typography } from "@mui/material";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
+    DocumentationLink,
     EmptyPlaceholder,
     GridLayout,
     ResourceGrid,
@@ -337,6 +338,23 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                                             <Typography variant="h5">
                                                 { t(category?.displayName) }
                                             </Typography>
+                                            {
+                                                category?.description
+                                                    ? (
+                                                        <Typography
+                                                            className="application-template-card-group-description"
+                                                            variant="subtitle1"
+                                                        >
+                                                            { t(category?.description) }
+                                                            <DocumentationLink
+                                                                link={ null }
+                                                            >
+                                                                { t("common:learnMore") }
+                                                            </DocumentationLink>
+                                                        </Typography>
+                                                    )
+                                                    : null
+                                            }
                                             <ResourceGrid
                                                 isEmpty={
                                                     !Array.isArray(categorizedTemplates)

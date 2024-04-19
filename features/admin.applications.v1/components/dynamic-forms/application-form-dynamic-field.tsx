@@ -33,6 +33,10 @@ export interface ApplicationFormDynamicFieldPropsInterface extends IdentifiableC
      * Form state from the form library.
      */
     form: FormApi<Record<string, any>>;
+    /**
+     * Whether the form field is read only or not.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -43,7 +47,7 @@ export interface ApplicationFormDynamicFieldPropsInterface extends IdentifiableC
 export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
     ApplicationFormDynamicFieldPropsInterface
 >> = (props: PropsWithChildren<ApplicationFormDynamicFieldPropsInterface>): ReactElement => {
-    const { ["data-componentid"]: componentId, field, ...rest } = props;
+    const { ["data-componentid"]: componentId, field, readOnly, ...rest } = props;
 
     const getDynamicFieldAdapter = (type: DynamicInputFieldTypes): ReactElement => {
         switch (type) {
@@ -54,13 +58,15 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         FormControlProps={ {
                             margin: "dense"
                         } }
-                        ariaLabel={ field.ariaLabel }
+                        aria-label={ field["aria-label"] }
                         data-componentid={ field["data-componentid"] }
                         name={ field.name }
                         type={ field.type }
                         label={ field.label }
                         placeholder={ field.placeholder }
                         component={ CheckboxFieldAdapter }
+                        disabled={ readOnly }
+                        required={ field?.required }
                     />
                 );
             case DynamicInputFieldTypes.TEXT:
@@ -70,15 +76,35 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         FormControlProps={ {
                             margin: "dense"
                         } }
-                        ariaLabel={ field.ariaLabel }
+                        aria-label={ field["aria-label"] }
                         data-componentid={ field["data-componentid"] }
                         name={ field.name }
                         type={ field.type }
                         label={ field.label }
                         placeholder={ field.placeholder }
                         component={ TextFieldAdapter }
-                        maxLength={ field.maxLength }
-                        minLength={ field.minLength }
+                        readOnly={ readOnly }
+                        required={ field?.required }
+                    />
+                );
+            case DynamicInputFieldTypes.TEXTAREA:
+                return (
+                    <FinalFormField
+                        fullWidth
+                        FormControlProps={ {
+                            margin: "dense"
+                        } }
+                        aria-label={ field["aria-label"] }
+                        data-componentid={ field["data-componentid"] }
+                        name={ field.name }
+                        type={ field.type }
+                        label={ field.label }
+                        placeholder={ field.placeholder }
+                        component={ TextFieldAdapter }
+                        readOnly={ readOnly }
+                        rows={ 3 }
+                        multiline={ true }
+                        required={ field?.required }
                     />
                 );
             default:
@@ -88,15 +114,15 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         FormControlProps={ {
                             margin: "dense"
                         } }
-                        ariaLabel={ field.ariaLabel }
+                        aria-label={ field["aria-label"] }
                         data-componentid={ field["data-componentid"] }
                         name={ field.name }
                         type={ field.type }
                         label={ field.label }
                         placeholder={ field.placeholder }
                         component={ TextFieldAdapter }
-                        maxLength={ field.maxLength }
-                        minLength={ field.minLength }
+                        readOnly={ readOnly }
+                        required={ field?.required }
                     />
                 );
         }
