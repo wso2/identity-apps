@@ -187,6 +187,24 @@ export const branding: BrandingNS = {
                 button: "Try Branding AI"
             }
         },
+        notifications: {
+            generateError: {
+                description: "An error occurred while generating the branding.",
+                message: "Branding generation failed"
+            },
+            regenerateError: {
+                description: "An error occurred while regenerating the branding.",
+                message: "Branding regeneration failed"
+            },
+            resetSuccess: {
+                description: "Successfully reset the AI generated branding.",
+                message: "AI Branding reset successful"
+            },
+            renderingError: {
+                description: "An error occurred while rendering the website.",
+                message: "Website rendering failed"
+            }
+        },
         screens: {
             loading: {
                 heading: "Generating your branding",
