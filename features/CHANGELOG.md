@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.10
+
+### Patch Changes
+
+- [#6020](https://github.com/wso2/identity-apps/pull/6020) [`b6d8ca263e`](https://github.com/wso2/identity-apps/commit/b6d8ca263ea67a659cfb0b21eabcb8e3be6baaa1) Thanks [@brionmario](https://github.com/brionmario)! - Fix Outbound Provisioning connector visibility not honouring feature config
+
 ## 2.15.9
 
 ### Patch Changes
