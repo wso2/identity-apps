@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.5.27
+
+### Patch Changes
+
+- [#6016](https://github.com/wso2/identity-apps/pull/6016) [`dc182a7490`](https://github.com/wso2/identity-apps/commit/dc182a74906b2ef28cf56c9f1ce396ae3dd61425) Thanks [@brionmario](https://github.com/brionmario)! - Fix fidp param
+
 ## 2.5.26
 
 ### Patch Changes
