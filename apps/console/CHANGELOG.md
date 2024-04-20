@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.15.15
+
+### Patch Changes
+
+- [#6018](https://github.com/wso2/identity-apps/pull/6018) [`012aa34fc8`](https://github.com/wso2/identity-apps/commit/012aa34fc860d8fdba1affcce478a8066f37e0b8) Thanks [@brionmario](https://github.com/brionmario)! - Fix error popups
+
+- Updated dependencies [[`b6d8ca263e`](https://github.com/wso2/identity-apps/commit/b6d8ca263ea67a659cfb0b21eabcb8e3be6baaa1)]:
+  - @wso2is/features@2.15.10
+
 ## 2.15.14
 
 ### Patch Changes
