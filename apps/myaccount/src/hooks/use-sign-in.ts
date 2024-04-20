@@ -132,6 +132,26 @@ const useSignIn = (): UseSignInInterface => {
                 || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomain);
         const userOrganizationId: string = idToken.user_org;
 
+        const __experimental__platformIdP: {
+            enabled: boolean;
+            homeRealmId: string;
+        } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
+        if (__experimental__platformIdP?.enabled) {
+            if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
+                const redirectUrl: URL = new URL(
+                    window["AppUtils"].getConfig().clientOriginWithTenant.replace(
+                        window["AppUtils"].getConfig().tenant,
+                        idToken.default_tenant
+                    )
+                );
+
+                redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                window.location.href = redirectUrl.href;
+            }
+        }
+
         // Update the organization name with the newly resolved org.
         if (!isFirstLevelOrg) {
             window["AppUtils"].updateOrganizationName(idToken.org_id);
@@ -149,6 +169,7 @@ const useSignIn = (): UseSignInInterface => {
         } else {
             orgType = OrganizationType.SUBORGANIZATION;
         }
+
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));

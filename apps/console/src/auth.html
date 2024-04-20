@@ -284,18 +284,19 @@
                     }
 
                     /**
-                     * Construct the auth params for organization login `authorize` requets.
+                     * Construct the auth params for sign in `authorize` requests.
                      *
                      * @remarks This only applies to the new authz runtime.
                      *
                      * @returns {string} Contructed auth params.
                      */
-                    function getAuthParamsForOrganizationLogins(orginalParams) {
+                    function getAuthParams(orginalParams) {
                         if (startupConfig.legacyAuthzRuntime) {
                             return orginalParams;
                         }
 
                         var authParams = Object.assign({}, orginalParams);
+                        var fidp = new URL(location.href).searchParams.get("fidp");
 
                         if (getOrganizationPath()) {
                             var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
@@ -310,6 +311,10 @@
                                 authParams["fidp"] = "OrganizationSSO";
                                 authParams["orgId"] = getOrganizationName();
                             }
+                        }
+
+                        if (fidpParam) {
+                            authParams["fidp"] = fidp;
                         }
 
                         return authParams;
@@ -357,7 +362,7 @@
                     // Redirect user to the login page if the prompt parameter is set to login.
                     if (promptParam && promptParam === 'login') {
                         auth.initialize(authConfig);
-                        auth.signIn(getAuthParamsForOrganizationLogins({ prompt: "login" }));
+                        auth.signIn(getAuthParams({ prompt: "login" }));
 
                         return;
                     }
@@ -379,7 +384,7 @@
                             sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
                         }
 
-                        auth.signIn(getAuthParamsForOrganizationLogins({}));
+                        auth.signIn(getAuthParams({}));
                     }
                 }
             }
