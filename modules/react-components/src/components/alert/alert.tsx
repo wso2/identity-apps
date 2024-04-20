@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,10 @@ import { GenericIcon } from "../icon";
  * Prop types interface for the Alert component.
  */
 export interface AlertPropsInterface extends TestableComponentInterface, IdentifiableComponentInterface {
+    /**
+     * Specifies the unique identifier for the alert.
+     */
+    "data-alertid"?: "string";
     /**
      * Unset the position of the alert.
      */
@@ -101,6 +105,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
         dismissInterval,
         onAlertSystemInitialize,
         withIcon,
+        [ "data-alertid" ]: alertId,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -211,6 +216,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
              */
             onMouseLeave={ () => setIntermediateDissmissInterval(dismissInterval) }
             className={ `alert-wrapper ${ classes }` }
+            data-alertid={ alertId ?? alert?.message }
             data-componentid={ componentId }
             data-testid={ testId }
         >
