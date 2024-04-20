@@ -280,19 +280,19 @@
                     }
 
                     /**
-                     * Construct the auth params for organization login `authorize` requets.
+                     * Construct the auth params for sign in `authorize` requests.
                      *
                      * @remarks This only applies to the new authz runtime.
                      *
-                     * @params orginalPrams - Original auth params.
                      * @returns {string} Contructed auth params.
                      */
-                    function getAuthParamsForOrganizationLogins(orginalPrams) {
+                    function getAuthParams(orginalParams) {
                         if (startupConfig.legacyAuthzRuntime) {
                             return orginalPrams;
                         }
 
                         var authParams = Object.assign({}, orginalPrams);
+                        var fidp = new URL(location.href).searchParams.get("fidp");
 
                         if (getOrganizationPath()) {
                             var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
@@ -307,6 +307,10 @@
                                 authParams["fidp"] = "OrganizationSSO";
                                 authParams["orgId"] = getOrganizationName();
                             }
+                        }
+
+                        if (fidpParam) {
+                            authParams["fidp"] = fidp;
                         }
 
                         return authParams;
@@ -348,7 +352,7 @@
                     }
 
                     auth.initialize(authConfig);
-                    auth.signIn(getAuthParamsForOrganizationLogins({}));
+                    auth.signIn(getAuthParams({}));
                 }
             }
         </script>

@@ -360,12 +360,21 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         <SecureApp
             fallback={ <PreLoader /> }
             overrideSignIn={ async () => {
+                const prompt: string = new URL(location.href).searchParams.get("prompt");
+                const fidp: string = new URL(location.href).searchParams.get("fidp");
+
                 // This is to prompt the SSO page if a user tries to sign in
                 // through a federated IdP using an existing email address.
-                if (new URL(location.href).searchParams.get("prompt")) {
+                if (prompt) {
                     await signIn({ prompt: "login" });
                 } else {
-                    await signIn();
+                    const authParams: { fidp?: string; } = {};
+
+                    if (fidp) {
+                        authParams["fidp"] = fidp;
+                    }
+
+                    await signIn(authParams);
                 }
             } }
         >
