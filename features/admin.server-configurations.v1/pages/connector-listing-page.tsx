@@ -85,11 +85,12 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 allowedScopes
             );
 
-        const isResidentOutboundProvisioningEnabled: boolean = hasRequiredScopes(
-            featureConfig?.residentOutboundProvisioning,
-            featureConfig?.residentOutboundProvisioning?.scopes?.feature,
-            allowedScopes
-        );
+        const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
+            && hasRequiredScopes(
+                featureConfig?.residentOutboundProvisioning,
+                featureConfig?.residentOutboundProvisioning?.scopes?.feature,
+                allowedScopes
+            );
 
         for (const category of originalConnectors) {
             if (!isOrganizationDiscoveryEnabled
