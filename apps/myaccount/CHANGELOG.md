@@ -1,5 +1,13 @@
 # @wso2is/myaccount
 
+## 2.5.26
+
+### Patch Changes
+
+- [#6015](https://github.com/wso2/identity-apps/pull/6015) [`1b200e35e0`](https://github.com/wso2/identity-apps/commit/1b200e35e0b72b39628c83c6d50992437970e9e0) Thanks [@brionmario](https://github.com/brionmario)! - Fix NPE in `AppInsights`
+
+* [#6013](https://github.com/wso2/identity-apps/pull/6013) [`6af2c8e686`](https://github.com/wso2/identity-apps/commit/6af2c8e686cf17e22e1909b42a398fd422028848) Thanks [@brionmario](https://github.com/brionmario)! - Update pre-auth logic of My Account
+
 ## 2.5.25
 
 ### Patch Changes
