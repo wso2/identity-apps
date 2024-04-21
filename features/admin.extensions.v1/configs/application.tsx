@@ -104,16 +104,16 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
 };
 
 export enum ApplicationTabIDs {
-    GENERAL = "general-tab",
-    PROTOCOL = "protocol-tab",
-    USER_ATTRIBUTES = "user-attributes-tab",
-    SIGN_IN_METHODS = "sign-in-methods-tab",
-    PROVISIONING = "provisioning-tab",
-    ADVANCED = "advanced-tab",
+    GENERAL = "general",
+    PROTOCOL = "protocol",
+    USER_ATTRIBUTES = "user-attributes",
+    SIGN_IN_METHODS = "sign-in-method",
+    PROVISIONING = "provisioning",
+    ADVANCED = "advanced",
     SHARED_ACCESS = "shared-access",
-    INFO = "info-tab",
-    API_AUTHORIZATION = "api-authorization-tab",
-    APPLICATION_ROLES = "application-roles-tab"
+    INFO = "info",
+    API_AUTHORIZATION = "api-authorization",
+    APPLICATION_ROLES = "application-roles"
 }
 
 export const applicationConfig: ApplicationConfig = {
@@ -434,7 +434,7 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "api-authorization",
-                        id: ApplicationTabIDs.API_AUTHORIZATION,
+                        "data-tabid": ApplicationTabIDs.API_AUTHORIZATION,
                         index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
@@ -473,7 +473,7 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "application-roles",
-                        id: ApplicationTabIDs.APPLICATION_ROLES,
+                        "data-tabid": ApplicationTabIDs.APPLICATION_ROLES,
                         index: APPLICATION_ROLES_INDEX + tabExtensions.length,
                         menuItem: I18n.instance.t(
                             "extensions:develop.applications.edit.sections.roles.heading"

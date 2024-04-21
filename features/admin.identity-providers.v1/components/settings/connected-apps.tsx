@@ -70,6 +70,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../admin.core.v1";
+import { ApplicationTabIDs } from "../../../admin.extensions.v1";
 import { applicationListConfig } from "../../../admin.extensions.v1/configs/application-list";
 import { getIDPConnectedApps } from "../../api";
 import {
@@ -77,7 +78,6 @@ import {
     ConnectedAppsInterface,
     IdentityProviderInterface
 } from "../../models";
-
 
 /**
  * Proptypes for the advance settings component.
@@ -463,7 +463,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access, "#tab=" +
-                        ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG),
+                        ApplicationTabIDs.SIGN_IN_METHODS),
                 popupText: (): string => {
                     return t("idp:connectedApps.action");
                 },
@@ -538,7 +538,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 data={ filterSelectedApps }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
                     handleApplicationEdit(app.id, app.access, "#tab=" +
-                        ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG);
+                        ApplicationTabIDs.SIGN_IN_METHODS);
                     onListItemClick && onListItemClick(e, app);
                 } }
                 placeholders={ showPlaceholders() }

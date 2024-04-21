@@ -108,9 +108,9 @@ export interface ApplicationTemplateMetadataInterface {
          */
         tabs: ApplicationEditTabMetadataInterface[],
         /**
-         * ID of the default active tab.
+         * Tab id of the default active tab.
          */
-        defaultActiveTab?: string;
+        defaultActiveTabId?: string;
     }
 }
 

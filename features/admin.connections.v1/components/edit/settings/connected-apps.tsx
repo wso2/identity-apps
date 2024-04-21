@@ -74,6 +74,7 @@ import {
     history
 } from "../../../../admin.core.v1";
 import { OrganizationType } from "../../../../admin.core.v1/constants/organization-constants";
+import { ApplicationTabIDs } from "../../../../admin.extensions.v1";
 import { applicationListConfig } from "../../../../admin.extensions.v1/configs/application-list";
 import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getConnectedApps } from "../../../api/connections";
@@ -82,7 +83,6 @@ import {
     ConnectedAppsInterface,
     ConnectionInterface
 } from "../../../models/connection";
-
 
 /**
  * Proptypes for the advance settings component.
@@ -520,7 +520,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         app.id,
                         app.access,
                         `#tab=${
-                            ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                            ApplicationTabIDs.SIGN_IN_METHODS
                         }`,
                         app.name
                     );
@@ -602,7 +602,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         app.id,
                         app.access,
                         `#tab=${
-                            ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                            ApplicationTabIDs.SIGN_IN_METHODS
                         }`,
                         app.name
                     );

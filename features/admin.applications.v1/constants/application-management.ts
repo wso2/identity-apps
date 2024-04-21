@@ -123,11 +123,6 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE: string = "true";
 
     /**
-     * Value for sign in method tab url.
-     */
-    public static readonly SIGN_IN_METHOD_TAB_URL_FRAG: string = "sign-in-method";
-
-    /**
      * Value for application roles tab url.
      */
     public static readonly ROLES_TAB_URL_FRAG: string = "5";

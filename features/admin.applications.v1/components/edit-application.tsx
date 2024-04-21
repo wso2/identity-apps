@@ -24,7 +24,8 @@ import {
     ContentLoader,
     CopyInputField,
     ResourceTab,
-    ResourceTabPaneInterface
+    ResourceTabPaneInterface,
+    TAB_URL_HASH_FRAGMENT
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -52,8 +53,7 @@ import {
     CORSOriginsListInterface,
     EventPublisher,
     FeatureConfigInterface,
-    getCORSOrigins,
-    history
+    getCORSOrigins
 } from "../../admin.core.v1";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { ApplicationTabIDs, applicationConfig } from "../../admin.extensions.v1";
@@ -74,8 +74,7 @@ import {
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
-    SupportedAuthProtocolTypes,
-    URLFragmentTypes
+    SupportedAuthProtocolTypes
 } from "../models";
 import {
     ApplicationEditTabContentTypes,
@@ -205,9 +204,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
     const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
     const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
-    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
-    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
-    const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -612,7 +608,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     )) {
                     panes.push({
                         componentId: "general",
-                        id: ApplicationTabIDs.GENERAL,
+                        "data-tabid": ApplicationTabIDs.GENERAL,
                         menuItem:
                                  <Menu.Item data-tourid="general">
                                      { t("applications:edit.sections.general.tabName") }
@@ -642,7 +638,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ) &&
                 panes.push({
                     componentId: "protocol",
-                    id: ApplicationTabIDs.PROTOCOL,
+                    "data-tabid": ApplicationTabIDs.PROTOCOL,
                     menuItem: t("applications:edit.sections.access.tabName"),
                     render: ApplicationSettingsTabPane
                 });
@@ -658,7 +654,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
                 panes.push({
                     componentId: "user-attributes",
-                    id: ApplicationTabIDs.USER_ATTRIBUTES,
+                    "data-tabid": ApplicationTabIDs.USER_ATTRIBUTES,
                     menuItem:
                         <Menu.Item data-tourid="attributes">
                             { t("applications:edit.sections.attributes.tabName") }
@@ -684,7 +680,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD, tenantDomain) &&
                   panes.push({
                       componentId: "sign-in-method",
-                      id: ApplicationTabIDs.SIGN_IN_METHODS,
+                      "data-tabid": ApplicationTabIDs.SIGN_IN_METHODS,
                       menuItem:
                           <Menu.Item data-tourid="sign-in-methods">
                               { t("applications:edit.sections.signOnMethod.tabName") }
@@ -704,7 +700,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
                 panes.push({
                     componentId: "provisioning",
-                    id: ApplicationTabIDs.PROVISIONING,
+                    "data-tabid": ApplicationTabIDs.PROVISIONING,
                     menuItem: t("applications:edit.sections.provisioning.tabName"),
                     render: ProvisioningSettingsTabPane
                 });
@@ -721,7 +717,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         inboundProtocolConfig?.oidc?.clientId , ApplicationTabTypes.ADVANCED, tenantDomain) &&
                   panes.push({
                       componentId: "advanced",
-                      id: ApplicationTabIDs.ADVANCED,
+                      "data-tabid": ApplicationTabIDs.ADVANCED,
                       menuItem: (
                           <Menu.Item data-tourid="advanced">
                               { t("applications:edit.sections.advanced.tabName") }
@@ -749,7 +745,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     UIConfig?.legacyMode?.organizations &&
                     panes.push({
                         componentId: "shared-access",
-                        id: ApplicationTabIDs.SHARED_ACCESS,
+                        "data-tabid": ApplicationTabIDs.SHARED_ACCESS,
                         menuItem: t("applications:edit.sections.sharedAccess.tabName"),
                         render: SharedAccessTabPane
                     });
@@ -766,7 +762,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     ) &&
                  panes.push({
                      componentId: "info",
-                     id: ApplicationTabIDs.INFO,
+                     "data-tabid": ApplicationTabIDs.INFO,
                      menuItem: {
                          content: t("applications:edit.sections.info.tabName"),
                          icon: "info circle grey"
@@ -787,49 +783,49 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         return [
             {
                 componentId: "general",
-                id: ApplicationTabIDs.GENERAL,
+                "data-tabid": ApplicationTabIDs.GENERAL,
                 menuItem: t("applications:edit.sections.general.tabName"),
                 render: GeneralApplicationSettingsTabPane
             },
             {
                 componentId: "protocol",
-                id: ApplicationTabIDs.PROTOCOL,
+                "data-tabid": ApplicationTabIDs.PROTOCOL,
                 menuItem: t("applications:edit.sections.access.tabName"),
                 render: ApplicationSettingsTabPane
             },
             {
                 componentId: "user-attributes",
-                id: ApplicationTabIDs.USER_ATTRIBUTES,
+                "data-tabid": ApplicationTabIDs.USER_ATTRIBUTES,
                 menuItem: t("applications:edit.sections.attributes.tabName"),
                 render: AttributeSettingTabPane
             },
             {
                 componentId: "sign-in-method",
-                id: ApplicationTabIDs.SIGN_IN_METHODS,
+                "data-tabid": ApplicationTabIDs.SIGN_IN_METHODS,
                 menuItem: t("applications:edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
             applicationConfig.editApplication.showProvisioningSettings && {
                 componentId: "provisioning",
-                id: ApplicationTabIDs.PROVISIONING,
+                "data-tabid": ApplicationTabIDs.PROVISIONING,
                 menuItem: t("applications:edit.sections.provisioning.tabName"),
                 render: ProvisioningSettingsTabPane
             },
             {
                 componentId: "advanced",
-                id: ApplicationTabIDs.ADVANCED,
+                "data-tabid": ApplicationTabIDs.ADVANCED,
                 menuItem: t("applications:edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
             },
             {
                 componentId: "shared-access",
-                id: ApplicationTabIDs.SHARED_ACCESS,
+                "data-tabid": ApplicationTabIDs.SHARED_ACCESS,
                 menuItem: t("applications:edit.sections.sharedAccess.tabName"),
                 render: SharedAccessTabPane
             },
             {
                 componentId: "info",
-                id: ApplicationTabIDs.INFO,
+                "data-tabid": ApplicationTabIDs.INFO,
                 menuItem: {
                     content: t("applications:edit.sections.info.tabName"),
                     icon: "info circle grey"
@@ -858,7 +854,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
          */
         const addPredefineTab = (currentTab: ApplicationEditTabMetadataInterface) => {
             const predefineTab: ResourceTabPaneInterface =
-                        tabs.find((item: ResourceTabPaneInterface) => item?.id === currentTab?.id);
+                        tabs.find((item: ResourceTabPaneInterface) => item?.["data-tabid"] === currentTab?.id);
 
             if (predefineTab) {
                 if (currentTab?.displayName) {
@@ -875,7 +871,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     if (tab?.guide) {
                         filteredTabs.push({
                             componentId: tab?.id,
-                            id: tab?.id,
+                            "data-tabid": tab?.id,
                             menuItem: tab?.displayName,
                             render: () => MarkdownGuideTabPane(tab?.guide)
                         });
@@ -886,7 +882,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     if (tab?.form?.fields && Array.isArray(tab?.form?.fields) && tab?.form?.fields?.length > 0) {
                         filteredTabs.push({
                             componentId: tab?.id,
-                            id: tab?.id,
+                            "data-tabid": tab?.id,
                             menuItem: tab?.displayName,
                             render: () => DynamicApplicationEditTabPane(tab)
                         });
@@ -924,81 +920,39 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const renderedTabPanes: ResourceTabPaneInterface[] = getFinalRenderingTabPanes();
 
     /**
-     * Handles the activeTabIndex change.
-     *
-     * @param tabIndex - Active tab index.
+     * Get the default active tab.
      */
-    const handleActiveTabIndexChange = (tabIndex:number): void => {
+    const getDefaultActiveTab = (): number | string => {
 
-        history.push({
-            hash: `#${ URLFragmentTypes.TAB_INDEX }${ tabIndex }`,
-            pathname: window.location.pathname
-        });
-        setActiveTabIndex(tabIndex);
+        let defaultTab: number | string = 0;
+
+        if(applicationConfig.editApplication.extendTabs && template?.id !== CustomApplicationTemplate.id) {
+            defaultTab = 1;
+        }
+
+        if (extensionTemplateMetadata?.edit?.defaultActiveTabId) {
+            defaultTab = extensionTemplateMetadata?.edit?.defaultActiveTabId;
+        }
+
+        return defaultTab;
     };
 
     /**
-     * Handles the defaultActiveIndex change.
-     */
-    const handleDefaultTabIndexChange = (defaultActiveIndex: number): void => {
-
-        if (extensionTemplate && extensionTemplateMetadata?.edit?.defaultActiveTab) {
-            const tabIndex: number = renderedTabPanes.findIndex(
-                (pane: ResourceTabPaneInterface) => pane?.id === extensionTemplateMetadata?.edit?.defaultActiveTab);
-
-            if (tabIndex !== -1) {
-                handleActiveTabIndexChange(tabIndex);
-
-                return;
-            }
-        }
-
-        if (template.id === CustomApplicationTemplate.id && defaultActiveIndex > 0) {
-            handleActiveTabIndexChange(defaultActiveIndex - 1);
-
-            return;
-        }
-
-        handleActiveTabIndexChange(defaultActiveIndex);
-    };
-
-    /**
-     * Set the defaultTabIndex when the application template updates.
+     * When the strong authentication parameter is set to true, set the sign-in methods tab.
      */
     useEffect(() => {
-
-        if(!template) {
-            return;
-        }
-
-        let defaultTabIndex: number = 0;
-
-        if(applicationConfig.editApplication.extendTabs) {
-            defaultTabIndex=1;
-        }
-
-        setDefaultActiveIndex(defaultTabIndex);
 
         if(isEmpty(window.location.hash)){
 
             if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) !==
                 ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
-                handleDefaultTabIndexChange(defaultTabIndex);
 
                 return;
             }
 
-            // When application selection is done through the strong authentication flow.
-            const signInMethodtabIndex: number = renderedTabPanes?.findIndex(
-                (element: {"componentId": string}) =>
-                    element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
-            );
-
-            if (signInMethodtabIndex !== -1) {
-                handleActiveTabIndexChange(signInMethodtabIndex);
-            }
+            window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.SIGN_IN_METHODS;
         }
-    },[ template, extensionTemplate, extensionTemplateMetadata, renderedTabPanes ]);
+    },[ urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ]);
 
     /**
      * Check whether the application is an M2M Application.
@@ -1009,41 +963,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             setM2MApplication(true);
         }
     }, [ template ]);
-
-    /**
-     * Called when the URL fragment updates.
-     */
-    useEffect( () => {
-
-        if(totalTabs === undefined || window.location.hash.includes(URLFragmentTypes.VIEW) ||
-            isEmpty(window.location.hash)) {
-
-            return;
-        }
-
-        const urlFragment: string[] = window.location.hash.split("#"+URLFragmentTypes.TAB_INDEX);
-
-        if(urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
-
-            const tabIndex: number = parseInt(urlFragment[1], 10);
-
-            if(tabIndex === activeTabIndex) {
-                return;
-            }
-
-            handleActiveTabIndexChange(tabIndex);
-        } else if (window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)) {
-            // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
-            const SignInMethodtabIndex: number = renderedTabPanes?.findIndex(
-                (element: {"componentId": string}) =>
-                    element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG);
-
-            handleActiveTabIndexChange(SignInMethodtabIndex);
-        } else {
-            // Change the tab index to defaultActiveIndex for invalid URL fragments.
-            handleDefaultTabIndexChange(defaultActiveIndex);
-        }
-    }, [ window.location.hash, totalTabs ]);
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -1157,9 +1076,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onApplicationUpdate: () => {
                     handleApplicationUpdate(application?.id);
                 },
-                onTriggerTabUpdate: (tabIndex: number) => {
-                    setActiveTabIndex(tabIndex);
-                },
                 template: template
             },
             featureConfig,
@@ -1199,8 +1115,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 type: data.panes[data.activeIndex].componentId
             });
         });
-
-        handleActiveTabIndexChange(data.activeIndex as number);
     };
 
     /**
@@ -1324,14 +1238,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 <>
                     <ResourceTab
                         isLoading={ isLoading || (extensionTemplate && isExtensionTemplateMetadataFetchRequestLoading) }
-                        activeIndex={ activeTabIndex }
                         data-componentid={ `${ componentId }-resource-tabs` }
-                        defaultActiveIndex={ defaultActiveIndex }
+                        controlTabRedirectionInternally
+                        defaultActiveTab={ getDefaultActiveTab() }
                         onTabChange={ handleTabChange }
                         panes={ renderedTabPanes }
-                        onInitialize={ ({ panesLength }: { panesLength: number }) => {
-                            setTotalTabs(panesLength);
-                        } }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>

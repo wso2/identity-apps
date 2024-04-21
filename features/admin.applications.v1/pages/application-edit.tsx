@@ -172,17 +172,21 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const determineApplicationTemplate = (applicationData: ApplicationInterface): ApplicationInterface => {
 
-        let template: ApplicationTemplateListItemInterface = applicationTemplates?.find(
-            (template: ApplicationTemplateListItemInterface) => {
-                return template.id === applicationData.templateId;
-            });
+        const getTemplate = (templateId: string): ApplicationTemplateListItemInterface => {
+            if (templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+                || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                return applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
+                    template.id === CustomApplicationTemplate.id);
+            }
 
-        if (applicationData.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || applicationData.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-            || applicationData.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-            template = applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
-                template.id === CustomApplicationTemplate.id);
-        }
+            return applicationTemplates?.find(
+                (template: ApplicationTemplateListItemInterface) => {
+                    return template.id === templateId;
+                });
+        };
+
+        let template: ApplicationTemplateListItemInterface = getTemplate(applicationData?.templateId);
 
         /**
          * This condition block will help identify the applications created from templates
@@ -191,7 +195,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if (!template) {
             const extensionTemplate: ApplicationTemplateListInterface = extensionApplicationTemplates?.find(
                 (template: ApplicationTemplateListInterface) => {
-                    return template?.id === applicationData.templateId;
+                    return template?.id === applicationData?.templateId;
                 }
             );
 
@@ -203,6 +207,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
 
                 applicationData.templateId = relatedLegacyTemplateId;
+
+                template = getTemplate(relatedLegacyTemplateId);
             }
         }
 
