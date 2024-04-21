@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.5.29
+
+### Patch Changes
+
+- [#6021](https://github.com/wso2/identity-apps/pull/6021) [`c012bf9c4a`](https://github.com/wso2/identity-apps/commit/c012bf9c4ad9e836b768d6aad552be761be84f1c) Thanks [@brionmario](https://github.com/brionmario)! - Fix My Account invalid params
+
 ## 2.5.28
 
 ### Patch Changes
