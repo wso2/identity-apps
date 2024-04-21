@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.15.17
+
+### Patch Changes
+
+- [#6025](https://github.com/wso2/identity-apps/pull/6025) [`c1be275844`](https://github.com/wso2/identity-apps/commit/c1be275844f62fb7e22b5216d6a5a81554fb15a2) Thanks [@brionmario](https://github.com/brionmario)! - Fix My Account SSO issue when there's a Super Tenant proxy
+
 ## 2.15.16
 
 ### Patch Changes
