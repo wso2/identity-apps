@@ -27,6 +27,7 @@ import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
 import { AccessControlUtils } from "@wso2is/features/admin.access-control.v1/configs/access-control";
 import { EventPublisher, PreLoader } from "@wso2is/features/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/features/admin.core.v1/components";
+import CommonFeatureProviders from "@wso2is/features/admin.core.v1/components/common-feature-provider";
 import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/features/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
 import { history } from "@wso2is/features/admin.core.v1/helpers";
@@ -63,7 +64,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import CommonFeatureProviders from "../../../features/admin.core.v1/components/common-feature-provider";
 import "moment/locale/si";
 import "moment/locale/fr";
 
