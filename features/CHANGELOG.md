@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.11
+
+### Patch Changes
+
+- [#6023](https://github.com/wso2/identity-apps/pull/6023) [`900c8ebd2a`](https://github.com/wso2/identity-apps/commit/900c8ebd2aec9b61e7fa22c0fd0cbb7b492119e5) Thanks [@sandushi](https://github.com/sandushi)! - Fix include user domain and include tenant domain issue
+
 ## 2.15.10
 
 ### Patch Changes
