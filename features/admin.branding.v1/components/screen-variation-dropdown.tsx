@@ -82,23 +82,13 @@ const ScreenVariationDropdown: FunctionComponent<ScreenVariationDropdownPropsInt
             return [];
         }
 
-        return screenVariations
-            .filter((variation: string) => {
-                /** Remove "base" variation if the base display variation is set
-                * to be something other than "base" or if "base" is not the only
-                * available option.
-                */
-                return BASE_DISPLAY_VARIATION[selectedScreen] === PreviewScreenVariationType.BASE
-                    || variation !== PreviewScreenVariationType.BASE
-                    || screenVariations.length < 2;
-            })
-            .map((variation: string) => {
-                return {
-                    key: variation,
-                    text: t(`branding:variations.${ variation }`),
-                    value: variation
-                };
-            });
+        return screenVariations.map((variation: string) => {
+            return {
+                key: variation,
+                text: t(`branding:variations.${ variation }`),
+                value: variation
+            };
+        });
     }, [ screenVariations ]);
 
     return (

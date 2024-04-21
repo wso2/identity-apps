@@ -46,6 +46,7 @@ import { CustomTextPreferenceConstants } from "../constants/custom-text-preferen
 import AuthenticationFlowContext from "../context/branding-preference-context";
 import { BrandingSubFeatures, PreviewScreenType, PreviewScreenVariationType } from "../models/branding-preferences";
 import {
+    BASE_DISPLAY_VARIATION,
     CustomTextConfigurationModes,
     CustomTextInterface,
     CustomTextPreferenceAPIResponseInterface,
@@ -373,12 +374,11 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     if (!customTextMeta?.screens) {
                         return [];
                     }
-                    const result: PreviewScreenVariationType[] =
-                        customTextMeta?.screens[selectedScreen] as PreviewScreenVariationType[];
+                    const result: PreviewScreenVariationType[] = customTextMeta?.screens[selectedScreen];
 
                     // Base variation is added by default
-                    if (result.indexOf(PreviewScreenVariationType.BASE) < 0) {
-                        result.push(PreviewScreenVariationType.BASE);
+                    if (result.indexOf(BASE_DISPLAY_VARIATION[selectedScreen]) < 0) {
+                        result.push(BASE_DISPLAY_VARIATION[selectedScreen]);
                     }
 
                     return result;
