@@ -1106,8 +1106,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     claim: {
                         uri: advanceSettingValues?.subject.claim
                     },
-                    includeTenantDomain: getIncludeUserDomainFinalValue(advanceSettingValues),
-                    includeUserDomain: getIncludeOrgNameFinalValue(advanceSettingValues),
+                    includeTenantDomain: getIncludeOrgNameFinalValue(advanceSettingValues),
+                    includeUserDomain: getIncludeUserDomainFinalValue(advanceSettingValues),
                     mappedLocalSubjectMandatory: advanceSettingValues?.subject.mappedLocalSubjectMandatory,
                     useMappedLocalSubject: advanceSettingValues?.subject.useMappedLocalSubject
                 }
