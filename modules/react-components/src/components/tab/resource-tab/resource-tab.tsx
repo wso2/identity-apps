@@ -338,8 +338,10 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
  */
 ResourceTab.defaultProps = {
     attached: false,
+    controlTabRedirectionInternally: false,
     "data-componentid": "resource-tabs",
     "data-testid": "resource-tabs",
+    defaultActiveTab: 0,
     isAutomaticTabRedirectionEnabled: false,
     isLoading: false,
     pointing: true,
