@@ -193,9 +193,11 @@
                         return "";
                     }
 
-                    function getTenantPath() {
-                        return getTenantName() !== ""
-                            ? "/" + startupConfig.tenantPrefix + "/" + getTenantName()
+                    function getTenantPath(tenantDomain) {
+                        var _tenantDomain = tenantDomain ? tenantDomain : getTenantName();
+
+                        return _tenantDomain !== ""
+                            ? "/" + startupConfig.tenantPrefix + "/" + _tenantDomain
                             : "";
                     };
 
@@ -208,18 +210,21 @@
                             return serverOrigin;
                         }
 
-                        var basePath = serverOrigin;
                         var tenantDomain = getTenantName();
 
-                        if (tenantDomain) {
-                            basePath = serverOrigin + getTenantPath();
+                        if (!tenantDomain) {
+                            if (startupConfig.superTenantProxy) {
+                                tenantDomain = startupConfig.superTenantProxy;
+                            } else {
+                                tenantDomain = startupConfig.superTenant;
+                            }
                         }
 
                         if (path) {
-                            return basePath + path;
+                            return serverOrigin + getTenantPath(tenantDomain) + path;
                         }
 
-                        return basePath;
+                        return serverOrigin + getTenantPath(tenantDomain);
                     }
 
                     /**
@@ -317,6 +322,21 @@
                         return authParams;
                     }
 
+                    /**
+                     * Retrieves the super tenant.
+                     * If a super tenant proxy is defined in the startup configuration, it is returned;
+                     * otherwise, the super tenant directly from the startup configuration is returned.
+                     *
+                     * @returns {string} The super tenant.
+                     */
+                     function getSuperTenant() {
+                        if (startupConfig.superTenantProxy) {
+                            return startupConfig.superTenantProxy;
+                        }
+
+                        startupConfig.superTenant;
+                    }
+
                     var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                     var authConfig = {
@@ -345,11 +365,11 @@
                         authConfig.signOutRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
                         authConfig.endpoints.authorizationEndpoint = getApiPath(
                             userTenant
-                                ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
-                                : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"
+                                ? "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                                : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize"
                         );
-                        authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout");
-                        authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession");
+                        authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/logout");
+                        authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/checksession");
                     }
 
                     auth.initialize(authConfig);
