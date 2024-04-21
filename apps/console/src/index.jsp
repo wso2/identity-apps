@@ -316,6 +316,21 @@
                     return authParams;
                 }
 
+                /**
+                 * Retrieves the super tenant.
+                 * If a super tenant proxy is defined in the startup configuration, it is returned;
+                 * otherwise, the super tenant directly from the startup configuration is returned.
+                 *
+                 * @returns {string} The super tenant.
+                 */
+                function getSuperTenant() {
+                    if (startupConfig.superTenantProxy) {
+                        return startupConfig.superTenantProxy;
+                    }
+
+                    startupConfig.superTenant;
+                }
+
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
@@ -343,10 +358,10 @@
                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     authConfig.signOutRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
                     authConfig.endpoints.authorizationEndpoint = getApiPath(userTenant
-                            ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
-                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize");
-                    authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout");
-                    authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession");
+                            ? "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                            : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize");
+                    authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/logout");
+                    authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/checksession");
                 }
 
                 var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");
