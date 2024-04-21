@@ -145,8 +145,8 @@ export const branding: BrandingNS = {
             placeholder: "Select screen"
         },
         screenSelectVariationDropdown: {
-            label: "State",
-            placeholder: "Select state"
+            label: "Variation",
+            placeholder: "Select Variation"
         }
     },
     connectors: {
