@@ -342,15 +342,15 @@
                  *
                  * @remarks This only applies to the new authz runtime.
                  *
-                 * @params orginalPrams - Original auth params.
+                 * @params originalParams - Original auth params.
                  * @returns {string} Contructed auth params.
                  */
-                function getAuthParamsForOrganizationLogins(orginalPrams) {
+                function getAuthParamsForOrganizationLogins(originalParams) {
                     if (startupConfig.legacyAuthzRuntime) {
-                        return orginalPrams;
+                        return originalParams;
                     }
 
-                    var authParams = Object.assign({}, orginalPrams);
+                    var authParams = Object.assign({}, originalParams);
 
                     if (getOrganizationPath()) {
                         var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
