@@ -209,32 +209,39 @@
                     return "";
                 }
 
+                function getTenantPath(tenantDomain) {
+                    var _tenantDomain = tenantDomain ? tenantDomain : getTenantName();
+
+                    return _tenantDomain !== ""
+                        ? "/" + startupConfig.tenantPrefix + "/" + _tenantDomain
+                        : "";
+                };
+
                 function getApiPath(path) {
                     if (startupConfig.legacyAuthzRuntime) {
-                        if(path) {
+                        if (path) {
                             return serverOrigin + path;
                         }
 
                         return serverOrigin;
                     }
-                    var basePath = serverOrigin;
 
-                    if (getTenantName()) {
-                        basePath = serverOrigin + getTenantPath();
+                    var tenantDomain = getTenantName();
+
+                    if (!tenantDomain) {
+                        if (startupConfig.superTenantProxy) {
+                            tenantDomain = startupConfig.superTenantProxy;
+                        } else {
+                            tenantDomain = startupConfig.superTenant;
+                        }
                     }
 
-                    if(path) {
-                        return basePath + path;
+                    if (path) {
+                        return serverOrigin + getTenantPath(tenantDomain) + path;
                     }
 
-                    return basePath;
+                    return serverOrigin + getTenantPath(tenantDomain);
                 }
-
-                function getTenantPath() {
-                    return getTenantName() !== ""
-                        ? "/" + startupConfig.tenantPrefix + "/" + getTenantName()
-                        : "";
-                };
 
                 /**
                  * Construct the sign-in redirect URL.

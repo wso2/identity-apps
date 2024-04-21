@@ -198,9 +198,11 @@
                         return "";
                     }
 
-                    function getTenantPath() {
-                        return getTenantName() !== ""
-                            ? "/" + startupConfig.tenantPrefix + "/" + getTenantName()
+                    function getTenantPath(tenantDomain) {
+                        var _tenantDomain = tenantDomain ? tenantDomain : getTenantName();
+
+                        return _tenantDomain !== ""
+                            ? "/" + startupConfig.tenantPrefix + "/" + _tenantDomain
                             : "";
                     };
 
@@ -216,14 +218,18 @@
                         var tenantDomain = getTenantName();
 
                         if (!tenantDomain) {
-                            tenantDomain = startupConfig.superTenant;
+                            if (startupConfig.superTenantProxy) {
+                                tenantDomain = startupConfig.superTenantProxy;
+                            } else {
+                                tenantDomain = startupConfig.superTenant;
+                            }
                         }
 
                         if (path) {
-                            return serverOrigin + getTenantPath() + path;
+                            return serverOrigin + getTenantPath(tenantDomain) + path;
                         }
 
-                        return serverOrigin + getTenantPath();
+                        return serverOrigin + getTenantPath(tenantDomain);
                     }
 
                     /**
