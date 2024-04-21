@@ -22,7 +22,8 @@ import { Context, createContext } from "react";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingSubFeatures,
-    PreviewScreenType
+    PreviewScreenType,
+    PreviewScreenVariationType
 } from "../models/branding-preferences";
 import {
     CustomTextConfigurationModes,
@@ -40,6 +41,11 @@ export interface BrandingPreferenceContextProps {
      */
     onSelectedPreviewScreenChange: (screen: PreviewScreenType) => void;
     /**
+     * Sets the variation of the current screen, requested for preview.
+     * @param variation - Selected screen variation.
+     */
+    onSelectedPreviewScreenVariationChange: (variation: PreviewScreenVariationType) => void;
+    /**
      * Sets the language requesting for preview.
      * @param locale - Selected language.
      */
@@ -48,6 +54,10 @@ export interface BrandingPreferenceContextProps {
      * Selected screen requesting text preference.
      */
     selectedScreen: PreviewScreenType;
+    /**
+     * Selected screen variation requesting text preference.
+     */
+    selectedScreenVariation: PreviewScreenVariationType;
     /**
      * Selected language requesting text preference.
      */
@@ -109,6 +119,12 @@ export interface BrandingPreferenceContextProps {
      * @returns Supported screens.
      */
     getScreens: (requestingView: BrandingSubFeatures) => string[];
+    /**
+     * Get the set of supported screen variations for a requested screen.
+     * @param screen - Screen for which the variations list is requested.
+     * @returns Supported screen variations.
+     */
+    getScreenVariations: (screen: PreviewScreenType) => PreviewScreenVariationType[];
     /**
      * Resets the custom text preference for a given screen and locale.
      * @param screen - Screen to be reset.

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { BrandingPreferenceTypes, PreviewScreenType } from "./branding-preferences";
+import { BrandingPreferenceTypes, PreviewScreenType, PreviewScreenVariationType } from "./branding-preferences";
 
 /**
  * Interface for the custom text preference API response.
@@ -64,9 +64,9 @@ export type CustomTextInterface = Record<string, string>;
  */
 export interface CustomTextPreferenceMeta {
     /**
-     * Set of supported screens.
+     * Set of supported screens and variations.
      */
-    screens: PreviewScreenType[];
+    screens: Record<PreviewScreenType, PreviewScreenVariationType[]>;
     /**
      * Set of supported locales.
      */
@@ -106,3 +106,20 @@ export interface CustomTextPreferenceScreenMetaInterface {
         MULTI_LINE: boolean;
     };
 }
+
+/**
+ * Base variations for screens. Represents the basic state of the screen.
+ */
+export const BASE_DISPLAY_VARIATION :Record<PreviewScreenType, PreviewScreenVariationType> = {
+    "common" : PreviewScreenVariationType.BASE, 
+    "email-otp" : PreviewScreenVariationType.BASE,
+    "email-template" : PreviewScreenVariationType.BASE,
+    "login" : PreviewScreenVariationType.BASE,
+    "myaccount" : PreviewScreenVariationType.BASE,
+    "password-recovery" : PreviewScreenVariationType.EMAIL_LINK,
+    "password-reset" : PreviewScreenVariationType.BASE,
+    "password-reset-success" : PreviewScreenVariationType.BASE,
+    "sign-up" : PreviewScreenVariationType.BASE,
+    "sms-otp" : PreviewScreenVariationType.BASE,
+    "totp" : PreviewScreenVariationType.BASE
+};

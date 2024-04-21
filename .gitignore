@@ -134,3 +134,5 @@ tests/dist/
 .repository/
 apps/console/src/extensions/i18n/tmp/**
 .nx
+apps/myaccount/v8-compile-cache-0/**
+features/v8-compile-cache-0/**

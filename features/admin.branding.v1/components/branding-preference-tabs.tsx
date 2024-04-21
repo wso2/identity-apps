@@ -46,6 +46,7 @@ import {
 } from "./general";
 import { BrandingPreferencePreview } from "./preview";
 import ScreenDropdown from "./screen-dropdown";
+import ScreenVariationDropdown from './screen-variation-dropdown';
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
 import { commonConfig } from "../../admin.extensions.v1/configs";
 import { AppState } from "../../admin.core.v1/store";
@@ -58,7 +59,8 @@ import {
     BrandingPreferenceThemeInterface,
     BrandingSubFeatures,
     PredefinedThemes,
-    PreviewScreenType
+    PreviewScreenType,
+    PreviewScreenVariationType
 } from "../models";
 import { CustomTextConfigurationModes } from "../models/custom-text-preference";
 
@@ -143,6 +145,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         selectedScreen,
         getScreens,
         onSelectedPreviewScreenChange,
+        onSelectedPreviewScreenVariationChange,
         activeTab,
         updateActiveTab,
         isCustomTextConfigured,
@@ -539,6 +542,16 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                                                     screens={ getScreens(BrandingSubFeatures.DESIGN) }
                                                     onChange={ (screen: PreviewScreenType) => {
                                                         onSelectedPreviewScreenChange(screen);
+                                                    } }
+                                                />
+                                            </div>
+                                        ) }
+                                        { activeTab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID && (
+                                            <div className="preview-screen-selection">
+                                                <ScreenVariationDropdown
+                                                    selectedScreen= { selectedScreen }
+                                                    onChange={ (variation: PreviewScreenVariationType) => {
+                                                        onSelectedPreviewScreenVariationChange(variation);
                                                     } }
                                                 />
                                             </div>

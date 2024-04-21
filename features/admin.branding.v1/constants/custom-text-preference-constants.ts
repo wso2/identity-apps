@@ -121,7 +121,11 @@ export class CustomTextPreferenceConstants {
                     PLACEHOLDER: string;
                 }
             }
-            BUTTON: string;
+            BUTTON: {
+                SMS_OTP: string,
+                EMAIL_LINK: string,
+                MULTI: string
+            };
         },
         PASSWORD_RESET: {
             HEADING: string;
@@ -164,7 +168,11 @@ export class CustomTextPreferenceConstants {
         },
         PASSWORD_RECOVERY: {
             BODY: "password.recovery.body",
-            BUTTON: "password.recovery.button",
+            BUTTON: {
+                EMAIL_LINK: "password.recovery.button.email.link",
+                MULTI: "password.recovery.button.email.multi",
+                SMS_OTP: "password.recovery.button.smsotp"
+            },
             HEADING: "password.recovery.heading",
             IDENTIFIER: {
                 INPUT: {

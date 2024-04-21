@@ -44,7 +44,7 @@ import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-pre
 import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
-import { BrandingSubFeatures, PreviewScreenType } from "../models/branding-preferences";
+import { BrandingSubFeatures, PreviewScreenType, PreviewScreenVariationType } from "../models/branding-preferences";
 import {
     CustomTextConfigurationModes,
     CustomTextInterface,
@@ -90,6 +90,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     );
 
     const [ selectedScreen, setSelectedPreviewScreen ] = useState<PreviewScreenType>(PreviewScreenType.COMMON);
+    const [ selectedScreenVariation, setSelectedPreviewScreenVariation ]
+        = useState<PreviewScreenVariationType>(PreviewScreenVariationType.BASE);
     const [ selectedLocale, setSelectedCustomTextLocale ] = useState<string>(
         CustomTextPreferenceConstants.DEFAULT_LOCALE
     );
@@ -367,17 +369,32 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
                     return null;
                 },
-                getScreens: (requestingView: BrandingSubFeatures): PreviewScreenType[] => {
-                    if (!Array.isArray(customTextMeta?.screens)) {
+                getScreenVariations: (selectedScreen: PreviewScreenType): PreviewScreenVariationType[] => {
+                    if (!customTextMeta?.screens) {
                         return [];
                     }
+                    const result: PreviewScreenVariationType[] =
+                        customTextMeta?.screens[selectedScreen] as PreviewScreenVariationType[];
+
+                    // Base variation is added by default
+                    if (result.indexOf(PreviewScreenVariationType.BASE) < 0) {
+                        result.push(PreviewScreenVariationType.BASE);
+                    }
+
+                    return result;
+                },
+                getScreens: (requestingView: BrandingSubFeatures): PreviewScreenType[] => {
+                    if (!customTextMeta?.screens) {
+                        return [];
+                    }
+                    const screens:PreviewScreenType[] = Object.keys(customTextMeta?.screens) as PreviewScreenType[];
 
                     let meta: PreviewScreenType[] = [];
 
                     if (requestingView === BrandingSubFeatures.CUSTOM_TEXT) {
-                        meta = customTextMeta?.screens;
+                        meta = screens;
                     } else {
-                        meta = customTextMeta?.screens.filter((screen: string) => {
+                        meta = screens.filter((screen: string) => {
                             return screen !== PreviewScreenType.COMMON;
                         });
 
@@ -398,11 +415,15 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     setCustomTextFormSubscription(null);
                     setSelectedPreviewScreen(screen);
                 },
+                onSelectedPreviewScreenVariationChange: (screenVariation: PreviewScreenVariationType): void => {
+                    setSelectedPreviewScreenVariation(screenVariation);
+                },
                 preference: brandingPreference,
                 resetAllCustomTextPreference: _deleteCustomTextPreference,
                 resetCustomTextField,
                 selectedLocale,
                 selectedScreen,
+                selectedScreenVariation,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
                 updateActiveTab: (tab: string) => {
                     // If the tab is the text tab, set the preview screen to common before changing the tab.

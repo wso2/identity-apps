@@ -136,6 +136,10 @@ export interface BrandingNS {
             label: string;
             placeholder: string;
         };
+        screenSelectVariationDropdown: {
+            label: string;
+            placeholder: string;
+        };
     };
     connectors: {
         multiAttributeLogin: string;
@@ -168,4 +172,10 @@ export interface BrandingNS {
         "password-reset": string;
         "password-reset-success": string;
     };
+    variations: {
+        "sms-otp": string;
+        "email-link": string;
+        "base": string;
+        "multi": string;
+    }
 }

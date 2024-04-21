@@ -576,6 +576,16 @@ export enum PreviewScreenType {
 }
 
 /**
+ * Enum for preview screen variation types
+ */
+export enum PreviewScreenVariationType {
+    BASE = "base",
+    SMS_OTP = "sms-otp",
+    EMAIL_LINK = "email-link",
+    MULTI = "multi"
+}
+
+/**
  * Enum for set of predefined layouts.
  */
 export enum PredefinedLayouts {

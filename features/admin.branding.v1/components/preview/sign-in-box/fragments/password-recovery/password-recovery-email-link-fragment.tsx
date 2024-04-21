@@ -18,13 +18,13 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { CustomTextPreferenceConstants } from "../../../../constants/custom-text-preference-constants";
-import useBrandingPreference from "../../../../hooks/use-branding-preference";
+import { CustomTextPreferenceConstants } from "../../../../../constants/custom-text-preference-constants";
+import useBrandingPreference from "../../../../../hooks/use-branding-preference";
 
 /**
  * Proptypes for the password-recovery fragment of login screen skeleton.
  */
-export type PasswordRecoveryFragmentInterface = IdentifiableComponentInterface;
+export type PasswordRecoveryEmailLinkFragmentInterface = IdentifiableComponentInterface;
 
 /**
  * Password recovery fragment component for the branding preview of Password Recovery box.
@@ -32,8 +32,8 @@ export type PasswordRecoveryFragmentInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Password recovery fragment component.
  */
-const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterface> = (
-    props: PasswordRecoveryFragmentInterface
+const PasswordRecoveryEmailLinkFragment: FunctionComponent<PasswordRecoveryEmailLinkFragmentInterface> = (
+    props: PasswordRecoveryEmailLinkFragmentInterface
 ): ReactElement => {
     const { ["data-componentid"]: componentId } = props;
 
@@ -77,7 +77,7 @@ const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterf
                             id="subButton"
                             className="ui primary fluid large button mb-2"
                         >
-                            { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.BUTTON,
+                            { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.BUTTON.EMAIL_LINK,
                                 "Send Reset Link") }
                         </button>
                         <button
@@ -97,8 +97,8 @@ const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterf
 /**
  * Default props for the component.
  */
-PasswordRecoveryFragment.defaultProps = {
+PasswordRecoveryEmailLinkFragment.defaultProps = {
     "data-componentid": "branding-preview-password-recovery-fragment"
 };
 
-export default PasswordRecoveryFragment;
+export default PasswordRecoveryEmailLinkFragment;

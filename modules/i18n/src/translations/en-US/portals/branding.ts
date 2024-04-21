@@ -143,6 +143,10 @@ export const branding: BrandingNS = {
         screenSelectDropdown: {
             label: "Screen",
             placeholder: "Select screen"
+        },
+        screenSelectVariationDropdown: {
+            label: "State",
+            placeholder: "Select state"
         }
     },
     connectors: {
@@ -167,6 +171,12 @@ export const branding: BrandingNS = {
         "sign-up": "Sign Up",
         "sms-otp": "SMS OTP",
         "totp": "TOTP"
+    },
+    variations: {
+        "sms-otp": "SMS OTP",
+        "email-link": "Email Link",
+        "base": "Base",
+        "multi": "Multi Option"
     },
     tabs: {
         preview: {

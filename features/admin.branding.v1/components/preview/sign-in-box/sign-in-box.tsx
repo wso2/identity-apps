@@ -24,14 +24,18 @@ import React, {
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import CommonFragment from "./fragments/common-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
-import PasswordRecoveryFragment from "./fragments/password-recovery-fragment";
+import {
+    PasswordRecoveryEmailLinkFragment,
+    PasswordRecoveryMultiOptionFragment,
+    PasswordRecoverySMSFragment
+} from "./fragments/password-recovery";
 import PasswordResetFragment from "./fragments/password-reset-fragment";
 import PasswordResetSuccessFragment from "./fragments/password-reset-success-fragment";
 import SignUpFragment from "./fragments/sign-up-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
 import useBrandingPreference from "../../../hooks/use-branding-preference";
-import { BrandingPreferenceInterface, PreviewScreenType } from "../../../models";
+import { BrandingPreferenceInterface, PreviewScreenType, PreviewScreenVariationType } from "../../../models";
 
 /**
  * Proptypes for the login box component of login screen skeleton.
@@ -57,7 +61,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
         ["data-componentid"]: componentId
     } = props;
 
-    const { selectedScreen } = useBrandingPreference();
+    const { selectedScreen, selectedScreenVariation } = useBrandingPreference();
 
     const renderFragment = (): ReactElement => {
         if (selectedScreen === PreviewScreenType.COMMON) {
@@ -73,7 +77,13 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
         } else if (selectedScreen === PreviewScreenType.TOTP) {
             return <TOTPFragment />;
         } else if (selectedScreen === PreviewScreenType.PASSWORD_RECOVERY) {
-            return <PasswordRecoveryFragment />;
+            if (selectedScreenVariation === PreviewScreenVariationType.EMAIL_LINK) {
+                return <PasswordRecoveryEmailLinkFragment />;
+            } else if(selectedScreenVariation === PreviewScreenVariationType.SMS_OTP) {
+                return <PasswordRecoverySMSFragment/>;
+            } else if(selectedScreenVariation === PreviewScreenVariationType.MULTI) {
+                return <PasswordRecoveryMultiOptionFragment/>;
+            }
         } else if (selectedScreen === PreviewScreenType.PASSWORD_RESET) {
             return <PasswordResetFragment />;
         } else if (selectedScreen === PreviewScreenType.PASSWORD_RESET_SUCCESS) {
