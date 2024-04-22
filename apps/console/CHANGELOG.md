@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.15.18
+
+### Patch Changes
+
+- [#5922](https://github.com/wso2/identity-apps/pull/5922) [`9807a001d2`](https://github.com/wso2/identity-apps/commit/9807a001d2ccfb21b3557239992e0bb0884d49a5) Thanks [@DMHP](https://github.com/DMHP)! - Removing the necessity of having org_role application association
+
+- Updated dependencies [[`9807a001d2`](https://github.com/wso2/identity-apps/commit/9807a001d2ccfb21b3557239992e0bb0884d49a5)]:
+  - @wso2is/features@2.15.12
+
 ## 2.15.17
 
 ### Patch Changes
