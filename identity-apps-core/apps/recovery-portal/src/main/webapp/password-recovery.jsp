@@ -340,7 +340,7 @@
                             %>
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="recoveryOption" value="SMSOTP" checked/>
+                                    <input type="radio" name="recoveryOption" value="SMSOTP" />
                                     <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "send.code.via.sms")%>
                                 </div>
                             </div>
