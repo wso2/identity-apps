@@ -399,8 +399,20 @@ export const AppUtils: any = (function() {
         getOrganizationType: function () {
             return _config.organizationType;
         },
-
-        getServerOriginWithTenant: function() {
+        /**
+         * Get the server base URL with tenant name appended.
+         *
+         * @example
+         * `https://localhost:9443/t/testtenant`
+         * `https://localhost:9443/t/testtenant/o/suborgid`
+         *
+         * @param enforceOrgPath - whether the suborg prefix should be attached for suborganization base URL.
+         * This was added to utilize this method for constructing the feature gate API base URL which should
+         * not have suborg path prefix appended in the base URL when invoking from suborganizations.
+         *
+         * @returns the server base URL with the tenant name appended.
+         */
+        getServerOriginWithTenant: function(enforceOrgPath: boolean = true) {
             if (_config.legacyAuthzRuntime) {
                 return _config.serverOrigin + this.getTenantPath(true);
             }
@@ -414,7 +426,8 @@ export const AppUtils: any = (function() {
                 tenantPath = `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
             }
 
-            return `${ _config.serverOrigin }${ tenantPath }${ this.getOrganizationName() ? "/o" : "" }`;
+            // eslint-disable-next-line max-len
+            return `${ _config.serverOrigin }${ tenantPath }${ enforceOrgPath && this.getOrganizationName() ? "/o" : "" }`;
         },
 
         /**
