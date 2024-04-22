@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.13
+
+### Patch Changes
+
+- [#6035](https://github.com/wso2/identity-apps/pull/6035) [`759ce2692a`](https://github.com/wso2/identity-apps/commit/759ce2692a83a9f6043d179d20dbc04a1f7ace93) Thanks [@lashinijay](https://github.com/lashinijay)! - Disable iproov as a first factor authenticator
+
 ## 2.15.12
 
 ### Patch Changes
