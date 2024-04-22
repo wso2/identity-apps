@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTranslation } from "react-i18next";
@@ -64,12 +65,23 @@ const useGenerateAILoginFlow = (): GenerateLoginFlowFunction => {
                     setGeneratingLoginFlow(true);
                 }
             )
-            .catch(() => {
+            .catch((error: IdentityAppsApiException) => {
+                if (error.message && error.name) {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: error.name,
+                            level: AlertLevels.ERROR,
+                            message: error.message
+                        }));
+
+                    return;
+                }
+
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("branding:ai.notifications.generateError.description"),
+                        description: t("ai:aiLoginFlow.notifications.generateError.generic.description"),
                         level: AlertLevels.ERROR,
-                        message: t("branding:ai.notifications.generateError.message")
+                        message: t("ai:aiLoginFlow.notifications.generateError.generic.message")
                     }));
             });
     };

@@ -24,7 +24,6 @@ import {
     ApplicationInterface,
     AuthenticationSequenceInterface
 } from "../../../../models";
-import LoginFlowAIBanner from "features/admin.login-flow.ai.v1/components/login-flow-ai-banner";
 
 /**
  * Proptypes for the sign on methods component.
@@ -93,20 +92,18 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
     } = props;
 
     return (
-        <>
-            <SignOnMethodsCore
-                application={ application }
-                appId={ appId }
-                authenticationSequence={ authenticationSequence }
-                clientId={ clientId }
-                isLoading={ isLoading }
-                onUpdate={ onUpdate }
-                readOnly={ readOnly }
-                isSystemApplication={ isSystemApplication }
-                hiddenAuthenticators={ hiddenAuthenticators }
-                data-componentid={ componentId  }
-            />
-        </>
+        <SignOnMethodsCore
+            application={ application }
+            appId={ appId }
+            authenticationSequence={ authenticationSequence }
+            clientId={ clientId }
+            isLoading={ isLoading }
+            onUpdate={ onUpdate }
+            readOnly={ readOnly }
+            isSystemApplication={ isSystemApplication }
+            hiddenAuthenticators={ hiddenAuthenticators }
+            data-componentid={ componentId  }
+        />
     );
 };
 

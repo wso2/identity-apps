@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -44,7 +43,6 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import { applicationConfig } from "../../admin.extensions.v1";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -53,6 +51,9 @@ import {
     getCORSOrigins,
     history
 } from "../../admin.core.v1";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "../../admin.extensions.v1";
+import AILoginFlowProvider from "../../admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getInboundProtocolConfig } from "../api";
@@ -948,20 +949,22 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
 
     const SignOnMethodsTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <SignOnMethods
-                application={ application }
-                appId={ application.id }
-                authenticationSequence={ application.authenticationSequence }
-                clientId={ inboundProtocolConfig?.oidc?.clientId }
-                hiddenAuthenticators={ hiddenAuthenticators }
-                isLoading={ isLoading }
-                onUpdate={ handleApplicationUpdate }
-                featureConfig={ featureConfig }
-                readOnly={ readOnly }
-                data-componentid={ `${ componentId }-sign-on-methods` }
-            />
-        </ResourceTab.Pane>
+        <AILoginFlowProvider>
+            <ResourceTab.Pane controlledSegmentation>
+                <SignOnMethods
+                    application={ application }
+                    appId={ application.id }
+                    authenticationSequence={ application.authenticationSequence }
+                    clientId={ inboundProtocolConfig?.oidc?.clientId }
+                    hiddenAuthenticators={ hiddenAuthenticators }
+                    isLoading={ isLoading }
+                    onUpdate={ handleApplicationUpdate }
+                    featureConfig={ featureConfig }
+                    readOnly={ readOnly }
+                    data-componentid={ `${ componentId }-sign-on-methods` }
+                />
+            </ResourceTab.Pane>
+        </AILoginFlowProvider>
     );
 
     const AdvancedSettingsTabPane = (): ReactElement => (

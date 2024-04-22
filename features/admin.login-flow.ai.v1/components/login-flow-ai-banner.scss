@@ -1,0 +1,116 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.login-flow-ai-banner {
+    &.hidden {
+        display: none;
+    }
+}
+
+.login-flow-ai-banner-full {
+    background: #F5F2F0;
+    align-items: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right center;
+    border: 1px solid #ffdfd1;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    padding: 32px 25px;
+}
+
+.login-flow-ai-banner-input {
+    background: #F5F2F0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right center;
+    border: 1px solid #CBCEDB;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0px 25px 30px 25px;
+}
+
+.login-flow-ai-banner-collapsed {
+    background: #F5F2F0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right center;
+    border: 1px solid #CBCEDB;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0px 25px 30px 25px;
+}
+
+.login-flow-ai-banner-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 75%;
+}
+
+.login-flow-ai-banner-close-icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.login-flow-ai-banner-button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-flow-ai-banner-heading {
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.login-flow-ai-banner-sub-heading {
+    font-size: 15px;
+    font-weight: 500;
+    color: #5c5c5e;
+}
+
+.login-flow-ai-banner-button {
+    background-color: white;
+}
+
+.login-flow-ai-input-field {
+    width: 60%;
+}
+
+.login-flow-ai-input-field-inner {
+    background-color: #F9F9F9;
+    border-radius: 30px;
+    border: 1px solid #DADAD9;
+    width: 100%;
+    padding: 0px 10px;
+    min-height: 50px;
+}
+
+.login-flow-ai-input-button {
+    background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
+    padding: 10px;
+    margin-left: 10px;
+}

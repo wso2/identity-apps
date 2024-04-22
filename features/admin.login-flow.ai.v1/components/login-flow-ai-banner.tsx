@@ -16,30 +16,35 @@
  * under the License.
  */
 
+import IconButton from "@mui/material/IconButton";
 import { ChevronUpIcon, XMarkIcon }from "@oxygen-ui/react-icons";
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import Input from "@oxygen-ui/react/Input";
+import TextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
 import { DocumentationLink, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Header, Segment } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { ReactComponent as AIIcon } from "../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
+import AIBannerBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-background.svg";
+import AIBannerInputBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-input-background.svg";
 import useAvailableAuthenticators from "../api/use-available-authenticators";
+import useUserClaims from "../api/use-user-claims";
 import useAILoginFlow from "../hooks/use-ai-login-flow";
 import useGenerateAILoginFlow, { GenerateLoginFlowFunction } from "../hooks/use-generate-ai-login-flow";
 import { BannerState } from "../models/banner-state";
-
+import "./login-flow-ai-banner.scss";
 
 const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
 
     const { isGeneratingLoginFlow, setOperationId } = useAILoginFlow();
-    /**
-     * Hook to fetch the available authenticators.
-     */
+
     const { availableAuthenticators } = useAvailableAuthenticators();
+
+    const { claimURI, error } = useUserClaims();
 
     const generateAILoginFlow: GenerateLoginFlowFunction = useGenerateAILoginFlow();
 
@@ -60,8 +65,9 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
         setBannerState(BannerState.COLLAPSED);
     };
 
-
-    //Delete banner button click event handler.
+    /**
+     * Handles the click event of the delete button.
+     */
     const handleDeleteButtonCLick = () => {
         setBannerState(BannerState.NULL);
     };
@@ -70,216 +76,21 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
      * Handles the click event of the generate button.
      */
     const handleGenerateClick = async () => {
+        if (!userPrompt) {
+            return;
+        }
+
+        if (error) {
+            return;
+        }
+
         const operationUUID: string = uuidv4();
 
         setOperationId(operationUUID);
 
-        await generateAILoginFlow(userPrompt, null, availableAuthenticators, operationUUID);
+        await generateAILoginFlow(userPrompt, claimURI, availableAuthenticators, operationUUID);
         setBannerState(BannerState.COLLAPSED);
     };
-
-    /*
-    Declaring sub components for the card.
-    */
-
-    // Full Banner.
-    const FullBanner = () => (
-
-        <Segment
-            basic
-            style={ {
-                background: "linear-gradient(90deg, rgba(255,115,0,0.42) 0%, rgba(255,244,235,1) 37%)",
-                borderRadius: "8px"
-            } }
-        >
-            <div
-                style={ {
-                    alignItems: "center",
-                    display: "flex",
-                    height: "100%",
-                    justifyContent: "space-between",
-                    padding: "45px",
-                    position: "relative"
-                } }>
-                <div>
-                    <Header as="h3">
-                        { t("ai:banner.full.heading") }
-                    </Header>
-                    <p>
-                        { t("ai:banner.full.subheading1") }<br />
-                        { t("ai:banner.full.subheading2") }
-                    </p>
-                </div>
-                <Button onClick={ handleExpandClick } color="secondary" variant="outlined">
-                    <GenericIcon icon={ AIIcon } style={ { paddingRight: "5px" } }/>
-                    { t("ai:banner.full.button") }
-                </Button>
-            </div>
-        </Segment>
-    );
-
-    // Input Banner.
-    const InputBanner = () => (
-        <Segment
-            basic
-            style={ {
-                background: "white",
-                borderRadius: "8px"
-            } }
-        >
-            <div
-                style={ {
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    padding: "25px",
-                    position: "relative"
-                } }>
-                <div
-                    style={ {
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "space-between"
-                    } }>
-                    <button
-                        onClick={ handleCollapseClick }
-                        style={ {  backgroundColor: "transparent",
-                            border: "none",
-                            cursor: "pointer",
-                            padding:"10px 20px",
-                            position: "absolute",
-                            right: "0px",
-                            top: "0px" } }>
-                        <ChevronUpIcon />
-                    </button>
-                    <Header as="h3">{ t("ai:banner.input.heading") }</Header>
-
-                </div>
-
-
-                <div
-                    style={ {
-                        marginBottom: "10px",
-                        marginTop: "5px"
-
-                    } }>
-                    <p>
-                        { t("ai:banner.input.subheading") }
-                        <DocumentationLink
-                            link={ "develop.applications.editApplication.asgardeoTryitApplication.general.learnMore" }
-                            isLinkRef={ true }>
-                            <Trans i18nKey={ "extensions:common.learnMore" }>
-                                Learn more
-                            </Trans>
-                        </DocumentationLink>
-                    </p>
-                </div>
-                <form onSubmit={ handleGenerateClick }>
-                    <div
-                        style={ {
-                            alignItems: "center",
-                            display: "flex",
-                            height: "100%",
-                            justifyContent: "space-between",
-                            position: "relative"
-                        } }>
-                        <Input
-                            name="loginFlowInput"
-                            placeholder={ t("ai:banner.input.placeholder") }
-                            style={ {
-                                border: "1px solid grey",
-                                boxSizing: "border-box",
-                                maxHeight: "50px",
-                                minHeight: "10px",
-                                overflowX: "hidden",
-                                overflowY: "auto",
-                                padding: "10px",
-                                resize: "vertical",
-                                width: "80%"
-                            } }
-                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                setUserPrompt(e.target.value) }
-                        />
-                        <Button
-                            type="submit"
-                            color="secondary"
-                            variant="outlined"
-                            style= { { alignItems:"center", height: "25%" } }>
-                            <GenericIcon icon={ AIIcon } style={ { paddingRight: "5px" } }/>
-                            { t("ai:banner.input.button") }
-                        </Button>
-                    </div>
-                </form>
-            </div>
-        </Segment>
-    );
-
-    // Collapsed Banner.
-    const CollapsedBanner = () => (
-        <Segment
-            basic
-            style={ {
-                background: "white",
-                borderRadius: "8px",
-                height:"auto",
-                padding: "10px"
-            } }
-        >
-            <div
-                style={ {
-                    display: "flex",
-                    flexDirection: "column",
-                    padding: "0px",
-                    position: "relative"
-                } }>
-                <div
-                    style={ {
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "space-between"
-                    } }>
-                    <button
-                        onClick={ handleDeleteButtonCLick }
-                        style={ {  backgroundColor: "transparent",
-                            border: "none",
-                            cursor: "pointer",
-                            padding:"5px 10px",
-                            position: "absolute",
-                            right: "5px",
-                            top: "5px" } }>
-                        <XMarkIcon />
-                    </button>
-                    <Header as="h3">{ t("ai:banner.collapsed.heading") }</Header>
-                </div>
-                <div
-                    style={ {
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        position: "relative"
-                    } }>
-                    <div>
-                        <p>
-                            { t("ai:banner.collapsed.subheading") }
-                            <DocumentationLink
-                                link={
-                                    "develop.applications.editApplication.asgardeoTryitApplication.general.learnMore"
-                                }
-                                isLinkRef={ true }>
-                                <Trans i18nKey={ "extensions:common.learnMore" }>
-                                        Learn more
-                                </Trans>
-                            </DocumentationLink>
-                        </p>
-                    </div>
-                    <Button onClick={ handleExpandClick } color="secondary" variant="outlined">
-                        <GenericIcon icon={ AIIcon } style={ { paddingRight: "5px" } }/>
-                        { t("ai:banner.collapsed.button") }
-                    </Button>
-                </div>
-            </div>
-        </Segment>
-    );
 
     if (isGeneratingLoginFlow) {
         return null;
@@ -287,19 +98,155 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
     if (bannerState === BannerState.FULL) {
         return (
-            <FullBanner />
+            <Box
+                className="login-flow-ai-banner-full"
+                style={ {
+                    backgroundImage: `linear-gradient(90deg, rgba(255,115,0,0.42) 0%, rgba(255,244,235,0.5) 37%),
+                        url(${ AIBannerBackground })`
+                } }
+            >
+                <div className="login-flow-ai-banner-text-container">
+                    <Typography
+                        as="h3"
+                        className="login-flow-ai-banner-heading"
+                    >
+                        { t("ai:aiLoginFlow.banner.full.heading") }
+                    </Typography>
+                    <Typography className="login-flow-ai-banner-sub-heading">
+                        { t("ai:aiLoginFlow.banner.full.subheading") }
+                    </Typography>
+                </div>
+                <Button
+                    className="login-flow-ai-banner-button"
+                    color="secondary"
+                    variant="outlined"
+                    onClick={ handleExpandClick }
+                >
+                    <GenericIcon
+                        icon={ AIIcon }
+                        fill="primary"
+                        className="pr-2"
+                    />
+                    { t("ai:aiLoginFlow.banner.full.button") }
+                </Button>
+            </Box>
         );
     }
 
     if (bannerState === BannerState.INPUT) {
         return (
-            <InputBanner />
+            <Box
+                className="login-flow-ai-banner-input"
+                style={ {
+                    backgroundImage: `url(${ AIBannerInputBackground })`
+                } }
+            >
+                <Box className="login-flow-ai-banner-close-icon">
+                    <IconButton
+                        onClick={ handleCollapseClick }
+                    >
+                        <ChevronUpIcon />
+                    </IconButton>
+                </Box>
+                <div className="login-flow-ai-banner-text-container">
+                    <Typography
+                        as="h3"
+                        className="login-flow-ai-banner-heading"
+                    >
+                        { t("ai:aiLoginFlow.banner.input.heading") }
+                    </Typography>
+                    <Typography className="login-flow-ai-banner-sub-heading">
+                        { t("ai:aiLoginFlow.banner.input.subheading") }
+                        <DocumentationLink
+                            link={ "develop.applications.editApplication.asgardeoTryitApplication.general.learnMore" }
+                            isLinkRef={ true }>
+                            <Trans i18nKey={ "extensions:common.learnMore" }>
+                                Learn more
+                            </Trans>
+                        </DocumentationLink>
+                    </Typography>
+                </div>
+                <TextField
+                    name="loginFlowInput"
+                    className="login-flow-ai-input-field mt-5"
+                    placeholder={ t("ai:aiLoginFlow.banner.input.placeholder") }
+                    fullWidth
+                    multiline
+                    maxRows={ 4 }
+                    value={ userPrompt }
+                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                        setUserPrompt(e.target.value) }
+                    InputProps={ {
+                        className: "login-flow-ai-input-field-inner",
+                        endAdornment: (
+                            <IconButton
+                                className="login-flow-ai-input-button"
+                                onClick={ () => handleGenerateClick() }
+                                disabled={ !userPrompt }
+                            >
+                                <GenericIcon
+                                    icon={ AIIcon }
+                                    rounded
+                                    transparent
+                                    fill="white"
+                                />
+                            </IconButton>
+                        )
+                    } }
+                />
+            </Box>
         );
     }
 
     if (bannerState === BannerState.COLLAPSED) {
         return (
-            <CollapsedBanner />
+            <Box
+                className="login-flow-ai-banner-collapsed"
+                style={ {
+                    backgroundImage: `url(${ AIBannerBackground })`
+                } }
+            >
+                <Box className="login-flow-ai-banner-close-icon">
+                    <IconButton
+                        onClick={ handleDeleteButtonCLick }
+                    >
+                        <XMarkIcon />
+                    </IconButton>
+                </Box>
+                <Box className="login-flow-ai-banner-button-container">
+                    <div className="login-flow-ai-banner-text-container">
+                        <Typography
+                            as="h3"
+                            className="login-flow-ai-banner-heading"
+                        >
+                            { t("ai:aiLoginFlow.banner.collapsed.heading") }
+                        </Typography>
+                        <Typography className="login-flow-ai-banner-sub-heading">
+                            { t("ai:aiLoginFlow.banner.input.subheading") }
+                            <DocumentationLink
+                                link={ "" }
+                                isLinkRef={ true }>
+                                <Trans i18nKey={ "extensions:common.learnMore" }>
+                                    Learn more
+                                </Trans>
+                            </DocumentationLink>
+                        </Typography>
+                    </div>
+                    <Button
+                        className="login-flow-ai-banner-button"
+                        onClick={ handleExpandClick }
+                        color="secondary"
+                        variant="outlined"
+                    >
+                        <GenericIcon
+                            icon={ AIIcon }
+                            fill="primary"
+                            className="pr-2"
+                        />
+                        { t("ai:aiLoginFlow.banner.collapsed.button") }
+                    </Button>
+                </Box>
+            </Box>
         );
     }
 

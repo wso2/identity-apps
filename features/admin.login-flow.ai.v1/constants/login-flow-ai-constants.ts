@@ -25,9 +25,9 @@ export const useGetFacts = (): string[] => {
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     return [
-        t("ai:screens.loading.facts.0", { productName }),
-        t("ai:screens.loading.facts.1", { productName }),
-        t("ai:screens.loading.facts.2", { productName })
+        t("ai:aiLoginFlow.screens.loading.facts.0", { productName }),
+        t("ai:aiLoginFlow.screens.loading.facts.1", { productName }),
+        t("ai:aiLoginFlow.screens.loading.facts.2", { productName })
     ];
 };
 
@@ -35,16 +35,16 @@ export const useGetStatusLabels = (): Record<string, string> => {
     const { t } = useTranslation();
 
     return {
-        generating_login_flow_authenticators: t("ai:screens.loading.states.7"),
-        generating_login_flow_script: t("ai:screens.loading.states.5"),
-        generation_of_login_flow_authenticators_complete: t("ai:screens.loading.states.8"),
-        generation_of_login_flow_script_complete: t("ai:screens.loading.states.6"),
-        login_flow_generation_complete: t("ai:screens.loading.states.10"),
-        optimization_and_validation_complete: t("ai:screens.loading.states.2"),
-        optimizing_and_validating_final_login_flow: t("ai:screens.loading.states.9"),
-        optimizing_and_validating_user_query: t("ai:screens.loading.states.1"),
-        retrieval_of_examples_complete: t("ai:screens.loading.states.4"),
-        retrieving_examples: t("ai:screens.loading.states.3")
+        generating_login_flow_authenticators: t("ai:aiLoginFlow.screens.loading.states.7"),
+        generating_login_flow_script: t("ai:aiLoginFlow.screens.loading.states.5"),
+        generation_of_login_flow_authenticators_complete: t("ai:aiLoginFlow.screens.loading.states.8"),
+        generation_of_login_flow_script_complete: t("ai:aiLoginFlow.screens.loading.states.6"),
+        login_flow_generation_complete: t("ai:aiLoginFlow.screens.loading.states.10"),
+        optimization_and_validation_complete: t("ai:aiLoginFlow.screens.loading.states.2"),
+        optimizing_and_validating_final_login_flow: t("ai:aiLoginFlow.screens.loading.states.9"),
+        optimizing_and_validating_user_query: t("ai:aiLoginFlow.screens.loading.states.1"),
+        retrieval_of_examples_complete: t("ai:aiLoginFlow.screens.loading.states.4"),
+        retrieving_examples: t("ai:aiLoginFlow.screens.loading.states.3")
     };
 };
 

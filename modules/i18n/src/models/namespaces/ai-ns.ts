@@ -20,8 +20,7 @@ export interface aiNS{
         banner:{
             full:{
                 heading: string;
-                subheading1: string;
-                subheading2: string;
+                subheading: string;
                 button: string;
             };
             input:{

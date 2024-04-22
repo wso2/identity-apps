@@ -32,6 +32,7 @@ import {
     useGetFacts,
     useGetStatusLabels
 } from "../constants/login-flow-ai-constants";
+import "./login-flow-ai-loading-screen.scss";
 
 const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     const { t } = useTranslation();
@@ -100,8 +101,8 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
      * @returns The current status.
      */
     const getCurrentStatus = () => {
-        if (!data) return t("branding:ai.screens.loading.states.0");
-        let currentStatusLabel: string = "branding:ai.screens.loading.states.0";
+        if (!data) return t("ai:aiLoginFlow.screens.loading.states.0");
+        let currentStatusLabel: string = "ai:aiLoginFlow.screens.loading.states.0";
 
         Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
             if (value && statusLabels[key]) {
@@ -113,53 +114,30 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
     };
 
     return (
-        <Box sx={ { alignItems: "center", display: "flex", justifyContent: "center" } }>
-            <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", width: "75%" } }>
-                <Box
-                    sx={ {
-                        alignItems: "center",
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        marginBottom: "20px"
-                    } }>
-                    <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", mt: 2 } }>
-                        <Box sx={ { alignItems: "left", display: "flex", flexDirection: "column", maxWidth: "75%" } }>
-                            <Typography variant="h5" sx={ { color: "rgba(0, 0, 0, 0.6)", fontWeight: "bold" } }>
-                                Did you know?
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                align="justify"
-                                sx={ {
-                                    color: "#757575",
-                                    height: "150px",
-                                    mt: 2,
-                                    overflow: "auto"
-                                } }>
-                                { facts[factIndex] }
-                            </Typography>
-                        </Box>
-                    </Box>
-                    <Box sx={ { display: "flex", justifyContent: "left" } }>
-                        <LoadingPlaceholder />
-                    </Box>
-                </Box>
-                <Box sx={ { width: "100%" } }>
-                    <LinearProgress variant="determinate" value={ currentProgress } />
-                </Box>
-                <Box
-                    sx={ {
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        mt: 2,
-                        width: "100%"
-                    } }>
-                    { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
-                    <Typography variant="h6">
-                        { getCurrentStatus() }
+        <Box className="login-flow-ai-loading-screen-container">
+            <Box className="login-flow-ai-loading-screen-illustration-container">
+                <LoadingPlaceholder />
+            </Box>
+            <Box className="login-flow-ai-loading-screen-text-container">
+                <Box className="mb-5">
+                    <Typography
+                        variant="h5"
+                        className="login-flow-ai-loading-screen-heading"
+                    >
+                        Did you know?
                     </Typography>
+                    <Typography className="login-flow-ai-loading-screen-sub-heading">
+                        { facts[factIndex] }
+                    </Typography>
+                </Box>
+                <Box sx={ { width: 1 } }>
+                    <Box className="login-flow-ai-loading-screen-loading-container">
+                        { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
+                        <Typography className="login-flow-ai-loading-screen-loading-state">
+                            { getCurrentStatus() }
+                        </Typography>
+                    </Box>
+                    <LinearProgress variant="determinate" value={ currentProgress } />
                 </Box>
             </Box>
         </Box>
