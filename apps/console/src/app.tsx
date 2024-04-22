@@ -37,11 +37,10 @@ import {
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface
 } from "@wso2is/features/admin.core.v1/models";
-import { AppState, store } from "@wso2is/features/admin.core.v1/store";
+import { AppState } from "@wso2is/features/admin.core.v1/store";
 import { commonConfig } from "@wso2is/features/admin.extensions.v1";
 import { useGetAllFeatures } from "@wso2is/features/admin.extensions.v1/components/feature-gate/api/feature-gate";
 import { featureGateConfig } from "@wso2is/features/admin.extensions.v1/configs/feature-gate";
-import { OrganizationUtils } from "@wso2is/features/admin.organizations.v1/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
@@ -78,7 +77,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently, getDecodedIDToken, signOut, state } = useAuthContext();
+    const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
