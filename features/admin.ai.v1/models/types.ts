@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,8 @@
  * under the License.
  */
 
-import { useContext } from "react";
-import { GovernanceConnectorContext } from "./governance-connector-context";
-import { GovernanceCategoryForOrgsInterface } from "./models/governance-connector";
-
-/**
- * Provides GovernanceConnector links as context
- */
-export const useGovernanceConnector = (): GovernanceCategoryForOrgsInterface[] => {
-
-    const categories = useContext(GovernanceConnectorContext);
-
-    return { ...categories };
-};
+export enum BannerState {
+    FULL = "banner-full",
+    INPUT = "banner-input",
+    COLLAPSED = "banner-collapsed",
+}

@@ -1,5 +1,25 @@
 # @wso2is/react-components
 
+## 2.1.19
+
+### Patch Changes
+
+- [#5989](https://github.com/wso2/identity-apps/pull/5989) [`3232ccf4bc`](https://github.com/wso2/identity-apps/commit/3232ccf4bc21487a97fd6fc7cb8071d9f92bbf6c) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove governance connector provider
+
+## 2.1.18
+
+### Patch Changes
+
+- Updated dependencies [[`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b)]:
+  - @wso2is/theme@2.0.73
+
+## 2.1.17
+
+### Patch Changes
+
+- Updated dependencies [[`1c8757adf6`](https://github.com/wso2/identity-apps/commit/1c8757adf6539b13621c656bb91ab7d8f56e0494)]:
+  - @wso2is/theme@2.0.72
+
 ## 2.1.16
 
 ### Patch Changes

@@ -19,8 +19,6 @@
 import { DocumentationConstants } from "@wso2is/core/constants";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
-import { getFeatureGateResourceEndpoints } from "../../admin.extensions.v1/components/feature-gate/configs";
-import { getExtendedFeatureResourceEndpoints } from "../../admin.extensions.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "../../admin.api-resources.v2/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../admin.applications.v1/configs/endpoints";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
@@ -30,6 +28,8 @@ import { getClaimResourceEndpoints } from "../../admin.claims.v1/configs/endpoin
 import { getConnectionResourceEndpoints } from "../../admin.connections.v1";
 import { getConsoleSettingsResourceEndpoints } from "../../admin.console-settings.v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../admin.email-templates.v1";
+import { getFeatureGateResourceEndpoints } from "../../admin.extensions.v1/components/feature-gate/configs";
+import { getExtendedFeatureResourceEndpoints } from "../../admin.extensions.v1/configs/endpoints";
 import { getGroupsResourceEndpoints } from "../../admin.groups.v1";
 import { getIDPResourceEndpoints } from "../../admin.identity-providers.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "../../admin.identity-verification-providers.v1";
@@ -113,6 +113,7 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
+            __experimental__platformIdP: window[ "AppUtils" ]?.getConfig()?.__experimental__platformIdP,
             accountApp: window[ "AppUtils" ]?.getConfig()?.accountApp,
             adminApp: window[ "AppUtils" ]?.getConfig()?.adminApp,
             allowMultipleAppProtocols: window[ "AppUtils" ]?.getConfig()?.allowMultipleAppProtocols,
@@ -124,6 +125,7 @@ export class Config {
             clientHost: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             clientID: window[ "AppUtils" ]?.getConfig()?.clientID,
             clientOrigin: window[ "AppUtils" ]?.getConfig()?.clientOrigin,
+            clientOriginWithTenant: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             customServerHost: window[ "AppUtils" ]?.getConfig()?.customServerHost,
             developerApp: window[ "AppUtils" ]?.getConfig()?.developerApp,
             docSiteURL: window[ "AppUtils" ]?.getConfig()?.docSiteUrl,
@@ -229,7 +231,8 @@ export class Config {
                 I18nConstants.GROUPS_NAMESPACE,
                 I18nConstants.APPLICATIONS_NAMESPACE,
                 I18nConstants.IDP_NAMESPACE,
-                I18nConstants.API_RESOURCES_NAMESPACE
+                I18nConstants.API_RESOURCES_NAMESPACE,
+                I18nConstants.AI_NAMESPACE
             ],
             preload: []
         };

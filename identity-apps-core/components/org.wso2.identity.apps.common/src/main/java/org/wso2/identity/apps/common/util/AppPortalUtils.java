@@ -57,6 +57,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.wso2.carbon.identity.application.common.util.IdentityApplicationConstants.IS_SYSTEM_RESERVED_APP_FLAG;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.AUTHORIZATION_CODE;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.REFRESH_TOKEN;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.OAuthVersions.VERSION_2;
@@ -66,6 +67,7 @@ import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.APPLICATIO
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.AppPortal.CONSOLE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_CALLBACK_URL;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
@@ -134,6 +136,10 @@ public class AppPortalUtils {
                     + "|" + callbackUrl.replace(portalPath, "/t/(.*)/o/(.*)" + portalPath)
                     + ")";
             }
+        }
+        String consoleCallbackUrl = IdentityUtil.getProperty(CONSOLE_CALLBACK_URL);
+        if (StringUtils.isNotEmpty(consoleCallbackUrl) && StringUtils.equals(CONSOLE_APP, applicationName)) {
+            callbackUrl = consoleCallbackUrl;
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
@@ -505,10 +511,17 @@ public class AppPortalUtils {
         }
 
         // Make system applications shareable.
-        ServiceProviderProperty spProperty = new ServiceProviderProperty();
-        spProperty.setName(SHARE_WITH_ALL_CHILDREN);
-        spProperty.setValue("true");
-        ServiceProviderProperty[] serviceProviderProperties = {spProperty};
+        ServiceProviderProperty spProperty1 = new ServiceProviderProperty();
+        spProperty1.setName(SHARE_WITH_ALL_CHILDREN);
+        spProperty1.setValue("true");
+
+        // Mark as system reserved app.
+        ServiceProviderProperty spProperty2 = new ServiceProviderProperty();
+        spProperty2.setName(IS_SYSTEM_RESERVED_APP_FLAG);
+        spProperty2.setValue("true");
+        spProperty2.setDisplayName("Is System Reserved Application");
+
+        ServiceProviderProperty[] serviceProviderProperties = {spProperty1, spProperty2};
         serviceProvider.setSpProperties(serviceProviderProperties);
 
         // Set role audience as 'application'

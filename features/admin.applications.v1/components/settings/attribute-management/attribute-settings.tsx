@@ -968,6 +968,47 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
     });
 
+
+    /**
+     * Get the final value of includeUserDomain
+     *
+     * @param advanceSettingValues - Advanced settings values for submit
+     */
+    const getIncludeUserDomainFinalValue = ((advanceSettingValues : AdvanceSettingsSubmissionInterface) => {
+
+        let includeUserDomain: boolean = advanceSettingValues?.subject.includeUserDomain;
+
+        if (
+            onlyOIDCConfigured
+            && typeof advanceSettingValues?.subject?.claim === "string"
+            && advanceSettingValues?.subject?.claim === DefaultSubjectAttribute
+        ) {
+            includeUserDomain = false;
+        }
+
+        return includeUserDomain;
+    });
+
+    /**
+     * Get the final value of includeUserDomain
+     *
+     * @param advanceSettingValues - Advanced settings values for submit
+     */
+    const getIncludeOrgNameFinalValue = ((advanceSettingValues : AdvanceSettingsSubmissionInterface) => {
+
+        let includeTenantDomain: boolean = advanceSettingValues?.subject.includeTenantDomain;
+
+        if (
+            onlyOIDCConfigured
+            && typeof advanceSettingValues?.subject?.claim === "string"
+            && advanceSettingValues?.subject?.claim === DefaultSubjectAttribute
+        ) {
+            includeTenantDomain = false;
+        }
+
+        return includeTenantDomain;
+    });
+
     /**
      *  Submit update request
      *
@@ -1065,8 +1106,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     claim: {
                         uri: advanceSettingValues?.subject.claim
                     },
-                    includeTenantDomain: advanceSettingValues?.subject.includeTenantDomain,
-                    includeUserDomain: advanceSettingValues?.subject.includeUserDomain,
+                    includeTenantDomain: getIncludeOrgNameFinalValue(advanceSettingValues),
+                    includeUserDomain: getIncludeUserDomainFinalValue(advanceSettingValues),
                     mappedLocalSubjectMandatory: advanceSettingValues?.subject.mappedLocalSubjectMandatory,
                     useMappedLocalSubject: advanceSettingValues?.subject.useMappedLocalSubject
                 }
@@ -1134,9 +1175,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         * Distpatch an error alert when the alternative subject identifier value is not in the
         * requested attribute list.
         */
-        if( onlyOIDCConfigured && !submitValue.claimConfiguration.requestedClaims.map(
-            (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
-            .includes(submitValue.claimConfiguration.subject.claim.uri)) {
+        if( onlyOIDCConfigured && submitValue.claimConfiguration.subject.claim.uri !== DefaultSubjectAttribute
+            && !submitValue.claimConfiguration.requestedClaims.map(
+                (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
+                .includes(submitValue.claimConfiguration.subject.claim.uri)) {
             onClaimConfigUpdateWithNotAllowedSubjectAttributeError();
 
             return;

@@ -150,6 +150,13 @@ export interface Extensions {
                         };
                     };
                 };
+                m2m: {
+                    customConfig: {
+                        tokenEndpoint: string;
+                        tokenRequest: string;
+                        configurations: string;
+                    };
+                }
             };
         };
         applicationRoles: {
@@ -1128,6 +1135,19 @@ export interface Extensions {
                         skipURIs: string;
                     };
                 };
+                m2m: {
+                    configurations: {
+                        clientId: {
+                            hint: string;
+                        },
+                        clientSecret: {
+                            hint: string;
+                        },
+                        tokenEndpoint: string,
+                        scopes: string,
+                        tokenRequest: string
+                    }
+                }
             };
         };
         branding: {

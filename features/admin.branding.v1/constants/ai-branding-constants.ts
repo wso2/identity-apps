@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,4 @@
  * under the License.
  */
 
-import { Context, createContext } from "react";
-import { GovernanceCategoryForOrgsInterface } from "./models/governance-connector";
-
-export const GovernanceConnectorContext: Context<GovernanceCategoryForOrgsInterface[] | null> = createContext(null);
+export const AI_BRANDING_FEATURE_ID: string = "branding.ai";

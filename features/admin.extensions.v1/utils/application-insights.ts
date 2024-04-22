@@ -187,11 +187,11 @@ export class AppInsights {
 
             this.externalAppInsightsInstance.trackPageView();
 
-            // toogle cookie enabled option based on "cookie-pref-change" event
-            window.addEventListener("cookie-pref-change",function (e: any){
-                const updatedPreferences: any = e["pref"];
+            // Toggle cookie enabled option based on "cookie-pref-change" event
+            window.addEventListener("cookie-pref-change", function (e: Event){
+                const updatedPreferences: string[] = e["pref"];
 
-                if (updatedPreferences.includes("C0002")){
+                if (updatedPreferences?.includes("C0002")){
                     this.externalAppInsightsInstance.getCookieMgr().setEnabled(true);
                 } else {
                     this.externalAppInsightsInstance.getCookieMgr().setEnabled(false);

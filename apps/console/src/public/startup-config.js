@@ -26,6 +26,6 @@ var startupConfig = {
     serverUrlGlobal: "https://localhost:9443",
     subdomainApplication: false,
     superTenant: "carbon.super",
-    superTenantProxy: "carbon.super",
+    superTenantProxy: "",
     tenantPrefix: "t"
 };

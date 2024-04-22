@@ -30,6 +30,7 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SMSProviderConstants } from "../constants";
 
 interface TwilioSMSProviderPageInterface extends IdentifiableComponentInterface {
+    "data-componentid": string;
     isReadOnly: boolean;
     onSubmit: (values: any) => void;
 }
@@ -61,7 +62,11 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
 
 
     return (
-        <EmphasizedSegment className="form-wrapper" padded={ "very" }>
+        <EmphasizedSegment
+            className="form-wrapper"
+            padded={ "very" }
+            data-componentid={ `${componentId}-tab` }
+        >
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column>
@@ -177,6 +182,10 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
             </Grid>
         </EmphasizedSegment>
     );
+};
+
+TwilioSMSProvider.defaultProps = {
+    "data-componentid": "twilio-sms-provider"
 };
 
 export default TwilioSMSProvider;

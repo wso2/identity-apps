@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,7 +40,7 @@ export class AppInsights {
     private telemetryInitializer: (item: ITelemetryItem) => boolean | void;
 
     /**
-     * Private constructor to avoid object initialization from 
+     * Private constructor to avoid object initialization from
      * outside the class.
     */
     private constructor() {
@@ -54,7 +54,7 @@ export class AppInsights {
 
     /**
      * Returns an instance of the App Insights class.
-     * 
+     *
      * @returns AppInsights
     */
     public static getInstance(): AppInsights {
@@ -68,7 +68,7 @@ export class AppInsights {
 
     /**
      * Initialize application insights and other needed common variables.
-     * 
+     *
      * @returns boolean - True if initialization successful. Else false.
     */
     public init(): boolean {
@@ -144,7 +144,7 @@ export class AppInsights {
              * Disabling automatic publish of pageview data.
              * This feature is temporary disabled due to below issue.
              * https://github.com/wso2-enterprise/asgardeo-product/issues/5200
-             * 
+             *
              * TODO: Need to fix this and re-enable.
             */
             this.telemetryInitializer = (envelope: ITelemetryItem) => {
@@ -164,11 +164,11 @@ export class AppInsights {
              * Uncomment if need to track all page visits.
             */
             // this.externalAppInsightsInstance.trackPageView();
-            // toogle cookie enabled option based on "cookie-pref-change" event
-            window.addEventListener("cookie-pref-change",function (e){
-                const updatedPreferences = e["pref"];
+            // Toggle cookie enabled option based on "cookie-pref-change" event
+            window.addEventListener("cookie-pref-change", function (e: Event){
+                const updatedPreferences: string[] = e["pref"];
 
-                if (updatedPreferences.includes("C0002")){
+                if (updatedPreferences?.includes("C0002")){
                     this.externalAppInsightsInstance.getCookieMgr().setEnabled(true);
                 } else {
                     this.externalAppInsightsInstance.getCookieMgr().setEnabled(false);
@@ -182,9 +182,9 @@ export class AppInsights {
             this.tenantId = store.getState().authenticationInformation.tenantDomain;
 
             const WSO2_USER_REGEX: RegExp = /.+ws[o|0]2\.com.*/;
-            const uid: string = store.getState().authenticationInformation.emails ?? 
+            const uid: string = store.getState().authenticationInformation.emails ??
                 store.getState().authenticationInformation.profileInfo.userName;
-            
+
             if (!uid) {
                 this.isWSO2User = undefined;
             } else if (uid.match(WSO2_USER_REGEX)) {
@@ -201,7 +201,7 @@ export class AppInsights {
 
     /**
      * Function to perform app insights related computations.
-     * 
+     *
      * @param computation - Computation to perform.
     */
     public compute = (computation: () => void): void => {
@@ -215,11 +215,11 @@ export class AppInsights {
 
     /**
      * Send analytics data to insights server.
-     * 
+     *
      * @param eventId - Event identifier string.
      * @param customProperties - Any custom properties (optional).
     */
-    public trackEvent(eventId: string, customProperties?: { [key: string]: string | Record<string, unknown> | 
+    public trackEvent(eventId: string, customProperties?: { [key: string]: string | Record<string, unknown> |
             number }): void {
 
         if (!this.isEnabled) {
@@ -241,7 +241,7 @@ export class AppInsights {
             properties.tenant = this.tenantId;
         }
         properties.isWSO2User = this.isWSO2User;
-        
+
         if (customProperties) {
             properties.data = customProperties;
         }
