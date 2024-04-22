@@ -138,7 +138,7 @@ public class AppPortalUtils {
             }
         }
         String consoleCallbackUrl = IdentityUtil.getProperty(CONSOLE_CALLBACK_URL);
-        if (StringUtils.isNotEmpty(consoleCallbackUrl)) {
+        if (StringUtils.isNotEmpty(consoleCallbackUrl) && StringUtils.equals(CONSOLE_APP, applicationName)) {
             callbackUrl = consoleCallbackUrl;
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
