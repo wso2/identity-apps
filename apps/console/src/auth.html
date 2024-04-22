@@ -170,6 +170,8 @@
             var superTenantGlobal = startupConfig.superTenant;
             var tenantPrefixGlobal = startupConfig.tenantPrefix;
             var legacyAuthzRuntime = startupConfig.legacyAuthzRuntime;
+            var isAdaptiveAuthenticationAvailable = true;
+            var isOrganizationManagementEnabled = true;
 
             if (window.top === window.self && sessionStorage.getItem("auth_callback_url_console") === null) {
                 var authCallbackUrl = window.location.pathname + window.location.hash;
