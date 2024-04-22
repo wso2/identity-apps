@@ -100,14 +100,7 @@ const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPr
             (legacyTemplate: ApplicationTemplateListItemInterface) => legacyTemplate?.templateId === template?.id);
 
         switch(template?.category) {
-            case ApplicationTemplateCategories.SSO_INTEGRATION:
-                return (
-                    <ApplicationCreateWizard
-                        template={ template }
-                        onClose={ onClose }
-                    />
-                );
-            default:
+            case ApplicationTemplateCategories.DEFAULT:
                 return (
                     <MinimalAppCreateWizard
                         title={ legacyApplicationTemplate?.name }
@@ -119,6 +112,13 @@ const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPr
                         subTemplatesSectionTitle={ legacyApplicationTemplate?.subTemplatesSectionTitle }
                         addProtocol={ false }
                         templateLoadingStrategy={ ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY }
+                    />
+                );
+            default:
+                return (
+                    <ApplicationCreateWizard
+                        template={ template }
+                        onClose={ onClose }
                     />
                 );
         }
