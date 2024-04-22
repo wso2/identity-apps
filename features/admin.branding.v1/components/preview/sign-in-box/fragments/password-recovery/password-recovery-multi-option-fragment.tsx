@@ -41,10 +41,9 @@ const PasswordRecoveryMultiOptionFragment: FunctionComponent<PasswordRecoveryMul
 
     return (
         <div data-componentid={ componentId }>
-            <h3 className="ui header m-0" data-testid="password-recovery-page-header">
-                Forgot Password?
-            </h3>
-
+            <h2>
+                { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.HEADING, "Forgot Password?") }
+            </h2>
             <div className="ui divider hidden"></div>
             <div className="segment-form">
                 <form className="ui large form" method="post" action="#" id="recoverDetailsForm">
@@ -72,6 +71,7 @@ const PasswordRecoveryMultiOptionFragment: FunctionComponent<PasswordRecoveryMul
                             </div>
                         </div>
                     </div>
+                    <div className="ui divider hidden"></div>
                     <div className="segment" style={ { "textAlign": "left" } }>
                         <div className="field">
                             <div className="ui radio checkbox">
