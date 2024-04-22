@@ -168,4 +168,64 @@ export interface BrandingNS {
         "password-reset": string;
         "password-reset-success": string;
     };
+    ai: {
+        banner: {
+            full: {
+                heading: string;
+                subHeading: string;
+                button: string;
+            };
+            input: {
+                heading: string;
+                subHeading: string;
+                placeholder: string;
+                button: string;
+            };
+            collapsed: {
+                heading: string;
+                subHeading: string;
+                button: string;
+            };
+        };
+        notifications: {
+            generateError: {
+                description: string;
+                message: string;
+            };
+            regenerateError: {
+                description: string;
+                message: string;
+            };
+            resetSuccess: {
+                description: string;
+                message: string;
+            };
+            renderingError: {
+                description: string;
+                message: string;
+            };
+        };
+        screens: {
+            loading: {
+                heading: string;
+                didYouKnow: string;
+                facts: {
+                    0: string;
+                    1: string;
+                    2: string;
+                };
+                states: {
+                    0: string;
+                    1: string;
+                    2: string;
+                    3: string;
+                    4: string;
+                    5: string;
+                    6: string;
+                    7: string;
+                    8: string;
+                };
+            };
+        };
+    };
 }

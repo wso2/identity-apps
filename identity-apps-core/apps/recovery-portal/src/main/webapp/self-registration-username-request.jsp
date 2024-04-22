@@ -1295,7 +1295,7 @@
 
     <script>
         const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
-        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^_.{|}~-]+$/;
+        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^.{|}~-]+$/;  
         var registrationDataKey = "registrationData";
         var passwordField = $("#passwordUserInput");
         var $registerForm = $("#register");
@@ -1668,21 +1668,6 @@
                             error_msg = $("#server-error-msg");
                         }
 
-                        <%
-                        if(reCaptchaEnabled) {
-                            %>
-                            var resp = $("[name='g-recaptcha-response']")[0].value;
-                            if (resp.trim() == '') {
-                                error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Please.select.reCaptcha")%>");
-                                error_msg.show();
-                                $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                                validInput = false;
-                            }
-                            <%
-                        }
-                        %>
-
                         // If the input is not valid,
                         // This will return false and prevent form submission.
                         if (!validInput) {
@@ -1785,20 +1770,6 @@
                     $("#error-msg").hide();
                     error_msg = $("#server-error-msg");
                 }
-                <%
-                    if(reCaptchaEnabled) {
-                        %>
-                        var resp = $("[name='g-recaptcha-response']")[0].value;
-                        if (resp.trim() == '') {
-                            error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                "Please.select.reCaptcha")%>");
-                            error_msg.show();
-                            $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                            validInput = false;
-                        }
-                        <%
-                    }
-                %>
                 // Do the form submission if the inputs are valid.
                 if (validInput) {
                     $form.data("submitted", true);

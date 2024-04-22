@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,11 +23,8 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import useUIConfig from "@wso2is/features/admin.core.v1/hooks/use-ui-configs";
 import {
     AppConstants as CommonAppConstants } from "@wso2is/core/constants";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
@@ -39,6 +36,32 @@ import {
     SessionStorageUtils,
     StringUtils
 } from "@wso2is/core/utils";
+import useSignIn from "@wso2is/features/admin.authentication.v1/hooks/use-sign-in";
+import {
+    AppState,
+    AppUtils,
+    Config,
+    DeploymentConfigInterface,
+    HttpUtils,
+    PreLoader,
+    UIConfigInterface,
+    getAppViewRoutes,
+    setFilteredDevelopRoutes,
+    setSanitizedDevelopRoutes,
+    store
+} from "@wso2is/features/admin.core.v1";
+import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
+import { MultitenantConstants } from "@wso2is/features/admin.core.v1/constants/multitenant-constants";
+import { history } from "@wso2is/features/admin.core.v1/helpers";
+import useRoutes from "@wso2is/features/admin.core.v1/hooks/use-routes";
+import useUIConfig from "@wso2is/features/admin.core.v1/hooks/use-ui-configs";
+import { commonConfig } from "@wso2is/features/admin.extensions.v1";
+import { CONSUMER_USERSTORE } from "@wso2is/features/admin.extensions.v1/components/administrators/constants/users";
+import useTenantTier from "@wso2is/features/admin.extensions.v1/components/subscription/api/subscription";
+import { TenantTier } from "@wso2is/features/admin.extensions.v1/components/subscription/models/subscription";
+import { SubscriptionProvider }
+    from "@wso2is/features/admin.extensions.v1/components/subscription/providers/subscription-provider";
+import useOrganizationSwitch from "@wso2is/features/admin.organizations.v1/hooks/use-organization-switch";
 import {
     I18n,
     I18nInstanceInitException,
@@ -46,7 +69,6 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
-import { GovernanceConnectorProvider } from "@wso2is/react-components";
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
 import React, {
@@ -60,33 +82,6 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig } from "@wso2is/features/admin.extensions.v1";
-import useTenantTier from "@wso2is/features/admin.extensions.v1/components/subscription/api/subscription";
-import { TenantTier } from "@wso2is/features/admin.extensions.v1/components/subscription/models/subscription";
-import { SubscriptionProvider } from "@wso2is/features/admin.extensions.v1/components/subscription/providers/subscription-provider";
-import useSignIn from "@wso2is/features/admin.authentication.v1/hooks/use-sign-in";
-import {
-    AppState,
-    AppUtils,
-    Config,
-    DeploymentConfigInterface,
-    FeatureConfigInterface,
-    HttpUtils,
-    PreLoader,
-    UIConfigInterface,
-    getAppViewRoutes,
-    setFilteredDevelopRoutes,
-    setSanitizedDevelopRoutes,
-    store
-} from "@wso2is/features/admin.core.v1";
-import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
-import { history } from "@wso2is/features/admin.core.v1/helpers";
-import useRoutes from "@wso2is/features/admin.core.v1/hooks/use-routes";
-import useOrganizationSwitch from "@wso2is/features/admin.organizations.v1/hooks/use-organization-switch";
-import {
-    GovernanceCategoryForOrgsInterface,
-    useGovernanceConnectorCategories
-} from "@wso2is/features/admin.server-configurations.v1";
 
 const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 
@@ -98,10 +93,11 @@ type AppPropsInterface = IdentifiableComponentInterface;
  * @returns ProtectedApp component (React Element)
  */
 export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactElement => {
+
     const {
         on,
         signIn,
-        state: { isAuthenticated }
+        state
     } = useAuthContext();
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -110,31 +106,18 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const { switchOrganization } = useOrganizationSwitch();
 
-    const { filterRoutes } = useRoutes();
-
     const { setUIConfig } = useUIConfig();
 
     const { data: tenantTier } = useTenantTier();
 
-    const featureConfig: FeatureConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features
-    );
+    const { filterRoutes } = useRoutes();
+
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
-    const {
-        data: originalConnectorCategories,
-        error: connectorCategoriesFetchRequestError
-    } = useGovernanceConnectorCategories(
-        featureConfig?.server?.enabled && isFirstLevelOrg &&
-        hasRequiredScopes(featureConfig?.governanceConnectors, featureConfig?.governanceConnectors?.scopes?.read,
-            allowedScopes));
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
-    const [ governanceConnectors, setGovernanceConnectors ] = useState<GovernanceCategoryForOrgsInterface[]>([]);
 
     useEffect(() => {
         dispatch(
@@ -194,16 +177,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         });
     }, []);
 
-    useEffect(() => {
-        if (!originalConnectorCategories ||
-            originalConnectorCategories instanceof IdentityAppsApiException ||
-            connectorCategoriesFetchRequestError) {
-            return;
-        }
-
-        setGovernanceConnectors(originalConnectorCategories);
-    }, [ originalConnectorCategories ]);
-
     const loginSuccessRedirect = (idToken: DecodedIDTokenPayload): void => {
         const AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
@@ -214,17 +187,34 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
          */
         if (commonConfig?.enableOrganizationAssociations) {
 
-            const isPrivilegedUser: boolean =
+            let isPrivilegedUser: boolean =
                 idToken?.amr?.length > 0
                     ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
                     : false;
 
             let isOrgSwitch: boolean = false;
+            let isNotPlatformIdPFederatedUser: boolean = true;
 
             if (has(idToken, "org_id") && has(idToken, "user_org")) {
                 isOrgSwitch = (idToken?.org_id !== idToken?.user_org);
             }
-            if (has(idToken, "associated_tenants") || isPrivilegedUser || isOrgSwitch) {
+
+            const __experimental__platformIdP: {
+                enabled: boolean;
+                homeRealmId: string;
+            } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
+            if (__experimental__platformIdP?.enabled) {
+                isPrivilegedUser = idToken?.sub?.startsWith(`${ CONSUMER_USERSTORE }/`);
+                isNotPlatformIdPFederatedUser = idToken?.org_name !== MultitenantConstants.SUPER_TENANT_DISPLAY_NAME;
+            }
+
+            if (
+                has(idToken, "associated_tenants") ||
+                isPrivilegedUser ||
+                isOrgSwitch ||
+                isNotPlatformIdPFederatedUser
+            ) {
                 // If there is an association, the user should be redirected to console landing page.
                 const location: string =
                     !AuthenticationCallbackUrl ||
@@ -272,14 +262,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     };
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            return;
-        }
-
-        filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
-    }, [ filterRoutes, governanceConnectors, isAuthenticated, isFirstLevelOrg ]);
-
-    useEffect(() => {
         const error: string = new URLSearchParams(location.search).get(
             "error_description"
         );
@@ -300,7 +282,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
      * Load localization files.
      */
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!state.isAuthenticated) {
             return;
         }
 
@@ -364,28 +346,43 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             .catch((error: any) => {
                 throw new I18nInstanceInitException(error);
             });
-    }, [ isAuthenticated ]);
+    }, [ state.isAuthenticated ]);
+
+    useEffect(() => {
+        if (!state.isAuthenticated) {
+            return;
+        }
+
+        filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
+    }, [ filterRoutes, state.isAuthenticated, isFirstLevelOrg ]);
 
     return (
         <SecureApp
             fallback={ <PreLoader /> }
             overrideSignIn={ async () => {
+                const prompt: string = new URL(location.href).searchParams.get("prompt");
+                const fidp: string = new URL(location.href).searchParams.get("fidp");
+
                 // This is to prompt the SSO page if a user tries to sign in
                 // through a federated IdP using an existing email address.
-                if (new URL(location.href).searchParams.get("prompt")) {
+                if (prompt) {
                     await signIn({ prompt: "login" });
                 } else {
-                    await signIn();
+                    const authParams: { fidp?: string; } = {};
+
+                    if (fidp) {
+                        authParams["fidp"] = fidp;
+                    }
+
+                    await signIn(authParams);
                 }
             } }
         >
-            <GovernanceConnectorProvider connectorCategories={ governanceConnectors }>
-                <I18nextProvider i18n={ I18n.instance }>
-                    <SubscriptionProvider tierName={ tenantTier?.tierName ?? TenantTier.FREE }>
-                        { renderApp && routesFiltered ? <App /> : <PreLoader /> }
-                    </SubscriptionProvider>
-                </I18nextProvider>
-            </GovernanceConnectorProvider>
+            <I18nextProvider i18n={ I18n.instance }>
+                <SubscriptionProvider tierName={ tenantTier?.tierName ?? TenantTier.FREE }>
+                    { renderApp && routesFiltered ? <App /> : <PreLoader /> }
+                </SubscriptionProvider>
+            </I18nextProvider>
         </SecureApp>
     );
 };

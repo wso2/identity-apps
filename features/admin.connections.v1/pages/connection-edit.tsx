@@ -23,9 +23,11 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     AppAvatar,
+    DocumentationLink,
     LabelWithPopup,
     Popup,
-    TabPageLayout
+    TabPageLayout,
+    useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
@@ -152,6 +154,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         !hasRequiredScopes(
             featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
+    const { getLink } = useDocumentation();
 
     /**
      *  Group the connection templates.
@@ -729,6 +732,11 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             connector.id
                         )
                 }
+                <DocumentationLink
+                    link={ getLink(`develop.connections.newConnection.${connector.name}.learnMore`) }
+                >
+                    { t("common:learnMore") }
+                </DocumentationLink>
             </div>
         );
     };

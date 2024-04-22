@@ -173,6 +173,13 @@ export const extensions: Extensions = {
                             idpUrl: "IdP URL"
                         }
                     }
+                },
+                m2m: {
+                    customConfig: {
+                        tokenEndpoint: "Token Endpoint",
+                        tokenRequest: "Token Request",
+                        configurations: "Configurations"
+                    }
                 }
             }
         },
@@ -445,8 +452,8 @@ export const extensions: Extensions = {
             notifications: {
                 getConfiguration: {
                     error: {
-                        description: "{{description}}",
-                        message: "Error occurred while retrieving organization information"
+                        description: "Error occurred while retrieving organization information",
+                        message: "An error occurred"
                     },
                     genericError: {
                         description: "An error occurred while retrieving organization information.",
@@ -1316,6 +1323,20 @@ export const extensions: Extensions = {
                             "Note the <1>skipURIs</1> property. This property defines the web pages in your " +
                             "application that should not be secured, and do not require authentication. Multiple " +
                             "URIs can be set using <3>comma separated</3> values."
+                    }
+                },
+                m2m: {
+                    configurations: {
+                        clientId: {
+                            hint: "The Client ID generated when registering the application in {{ productName }}."
+                        },
+                        clientSecret: {
+                            hint: "The Client Secret generated when registering the application in {{ productName }}."
+                        },
+                        tokenRequest: "The API request used by the application to obtain an access token from {{ productName }}.",
+                        tokenEndpoint: "The token endpoint of {{ productName }}.",
+                        scopes: "The list of authorized scopes." +
+                                "Include required scopes by authorizing APIs through the <1>API Authorization</1> tab"
                     }
                 }
             }
@@ -2214,7 +2235,7 @@ export const extensions: Extensions = {
                     choreoAsSMSProvider: {
                         title: "Configure Choreo as SMS Provider",
                         enableRequiredNote: {
-                            message: "Asgardeo publishes identity events to Choreo, where Chreo webhooks can be used to" +
+                            message: "Asgardeo publishes identity events to Choreo, where Choreo webhooks can be used to" +
                             " integrate with multiple services to send SMS notifications and run custom business" +
                             " logic. <1>Learn More</1>"
                         }
@@ -2636,6 +2657,12 @@ export const extensions: Extensions = {
             }
         },
         monitor: {
+            logs: {
+                tabs: {
+                    audit: "Audit",
+                    diagnostic: "Diagnostic"
+                }
+            },
             filter: {
                 advancedSearch: {
                     attributes: {
@@ -2953,7 +2980,7 @@ export const extensions: Extensions = {
                     2: "characters."
                 },
                 usernameAlphanumeric: "Restrict to alphanumeric (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$&'+\\=^_.{|}~-."
+                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$&'+\\=^.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Alternative Login Identifiers",
@@ -3198,7 +3225,7 @@ export const extensions: Extensions = {
                             "{{maxLength}} characters including at least one letter.",
                         usernameSpecialCharHint: "Must be {{minLength}} to {{maxLength}} characters long, " +
                             "including at least one letter, and may contain a combination of the following " +
-                            "characters: a-z, A-Z, 0-9, !@#$&'+\\=^_.{|}~-.",
+                            "characters: a-z, A-Z, 0-9, !@#$&'+\\=^.{|}~-.",
                         usernameLength: "The username length should be between {{minLength}} and {{maxLength}}.",
                         usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter.",
                         usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines."

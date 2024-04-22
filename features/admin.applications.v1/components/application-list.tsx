@@ -17,7 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -594,7 +594,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     action={ (onEmptyListPlaceholderActionClick
                         && organizationType !== OrganizationType.SUBORGANIZATION)
                         && (
-                            <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                            <Show
+                                when={ featureConfig?.applications?.scopes?.create }
+                            >
                                 <PrimaryButton
                                     onClick={ () => {
                                         eventPublisher.publish(componentId + "-click-new-application-button");

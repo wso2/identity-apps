@@ -421,7 +421,7 @@ export const applicationConfig: ApplicationConfig = {
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
-                legacyMode?.apiResources &&
+                legacyMode?.apiResourcesV1 &&
                 (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === MobileAppTemplate?.id

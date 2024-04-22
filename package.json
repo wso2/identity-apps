@@ -15,7 +15,7 @@
     "scripts": {
         "build": "pnpm nx run-many --target=build --all",
         "build:apps": "pnpm nx run-many --target=build --projects=console,myaccount",
-        "build:modules": "pnpm nx run-many --target=build --projects=access-control,dynamic-forms,common,core,forms,form,i18n,react-components,theme,validation",
+        "build:modules": "pnpm nx run-many --target=build --projects=access-control,dynamic-forms,core,forms,form,i18n,react-components,theme,validation",
         "clean": "pnpm nx run-many --target=clean --all --parallel=false && pnpm clean:root",
         "clean:root": "pnpm clean:root:cache && pnpm clean:root:lock-files && pnpm clean:root:maven-folders & pnpm clean:root:node-modules",
         "clean:root:cache": "pnpm rimraf npm",
@@ -62,7 +62,6 @@
         "moment": "^2.29.4",
         "node-forge": "^0.10.0",
         "rc-tree": "^4.0.0-beta.2",
-        "react-access-control": "^1.0.1",
         "react-app-polyfill": "^1.0.4",
         "react-final-form": "^6.5.3",
         "react-head": "^3.3.0",

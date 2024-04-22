@@ -1,5 +1,56 @@
 # @wso2is/i18n
 
+## 2.2.1
+
+### Patch Changes
+
+- [#6007](https://github.com/wso2/identity-apps/pull/6007) [`46ad47e34a`](https://github.com/wso2/identity-apps/commit/46ad47e34a47fd1390998940b5d3fae7ab63a224) Thanks [@chamathns](https://github.com/chamathns)! - Add improvement for branding AI
+
+## 2.2.0
+
+### Minor Changes
+
+- [#5979](https://github.com/wso2/identity-apps/pull/5979) [`5d00c6baa6`](https://github.com/wso2/identity-apps/commit/5d00c6baa608408a0b913dfababd5d683b51afb5) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Adding a new i18n namespace for AI features.
+
+### Patch Changes
+
+- [#5981](https://github.com/wso2/identity-apps/pull/5981) [`8a00958d2c`](https://github.com/wso2/identity-apps/commit/8a00958d2c155a548afa297d73a8f47bba8065f4) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Improve app-native authentication feature title
+
+## 2.1.12
+
+### Patch Changes
+
+- [#5961](https://github.com/wso2/identity-apps/pull/5961) [`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b) Thanks [@chamathns](https://github.com/chamathns)! - add branding AI implementation
+
+## 2.1.11
+
+### Patch Changes
+
+- [#5901](https://github.com/wso2/identity-apps/pull/5901) [`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor access control methods to use React hooks
+
+- Updated dependencies [[`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50)]:
+  - @wso2is/core@2.0.41
+
+## 2.1.10
+
+### Patch Changes
+
+- Updated dependencies [[`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372)]:
+  - @wso2is/core@2.0.40
+
+## 2.1.9
+
+### Patch Changes
+
+- [#5879](https://github.com/wso2/identity-apps/pull/5879) [`8261a2cc41`](https://github.com/wso2/identity-apps/commit/8261a2cc411b6ce0838943309cadb35ed4339943) Thanks [@sandushi](https://github.com/sandushi)! - Fix the alternative subject identifier drop down issues
+
+## 2.1.8
+
+### Patch Changes
+
+- Updated dependencies [[`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e)]:
+  - @wso2is/core@2.0.39
+
 ## 2.1.7
 
 ### Patch Changes

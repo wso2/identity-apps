@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,20 +16,23 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Hint, Popup } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FC, Fragment, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, Icon, TextArea, TextAreaProps, Transition } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "../../admin.core.v1";
 import { patchSecret } from "../api/secret";
 import { EMPTY_STRING } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
 import { SECRET_VALUE_LENGTH, secretValueValidator } from "../utils/secrets.validation.utils";
 
-const FIELD_I18N_KEY = "secrets:forms.editSecret.secretValueField";
+const FIELD_I18N_KEY: string = "secrets:forms.editSecret.secretValueField";
 
 /**
  * Props interface of {@link SecretValueForm}
@@ -47,7 +50,8 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ fieldError, setFieldError ] = useState<string | undefined>(undefined);
@@ -77,7 +81,7 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                 level: AlertLevels.SUCCESS,
                 message: t("secrets:alerts.updatedSecret.message")
             }));
-        }).catch((error): void => {
+        }).catch((error: AxiosError): void => {
             if (error.response && error.response.data && error.response.data.description) {
                 dispatch(addAlert({
                     description: error.response.data.description,
@@ -200,7 +204,7 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                             <div className={ "edit-button-transition" }>
                                 <Popup
                                     trigger={ (
-                                        <Show when={ AccessControlConstants.SECRET_EDIT }>
+                                        <Show when={ featureConfig?.secretsManagement?.scopes?.update }>
                                             <Button
                                                 type="submit"
                                                 loading={ loading }

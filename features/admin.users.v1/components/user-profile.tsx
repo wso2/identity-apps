@@ -25,7 +25,6 @@ import {
     MultiValueAttributeInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface,
-    SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -49,12 +48,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import { SCIMConfigs, commonConfig, userConfig } from "../../admin.extensions.v1";
 import { TenantInfo } from "../../admin.extensions.v1/components/tenants/models";
 import { getAssociationType } from "../../admin.extensions.v1/components/tenants/utils/tenants";
 import { administratorConfig } from "../../admin.extensions.v1/configs/administrator";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import { searchRoleList, updateRoleDetails } from "../../admin.roles.v2/api/roles";
 import {
     OperationValueInterface,
@@ -64,13 +62,13 @@ import {
 } from "../../admin.roles.v2/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../admin.server-configurations.v1";
 import { updateUserInfo } from "../api";
-import { AdminAccountTypes, UserManagementConstants } from "../constants";
+import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
 /**
  * Prop types for the basic details component.
  */
-interface UserProfilePropsInterface extends TestableComponentInterface, SBACInterface<FeatureConfigInterface> {
+interface UserProfilePropsInterface extends TestableComponentInterface {
     /**
      * System admin username
      */
@@ -142,7 +140,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         handleUserUpdate,
         isReadOnly,
         allowDeleteOnly,
-        featureConfig,
         connectorProperties,
         isReadOnlyUserStoresLoading,
         isReadOnlyUserStore,
@@ -166,6 +163,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -518,6 +516,25 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * The function returns the normalized format of locale.
+     *
+     * @param locale - locale value.
+     * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+     */
+    const  normalizeLocaleFormat = (locale: string, localeJoiningSymbol: LocaleJoiningSymbol): string => {
+        if (!locale) {
+            return locale;
+        }
+
+        let [ language, region ] = locale.split(/[-_]/);
+
+        language = language.toLowerCase();
+        region = region.toUpperCase();
+
+        return `${language}${localeJoiningSymbol}${region}`;
+    };
+
+    /**
      * This function returns the ID of the administrator role.
      *
      */
@@ -691,7 +708,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS")
                                         ? { emails: [ values.get(schema.name) ] }
-                                        : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                            .get("LOCALE")
+                                            ? { [schemaNames[0]]: normalizeLocaleFormat(
+                                                values.get(schemaNames[0]) as string,
+                                                LocaleJoiningSymbol.UNDERSCORE
+                                            ) }
+                                            : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
                                 if(schema.extended) {
@@ -821,7 +844,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS")
                                         ? { emails: [ values.get(schema.name) ] }
-                                        : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                            .get("LOCALE")
+                                            ? { [schemaNames[0]]: normalizeLocaleFormat(
+                                                values.get(schemaNames[0]) as string,
+                                                LocaleJoiningSymbol.UNDERSCORE
+                                            ) }
+                                            : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
                                 if(schema.extended) {
@@ -1078,7 +1107,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     (!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
                     && !isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser ? (
                             <Show
-                                when={ AccessControlConstants.USER_DELETE }
+                                when={ featureConfig?.users?.scopes?.delete }
                             >
                                 <DangerZoneGroup
                                     sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
@@ -1090,7 +1119,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             !isUserManagedByParentOrg &&
                                             user.userName !== adminUsername
                                         ) ? (
-                                                <Show when={ AccessControlConstants.USER_EDIT }>
+                                                <Show when={ featureConfig?.users?.scopes?.update }>
                                                     <DangerZone
                                                         data-testid={ `${ testId }-change-password` }
                                                         actionTitle={ t("user:editUser." +
@@ -1275,7 +1304,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             { fieldName })
                     }
                     type="dropdown"
-                    value={ profileInfo.get(schema?.name) }
+                    value={ normalizeLocaleFormat(profileInfo.get(schema?.name), LocaleJoiningSymbol.HYPHEN) }
                     children={ [ {
                         "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
                         key: "empty-locale" as string,

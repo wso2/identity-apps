@@ -1,5 +1,36 @@
 # @wso2is/access-control
 
+## 3.0.1
+
+### Patch Changes
+
+- [#5978](https://github.com/wso2/identity-apps/pull/5978) [`94b6c88a84`](https://github.com/wso2/identity-apps/commit/94b6c88a8486fd2e450bb5ce2f0f25a7e34a9316) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues with access control module
+
+## 3.0.0
+
+### Major Changes
+
+- [#5901](https://github.com/wso2/identity-apps/pull/5901) [`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor access control methods to use React hooks
+
+### Patch Changes
+
+- Updated dependencies [[`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50)]:
+  - @wso2is/core@2.0.41
+
+## 2.0.25
+
+### Patch Changes
+
+- Updated dependencies [[`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372)]:
+  - @wso2is/core@2.0.40
+
+## 2.0.24
+
+### Patch Changes
+
+- Updated dependencies [[`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e)]:
+  - @wso2is/core@2.0.39
+
 ## 2.0.23
 
 ### Patch Changes

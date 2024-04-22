@@ -1,5 +1,53 @@
 # @wso2is/form
 
+## 2.0.49
+
+### Patch Changes
+
+- Updated dependencies [[`3232ccf4bc`](https://github.com/wso2/identity-apps/commit/3232ccf4bc21487a97fd6fc7cb8071d9f92bbf6c)]:
+  - @wso2is/react-components@2.1.19
+
+## 2.0.48
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.1.18
+
+## 2.0.47
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.1.17
+
+## 2.0.46
+
+### Patch Changes
+
+- [#5901](https://github.com/wso2/identity-apps/pull/5901) [`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor access control methods to use React hooks
+
+- Updated dependencies [[`bf827ef676`](https://github.com/wso2/identity-apps/commit/bf827ef6760c36c86caa38677e03214d38ebcc50)]:
+  - @wso2is/core@2.0.41
+  - @wso2is/react-components@2.1.16
+  - @wso2is/validation@2.0.4
+
+## 2.0.45
+
+### Patch Changes
+
+- Updated dependencies [[`1586b3777b`](https://github.com/wso2/identity-apps/commit/1586b3777b3591bc2c81a9401c19eb232ea31372)]:
+  - @wso2is/core@2.0.40
+  - @wso2is/react-components@2.1.15
+
+## 2.0.44
+
+### Patch Changes
+
+- Updated dependencies [[`9a07d86e9f`](https://github.com/wso2/identity-apps/commit/9a07d86e9fafac1464c19334c42d7f728be0973e)]:
+  - @wso2is/core@2.0.39
+  - @wso2is/react-components@2.1.14
+
 ## 2.0.43
 
 ### Patch Changes

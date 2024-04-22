@@ -25,7 +25,6 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
-import { OrganizationType } from "@wso2is/common";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -56,6 +55,7 @@ import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard"
 import { updateApplicationDetails } from "../../admin.applications.v1/api";
 import { useGetApplication } from "../../admin.applications.v1/api/use-get-application";
 import { ApplicationInterface } from "../../admin.applications.v1/models";
+import { OrganizationType } from "../../admin.core.v1";
 import { history } from "../../admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "../../admin.core.v1/models";
 import { AppState } from "../../admin.core.v1/store";
@@ -377,13 +377,14 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             </FormGroup>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column width={ 16 }>
-                            <Heading as="h5">
-                                { t("extensions:develop.applications.edit.sections.rolesV2.assignedRoles") }
-                            </Heading>
-                        </Grid.Column>
-                        { /* {
+                    { tempRoleAudience === RoleAudienceTypes.APPLICATION ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <Heading as="h5">
+                                    { t("extensions:develop.applications.edit.sections.rolesV2.assignedRoles") }
+                                </Heading>
+                            </Grid.Column>
+                            { /* {
                             // Will be enabled once the feature is completed.
                             roleAudience === RoleAudienceTypes.APPLICATION
                                 && (
@@ -397,64 +398,65 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     </Grid.Column>
                                 )
                         } */ }
-                        <Grid.Column width={ 8 }>
-                            <Autocomplete
-                                multiple
-                                disableCloseOnSelect
-                                loading={ isLoading }
-                                options={ roleList }
-                                value={ selectedRoles ?? [] }
-                                disabled = { isReadOnly }
-                                getOptionLabel={
-                                    (role: BasicRoleInterface) => role.name
-                                }
-                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                    <TextField
-                                        { ...params }
-                                        placeholder={ !isReadOnly && t("extensions:develop.applications.edit." +
+                            <Grid.Column width={ 8 }>
+                                <Autocomplete
+                                    multiple
+                                    disableCloseOnSelect
+                                    loading={ isLoading }
+                                    options={ roleList }
+                                    value={ selectedRoles ?? [] }
+                                    disabled = { isReadOnly }
+                                    getOptionLabel={
+                                        (role: BasicRoleInterface) => role.name
+                                    }
+                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <TextField
+                                            { ...params }
+                                            placeholder={ !isReadOnly && t("extensions:develop.applications.edit." +
                                             "sections.rolesV2.searchPlaceholder") }
-                                    />
-                                ) }
-                                onChange={ (event: SyntheticEvent, roles: BasicRoleInterface[]) => {
-                                    setSelectedRoles(roles);
-                                } }
-                                isOptionEqualToValue={
-                                    (option: BasicRoleInterface, value: BasicRoleInterface) =>
-                                        option.id === value.id
-                                }
-                                renderTags={ (
-                                    value: BasicRoleInterface[],
-                                    getTagProps: AutocompleteRenderGetTagProps
-                                ) => value.map((option: BasicRoleInterface, index: number) => (
-                                    <Chip
-                                        { ...getTagProps({ index }) }
-                                        key={ index }
-                                        label={ option.name }
-                                        activeOption={ activeOption }
-                                        setActiveOption={ setActiveOption }
-                                        variant={
-                                            initialSelectedRoles?.find(
-                                                (role: BasicRoleInterface) => role.id === option.id
-                                            )
-                                                ? "solid"
-                                                : "outlined"
-                                        }
-                                    />
-                                )) }
-                                renderOption={ (
-                                    props: HTMLAttributes<HTMLLIElement>,
-                                    option: BasicRoleInterface,
-                                    { selected }: { selected: boolean }
-                                ) => (
-                                    <AutoCompleteRenderOption
-                                        selected={ selected }
-                                        displayName={ option.name }
-                                        renderOptionProps={ props }
-                                    />
-                                ) }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
+                                        />
+                                    ) }
+                                    onChange={ (event: SyntheticEvent, roles: BasicRoleInterface[]) => {
+                                        setSelectedRoles(roles);
+                                    } }
+                                    isOptionEqualToValue={
+                                        (option: BasicRoleInterface, value: BasicRoleInterface) =>
+                                            option.id === value.id
+                                    }
+                                    renderTags={ (
+                                        value: BasicRoleInterface[],
+                                        getTagProps: AutocompleteRenderGetTagProps
+                                    ) => value.map((option: BasicRoleInterface, index: number) => (
+                                        <Chip
+                                            { ...getTagProps({ index }) }
+                                            key={ index }
+                                            label={ option.name }
+                                            activeOption={ activeOption }
+                                            setActiveOption={ setActiveOption }
+                                            variant={
+                                                initialSelectedRoles?.find(
+                                                    (role: BasicRoleInterface) => role.id === option.id
+                                                )
+                                                    ? "solid"
+                                                    : "outlined"
+                                            }
+                                        />
+                                    )) }
+                                    renderOption={ (
+                                        props: HTMLAttributes<HTMLLIElement>,
+                                        option: BasicRoleInterface,
+                                        { selected }: { selected: boolean }
+                                    ) => (
+                                        <AutoCompleteRenderOption
+                                            selected={ selected }
+                                            displayName={ option.name }
+                                            renderOptionProps={ props }
+                                        />
+                                    ) }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
                     {
                         !isReadOnly && (
                             <Grid.Row className="mt-4">

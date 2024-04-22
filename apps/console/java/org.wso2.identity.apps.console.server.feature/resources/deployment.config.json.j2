@@ -1,4 +1,10 @@
 {
+    {% if console.__experimental__platform_idp is defined %}
+    "__experimental__platformIdP" : {
+        "enabled": {{ console.__experimental__platform_idp.enabled }},
+        "homeRealmId": "{{ console.__experimental__platform_idp.homeRealmId }}"
+    },
+    {% endif %}
     "accountApp": {
         {% if console.applications.account_app.configs is defined %}
         {% for key, value in console.applications.account_app.configs.items() %}
@@ -612,6 +618,12 @@
                 ],
                 "enabled": {% if console.bulk_user_import.enabled is defined %} {{ console.bulk_user_import.enabled }},
                 {% else %} true,
+                {% endif %}
+                {% if console.bulk_user_import.user_limit is defined %}
+                "userLimit": {{ console.bulk_user_import.user_limit }},
+                {% endif %}
+                {% if console.bulk_user_import.file_import_timeout is defined %}
+                "fileImportTimeout": {{ console.bulk_user_import.file_import_timeout }},
                 {% endif %}
                 "scopes": {
                     {% if console.bulk_user_import.scopes is defined %}
@@ -1790,13 +1802,15 @@
         {% endif %}
         "legacyMode": {
             {% if legacy_mode.enable == true %}
-            "apiResources": false,
+            "apiResourcesV1": false,
+            "apiResourcesV2": false,
             "applicationListSystemApps": true,
             "applicationOIDCSubjectIdentifier": true,
             "applicationRequestPathAuthentication": true,
             "applicationSystemAppsSettings": true,
             "approvals": true,
             "certificates": true,
+            "backupCodesForSubOrganizations": false,
             "loginAndRegistrationEmailDomainDiscovery": false,
             "organizations": false,
             "rolesV1": true,

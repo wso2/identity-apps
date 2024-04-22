@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -58,6 +58,7 @@ import { EditApplicationRole } from "./edit-app-role";
 import { ApplicationInterface } from "../../../../../admin.applications.v1/models";
 import {
     AppState,
+    FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
@@ -105,6 +106,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         (state: AppState) => state.organization.organization
     );
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showEditModal, setShowEditModal ] = useState<boolean>(false);
@@ -136,8 +139,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         error: sharedApplicationDataFetchRequestError
     } = useSharedApplicationData(appId, currentOrganization?.id);
 
-    useEffect(() => {                
-        if (originalSharedApplicationData instanceof IdentityAppsApiException 
+    useEffect(() => {
+        if (originalSharedApplicationData instanceof IdentityAppsApiException
                 || sharedApplicationDataFetchRequestError) {
             handleRetrieveError();
 
@@ -483,7 +486,9 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 <EmptyPlaceholder
                     className={ "list-placeholder" }
                     action={ !isSharedApplication &&
-                        (<Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                        (<Show
+                            when={ featureConfig?.applications?.scopes?.create }
+                        >
                             <PrimaryButton
                                 onClick={ () => { setShowWizard(true); } }>
                                 <Icon name="add" />
@@ -522,7 +527,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         </Heading>
                         <Heading subHeading ellipsis as="h6">
                             {
-                                isSharedApplication 
+                                isSharedApplication
                                     ? t("extensions:develop.applications.edit.sections.roles.subHeadingAlt")
                                     : t("extensions:develop.applications.edit.sections.roles.subHeading")
                             }

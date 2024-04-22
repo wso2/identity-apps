@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
@@ -27,18 +28,19 @@ import {
     ListLayout,
     PrimaryButton
 } from "@wso2is/react-components";
+import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 import { AddAPIResourcePermission } from "../wizard";
 
 /**
  * Prop-types for the API resources page component.
  */
-type PermissionAPIResourceInterface = SBACInterface<FeatureConfigInterface> &
+type PermissionAPIResourceInterface = SBACInterface<ExtendedFeatureConfigInterface> &
     IdentifiableComponentInterface & APIResourcePanesCommonPropsInterface;
 
 /**
@@ -56,8 +58,8 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
         isAPIResourceDataLoading,
         isSubmitting,
         isReadOnly,
+        isManagedByChoreo,
         handleUpdateAPIResource,
-        handleDeleteAPIScope,
         ["data-componentid"]: componentId
     } = props;
 
@@ -75,8 +77,8 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
      */
     useEffect(() => {
         if (apiResourceData) {
-            setPermissionList(apiResourceData.scopes);
-            setSearchedPermissionList(apiResourceData.scopes);
+            setPermissionList(apiResourceData.permissions);
+            setSearchedPermissionList(apiResourceData.permissions);
         }
     }, [ apiResourceData, deletingAPIResourcePermission ]);
 
@@ -117,27 +119,39 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
      * Handles the API resource permission delete action.
      */
     const deletePermission = (): void => {
-        handleDeleteAPIScope(
-            deletingAPIResourcePermission.name,
+        handleUpdateAPIResource(
+            {
+                deletedPermissions: [ deletingAPIResourcePermission.id ]
+            },
             (): void => setDeletingAPIResourcePermission(null)
         );
     };
 
     return (
         <>
+            {
+                isManagedByChoreo && (
+                    <Alert severity="warning">
+                        <Trans i18nKey={ "extensions:develop.apiResource.tabs.choreoApiEditWarning" }>
+                            Updating this API resource will create unforeseen errors as this is an API
+                            resource managed by Choreo. <b>Proceed with caution.</b>
+                        </Trans>
+                    </Alert>
+                )
+            }
             <EmphasizedSegment className="padded" loading={ isAPIResourceDataLoading }>
                 <Grid container className="mb-1">
                     <Grid xs={ 8 }>
                         <Heading as="h4" compact>
-                            { t("apiResources:tabs.scopes.title") }
+                            { t("extensions:develop.apiResource.tabs.permissions.title") }
                         </Heading>
                         <Heading as="h6" color="grey" subHeading className="mb-5">
-                            { t("apiResources:tabs.scopes.subTitle") }
+                            { t("extensions:develop.apiResource.tabs.permissions.subTitle") }
                         </Heading>
                     </Grid>
                     <Grid xs={ 4 } alignItems="flex-end">
                         {
-                            permissionList?.length !== 0 && !isReadOnly
+                            permissionList?.length !== 0
                                 && (<PrimaryButton
                                     data-componentid={ `${componentId}-add-permission-button` }
                                     size="medium"
@@ -145,7 +159,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                                     onClick={ () => setTriggerAddAPIResourcePermissionModal() }
                                 >
                                     <Icon name="add" />
-                                    { t("apiResources:tabs.scopes.button") }
+                                    { t("extensions:develop.apiResource.tabs.permissions.button") }
                                 </PrimaryButton>)
                         }
                     </Grid>
@@ -165,7 +179,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                                 icon="search"
                                 iconPosition="left"
                                 onChange={ searchPermission }
-                                placeholder={ t("apiResources:tabs.scopes.search") }
+                                placeholder={ t("extensions:develop.apiResource.tabs.permissions.search") }
                                 floated="right"
                                 size="small"
                                 value={ permissionSearchQuery }
@@ -216,7 +230,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                         open={ deletingAPIResourcePermission !== null }
                         onClose={ (): void => setDeletingAPIResourcePermission(null) }
                         type="negative"
-                        assertionHint={ t("apiResources:confirmations." +
+                        assertionHint={ t("extensions:develop.apiResource.confirmations." +
                                     "deleteAPIResourcePermission.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -229,7 +243,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                         <ConfirmationModal.Header
                             data-testid={ `${componentId}-delete-confirmation-modal-header` }
                         >
-                            { t("apiResources:confirmations.deleteAPIResourcePermission." +
+                            { t("extensions:develop.apiResource.confirmations.deleteAPIResourcePermission." +
                                         "header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
@@ -237,13 +251,13 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                             negative
                             data-testid={ `${componentId}-delete-confirmation-modal-message` }
                         >
-                            { t("apiResources:confirmations.deleteAPIResourcePermission." +
+                            { t("extensions:develop.apiResource.confirmations.deleteAPIResourcePermission." +
                                         "message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${componentId}-delete-confirmation-modal-content` }
                         >
-                            { t("apiResources:confirmations.deleteAPIResourcePermission." +
+                            { t("extensions:develop.apiResource.confirmations.deleteAPIResourcePermission." +
                                         "content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

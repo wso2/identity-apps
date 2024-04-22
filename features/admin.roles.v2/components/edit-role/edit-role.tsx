@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { OrganizationType } from "@wso2is/common";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, RolesInterface, SBACInterface } from "@wso2is/core/models";
@@ -25,14 +24,13 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { BasicRoleDetails } from "./edit-role-basic";
-import { RoleConnectedApps } from "./edit-role-connected-apps";
 import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
-import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
+import { AppState, FeatureConfigInterface, OrganizationType } from "../../../admin.core.v1";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { UserManagementConstants } from "../../../admin.users.v1/constants";
-import { RoleConstants as LocalRoleConstants, RoleAudienceTypes } from "../../constants";
+import { RoleConstants as LocalRoleConstants } from "../../constants";
 
 /**
  * Captures props needed for edit role component
@@ -166,23 +164,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                         />
                     </ResourceTab.Pane>
                 )
-            },
-            // Hide connected apps tab if the audience is application.
-            roleObject?.audience?.type === RoleAudienceTypes.ORGANIZATION.toLocaleLowerCase()
-                ? {
-                    menuItem: t("roles:edit.menuItems.connectedApps"),
-                    render: () => (
-                        <ResourceTab.Pane controlledSegmentation attached={ false }>
-                            <RoleConnectedApps
-                                isReadOnly={ isReadOnly }
-                                role={ roleObject }
-                                onRoleUpdate={ onRoleUpdate }
-                                tabIndex={ 4 }
-                            />
-                        </ResourceTab.Pane>
-                    )
-                }
-                : null
+            }
         ];
 
         return panes;

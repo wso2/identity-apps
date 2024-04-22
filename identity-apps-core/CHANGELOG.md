@@ -1,5 +1,49 @@
 # @wso2is/identity-apps-core
 
+## 2.1.58
+
+### Patch Changes
+
+- [#6028](https://github.com/wso2/identity-apps/pull/6028) [`f67d5f98c5`](https://github.com/wso2/identity-apps/commit/f67d5f98c581d55c953a2b074b86fdf04f5755ec) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Set defined callback URL for the console portal app initilization
+
+## 2.1.57
+
+### Patch Changes
+
+- [#6011](https://github.com/wso2/identity-apps/pull/6011) [`5dbe369d55`](https://github.com/wso2/identity-apps/commit/5dbe369d5584ce66fd6ca7e7f0931e037330ad55) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove enterprise IDP logics
+
+## 2.1.56
+
+### Patch Changes
+
+- [#5999](https://github.com/wso2/identity-apps/pull/5999) [`008a23396e`](https://github.com/wso2/identity-apps/commit/008a23396e3b9a1ec5767ae0bef3fa5f9db1c5f6) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Mark portal apps as system reserved apps
+
+## 2.1.55
+
+### Patch Changes
+
+- Updated dependencies [[`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b)]:
+  - @wso2is/theme@2.0.73
+
+## 2.1.54
+
+### Patch Changes
+
+- Updated dependencies [[`1c8757adf6`](https://github.com/wso2/identity-apps/commit/1c8757adf6539b13621c656bb91ab7d8f56e0494)]:
+  - @wso2is/theme@2.0.72
+
+## 2.1.53
+
+### Patch Changes
+
+- [#5962](https://github.com/wso2/identity-apps/pull/5962) [`343cb2a59a`](https://github.com/wso2/identity-apps/commit/343cb2a59a9b2190ab35c28aa311999070a38360) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove unsupported \_ char from special character username regex.
+
+## 2.1.52
+
+### Patch Changes
+
+- [#5903](https://github.com/wso2/identity-apps/pull/5903) [`4eb40aa87a`](https://github.com/wso2/identity-apps/commit/4eb40aa87a8c0e32ddc91af241eb27303985a79a) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Remove legacy recaptcha check
+
 ## 2.1.51
 
 ### Patch Changes

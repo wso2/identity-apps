@@ -23,7 +23,8 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
+import { AppState } from "../../../../admin.core.v1/store";
+import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
 import { getAPIResourcesForIdenitifierValidation } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
 import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../models";
@@ -31,7 +32,7 @@ import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../m
 /**
  * Prop-types for the API resources page component.
  */
-interface AddAPIResourceBasicInterface extends SBACInterface<FeatureConfigInterface>,
+interface AddAPIResourceBasicInterface extends SBACInterface<ExtendedFeatureConfigInterface>,
     IdentifiableComponentInterface {
     /**
      * initial basic details
@@ -120,7 +121,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                             tabIndex={ 1 }
                             value={ initalBasicDetails && initalBasicDetails.identifier }
                             validation={ async (value: string, validation: Validation) => {
-                                
+
                                 setIdentifierValidationLoading(true);
 
                                 if (!APIResourcesConstants.checkValidPermissionIdentifier(value)) {
@@ -130,9 +131,9 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                                 } else {
                                     const filter: string = "identifier eq " + value;
 
-                                    const response: APIResourcesListInterface = 
+                                    const response: APIResourcesListInterface =
                                         await getAPIResourcesForIdenitifierValidation(filter);
-    
+
                                     if (response?.apiResources?.length > 0) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
@@ -146,13 +147,13 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                             loading={ isIdentifierValidationLoading }
                         />
                         <Hint className="mb-0">
-                            <Trans 
+                            <Trans
                                 i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps.basic." +
                                     "form.fields.identifier.hint" }
                                 tOptions={ { productName } }>
-                                We recommend using a URI as the identifier, but you do not need to make the URI 
-                                publicly available since WSO2 Identity Server will not access your API. 
-                                WSO2 Identity Server will use this identifier value as the audience(aud) claim in the 
+                                We recommend using a URI as the identifier, but you do not need to make the URI
+                                publicly available since Asgardeo will not access your API.
+                                Asgardeo will use this identifier value as the audience(aud) claim in the
                                 issued JWT tokens. <b>This field should be unique; once created, it is not editable.</b>
                             </Trans>
                         </Hint>
@@ -160,16 +161,16 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                        <Field            
+                        <Field
                             type="text"
                             name="displayName"
-                            label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form.fields." + 
+                            label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form.fields." +
                                 "name.label") }
                             placeholder={ t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form." +
                                 "fields.name.placeholder") }
                             required={ true }
                             tabIndex={ 2 }
-                            requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." + 
+                            requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
                                 "basic.form.fields.name.emptyValidate") }
                             value={ initalBasicDetails?.displayName }
                             data-testid={ `${componentId}-basic-form-displayName` }

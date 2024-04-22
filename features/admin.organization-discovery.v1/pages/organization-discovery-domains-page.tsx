@@ -48,7 +48,6 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -384,7 +383,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                         || discoverableOrganizations?.totalResults <= 0
                     )
                 ) && (
-                    <Show when={ AccessControlConstants.ORGANIZATION_DISCOVERY_WRITE }>
+                    <Show when={ featureConfig?.organizationDiscovery?.scopes?.create }>
                         <PrimaryButton
                             disabled={ isDiscoverableOrganizationsFetchRequestLoading }
                             loading={ isDiscoverableOrganizationsFetchRequestLoading }

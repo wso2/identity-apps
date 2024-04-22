@@ -26,97 +26,111 @@ export interface APIResourcesListInterface {
     /**
      * List of roles in API resources.
      */
-    totalResults: number;
+    roles?: APIResourceRoleInterface[];
     /**
      * List of API resources.
      */
     apiResources: APIResourceInterface[];
     /**
-     * Links for pagination.
+     * Useful links for pagination.
      */
     links?: LinkInterface[];
 }
 
 /**
- *  Details of an API resource.
+ *  Basic details of an API resource role
+ */
+export interface APIResourceRoleInterface {
+    /**
+     * Name of the API resource role
+     */
+    name: string,
+    /**
+     * List of permissions associated with the API resource role
+     */
+    permissions: APIResourcePermissionInterface[]
+}
+
+/**
+ *  Details of an API resource
  */
 export interface APIResourceInterface {
     /**
-     * ID of the API resource.
+     * ID of the API resource
      */
     id?: string;
     /**
-     * Display name of the API resource.
+     * Display name of the API resource
      */
-    name?: string;
+    displayName: string;
     /**
-     * Identifier of the API resource. [Usually this is an API endpoint]
+     * Identifier of the API resource [Usually this is an API endpoint]
      */
-    identifier?: string;
+    identifier: string;
     /**
-     * Required authorization.
+     * Required authorization
      */
     requiresAuthorization?: boolean;
     /**
-     * Type of the API resource.
+     * Gateway name of the API resource
      */
-    type?: string;
+    gwName?: string;
     /**
-     * List of scopes associate with the API resource.
+     * List of permissions associate with the API resource
      */
-    scopes?: APIResourcePermissionInterface[],
+    permissions: APIResourcePermissionInterface[],
     /**
-     * List of applications associate with the API resource.
+     * List of applications associate with the API resource
      */
     applications?: string[];
     /**
-     * Subdirectory of the API resource.
+     * Subdirectory of the API resource
      */
     self?: string;
 }
 
 /**
- *  Basic details of an API resource.
+ *  Basic details of an API resource
  */
 export interface BasicAPIResourceInterface {
     /**
-     * Display name of the API resource.
+     * Display name of the API resource
      */
     displayName: string;
     /**
-     * Identifier of the API resource. [Usually this is an API endpoint]
+     * Identifier of the API resource [Usually this is an API endpoint]
      */
     identifier: string;
 }
 
 /**
- * Authorization details of an API resource.
+ * Authorization details of an API resource
  */
 export interface AuthorizationAPIResourceInterface {
     /**
-     * Required authorization.
+     * Required authorization
      */
     authorization: boolean;
 }
 
 /**
- * Details of an API resource permission.
+ * Details of an API resource permission
  */
 export interface APIResourcePermissionInterface {
     /**
-     * id of the API resource permission.
+     * id of the API resource permission
      */
     id?: string;
     /**
-     * Display name of the API resource permission.
+     * Display name of the API resource permission
      */
     displayName: string;
     /**
-     * Name of the API resource role.
+     * Name of the API resource role
      */
     name: string;
     /**
-     * Description of the API resource permission.
+     * Description of the API resource permission
      */
     description?: string;
 }
@@ -126,21 +140,25 @@ export interface APIResourcePermissionInterface {
  */
 export interface UpdatedAPIResourceInterface {
     /**
-     * Display name of the API resource.
+     * Display name of the API resource
      */
-    name?: string;
+    displayName?: string;
     /**
-     * Identifier of the API resource. [Usually this is an API endpoint]
+     * Identifier of the API resource [Usually this is an API endpoint]
      */
     identifier?: string;
     /**
-     * List of scopes associate with the API resource.
+     * Gateway name of the API resource
      */
-    addedScopes?: APIResourcePermissionInterface[],
+    gwName?: string;
     /**
-     * List of scopes that need to remove from the API resource.
+     * List of permissions associate with the API resource
      */
-    removedScopes?: string[],
+    addedPermissions?: APIResourcePermissionInterface[],
+    /**
+     * List of permissions that need to remove from the API resource
+     */
+    deletedPermissions?: string[],
 }
 
 /**
@@ -148,13 +166,17 @@ export interface UpdatedAPIResourceInterface {
  */
 export interface GeneralUpdateAPIResourceInterface {
     /**
-     * Updated display name of the API resource.
+     * Updated display name of the API resource
      */
     displayName?: string;
     /**
-     * Identifier of the API resource. [Usually this is an API endpoint]
+     * Identifier of the API resource [Usually this is an API endpoint]
      */
     identifier?: string;
+    /**
+     * Gateway name of the API resource
+     */
+    gwName?: string;
 }
 
 /**
@@ -162,11 +184,11 @@ export interface GeneralUpdateAPIResourceInterface {
  */
 export interface GeneralErrorAPIResourceInterface {
     /**
-     * Error message of display name of the API resource.
+     * Error message of display name of the API resource
      */
     displayName?: string;
     /**
-     * Error message of identifier of the API resource.
+     * Error message of identifier of the API resource
      */
     identifier?: string;
 }
@@ -176,11 +198,11 @@ export interface GeneralErrorAPIResourceInterface {
  */
 export interface APIResourcePanesCommonPropsInterface {
     /**
-     * List of API Resources.
+     * List of API Resources
      */
     apiResourceData?: APIResourceInterface;
     /**
-     * show if API resources list is still loading.
+     * show if API resources list is still loading
      */
     isAPIResourceDataLoading: boolean;
     /**
@@ -192,13 +214,13 @@ export interface APIResourcePanesCommonPropsInterface {
      */
     isReadOnly?: boolean;
     /**
+     * Specifies if the API resource is managed by Choreo.
+     */
+    isManagedByChoreo?: boolean;
+    /**
      * Function to handle the API resource update.
      */
     handleUpdateAPIResource?: (updatedAPIResource: UpdatedAPIResourceInterface, callback?: () => void) => void;
-    /**
-     * Function to handle the API scope delete.
-     */
-    handleDeleteAPIScope?: (scopeId: string, callback?: () => void) => void;
 }
 
 /**
@@ -243,39 +265,4 @@ export interface PermissionMappingInterface {
      * Update the permissions map
      */
     updatePermissions: (permission: APIResourcePermissionInterface, action : "set" | "delete") => void
-}
-
-/**
- * Capture the API Resource endpoints.
- */
-export interface APIResourceEndpointsInterface {
-    /**
-     * API Resource endpoint.
-     */
-    apiResources: string;
-    /**
-     * Scopes endpoint.
-     */
-    scopes: string;
-}
-
-/**
- * Interface to contain scope information
- */
-export interface ScopeInterface {
-    id: string;
-    displayName?: string;
-    name?: string;
-    description?: string;
-}
-
-/**
- * Interface to store authorized API list item.
- */
-export interface AuthorizedAPIListItemInterface {
-    id: string,
-    identifier: string,
-    displayName: string,
-    policyId: string,
-    authorizedScopes: ScopeInterface[]
 }

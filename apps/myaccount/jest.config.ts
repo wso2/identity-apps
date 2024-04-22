@@ -32,6 +32,23 @@ module.exports = {
         "node"
     ],
     moduleNameMapper: {
+        "@oxygen-ui/react": "<rootDir>/node_modules/@oxygen-ui/react",
+        "@wso2is/common": "<rootDir>/../../modules/common/dist",
+        "@wso2is/core/api": "<rootDir>/../../modules/core/dist/src/api",
+        "@wso2is/core/configs": "<rootDir>/../../modules/core/dist/src/configs",
+        "@wso2is/core/constants": "<rootDir>/../../modules/core/dist/src/constants",
+        "@wso2is/core/errors": "<rootDir>/../../modules/core/dist/src/errors",
+        "@wso2is/core/exceptions": "<rootDir>/../../modules/core/dist/src/exceptions",
+        "@wso2is/core/helpers": "<rootDir>/../../modules/core/dist/src/helpers",
+        "@wso2is/core/hooks": "<rootDir>/../../modules/core/dist/src/hooks",
+        "@wso2is/core/models": "<rootDir>/../../modules/core/dist/src/models",
+        "@wso2is/core/store": "<rootDir>/../../modules/core/dist/src/store",
+        "@wso2is/core/utils": "<rootDir>/../../modules/core/dist/src/utils",
+        "@wso2is/core/workers": "<rootDir>/../../modules/core/dist/src/workers",
+        "@wso2is/dynamic-forms":  "<rootDir>/../../modules/dynamic-forms/dist",
+        "@wso2is/form": "<rootDir>/../../modules/form/dist",
+        "@wso2is/forms": "<rootDir>/../../modules/forms/dist",
+        "@wso2is/react-components": "<rootDir>/../../modules/react-components/dist",
         "\\.(css|less)$": "<rootDir>/test-configs/__mocks__/style-file.ts",
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$":
             "<rootDir>/test-configs/__mocks__/file.ts",

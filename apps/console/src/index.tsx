@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,20 +18,19 @@
 
 import { AuthProvider } from "@asgardeo/auth-react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
-import { AppConfigProvider } from "@wso2is/features/admin.core.v1/providers/app-config-provider";
 import { ContextUtils } from "@wso2is/core/utils";
-import * as React from "react";
-import { ReactElement } from "react";
+import { AuthenticateUtils } from "@wso2is/features/admin.authentication.v1";
+import { Config, PreLoader, store } from "@wso2is/features/admin.core.v1";
+import { UserPreferencesInterface } from "@wso2is/features/admin.core.v1/models/user-preferences";
+import { AppConfigProvider } from "@wso2is/features/admin.core.v1/providers/app-config-provider";
+import AppSettingsProvider from "@wso2is/features/admin.core.v1/providers/app-settings-provider";
+import UserPreferencesProvider from "@wso2is/features/admin.core.v1/providers/user-preferences-provider";
+import OrganizationsProvider from "@wso2is/features/admin.organizations.v1/providers/organizations-provider";
+import React, { ReactElement, useEffect, useState } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AsgardeoTheme } from "./branding/theme";
-import { AuthenticateUtils } from "@wso2is/features/admin.authentication.v1";
-import { Config, PreLoader, store } from "@wso2is/features/admin.core.v1";
-import { UserPreferencesInterface } from "@wso2is/features/admin.core.v1/models/user-preferences";
-import AppSettingsProvider from "@wso2is/features/admin.core.v1/providers/app-settings-provider";
-import UserPreferencesProvider from "@wso2is/features/admin.core.v1/providers/user-preferences-provider";
-import OrganizationsProvider from "@wso2is/features/admin.organizations.v1/providers/organizations-provider";
 import { ProtectedApp } from "./protected-app";
 
 // Set the runtime config in the context.
@@ -44,9 +43,9 @@ ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
  */
 const RootWithConfig = (): ReactElement => {
 
-    const [ ready, setReady ] = React.useState(false);
+    const [ ready, setReady ] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (AuthenticateUtils.getInitializeConfig()?.baseUrl) {
             setReady(true);
 

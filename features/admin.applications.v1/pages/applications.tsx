@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -537,7 +537,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             pageTitle="Applications"
             action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
                 filteredApplicationList?.totalResults > 0) && (
-                <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                <Show
+                    when={ featureConfig?.applications?.scopes?.create }
+                >
                     <PrimaryButton
                         onClick={ (): void => {
                             eventPublisher.publish("application-click-new-application-button");

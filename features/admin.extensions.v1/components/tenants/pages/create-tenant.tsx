@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -50,11 +50,11 @@ import { Card, Divider, Flag, FlagNameValues, Grid, Icon } from "semantic-ui-rea
 import { history } from "../../../../admin.core.v1/helpers";
 import { AppState } from "../../../../admin.core.v1/store";
 import { EventPublisher } from "../../../../admin.core.v1/utils";
+import { handleTenantSwitch } from "../../../../admin.tenants.v1/utils/tenant-switch";
 import { addNewTenant, checkDuplicateTenants } from "../api";
 import { TenantCreationIcons } from "../configs";
 import { TenantManagementConstants } from "../constants";
 import { Region } from "../models/region";
-import { handleTenantSwitch } from "../utils";
 
 /**
  * Interface to capture add tenant form error messages.
@@ -121,7 +121,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
     }, [ deploymentRegion ]);
 
     /**
-     * Generate alternative console url base path based on the 
+     * Generate alternative console url base path based on the
      * current deployment region and url pattern.
      * Alternative region will be the inverse of the current region.
      */
@@ -137,24 +137,24 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
 
             if (regionQualifiedConsoleUrl.includes("asgardeo.io")) {
                 const position: number = regionQualifiedConsoleUrl.indexOf("asgardeo.io");
-                
+
                 return [
-                    regionQualifiedConsoleUrl.slice(0, position), 
-                    `${Region.EU.toLowerCase()}.`, 
+                    regionQualifiedConsoleUrl.slice(0, position),
+                    `${Region.EU.toLowerCase()}.`,
                     regionQualifiedConsoleUrl.slice(position)
                 ].join("");
             } else if (regionQualifiedConsoleUrl.includes("asg.io")) {
                 const position: number = regionQualifiedConsoleUrl.indexOf("asg.io");
-                
+
                 return [
-                    regionQualifiedConsoleUrl.slice(0, position), 
-                    `${Region.EU.toLowerCase()}.`, 
+                    regionQualifiedConsoleUrl.slice(0, position),
+                    `${Region.EU.toLowerCase()}.`,
                     regionQualifiedConsoleUrl.slice(position)
                 ].join("");
             } else {
                 return TenantManagementConstants.EU_PROD_CONSOLE_FALLBACK_URL;
             }
-            
+
         } else {
             if (regionQualifiedConsoleUrl.includes("."+Region.EU.toLowerCase())) {
                 return regionQualifiedConsoleUrl.replace(/.eu/g,"");
@@ -460,8 +460,8 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                                                 "tenantCreationPrompt.subHeading1") }
                                         </Text>
                                         <Text display="inline">
-                                            <Flag 
-                                                name={ String(deploymentRegion)?.toLowerCase() as FlagNameValues } 
+                                            <Flag
+                                                name={ String(deploymentRegion)?.toLowerCase() as FlagNameValues }
                                             />
                                             { deploymentRegion }
                                             { " " }
@@ -489,8 +489,8 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                                         <Text muted display="inline">{ t("extensions:manage.features.tenant." +
                                                 "tenantCreationPrompt.subHeading6") }</Text>
                                         <Text display="inline">
-                                            <Flag 
-                                                name={ String(alternativeRegion)?.toLowerCase() as FlagNameValues } 
+                                            <Flag
+                                                name={ String(alternativeRegion)?.toLowerCase() as FlagNameValues }
                                             />
                                             { alternativeRegion }
                                             { " " }
@@ -550,13 +550,13 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                             { isCheckingTenantExistence
                                 ? (
                                     <Text className="tenant-uri-prefix">
-                                        { `${regionQualifiedConsoleUrl ?? 
+                                        { `${regionQualifiedConsoleUrl ??
                                             "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
                                         <Icon name="circle notched" color="grey" loading/>
                                     </Text>
                                 ) : (
                                     <span>
-                                        { `${regionQualifiedConsoleUrl ?? 
+                                        { `${regionQualifiedConsoleUrl ??
                                             "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
                                         <span
                                             className={ `${

@@ -24,7 +24,6 @@ import {
     OIDCEndpoints,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { OrganizationType } from "@wso2is/common";
 import { AppConstants as AppConstantsCore, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
 import {
     setDeploymentConfigs,
@@ -34,6 +33,7 @@ import {
     setUIConfigs
 } from "@wso2is/core/store";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
+import { OrganizationType } from "@wso2is/features/admin.organizations.v1/constants";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { useDispatch } from "react-redux";
 import { AnyAction, Dispatch } from "redux";
@@ -57,7 +57,13 @@ const LOGOUT_URL: string = "sign_out_url";
 export interface UseSignInInterface {
     /**
      * Handles the sign-in process.
+     *
+     * @example
+     * ```
+     * const { onSignIn } = useSignIn();
+     * ```
      * @param response - The basic user information returned from the sign-in process.
+     *
      * @returns A promise.
      */
     onSignIn: (response: BasicUserInfo) => Promise<void>;
@@ -92,7 +98,8 @@ const useSignIn = (): UseSignInInterface => {
      * const { onSignIn } = useSignIn();
      * ```
      * @param response - The basic user information returned from the sign-in process.
-     * @throws Will throw an error if the new onSignIn method is not implemented.
+     *
+     * @returns A promise.
      */
     const onSignIn = async (response: BasicUserInfo): Promise<void> => {
         if (legacyAuthzRuntime) {
@@ -106,7 +113,10 @@ const useSignIn = (): UseSignInInterface => {
 
     /**
      * Handles the sign-in process for the new authorization server.
+     *
      * @param response - The basic user information returned from the sign-in process.
+     *
+     * @returns A promise.
      */
     const _onSignIn = async (response: BasicUserInfo): Promise<void> => {
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
@@ -121,6 +131,26 @@ const useSignIn = (): UseSignInInterface => {
                 || idToken.org_name === tenantDomain
                 || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomain);
         const userOrganizationId: string = idToken.user_org;
+
+        const __experimental__platformIdP: {
+            enabled: boolean;
+            homeRealmId: string;
+        } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
+        if (__experimental__platformIdP?.enabled) {
+            if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
+                const redirectUrl: URL = new URL(
+                    window["AppUtils"].getConfig().clientOriginWithTenant.replace(
+                        window["AppUtils"].getConfig().tenant,
+                        idToken.default_tenant
+                    )
+                );
+
+                redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                window.location.href = redirectUrl.href;
+            }
+        }
 
         // Update the organization name with the newly resolved org.
         if (!isFirstLevelOrg) {
@@ -139,6 +169,7 @@ const useSignIn = (): UseSignInInterface => {
         } else {
             orgType = OrganizationType.SUBORGANIZATION;
         }
+
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
@@ -249,8 +280,11 @@ const useSignIn = (): UseSignInInterface => {
 
     /**
      * Handles the sign-in process for legacy authorization server.
+     *
      * @deprecated This is deprecated and will be removed in the next major release.
      * @param response - The basic user information returned from the sign-in process.
+     *
+     * @returns A promise.
      */
     const legacyOnSignIn = async (response: BasicUserInfo): Promise<void> => {
         let logoutUrl: string;

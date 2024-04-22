@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,20 +16,26 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { OrganizationType } from "@wso2is/common";
+import { Show } from "@wso2is/access-control";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { useApplicationList } from "../../admin.applications.v1/api";
-import { AdvancedSearchWithBasicFilters, AppConstants, UIConstants } from "../../admin.core.v1";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    OrganizationType,
+    UIConstants
+} from "../../admin.core.v1";
 import { history } from "../../admin.core.v1/helpers";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { deleteRoleById, useRolesList } from "../api";
@@ -55,6 +61,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const { t } = useTranslation();
 
     const { organizationType } = useGetCurrentOrganizationType();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -214,7 +221,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
             action={
                 !isSubOrg && !isRolesListLoading && (rolesList?.totalResults > 0)
                     ? (
-                        <Show when={ AccessControlConstants.ROLE_WRITE }>
+                        <Show when={ featureConfig?.userRoles?.scopes?.create }>
                             <PrimaryButton
                                 data-componentid={ `${componentId}-add-button` }
                                 onClick={ () => handleCreateRole() }

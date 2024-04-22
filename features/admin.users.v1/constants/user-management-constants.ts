@@ -103,7 +103,8 @@ export class UserManagementConstants {
         .set("USERNAME", "userName")
         .set("NAME", "name")
         .set("DISPLAY_NAME", "displayName")
-        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User");
+        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User")
+        .set("LOCALE", "locale");
 
     /**
      * Set of SCIM2 enterprise attributes.
@@ -123,6 +124,10 @@ export class UserManagementConstants {
 
     // Regular expression to validate having alphanumeric characters.
     public static readonly USERNAME_VALIDATION_REGEX: string = "^(?=.*[a-zA-Z])[a-zA-Z0-9]+$";
+    // Regular expression to validate having alphanumeric with special characters.
+    public static readonly USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS: string =
+        "^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\\\=^.{|}~-]+$";
+
     // Error message when API call returns a status code !== 200
     public static readonly INVALID_STATUS_CODE_ERROR: string = "Invalid Status Code. Expected Code 200.";
     // Error message text for resources not found.
@@ -290,4 +295,14 @@ export enum InvitationStatus {
     ACCEPTED = "Accepted",
     PENDING = "Pending",
     EXPIRED = "Expired"
+}
+
+/**
+ * Enum for locale joining symbol.
+ *
+ * @readonly
+ */
+export enum LocaleJoiningSymbol {
+    HYPHEN = "-",
+    UNDERSCORE = "_"
 }

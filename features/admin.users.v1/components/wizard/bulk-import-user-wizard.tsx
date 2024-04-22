@@ -45,6 +45,7 @@ import {
     CSVFileStrategy,
     CSVResult,
     ContentLoader,
+    DocumentationLink,
     FilePicker,
     Heading,
     Hint,
@@ -54,14 +55,15 @@ import {
     PickerResult,
     Popup,
     PrimaryButton,
+    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
-import camelCase from "lodash-es/camelCase";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import toUpper from "lodash-es/toUpper";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
@@ -69,6 +71,7 @@ import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../.
 import { ClaimManagementConstants } from "../../../admin.claims.v1/constants";
 import {
     AppConstants,
+    AppState,
     ModalWithSidePanel,
     UserStoreDetails,
     UserStoreProperty,
@@ -150,11 +153,6 @@ interface GroupMemberAssociation {
 }
 
 const ASK_PASSWORD_ATTRIBUTE: string = "identity/askPassword";
-const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy(
-    undefined,  // Mimetype.
-    userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
-    userConfig.bulkUserImportLimit.userCount  // Row Count.
-);
 const DATA_VALIDATION_ERROR: string = "Data validation error";
 const TIMEOUT_ERROR: string = "TIMEOUT_ERROR";
 const ADDRESS_HOME_ATTRIBUTE: string = "addresses#home";
@@ -205,8 +203,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ fileModeTimeOutError , setFileModeTimeOutError ] = useState<boolean>(false);
 
     const { data: validationData } = useValidationConfigData();
+    const { getLink } = useDocumentation();
     const config: ValidationFormInterface = getUsernameConfiguration(validationData);
     const isAlphanumericUsername: boolean = config?.enableValidator === "true";
+    const fileImportTimeout: number = useSelector((state: AppState) =>
+        state.config.ui.features.bulkUserImport.fileImportTimeout);
+    const userLimit: number = useSelector((state: AppState) =>
+        state.config.ui.features.bulkUserImport.userLimit);
+    const csvFileProcessingStrategy: CSVFileStrategy = useMemo( () => {
+        return new CSVFileStrategy(
+            undefined,  // Mimetype.
+            userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
+            userLimit ? userLimit : userConfig.bulkUserImportLimit.userCount  // Row Count.
+        );
+    }, [ userLimit ]);
 
     const optionsArray: string[] = [];
 
@@ -597,7 +607,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const headers: string[] = userData.headers;
         const rows: string[][] = userData.items;
 
-        const requiredFields: string[] = Object.values(RequiredBulkUserImportAttributes);
+        const requiredFields: string[] = isAlphanumericUsername
+            ? Object.values(RequiredBulkUserImportAttributes)
+            : [ RequiredBulkUserImportAttributes.USERNAME ];
         const missingFields: string[] = getMissingFields(headers, requiredFields);
         const duplicateEntries: string[] = getDuplicateEntries(headers);
         const blockedAttributes: string[] = Object.values(BlockedBulkUserImportAttributes);
@@ -713,6 +725,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         ): Record<string, unknown> => {
             const dataObj: Record<string, unknown> = {};
             const schemasSet: Set<string> = new Set([ UserManagementConstants.SCIM2_USER_SCHEMA ]);
+            let emailValue: string = "";
 
             for (const attribute of filteredAttributeMapping) {
                 const scimAttribute: string = attribute.mappedSCIMAttributeURI.replace(
@@ -729,6 +742,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 // Handle username attribute.
                 if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
+                    emailValue = attributeValue;
+
                     if (isEmptyAttribute(attributeValue)) {
                         setEmptyDataFieldError(attribute.attributeName);
                         throw new Error(DATA_VALIDATION_ERROR);
@@ -744,6 +759,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 // Handle email attribute.
                 if (attribute.attributeName === RequiredBulkUserImportAttributes.EMAILADDRESS) {
+                    if (!isAlphanumericUsername) {
+                        continue;
+                    }
+
                     if (isEmptyAttribute(attributeValue)) {
                         setEmptyDataFieldError(attribute.attributeName);
                         throw new Error(DATA_VALIDATION_ERROR);
@@ -848,6 +867,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                     continue;
                 }
+            }
+
+            // Add the email address when the email username is enabled.
+            if (!isAlphanumericUsername) {
+                dataObj[SpecialMultiValuedComplexAttributes.Emails] =
+                    [ { primary: true, value: emailValue } ];
             }
 
             return {
@@ -1171,7 +1196,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const timeoutPromise: Promise<unknown> = new Promise((_: unknown, reject: (reason?: any) => void) => {
                 setTimeout(() => reject(
                     new Error(TIMEOUT_ERROR)
-                ), FILE_IMPORT_TIMEOUT);
+                ), fileImportTimeout ? fileImportTimeout : FILE_IMPORT_TIMEOUT);
             });
 
             const scimResponse: any = await Promise.race([ scimResponsePromise, timeoutPromise ]);
@@ -1547,11 +1572,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                                 "bulkImportUserWizard.wizardSummary.userstoreMessage"
                                                             }
                                                             tOptions={ {
-                                                                userstore: camelCase(userstore)
+                                                                userstore: toUpper(userstore)
                                                             } }
                                                         >
                                                             The created users will be added to
-                                                            the <b>{ camelCase(userstore) }</b> user store.
+                                                            the <b>{ toUpper(userstore) }</b> user store.
                                                         </Trans>
                                                     </Alert>
                                                 </Grid.Column>
@@ -1794,11 +1819,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         ".wizardSummary.userstoreMessage"
                                                     }
                                                     tOptions={ {
-                                                        userstore: camelCase(userstore)
+                                                        userstore: toUpper(userstore)
                                                     } }
                                                 >
                                                     The created users will be added to
-                                                    the <b>{ camelCase(userstore) }</b> user store.
+                                                    the <b>{ toUpper(userstore) }</b> user store.
                                                 </Trans>
                                             </Alert>
                                         </Grid.Column>
@@ -1818,7 +1843,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 <Grid.Column mobile={ 16 }>
                                     <FilePicker
                                         key={ 1 }
-                                        fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
+                                        fileStrategy={ csvFileProcessingStrategy }
                                         file={ selectedCSVFile }
                                         onChange={ (
                                             result: PickerResult<{
@@ -1944,12 +1969,22 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         <p> { t("user:modals.bulkImportUserWizard.sidePanel." +
                                 "fileFormatSampleHeading") }</p>
                         <p>
-                            <code>
-                                username,givenname,emailaddress,groups<br />
-                                user1,john,john@test.com,group1|group2<br/>
-                                user2,jake,jake@test.com,group2<br/>
-                                user3,jane,jane@test.com,group1<br/>
-                            </code>
+                            {
+                                isAlphanumericUsername ? (
+                                    <code>
+                                        username,givenname,emailaddress,groups<br />
+                                        user1,john,john@test.com,group1|group2<br/>
+                                        user2,jake,jake@test.com,group2<br/>
+                                        user3,jane,jane@test.com,group1<br/>
+                                    </code>
+                                ) : (
+                                    <code>
+                                        username,givenname,groups<br />
+                                        user1,john,group1|group2<br/>
+                                        user2,jake,group2<br/>
+                                        user3,jane,group1<br/>
+                                    </code>)
+                            }
                         </p>
                     </Suspense>
                 </ModalWithSidePanel.Content>
@@ -1978,6 +2013,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     { t("user:modals.bulkImportUserWizard.title") }
                     <Heading as="h6">
                         { t("user:modals.bulkImportUserWizard.subTitle") }
+                        <DocumentationLink
+                            link={ getLink("manage.users.bulkUsers.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
                     </Heading>
                 </ModalWithSidePanel.Header>
 

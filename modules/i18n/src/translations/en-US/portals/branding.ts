@@ -168,6 +168,66 @@ export const branding: BrandingNS = {
         "sms-otp": "SMS OTP",
         "totp": "TOTP"
     },
+    ai: {
+        banner: {
+            full: {
+                heading: "Simplify branding setup with Branding AI",
+                subHeading: "Elevate your organization's branding effortlessly with BrandingAI, simply by providing your website URL.",
+                button: "Try Branding AI"
+            },
+            input: {
+                heading: "Configure branding with Branding AI",
+                subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
+                placeholder: "Enter website URL",
+                button: "Generate Branding"
+            },
+            collapsed: {
+                heading: "Configure branding with Branding AI",
+                subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
+                button: "Try Branding AI"
+            }
+        },
+        notifications: {
+            generateError: {
+                description: "An error occurred while generating the branding.",
+                message: "Branding generation failed"
+            },
+            regenerateError: {
+                description: "An error occurred while regenerating the branding.",
+                message: "Branding regeneration failed"
+            },
+            resetSuccess: {
+                description: "Successfully reset the AI generated branding.",
+                message: "AI Branding reset successful"
+            },
+            renderingError: {
+                description: "An error occurred while rendering the website.",
+                message: "Website rendering failed"
+            }
+        },
+        screens: {
+            loading: {
+                heading: "Generating your branding",
+                didYouKnow: "Did you know?",
+                facts: {
+                    0: "{{productName}}'s advanced theming capabilities let you customize your site title, copyright info, and support email on login pages to match your brand identity",
+                    1: "You can enhance your login portal by updating links to your privacy policy, terms of service, and cookie policy for visible compliance with {{productName}}.",
+                    2: "With {{productName}}'s branding features, you can ensure a consistent branding experience across all your applications."
+                },
+                states: {
+                    0: "Getting things started",
+                    1: "Analyzing your webpage...",
+                    2: "Gathering visual elements...",
+                    3: "Gathering visual elements...",
+                    4: "Creating your branding theme...",
+                    5: "Creating your branding theme...",
+                    6: "Creating your branding theme...",
+                    7: "Applying final touches...",
+                    8: "Branding Generation Completed!"
+                }
+            }
+        }
+    },
     tabs: {
         preview: {
             label: "Preview"

@@ -556,7 +556,7 @@ export interface IdentityProviderReducerStateInterface {
 /**
  * Interface for the identity provider meta for the redux store.
  */
-interface IdentityProviderMetaInterface {
+export interface IdentityProviderMetaInterface {
     authenticators: FederatedAuthenticatorListItemInterface[];
 }
 

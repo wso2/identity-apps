@@ -39,7 +39,6 @@ import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
 import { AuthenticatorManagementConstants } from "../../admin.connections.v1/constants/autheticator-constants";
 import {
     AppConstants,
@@ -559,13 +558,17 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             <Grid>
                                                 <Grid.Row columns={ 3 }>
                                                     { providerCards.map(
-                                                        (provider: SMSProviderCardInterface) => (
-                                                            <Grid.Column key={ provider.id }>
+                                                        (provider: SMSProviderCardInterface) => {
+                                                            // Get the provider name in lower case to use as the
+                                                            // data-componentid.
+                                                            const smsProviderName: string =
+                                                                    provider?.name?.toLocaleLowerCase();
+
+                                                            return (<Grid.Column key={ provider?.id }>
                                                                 <InfoCard
                                                                     fluid
                                                                     data-componentid=
-                                                                        { `${componentId}
-                                                                                -sms-provider-info-card` }
+                                                                        { `${smsProviderName}-sms-provider-info-card` }
                                                                     image={ provider.icon }
                                                                     imageSize="x30"
                                                                     header={
@@ -584,8 +587,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                                     showSetupGuideButton={ false }
                                                                     showCardAction={ false }
                                                                 />
-                                                            </Grid.Column>
-                                                        )) }
+                                                            </Grid.Column>);
+                                                        })
+                                                    }
                                                 </Grid.Row>
                                             </Grid>
                                         </div>
@@ -596,6 +600,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                 <CustomSMSProvider
                                                     isReadOnly={ isReadOnly }
                                                     onSubmit={ handleSubmit }
+                                                    data-componentid={ "custom-sms-provider" }
                                                 />
                                                 { smsProviderConfig.renderAlternativeSmsProviderOptions() }
                                             </>
@@ -605,6 +610,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             <TwilioSMSProvider
                                                 isReadOnly={ isReadOnly }
                                                 onSubmit={ handleSubmit }
+                                                data-componentid={ "twilio-sms-provider" }
                                             />
                                         ) }
                                         { smsProviderSettings?.selectedProvider ===
@@ -612,6 +618,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             <VonageSMSProvider
                                                 isReadOnly={ isReadOnly }
                                                 onSubmit={ handleSubmit }
+                                                data-componentid={ "vonage-sms-provider" }
                                             />
                                         ) }
 
@@ -626,7 +633,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             {
                 !isLoading && !isSMSProviderConfigFetchRequestLoading && (
                     <Show
-                        when={ AccessControlConstants.NOTIFICATION_SENDERS_DELETE }
+                        when={ featureConfig?.notificationChannels?.scopes?.delete }
                     >
                         <Divider hidden />
                         <DangerZoneGroup

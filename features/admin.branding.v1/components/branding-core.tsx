@@ -17,8 +17,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { OrganizationType } from "@wso2is/common";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -38,7 +37,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { EventPublisher } from "../../admin.core.v1";
+import { EventPublisher, OrganizationType } from "../../admin.core.v1";
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
@@ -63,7 +62,10 @@ import { BrandingPreferenceUtils } from "../utils";
 /**
  * Prop-types for the branding core component.
  */
-type BrandingCoreInterface = IdentifiableComponentInterface;
+interface BrandingCoreInterface extends IdentifiableComponentInterface {
+
+    brandingPreference?: BrandingPreferenceInterface;
+}
 
 /**
  * Branding core.
@@ -76,6 +78,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 ): ReactElement => {
 
     const {
+        brandingPreference: overridenBrandingPreference,
         ["data-componentid"]: componentId
     } = props;
 
@@ -157,7 +160,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const {
-        mutate: mutateCustomTextPreferenceFetchRequest
+        mutateMultiple: mutateCustomTextPreferenceFetchRequests
     } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
 
     const isBrandingPageLoading: boolean = useMemo(
@@ -219,18 +222,21 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             setIsBrandingConfigured(true);
         }
 
-        setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
-            BrandingPreferenceUtils.migrateThemePreference(
-                originalBrandingPreference.preference,
+        if  (!overridenBrandingPreference)  {
+            setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
+                BrandingPreferenceUtils.migrateThemePreference(
+                    originalBrandingPreference.preference,
+                    {
+                        theme: predefinedThemes
+                    }
+                ),
                 {
-                    theme: predefinedThemes
+                    layout: predefinedLayouts
                 }
-            ),
-            {
-                layout: predefinedLayouts
-            }
-        ));
-        setSelectedLayout(originalBrandingPreference.preference.layout.activeLayout);
+            ));
+            setSelectedLayout(originalBrandingPreference.preference.layout.activeLayout);
+        }
+
     }, [ originalBrandingPreference ]);
 
     /**
@@ -245,7 +251,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         if (brandingPreferenceFetchRequestError.response?.data?.code
             === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
             setIsBrandingConfigured(false);
-            setBrandingPreference(DEFAULT_PREFERENCE);
+            setBrandingPreference(overridenBrandingPreference ?? DEFAULT_PREFERENCE);
 
             return;
         }
@@ -257,7 +263,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             message: t("extensions:develop.branding.notifications.fetch.genericError.message")
         }));
 
-        setBrandingPreference(DEFAULT_PREFERENCE);
+        setBrandingPreference(overridenBrandingPreference ?? DEFAULT_PREFERENCE);
     }, [ brandingPreferenceFetchRequestError ]);
 
     /**
@@ -281,6 +287,13 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 // Tracked here https://github.com/wso2/product-is/issues/11650.
             });
     }, [ theme ]);
+
+    useEffect(() => {
+
+        if (overridenBrandingPreference) {
+            setBrandingPreference(overridenBrandingPreference);
+        }
+    }, [ overridenBrandingPreference ]);
 
     /**
      * Handles preference form submit action.
@@ -476,6 +489,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 if (setRequestLoadingState) {
                     setIsBrandingPreferenceUpdateRequestLoading(false);
                 }
+                mutateBrandingPreferenceFetchRequest();
             });
     };
 
@@ -566,7 +580,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         setIsBrandingConfigured(false);
         setBrandingPreference(DEFAULT_PREFERENCE);
         mutateBrandingPreferenceFetchRequest();
-        mutateCustomTextPreferenceFetchRequest();
+        mutateCustomTextPreferenceFetchRequests();
 
         // Increment the tabs component key to remount the component on branding revert.
         setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);
@@ -684,7 +698,9 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-            <Show when={ AccessControlConstants.BRANDING_DELETE }>
+            <Show
+                when={ featureConfig?.branding?.scopes?.delete }
+            >
                 <DangerZoneGroup sectionHeader={ t("extensions:develop.branding.dangerZoneGroup.header") }>
                     { brandingPreference.configs?.isBrandingEnabled && (
                         <DangerZone
