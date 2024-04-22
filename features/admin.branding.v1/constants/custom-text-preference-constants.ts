@@ -120,6 +120,10 @@ export class CustomTextPreferenceConstants {
                 INPUT: {
                     PLACEHOLDER: string;
                 }
+            };
+            RADIO_BUTTON: {
+                SMS_OTP: string,
+                EMAIL_LINK: string
             }
             BUTTON: {
                 SMS_OTP: string,
@@ -178,6 +182,10 @@ export class CustomTextPreferenceConstants {
                 INPUT: {
                     PLACEHOLDER: "password.recovery.identifier.input.placeholder"
                 }
+            },
+            RADIO_BUTTON: {
+                EMAIL_LINK: "send.email.link",
+                SMS_OTP: "send.code.via.sms"
             }
         },
         PASSWORD_RESET: {
