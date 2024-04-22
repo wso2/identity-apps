@@ -46,6 +46,10 @@ export interface BrandingPreferenceContextProps {
      */
     onSelectedPreviewScreenVariationChange: (variation: PreviewScreenVariationType) => void;
     /**
+     * Resets the variations back to default
+     */
+    resetSelectedPreviewScreenVariations: () => void;
+    /**
      * Sets the language requesting for preview.
      * @param locale - Selected language.
      */

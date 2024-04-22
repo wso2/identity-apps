@@ -421,6 +421,9 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 preference: brandingPreference,
                 resetAllCustomTextPreference: _deleteCustomTextPreference,
                 resetCustomTextField,
+                resetSelectedPreviewScreenVariations: () : void => {
+                    setSelectedPreviewScreenVariation(PreviewScreenVariationType.BASE);
+                },
                 selectedLocale,
                 selectedScreen,
                 selectedScreenVariation,

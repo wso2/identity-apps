@@ -141,6 +141,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const {
         activeCustomTextConfigurationMode,
         resetAllCustomTextPreference,
+        resetSelectedPreviewScreenVariations,
         selectedLocale,
         selectedScreen,
         getScreens,
@@ -161,7 +162,8 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(isUpdating);
     const [
         brandingPreferenceForPreview,
-        setBrandingPreferenceForPreview
+        setBrandingPreferenceForPreview,
+        
     ] = useState<BrandingPreferenceInterface>(brandingPreference);
     const [
         showCustomTextRevertAllConfirmationModal,
@@ -519,6 +521,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                     ) => {
                         activeTabMetadata && updateActiveTab(activeTabMetadata["data-tabid"]);
                         setBrandingPreferenceForPreview(moderateValuesForPreview(brandingPreference));
+                        resetSelectedPreviewScreenVariations();
                     } }
                     panes={ resolveTabPanes() }
                     data-componentid={ `${componentId}-forms` }

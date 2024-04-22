@@ -77,7 +77,9 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
         } else if (selectedScreen === PreviewScreenType.TOTP) {
             return <TOTPFragment />;
         } else if (selectedScreen === PreviewScreenType.PASSWORD_RECOVERY) {
-            if (selectedScreenVariation === PreviewScreenVariationType.EMAIL_LINK) {
+            if (selectedScreenVariation === PreviewScreenVariationType.EMAIL_LINK ||
+                selectedScreenVariation === PreviewScreenVariationType.BASE
+            ) {
                 return <PasswordRecoveryEmailLinkFragment />;
             } else if(selectedScreenVariation === PreviewScreenVariationType.SMS_OTP) {
                 return <PasswordRecoverySMSFragment/>;
