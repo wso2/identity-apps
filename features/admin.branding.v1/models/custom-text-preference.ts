@@ -111,7 +111,7 @@ export interface CustomTextPreferenceScreenMetaInterface {
  * Base variations for screens. Represents the basic state of the screen.
  */
 export const BASE_DISPLAY_VARIATION :Record<PreviewScreenType, PreviewScreenVariationType> = {
-    "common" : PreviewScreenVariationType.BASE, 
+    "common" : PreviewScreenVariationType.BASE,
     "email-otp" : PreviewScreenVariationType.BASE,
     "email-template" : PreviewScreenVariationType.BASE,
     "login" : PreviewScreenVariationType.BASE,

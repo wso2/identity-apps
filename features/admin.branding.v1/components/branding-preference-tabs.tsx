@@ -162,8 +162,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(isUpdating);
     const [
         brandingPreferenceForPreview,
-        setBrandingPreferenceForPreview,
-        
+        setBrandingPreferenceForPreview
     ] = useState<BrandingPreferenceInterface>(brandingPreference);
     const [
         showCustomTextRevertAllConfirmationModal,
