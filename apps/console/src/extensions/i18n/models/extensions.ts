@@ -3039,6 +3039,7 @@ export interface Extensions {
                             enableEmailBasedRecovery: FormAttributes;
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
+                            otpMaxResendCount: FormAttributes;
                             smsOtpExpiryTime: FormAttributes;
                             passwordRecoveryOtpUseUppercase: FormAttributes;
                             passwordRecoveryOtpUseLowercase: FormAttributes;

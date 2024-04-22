@@ -60,6 +60,10 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: number;
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
+        MAX_RESEND_COUNT_MIN_LENGTH: number;
+        MAX_RESEND_COUNT_MAX_LENGTH: number;
+        MAX_RESEND_COUNT_MIN_VALUE: number;
+        MAX_RESEND_COUNT_MAX_VALUE: number;
         SMS_OTP_EXPIRY_TIME_MAX_LENGTH: number;
         SMS_OTP_EXPIRY_TIME_MAX_VALUE: number;
         SMS_OTP_CODE_LENGTH_MAX_LENGTH: number;
@@ -72,12 +76,16 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: 10080,
         EXPIRY_TIME_MIN_LENGTH: 1,
         EXPIRY_TIME_MIN_VALUE: 1,
-        SMS_OTP_EXPIRY_TIME_MAX_LENGTH: 4,
-        SMS_OTP_EXPIRY_TIME_MAX_VALUE: 1440,
+        MAX_RESEND_COUNT_MAX_LENGTH: 1,
+        MAX_RESEND_COUNT_MAX_VALUE: 5,
+        MAX_RESEND_COUNT_MIN_LENGTH: 1,
+        MAX_RESEND_COUNT_MIN_VALUE: 1,
         SMS_OTP_CODE_LENGTH_MAX_LENGTH: 2,
         SMS_OTP_CODE_LENGTH_MAX_VALUE: 10,
         SMS_OTP_CODE_LENGTH_MIN_LENGTH: 1,
-        SMS_OTP_CODE_LENGTH_MIN_VALUE: 6
+        SMS_OTP_CODE_LENGTH_MIN_VALUE: 6,
+        SMS_OTP_EXPIRY_TIME_MAX_LENGTH: 4,
+        SMS_OTP_EXPIRY_TIME_MAX_VALUE: 1440,
     };
 
     /**

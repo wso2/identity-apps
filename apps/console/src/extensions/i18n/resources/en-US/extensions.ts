@@ -3578,6 +3578,19 @@ export const extensions: Extensions = {
                                     "recovery is successful.",
                                 label: "Notify on successful recovery"
                             },
+                            otpMaxResendCount: {
+                                hint: "Password recovery OTP maximum resend count.",
+                                label: "Max resend count",
+                                placeholder: "Enter max resend count",
+                                validations: {
+                                    invalid: "Password recovery OTP resend count should be an integer.",
+                                    empty: "Password recovery OTP resend count cannot be empty.",
+                                    range:
+                                        "Password recovery OTP resend count should be between 1 & 5.",
+                                    maxLengthReached:
+                                        "Password recovery OTP resend count should be a number with 1 digits."
+                                }
+                            },
                             smsOtpExpiryTime: {
                                 hint: "Password recovery OTP expiry time in minutes.",
                                 label: "Password recovery OTP expiry time",
