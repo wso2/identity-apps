@@ -92,27 +92,28 @@ const ScreenVariationDropdown: FunctionComponent<ScreenVariationDropdownPropsInt
     }, [ screenVariations ]);
 
     return (
-        <Form.Field
-            control={ Select }
-            ariaLabel="Branding text customization screen selection"
-            className="dropdown branding-preference-custom-text-screen-dropdown"
-            name="screen-variation"
-            label={ t("branding:brandingCustomText.screenSelectVariationDropdown.label") }
-            options={ supportedScreenVariations }
-            required={ required }
-            data-componentid={ componentId }
-            placeholder={ t("branding:brandingCustomText.screenSelectVariationDropdown.placeholder") }
-            defaultValue={ supportedScreenVariations[0]?.text }
-            value={ selectedScreenVariation }
-            onChange={ (
-                _: React.SyntheticEvent<HTMLElement, Event>,
-                { value }: DropdownProps
-            ) => {
-                setSelectedScreenVariation(value as PreviewScreenVariationType);
-                onChange(value as PreviewScreenVariationType);
-            } }
-        />
-    );
+        (screenVariations?.length > 1 && (
+            <Form.Field
+                control={ Select }
+                ariaLabel="Branding text customization screen selection"
+                className="dropdown branding-preference-custom-text-screen-dropdown"
+                name="screen-variation"
+                label={ t("branding:brandingCustomText.screenSelectVariationDropdown.label") }
+                options={ supportedScreenVariations }
+                required={ required }
+                data-componentid={ componentId }
+                placeholder={ t("branding:brandingCustomText.screenSelectVariationDropdown.placeholder") }
+                defaultValue={ supportedScreenVariations[0]?.text }
+                value={ selectedScreenVariation }
+                onChange={ (
+                    _: React.SyntheticEvent<HTMLElement, Event>,
+                    { value }: DropdownProps
+                ) => {
+                    setSelectedScreenVariation(value as PreviewScreenVariationType);
+                    onChange(value as PreviewScreenVariationType);
+                } }
+            />)
+        ));
 };
 
 /**
