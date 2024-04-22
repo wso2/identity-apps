@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.58
+
+### Patch Changes
+
+- [#6028](https://github.com/wso2/identity-apps/pull/6028) [`f67d5f98c5`](https://github.com/wso2/identity-apps/commit/f67d5f98c581d55c953a2b074b86fdf04f5755ec) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Set defined callback URL for the console portal app initilization
+
 ## 2.1.57
 
 ### Patch Changes
