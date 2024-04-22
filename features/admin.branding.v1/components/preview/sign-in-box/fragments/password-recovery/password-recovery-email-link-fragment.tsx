@@ -45,7 +45,7 @@ const PasswordRecoveryEmailLinkFragment: FunctionComponent<PasswordRecoveryEmail
                 { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.HEADING, "Forgot Password?") }
             </h2>
             <div className="segment-form">
-                <form method="post" id="totpForm" className="ui large form otp-form">
+                <form method="post" id="otpForm" className="ui large form otp-form">
                     <p className="line-break text-center" id="instruction" >
                         { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.BODY,
                             "Don't worry, it happens. We will send you an email to reset your password.") }
