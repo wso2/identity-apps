@@ -24,7 +24,6 @@ import useBrandingPreference from "../hooks/use-branding-preference";
 import { PreviewScreenType, PreviewScreenVariationType } from "../models/branding-preferences";
 import { BASE_DISPLAY_VARIATION } from "../models/custom-text-preference";
 
-
 /**
  * Prop types for the screen variation dropdown component.
  */
@@ -56,17 +55,20 @@ const ScreenVariationDropdown: FunctionComponent<ScreenVariationDropdownPropsInt
         onChange,
         selectedScreen,
         required,
-        ["data-componentid"]: componentId } = props;
+        ["data-componentid"]: componentId
+    } = props;
 
     const { getScreenVariations } = useBrandingPreference();
 
     const { t } = useTranslation();
 
     const [ screenVariations, setScreenVariations ] = useState<PreviewScreenVariationType[]>();
-
     const [ selectedScreenVariation, setSelectedScreenVariation ]
         = useState<PreviewScreenVariationType>();
 
+    /**
+     * Update the variations accordingly on selected screen change.
+     */
     useEffect(() => {
         setSelectedScreenVariation(BASE_DISPLAY_VARIATION[selectedScreen]);
         setScreenVariations(getScreenVariations(selectedScreen));

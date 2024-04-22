@@ -46,7 +46,7 @@ export interface BrandingPreferenceContextProps {
      */
     onSelectedPreviewScreenVariationChange: (variation: PreviewScreenVariationType) => void;
     /**
-     * Resets the variations back to default
+     * Resets the variations back to default.
      */
     resetSelectedPreviewScreenVariations: () => void;
     /**
