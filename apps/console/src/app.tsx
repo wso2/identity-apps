@@ -96,14 +96,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
-    const [ orgId, setOrgId ] = useState<string>();
     const [ featureGateConfigData, setFeatureGateConfigData ] =
         useState<FeatureGateInterface | null>(featureGateConfigUpdated);
 
     const {
         data: allFeatures,
         error: featureGateAPIException
-    } = useGetAllFeatures(orgId, state.isAuthenticated);
+    } = useGetAllFeatures();
 
     /**
      * Set the deployment configs in redux state.
@@ -219,24 +218,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         }
         eventPublisher.publish("page-visit-console-landing-page");
     }, [ uuid ]);
-
-    useEffect(() => {
-        if(state.isAuthenticated) {
-            if (OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
-            || store.getState().organization.isFirstLevelOrganization) {
-                getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
-                    const orgName: string = response.org_name;
-                    // Set org_name instead of org_uuid as the API expects org_name
-                    // as it resolves tenant uuid from it.
-
-                    setOrgId(orgName);
-                });
-            } else {
-                // Set the sub org id to the current organization id.
-                setOrgId(store.getState().organization.organization.id);
-            }
-        }
-    }, [ state ]);
 
     useEffect(() => {
         if (allFeatures instanceof IdentityAppsApiException || featureGateAPIException) {
