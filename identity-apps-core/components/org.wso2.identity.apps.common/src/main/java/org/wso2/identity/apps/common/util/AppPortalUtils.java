@@ -67,6 +67,7 @@ import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.APPLICATIO
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.AppPortal.CONSOLE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_CALLBACK_URL;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
@@ -135,6 +136,10 @@ public class AppPortalUtils {
                     + "|" + callbackUrl.replace(portalPath, "/t/(.*)/o/(.*)" + portalPath)
                     + ")";
             }
+        }
+        String consoleCallbackUrl = IdentityUtil.getProperty(CONSOLE_CALLBACK_URL);
+        if (StringUtils.isNotEmpty(consoleCallbackUrl)) {
+            callbackUrl = consoleCallbackUrl;
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
