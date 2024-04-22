@@ -248,7 +248,7 @@ public class AppPortalUtils {
         String appId = AppsCommonDataHolder.getInstance().getApplicationManagementService()
             .createApplication(serviceProvider, tenantDomain, appOwner);
 
-        if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+        if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME && CONSOLE_APP.equals(appName)) {
             shareApplication(tenantDomain, tenantId, appId, appName, appOwner);
         }
     }
