@@ -239,7 +239,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
                 getAdaptiveAuthenticationAvailability: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
-                "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
+                    "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
                     : "",
                 hash: true,
                 importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
