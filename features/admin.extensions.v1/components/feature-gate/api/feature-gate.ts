@@ -19,7 +19,6 @@
 import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AllFeatureInterface } from "@wso2is/access-control";
 import { HttpMethods } from "@wso2is/core/models";
-import { OrganizationType } from "../../../../admin.organizations.v1/constants";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useRequest, {
@@ -27,6 +26,7 @@ import useRequest, {
     RequestResultInterface
 } from "../../../../admin.core.v1/hooks/use-request";
 import { AppState } from "../../../../admin.core.v1/store";
+import { OrganizationType } from "../../../../admin.organizations.v1/constants";
 import { getFeatureGateResourceEndpoints } from "../configs";
 
 /**
