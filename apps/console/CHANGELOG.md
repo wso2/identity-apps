@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.15.22
+
+### Patch Changes
+
+- [#6034](https://github.com/wso2/identity-apps/pull/6034) [`01d27ac6db`](https://github.com/wso2/identity-apps/commit/01d27ac6db717f1d1bcdffbccdd644188ec7fa33) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix feature gate API invocation issue
+
+- Updated dependencies [[`01d27ac6db`](https://github.com/wso2/identity-apps/commit/01d27ac6db717f1d1bcdffbccdd644188ec7fa33)]:
+  - @wso2is/features@2.15.16
+
 ## 2.15.21
 
 ### Patch Changes
