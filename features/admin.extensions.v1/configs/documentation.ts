@@ -183,6 +183,16 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 },
                 roles: {
                     learnMore: undefined
+                },
+                template: {
+                    categories: {
+                        default: {
+                            learnMore: undefined
+                        },
+                        ssoIntegration: {
+                            learnMore: undefined
+                        }
+                    }
                 }
             },
             branding: {

@@ -2862,9 +2862,19 @@ export const applications: ApplicationsNS = {
     },
     templates: {
         categories: {
-            default: "Application Types",
-            ssoIntegration: "SSO Integrations",
-            other: "Others"
+            default: {
+                displayName: "Application Types",
+                description: "Integrate applications based on technology and platform."
+            },
+            ssoIntegration: {
+                displayName: "SSO Integrations",
+                description: "Configure single sign-on seamlessly across SaaS services such as"
+                    + " Google Workspace, Salesforce, and more."
+            },
+            other: {
+                displayName: "Others",
+                description: "Other types of un-categorized integrations."
+            }
         },
         emptyPlaceholder: {
             action: null,

@@ -24,7 +24,8 @@ import {
     EmptyPlaceholder,
     GridLayout,
     ResourceGrid,
-    SearchWithFilterLabels
+    SearchWithFilterLabels,
+    useDocumentation
 } from "@wso2is/react-components";
 import union from "lodash-es/union";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
@@ -36,6 +37,7 @@ import { ApplicationTemplateConstants } from "../../constants/application-templa
 import useApplicationTemplates from "../../hooks/use-application-templates";
 import { AuthProtocolMetaListItemInterface } from "../../models";
 import {
+    ApplicationTemplateCategories,
     ApplicationTemplateListInterface,
     CategorizedApplicationTemplatesInterface
 } from "../../models/application-templates";
@@ -67,6 +69,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
     const { onTemplateSelect, ["data-componentid"]: componentId } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const customInboundProtocols: AuthProtocolMetaListItemInterface[] = useSelector((state: AppState) =>
         state?.application?.meta?.customInboundProtocols);
@@ -269,12 +272,12 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={
-                        t("applications:placeHolders.emptyApplicationTypeList.title")
+                        t("applications:placeholders.emptyApplicationTypeList.title")
                     }
                     subtitle={ [
-                        t("applications:placeHolders.emptyApplicationTypeList" +
+                        t("applications:placeholders.emptyApplicationTypeList" +
                             ".subtitles.0"),
-                        t("applications:placeHolders.emptyApplicationTypeList" +
+                        t("applications:placeholders.emptyApplicationTypeList" +
                             ".subtitles.1")
                     ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }
@@ -283,6 +286,25 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         }
 
         return null;
+    };
+
+    /**
+     * Resolve the correct documentation link based on the provided category ID.
+     *
+     * @param category - The category ID requires the documentation link.
+     * @returns Documentation link.
+     */
+    const resolveDocumentationLinks = (category: string) => {
+        switch(category) {
+            case ApplicationTemplateCategories.DEFAULT:
+                return getLink("develop.applications.template." +
+                    "categories.default.learnMore");
+            case ApplicationTemplateCategories.SSO_INTEGRATION:
+                return getLink("develop.applications.template." +
+                    "categories.ssoIntegration.learnMore");
+            default:
+                return null;
+        }
     };
 
     return (
@@ -347,7 +369,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                                                         >
                                                             { t(category?.description) }
                                                             <DocumentationLink
-                                                                link={ null }
+                                                                link={ resolveDocumentationLinks(category?.id) }
                                                             >
                                                                 { t("common:learnMore") }
                                                             </DocumentationLink>

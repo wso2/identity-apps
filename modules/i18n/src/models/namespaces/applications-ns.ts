@@ -2604,9 +2604,18 @@ export interface ApplicationsNS {
     };
     templates: {
         categories: {
-            default: string;
-            ssoIntegration: string;
-            other: string;
+            default: {
+                displayName: string;
+                description: string;
+            };
+            ssoIntegration: {
+                displayName: string;
+                description: string;
+            };
+            other: {
+                displayName: string;
+                description: string;
+            };
         }
         emptyPlaceholder: {
             action: string;

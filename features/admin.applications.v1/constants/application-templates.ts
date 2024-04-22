@@ -32,22 +32,22 @@ export class ApplicationTemplateConstants {
 
     public static readonly SUPPORTED_CATEGORIES_INFO: ApplicationTemplateCategoryInterface[] = [
         {
-            description: "Integrate applications based on technology and platform.",
-            displayName: "applications:templates.categories.default",
+            description: "applications:templates.categories.default.description",
+            displayName: "applications:templates.categories.default.displayName",
             displayOrder: 0,
             id: "DEFAULT"
         },
         {
-            description: "Configure single sign-on seamlessly across SaaS services such as"
-                + " Google Workspace, Salesforce, and more.",
-            displayName: "applications:templates.categories.ssoIntegration",
+            description: "applications:templates.categories.ssoIntegration.description",
+            displayName: "applications:templates.categories.ssoIntegration.displayName",
             displayOrder: 1,
             id: "SSO-INTEGRATION"
         }
     ];
 
     public static readonly OTHER_CATEGORY_INFO: ApplicationTemplateCategoryInterface = {
-        displayName: "applications:templates.categories.other",
+        description: "applications:templates.categories.other.description",
+        displayName: "applications:templates.categories.other.displayName",
         displayOrder: Infinity,
         id: "OTHER"
     }
