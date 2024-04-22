@@ -378,7 +378,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 : initialConnectorValues?.enableSMSBasedRecovery,
             "Recovery.NotifySuccess": values.notifySuccess !== undefined
                 ? !!values.notifySuccess
-                : initialConnectorValues?.notifySuccess,
+                : initialConnectorValues?.notifySuccess
         };
 
         return data;

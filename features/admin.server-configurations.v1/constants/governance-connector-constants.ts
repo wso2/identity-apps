@@ -85,7 +85,7 @@ export class GovernanceConnectorConstants {
         SMS_OTP_CODE_LENGTH_MIN_LENGTH: 1,
         SMS_OTP_CODE_LENGTH_MIN_VALUE: 6,
         SMS_OTP_EXPIRY_TIME_MAX_LENGTH: 4,
-        SMS_OTP_EXPIRY_TIME_MAX_VALUE: 1440,
+        SMS_OTP_EXPIRY_TIME_MAX_VALUE: 1440
     };
 
     /**

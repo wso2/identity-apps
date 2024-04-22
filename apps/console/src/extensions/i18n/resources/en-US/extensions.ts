@@ -3607,15 +3607,15 @@ export const extensions: Extensions = {
                             },
                             passwordRecoveryOtpUseUppercase: {
                                 hint: "This specifies whether to use upper case characters in the password recovery otp code.",
-                                label: "Use upper case letters",
+                                label: "Use upper case letters"
                             },
                             passwordRecoveryOtpUseLowercase: {
                                 hint: "This specifies whether to use lower case characters in the password recovery otp code.",
-                                label: "Use lower case letters",
+                                label: "Use lower case letters"
                             },
                             passwordRecoveryOtpUseNumeric: {
                                 hint: "This specifies whether to use numeric characters in the password recovery otp code.",
-                                label: "Use numeric characters",
+                                label: "Use numeric characters"
                             },
                             passwordRecoveryOtpLength: {
                                 hint: "Password recovery OTP length in characters",
@@ -3630,7 +3630,7 @@ export const extensions: Extensions = {
                             enableEmailBasedRecovery: {
                                 hint: "This specifies whether to send an recovery link to the email address.",
                                 label: "Enable email link based recovery"
-                            },
+                            }
                         }
                     },
                     recoveryOptionSubHeadingEmailLink: "Email Link",
