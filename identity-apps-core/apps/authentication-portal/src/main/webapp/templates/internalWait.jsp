@@ -31,6 +31,7 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <jsp:directive.include file="../includes/init-url.jsp"/>
 
@@ -54,9 +55,9 @@
     Map<String, String> properties = new HashMap<>();
     int timeout = 10;
 
-    // TODO: Set i18n mappings/ translations.
-    String greeting = "Hello There!";
-    String message = "Please wait until we setup your environment...";
+    // Apply i18n translations for the default greeting and message.
+    String greeting = AuthenticationEndpointUtil.i18n(resourceBundle, "prompt.template.internal.wait.greeting");
+    String message = AuthenticationEndpointUtil.i18n(resourceBundle, "prompt.template.internal.wait.message");
 
     if (dataObj instanceof Map) {
         Map<String, Object> data = (Map<String, Object>) dataObj;
