@@ -411,7 +411,6 @@ export const AppUtils: any = (function() {
          * not have suborg path prefix appended in the base URL when invoking from suborganizations.
          *
          * @returns the server base URL with the tenant name appended.
-         *
          */
         getServerOriginWithTenant: function(enforceOrgPath: boolean = true) {
             if (_config.legacyAuthzRuntime) {
