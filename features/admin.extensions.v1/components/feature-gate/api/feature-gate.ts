@@ -26,7 +26,8 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../../../admin.core.v1/hooks/use-request";
-import { AppState, store } from "../../../../admin.core.v1/store";
+import { AppState } from "../../../../admin.core.v1/store";
+import { getFeatureGateResourceEndpoints } from "../configs";
 
 /**
  * Hook to get the all features of the organization.
@@ -44,31 +45,26 @@ export const useGetAllFeatures = <
         (state: AppState) => state.organization.organizationType
     );
 
+    const baseUrl: string = window["AppUtils"]?.getServerOriginWithTenant(false);
+
     // TODO: Remove this config once the deployment issues are sorted out.
     const isFeatureGateEnabled: boolean = useSelector((state: AppState) => state?.config?.ui?.isFeatureGateEnabled);
     const shouldSendRequest : string = isFeatureGateEnabled && orgIdentifier;
 
     useEffect(() => {
-        if (
-            organizationType === OrganizationType.SUPER_ORGANIZATION
-            || organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
-        ) {
-            getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
-                const orgName: string = response.org_name;
+        getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
+            if (
+                organizationType === OrganizationType.SUPER_ORGANIZATION
+                || organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
+            ) {
                 // Set org_name instead of org_uuid as the API expects org_name
                 // as it resolves tenant uuid from it.
-
-                if (orgName !== orgIdentifier) {
-                    setOrgIdentifier(orgName);
-                }
-
-            });
-        } else {
-            // Using the organization id, if the current organization is a suborganization.
-            if (orgIdentifier !== store.getState().organization.organization.id) {
-                setOrgIdentifier(store.getState().organization.organization.id);
+                setOrgIdentifier(response.org_name);
+            } else {
+                // Using the organization id, if the current organization is a suborganization.
+                setOrgIdentifier(response.org_id);
             }
-        }
+        });
     }, [ organizationType ]);
 
     const requestConfig: any = {
@@ -78,7 +74,7 @@ export const useGetAllFeatures = <
         },
         method: HttpMethods.GET,
         url: shouldSendRequest
-            ? `${store?.getState()?.config?.endpoints?.allFeatures?.replace("{org-uuid}", orgIdentifier)}`
+            ? `${getFeatureGateResourceEndpoints(baseUrl).allFeatures?.replace("{org-uuid}", orgIdentifier)}`
             : ""
     };
 
