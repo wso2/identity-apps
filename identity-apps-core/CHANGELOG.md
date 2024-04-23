@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.1.59
+
+### Patch Changes
+
+- [#6039](https://github.com/wso2/identity-apps/pull/6039) [`00e6bef41f`](https://github.com/wso2/identity-apps/commit/00e6bef41f5b4b4a32a2097e732e8fb3dbb06ded) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Stop sharing the myaccount app with organizations by default
+
+* [#6046](https://github.com/wso2/identity-apps/pull/6046) [`b8bf6a9fef`](https://github.com/wso2/identity-apps/commit/b8bf6a9fef24e488bc22d985c7c2aa5799b53332) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Revert callback URL set when portal app creation
+
 ## 2.1.58
 
 ### Patch Changes
