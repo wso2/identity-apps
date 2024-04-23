@@ -520,7 +520,7 @@ public class AppPortalUtils {
         spProperty1.setDisplayName("Is System Reserved Application");
         serviceProviderProperties.add(spProperty1);
 
-        // Make system applications shareable.
+        // Share the console application with all child organizations.
         if (ApplicationConstants.CONSOLE_APPLICATION_NAME.equals(serviceProvider.getApplicationName())) {
             ServiceProviderProperty spProperty2 = new ServiceProviderProperty();
             spProperty2.setName(SHARE_WITH_ALL_CHILDREN);
