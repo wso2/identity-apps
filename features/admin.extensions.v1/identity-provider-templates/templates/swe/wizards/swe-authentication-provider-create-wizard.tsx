@@ -48,6 +48,7 @@ import {
     IdentityProviderInterface
 } from "../../../../../admin.identity-providers.v1/models";
 import { IdentityProviderManagementUtils } from "../../../../../admin.identity-providers.v1/utils";
+import { SIWEConstants } from "../../../../components/identity-providers/constants/swe-constants";
 import { identityProviderConfig } from "../../../../configs/identity-provider";
 
 /**
@@ -248,21 +249,23 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties =
                 identityProvider?.federatedAuthenticators?.authenticators[ 0 ]?.properties?.filter(
                     (item: CommonPluggableComponentPropertyInterface) =>
-                        item.key !== "ClientId" && item.key !== "ClientSecret" && item.key !== "callbackUrl"
+                        item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_ID
+                            && item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRETE
+                            && item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CALLBACK_URL
                 );
 
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
                 ...identityProvider.federatedAuthenticators.authenticators[ 0 ].properties,
                 {
-                    "key": "ClientId",
+                    "key": SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_ID,
                     "value": values.clientId.toString()
                 },
                 {
-                    "key": "ClientSecret",
+                    "key": SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRETE,
                     "value": values.clientSecret.toString()
                 },
                 {
-                    "key": "callbackUrl",
+                    "key": SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CALLBACK_URL,
                     "value": IdentityProviderManagementUtils.getCommonAuthEndpoint()
                 }
             ];
