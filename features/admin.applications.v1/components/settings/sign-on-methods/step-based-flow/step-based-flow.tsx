@@ -184,6 +184,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 .includes(authenticator.defaultAuthenticator.authenticatorId)) {
 
                 filteredSocialAuthenticators.push(authenticator);
+            } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(
+                authenticator.defaultAuthenticator.authenticatorId)) {
+                secondFactorAuth.push(authenticator);
             } else {
                 filteredEnterpriseAuthenticators.push(authenticator);
             }
