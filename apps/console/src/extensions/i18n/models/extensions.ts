@@ -3039,7 +3039,8 @@ export interface Extensions {
                             enableEmailBasedRecovery: FormAttributes;
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
-                            otpMaxResendCount: FormAttributes;
+                            maxResendCount: FormAttributes;
+                            maxFailedAttemptCount: FormAttributes;
                             smsOtpExpiryTime: FormAttributes;
                             passwordRecoveryOtpUseUppercase: FormAttributes;
                             passwordRecoveryOtpUseLowercase: FormAttributes;
@@ -3051,6 +3052,7 @@ export interface Extensions {
                     recoveryOptionSubHeadingSMS: string;
                     recoveryOptionHeading: string;
                     otpConfigHeading: string;
+                    otherConfigHeading: string;
                     connectorDescription: string;
                     heading: string;
                     notification: {

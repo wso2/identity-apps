@@ -3578,9 +3578,9 @@ export const extensions: Extensions = {
                                     "recovery is successful.",
                                 label: "Notify on successful recovery"
                             },
-                            otpMaxResendCount: {
-                                hint: "Password recovery OTP maximum resend count.",
-                                label: "Max resend count",
+                            maxResendCount: {
+                                hint: "Password recovery maximum resend count.",
+                                label: "Max resend attempts count",
                                 placeholder: "Enter max resend count",
                                 validations: {
                                     invalid: "Password recovery OTP resend count should be an integer.",
@@ -3589,6 +3589,19 @@ export const extensions: Extensions = {
                                         "Password recovery OTP resend count should be between 1 & 5.",
                                     maxLengthReached:
                                         "Password recovery OTP resend count should be a number with 1 digits."
+                                }
+                            },
+                            maxFailedAttemptCount: {
+                                hint: "Password recovery maximum failed attempt count.",
+                                label: "Max failed attempts count",
+                                placeholder: "Enter max failed attempts",
+                                validations: {
+                                    invalid: "Password recovery max failed attempts count should be an integer.",
+                                    empty: "Password recovery max failed attempts count cannot be empty.",
+                                    range:
+                                        "Password recovery max failed attempts count should be between 1 & 10.",
+                                    maxLengthReached:
+                                        "Password recovery max failed attempts count should be a number with less than 3 digits."
                                 }
                             },
                             smsOtpExpiryTime: {
@@ -3637,6 +3650,7 @@ export const extensions: Extensions = {
                     recoveryOptionSubHeadingSMS: "SMS OTP",
                     recoveryOptionHeading: "Recovery Option Selection",
                     otpConfigHeading: "OTP Code Configuration",
+                    otherConfigHeading: "Other Configuration",
                     connectorDescription: "Enable self-service password recovery for users " + "on the login page.",
                     heading: "Password Recovery",
                     notification: {

@@ -248,7 +248,9 @@ export class ServerConfigurationsConstants {
 
 	public static readonly RECOVERY_OTP_USE_NUMERIC: string = "Recovery.Notification.Password.OTP.UseNumbersInOTP";
 	public static readonly RECOVERY_OTP_LENGTH: string = "Recovery.Notification.Password.OTP.OTPLength";
-	public static readonly RECOVERY_OTP_MAX_RESEND_COUNT: string = "Recovery.Notification.Password.MaxResendAttempts";
+	public static readonly RECOVERY_MAX_RESEND_COUNT: string = "Recovery.Notification.Password.MaxResendAttempts";
+	public static readonly RECOVERY_MAX_FAILED_ATTEMPTS_COUNT: string =
+		"Recovery.Notification.Password.MaxFailedAttempts";
 
 	/**
 	 * Login policies - account locking API Keyword constants.

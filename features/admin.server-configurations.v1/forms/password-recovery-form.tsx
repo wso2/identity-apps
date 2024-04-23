@@ -100,9 +100,13 @@ interface PasswordRecoveryFormInitialValuesInterface {
      */
     smsOtpLength: string;
     /**
-     * The maximum amount of times otp is resent.
+     * The maximum amount of times recovery code/link is resent.
      */
-    otpMaxResendCount: string;
+    maxResendCount: string;
+    /**
+     * The maximum allowed failed attempts for a recovery flow.
+     */
+    maxFailedAttemptCount: string;
 }
 
 /**
@@ -122,9 +126,13 @@ export interface PasswordRecoveryFormErrorValidationsInterface {
      */
     smsOtpLength: string;
     /**
-     * OTP max resend count field.
+     * max resend count field.
      */
-    otpMaxResendCount: string;
+    maxResendCount: string;
+    /**
+     * Max allowed failed attempts count field.
+     */
+    maxFailedAttemptCount: string;
 }
 
 const allowedConnectorFields: string[] = [
@@ -137,7 +145,8 @@ const allowedConnectorFields: string[] = [
     ServerConfigurationsConstants.RECOVERY_OTP_USE_LOWERCASE,
     ServerConfigurationsConstants.RECOVERY_OTP_USE_NUMERIC,
     ServerConfigurationsConstants.RECOVERY_OTP_LENGTH,
-    ServerConfigurationsConstants.RECOVERY_OTP_MAX_RESEND_COUNT
+    ServerConfigurationsConstants.RECOVERY_MAX_RESEND_COUNT,
+    ServerConfigurationsConstants.RECOVERY_MAX_FAILED_ATTEMPTS_COUNT
 ];
 
 const FORM_ID: string = "governance-connectors-password-recovery-form";
@@ -228,10 +237,15 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         ...resolvedInitialValues,
                         smsOtpLength: property.value
                     };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_OTP_MAX_RESEND_COUNT) {
+                } else if (property.name === ServerConfigurationsConstants.RECOVERY_MAX_RESEND_COUNT) {
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
-                        otpMaxResendCount : property.value
+                        maxResendCount : property.value
+                    };
+                }  else if (property.name === ServerConfigurationsConstants.RECOVERY_MAX_FAILED_ATTEMPTS_COUNT) {
+                    resolvedInitialValues = {
+                        ...resolvedInitialValues,
+                        maxFailedAttemptCount : property.value
                     };
                 }
             }
@@ -254,7 +268,8 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
         PasswordRecoveryFormErrorValidationsInterface => {
         const errors: PasswordRecoveryFormErrorValidationsInterface = {
             expiryTime: undefined,
-            otpMaxResendCount: undefined,
+            maxFailedAttemptCount: undefined,
+            maxResendCount: undefined,
             smsOtpExpiryTime: undefined,
             smsOtpLength: undefined
         };
@@ -312,17 +327,28 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             // Check for invalid input length.
             errors.smsOtpLength = t("extensions:manage.serverConfigurations.accountRecovery." +
                 "passwordRecovery.form.fields.smsOtpLength.validations.maxLengthReached");
-        } else if (!values.otpMaxResendCount) {
+        } else if (!values.maxResendCount) {
             // Check for required error
             errors.smsOtpLength = t("extensions:manage.serverConfigurations.accountRecovery." +
-            "passwordRecovery.form.fields.otpMaxResendCount.validations.empty");
-        } else if (parseInt(values.otpMaxResendCount, 10) < GovernanceConnectorConstants
+            "passwordRecovery.form.fields.maxResendCount.validations.empty");
+        } else if (parseInt(values.maxResendCount, 10) < GovernanceConnectorConstants
             .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_RESEND_COUNT_MIN_VALUE ||
-            parseInt(values.otpMaxResendCount, 10) > GovernanceConnectorConstants
+            parseInt(values.maxResendCount, 10) > GovernanceConnectorConstants
                 .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_RESEND_COUNT_MAX_VALUE) {
-            // Check for invalid input length.
-            errors.otpMaxResendCount = t("extensions:manage.serverConfigurations.accountRecovery." +
-                "passwordRecovery.form.fields.otpMaxResendCount.validations.maxLengthReached");
+            // Check for invalid range.
+            errors.maxResendCount = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "passwordRecovery.form.fields.maxResendCount.validations.range");
+        } else if (!values.maxFailedAttemptCount) {
+            // Check for required error
+            errors.maxFailedAttemptCount = t("extensions:manage.serverConfigurations.accountRecovery." +
+            "passwordRecovery.form.fields.maxFailedAttemptCount.validations.empty");
+        } else if (parseInt(values.maxFailedAttemptCount, 10) < GovernanceConnectorConstants
+            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_FAILED_ATTEMPT_COUNT_MIN_VALUE ||
+            parseInt(values.maxFailedAttemptCount, 10) > GovernanceConnectorConstants
+                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_FAILED_ATTEMPT_COUNT_MAX_VALUE) {
+            // Check for invalid range.
+            errors.maxFailedAttemptCount = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "passwordRecovery.form.fields.maxFailedAttemptCount.validations.range");
         }
 
         return errors;
@@ -339,6 +365,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             "Recovery.ExpiryTime": any;
             "Recovery.Notification.Password.emailLink.Enable": boolean;
             "Recovery.Notification.Password.ExpiryTime.smsOtp": number;
+            "Recovery.Notification.Password.MaxFailedAttempts": number;
             "Recovery.Notification.Password.MaxResendAttempts": number;
             "Recovery.Notification.Password.smsOtp.Enable": boolean;
             "Recovery.Notification.Password.OTP.UseUppercaseCharactersInOTP": number;
@@ -353,9 +380,12 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             "Recovery.Notification.Password.ExpiryTime.smsOtp": values.smsOtpExpiryTime !== undefined
                 ? values.smsOtpExpiryTime
                 : initialConnectorValues?.smsOtpExpiryTime,
-            "Recovery.Notification.Password.MaxResendAttempts": values.otpMaxResendCount !== undefined
-                ? values.otpMaxResendCount
-                : initialConnectorValues?.otpMaxResendCount,
+            "Recovery.Notification.Password.MaxFailedAttempts": values.maxFailedAttemptCount !== undefined
+                ? values.maxFailedAttemptCount
+                : initialConnectorValues?.maxFailedAttemptCount,
+            "Recovery.Notification.Password.MaxResendAttempts": values.maxResendCount !== undefined
+                ? values.maxResendCount
+                : initialConnectorValues?.maxResendCount,
             "Recovery.Notification.Password.OTP.OTPLength": values.smsOtpLength !== undefined
                 ? values.smsOtpLength
                 : initialConnectorValues?.smsOtpLength,
@@ -639,10 +669,55 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.passwordRecoveryOtpLength.hint") as ReactNode }
                 </Hint>
+                <Divider/>
+                <Heading as="h4" className={ "mt-4 mb-4" }>
+                    { t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.otherConfigHeading") as ReactNode }
+                </Heading>
                 <Field.Input
-                    ariaLabel="otpMaxResendCount"
+                    ariaLabel="maxFailedAttemptCount"
                     inputType="number"
-                    name="otpMaxResendCount"
+                    name="maxFailedAttemptCount"
+                    min={
+                        GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                            .MAX_FAILED_ATTEMPT_COUNT_MIN_VALUE
+                    }
+                    max={
+                        GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                            .MAX_FAILED_ATTEMPT_COUNT_MAX_VALUE
+                    }
+                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "passwordRecovery.form.fields.maxFailedAttemptCount.label") }
+                    placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "passwordRecovery.form.fields.maxFailedAttemptCount.placeholder") }
+                    required={ false }
+                    maxLength={
+                        GovernanceConnectorConstants
+                            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_FAILED_ATTEMPT_COUNT_MAX_LENGTH
+                    }
+                    minLength={
+                        GovernanceConnectorConstants
+                            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_FAILED_ATTEMPT_COUNT_MIN_LENGTH
+                    }
+                    readOnly={ readOnly }
+                    width={ 10 }
+                    labelPosition="right"
+                    disabled={ !isConnectorEnabled }
+                    data-testid={ `${ testId }-max-fail-attempt-count` }
+                >
+                    <input/>
+                    <Label
+                        content={ "attempts" }
+                    />
+                </Field.Input>
+                <Hint className={ "mb-5 " }>
+                    { t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.maxFailedAttemptCount.hint") as ReactNode }
+                </Hint>
+                <Field.Input
+                    ariaLabel="maxResendCount"
+                    inputType="number"
+                    name="maxResendCount"
                     min={
                         GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
                             .MAX_RESEND_COUNT_MIN_VALUE
@@ -652,9 +727,9 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                             .MAX_RESEND_COUNT_MAX_VALUE
                     }
                     label={ t("extensions:manage.serverConfigurations.accountRecovery." +
-                        "passwordRecovery.form.fields.otpMaxResendCount.label") }
+                        "passwordRecovery.form.fields.maxResendCount.label") }
                     placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
-                        "passwordRecovery.form.fields.otpMaxResendCount.placeholder") }
+                        "passwordRecovery.form.fields.maxResendCount.placeholder") }
                     required={ false }
                     maxLength={
                         GovernanceConnectorConstants
@@ -677,7 +752,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 </Field.Input>
                 <Hint className={ "mb-5 " }>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
-                            "passwordRecovery.form.fields.otpMaxResendCount.hint") as ReactNode }
+                            "passwordRecovery.form.fields.maxResendCount.hint") as ReactNode }
                 </Hint>
                 <Field.Button
                     className= { "mt-4" }
