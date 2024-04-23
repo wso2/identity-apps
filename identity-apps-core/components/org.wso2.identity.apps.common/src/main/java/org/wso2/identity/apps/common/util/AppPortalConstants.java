@@ -43,7 +43,6 @@ public class AppPortalConstants {
     public static final String SYSTEM_PROP_SKIP_SERVER_INITIALIZATION = "skipServerInitialization";
 
     public static final String CONSOLE_APP = "Console";
-    public static final String CONSOLE_CALLBACK_URL = "Console.CallbackURL";
 
     private AppPortalConstants() {
 
