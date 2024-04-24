@@ -136,8 +136,6 @@
                 request.setAttribute("resendCode", recoveryResponse.getResendCode());
                 request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
             } catch (ApiException e) {
-                org.apache.logging.log4j.LogManager.getLogger().error("ERROR OCCURED!");
-                org.apache.logging.log4j.LogManager.getLogger().error(e);
                 IdentityManagementEndpointUtil.addErrorInformation(request, e);
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
@@ -145,7 +143,6 @@
             // STEP THREE : Redirect to enter the OTP sent
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
         } else if ("RESEND".equals(recoveryStage)) {
-            org.apache.logging.log4j.LogManager.getLogger().error("REACHED RESEND START");
             String resendCode = request.getParameter("resendCode");
             // SENDING RESEND REQEUST
             try {
@@ -162,7 +159,6 @@
                 request.setAttribute("resendCode", resendResponse.getResendCode());
                 request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
             } catch (ApiException e) {
-            org.apache.logging.log4j.LogManager.getLogger().error("REACHED RESEND ERROR");
                 if (!StringUtils.isBlank(username)) {
                     request.setAttribute("username", username);
                 }
@@ -176,7 +172,6 @@
                 request.setAttribute("resendCode", resendCode);
                 request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
             }
-            org.apache.logging.log4j.LogManager.getLogger().error("REACHED RESEND END");
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
         } else if ("CONFIRM".equals(recoveryStage)) {
             String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
