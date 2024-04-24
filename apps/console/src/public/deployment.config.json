@@ -39,6 +39,7 @@
     "idpConfigs": {
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",
         "oidcSessionIFrameEndpointURL": "${serverOrigin}/oidc/checksession",
+        "enableOIDCSessionManagement": true,
         "baseUrls": [],
         "clockTolerance": 300,
         "storage": "webWorker",
