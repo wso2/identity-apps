@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import { ChevronUpIcon, XMarkIcon }from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
@@ -46,7 +47,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
     const dispatch: Dispatch = useDispatch();
 
-    const { isGeneratingLoginFlow, setOperationId } = useAILoginFlow();
+    const { isGeneratingLoginFlow } = useAILoginFlow();
 
     const { availableAuthenticators } = useAvailableAuthenticators();
 
@@ -56,6 +57,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
     const [ userPrompt, setUserPrompt ] = useState<string>("");
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Handles the click event of the expand button.
@@ -100,12 +102,13 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
             return;
         }
 
-        const operationUUID: string = uuidv4();
+        setIsSubmitting(true);
 
-        setOperationId(operationUUID);
+        const traceID: string = uuidv4();
 
-        await generateAILoginFlow(userPrompt, claimURI, availableAuthenticators, operationUUID);
+        await generateAILoginFlow(userPrompt, claimURI, availableAuthenticators, traceID);
         setBannerState(BannerState.COLLAPSED);
+        setIsSubmitting(false);
     };
 
     if (isGeneratingLoginFlow) {
@@ -199,18 +202,22 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     InputProps={ {
                         className: "login-flow-ai-input-field-inner",
                         endAdornment: (
-                            <IconButton
-                                className="login-flow-ai-input-button"
-                                onClick={ () => handleGenerateClick() }
-                                disabled={ !userPrompt }
-                            >
-                                <GenericIcon
-                                    icon={ AIIcon }
-                                    rounded
-                                    transparent
-                                    fill="white"
-                                />
-                            </IconButton>
+                            !isSubmitting ? (
+                                <IconButton
+                                    className="login-flow-ai-input-button"
+                                    onClick={ () => handleGenerateClick() }
+                                    disabled={ !userPrompt }
+                                >
+                                    <GenericIcon
+                                        icon={ AIIcon }
+                                        rounded
+                                        transparent
+                                        fill="white"
+                                    />
+                                </IconButton>
+                            ) : (
+                                <CircularProgress color="primary" />
+                            )
                         )
                     } }
                 />

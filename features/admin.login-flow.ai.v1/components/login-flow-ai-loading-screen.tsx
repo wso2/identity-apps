@@ -33,15 +33,22 @@ import {
     useGetStatusLabels
 } from "../constants/login-flow-ai-constants";
 import "./login-flow-ai-loading-screen.scss";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 
 const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
+
     const { t } = useTranslation();
+
+    const dispatch: Dispatch = useDispatch();
 
     const statusLabels: Record<string, string> = useGetStatusLabels();
 
     const facts: string[] = useGetFacts();
 
-    const { data, isLoading } = useAILoginFlowGenerationStatus(traceId);
+    const { data, isLoading, error } = useAILoginFlowGenerationStatus(traceId);
 
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
     const [ factIndex, setFactIndex ] = useState<number>(0);
@@ -66,7 +73,6 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
         return () => clearInterval(interval);
     }, [ data ]);
 
-
     useEffect(() => {
         const interval: NodeJS.Timeout = setInterval(() => {
             setFactIndex((factIndex + 1) % facts.length);
@@ -74,6 +80,18 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
 
         return () => clearInterval(interval);
     }, [ factIndex ]);
+
+    useEffect(() => {
+        if (error) {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("ai:aiLoginFlow.notifications.generateStatusError.generic.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("ai:aiLoginFlow.notifications.generateStatusError.generic.message")
+                })
+            );
+        }
+    }, [ error ]);
 
     /**
      * Get the current progress based on the status.

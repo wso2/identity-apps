@@ -59,13 +59,13 @@ const generateLoginFlow = (
             "Trace-Id": traceId
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.applications}/ai/loginflow/generate`
+        url: `${store.getState().config.endpoints.applications}/loginflow/generate`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse<GenerateLoginFlowAPIResponseInterface>) => {
-            if (response.status !== 202) {
-                throw new Error("Failed to generate login flow: ${response.statusText}");
+            if (response.status !== 200) {
+                throw new Error(`Failed to generate login flow: ${response.statusText}`);
             }
 
             return response.data;

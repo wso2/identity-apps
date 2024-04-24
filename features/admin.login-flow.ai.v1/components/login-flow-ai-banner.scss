@@ -44,12 +44,12 @@
     }
 }
 
-.login-flow-ai-banner-collapsed {
-    background: #F5F2F0;
+.login-flow-ai-banner-input {
+    background: #FEFEFE;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: right center;
-    border: 1px solid #CBCEDB;
+    border: 1px solid #DCDAD8;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -75,6 +75,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .login-flow-ai-banner-heading {

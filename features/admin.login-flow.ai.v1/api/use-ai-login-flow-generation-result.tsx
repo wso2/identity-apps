@@ -37,7 +37,7 @@ export const useAILoginFlowGenerationResult = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.applications}/ai/loginflow/result/${ operationId }`
+        url: `${store.getState().config.endpoints.applications}/loginflow/result/${ operationId }`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<AILoginFlowGenerationResultAPIResponseInterface,

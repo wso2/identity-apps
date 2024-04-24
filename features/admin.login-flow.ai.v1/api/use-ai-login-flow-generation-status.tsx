@@ -25,6 +25,7 @@ import useRequest, {
 } from "../../admin.core.v1/hooks/use-request";
 import { store } from "../../admin.core.v1/store";
 import { AILoginFlowGenerationStatusAPIResponseInterface } from "../models/ai-login-flow";
+import useAILoginFlow from "../hooks/use-ai-login-flow";
 
 export const useAILoginFlowGenerationStatus = (
     operationId: string
@@ -32,13 +33,15 @@ export const useAILoginFlowGenerationStatus = (
 
     const [ isLoading, setIsLoading ] = useState(true);
 
+    const { setLoginFlowGenerationCompleted } = useAILoginFlow();
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.applications}/ai/loginflow/status/${operationId}`
+        url: `${store.getState().config.endpoints.applications}/loginflow/status/${operationId}`
     };
 
     const { data, error, isValidating, mutate } =
@@ -56,7 +59,7 @@ export const useAILoginFlowGenerationStatus = (
         if (data?.status?.login_flow_generation_complete) {
             setIsLoading(false);
             clearInterval(interval);
-            // setLoginFlowGenerationCompleted(true);
+            setLoginFlowGenerationCompleted(true);
         } else {
             setIsLoading(true);
         }
