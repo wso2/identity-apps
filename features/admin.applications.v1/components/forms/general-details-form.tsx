@@ -27,7 +27,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
@@ -181,6 +181,25 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
 
     /**
+     * Build the pattern for the access URL placeholders.
+     */
+    const accessUrlPlaceholdersPattern: RegExp = useMemo(() => {
+        let placeholdersPattern: string = "";
+
+        ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_ALLOWED_PLACEHOLDERS.forEach(
+            (placeholder: string, index: number) => {
+                if (index == 0) {
+                    placeholdersPattern += placeholder;
+                } else {
+                    placeholdersPattern += `|${placeholder}`;
+                }
+            }
+        );
+
+        return new RegExp(placeholdersPattern, "g");
+    });
+
+    /**
      * Prepare form values for submitting.
      *
      * @param values - Form values.
@@ -262,27 +281,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * @returns Error message.
      */
     const validateAccessURL = (value: string): string => {
-        let moderatedValue: string = value?.trim();
-        let errorMsg: string;
-
-
-        let placeholdersPattern: string = "";
-
-        ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_ALLOWED_PLACEHOLDERS.forEach(
-            (placeholder: string, index: number) => {
-                if (index == 0) {
-                    placeholdersPattern += placeholder;
-                } else {
-                    placeholdersPattern += `|${placeholder}`;
-                }
-            }
-        );
-
         /**
          * Use a regex to replace `${UserTenantHint}`, and `${organizationIdHint}` placeholders
          * while preserving other characters
          */
-        moderatedValue = value?.trim()?.replace(new RegExp(placeholdersPattern, "g"), "");
+        let moderatedValue: string = value?.trim()?.replace(accessUrlPlaceholdersPattern, "");
+        let errorMsg: string;
 
         if (moderatedValue && (!URLUtils.isURLValid(moderatedValue, true) || !FormValidation.url(moderatedValue))) {
             errorMsg = t("applications:forms.generalDetails.fields.accessUrl.validations.invalid");
