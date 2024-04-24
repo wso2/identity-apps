@@ -213,7 +213,7 @@ export interface AppUtilsInterface {
     getSuperTenant: () => string;
     getSuperTenantProxy: () => string;
     getTenantName: (fromLocation?: boolean) => string;
-    getTenantPath: (skipSuperTenant?: boolean) => string;
+    getTenantPath: (skipSuperTenant?: boolean, forIdPUrls?: boolean) => string;
     getTenantPrefix: () => string;
     getTenantResolutionStrategy: () => string;
     init: (Args: any) => void;

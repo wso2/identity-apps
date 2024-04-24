@@ -377,16 +377,33 @@ export const AppUtils: AppUtilsInterface = (function() {
          *
          * @remarks if `skipSuperTenant` is set to true, "" will be returned.
          * @param skipSuperTenant - Flag to skip super tenant.
+         * @param forIdPUrls - Is the tenant path meant for IdP Urls.
          * @returns Tenant path.
          */
-        getTenantPath: function(skipSuperTenant: boolean = false) {
+        getTenantPath: function(skipSuperTenant: boolean = false, forIdPUrls?: boolean) {
 
             if (skipSuperTenant && (this.getTenantName() === this.getSuperTenant() || this.getTenantName() === "")) {
                 return urlPathForSuperTenantOriginsFallback;
             }
 
-            return (this.getTenantName() !== "") ?
-                "/" + this.getTenantPrefix() + "/" + this.getTenantName() : "";
+            let tenantDomain: string = this.getTenantName();
+
+            // If the tenant path is meant for `idPUrls`, replace the super tenant with the defined proxy.
+            if (!_config.legacyAuthzRuntime && forIdPUrls) {
+                if (_config.superTenantProxy) {
+                    if (!tenantDomain) {
+                        tenantDomain = _config.superTenantProxy;
+                    }
+
+                    if (tenantDomain && tenantDomain === this.getSuperTenant()) {
+                        tenantDomain = _config.superTenantProxy;
+                    }
+                }
+            }
+
+            return (tenantDomain !== "")
+                ? `/${this.getTenantPrefix()}/${tenantDomain}`
+                : "";
         },
 
         /**
@@ -496,7 +513,7 @@ export const AppUtils: AppUtilsInterface = (function() {
          * @returns Resolved URLs.
          */
         resolveURLs: function() {
-            const tenantPath: string = _config.legacyAuthzRuntime ? "" : this.getTenantPath();
+            const tenantPath: string = _config.legacyAuthzRuntime ? "" : this.getTenantPath(false, true);
 
             return {
                 authorizeEndpointURL: _config.idpConfigs

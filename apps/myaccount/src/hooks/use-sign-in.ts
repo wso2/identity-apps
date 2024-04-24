@@ -224,15 +224,6 @@ const useSignIn = (): UseSignInInterface => {
                     );
                 }
 
-                // If super tenant proxy is configured, `authorize` endpoint is updated with the configured
-                // super tenant proxy.
-                if (window["AppUtils"].getConfig().superTenantProxy) {
-                    authorizationEndpoint = authorizationEndpoint.replace(
-                        window["AppUtils"].getConfig().superTenant,
-                        window["AppUtils"].getConfig().superTenantProxy
-                    );
-                }
-
                 // If `oidc session iframe` endpoint is overridden, save that in the session.
                 if (window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
                     oidcSessionIframeEndpoint = resolveIdpURLSAfterTenantResolves(
@@ -246,6 +237,23 @@ const useSignIn = (): UseSignInInterface => {
                     tokenEndpoint = resolveIdpURLSAfterTenantResolves(
                         tokenEndpoint,
                         window["AppUtils"].getConfig().idpConfigs.tokenEndpointURL
+                    );
+                }
+
+                // If super tenant proxy is configured,
+                // update the endpoints with the configured super tenant proxy.
+                if (window["AppUtils"].getConfig().superTenantProxy) {
+                    authorizationEndpoint = authorizationEndpoint.replace(
+                        window["AppUtils"].getConfig().superTenant,
+                        window["AppUtils"].getConfig().superTenantProxy
+                    );
+                    oidcSessionIframeEndpoint = oidcSessionIframeEndpoint.replace(
+                        window["AppUtils"].getConfig().superTenant,
+                        window["AppUtils"].getConfig().superTenantProxy
+                    );
+                    tokenEndpoint = tokenEndpoint.replace(
+                        window["AppUtils"].getConfig().superTenant,
+                        window["AppUtils"].getConfig().superTenantProxy
                     );
                 }
 
