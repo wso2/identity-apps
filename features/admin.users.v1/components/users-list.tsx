@@ -253,6 +253,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     const renderUserIdp = (user: UserBasicInterface): string => {
+        if (user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg) {
+            return UserManagementConstants.MANAGED_BY_PARENT_TEXT;
+        }
+
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]?.toUpperCase()
             : userstoresConfig.primaryUserstoreName;
@@ -313,12 +317,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 <div>
                                     { header as ReactNode }
                                     {
-                                        user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg && (
-                                            <Label size="mini" className="client-id-label">
-                                                { t("parentOrgInvitations:" +
-                                                "invitedUserLabel") }
-                                            </Label>
-                                        )
+                                        userConfig.disableManagedByColumn
+                                            && user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
+                                            && (
+                                                <Label size="mini" className="client-id-label">
+                                                    { t("parentOrgInvitations:invitedUserLabel") }
+                                                </Label>
+                                            )
                                     }
                                 </div>
                                 {

@@ -149,6 +149,8 @@ export class UserManagementConstants {
     public static readonly ERROR_COLLABORATOR_USER_LIMIT_REACHED: string = "ASG-UIM-10010";
     // Query param to exclude groups from getUserList API call.
     public static readonly GROUPS_ATTRIBUTE: string = "groups";
+
+    public static readonly MANAGED_BY_PARENT_TEXT: string = "Parent Organization";
 }
 
 /**
