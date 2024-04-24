@@ -50,10 +50,10 @@
 <%@ include file="tenant-resolve.jsp"%>
 
 <%! 
-    public static String getRandomNumberString(int len) {
+    public static String getRandomNumberString(int len, String seed) {
 
         StringBuilder sb = new StringBuilder(len);
-        Random random = new Random();
+        Random random = new Random(seed.hashCode());
 
         for (int i = 0; i < len; i++) {
             Integer numAtIndex = random.nextInt(10);
@@ -101,7 +101,7 @@
                 List<AccountRecoveryType> resp = recoveryApiV2.initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
                 if (resp == null) {
                     // handling invalid username scenario. proceeds to next level without warning to avoid an attacker bruteforcing to learn the usernames
-                    request.setAttribute("screenValue", "******" + getRandomNumberString(4));
+                    request.setAttribute("screenValue", "******" + getRandomNumberString(4, username));
                     request.setAttribute("resendCode", UUID.randomUUID().toString());
                     request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
                     request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
