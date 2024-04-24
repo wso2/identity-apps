@@ -197,7 +197,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         );
 
         return new RegExp(placeholdersPattern, "g");
-    });
+    }, []);
 
     /**
      * Prepare form values for submitting.
