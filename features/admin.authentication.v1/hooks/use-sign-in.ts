@@ -53,6 +53,7 @@ import {
     setOrganizationType,
     setUserOrganizationId
 } from "../../admin.core.v1/store/actions/organization";
+import { CONSUMER_USERSTORE } from "../../admin.extensions.v1/components/administrators/constants/users";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import useOrganizationSwitch from "../../admin.organizations.v1/hooks/use-organization-switch";
 import useOrganizations from "../../admin.organizations.v1/hooks/use-organizations";
@@ -266,7 +267,7 @@ const useSignIn = (): UseSignInInterface => {
         let logoutRedirectUrl: string;
 
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
-        const isPrivilegedUser: boolean =
+        let isPrivilegedUser: boolean =
             idToken?.amr?.length > 0
                 ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
                 : false;
@@ -289,6 +290,28 @@ const useSignIn = (): UseSignInInterface => {
         const firstName: string = idToken?.given_name;
         const lastName: string = idToken?.family_name;
         const fullName: string = firstName ? firstName + (lastName ? " " + lastName : "") : response.email;
+
+        const __experimental__platformIdP: {
+            enabled: boolean;
+            homeRealmId: string;
+        } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
+        if (__experimental__platformIdP?.enabled) {
+            isPrivilegedUser = idToken?.sub?.startsWith(`${ CONSUMER_USERSTORE }/`);
+
+            if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
+                const redirectUrl: URL = new URL(
+                    window["AppUtils"].getConfig().clientOriginWithTenant.replace(
+                        window["AppUtils"].getConfig().tenant,
+                        idToken.default_tenant
+                    )
+                );
+
+                redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                window.location.href = redirectUrl.href;
+            }
+        }
 
         await dispatch(
             setSignIn<AuthenticatedUserInfo & TenantListInterface>(

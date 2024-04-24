@@ -91,7 +91,7 @@ enum AddAdministratorModes {
     /**
      * To invite a new user as an administrator.
      */
-    InviteNew = "inviteNewUser"
+    InviteParentUser = "inviteParentUser"
 }
 
 /**
@@ -220,8 +220,8 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                     {
                         "data-componentid": `${ componentId }-invite-new-user-dropdown-item`,
                         key: 2,
-                        text: t("consoleSettings:administrators.add.options.inviteNewUser"),
-                        value: AddAdministratorModes.InviteNew
+                        text: t("consoleSettings:administrators.add.options.inviteParentUser"),
+                        value: AddAdministratorModes.InviteParentUser
                     }
                 ];
 

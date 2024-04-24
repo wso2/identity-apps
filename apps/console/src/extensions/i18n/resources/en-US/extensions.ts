@@ -452,8 +452,8 @@ export const extensions: Extensions = {
             notifications: {
                 getConfiguration: {
                     error: {
-                        description: "{{description}}",
-                        message: "Error occurred while retrieving organization information"
+                        description: "Error occurred while retrieving organization information",
+                        message: "An error occurred"
                     },
                     genericError: {
                         description: "An error occurred while retrieving organization information.",

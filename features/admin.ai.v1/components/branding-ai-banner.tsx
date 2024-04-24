@@ -140,6 +140,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                                                 color="secondary"
                                                 variant="outlined"
                                                 className="branding-card-banner-input-button"
+                                                disabled={ !websiteUrl }
                                             >
                                                 <GenericIcon
                                                     className="branding-card-banner-input-button-icon"

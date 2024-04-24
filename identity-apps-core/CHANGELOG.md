@@ -1,5 +1,31 @@
 # @wso2is/identity-apps-core
 
+## 2.1.59
+
+### Patch Changes
+
+- [#6039](https://github.com/wso2/identity-apps/pull/6039) [`00e6bef41f`](https://github.com/wso2/identity-apps/commit/00e6bef41f5b4b4a32a2097e732e8fb3dbb06ded) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Stop sharing the myaccount app with organizations by default
+
+* [#6046](https://github.com/wso2/identity-apps/pull/6046) [`b8bf6a9fef`](https://github.com/wso2/identity-apps/commit/b8bf6a9fef24e488bc22d985c7c2aa5799b53332) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Revert callback URL set when portal app creation
+
+## 2.1.58
+
+### Patch Changes
+
+- [#6028](https://github.com/wso2/identity-apps/pull/6028) [`f67d5f98c5`](https://github.com/wso2/identity-apps/commit/f67d5f98c581d55c953a2b074b86fdf04f5755ec) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Set defined callback URL for the console portal app initilization
+
+## 2.1.57
+
+### Patch Changes
+
+- [#6011](https://github.com/wso2/identity-apps/pull/6011) [`5dbe369d55`](https://github.com/wso2/identity-apps/commit/5dbe369d5584ce66fd6ca7e7f0931e037330ad55) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove enterprise IDP logics
+
+## 2.1.56
+
+### Patch Changes
+
+- [#5999](https://github.com/wso2/identity-apps/pull/5999) [`008a23396e`](https://github.com/wso2/identity-apps/commit/008a23396e3b9a1ec5767ae0bef3fa5f9db1c5f6) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Mark portal apps as system reserved apps
+
 ## 2.1.55
 
 ### Patch Changes

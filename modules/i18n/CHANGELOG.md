@@ -1,5 +1,23 @@
 # @wso2is/i18n
 
+## 2.2.3
+
+### Patch Changes
+
+- [#6040](https://github.com/wso2/identity-apps/pull/6040) [`30fde0c49b`](https://github.com/wso2/identity-apps/commit/30fde0c49bb1fb60a4a7b06f533b8f2af514f15d) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve invite parent users as admins wizard and disable iproov as a first factor authenticator
+
+## 2.2.2
+
+### Patch Changes
+
+- [#6033](https://github.com/wso2/identity-apps/pull/6033) [`fd72a16b08`](https://github.com/wso2/identity-apps/commit/fd72a16b0873b5c0c71828f4e12f661208190e2e) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Improve invite parent users as admins wizard
+
+## 2.2.1
+
+### Patch Changes
+
+- [#6007](https://github.com/wso2/identity-apps/pull/6007) [`46ad47e34a`](https://github.com/wso2/identity-apps/commit/46ad47e34a47fd1390998940b5d3fae7ab63a224) Thanks [@chamathns](https://github.com/chamathns)! - Add improvement for branding AI
+
 ## 2.2.0
 
 ### Minor Changes

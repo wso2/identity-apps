@@ -1,5 +1,103 @@
 # @wso2is/features
 
+## 2.15.16
+
+### Patch Changes
+
+- [#6034](https://github.com/wso2/identity-apps/pull/6034) [`01d27ac6db`](https://github.com/wso2/identity-apps/commit/01d27ac6db717f1d1bcdffbccdd644188ec7fa33) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix feature gate API invocation issue
+
+## 2.15.15
+
+### Patch Changes
+
+- [#6040](https://github.com/wso2/identity-apps/pull/6040) [`30fde0c49b`](https://github.com/wso2/identity-apps/commit/30fde0c49bb1fb60a4a7b06f533b8f2af514f15d) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve invite parent users as admins wizard and disable iproov as a first factor authenticator
+
+- Updated dependencies [[`30fde0c49b`](https://github.com/wso2/identity-apps/commit/30fde0c49bb1fb60a4a7b06f533b8f2af514f15d)]:
+  - @wso2is/i18n@2.2.3
+
+## 2.15.14
+
+### Patch Changes
+
+- [#6033](https://github.com/wso2/identity-apps/pull/6033) [`fd72a16b08`](https://github.com/wso2/identity-apps/commit/fd72a16b0873b5c0c71828f4e12f661208190e2e) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Improve invite parent users as admins wizard
+
+- Updated dependencies [[`fd72a16b08`](https://github.com/wso2/identity-apps/commit/fd72a16b0873b5c0c71828f4e12f661208190e2e)]:
+  - @wso2is/i18n@2.2.2
+
+## 2.15.13
+
+### Patch Changes
+
+- [#6035](https://github.com/wso2/identity-apps/pull/6035) [`759ce2692a`](https://github.com/wso2/identity-apps/commit/759ce2692a83a9f6043d179d20dbc04a1f7ace93) Thanks [@lashinijay](https://github.com/lashinijay)! - Disable iproov as a first factor authenticator
+
+## 2.15.12
+
+### Patch Changes
+
+- [#5922](https://github.com/wso2/identity-apps/pull/5922) [`9807a001d2`](https://github.com/wso2/identity-apps/commit/9807a001d2ccfb21b3557239992e0bb0884d49a5) Thanks [@DMHP](https://github.com/DMHP)! - Removing the necessity of having org_role application association
+
+## 2.15.11
+
+### Patch Changes
+
+- [#6023](https://github.com/wso2/identity-apps/pull/6023) [`900c8ebd2a`](https://github.com/wso2/identity-apps/commit/900c8ebd2aec9b61e7fa22c0fd0cbb7b492119e5) Thanks [@sandushi](https://github.com/sandushi)! - Fix include user domain and include tenant domain issue
+
+## 2.15.10
+
+### Patch Changes
+
+- [#6020](https://github.com/wso2/identity-apps/pull/6020) [`b6d8ca263e`](https://github.com/wso2/identity-apps/commit/b6d8ca263ea67a659cfb0b21eabcb8e3be6baaa1) Thanks [@brionmario](https://github.com/brionmario)! - Fix Outbound Provisioning connector visibility not honouring feature config
+
+## 2.15.9
+
+### Patch Changes
+
+- [#6007](https://github.com/wso2/identity-apps/pull/6007) [`46ad47e34a`](https://github.com/wso2/identity-apps/commit/46ad47e34a47fd1390998940b5d3fae7ab63a224) Thanks [@chamathns](https://github.com/chamathns)! - Add improvement for branding AI
+
+* [#6006](https://github.com/wso2/identity-apps/pull/6006) [`e7cee27745`](https://github.com/wso2/identity-apps/commit/e7cee277453b1d334ee79cdae912365375f3f13d) Thanks [@chamathns](https://github.com/chamathns)! - Add improvement for branding AI
+
+* Updated dependencies [[`46ad47e34a`](https://github.com/wso2/identity-apps/commit/46ad47e34a47fd1390998940b5d3fae7ab63a224)]:
+  - @wso2is/i18n@2.2.1
+
+## 2.15.8
+
+### Patch Changes
+
+- [#5976](https://github.com/wso2/identity-apps/pull/5976) [`b586a4d264`](https://github.com/wso2/identity-apps/commit/b586a4d264d9c26e5fe993765f29396dba9db9c4) Thanks [@brionmario](https://github.com/brionmario)! - New runtime migration groundwork
+
+## 2.15.7
+
+### Patch Changes
+
+- [#6004](https://github.com/wso2/identity-apps/pull/6004) [`20dc92d7cb`](https://github.com/wso2/identity-apps/commit/20dc92d7cb30b303ea45e46abc8ff03b05cd8743) Thanks [@chamathns](https://github.com/chamathns)! - Use default preference when preference is undefined
+
+## 2.15.6
+
+### Patch Changes
+
+- Updated dependencies [[`3232ccf4bc`](https://github.com/wso2/identity-apps/commit/3232ccf4bc21487a97fd6fc7cb8071d9f92bbf6c)]:
+  - @wso2is/react-components@2.1.19
+  - @wso2is/dynamic-forms@2.0.48
+  - @wso2is/form@2.0.49
+
+## 2.15.5
+
+### Patch Changes
+
+- [#5998](https://github.com/wso2/identity-apps/pull/5998) [`98c2550dec`](https://github.com/wso2/identity-apps/commit/98c2550dec5d0e0b15d6c8c219bf20c2277abd30) Thanks [@brionmario](https://github.com/brionmario)! - Fix NPEs
+
+## 2.15.4
+
+### Patch Changes
+
+- [#5994](https://github.com/wso2/identity-apps/pull/5994) [`3052092135`](https://github.com/wso2/identity-apps/commit/3052092135a00302899f73e4295e00bc921bd4fe) Thanks [@sandushi](https://github.com/sandushi)! - Fix the alternative subject identifier option reverting issue
+
+## 2.15.3
+
+### Patch Changes
+
+- [#5990](https://github.com/wso2/identity-apps/pull/5990) [`783396c123`](https://github.com/wso2/identity-apps/commit/783396c12348d2f8021643b40bdb0797da7da656) Thanks [@chamathns](https://github.com/chamathns)! - Skip applying default branding preference upon change
+
 ## 2.15.2
 
 ### Patch Changes
