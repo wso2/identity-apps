@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.20
+
+### Patch Changes
+
+- [#6055](https://github.com/wso2/identity-apps/pull/6055) [`a6487983d4`](https://github.com/wso2/identity-apps/commit/a6487983d428ed5e8364db1b6fa5c1b0fd7d68e7) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add 'Managed by' property as 'Parent Organization' for invited users
+
 ## 2.15.19
 
 ### Patch Changes
