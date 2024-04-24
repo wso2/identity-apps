@@ -22,23 +22,23 @@ export const ai: aiNS = {
     aiLoginFlow:{
         banner:{
             collapsed:{
-                button: "Try Login AI",
-                heading: "Configure your login flow with Login AI",
+                button: "Try Login Flow AI",
+                heading: "Configure your login flow with ",
                 subheading: "Enter your ideal login sequence; "+
                 "our AI adapts authenticators and context to configure the flow."
             },
             full:{
-                button: "Try Login AI",
-                heading: "Simplify authentication flow Setup with Login AI",
+                button: "Try Login Flow AI",
+                heading: "Simplify authentication flow Setup with ",
                 subheading: "Configure your application's login flow effortlessly with Login AI, " +
                     "by describing your desired authentication sequence, including authenticators and " +
                     "conditional authentication."
             },
             input:{
                 button: "Generate Login Flow",
-                heading: "Configure your login flow with Login AI",
+                heading: "Configure your login flow with ",
                 placeholder: "Input your login flow eg: have username and password as first step,"+
-                " and prompt for TOTP second factor if the user has ‘manager’ role.",
+                " and prompt for TOTP second factor if the user has 'manager' role.",
                 subheading: "AI-powered login configurations crafted to align with your application's"+
                 " environment and authenticators."
             }
@@ -68,6 +68,7 @@ export const ai: aiNS = {
                     9: "Applying final touches..."
                 }
             }
-        }
+        },
+        title: "Login Flow AI"
     }
 };

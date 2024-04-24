@@ -51,6 +51,10 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
     const { data, error } = useAILoginFlowGenerationResult(operationId, loginFlowGenerationCompleted);
 
     useEffect(() => {
+        if (error) {
+            setGeneratingLoginFlow(false);
+        }
+
         if (loginFlowGenerationCompleted && !error && data) {
             handleGenerate(data);
         }
@@ -86,7 +90,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
                 ) : (
                     <>
                         {
-                            !disabledFeatures?.includes("application.loginflow.ai") && (
+                            !disabledFeatures?.includes("applications.loginFlow.ai") && (
                                 <LoginFlowAIBanner/>
                             )
                         }

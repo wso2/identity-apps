@@ -227,5 +227,6 @@ export interface BrandingNS {
                 };
             };
         };
+        title: string;
     };
 }

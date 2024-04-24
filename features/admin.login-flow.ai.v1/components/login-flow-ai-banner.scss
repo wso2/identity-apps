@@ -16,36 +16,32 @@
  * under the License.
  */
 
-.login-flow-ai-banner {
+ .login-flow-ai-banner {
     &.hidden {
         display: none;
     }
 }
 
-.login-flow-ai-banner-full {
-    background: #F5F2F0;
+.login-flow-ai-banner {
+    background: #FEFEFE;
     align-items: center;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: right center;
-    border: 1px solid #ffdfd1;
+    border: 1px solid #DCDAD8;
     border-radius: 8px;
     display: flex;
-    justify-content: space-between;
-    padding: 32px 25px;
-}
 
-.login-flow-ai-banner-input {
-    background: #F5F2F0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: right center;
-    border: 1px solid #CBCEDB;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 0px 25px 30px 25px;
+    &.full {
+        justify-content: space-between;
+        padding: 32px 25px;
+    }
+
+    &.collapsed, &.input {
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0px 25px 30px 25px;
+    }
 }
 
 .login-flow-ai-banner-collapsed {
@@ -70,6 +66,7 @@
 
 .login-flow-ai-banner-close-icon {
     display: flex;
+    width: 100%;
     flex-direction: row;
     justify-content: flex-end;
 }
@@ -89,11 +86,7 @@
 .login-flow-ai-banner-sub-heading {
     font-size: 15px;
     font-weight: 500;
-    color: #5c5c5e;
-}
-
-.login-flow-ai-banner-button {
-    background-color: white;
+    color: #8D91A3;
 }
 
 .login-flow-ai-input-field {
@@ -101,9 +94,9 @@
 }
 
 .login-flow-ai-input-field-inner {
-    background-color: #F9F9F9;
-    border-radius: 30px;
-    border: 1px solid #DADAD9;
+    background-color: #fefefe;
+    border-radius: 40px;
+    border: 1px solid #cbcedb;
     width: 100%;
     padding: 0px 10px;
     min-height: 50px;
@@ -113,4 +106,11 @@
     background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
     padding: 10px;
     margin-left: 10px;
+}
+
+.login-flow-ai-text {
+    background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }

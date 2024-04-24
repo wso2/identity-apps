@@ -22,12 +22,16 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 import { ReactComponent as AIIcon } from "../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
-import AIBannerBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-background.svg";
+import AIBannerBackgroundWhite from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
 import AIBannerInputBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-input-background.svg";
 import useAvailableAuthenticators from "../api/use-available-authenticators";
 import useUserClaims from "../api/use-user-claims";
@@ -40,11 +44,13 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
 
+    const dispatch: Dispatch = useDispatch();
+
     const { isGeneratingLoginFlow, setOperationId } = useAILoginFlow();
 
     const { availableAuthenticators } = useAvailableAuthenticators();
 
-    const { claimURI, error } = useUserClaims();
+    const { claimURI, error: userClaimError } = useUserClaims();
 
     const generateAILoginFlow: GenerateLoginFlowFunction = useGenerateAILoginFlow();
 
@@ -80,7 +86,17 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
             return;
         }
 
-        if (error) {
+        if (userClaimError) {
+            dispatch(addAlert(
+                {
+                    description: userClaimError?.response?.data?.description
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: userClaimError?.response?.data?.message
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                }
+            ));
+
             return;
         }
 
@@ -99,10 +115,9 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
     if (bannerState === BannerState.FULL) {
         return (
             <Box
-                className="login-flow-ai-banner-full"
+                className="login-flow-ai-banner full"
                 style={ {
-                    backgroundImage: `linear-gradient(90deg, rgba(255,115,0,0.42) 0%, rgba(255,244,235,0.5) 37%),
-                        url(${ AIBannerBackground })`
+                    backgroundImage: `url(${ AIBannerBackgroundWhite })`
                 } }
             >
                 <div className="login-flow-ai-banner-text-container">
@@ -111,20 +126,22 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         className="login-flow-ai-banner-heading"
                     >
                         { t("ai:aiLoginFlow.banner.full.heading") }
+                        <span className="login-flow-ai-text">
+                            { t("ai:aiLoginFlow.title") }
+                        </span>
                     </Typography>
                     <Typography className="login-flow-ai-banner-sub-heading">
                         { t("ai:aiLoginFlow.banner.full.subheading") }
                     </Typography>
                 </div>
                 <Button
-                    className="login-flow-ai-banner-button"
-                    color="secondary"
-                    variant="outlined"
                     onClick={ handleExpandClick }
+                    color="primary"
+                    variant="contained"
                 >
                     <GenericIcon
                         icon={ AIIcon }
-                        fill="primary"
+                        fill="white"
                         className="pr-2"
                     />
                     { t("ai:aiLoginFlow.banner.full.button") }
@@ -154,6 +171,9 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         className="login-flow-ai-banner-heading"
                     >
                         { t("ai:aiLoginFlow.banner.input.heading") }
+                        <span className="login-flow-ai-text">
+                            { t("ai:aiLoginFlow.title") }
+                        </span>
                     </Typography>
                     <Typography className="login-flow-ai-banner-sub-heading">
                         { t("ai:aiLoginFlow.banner.input.subheading") }
@@ -201,9 +221,9 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
     if (bannerState === BannerState.COLLAPSED) {
         return (
             <Box
-                className="login-flow-ai-banner-collapsed"
+                className="login-flow-ai-banner collapsed"
                 style={ {
-                    backgroundImage: `url(${ AIBannerBackground })`
+                    backgroundImage: `url(${ AIBannerBackgroundWhite })`
                 } }
             >
                 <Box className="login-flow-ai-banner-close-icon">
@@ -220,6 +240,9 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                             className="login-flow-ai-banner-heading"
                         >
                             { t("ai:aiLoginFlow.banner.collapsed.heading") }
+                            <span className="login-flow-ai-text">
+                                { t("ai:aiLoginFlow.title") }
+                            </span>
                         </Typography>
                         <Typography className="login-flow-ai-banner-sub-heading">
                             { t("ai:aiLoginFlow.banner.input.subheading") }
@@ -233,14 +256,13 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         </Typography>
                     </div>
                     <Button
-                        className="login-flow-ai-banner-button"
                         onClick={ handleExpandClick }
-                        color="secondary"
-                        variant="outlined"
+                        color="primary"
+                        variant="contained"
                     >
                         <GenericIcon
                             icon={ AIIcon }
-                            fill="primary"
+                            fill="white"
                             className="pr-2"
                         />
                         { t("ai:aiLoginFlow.banner.collapsed.button") }

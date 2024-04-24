@@ -16,83 +16,101 @@
  * under the License.
  */
 
- .branding-card {
+ .branding-ai-banner {
     &.hidden {
         display: none;
     }
- }
-
- .branding-card-banner-full {
-    background: linear-gradient(90deg, rgba(255,115,0,0.42) 0%, rgba(255,244,235,1) 37%) !important;
-    border-radius: 8px !important;
-
-    .branding-card-banner-full-heading {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 45px;
-    }
-
-    .branding-card-banner-full-button {
-        padding-right: 5px;
-    }
 }
 
-.branding-card-banner-input {
+.branding-ai-banner {
+    background: #FEFEFE;
+    align-items: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right center;
+    border: 1px solid #DCDAD8;
+    border-radius: 8px;
     display: flex;
-    flex-direction: column;
-    height: 100%;
-    position: relative;
 
-    .branding-card-banner-input-icon {
-        cursor: pointer;
-        position: absolute;
-        right: 0;
-        top: 0;
+    &.full {
+        justify-content: space-between;
+        padding: 32px 25px;
     }
 
-    .branding-card-banner-input-content {
-        display: flex;
+    &.collapsed, &.input {
         flex-direction: column;
         justify-content: space-between;
-        padding: 10px;
-
-        .branding-card-banner-input-heading {
-            margin-bottom: 5px;
-        }
-
-        .branding-card-banner-input-actions {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 20px;
-
-            .branding-input-field {
-                width: 50%;
-            }
-
-            .branding-card-banner-input-button {
-                margin-left: auto;
-            }
-
-            .branding-card-banner-input-button-icon {
-                padding-right: 5px;
-            }
-        }
+        padding: 0px 25px 30px 25px;
     }
 }
 
-.branding-card-banner-collapsed {
+.branding-ai-banner-input {
+    background: #F5F2F0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right center;
+    border: 1px solid #CBCEDB;
+    border-radius: 8px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: space-between;
+    padding: 0px 25px 30px 25px;
+}
+
+.branding-ai-banner-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 75%;
+}
+
+.branding-ai-banner-close-icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.branding-ai-banner-button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.branding-ai-banner-heading {
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.branding-ai-banner-sub-heading {
+    font-size: 15px;
+    font-weight: 500;
+    color: #8D91A3;
+}
+
+.branding-ai-input-field {
+    width: 60%;
+}
+
+.branding-ai-input-field-inner {
+    background-color: #FEFEFE;
+    border-radius: 40px;
+    border: 1px solid #CBCEDB;
+    width: 100%;
+    padding: 0px 4px;
+}
+
+.branding-ai-input-button {
+    background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
     padding: 10px;
+    margin-left: 10px;
+}
 
-    .branding-card-banner-collapsed-heading {
-        margin-bottom: 5px;
-    }
-
-    .branding-card-banner-collapsed-button {
-        padding-right: 5px;
-    }
+.branding-ai-text {
+    background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }

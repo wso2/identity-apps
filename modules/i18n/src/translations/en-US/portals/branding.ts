@@ -171,18 +171,18 @@ export const branding: BrandingNS = {
     ai: {
         banner: {
             full: {
-                heading: "Simplify branding setup with Branding AI",
+                heading: "Simplify branding setup with ",
                 subHeading: "Elevate your organization's branding effortlessly with BrandingAI, simply by providing your website URL.",
                 button: "Try Branding AI"
             },
             input: {
-                heading: "Configure branding with Branding AI",
+                heading: "Configure branding with ",
                 subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
                 placeholder: "Enter website URL",
                 button: "Generate Branding"
             },
             collapsed: {
-                heading: "Configure branding with Branding AI",
+                heading: "Configure branding with ",
                 subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
                 button: "Try Branding AI"
             }
@@ -226,7 +226,8 @@ export const branding: BrandingNS = {
                     8: "Branding Generation Completed!"
                 }
             }
-        }
+        },
+        title: "Branding AI"
     },
     tabs: {
         preview: {

@@ -59,6 +59,6 @@ export interface aiNS{
                 };
             };
         };
-
+        title: string;
     };
 }
