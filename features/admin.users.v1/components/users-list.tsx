@@ -317,8 +317,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 <div>
                                     { header as ReactNode }
                                     {
-                                        userConfig.disableManagedByColumn
-                                            && user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
+                                        userConfig?.disableManagedByColumn
+                                            && user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg
                                             && (
                                                 <Label size="mini" className="client-id-label">
                                                     { t("parentOrgInvitations:invitedUserLabel") }
