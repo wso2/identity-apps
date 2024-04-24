@@ -78,6 +78,7 @@ import {
     AuthProtocolTypes,
     ConnectionInterface,
     ConnectionTemplateInterface,
+    EnterpriseConnectionCreateWizardGeneralFormValuesInterface,
     GenericConnectionCreateWizardPropsInterface,
     IdpNameValidationCache
 } from "../../models/connection";
@@ -434,7 +435,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const wizardCommonFirstPage = () => (
         <WizardPage
-            validate={ (values: any) => {
+            validate={ (values: EnterpriseConnectionCreateWizardGeneralFormValuesInterface) => {
                 const errors: FormErrors = {};
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
@@ -465,18 +466,18 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     return values.toString().trimStart();
                 } }
                 listen={ idpNameValidation }
-                validation={ (values: any) => {
+                validation={ (value: string) => {
                     let errors: "";
 
-                    errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
-                    if (values && isUserInputIdpNameAlreadyTaken) {
+                    errors = composeValidators(required, length(IDP_NAME_LENGTH))(value);
+                    if (value && isUserInputIdpNameAlreadyTaken) {
                         errors = t("authenticationProvider:" +
                             "forms.generalDetails.name.validations.duplicate");
                     }
-                    if (!FormValidation.isValidResourceName(values)) {
+                    if (!FormValidation.isValidResourceName(value)) {
                         errors = t("authenticationProvider:" +
                             "templates.enterprise.validation.invalidName",
-                        { idpName: values });
+                        { idpName: value });
                     }
 
                     if (errors === "" || errors === undefined) {

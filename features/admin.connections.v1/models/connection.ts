@@ -763,3 +763,21 @@ export interface IdpNameValidationCache {
      */
     state: boolean;
 }
+
+/**
+ * Interface for the general form values in the enterprise connection wizard.
+ */
+export interface EnterpriseConnectionCreateWizardGeneralFormValuesInterface {
+    /**
+     * Name ID type used in the SAML protocol connection.
+     */
+    NameIDType: string;
+    /**
+     * Request method for the SAML protocol connection.
+     */
+    RequestMethod: string;
+    /**
+     * Unique name for the connection.
+     */
+    name: string;
+}
