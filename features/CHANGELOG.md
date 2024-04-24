@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.18
+
+### Patch Changes
+
+- [#6048](https://github.com/wso2/identity-apps/pull/6048) [`b3f72aa483`](https://github.com/wso2/identity-apps/commit/b3f72aa483c5118d1d1380406ff3d8f531499a43) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enable OIDC session management by default
+
 ## 2.15.17
 
 ### Patch Changes
