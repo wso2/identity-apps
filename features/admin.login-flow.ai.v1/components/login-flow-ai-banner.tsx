@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import { ChevronUpIcon, XMarkIcon }from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels } from "@wso2is/core/models";
@@ -216,7 +216,9 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                                     />
                                 </IconButton>
                             ) : (
-                                <CircularProgress color="primary" />
+                                <Box>
+                                    <CircularProgress color="primary" size={ 25 } className="mr-2 mt-1" />
+                                </Box>
                             )
                         )
                     } }

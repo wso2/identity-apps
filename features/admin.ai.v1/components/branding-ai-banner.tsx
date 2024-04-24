@@ -37,6 +37,7 @@ import useGenerateAIBrandingPreference,
 { GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
 import { BannerState } from "../models/types";
 import "./branding-ai-banner.scss";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 
 
 /**
@@ -45,8 +46,10 @@ import "./branding-ai-banner.scss";
 export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
+
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
     const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const { isGeneratingBranding } = useAIBrandingPreference();
     const generateAIBrandingPreference: GenerateAIBrandingPreferenceFunc = useGenerateAIBrandingPreference();
@@ -69,8 +72,10 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
      * Handles the click event of the generate button.
      */
     const handleGenerateClick = async () => {
+        setIsSubmitting(true);
         await generateAIBrandingPreference(websiteUrl);
         setBannerState(BannerState.COLLAPSED);
+        setIsSubmitting(false);
     };
 
     /**
@@ -169,18 +174,24 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     InputProps={ {
                         className: "branding-ai-input-field-inner",
                         endAdornment: (
-                            <IconButton
-                                className="branding-ai-input-button"
-                                onClick={ () => handleGenerateClick() }
-                                disabled={ !websiteUrl }
-                            >
-                                <GenericIcon
-                                    icon={ AIIcon }
-                                    rounded
-                                    transparent
-                                    fill="white"
-                                />
-                            </IconButton>
+                            !isSubmitting ? (
+                                <IconButton
+                                    className="branding-ai-input-button"
+                                    onClick={ () => handleGenerateClick() }
+                                    disabled={ !websiteUrl }
+                                >
+                                    <GenericIcon
+                                        icon={ AIIcon }
+                                        rounded
+                                        transparent
+                                        fill="white"
+                                    />
+                                </IconButton>
+                            ) : (
+                                <Box>
+                                    <CircularProgress color="primary" size={ 25 } className="mr-2 mt-1" />
+                                </Box>
+                            )
                         )
                     } }
                 />
