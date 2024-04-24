@@ -16,9 +16,8 @@
   ~ under the License.
 --%>
 
-<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -27,8 +26,6 @@
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.AccountRecoveryType" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.RecoveryInitRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
@@ -42,13 +39,40 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.RecoveryResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResendRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResendResponse" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResetRequest" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResetResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 
 <%-- Include tenant context --%>
 <%@ include file="tenant-resolve.jsp"%>
 
+<%! 
+    public enum RecoveryStage {
+        INITIATE("INITIATE"),
+        RESEND("RESEND"),
+        CONFIRM("CONFIRM"),
+        RESET("RESET");
+
+        private final String value;
+
+        RecoveryStage(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Override toString() method to return the enum value
+        @Override
+        public String toString() {
+            return value;
+        }
+
+        // Custom method to compare the enum value with a string
+        public boolean equalsValue(String otherValue) {
+            return this.value.equals(otherValue);
+        }
+    }
+%>
 <%! 
     public static String getRandomNumberString(int len, String seed) {
 
@@ -74,13 +98,13 @@
     if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(channel)) {
         String recoveryStage = request.getParameter("recoveryStage");
 
-        if ("INITIATE".equals(recoveryStage)) {
+        if (RecoveryStage.INITIATE.equalsValue(recoveryStage)) {
             List<UserClaim> userClaims = new ArrayList<UserClaim>();
 
             // get the username claim string for the tenant
-            String usernameClaimUriForTenant = "http://wso2.org/claims/username"; // todo: RNN : get this claim from somewhere
+            final String USERNAME_CLAIM_URI_FOR_TENANT = "http://wso2.org/claims/username";
             UserClaim userNameClaim = new UserClaim();
-            userNameClaim.setUri(usernameClaimUriForTenant);
+            userNameClaim.setUri(USERNAME_CLAIM_URI_FOR_TENANT);
             userNameClaim.setValue(MultitenantUtils.getTenantAwareUsername(username));
             userClaims.add(userNameClaim);
 
@@ -98,9 +122,11 @@
                 if (request.getParameter("g-recaptcha-response") != null) {
                     requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
                 }
-                List<AccountRecoveryType> resp = recoveryApiV2.initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
+                List<AccountRecoveryType> resp = 
+                    recoveryApiV2.initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
                 if (resp == null) {
-                    // handling invalid username scenario. proceeds to next level without warning to avoid an attacker bruteforcing to learn the usernames
+                    /** handling invalid username scenario. proceeds to next level without warning to 
+                    avoid an attacker bruteforcing to learn the usernames. */
                     request.setAttribute("screenValue", "******" + getRandomNumberString(4, username));
                     request.setAttribute("resendCode", UUID.randomUUID().toString());
                     request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
@@ -127,11 +153,12 @@
                     }
                 }
 
-                // STEP TWO : Get Recovery Information
+                // STEP TWO : Get Recovery Information.
                 RecoveryRequest recoveryRequest = new RecoveryRequest();
                 recoveryRequest.setChannelId(channelId);
                 recoveryRequest.setRecoveryCode(recoveryCode);
-                RecoveryResponse recoveryResponse = recoveryApiV2.recoverPassword(recoveryRequest, tenantDomain, requestHeaders);
+                RecoveryResponse recoveryResponse = 
+                    recoveryApiV2.recoverPassword(recoveryRequest, tenantDomain, requestHeaders);
                 request.setAttribute("screenValue", screenValue);
                 request.setAttribute("resendCode", recoveryResponse.getResendCode());
                 request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
@@ -140,9 +167,9 @@
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
-            // STEP THREE : Redirect to enter the OTP sent
+            // STEP THREE : Redirect to enter the OTP sent.
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
-        } else if ("RESEND".equals(recoveryStage)) {
+        } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
             String resendCode = request.getParameter("resendCode");
             // SENDING RESEND REQEUST
             try {
@@ -152,16 +179,19 @@
                 }
                 ResendRequest resendRequest = new ResendRequest();
                 resendRequest.setResendCode(resendCode);
-                ResendResponse resendResponse = recoveryApiV2.resendPasswordNotification(resendRequest, tenantDomain, requestHeaders);
+                ResendResponse resendResponse = 
+                    recoveryApiV2.resendPasswordNotification(resendRequest, tenantDomain, requestHeaders);
                 
-                // Resend code re-attached to the reqeust to avoid value being missed after page refresh happening  
-                // after the resent operation.
+                /** Resend code re-attached to the reqeust to avoid value being missed after page refresh happening  
+                after the resend operation. */
                 request.setAttribute("resendCode", resendResponse.getResendCode());
                 request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
             } catch (ApiException e) {
                 if (!StringUtils.isBlank(username)) {
                     request.setAttribute("username", username);
                 }
+                /** Status code 406 is used for invalid/expired channel id/recovery code. Other error are considered
+                unexpected and redirected to the error page. */
                 if (e.getCode() != 406) {
                     IdentityManagementEndpointUtil.addErrorInformation(request, e);
                     request.getRequestDispatcher("error.jsp").forward(request, response);
@@ -173,7 +203,7 @@
                 request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
             }
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
-        } else if ("CONFIRM".equals(recoveryStage)) {
+        } else if (RecoveryStage.CONFIRM.equalsValue(recoveryStage)) {
             String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
             String OTPcode = request.getParameter("OTPcode");
             try {
@@ -185,7 +215,8 @@
                 // For local notification channels flowConfirmationCode is used as confirmation code
                 confirmRequest.setConfirmationCode(flowConfirmationCode);
                 confirmRequest.setOtp(OTPcode);
-                ConfirmResponse confirmResponse = recoveryApiV2.confirmPasswordRecovery(confirmRequest, tenantDomain, requestHeaders);
+                ConfirmResponse confirmResponse = 
+                    recoveryApiV2.confirmPasswordRecovery(confirmRequest, tenantDomain, requestHeaders);
                 request.setAttribute("resetCode", confirmResponse.getResetCode());
             } catch (ApiException e) {
                 if (!StringUtils.isBlank(username)) {
@@ -204,7 +235,7 @@
                 return;
             }
             request.getRequestDispatcher("password-reset.jsp").forward(request, response);
-        } else if ("RESET".equals(recoveryStage)) {
+        } else if (RecoveryStage.RESET.equalsValue(recoveryStage)) {
             request.setAttribute("useRecoveryV2API", "true");            
             request.getRequestDispatcher("password-reset-complete.jsp").forward(request, response);
         } else {

@@ -142,8 +142,7 @@
 
         RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
         String resetCode = request.getParameter("resetCode");
-        String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
-        String password = request.getParameter("reset-password"); // todo: RNN : Change this to char array
+        String flowConfirmationCode = request.getParameter("flowConfirmationCode");
 
         try {
             Map<String, String> requestHeaders = new HashedMap();
@@ -154,7 +153,7 @@
             // For local notification channels flowConfirmationCode is used as confirmation code
             resetRequest.setResetCode(resetCode);
             resetRequest.setFlowConfirmationCode(flowConfirmationCode);
-            resetRequest.setPassword(password);
+            resetRequest.setPassword(request.getParameter("reset-password"));
             ResetResponse resetResponse = recoveryApiV2.resetUserPassword(resetRequest, tenantDomain, requestHeaders);
         } catch (ApiException e) {
             if (!StringUtils.isBlank(username)) {
