@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.19
+
+### Patch Changes
+
+- [#6053](https://github.com/wso2/identity-apps/pull/6053) [`1d9eb6f1a4`](https://github.com/wso2/identity-apps/commit/1d9eb6f1a46650b55ad3279869cca94f87ce8309) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the access url templating issue
+
 ## 2.15.18
 
 ### Patch Changes
