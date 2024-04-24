@@ -285,7 +285,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
          * Use a regex to replace `${UserTenantHint}`, and `${organizationIdHint}` placeholders
          * while preserving other characters
          */
-        let moderatedValue: string = value?.trim()?.replace(accessUrlPlaceholdersPattern, "");
+        const moderatedValue: string = value?.trim()?.replace(accessUrlPlaceholdersPattern, "");
         let errorMsg: string;
 
         if (moderatedValue && (!URLUtils.isURLValid(moderatedValue, true) || !FormValidation.url(moderatedValue))) {
