@@ -3620,15 +3620,15 @@ export const extensions: Extensions = {
                             },
                             passwordRecoveryOtpUseUppercase: {
                                 hint: "This specifies whether to use upper case characters in the password recovery otp code.",
-                                label: "Use upper case letters"
+                                label: "Include upper case letters"
                             },
                             passwordRecoveryOtpUseLowercase: {
                                 hint: "This specifies whether to use lower case characters in the password recovery otp code.",
-                                label: "Use lower case letters"
+                                label: "Include lower case letters"
                             },
                             passwordRecoveryOtpUseNumeric: {
                                 hint: "This specifies whether to use numeric characters in the password recovery otp code.",
-                                label: "Use numeric characters"
+                                label: "Include numeric characters"
                             },
                             passwordRecoveryOtpLength: {
                                 hint: "Password recovery OTP length in characters",
@@ -3650,7 +3650,7 @@ export const extensions: Extensions = {
                     recoveryOptionSubHeadingSMS: "SMS OTP",
                     recoveryOptionHeading: "Recovery Option Selection",
                     otpConfigHeading: "OTP Code Configuration",
-                    otherConfigHeading: "Other Configuration",
+                    otherConfigHeading: "Recovery Attempts Limitation",
                     connectorDescription: "Enable self-service password recovery for users " + "on the login page.",
                     heading: "Password Recovery",
                     notification: {
