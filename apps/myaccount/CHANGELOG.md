@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.5.37
+
+### Patch Changes
+
+- [#6051](https://github.com/wso2/identity-apps/pull/6051) [`2865d28b24`](https://github.com/wso2/identity-apps/commit/2865d28b24137d73d4f8a6e65a9bdf9742c46f0f) Thanks [@brionmario](https://github.com/brionmario)! - Fix My Account logout issues with Super Tenant Proxies
+
+- Updated dependencies [[`11237a0fb6`](https://github.com/wso2/identity-apps/commit/11237a0fb6570e6215175a103973ea02144f1d06)]:
+  - @wso2is/features@2.15.17
+
 ## 2.5.36
 
 ### Patch Changes

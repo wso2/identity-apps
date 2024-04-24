@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.17
+
+### Patch Changes
+
+- [#6037](https://github.com/wso2/identity-apps/pull/6037) [`11237a0fb6`](https://github.com/wso2/identity-apps/commit/11237a0fb6570e6215175a103973ea02144f1d06) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable api resource v2 in applications
+
 ## 2.15.16
 
 ### Patch Changes
