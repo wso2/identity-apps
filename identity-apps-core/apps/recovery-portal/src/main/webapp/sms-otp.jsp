@@ -118,33 +118,33 @@
                 <% } %>
             </layout:component>
             <layout:component componentName="MainSection">
-              <div class="ui segment">
-                      <%-- page content --%>
-                      <h2>
-                        <%= i18n(recoveryResourceBundle, customText, "sms.otp.heading") %>
-                      </h2>
-                      <div class="ui divider hidden"></div>
-                      <%
-                          if (authenticationFailed) {
-                      %>
-                      <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
-                      </div>
-                      <div class="ui divider hidden"></div>
-                      <% } %>
-                      <div id="alertDiv"></div>
-                      <div class="segment-form">
-                          <form class="ui large form" id="codeForm" name="codeForm" action="passwordrecoveryotp.do" method="POST">
-                              <%
-                                  String loginFailed = request.getParameter("authFailure");
-                                  if (loginFailed != null && "true".equals(loginFailed)) {
-                                      String authFailureMsg = request.getParameter("authFailureMsg");
-                                      if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
-                              %>
-                              <div class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%>
-                              </div>
-                              <div class="ui divider hidden"></div>
-                              <% }
-                              } %>
+            <div class="ui segment">
+                    <%-- page content --%>
+                    <h2>
+                    <%= i18n(recoveryResourceBundle, customText, "sms.otp.heading") %>
+                    </h2>
+                    <div class="ui divider hidden"></div>
+                    <%
+                        if (authenticationFailed) {
+                    %>
+                    <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
+                    </div>
+                    <div class="ui divider hidden"></div>
+                    <% } %>
+                    <div id="alertDiv"></div>
+                    <div class="segment-form">
+                        <form class="ui large form" id="codeForm" name="codeForm" action="passwordrecoveryotp.do" method="POST">
+                            <%
+                                String loginFailed = request.getParameter("authFailure");
+                                if (loginFailed != null && "true".equals(loginFailed)) {
+                                    String authFailureMsg = request.getParameter("authFailureMsg");
+                                    if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
+                            %>
+                            <div class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%>
+                            </div>
+                            <div class="ui divider hidden"></div>
+                            <% }
+                            } %>
 
                             <div class="field">
                                 <% if (request.getAttribute("screenValue") != null) { %>
@@ -183,7 +183,7 @@
                                         %>
                                             <div class="field mt-5">
                                                 <input
-                                                    class="text-center p-3"
+                                                    class="text-center pl-0 pr-0 pt-3 pb-3"
                                                     id=<%= currentStringIndex %>
                                                     name=<%= currentStringIndex %>
                                                     onkeyup="movetoNext(this, '<%= nextStringIndex %>', '<%= previousStringIndex %>')"
@@ -209,45 +209,45 @@
                                 <% } %>
                             </div>
 
-                                  <input type="hidden" name="channel"
-                                      value='<%=IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP%>'/>
-                                  <input type="hidden" id="recoveryStage" name="recoveryStage"
-                                      value='CONFIRM'/>
-                                  <input type="hidden" name="resendCode"
-                                      value='<%=Encode.forHtmlAttribute((String)request.getAttribute("resendCode"))%>'/>
-                                  <input type="hidden" name="sp"
-                                      value='<%=Encode.forHtmlAttribute((String)request.getAttribute("sp"))%>'/>
-                                  <input type="hidden" name="spId"
-                                      value='<%=Encode.forHtmlAttribute((String)request.getAttribute("spId"))%>'/>
-                                  <input type="hidden" name="flowConfirmationCode"
-                                      value='<%=Encode.forHtmlAttribute((String)request.getAttribute("flowConfirmationCode"))%>'/>
-                                  <input type="hidden" name="sessionDataKey"
-                                      value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-                                  <input id="multiOptionURI" type="hidden" name="multiOptionURI"
-                                     value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
-                                  <input type='hidden' name='resendFlagElement' id='resendFlagElement' value='false'/>
+                            <input type="hidden" name="channel"
+                                value='<%=IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP%>'/>
+                            <input type="hidden" id="recoveryStage" name="recoveryStage"
+                                value='CONFIRM'/>
+                            <input type="hidden" name="resendCode"
+                                value='<%=Encode.forHtmlAttribute((String)request.getAttribute("resendCode"))%>'/>
+                            <input type="hidden" name="sp"
+                                value='<%=Encode.forHtmlAttribute((String)request.getAttribute("sp"))%>'/>
+                            <input type="hidden" name="spId"
+                                value='<%=Encode.forHtmlAttribute((String)request.getAttribute("spId"))%>'/>
+                            <input type="hidden" name="flowConfirmationCode"
+                                value='<%=Encode.forHtmlAttribute((String)request.getAttribute("flowConfirmationCode"))%>'/>
+                            <input type="hidden" name="sessionDataKey"
+                                value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+                            <input id="multiOptionURI" type="hidden" name="multiOptionURI"
+                                value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
+                            <input type='hidden' name='resendFlagElement' id='resendFlagElement' value='false'/>
 
-                                  <div class="ui divider hidden"></div>
+                            <div class="ui divider hidden"></div>
 
-                                  <% if(request.getParameter("multiOptionURI") != null &&
-                                          request.getParameter("multiOptionURI").contains("backup-code-authenticator")) { %>
-                                      <div class="social-login blurring social-dimmer text-left">
-                                          <div class="field text-left">
-                                              <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "cannot.access.smsotp")%></label>
+                            <% if(request.getParameter("multiOptionURI") != null &&
+                                    request.getParameter("multiOptionURI").contains("backup-code-authenticator")) { %>
+                                <div class="social-login blurring social-dimmer text-left">
+                                    <div class="field text-left">
+                                        <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "cannot.access.smsotp")%></label>
 
-                                              <a
-                                                  onclick="window.location.href='<%=commonauthURL%>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>&multiOptionURI=<%=Encode.forUriComponent(request.getParameter("multiOptionURI"))%>';"
-                                                  target="_blank"
-                                                  class="clickable-link text-left ui form"
-                                                  rel="noopener noreferrer"
-                                                  data-testid="login-page-backup-code-link"
-                                                  style="cursor: pointer;display:block"
-                                              >
-                                                  <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "use.backup.code")%>
-                                              </a>
-                                          </div>
-                                      </div>
-                                  <% }%>
+                                        <a
+                                            onclick="window.location.href='<%=commonauthURL%>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>&multiOptionURI=<%=Encode.forUriComponent(request.getParameter("multiOptionURI"))%>';"
+                                            target="_blank"
+                                            class="clickable-link text-left ui form"
+                                            rel="noopener noreferrer"
+                                            data-testid="login-page-backup-code-link"
+                                            style="cursor: pointer;display:block"
+                                        >
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "use.backup.code")%>
+                                        </a>
+                                    </div>
+                                </div>
+                            <% } %>
 
                                 <div class="buttons">
                                     <% if (otpLength <= 6) { %>
@@ -272,9 +272,9 @@
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "sms.otp.resend.code")%>
                                     </button>
                                 </div>
-                          </form>
-                      </div>
-                  </div>
+                        </form>
+                    </div>
+                </div>
             </layout:component>
             <layout:component componentName="ProductFooter">
                 <%-- product-footer --%>
@@ -349,7 +349,7 @@
 
             // Handle paste events
     	    function handlePaste(e) {
-     	        var clipboardData, value;
+                var clipboardData, value;
 
                 // Stop data get being pasted into element
                 e.stopPropagation();
@@ -367,7 +367,7 @@
                 }
             }
 
-           document.getElementById('pincode-1') ? document.getElementById('pincode-1').addEventListener('paste', handlePaste) : null;
+            document.getElementById('pincode-1') ? document.getElementById('pincode-1').addEventListener('paste', handlePaste) : null;
 
             $(document).ready(function () {
                 $.fn.preventDoubleSubmission = function() {
