@@ -17,19 +17,22 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import {
     ContentLoader,
     DocumentationLink,
     EmphasizedSegment,
     Message,
-    useDocumentation } from "@wso2is/react-components";
+    useDocumentation
+} from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { applicationConfig } from "../../../admin.extensions.v1";
 import { AppConstants, AppState, UIConfigInterface } from "../../../admin.core.v1";
+import { applicationConfig } from "../../../admin.extensions.v1";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
 import { useMyAccountStatus } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
@@ -252,6 +255,43 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     };
 
     /**
+     * Access URL may have placeholders like `${UserTenantHint}`, or `${organizationIdHint}`.
+     * This function validates the Access URL after removing those placeholders.
+     *
+     * @param value - Access URL to be validated.
+     * @returns Error message.
+     */
+    const validateAccessURL = (value: string): string => {
+        let moderatedValue: string = value?.trim();
+        let errorMsg: string;
+
+
+        let placeholdersPattern: string = "";
+
+        ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_ALLOWED_PLACEHOLDERS.forEach(
+            (placeholder: string, index: number) => {
+                if (index == 0) {
+                    placeholdersPattern += placeholder;
+                } else {
+                    placeholdersPattern += `|${placeholder}`;
+                }
+            }
+        );
+
+        /**
+         * Use a regex to replace `${UserTenantHint}`, and `${organizationIdHint}` placeholders
+         * while preserving other characters
+         */
+        moderatedValue = value?.trim()?.replace(new RegExp(placeholdersPattern, "g"), "");
+
+        if (moderatedValue && (!URLUtils.isURLValid(moderatedValue, true) || !FormValidation.url(moderatedValue))) {
+            errorMsg = t("applications:forms.generalDetails.fields.accessUrl.validations.invalid");
+        }
+
+        return errorMsg;
+    };
+
+    /**
      * Checks whether this is an M2M application.
      */
     useEffect(() => {
@@ -471,6 +511,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 )
                             )
                         }
+                        validation={ validateAccessURL }
                         maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MAX_LENGTH }
                         minLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MIN_LENGTH }
                         data-testid={ `${ testId }-application-access-url-input` }
