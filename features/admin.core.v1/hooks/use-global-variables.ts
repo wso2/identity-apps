@@ -17,13 +17,19 @@
  */
 
 import { useContext } from "react";
-import GlobalVariablesContext, { GlobalContextType } from "../context/global-variables-context";
+import GlobalVariablesContext, { GlobalVariablesContextInterface } from "../context/global-variables-context";
 
-const useGlobalVariables = (): GlobalContextType => {
-    const context: GlobalContextType = useContext(GlobalVariablesContext);
+/**
+ * A hook for accessing global variables from the context.
+ *
+ * @returns The global variables context.
+ * @throws Error if the hook is not used within a GlobalVariablesProvider.
+ */
+const useGlobalVariables = (): GlobalVariablesContextInterface => {
+    const context: GlobalVariablesContextInterface = useContext(GlobalVariablesContext);
 
     if (!context) {
-        throw new Error("useGlobalVariablesContext must be used within a GlobalVariablesProvider");
+        throw new Error("useGlobalVariables must be used within a GlobalVariablesProvider");
     }
 
     return context;

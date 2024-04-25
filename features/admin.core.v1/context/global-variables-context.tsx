@@ -18,17 +18,28 @@
 
 import { Context, createContext } from "react";
 
-export interface GlobalContextType {
+/**
+ * Interface representing the shape of the global variables context.
+ */
+export interface GlobalVariablesContextInterface {
+  /** Indicates whether adaptive authentication is available. */
   isAdaptiveAuthenticationAvailable: boolean;
+  /** Indicates whether organization management is enabled. */
   isOrganizationManagementEnabled: boolean;
 }
 
-export const defaultValues: GlobalContextType = {
+/**
+ * Default values for the global variables context.
+ */
+export const defaultValues: GlobalVariablesContextInterface = {
     isAdaptiveAuthenticationAvailable: true,
     isOrganizationManagementEnabled: true
 };
 
-const GlobalVariablesContext: Context<GlobalContextType>= createContext<GlobalContextType>(defaultValues);
+/**
+ * Context for managing global variables.
+ */
+const GlobalVariablesContext: Context<GlobalVariablesContextInterface> =
+  createContext<GlobalVariablesContextInterface>(defaultValues);
 
 export default GlobalVariablesContext;
-

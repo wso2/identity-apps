@@ -17,15 +17,27 @@
  */
 
 import React from "react";
-import GlobalVariablesContext, { GlobalContextType, defaultValues } from "../context/global-variables-context";
+import GlobalVariablesContext, { GlobalVariablesContextInterface, defaultValues }
+    from "../context/global-variables-context";
 
+/**
+ * Properties for the GlobalVariablesProvider component.
+ */
 interface GlobalProviderProps {
-  value?: Partial<GlobalContextType>;
+  /** Partial values to override the default global variables. */
+  value?: Partial<GlobalVariablesContextInterface>;
+  /** The child components to be wrapped by the provider. */
   children: React.ReactNode;
 }
 
+/**
+ * Provides a context provider for global variables.
+ *
+ * @param value - Partial values to override the default global variables.
+ * @param children - The child components to be wrapped by the provider.
+ */
 const GlobalVariablesProvider: React.FC<GlobalProviderProps> = ({ children, value = {} }: GlobalProviderProps) => {
-    const mergedValues: GlobalContextType = {
+    const mergedValues: GlobalVariablesContextInterface = {
         ...defaultValues,
         ...value
     };
