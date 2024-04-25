@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.15.29
+
+### Patch Changes
+
+- [#5997](https://github.com/wso2/identity-apps/pull/5997) [`bd05cfb945`](https://github.com/wso2/identity-apps/commit/bd05cfb94509ac4e55315e609268fd371daa56ed) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add login flow AI feature
+
+- Updated dependencies [[`b7097d6fd2`](https://github.com/wso2/identity-apps/commit/b7097d6fd28e08fcaaa68e02727443531dde2a86), [`bd05cfb945`](https://github.com/wso2/identity-apps/commit/bd05cfb94509ac4e55315e609268fd371daa56ed)]:
+  - @wso2is/features@2.15.23
+  - @wso2is/theme@2.0.75
+  - @wso2is/i18n@2.2.4
+  - @wso2is/react-components@2.1.21
+  - @wso2is/dynamic-forms@2.0.50
+  - @wso2is/form@2.0.51
+
 ## 2.15.28
 
 ### Patch Changes
