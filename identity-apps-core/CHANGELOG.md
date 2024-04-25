@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.63
+
+### Patch Changes
+
+- [#6059](https://github.com/wso2/identity-apps/pull/6059) [`9b107d6cdc`](https://github.com/wso2/identity-apps/commit/9b107d6cdc5d92c62df1a7020da52a3bcde74831) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Avoid the nested if statement
+
 ## 2.1.62
 
 ### Patch Changes

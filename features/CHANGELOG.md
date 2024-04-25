@@ -1,5 +1,15 @@
 # @wso2is/features
 
+## 2.15.24
+
+### Patch Changes
+
+- [#6067](https://github.com/wso2/identity-apps/pull/6067) [`a991e74cc2`](https://github.com/wso2/identity-apps/commit/a991e74cc2060d153c14118d68743b95a36df997) Thanks [@savindi7](https://github.com/savindi7)! - Fix user profile account locking state issue.
+
+* [#6057](https://github.com/wso2/identity-apps/pull/6057) [`9d6cbb7a56`](https://github.com/wso2/identity-apps/commit/9d6cbb7a567c12aa9a56f44ba5528001481d2232) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Refactor the code to eliminate the use of any type.
+
+- [#6061](https://github.com/wso2/identity-apps/pull/6061) [`828714e36d`](https://github.com/wso2/identity-apps/commit/828714e36dc69917f0ef1a5ebf16614cfdfaa589) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with fetching tenant associations when the org is switched
+
 ## 2.15.23
 
 ### Patch Changes
