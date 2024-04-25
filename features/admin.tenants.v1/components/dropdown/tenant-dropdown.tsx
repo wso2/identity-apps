@@ -45,16 +45,16 @@ import {
     Item,
     Menu,
     Placeholder,
-    SemanticICONS 
+    SemanticICONS
 } from "semantic-ui-react";
-import { organizationConfigs } from "../../../admin.extensions.v1";
-import { 
-    FeatureGateConstants 
-} from "../../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { getMiscellaneousIcons } from "../../../admin.core.v1/configs";
 import { AppConstants } from "../../../admin.core.v1/constants";
 import { history } from "../../../admin.core.v1/helpers/history";
 import { AppState } from "../../../admin.core.v1/store";
+import { organizationConfigs } from "../../../admin.extensions.v1";
+import {
+    FeatureGateConstants
+} from "../../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
@@ -380,13 +380,13 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                 trigger={ dropdownTrigger }
             >
                 {
-                    organizationConfigs.showOrganizationDropdown ? 
+                    organizationConfigs.showOrganizationDropdown ?
                         !isSwitchTenantsSelected ? (
                             <Dropdown.Menu className="tenant-dropdown-menu" onClick={ handleDropdownClick }>
                                 <Item.Group className="current-tenant" unstackable>
                                     <Item
-                                        className={ isSubOrg || !organizationConfigs.showOrganizationDropdown 
-                                            ? "header sub-org-header" : "header" } 
+                                        className={ isSubOrg || !organizationConfigs.showOrganizationDropdown
+                                            ? "header sub-org-header" : "header" }
                                         key={ "current-tenant" }
                                     >
                                         {
@@ -437,7 +437,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                                 data-inverted
                                                                 data-tooltip={ isCopying
                                                                     ? t("extensions:manage.features.tenant." +
-                                                                        "header.copied") 
+                                                                        "header.copied")
                                                                     : t("extensions:manage.features.tenant." +
                                                                         "header.copyOrganizationId")
                                                                 }
@@ -480,7 +480,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                                     disabled={ true }
                                                                 >
                                                                     <BuildingCircleCheckIcon fill="black" />
-                                                                    { 
+                                                                    {
                                                                         t("extensions:manage.features.tenant." +
                                                                         "header.makeDefaultOrganization")
                                                                     }
@@ -496,7 +496,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                                     disabled={ isSetDefaultTenantInProgress }
                                                                 >
                                                                     <BuildingCircleCheckIcon fill="black" />
-                                                                    { 
+                                                                    {
                                                                         t("extensions:manage.features.tenant." +
                                                                         "header.makeDefaultOrganization")
                                                                     }
@@ -517,9 +517,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                             data-testid={ "tenant-switch-menu" }
                                                         >
                                                             <ArrowLeftArrowRightIcon fill="black" />
-                                                            { 
-                                                                t("extensions:manage.features." + 
-                                                                "tenant.header.tenantSwitchHeader") 
+                                                            {
+                                                                t("extensions:manage.features." +
+                                                                "tenant.header.tenantSwitchHeader")
                                                             }
                                                         </Dropdown.Item>
                                                     )
@@ -539,7 +539,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                                 name,
                                                                 onClick
                                                             } = link;
-                
+
                                                             return (
                                                                 <Dropdown.Item
                                                                     key={ index }
@@ -548,8 +548,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                                     // Temporarily hiding dropdown item until
                                                                     // modal is implemented.
                                                                     // style={{display:'none'}}
-                                                                    data-testid={ 
-                                                                        `tenant-dropdown-link-${ 
+                                                                    data-testid={
+                                                                        `tenant-dropdown-link-${
                                                                             name.replace(" ", "-") }`
                                                                     }
                                                                 >
