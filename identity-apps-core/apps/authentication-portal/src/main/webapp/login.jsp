@@ -30,6 +30,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
+<%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClient" %>
@@ -117,15 +118,34 @@
             // EnterpriseLoginRetrievalClient enterpriseLoginRetrievalClient = new EnterpriseLoginRetrievalClient();
             // enterpriseUserloginEnabled = enterpriseLoginRetrievalClient.isEnterpriseLoginEnabled(userTenantDomain);
 
-            CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
-            enterpriseUserloginEnabled = commonDataRetrievalClient.checkBooleanProperty(ENTERPRISE_API_RELATIVE_PATH + userTenantDomain,
-                                                              null, ENTERPRISE_LOGIN_KEY, false, false);
+            if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME != null && CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+                CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
+                enterpriseUserloginEnabled = commonDataRetrievalClient.checkBooleanProperty(ENTERPRISE_API_RELATIVE_PATH + userTenantDomain,
+                                                                  null, ENTERPRISE_LOGIN_KEY, false, false);
+            }
         } catch (Exception e) {
             // Ignored and send the default value.
         }
 
     }
 
+    if (enterpriseUserloginEnabled) {
+        %>
+          <script type="text/javascript">
+            document.location = "<%=oauth2AuthorizeURL%>?idp=<%=ENTERPRISE_USER_LOGIN_IDP%>" +
+                    "&authenticator=<%=ENTERPRISE_USER_LOGIN_AUTHENTICATOR%>" +
+                    "&fidp=EnterpriseIDP" + "&org=<%=userTenantDomain%>" +
+                    "&code_challenge_method=<%=Encode.forUriComponent(request.getParameter("code_challenge_method"))%>" +
+                    "&code_challenge=<%=Encode.forUriComponent(request.getParameter("code_challenge"))%>" +
+                    "&response_type=<%=Encode.forUriComponent(request.getParameter("response_type"))%>" +
+                    "&client_id=<%=Encode.forUriComponent(request.getParameter("client_id"))%>" +
+                    "&scope=<%=Encode.forUriComponent(request.getParameter("scope"))%>" +
+                    "&redirect_uri=<%=Encode.forUriComponent(request.getParameter("redirect_uri"))%>" +
+                    "&response_mode=<%=Encode.forUriComponent(request.getParameter("response_mode"))%>";
+          </script>
+        <%
+    }
+    
     String errorMessage = "authentication.failed.please.retry";
     String errorCode = "";
     if(request.getParameter(Constants.ERROR_CODE)!=null){
