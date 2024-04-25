@@ -51,7 +51,7 @@
         "@wso2is/theme": "^2.0.75",
         "@wso2is/validation": "^2.0.4",
         "@wso2is/features": "^2.15.23",
-        "axios": "^0.19.2",
+        "axios": "^0.28.0",
         "history": "^4.9.0",
         "i18next": "^21.9.1",
         "i18next-browser-languagedetector": "^6.1.5",

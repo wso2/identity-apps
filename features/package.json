@@ -38,7 +38,7 @@
         "@wso2is/react-components": "^2.1.21",
         "@wso2is/theme": "^2.0.75",
         "@wso2is/validation": "^2.0.4",
-        "axios": "^0.19.2",
+        "axios": "^0.28.0",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
         "deep-equal": "^2.2.2",
