@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.15.27
+
+### Patch Changes
+
+- [#6058](https://github.com/wso2/identity-apps/pull/6058) [`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501) Thanks [@lashinijay](https://github.com/lashinijay)! - Update iProov Logo
+
+- Updated dependencies [[`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501)]:
+  - @wso2is/theme@2.0.74
+  - @wso2is/features@2.15.21
+  - @wso2is/react-components@2.1.20
+  - @wso2is/dynamic-forms@2.0.49
+  - @wso2is/form@2.0.50
+
 ## 2.15.26
 
 ### Patch Changes
