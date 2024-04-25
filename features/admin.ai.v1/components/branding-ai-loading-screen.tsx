@@ -149,11 +149,11 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
                 </Box>
             </Box>
             <Typography variant="caption">
-                { t("ai:aiLoginFlow.disclaimer") }
+                { t("branding:ai.disclaimer") }
                 <DocumentationLink
                     link={ getLink("common.termsOfService") }
                 >
-                    { t("ai:aiLoginFlow.termsAndConditions") }
+                    { t("branding:ai.termsAndConditions") }
                 </DocumentationLink>
             </Typography>
         </Box>
