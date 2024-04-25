@@ -22,9 +22,9 @@ import {
     IdentityProviderManagementUtils
 } from "../../admin.identity-providers.v1/utils/identity-provider-management-utils";
 import AuthenticatorsRecord from "../models/authenticators-record";
-import { IdentityProviderManagementConstants } from "features/admin.identity-providers.v1/constants";
-import { ApplicationManagementConstants } from "features/admin.applications.v1/constants";
-import useUIConfig from "features/admin.core.v1/hooks/use-ui-configs";
+import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import { IdentityProviderManagementConstants } from "../../admin.identity-providers.v1/constants";
 
 const useAvailableAuthenticators = (): {
     filteredAuthenticators: {
