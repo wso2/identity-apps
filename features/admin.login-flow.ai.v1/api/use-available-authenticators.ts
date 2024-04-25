@@ -25,13 +25,14 @@ import AutheticatorsRecord from "../models/authenticators-record";
 
 const useAvailableAuthenticators = (): { availableAuthenticators: AutheticatorsRecord[], loading: boolean } => {
     const [ availableAuthenticators, setAvailableAuthenticators ] = useState<AutheticatorsRecord[]>([]);
-    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState<boolean>(true);
 
     useEffect(() => {
         getAvailableAuthenticators();
     }, []);
 
     const getAvailableAuthenticators = async () => {
+        setLoading(true);
         IdentityProviderManagementUtils.getAllAuthenticators()
             .then((response: GenericAuthenticatorInterface[][]) => {
                 const updatedAuthenticators:AutheticatorsRecord[] = [];

@@ -40,11 +40,23 @@ export interface AILoginFlowGenerationStatusAPIResponseInterface {
 /**
  * Login flow generation result API response interface.
  */
-export type AILoginFlowGenerationResultAPIResponseInterface = AuthenticationSequenceInterface;
+export interface AILoginFlowGenerationResultAPIResponseInterface {
+    data: AuthenticationSequenceInterface | { error: string};
+    status: LoginFlowResultStatus;
+}
 
 /**
  * Login flow generation API response interface.
  */
 export interface GenerateLoginFlowAPIResponseInterface {
     operation_id: string;
+}
+
+/**
+ * Login flow result status
+ */
+export enum LoginFlowResultStatus {
+    COMPLETED = "COMPLETED",
+    FAILED = "FAILED",
+    IN_PROGRESS = "IN_PROGRESS"
 }

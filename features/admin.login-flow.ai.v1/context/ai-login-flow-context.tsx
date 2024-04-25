@@ -29,7 +29,7 @@ export interface AILoginFlowContextProps {
      * Function to handle the login flow generation.
      * @param data - Data from the API response.
      */
-    handleGenerate: (data: AILoginFlowGenerationResultAPIResponseInterface) => void;
+    handleGenerate: (data: AuthenticationSequenceInterface) => void;
     /**
      * Flag to determine if the login flow is being generated.
      */

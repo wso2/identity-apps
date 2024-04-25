@@ -68,9 +68,9 @@ const useGenerateAILoginFlow = (): GenerateLoginFlowFunction => {
             .catch((error: IdentityAppsApiException) => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("ai:aiLoginFlow.notifications.generateError.generic.description"),
+                        description: t("ai:aiLoginFlow.notifications.generateError.description"),
                         level: AlertLevels.ERROR,
-                        message: error.message || t("ai:aiLoginFlow.notifications.generateError.generic.message")
+                        message: error.message || t("ai:aiLoginFlow.notifications.generateError.message")
                     })
                 );
             });

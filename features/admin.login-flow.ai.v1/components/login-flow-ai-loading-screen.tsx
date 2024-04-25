@@ -85,9 +85,9 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
         if (error) {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("ai:aiLoginFlow.notifications.generateStatusError.generic.description"),
+                    description: t("ai:aiLoginFlow.notifications.generateStatusError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiLoginFlow.notifications.generateStatusError.generic.message")
+                    message: t("ai:aiLoginFlow.notifications.generateStatusError.message")
                 })
             );
         }

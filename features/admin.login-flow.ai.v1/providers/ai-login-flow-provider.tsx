@@ -17,14 +17,19 @@
  */
 
 
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, {  PropsWithChildren, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import { AppState } from "../../admin.core.v1";
 import { useAILoginFlowGenerationResult } from "../api/use-ai-login-flow-generation-result";
 import LoginFlowAIBanner from "../components/login-flow-ai-banner";
 import LoginFlowAILoadingScreen from "../components/login-flow-ai-loading-screen";
 import AILoginFlowContext from "../context/ai-login-flow-context";
+import { LoginFlowResultStatus } from "../models/ai-login-flow";
 
 export type AILoginFlowProviderProps = unknown;
 
@@ -35,9 +40,14 @@ export type AILoginFlowProviderProps = unknown;
  * @returns Sign On Mehtods provider.
  */
 const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>): React.ReactElement=>{
+
     const { children } = props;
 
-    const disabledFeatures: string[] = useSelector((state: AppState) =>
+    const { t } = useTranslation();
+
+    const dispatch: Dispatch = useDispatch();
+
+    const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
         state.config.ui.features?.applications?.disabledFeatures);
 
     const [ aiGeneratedLoginFlow, setAiGeneratedLoginFlow ] = useState<AuthenticationSequenceInterface>(undefined);
@@ -53,10 +63,39 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
     useEffect(() => {
         if (error) {
             setGeneratingLoginFlow(false);
+
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("ai:aiLoginFlow.notifications.generateResultError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("ai:aiLoginFlow.notifications.generateResultError.message")
+                })
+            );
+
+            return;
         }
 
-        if (loginFlowGenerationCompleted && !error && data) {
-            handleGenerate(data);
+        if (data?.status === LoginFlowResultStatus.FAILED) {
+            setGeneratingLoginFlow(false);
+
+            // if data.data contains an object error then use that as the error message
+            const errorMessage = 'error' in data.data
+                ? data.data.error : t("ai:aiLoginFlow.notifications.generateResultFailed.message");
+
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: errorMessage,
+                    level: AlertLevels.ERROR,
+                    message: t("ai:aiLoginFlow.notifications.generateResultFailed.message")
+                })
+            );
+
+            return;
+        }
+
+        // data.data is of type AuthenticationSequenceInterface use it to generate the login flow
+        if (data?.status === LoginFlowResultStatus.COMPLETED && "type" in data.data) {
+            handleGenerate(data.data as AuthenticationSequenceInterface);
         }
     }, [ data, loginFlowGenerationCompleted ]);
 
@@ -90,7 +129,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
                 ) : (
                     <>
                         {
-                            !disabledFeatures?.includes("applications.loginFlow.ai") && (
+                            !applicationDisabledFeatures?.includes("applications.loginFlow.ai") && (
                                 <LoginFlowAIBanner/>
                             )
                         }

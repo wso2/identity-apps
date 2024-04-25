@@ -78,7 +78,8 @@ const generateLoginFlow = (
                 error.response?.data?.code,
                 error.request,
                 error.response,
-                error.config);
+                error.config
+            );
         });
 };
 

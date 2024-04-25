@@ -1,3 +1,5 @@
+import { NotificationItem } from "../common";
+
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
@@ -16,8 +18,8 @@
  * under the License.
  */
 export interface aiNS{
-    aiLoginFlow:{
-        banner:{
+    aiLoginFlow: {
+        banner: {
             full:{
                 heading: string;
                 subheading: string;
@@ -36,7 +38,15 @@ export interface aiNS{
             };
 
         };
-        screens:{
+        notifications: {
+            generateError: NotificationItem;
+            generateResultError: NotificationItem;
+            generateResultFailed: NotificationItem;
+            generateStatusError: NotificationItem;
+            noAuthenticators: NotificationItem;
+            rateLimitError: NotificationItem;
+        };
+        screens: {
             loading:{
                 heading: string;
                 facts:{
