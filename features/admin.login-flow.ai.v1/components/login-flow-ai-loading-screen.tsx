@@ -20,8 +20,12 @@ import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Typography from "@oxygen-ui/react/Typography";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { ReactComponent as LoadingPlaceholder }
     from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 import { useAILoginFlowGenerationStatus } from "../api/use-ai-login-flow-generation-status";
@@ -33,10 +37,6 @@ import {
     useGetStatusLabels
 } from "../constants/login-flow-ai-constants";
 import "./login-flow-ai-loading-screen.scss";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 
 const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
 

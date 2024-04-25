@@ -79,7 +79,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
             setGeneratingLoginFlow(false);
 
             // if data.data contains an object error then use that as the error message
-            const errorMessage = 'error' in data.data
+            const errorMessage: string = "error" in data.data
                 ? data.data.error : t("ai:aiLoginFlow.notifications.generateResultFailed.message");
 
             dispatch(

@@ -19,6 +19,7 @@
 import { ChevronUpIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
@@ -37,7 +38,6 @@ import useGenerateAIBrandingPreference,
 { GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
 import { BannerState } from "../models/types";
 import "./branding-ai-banner.scss";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
 
 
 /**

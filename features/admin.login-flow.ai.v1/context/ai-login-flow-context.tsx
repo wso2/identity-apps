@@ -18,7 +18,6 @@
 
 import { Context, createContext } from "react";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
-import { AILoginFlowGenerationResultAPIResponseInterface } from "../models/ai-login-flow";
 
 export interface AILoginFlowContextProps {
     /**
