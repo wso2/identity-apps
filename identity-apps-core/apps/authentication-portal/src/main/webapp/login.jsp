@@ -30,6 +30,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
+<%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClient" %>
@@ -117,9 +118,11 @@
             // EnterpriseLoginRetrievalClient enterpriseLoginRetrievalClient = new EnterpriseLoginRetrievalClient();
             // enterpriseUserloginEnabled = enterpriseLoginRetrievalClient.isEnterpriseLoginEnabled(userTenantDomain);
 
-            CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
-            enterpriseUserloginEnabled = commonDataRetrievalClient.checkBooleanProperty(ENTERPRISE_API_RELATIVE_PATH + userTenantDomain,
-                                                              null, ENTERPRISE_LOGIN_KEY, false, false);
+            if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME != null && CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+                CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
+                enterpriseUserloginEnabled = commonDataRetrievalClient.checkBooleanProperty(ENTERPRISE_API_RELATIVE_PATH + userTenantDomain,
+                                                                  null, ENTERPRISE_LOGIN_KEY, false, false);
+            }
         } catch (Exception e) {
             // Ignored and send the default value.
         }
