@@ -81,17 +81,6 @@ const useGetCustomTextPreferenceResolve = <
         shouldRetryOnError: false
     });
 
-    if ((error?.response?.data as any)?.code
-        === CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_NOT_CONFIGURED_ERROR_CODE) {
-        return {
-            data: null,
-            error,
-            isLoading: !error && !data,
-            isValidating,
-            mutate
-        };
-    }
-
     /**
      * This function is used to mutate the request cache of custom text preference retrieval requests
      * across all screens.
@@ -110,6 +99,18 @@ const useGetCustomTextPreferenceResolve = <
             { revalidate: false }
         );
     };
+
+    if ((error?.response?.data as any)?.code
+        === CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_NOT_CONFIGURED_ERROR_CODE) {
+        return {
+            data: null,
+            error,
+            isLoading: !error && !data,
+            isValidating,
+            mutate,
+            mutateMultiple
+        };
+    }
 
     return {
         data,

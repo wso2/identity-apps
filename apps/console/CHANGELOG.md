@@ -1,5 +1,57 @@
 # @wso2is/console
 
+## 2.15.28
+
+### Patch Changes
+
+- [#6064](https://github.com/wso2/identity-apps/pull/6064) [`5b68dd8b55`](https://github.com/wso2/identity-apps/commit/5b68dd8b556580874fea3e45e8d1eda835993e9f) Thanks [@lashinijay](https://github.com/lashinijay)! - Update iproov penrose logo
+
+- Updated dependencies [[`76db512659`](https://github.com/wso2/identity-apps/commit/76db5126590c215e503b742665bdc9e47ff577ae)]:
+  - @wso2is/features@2.15.22
+
+## 2.15.27
+
+### Patch Changes
+
+- [#6058](https://github.com/wso2/identity-apps/pull/6058) [`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501) Thanks [@lashinijay](https://github.com/lashinijay)! - Update iProov Logo
+
+- Updated dependencies [[`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501)]:
+  - @wso2is/theme@2.0.74
+  - @wso2is/features@2.15.21
+  - @wso2is/react-components@2.1.20
+  - @wso2is/dynamic-forms@2.0.49
+  - @wso2is/form@2.0.50
+
+## 2.15.26
+
+### Patch Changes
+
+- Updated dependencies [[`a6487983d4`](https://github.com/wso2/identity-apps/commit/a6487983d428ed5e8364db1b6fa5c1b0fd7d68e7)]:
+  - @wso2is/features@2.15.20
+
+## 2.15.25
+
+### Patch Changes
+
+- Updated dependencies [[`1d9eb6f1a4`](https://github.com/wso2/identity-apps/commit/1d9eb6f1a46650b55ad3279869cca94f87ce8309)]:
+  - @wso2is/features@2.15.19
+
+## 2.15.24
+
+### Patch Changes
+
+- [#6048](https://github.com/wso2/identity-apps/pull/6048) [`b3f72aa483`](https://github.com/wso2/identity-apps/commit/b3f72aa483c5118d1d1380406ff3d8f531499a43) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enable OIDC session management by default
+
+- Updated dependencies [[`b3f72aa483`](https://github.com/wso2/identity-apps/commit/b3f72aa483c5118d1d1380406ff3d8f531499a43)]:
+  - @wso2is/features@2.15.18
+
+## 2.15.23
+
+### Patch Changes
+
+- Updated dependencies [[`11237a0fb6`](https://github.com/wso2/identity-apps/commit/11237a0fb6570e6215175a103973ea02144f1d06)]:
+  - @wso2is/features@2.15.17
+
 ## 2.15.22
 
 ### Patch Changes

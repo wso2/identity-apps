@@ -1,5 +1,45 @@
 # @wso2is/features
 
+## 2.15.22
+
+### Patch Changes
+
+- [#6062](https://github.com/wso2/identity-apps/pull/6062) [`76db512659`](https://github.com/wso2/identity-apps/commit/76db5126590c215e503b742665bdc9e47ff577ae) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the function not defined error when the custom text are not configured.
+
+## 2.15.21
+
+### Patch Changes
+
+- Updated dependencies [[`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501)]:
+  - @wso2is/theme@2.0.74
+  - @wso2is/react-components@2.1.20
+  - @wso2is/dynamic-forms@2.0.49
+  - @wso2is/form@2.0.50
+
+## 2.15.20
+
+### Patch Changes
+
+- [#6055](https://github.com/wso2/identity-apps/pull/6055) [`a6487983d4`](https://github.com/wso2/identity-apps/commit/a6487983d428ed5e8364db1b6fa5c1b0fd7d68e7) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add 'Managed by' property as 'Parent Organization' for invited users
+
+## 2.15.19
+
+### Patch Changes
+
+- [#6053](https://github.com/wso2/identity-apps/pull/6053) [`1d9eb6f1a4`](https://github.com/wso2/identity-apps/commit/1d9eb6f1a46650b55ad3279869cca94f87ce8309) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the access url templating issue
+
+## 2.15.18
+
+### Patch Changes
+
+- [#6048](https://github.com/wso2/identity-apps/pull/6048) [`b3f72aa483`](https://github.com/wso2/identity-apps/commit/b3f72aa483c5118d1d1380406ff3d8f531499a43) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enable OIDC session management by default
+
+## 2.15.17
+
+### Patch Changes
+
+- [#6037](https://github.com/wso2/identity-apps/pull/6037) [`11237a0fb6`](https://github.com/wso2/identity-apps/commit/11237a0fb6570e6215175a103973ea02144f1d06) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable api resource v2 in applications
+
 ## 2.15.16
 
 ### Patch Changes

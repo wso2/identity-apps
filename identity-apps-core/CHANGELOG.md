@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 2.1.61
+
+### Patch Changes
+
+- Updated dependencies [[`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501)]:
+  - @wso2is/theme@2.0.74
+
+## 2.1.60
+
+### Patch Changes
+
+- [#6032](https://github.com/wso2/identity-apps/pull/6032) [`9b867b0c73`](https://github.com/wso2/identity-apps/commit/9b867b0c7372822aedc9c70a548508b347963f65) Thanks [@AnuradhaSK](https://github.com/AnuradhaSK)! - Support replacing organizationid hint in access url for password reset flow
+
 ## 2.1.59
 
 ### Patch Changes

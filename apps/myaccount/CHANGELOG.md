@@ -1,5 +1,51 @@
 # @wso2is/myaccount
 
+## 2.5.42
+
+### Patch Changes
+
+- Updated dependencies [[`76db512659`](https://github.com/wso2/identity-apps/commit/76db5126590c215e503b742665bdc9e47ff577ae)]:
+  - @wso2is/features@2.15.22
+
+## 2.5.41
+
+### Patch Changes
+
+- Updated dependencies [[`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501)]:
+  - @wso2is/theme@2.0.74
+  - @wso2is/features@2.15.21
+  - @wso2is/react-components@2.1.20
+
+## 2.5.40
+
+### Patch Changes
+
+- Updated dependencies [[`a6487983d4`](https://github.com/wso2/identity-apps/commit/a6487983d428ed5e8364db1b6fa5c1b0fd7d68e7)]:
+  - @wso2is/features@2.15.20
+
+## 2.5.39
+
+### Patch Changes
+
+- Updated dependencies [[`1d9eb6f1a4`](https://github.com/wso2/identity-apps/commit/1d9eb6f1a46650b55ad3279869cca94f87ce8309)]:
+  - @wso2is/features@2.15.19
+
+## 2.5.38
+
+### Patch Changes
+
+- Updated dependencies [[`b3f72aa483`](https://github.com/wso2/identity-apps/commit/b3f72aa483c5118d1d1380406ff3d8f531499a43)]:
+  - @wso2is/features@2.15.18
+
+## 2.5.37
+
+### Patch Changes
+
+- [#6051](https://github.com/wso2/identity-apps/pull/6051) [`2865d28b24`](https://github.com/wso2/identity-apps/commit/2865d28b24137d73d4f8a6e65a9bdf9742c46f0f) Thanks [@brionmario](https://github.com/brionmario)! - Fix My Account logout issues with Super Tenant Proxies
+
+- Updated dependencies [[`11237a0fb6`](https://github.com/wso2/identity-apps/commit/11237a0fb6570e6215175a103973ea02144f1d06)]:
+  - @wso2is/features@2.15.17
+
 ## 2.5.36
 
 ### Patch Changes
