@@ -186,7 +186,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
-    const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked;
+    const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
+    user[userConfig.userProfileSchema]?.accountLocked === true;
     const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
 
