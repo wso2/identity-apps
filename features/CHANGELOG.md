@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.22
+
+### Patch Changes
+
+- [#6062](https://github.com/wso2/identity-apps/pull/6062) [`76db512659`](https://github.com/wso2/identity-apps/commit/76db5126590c215e503b742665bdc9e47ff577ae) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the function not defined error when the custom text are not configured.
+
 ## 2.15.21
 
 ### Patch Changes
