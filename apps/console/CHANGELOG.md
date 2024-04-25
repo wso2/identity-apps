@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.15.28
+
+### Patch Changes
+
+- [#6064](https://github.com/wso2/identity-apps/pull/6064) [`5b68dd8b55`](https://github.com/wso2/identity-apps/commit/5b68dd8b556580874fea3e45e8d1eda835993e9f) Thanks [@lashinijay](https://github.com/lashinijay)! - Update iproov penrose logo
+
+- Updated dependencies [[`76db512659`](https://github.com/wso2/identity-apps/commit/76db5126590c215e503b742665bdc9e47ff577ae)]:
+  - @wso2is/features@2.15.22
+
 ## 2.15.27
 
 ### Patch Changes
