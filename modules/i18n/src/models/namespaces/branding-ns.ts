@@ -187,6 +187,7 @@ export interface BrandingNS {
                 button: string;
             };
         };
+        disclaimer: string;
         notifications: {
             generateError: {
                 description: string;
@@ -228,5 +229,6 @@ export interface BrandingNS {
             };
         };
         title: string;
+        termsAndConditions: string;
     };
 }

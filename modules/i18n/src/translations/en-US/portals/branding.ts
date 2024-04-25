@@ -187,6 +187,7 @@ export const branding: BrandingNS = {
                 button: "Try Branding AI"
             }
         },
+        disclaimer: "Branding AI can make errors. Verify the information for accuracy.",
         notifications: {
             generateError: {
                 description: "An error occurred while generating the branding.",
@@ -227,7 +228,8 @@ export const branding: BrandingNS = {
                 }
             }
         },
-        title: "Branding AI"
+        title: "Branding AI",
+        termsAndConditions: "Terms and Conditions"
     },
     tabs: {
         preview: {

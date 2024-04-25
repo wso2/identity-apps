@@ -63,6 +63,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
     useEffect(() => {
         if (error) {
             setGeneratingLoginFlow(false);
+            setLoginFlowGenerationCompleted(false);
 
             dispatch(
                 addAlert<AlertInterface>({
@@ -77,6 +78,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
 
         if (data?.status === LoginFlowResultStatus.FAILED) {
             setGeneratingLoginFlow(false);
+            setLoginFlowGenerationCompleted(false);
 
             // if data.data contains an object error then use that as the error message
             const errorMessage: string = "error" in data.data
@@ -106,8 +108,8 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
      */
     const handleGenerate = (data: AuthenticationSequenceInterface) => {
         setAiGeneratedLoginFlow(data);
-        setLoginFlowGenerationCompleted(false);
         setGeneratingLoginFlow(false);
+        setLoginFlowGenerationCompleted(false);
     };
 
     return (

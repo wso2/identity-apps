@@ -31,7 +31,7 @@ export const useAILoginFlowGenerationStatus = (
     operationId: string
 ): RequestResultInterface<AILoginFlowGenerationStatusAPIResponseInterface, RequestErrorInterface> =>{
 
-    const [ isLoading, setIsLoading ] = useState(true);
+    const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
     const { setLoginFlowGenerationCompleted } = useAILoginFlow();
 
@@ -65,7 +65,7 @@ export const useAILoginFlowGenerationStatus = (
         }
 
         return () => clearInterval(interval);
-    }, [ data, isValidating, mutate ]);
+    }, [ data, isValidating ]);
 
     return {
         data,
