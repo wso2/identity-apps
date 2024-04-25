@@ -45,28 +45,30 @@ export const ai: aiNS = {
         },
         notifications: {
             generateError: {
-                message: "An error occurred",
-                description: "An error occurred while generating the login flow. Please try again."
+                description: "An error occurred while generating the login flow. Please try again.",
+                message: "An error occurred"
             },
             generateResultError: {
-                message: "An error occurred",
-                description: "An error occurred while retrieving the results of the login flow generation. Please try again."
+                description: "An error occurred while retrieving the results of the login flow generation. " +
+                    "Please try again.",
+                message: "An error occurred"
             },
             generateResultFailed: {
-                message: "Invalid login flow generated",
-                description: "The generated login flow was invalid. Please try again with a different prompt."
+                description: "The generated login flow was invalid. Please try again with a different prompt.",
+                message: "Invalid login flow generated"
             },
             generateStatusError: {
-                message: "An error occurred",
-                description: "An error occurred while retrieving the status of the login flow generation. Please try again."
+                description: "An error occurred while retrieving the status of the login flow generation. " +
+                    "Please try again.",
+                message: "An error occurred"
             },
             noAuthenticators: {
-                message: "No authenticators found",
-                description: "No authenticators found for the given input. Please try again."
+                description: "No authenticators found for the given input. Please try again.",
+                message: "No authenticators found"
             },
             rateLimitError: {
-                message: "Rate limit exceeded",
-                description: "You have exceeded the rate limit for login flow generation. Please in a few moments."
+                description: "You have exceeded the rate limit for login flow generation. Please in a few moments.",
+                message: "Rate limit exceeded"
             }
         },
         screens: {

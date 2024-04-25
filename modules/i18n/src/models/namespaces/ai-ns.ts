@@ -1,5 +1,3 @@
-import { NotificationItem } from "../common";
-
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
@@ -17,6 +15,9 @@ import { NotificationItem } from "../common";
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { NotificationItem } from "../common";
+
 export interface aiNS{
     aiLoginFlow: {
         banner: {
