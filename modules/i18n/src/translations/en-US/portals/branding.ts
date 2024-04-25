@@ -210,7 +210,7 @@ export const branding: BrandingNS = {
                 heading: "Generating your branding",
                 didYouKnow: "Did you know?",
                 facts: {
-                    0: "{{productName}}'s advanced theming capabilities let you customize your site title, copyright info, and support email on login pages to match your brand identity",
+                    0: "{{productName}}'s advanced theming capabilities let you customize your site title, copyright info, and support email on login pages to match your brand identity.",
                     1: "You can enhance your login portal by updating links to your privacy policy, terms of service, and cookie policy for visible compliance with {{productName}}.",
                     2: "With {{productName}}'s branding features, you can ensure a consistent branding experience across all your applications."
                 },

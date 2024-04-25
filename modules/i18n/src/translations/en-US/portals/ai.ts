@@ -24,7 +24,7 @@ export const ai: aiNS = {
             collapsed: {
                 button: "Try Login Flow AI",
                 heading: "Configure your login flow with ",
-                subheading: "Enter your ideal login sequence; "+
+                subheading: "Enter your ideal login sequence and "+
                 "our AI adapts authenticators and context to configure the flow."
             },
             full: {
@@ -45,27 +45,27 @@ export const ai: aiNS = {
         },
         notifications: {
             generateError: {
-                message: "An error occurred.",
+                message: "An error occurred",
                 description: "An error occurred while generating the login flow. Please try again."
             },
             generateResultError: {
-                message: "An error occurred.",
+                message: "An error occurred",
                 description: "An error occurred while retrieving the results of the login flow generation. Please try again."
             },
             generateResultFailed: {
-                message: "Invalid login flow generated.",
+                message: "Invalid login flow generated",
                 description: "The generated login flow was invalid. Please try again with a different prompt."
             },
             generateStatusError: {
-                message: "An error occurred.",
+                message: "An error occurred",
                 description: "An error occurred while retrieving the status of the login flow generation. Please try again."
             },
             noAuthenticators: {
-                message: "No authenticators found.",
+                message: "No authenticators found",
                 description: "No authenticators found for the given input. Please try again."
             },
             rateLimitError: {
-                message: "Rate limit exceeded.",
+                message: "Rate limit exceeded",
                 description: "You have exceeded the rate limit for login flow generation. Please in a few moments."
             }
         },
