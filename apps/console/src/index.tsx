@@ -24,7 +24,7 @@ import { Config, PreLoader, store } from "@wso2is/features/admin.core.v1";
 import { UserPreferencesInterface } from "@wso2is/features/admin.core.v1/models/user-preferences";
 import { AppConfigProvider } from "@wso2is/features/admin.core.v1/providers/app-config-provider";
 import AppSettingsProvider from "@wso2is/features/admin.core.v1/providers/app-settings-provider";
-import  GlobalVariablesProvider from "@wso2is/features/admin.core.v1/providers/global-variables-provider";
+import GlobalVariablesProvider from "@wso2is/features/admin.core.v1/providers/global-variables-provider";
 import UserPreferencesProvider from "@wso2is/features/admin.core.v1/providers/user-preferences-provider";
 import OrganizationsProvider from "@wso2is/features/admin.organizations.v1/providers/organizations-provider";
 import React, { ReactElement, useEffect, useState } from "react";
