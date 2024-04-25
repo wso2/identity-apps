@@ -27,6 +27,8 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Icon, Message } from "semantic-ui-react";
 import { history, store } from "../../../../admin.core.v1";
 import { updateOrganizationConfig, useOrganizationConfig } from "../api/organization";
+import { updateOrganizationConfigV2, useOrganizationConfigV2 } from "../../../../admin.extensions.v2/components/administrators/api/organization";
+import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
 import { AdministratorConstants } from "../constants";
 
 /**
@@ -52,6 +54,9 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
     const { ["data-componentid"]: testId } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const { legacyAuthzRuntime }  = useAuthorization();
+    const useOrgConfig = legacyAuthzRuntime ? useOrganizationConfig : useOrganizationConfigV2;
+    const updateOrgConfig = legacyAuthzRuntime ? updateOrganizationConfig : updateOrganizationConfigV2;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
@@ -62,7 +67,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
         data: organizationConfig,
         isLoading: isOrgConfigRequestLoading,
         error: orgConfigFetchRequestError
-    } = useOrganizationConfig(
+    } = useOrgConfig(
         organizationName,
         {
             revalidateIfStale: false
@@ -115,7 +120,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
 
         setIsEnterpriseLoginEnabled(data.checked);
 
-        updateOrganizationConfig(isEnterpriseLoginEnabledConfig)
+        updateOrgConfig(isEnterpriseLoginEnabledConfig)
             .then(() => {
                 dispatch(addAlert({
                     description: t("extensions:manage.users.administratorSettings.success.description"),
