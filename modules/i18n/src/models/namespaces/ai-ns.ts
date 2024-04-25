@@ -39,6 +39,7 @@ export interface aiNS{
             };
 
         };
+        didYouKnow: string;
         notifications: {
             generateError: NotificationItem;
             generateResultError: NotificationItem;
@@ -70,6 +71,8 @@ export interface aiNS{
                 };
             };
         };
+        disclaimer: string;
+        termsAndConditions: string;
         title: string;
     };
 }

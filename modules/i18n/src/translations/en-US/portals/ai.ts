@@ -43,6 +43,8 @@ export const ai: aiNS = {
                 " environment and authenticators."
             }
         },
+        didYouKnow: "Did you know?",
+        disclaimer: "Login Flow AI can make errors. Verify the information for accuracy.",
         notifications: {
             generateError: {
                 description: "An error occurred while generating the login flow. Please try again.",
@@ -76,7 +78,7 @@ export const ai: aiNS = {
                 facts:{
                     0:"Asgardeo features a visual editor that simplifies authentication flow configuration by allowing"+
                     " intuitive placement of authenticators and conditional elements, enhancing design efficiency.",
-                    1:"ou can create dynamic authentication sequences with conditional scripts for versatile "+
+                    1:"You can create dynamic authentication sequences with conditional scripts for versatile "+
                     "login flows.",
                     2:"You can use Asgardeo's authentication script editor to create tailored authentication scripts"+
                     " to meet your authentication requirements."
@@ -97,6 +99,7 @@ export const ai: aiNS = {
                 }
             }
         },
+        termsAndConditions: "Terms and Conditions",
         title: "Login Flow AI"
     }
 };
