@@ -37,6 +37,7 @@ import {
     useGetStatusLabels
 } from "../constants/login-flow-ai-constants";
 import "./login-flow-ai-loading-screen.scss";
+import { DocumentationLink } from "@wso2is/react-components";
 
 const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
 
@@ -132,32 +133,43 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
     };
 
     return (
-        <Box className="login-flow-ai-loading-screen-container">
-            <Box className="login-flow-ai-loading-screen-illustration-container">
-                <LoadingPlaceholder />
-            </Box>
-            <Box className="login-flow-ai-loading-screen-text-container">
-                <Box className="mb-5">
-                    <Typography
-                        variant="h5"
-                        className="login-flow-ai-loading-screen-heading"
-                    >
-                        Did you know?
-                    </Typography>
-                    <Typography className="login-flow-ai-loading-screen-sub-heading">
-                        { facts[factIndex] }
-                    </Typography>
+        <Box className="login-flow-ai-loading-screen-parent">
+            <Box className="login-flow-ai-loading-screen-container">
+                <Box className="login-flow-ai-loading-screen-illustration-container">
+                    <LoadingPlaceholder />
                 </Box>
-                <Box sx={ { width: 1 } }>
-                    <Box className="login-flow-ai-loading-screen-loading-container">
-                        { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
-                        <Typography className="login-flow-ai-loading-screen-loading-state">
-                            { getCurrentStatus() }
+                <Box className="login-flow-ai-loading-screen-text-container">
+                    <Box className="mb-5">
+                        <Typography
+                            variant="h5"
+                            className="login-flow-ai-loading-screen-heading"
+                        >
+                            Did you know?
+                        </Typography>
+                        <Typography className="login-flow-ai-loading-screen-sub-heading">
+                            { facts[factIndex] }
                         </Typography>
                     </Box>
-                    <LinearProgress variant="determinate" value={ currentProgress } />
+                    <Box sx={ { width: 1 } }>
+                        <Box className="login-flow-ai-loading-screen-loading-container">
+                            { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
+                            <Typography className="login-flow-ai-loading-screen-loading-state">
+                                { getCurrentStatus() }
+                            </Typography>
+                        </Box>
+                        <LinearProgress variant="determinate" value={ currentProgress } />
+                    </Box>
                 </Box>
             </Box>
+            <Typography variant="caption">
+                Login Flow AI can make errors. Verify the information for accuracy.
+                <DocumentationLink
+                    link=""
+                    isLinkRef={ true }
+                >
+                    Terms and Conditions
+                </DocumentationLink>
+            </Typography>
         </Box>
     );
 };

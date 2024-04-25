@@ -16,6 +16,13 @@
  * under the License.
  */
 
+.login-flow-ai-loading-screen-parent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .login-flow-ai-loading-screen-container {
     display: flex;
     align-items: stretch;
