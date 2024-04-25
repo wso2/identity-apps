@@ -16,9 +16,9 @@
  * under the License.
  */
 
-export enum BannerState {
-    FULL = "banner-full",
-    INPUT = "banner-input",
-    COLLAPSED = "banner-collapsed",
-    NULL = "banner-null"
+interface AutheticatorsRecord {
+    authenticator: string;
+    idp: string;
 }
+
+export default AutheticatorsRecord;

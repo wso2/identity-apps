@@ -19,32 +19,60 @@
 import { aiNS } from "../../../models";
 
 export const ai: aiNS = {
-    aiLoginFlow:{
-        banner:{
-            collapsed:{
-                button: "Try Login AI",
-                heading: "Configure your login flow with Login AI",
-                subheading: "Enter your ideal login sequence; "+
+    aiLoginFlow: {
+        banner: {
+            collapsed: {
+                button: "Try Login Flow AI",
+                heading: "Configure your login flow with ",
+                subheading: "Enter your ideal login sequence and "+
                 "our AI adapts authenticators and context to configure the flow."
             },
-            full:{
-                button: "Try Login AI",
-                heading: "Simplify authentication flow Setup with Login AI",
-                subheading1: "Configure your application's login flow effortlessly with Login AI, "+
-                "by describing your desired authentication sequence, ",
-                subheading2: "including authenticators and conditional authentication."
+            full: {
+                button: "Try Login Flow AI",
+                heading: "Simplify authentication flow Setup with ",
+                subheading: "Configure your application's login flow effortlessly with Login AI, " +
+                    "by describing your desired authentication sequence, including authenticators and " +
+                    "conditional authentication."
             },
-            input:{
+            input: {
                 button: "Generate Login Flow",
-                heading: "Configure your login flow with Login AI",
+                heading: "Configure your login flow with ",
                 placeholder: "Input your login flow eg: have username and password as first step,"+
-                " and prompt for TOTP second factor if the user has ‘manager’ role.",
+                " and prompt for TOTP second factor if the user has 'manager' role.",
                 subheading: "AI-powered login configurations crafted to align with your application's"+
                 " environment and authenticators."
             }
         },
-        screens:{
-            loading:{
+        notifications: {
+            generateError: {
+                description: "An error occurred while generating the login flow. Please try again.",
+                message: "An error occurred"
+            },
+            generateResultError: {
+                description: "An error occurred while retrieving the results of the login flow generation. " +
+                    "Please try again.",
+                message: "An error occurred"
+            },
+            generateResultFailed: {
+                description: "The generated login flow was invalid. Please try again with a different prompt.",
+                message: "Invalid login flow generated"
+            },
+            generateStatusError: {
+                description: "An error occurred while retrieving the status of the login flow generation. " +
+                    "Please try again.",
+                message: "An error occurred"
+            },
+            noAuthenticators: {
+                description: "No authenticators found for the given input. Please try again.",
+                message: "No authenticators found"
+            },
+            rateLimitError: {
+                description: "You have exceeded the rate limit for login flow generation. Please in a few moments.",
+                message: "Rate limit exceeded"
+            }
+        },
+        screens: {
+            loading: {
                 facts:{
                     0:"Asgardeo features a visual editor that simplifies authentication flow configuration by allowing"+
                     " intuitive placement of authenticators and conditional elements, enhancing design efficiency.",
@@ -54,7 +82,7 @@ export const ai: aiNS = {
                     " to meet your authentication requirements."
                 },
                 heading: "Generating your login flow",
-                states:{
+                states: {
                     0: "Getting things started...",
                     1: "Getting things started...",
                     10: "Applying final touches...",
@@ -68,6 +96,7 @@ export const ai: aiNS = {
                     9: "Applying final touches..."
                 }
             }
-        }
+        },
+        title: "Login Flow AI"
     }
 };

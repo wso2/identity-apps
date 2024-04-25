@@ -16,19 +16,19 @@
  * under the License.
  */
 
- .branding-ai-loading-screen-container {
+.login-flow-ai-loading-screen-container {
     display: flex;
     align-items: stretch;
     justify-content: center;
 }
 
-.branding-ai-loading-screen-illustration-container {
+.login-flow-ai-loading-screen-illustration-container {
     display: flex;
     flex: 1;
     justify-content: right;
 }
 
-.branding-ai-loading-screen-text-container {
+.login-flow-ai-loading-screen-text-container {
     display: flex;
     flex: 1;
     justify-content: space-between;
@@ -37,26 +37,26 @@
     padding: 7rem 10rem 7rem 0;
 }
 
-.branding-ai-loading-screen-loading-container {
+.login-flow-ai-loading-screen-loading-container {
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
     align-items: center;
 }
 
-.branding-ai-loading-screen-heading {
+.login-flow-ai-loading-screen-heading {
     font-size: 19px;
     font-weight: 600;
     margin-bottom: 5px;
 }
 
-.branding-ai-loading-screen-sub-heading {
+.login-flow-ai-loading-screen-sub-heading {
     font-size: 15px;
     font-weight: 500;
     color: #6a6d7b;
 }
 
-.branding-ai-loading-screen-loading-state {
+.login-flow-ai-loading-screen-loading-state {
     font-size: 17px;
     font-weight: 600;
 }
