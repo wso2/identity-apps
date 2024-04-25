@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.25
+
+### Patch Changes
+
+- [#6071](https://github.com/wso2/identity-apps/pull/6071) [`5a5d2104fe`](https://github.com/wso2/identity-apps/commit/5a5d2104fe72c676419c439d80d02d58f1b84ead) Thanks [@brionmario](https://github.com/brionmario)! - Fix console logout issues in new runtime
+
 ## 2.15.24
 
 ### Patch Changes
