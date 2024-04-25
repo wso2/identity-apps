@@ -46,6 +46,9 @@
     String userStoreDomain = request.getParameter("userstoredomain");
     String type = request.getParameter("type");
     String spId = request.getParameter("spId");
+    if (StringUtils.isBlank(spId)) {
+        spId = (String)request.getAttribute("spId");
+    }
     String sp = Encode.forJava(request.getParameter("sp"));
     if (StringUtils.isBlank(sp)) {
         sp = (String)request.getAttribute("sp");

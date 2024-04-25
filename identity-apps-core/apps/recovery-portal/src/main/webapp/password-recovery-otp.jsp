@@ -202,7 +202,7 @@
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
-        // STEP THREE : Redirect to enter the OTP sent.
+        // STEP THREE : Redirect to enter the OTP.
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
     } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
         String resendCode = request.getParameter("resendCode");
@@ -271,9 +271,11 @@
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
             return;
         }
+        request.setAttribute("spId", request.getParameter("spId"));
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
     } else if (RecoveryStage.RESET.equalsValue(recoveryStage)) {
-        request.setAttribute("useRecoveryV2API", "true");            
+        request.setAttribute("useRecoveryV2API", "true");
+        request.setAttribute("spId", request.getParameter("spId"));
         request.getRequestDispatcher("password-reset-complete.jsp").forward(request, response);
     } else {
         request.setAttribute("errorMsg", "Invalid password recovery stage.");

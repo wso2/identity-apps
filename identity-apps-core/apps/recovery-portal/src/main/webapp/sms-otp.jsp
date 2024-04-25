@@ -218,7 +218,7 @@
                             <input type="hidden" name="sp"
                                 value='<%=Encode.forHtmlAttribute((String)request.getAttribute("sp"))%>'/>
                             <input type="hidden" name="spId"
-                                value='<%=Encode.forHtmlAttribute((String)request.getAttribute("spId"))%>'/>
+                                value='<%=Encode.forHtmlAttribute(request.getParameter("spId"))%>'/>
                             <input type="hidden" name="flowConfirmationCode"
                                 value='<%=Encode.forHtmlAttribute((String)request.getAttribute("flowConfirmationCode"))%>'/>
                             <input type="hidden" name="sessionDataKey"

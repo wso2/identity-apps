@@ -78,6 +78,7 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
+    String spId = request.getParameter("spId");
     String userTenantHint = request.getParameter("t");
     String applicationAccessUrl = "";
 
