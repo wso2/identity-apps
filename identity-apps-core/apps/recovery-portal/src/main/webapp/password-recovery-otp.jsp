@@ -18,11 +18,15 @@
 
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
+<%@ page import="java.io.IOException" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Random" %>
 <%@ page import="java.util.UUID" %>
+<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="javax.servlet.http.HttpServletResponse" %>
+<%@ page import="javax.servlet.ServletException" %>
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
@@ -46,6 +50,7 @@
 
 <%! 
     public enum RecoveryStage {
+
         INITIATE("INITIATE"),
         RESEND("RESEND"),
         CONFIRM("CONFIRM"),
@@ -54,26 +59,33 @@
         private final String value;
 
         RecoveryStage(String value) {
+            
             this.value = value;
         }
 
         public String getValue() {
+
             return value;
         }
 
-        // Override toString() method to return the enum value
         @Override
         public String toString() {
+
             return value;
         }
 
-        // Custom method to compare the enum value with a string
         public boolean equalsValue(String otherValue) {
+
             return this.value.equals(otherValue);
         }
     }
 %>
 <%! 
+    /**
+    * This generates a random number to provide a sample number for a invalid username
+    * to avoid letting external entities learning of the existing usernames. The same 
+    * random number string will be generated for the same username each time.
+    */
     public static String getRandomNumberString(int len, String seed) {
 
         StringBuilder sb = new StringBuilder(len);
@@ -86,165 +98,189 @@
         return sb.toString();
     }
 %>
-<%
-    RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
-    String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
-
-    String channel = (String)request.getAttribute("channel");
-    if (StringUtils.isBlank(channel)) {
-        channel = request.getParameter("channel");
+<%!
+    /**
+     * This redirects the flow to the error page with the provided error message.
+     */
+    void redirectToErrorPageWithMessage(HttpServletRequest request, 
+        HttpServletResponse response, String errorMsg) throws ServletException, IOException {
+        
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", errorMsg);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
     }
+%>
+<%
+    final String USERNAME_CLAIM_URI_FOR_TENANT = "http://wso2.org/claims/username";
+    final RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
+    final String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
 
-    if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(channel)) {
-        String recoveryStage = request.getParameter("recoveryStage");
+    String recoveryStage = request.getParameter("recoveryStage");
 
-        if (RecoveryStage.INITIATE.equalsValue(recoveryStage)) {
-            List<UserClaim> userClaims = new ArrayList<UserClaim>();
+    if (RecoveryStage.INITIATE.equalsValue(recoveryStage)) {
+        // if otp is supported by a new channel (eg: email) update this value assignment. null means unsupported.
+        final String targetChannel = IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP
+            .equals((String)request.getAttribute("channel"))
+                ? "SMS"
+                : null;
+        // Manage unsupported channel
+        if (StringUtils.isBlank(targetChannel)) {
+            redirectToErrorPageWithMessage(request, response, "Unknown.channel");
+            return;
+        }
+        List<UserClaim> userClaims = new ArrayList<UserClaim>();
 
-            // get the username claim string for the tenant
-            final String USERNAME_CLAIM_URI_FOR_TENANT = "http://wso2.org/claims/username";
-            UserClaim userNameClaim = new UserClaim();
-            userNameClaim.setUri(USERNAME_CLAIM_URI_FOR_TENANT);
-            userNameClaim.setValue(MultitenantUtils.getTenantAwareUsername(username));
-            userClaims.add(userNameClaim);
+        // Get the username claim string for the tenant
+        UserClaim userNameClaim = new UserClaim();
+        userNameClaim.setUri(USERNAME_CLAIM_URI_FOR_TENANT);
+        userNameClaim.setValue(MultitenantUtils.getTenantAwareUsername(username));
+        userClaims.add(userNameClaim);
 
-            // STEP ONE : Initiate password recovery
-            RecoveryInitRequest recoveryInitRequest = new RecoveryInitRequest();
-            recoveryInitRequest.setClaims(userClaims);
+        // STEP ONE : Initiate password recovery.
+        RecoveryInitRequest recoveryInitRequest = new RecoveryInitRequest();
+        recoveryInitRequest.setClaims(userClaims);
 
-            String flawConfirmationCode = "";
-            String recoveryCode = "";
-            String channelId = "";
-            String screenValue = "";
+        String flawConfirmationCode = "";
+        String recoveryCode = "";
+        String channelId = "";
+        String screenValue = "";
 
-            try {
-                Map<String, String> requestHeaders = new HashedMap();
-                if (request.getParameter("g-recaptcha-response") != null) {
-                    requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
-                }
-                List<AccountRecoveryType> resp = 
-                    recoveryApiV2.initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
-                if (resp == null) {
-                    /** handling invalid username scenario. proceeds to next level without warning to 
-                    avoid an attacker bruteforcing to learn the usernames. */
-                    request.setAttribute("screenValue", "******" + getRandomNumberString(4, username));
-                    request.setAttribute("resendCode", UUID.randomUUID().toString());
-                    request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
-                    request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
-                    return;
-                }
-                boolean resultFound = false;
-                for(AccountRecoveryType x: resp) {
-                    if (x.getMode().equals("recoverWithNotifications")) {
-                        RecoveryChannelInformation channelInfo = x.getChannelInfo();
-                        recoveryCode = channelInfo.getRecoveryCode();
-                        List<RecoveryChannel> channels = channelInfo.getChannels();
-                        for(RecoveryChannel ch: channels) {
-                            flawConfirmationCode = x.getFlowConfirmationCode();
-                            if (ch.getType().equals("SMS")) {
-                                channelId = ch.getId();
-                                screenValue = ch.getValue();
-                            }
-                            resultFound = true;
+        try {
+            Map<String, String> requestHeaders = new HashedMap();
+            if (request.getParameter("g-recaptcha-response") != null) {
+                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+            }
+            List<AccountRecoveryType> resp = 
+                recoveryApiV2.initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
+            if (resp == null) {
+                /** Handle invalid username scenario. proceeds to next level without warning to 
+                avoid an attacker bruteforcing to learn the usernames. */
+                request.setAttribute("screenValue", "******" + getRandomNumberString(4, username));
+                request.setAttribute("resendCode", UUID.randomUUID().toString());
+                request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
+                request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+                return;
+            }
+            for(AccountRecoveryType recoveryType: resp) {
+                if (recoveryType.getMode().equals("recoverWithNotifications")) {
+                    RecoveryChannelInformation channelInfo = recoveryType.getChannelInfo();
+                    recoveryCode = channelInfo.getRecoveryCode();
+                    List<RecoveryChannel> channels = channelInfo.getChannels();
+                    for(RecoveryChannel ch: channels) {
+                        flawConfirmationCode = recoveryType.getFlowConfirmationCode();
+                        if (ch.getType().equals(targetChannel)) {
+                            channelId = ch.getId();
+                            screenValue = ch.getValue();
+                            break;
                         }
                     }
-                    if (resultFound) {
-                        break;
-                    }
                 }
+                if (StringUtils.isNotBlank(channelId)) {
+                    break;
+                }
+            }
 
-                // STEP TWO : Get Recovery Information.
-                RecoveryRequest recoveryRequest = new RecoveryRequest();
-                recoveryRequest.setChannelId(channelId);
-                recoveryRequest.setRecoveryCode(recoveryCode);
-                RecoveryResponse recoveryResponse = 
-                    recoveryApiV2.recoverPassword(recoveryRequest, tenantDomain, requestHeaders);
-                request.setAttribute("screenValue", screenValue);
-                request.setAttribute("resendCode", recoveryResponse.getResendCode());
-                request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
-            } catch (ApiException e) {
+            /**
+             * Manage user don't have phone number set up in the account.
+             */
+            if (StringUtils.isBlank(channelId)) {
+                redirectToErrorPageWithMessage(request, response, "Channel.unavailable.for.user");
+                return;
+            }
+
+            // STEP TWO : Get Recovery Information.
+            RecoveryRequest recoveryRequest = new RecoveryRequest();
+            recoveryRequest.setChannelId(channelId);
+            recoveryRequest.setRecoveryCode(recoveryCode);
+            RecoveryResponse recoveryResponse = 
+                recoveryApiV2.recoverPassword(recoveryRequest, tenantDomain, requestHeaders);
+            request.setAttribute("screenValue", screenValue);
+            request.setAttribute("resendCode", recoveryResponse.getResendCode());
+            request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
+        } catch (ApiException e) {
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+        // STEP THREE : Redirect to enter the OTP sent.
+        request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+    } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
+        String resendCode = request.getParameter("resendCode");
+        // Sending resend request
+        try {
+            Map<String, String> requestHeaders = new HashedMap();
+            if (request.getParameter("g-recaptcha-response") != null) {
+                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+            }
+            ResendRequest resendRequest = new ResendRequest();
+            resendRequest.setResendCode(resendCode);
+            ResendResponse resendResponse = 
+                recoveryApiV2.resendPasswordNotification(resendRequest, tenantDomain, requestHeaders);
+            
+            /** Resend code re-attached to the reqeust to avoid value being missed after page refresh happening  
+            after the resend operation. */
+            request.setAttribute("resendCode", resendResponse.getResendCode());
+            request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
+        } catch (ApiException e) {
+            if (!StringUtils.isBlank(username)) {
+                request.setAttribute("username", username);
+            }
+            /** Status code 406 is used for invalid/expired channel id/recovery code. Other error are considered
+            unexpected and redirected to the error page. */
+            if (e.getCode() != 406) {
                 IdentityManagementEndpointUtil.addErrorInformation(request, e);
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
-            // STEP THREE : Redirect to enter the OTP sent.
-            request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
-        } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
-            String resendCode = request.getParameter("resendCode");
-            // SENDING RESEND REQEUST
-            try {
-                Map<String, String> requestHeaders = new HashedMap();
-                if (request.getParameter("g-recaptcha-response") != null) {
-                    requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
-                }
-                ResendRequest resendRequest = new ResendRequest();
-                resendRequest.setResendCode(resendCode);
-                ResendResponse resendResponse = 
-                    recoveryApiV2.resendPasswordNotification(resendRequest, tenantDomain, requestHeaders);
-                
-                /** Resend code re-attached to the reqeust to avoid value being missed after page refresh happening  
-                after the resend operation. */
-                request.setAttribute("resendCode", resendResponse.getResendCode());
-                request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
-            } catch (ApiException e) {
-                if (!StringUtils.isBlank(username)) {
-                    request.setAttribute("username", username);
-                }
-                /** Status code 406 is used for invalid/expired channel id/recovery code. Other error are considered
-                unexpected and redirected to the error page. */
-                if (e.getCode() != 406) {
-                    IdentityManagementEndpointUtil.addErrorInformation(request, e);
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                    return;
-                }
-                request.setAttribute("isAuthFailure","true");
-                request.setAttribute("authFailureMsg", "authentication.fail.message");
-                request.setAttribute("resendCode", resendCode);
-                request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
+            request.setAttribute("isAuthFailure","true");
+            request.setAttribute("authFailureMsg", "authentication.fail.message");
+            request.setAttribute("resendCode", resendCode);
+            request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
+        }
+        request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+    } else if (RecoveryStage.CONFIRM.equalsValue(recoveryStage)) {
+        String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
+        String OTPcode = request.getParameter("OTPcode");
+        try {
+            Map<String, String> requestHeaders = new HashedMap();
+            if (request.getParameter("g-recaptcha-response") != null) {
+                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
             }
-            request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
-        } else if (RecoveryStage.CONFIRM.equalsValue(recoveryStage)) {
-            String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
-            String OTPcode = request.getParameter("OTPcode");
-            try {
-                Map<String, String> requestHeaders = new HashedMap();
-                if (request.getParameter("g-recaptcha-response") != null) {
-                    requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
-                }
-                ConfirmRequest confirmRequest = new ConfirmRequest();
-                // For local notification channels flowConfirmationCode is used as confirmation code
-                confirmRequest.setConfirmationCode(flowConfirmationCode);
-                confirmRequest.setOtp(OTPcode);
-                ConfirmResponse confirmResponse = 
-                    recoveryApiV2.confirmPasswordRecovery(confirmRequest, tenantDomain, requestHeaders);
-                request.setAttribute("resetCode", confirmResponse.getResetCode());
-            } catch (ApiException e) {
-                if (!StringUtils.isBlank(username)) {
-                    request.setAttribute("username", username);
-                }
-                if (e.getCode() != 406) {
-                    IdentityManagementEndpointUtil.addErrorInformation(request, e);
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                    return;
-                }
-                request.setAttribute("isAuthFailure","true");
-                request.setAttribute("authFailureMsg", "authentication.fail.message");
-                request.setAttribute("resendCode", request.getParameter("resendCode"));
-                request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
-                request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
-                return;
-            }
-            request.getRequestDispatcher("password-reset.jsp").forward(request, response);
-        } else if (RecoveryStage.RESET.equalsValue(recoveryStage)) {
-            request.setAttribute("useRecoveryV2API", "true");            
-            request.getRequestDispatcher("password-reset-complete.jsp").forward(request, response);
-        } else {
-            request.setAttribute("errorMsg", "Invalid password recovery stage.");
+            ConfirmRequest confirmRequest = new ConfirmRequest();
+            // For local notification channels flowConfirmationCode is used as confirmation code
+            confirmRequest.setConfirmationCode(flowConfirmationCode);
+            confirmRequest.setOtp(OTPcode);
+            ConfirmResponse confirmResponse = 
+                recoveryApiV2.confirmPasswordRecovery(confirmRequest, tenantDomain, requestHeaders);
+            request.setAttribute("resetCode", confirmResponse.getResetCode());
+        } catch (ApiException e) {
             if (!StringUtils.isBlank(username)) {
                 request.setAttribute("username", username);
             }
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            /** Status code 406 is used for invalid/expired channel id/recovery code. Other error are considered
+            unexpected and redirected to the error page. */
+            if (e.getCode() != 406) {
+                IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+            request.setAttribute("isAuthFailure","true");
+            request.setAttribute("authFailureMsg", "authentication.fail.message");
+            request.setAttribute("resendCode", request.getParameter("resendCode"));
+            request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
+            request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+            return;
         }
+        request.getRequestDispatcher("password-reset.jsp").forward(request, response);
+    } else if (RecoveryStage.RESET.equalsValue(recoveryStage)) {
+        request.setAttribute("useRecoveryV2API", "true");            
+        request.getRequestDispatcher("password-reset-complete.jsp").forward(request, response);
+    } else {
+        request.setAttribute("errorMsg", "Invalid password recovery stage.");
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
+        request.getRequestDispatcher("error.jsp").forward(request, response);
     }
 %>
 

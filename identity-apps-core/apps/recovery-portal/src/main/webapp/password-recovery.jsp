@@ -60,8 +60,7 @@
         ? Encode.forHtmlAttribute(request.getParameter("username"))
         : "";
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
-    String sp = Encode.forJava(request.getParameter("sp"));
-    String spId = Encode.forJava(request.getParameter("spId"));
+    String sp = Encode.forJava(request.getParameter("sp"));]
 
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
@@ -369,8 +368,6 @@
 
                         <input type="hidden" name="recoveryStage" value="INITIATE"/>
                         <input type="hidden" name="channel" value=""/>
-                        <input type="hidden" name="sp" value="<%=sp %>"/>
-                        <input type="hidden" name="spId" value="<%=spId %>"/>
 
                         <%
                             String callback = request.getParameter("callback");
