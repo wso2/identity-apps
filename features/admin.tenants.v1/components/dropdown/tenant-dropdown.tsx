@@ -158,7 +158,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                 });
         }
         getOrganizationData();
-    }, []);
+    }, [ organizationType ]);
 
     useEffect(() => {
 
