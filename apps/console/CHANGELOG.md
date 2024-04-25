@@ -1,5 +1,12 @@
 # @wso2is/console
 
+## 2.15.31
+
+### Patch Changes
+
+- Updated dependencies [[`5a5d2104fe`](https://github.com/wso2/identity-apps/commit/5a5d2104fe72c676419c439d80d02d58f1b84ead)]:
+  - @wso2is/features@2.15.25
+
 ## 2.15.30
 
 ### Patch Changes
