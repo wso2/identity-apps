@@ -17,14 +17,14 @@
  */
 
 import { useEffect, useState } from "react";
+import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import { IdentityProviderManagementConstants } from "../../admin.identity-providers.v1/constants";
 import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
 import {
     IdentityProviderManagementUtils
 } from "../../admin.identity-providers.v1/utils/identity-provider-management-utils";
 import AuthenticatorsRecord from "../models/authenticators-record";
-import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { IdentityProviderManagementConstants } from "../../admin.identity-providers.v1/constants";
 
 const useAvailableAuthenticators = (): {
     filteredAuthenticators: {
@@ -83,21 +83,21 @@ const useAvailableAuthenticators = (): {
 
                     if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
                         recoveryAuthenticators.push({
-                            name: authenticator.name,
                             description: authenticator.description,
-                            idp: authenticator.idp
+                            idp: authenticator.idp,
+                            name: authenticator.name
                         });
                     } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                         secondFactorAuthenticators.push({
-                            name: authenticator.name,
                             description: authenticator.description,
-                            idp: authenticator.idp
+                            idp: authenticator.idp,
+                            name: authenticator.name
                         });
                     } else {
                         moderatedLocalAuthenticators.push({
-                            name: authenticator.name,
                             description: authenticator.description,
-                            idp: authenticator.idp
+                            idp: authenticator.idp,
+                            name: authenticator.name
                         });
                     }
                 });
@@ -113,15 +113,15 @@ const useAvailableAuthenticators = (): {
                         )
                     ) {
                         socialAuthenticators.push({
-                            name: authenticator.name,
                             description: authenticator.description,
-                            idp: authenticator.idp
+                            idp: authenticator.idp,
+                            name: authenticator.name
                         });
                     } else {
                         enterpriseAuthenticators.push({
-                            name: authenticator.name,
                             description: authenticator.description,
-                            idp: authenticator.idp
+                            idp: authenticator.idp,
+                            name: authenticator.name
                         });
                     }
                 });

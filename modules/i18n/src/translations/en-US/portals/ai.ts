@@ -74,8 +74,9 @@ export const ai: aiNS = {
         screens: {
             loading: {
                 facts:{
-                    0: "Asgardeo features a visual editor that simplifies authentication flow configuration by allowing"+
-                    " intuitive placement of authenticators and conditional elements, enhancing design efficiency.",
+                    0: "Asgardeo features a visual editor that simplifies authentication flow configuration by "+
+                    " allowing intuitive placement of authenticators and conditional elements, enhancing design " +
+                    "efficiency.",
                     1: "You can create dynamic authentication sequences with conditional scripts for versatile "+
                     "login flows.",
                     2: "You can use Asgardeo's authentication script editor to create tailored authentication scripts"+

@@ -22,6 +22,7 @@ import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Typography from "@oxygen-ui/react/Typography";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { DocumentationLink } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -37,7 +38,6 @@ import {
     useGetStatusLabels
 } from "../constants/login-flow-ai-constants";
 import "./login-flow-ai-loading-screen.scss";
-import { DocumentationLink } from "@wso2is/react-components";
 
 const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
 
