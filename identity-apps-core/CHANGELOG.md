@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.1.64
+
+### Patch Changes
+
+- [#6070](https://github.com/wso2/identity-apps/pull/6070) [`82e16875db`](https://github.com/wso2/identity-apps/commit/82e16875dbc3ca0dc157c176d61c37aeeee1d573) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide portal app path based on app base name
+
+* [#6078](https://github.com/wso2/identity-apps/pull/6078) [`d6061efeb8`](https://github.com/wso2/identity-apps/commit/d6061efeb89e1bdfd61f67df9d2f80032bc15024) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Add enterprise IDP for legecy authz runtime
+
 ## 2.1.63
 
 ### Patch Changes
