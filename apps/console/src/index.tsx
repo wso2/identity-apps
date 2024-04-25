@@ -61,7 +61,12 @@ const RootWithConfig = (): ReactElement => {
     }
 
     return (
-        <GlobalVariablesProvider >
+        <GlobalVariablesProvider
+            value={ {
+                isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable,
+                isOrganizationManagementEnabled: isOrganizationManagementEnabled
+            } }
+        >
             <AppSettingsProvider>
                 <ThemeProvider theme={ AsgardeoTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
                     <Provider store={ store }>
