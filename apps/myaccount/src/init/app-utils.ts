@@ -367,7 +367,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 return (tenantName) ? tenantName : "";
             }
 
-            return (_config.requireSuperTenantInUrls)
+            return (_config.tenantContext?.requireSuperTenantInUrls)
                 ? this.getSuperTenant()
                 : "";
         },
@@ -439,7 +439,6 @@ export const AppUtils: AppUtilsInterface = (function() {
                 "clientOrigin": window.location.origin,
                 "consoleAppOrigin": _args.consoleAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "contextPath": _args.contextPath,
-                "requireSuperTenantInUrls" : _args.requireSuperTenantInUrls || false,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 

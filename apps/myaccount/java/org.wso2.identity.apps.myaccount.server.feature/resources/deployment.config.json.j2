@@ -95,9 +95,6 @@
     {% if myaccount.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ myaccount.super_tenant_proxy_name }}",
     {% endif %}
-    {% if tenant_context.enable_tenant_qualified_urls is defined && tenant_context.require_super_tenant_in_urls is defined %}
-    "requireSuperTenantInUrls" : {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls }},
-    {% endif %}
     {% if myaccount.idp_configs is defined %}
     "idpConfigs": {
         {% if myaccount.idp_configs.items() is defined %}
@@ -133,6 +130,12 @@
     },
     {% if legacy_authz_runtime.enable is defined %}
         "legacyAuthzRuntime": {{ legacy_authz_runtime.enable }},
+    {% endif %}
+    {% if tenant_context is defined %}
+    "tenantContext": {
+        "enableTenantQualifiedUrls": {{ tenant_context.enable_tenant_qualified_urls }},
+        "requireSuperTenantInUrls": {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls }}
+    },
     {% endif %}
     "ui": {
         "announcements": [

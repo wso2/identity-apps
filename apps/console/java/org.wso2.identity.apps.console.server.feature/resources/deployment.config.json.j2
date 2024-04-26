@@ -57,9 +57,6 @@
     {% if console.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ console.super_tenant_proxy_name }}",
     {% endif %}
-    {% if tenant_context.enable_tenant_qualified_urls is defined && tenant_context.require_super_tenant_in_urls is defined %}
-    "requireSuperTenantInUrls" : {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls }},
-    {% endif %}
     {% if console.doc_site_path is defined %}
     "docSiteUrl": "{{ console.doc_site_path }}",
     {% endif %}
@@ -173,6 +170,12 @@
     {% endif %}
     {% if legacy_mode.enabled is defined %}
     "legacyMode": {{ legacy_mode.enabled }},
+    {% endif %}
+    {% if tenant_context is defined %}
+    "tenantContext": {
+        "enableTenantQualifiedUrls": {{ tenant_context.enable_tenant_qualified_urls }},
+        "requireSuperTenantInUrls": {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls }}
+    },
     {% endif %}
     "ui": {
         "announcements": [
