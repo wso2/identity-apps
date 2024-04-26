@@ -21,8 +21,11 @@
  */
 export interface ExtendedFeatureResourceEndpointsInterfaceV2 {
     /**
-     * Get the resource endpoints for the Invitation Management feature.
+     * Resource endpoint to fetch business user login configuration.
      */
     organizationEndpointV2: string;
+    /**
+     * Resource endpoint to update business user login configuration.
+     */
     organizationPatchEndpointV2: string;
 }
