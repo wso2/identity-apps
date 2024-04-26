@@ -19,7 +19,7 @@
 import { ReactNode } from "react";
 
 interface SmsProviderConfig {
-    renderAlternativeSmsProviderOptions: () => ReactNode
+    renderAlternativeSmsProviderOptions: (options: any) => ReactNode
 }
 
 export default SmsProviderConfig;
