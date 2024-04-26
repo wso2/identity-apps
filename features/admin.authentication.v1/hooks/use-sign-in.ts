@@ -285,7 +285,7 @@ const useSignIn = (): UseSignInInterface => {
             || idToken.org_name === tenantDomainFromSubject
             || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
 
-        const tenantDomain: string = transformTenantDomain(orgName);
+        const tenantDomain: string = isFirstLevelOrg ? transformTenantDomain(orgName) : orgIdIdToken;
 
         const firstName: string = idToken?.given_name;
         const lastName: string = idToken?.family_name;
@@ -318,7 +318,7 @@ const useSignIn = (): UseSignInInterface => {
                 Object.assign(
                     CommonAuthenticateUtils.getSignInState(
                         response,
-                        transformTenantDomain(response.orgName)
+                        tenantDomain
                     ), {
                         associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
                         defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
