@@ -25,12 +25,13 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Label } from "semantic-ui-react";
-import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
-import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
+import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "../models/governance-connectors";
+} from "../../models/governance-connectors";
+import "./password-recovery-form.scss";
 
 /**
  * Interface for Password Recovery Configuration Form props.
@@ -419,7 +420,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     }
 
     return (
-        <div className={ "connector-form" }>
+        <div className="connector-form password-recovery-form">
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
@@ -427,16 +428,15 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 validate={ validateForm }
                 uncontrolledForm={ false }
             >
-                <Heading as="h4" className={ "mt-4 mb-4" }>
+                <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionHeading") as ReactNode }
                 </Heading>
-                <Heading as="h5" className={ "mt-3 mb-3" }>
+                <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionSubHeadingEmailLink") as ReactNode }
                 </Heading>
                 <Field.Checkbox
-                    className=""
                     ariaLabel="enableEmailBasedRecovery"
                     name="enableEmailBasedRecovery"
                     label={ t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -448,12 +448,11 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     listen={ (value: boolean) => setIsEmailRecoveryEnabled(value) }
                     data-testid={ `${ testId }-email-link-based-recovery` }
                 />
-                <Hint className={ "mb-5" }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.enableEmailBasedRecovery.hint") as ReactNode }
                 </Hint>
                 <Field.Checkbox
-                    className="ml-6"
                     ariaLabel="notifyRecoverySuccess"
                     name="notifySuccess"
                     label={ t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -464,12 +463,11 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     disabled={ !isEmailRecoveryEnabled }
                     data-testid={ `${ testId }-notify-success` }
                 />
-                <Hint className={ "ml-6 mb-5" }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.notifySuccess.hint") as ReactNode }
                 </Hint>
                 <Field.Input
-                    className="ml-6"
                     ariaLabel="expiryTime"
                     inputType="number"
                     name="expiryTime"
@@ -505,12 +503,12 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         content={ "mins" }
                     />
                 </Field.Input>
-                <Hint className={ "ml-6 mb-5" }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.expiryTime.hint") as ReactNode }
                 </Hint>
 
-                <Heading as="h5" className={ "mb-3" }>
+                <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionSubHeadingSMS") as ReactNode }
                 </Heading>
@@ -526,12 +524,11 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     listen={ (value: boolean) => setIsSMSRecoveryEnabled(value) }
                     data-testid={ `${ testId }-sms-based-recovery` }
                 />
-                <Hint className={ "mb-5" }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.enableSMSBasedRecovery.hint") as ReactNode }
                 </Hint>
                 <Field.Input
-                    className="ml-6"
                     ariaLabel="smsOtpExpiryTime"
                     inputType="number"
                     name="smsOtpExpiryTime"
@@ -567,12 +564,12 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         content={ "mins" }
                     />
                 </Field.Input>
-                <Hint className={ "mb-5 ml-6" }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.smsOtpExpiryTime.hint") as ReactNode }
                 </Hint>
                 <Divider/>
-                <Heading as="h4" className={ "mt-4 mb-4" }>
+                <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.otpConfigHeading") as ReactNode }
                 </Heading>
@@ -590,7 +587,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     listen={ (value: boolean) => setIsUpperCaseEnabled(value) }
                     data-testid={ `${ testId }-sms-otp-uppercase` }
                 />
-                <Hint className={ "mb-5" }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.passwordRecoveryOtpUseUppercase.hint") as ReactNode }
                 </Hint>
@@ -608,7 +605,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     listen={ (value: boolean) => setIsLowerCaseEnabled(value) }
                     data-testid={ `${ testId }-sms-otp-lowercase` }
                 />
-                <Hint className={ "mb-5" }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.passwordRecoveryOtpUseLowercase.hint") as ReactNode }
                 </Hint>
@@ -626,7 +623,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     listen={ (value: boolean) => setIsNumericEnabled(value) }
                     data-testid={ `${ testId }-sms-otp-numeric` }
                 />
-                <Hint className={ "mb-5" }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.passwordRecoveryOtpUseNumeric.hint") as ReactNode }
                 </Hint>
@@ -665,12 +662,12 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         content={ "characters" }
                     />
                 </Field.Input>
-                <Hint className={ "mb-5" }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.passwordRecoveryOtpLength.hint") as ReactNode }
                 </Hint>
                 <Divider/>
-                <Heading as="h4" className={ "mt-4 mb-4" }>
+                <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.otherConfigHeading") as ReactNode }
                 </Heading>
@@ -710,7 +707,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         content={ "attempts" }
                     />
                 </Field.Input>
-                <Hint className={ "mb-5 " }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.maxFailedAttemptCount.hint") as ReactNode }
                 </Hint>
@@ -750,12 +747,11 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         content={ "attempts" }
                     />
                 </Field.Input>
-                <Hint className={ "mb-5 " }>
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.maxResendCount.hint") as ReactNode }
                 </Hint>
                 <Field.Button
-                    className= { "mt-4" }
                     form={ FORM_ID }
                     size="small"
                     buttonType="primary_btn"
