@@ -37,6 +37,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
+<%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -56,9 +57,14 @@
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
+    boolean isTenantQualifiedUsername = Boolean.parseBoolean(request.getParameter("isTenantQualifiedUsername"));
     String username = StringUtils.isNotEmpty(request.getParameter("username"))
         ? Encode.forHtmlAttribute(request.getParameter("username"))
         : "";
+    if (isTenantQualifiedUsername) {
+        tenantDomain = MultitenantUtils.getTenantDomain(username);
+        username = MultitenantUtils.getTenantAwareUsername(username);
+    }
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     String sp = Encode.forJava(request.getParameter("sp"));
     String spId = Encode.forJava(request.getParameter("spId"));
@@ -135,7 +141,7 @@
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain) &&
-                                                     Boolean.parseBoolean(IdentityUtil.getProperty("Connectors.ChallengeQuestions.Enabled"));
+        Boolean.parseBoolean(IdentityUtil.getProperty("Connectors.ChallengeQuestions.Enabled"));
         isEmailLinkBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkEmailLinkBasedPasswordRecovery(tenantDomain);
         isSMSOTPBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkSMSOTPBasedPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
@@ -386,7 +392,7 @@
                             if (sessionDataKey != null) {
                         %>
                             <input type="hidden" name="sessionDataKey"
-                                   value="<%=Encode.forHtmlAttribute(sessionDataKey) %>"/>
+                                value="<%=Encode.forHtmlAttribute(sessionDataKey) %>"/>
                         <%
                             }
                         %>
@@ -395,7 +401,7 @@
                             if (isSaaSApp && StringUtils.isNotBlank(userTenant)) {
                         %>
                             <input type="hidden" name="t"
-                                   value="<%=Encode.forHtmlAttribute(userTenant) %>"/>
+                                value="<%=Encode.forHtmlAttribute(userTenant) %>"/>
                         <%
                             }
                         %>

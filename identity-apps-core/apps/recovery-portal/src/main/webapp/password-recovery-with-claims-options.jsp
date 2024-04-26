@@ -222,10 +222,13 @@
 
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
+                <div class="field mb-5">
+                    <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
+                </div>
                 <div class="ui divider hidden"></div>
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
-                        <div class="ui secondary segment" style="text-align: left;">
+                        <div class="segment" style="text-align: left;">
                         <% if (isNotificationBasedRecoveryEnabled) { %>
                         <% if (isEmailEnabled) { %>
                             <div class="field">
