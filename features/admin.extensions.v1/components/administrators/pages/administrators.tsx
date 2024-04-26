@@ -52,6 +52,7 @@ import {
     PaginationProps,
     TabProps
 } from "semantic-ui-react";
+import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -64,13 +65,13 @@ import {
     history,
     store
 } from "../../../../admin.core.v1";
+import { useOrganizationConfigV2 } from "../../../../admin.extensions.v2/components/administrators/api";
 import { getRoleById, searchRoleList } from "../../../../admin.roles.v2/api/roles";
 import { SearchRoleInterface } from "../../../../admin.roles.v2/models/roles";
 import { useServerConfigs } from "../../../../admin.server-configurations.v1";
 import { useInvitedUsersList, useUsersList } from "../../../../admin.users.v1/api";
 import { AddUserWizard } from "../../../../admin.users.v1/components/wizard/add-user-wizard";
 import { UserManagementConstants } from "../../../../admin.users.v1/constants";
-import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
 import {
     InternalAdminUserListInterface,
     InvitationStatus,
@@ -92,7 +93,6 @@ import { getAssociationType } from "../../tenants/utils/tenants";
 import { getAgentConnections } from "../../user-stores/api";
 import { AgentConnectionInterface } from "../../user-stores/models";
 import { useOrganizationConfig } from "../api";
-import { useOrganizationConfigV2 } from "../../../../admin.extensions.v2/components/administrators/api";
 import { GuestUsersList, OnboardedGuestUsersList } from "../components";
 import {
     ADVANCED_USER_MGT,
@@ -100,6 +100,7 @@ import {
     AdministratorConstants,
     UserAccountTypes
 } from "../constants";
+import { UseOrganizationConfigType } from "../models/organization";
 import { AddAdministratorWizard } from "../wizard";
 
 /**
@@ -146,7 +147,8 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const { legacyAuthzRuntime }  = useAuthorization();
-    const useOrgConfig = legacyAuthzRuntime ? useOrganizationConfig : useOrganizationConfigV2;    
+    const useOrgConfig: UseOrganizationConfigType = legacyAuthzRuntime
+        ? useOrganizationConfig : useOrganizationConfigV2;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);

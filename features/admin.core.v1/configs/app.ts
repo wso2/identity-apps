@@ -285,7 +285,7 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
-            ...getExtendedFeatureResourceEndpointsV2(this.resolveServerHost(), this.getDeploymentConfig()),
+            ...getExtendedFeatureResourceEndpointsV2(this.resolveServerHost()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),

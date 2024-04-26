@@ -17,7 +17,6 @@
  */
 
 import { ExtendedFeatureResourceEndpointsInterfaceV2 } from "./models";
-import { DeploymentConfigInterface, store } from "../../admin.core.v1";
 
 /**
  * Get the resource endpoints for the extended features.
@@ -25,11 +24,8 @@ import { DeploymentConfigInterface, store } from "../../admin.core.v1";
  * @param serverHost - Server Host.
  * @returns Interface for the resource endpoints of extended features.
  */
-export const getExtendedFeatureResourceEndpointsV2 = (serverHost: string,
-    deploymentConfig: DeploymentConfigInterface): ExtendedFeatureResourceEndpointsInterfaceV2 => {
-
-    const orgId: string = store.getState().organization.organization.id;
-    const authzServiceHost: string = deploymentConfig.extensions?.authzServiceHost as string;
+export const getExtendedFeatureResourceEndpointsV2 = (serverHost: string):
+    ExtendedFeatureResourceEndpointsInterfaceV2 => {
 
     return {
         organizationEndpointV2: `${ serverHost }/api/asgardeo-enterprise-login/v2/business-user-login/{organization}`,

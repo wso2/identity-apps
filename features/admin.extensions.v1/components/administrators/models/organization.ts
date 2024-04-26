@@ -16,6 +16,12 @@
  * under the License.
  */
 
+import { 
+  RequestErrorInterface,
+  RequestResultInterface,
+  SWRConfig 
+} from "features/admin.core.v1/hooks/use-request";
+
 /**
   * Interface to store data for create group api.
   */
@@ -31,3 +37,9 @@ export interface EmailObject {
   primary?: boolean;
   value: string;
 }
+
+export type UseOrganizationConfigType = <Data = OrganizationInterface, Error = RequestErrorInterface>(
+  organization: string,
+  requestOptions: SWRConfig<Data, Error>,
+  shouldFetch?: boolean
+) => RequestResultInterface<Data, Error>;

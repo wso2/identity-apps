@@ -20,7 +20,7 @@
  * Interface for the resource endpoints of extended features.
  */
 export interface ExtendedFeatureResourceEndpointsInterfaceV2 {
-    
+
     /**
      * Get the resource endpoints for the Invitation Management feature.
      */

@@ -25,11 +25,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Icon, Message } from "semantic-ui-react";
-import { history, store } from "../../../../admin.core.v1";
-import { updateOrganizationConfig, useOrganizationConfig } from "../api/organization";
-import { updateOrganizationConfigV2, useOrganizationConfigV2 } from "../../../../admin.extensions.v2/components/administrators/api/organization";
 import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
+import { history, store } from "../../../../admin.core.v1";
+import {
+    updateOrganizationConfigV2,
+    useOrganizationConfigV2
+} from "../../../../admin.extensions.v2/components/administrators/api/organization";
+import { updateOrganizationConfig, useOrganizationConfig } from "../api/organization";
 import { AdministratorConstants } from "../constants";
+import { OrganizationInterface, UseOrganizationConfigType } from "../models/organization";
 
 /**
  * Props for the Administration Settings page.
@@ -55,8 +59,11 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
 
     const dispatch: Dispatch = useDispatch();
     const { legacyAuthzRuntime }  = useAuthorization();
-    const useOrgConfig = legacyAuthzRuntime ? useOrganizationConfig : useOrganizationConfigV2;
-    const updateOrgConfig = legacyAuthzRuntime ? updateOrganizationConfig : updateOrganizationConfigV2;
+
+    const useOrgConfig: UseOrganizationConfigType = legacyAuthzRuntime
+        ? useOrganizationConfig : useOrganizationConfigV2;
+    const updateOrgConfig: (isEnterpriseLoginEnabled: OrganizationInterface) =>
+        Promise<any> = legacyAuthzRuntime ? updateOrganizationConfig : updateOrganizationConfigV2;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
