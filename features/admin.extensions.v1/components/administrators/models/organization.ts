@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { 
-  RequestErrorInterface,
-  RequestResultInterface,
-  SWRConfig 
+import {
+    RequestErrorInterface,
+    RequestResultInterface,
+    SWRConfig
 } from "features/admin.core.v1/hooks/use-request";
 
 /**
@@ -38,7 +38,8 @@ export interface EmailObject {
   value: string;
 }
 
-export type UseOrganizationConfigType = <Data = OrganizationInterface, Error = RequestErrorInterface>(
+export type UseOrganizationConfigType = <Data = OrganizationInterface,
+  Error = RequestErrorInterface>(
   organization: string,
   requestOptions: SWRConfig<Data, Error>,
   shouldFetch?: boolean
