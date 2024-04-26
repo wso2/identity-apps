@@ -234,6 +234,11 @@
                     request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                             response);
                     return;
+                } else if(notificationChannel.equals("SMS")) {
+                    request.setAttribute("screenValue", request.getParameter("screenValue"));
+                    request.setAttribute("resendCode", recoveryResponse.getResendCode());
+                    request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
+                    request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
                 } else {
                     request.setAttribute("error", true);
                     request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
