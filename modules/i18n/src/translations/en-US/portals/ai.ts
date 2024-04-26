@@ -29,7 +29,7 @@ export const ai: aiNS = {
             },
             full: {
                 button: "Try Login Flow AI",
-                heading: "Simplify authentication flow Setup with ",
+                heading: "Simplify authentication flow setup with ",
                 subheading: "Configure your application's login flow effortlessly with Login AI, " +
                     "by describing your desired authentication sequence, including authenticators and " +
                     "conditional authentication."
@@ -43,7 +43,7 @@ export const ai: aiNS = {
                 " environment and authenticators."
             }
         },
-        didYouKnow: "Did you know?",
+        didYouKnow: "Do you know?",
         disclaimer: "Login Flow AI can make errors. Verify the information for accuracy.",
         notifications: {
             generateError: {
