@@ -106,12 +106,12 @@
 
 
     // Redirect to business user login page for tenanted access.
+    boolean enterpriseUserloginEnabled = false;
     if (StringUtils.equals("Console",  appName)
             && !StringUtils.equals(IdentityManagementEndpointConstants.SUPER_TENANT, userTenantDomain)
             && !StringUtils.equals(null, userTenantDomain)
             && !StringUtils.equals(userType, USER_TYPE_ASGARDEO)) {
 
-        boolean enterpriseUserloginEnabled = false;
         try {
 
             // TODO: need to use the "com.wso2.identity.asgardeo.enterprise.login.EnterpriseLoginRetrievalClient" client to retrieve value.
