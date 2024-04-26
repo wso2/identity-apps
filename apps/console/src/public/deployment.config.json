@@ -341,6 +341,7 @@
                 }
             },
             "applications": {
+                "saasMyAccount": false,
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
                     "applications.loginFlow.ai"

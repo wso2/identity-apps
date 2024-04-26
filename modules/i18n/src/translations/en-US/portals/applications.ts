@@ -2297,6 +2297,13 @@ export const applications: ApplicationsNS = {
                 description: "Couldn't retrieve My Account portal status.",
                 message: "Something went wrong"
             }
+        },
+        overview: {
+            tabName: "Overview",
+            heading: "Welcome to My Account",
+            contentIntro: "My Account is a one-stop portal for your users' self-service needs providing extensive account management capabilities.",
+            contentDescription: "You can configure the login flow of the My Account, apply custom <1>branding configurations</1> and share access to it with B2B organizations.",
+            shareApplication: "Share this link with your users to access the My Account portal."
         }
     },
     featureGate: {

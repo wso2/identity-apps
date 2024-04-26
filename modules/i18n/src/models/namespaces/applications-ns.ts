@@ -1977,6 +1977,13 @@ export interface ApplicationsNS {
                 message: string;
             };
         };
+        overview: {
+            tabName: string;
+            heading: string;
+            contentIntro: string;
+            contentDescription: string;
+            shareApplication: string;
+        };
     };
     featureGate: {
         enabledFeatures: {
