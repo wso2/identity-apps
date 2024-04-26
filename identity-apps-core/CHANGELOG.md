@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.65
+
+### Patch Changes
+
+- [#6082](https://github.com/wso2/identity-apps/pull/6082) [`bd90514024`](https://github.com/wso2/identity-apps/commit/bd905140243fb8010357c10b229fb0da7878a874) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix login.jsp issue
+
 ## 2.1.64
 
 ### Patch Changes
