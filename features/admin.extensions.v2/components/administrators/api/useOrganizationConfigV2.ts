@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -27,13 +25,6 @@ import useRequest, {
 } from "../../../../admin.core.v1/hooks/use-request";
 import { store } from "../../../../admin.core.v1/store";
 import { OrganizationInterface } from "../../../../admin.extensions.v1/components/administrators/models";
-
-/**
- * Initialize an axios Http client.
- *
- */
-const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().
-    httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Hook to get enterprise login enable config.
@@ -68,30 +59,3 @@ export const useOrganizationConfigV2 =
             mutate: mutate
         };
     };
-
-/**
- * Hook to update enterprise login enable config.
- *
- * @param isEnterpriseLoginEnabled - Enterpriselogin is enabled/disabled.
- *
- * @returns a promise containing the response.
- */
-export const updateOrganizationConfigV2 = (isEnterpriseLoginEnabled: OrganizationInterface): Promise<any> => {
-
-    const requestConfig: AxiosRequestConfig = {
-        data: isEnterpriseLoginEnabled,
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.organizationPatchEndpointV2
-    };
-
-    return httpClient(requestConfig).then((response: AxiosResponse) => {
-        return Promise.resolve(response);
-    }).catch((error: AxiosError) => {
-        return Promise.reject(error);
-    });
-};

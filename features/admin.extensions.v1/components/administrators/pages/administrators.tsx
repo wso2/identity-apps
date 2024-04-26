@@ -65,7 +65,9 @@ import {
     history,
     store
 } from "../../../../admin.core.v1";
-import { useOrganizationConfigV2 } from "../../../../admin.extensions.v2/components/administrators/api";
+import {
+    useOrganizationConfigV2
+} from "../../../../admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
 import { getRoleById, searchRoleList } from "../../../../admin.roles.v2/api/roles";
 import { SearchRoleInterface } from "../../../../admin.roles.v2/models/roles";
 import { useServerConfigs } from "../../../../admin.server-configurations.v1";

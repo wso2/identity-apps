@@ -38,6 +38,9 @@ export interface EmailObject {
   value: string;
 }
 
+/**
+ * Type to get orgnaization business user login configuration.
+ */
 export type UseOrganizationConfigType = <Data = OrganizationInterface,
   Error = RequestErrorInterface>(
   organization: string,
