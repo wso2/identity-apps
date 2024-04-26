@@ -43,14 +43,15 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
 import { RenderChip } from "./edit-role-common/render-chip";
-import { RemoteUserStoreConstants } from "../../../admin.extensions.v1/components/user-stores/constants";
 import { updateResources } from "../../../admin.core.v1/api/bulk-operations";
 import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1/configs/ui";
+import { AppState } from "../../../admin.core.v1/store";
+import { RemoteUserStoreConstants } from "../../../admin.extensions.v1/components/user-stores/constants";
 import { GroupsInterface } from "../../../admin.groups.v1/models/groups";
 import { useUsersList } from "../../../admin.users.v1/api";
 import {
@@ -85,6 +86,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const disabledUserstores: string[] = useSelector(
+        (state: AppState) => state.config.ui.features.userStores.disabledFeatures);
+
     const [ userSearchValue, setUserSearchValue ] = useState<string>(undefined);
     const [ isUserSearchLoading, setUserSearchLoading ] = useState<boolean>(false);
     const [ users, setUsers ] = useState<UserBasicInterface[]>([]);
@@ -92,7 +96,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
     const [ availableUserStores, setAvailableUserStores ] = useState<UserstoreDisplayItem[]>([]);
     const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
-        "Primary"
+        disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "Primary"
     );
     const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
@@ -150,14 +154,20 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     },[ role, selectedUserStoreDomainName ]);
 
     useEffect(() => {
+        if (!userStores) {
+            return;
+        }
+
         if (userStores) {
-            const availableUserStoreList: UserstoreDisplayItem[] = [
-                {
-                    id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
-                    name: t("users:userstores." +
-                    "userstoreOptions.primary")
-                }
-            ];
+            const availableUserStoreList: UserstoreDisplayItem[] = disabledUserstores
+                .includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME)
+                ? []
+                : [
+                    {
+                        id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
+                        name: t("users:userstores.userstoreOptions.primary")
+                    }
+                ];
 
             setAvailableUserStores(
                 [
