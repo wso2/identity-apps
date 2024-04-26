@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.29
+
+### Patch Changes
+
+- [#6075](https://github.com/wso2/identity-apps/pull/6075) [`72eef0f393`](https://github.com/wso2/identity-apps/commit/72eef0f393dfafc57cf4429ed93293d5b69e1dcb) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Use V2 API for business user login page
+
 ## 2.15.28
 
 ### Patch Changes
