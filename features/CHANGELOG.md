@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.27
+
+### Patch Changes
+
+- [#6079](https://github.com/wso2/identity-apps/pull/6079) [`9176386cc0`](https://github.com/wso2/identity-apps/commit/9176386cc0f3a9cfc745955529f68e4416965dbe) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Set suborg id as the tenant domain in redux store when switching to a suborganization
+
 ## 2.15.26
 
 ### Patch Changes
