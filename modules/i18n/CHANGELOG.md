@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.2.6
+
+### Patch Changes
+
+- [#6084](https://github.com/wso2/identity-apps/pull/6084) [`07bbb5ed78`](https://github.com/wso2/identity-apps/commit/07bbb5ed78f9f7ab0f1935705c20fa9650c164b5) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix 18n issues in AI features
+
 ## 2.2.5
 
 ### Patch Changes
