@@ -65,6 +65,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     common: {
                         signInMethod: {
                             conditionalAuthenticaion: {
+                                ai: {
+                                    learnMore: undefined
+                                },
                                 apiReference: undefined,
                                 learnMore: undefined,
                                 template: {
@@ -186,6 +189,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 }
             },
             branding: {
+                ai: {
+                    learnMore: undefined
+                },
                 layout: {
                     custom: {
                         learnMore: undefined

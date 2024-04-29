@@ -23,13 +23,13 @@ export const ai: aiNS = {
         banner: {
             collapsed: {
                 button: "Try Login Flow AI",
-                heading: "Configure your login flow with ",
+                heading: "Configure Your Login Flow with ",
                 subheading: "Enter your ideal login sequence and "+
                 "our AI adapts authenticators and context to configure the flow."
             },
             full: {
                 button: "Try Login Flow AI",
-                heading: "Simplify authentication flow setup with ",
+                heading: "Simplify Authentication Flow Setup with ",
                 subheading: "Configure your application's login flow effortlessly with Login AI, " +
                     "by describing your desired authentication sequence, including authenticators and " +
                     "conditional authentication."

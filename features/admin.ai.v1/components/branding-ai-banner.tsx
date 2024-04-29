@@ -25,7 +25,8 @@ import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import {
     DocumentationLink,
-    GenericIcon
+    GenericIcon,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -46,6 +47,7 @@ import "./branding-ai-banner.scss";
 export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
     const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
@@ -155,7 +157,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     <Typography className="branding-ai-banner-sub-heading">
                         { t("branding:ai.banner.input.subHeading") }
                         <DocumentationLink
-                            link={ "" }
+                            link={ getLink("develop.branding.ai.learnMore") }
                             isLinkRef={ true }>
                             <Trans i18nKey={ "extensions:common.learnMore" }>
                                 Learn more
