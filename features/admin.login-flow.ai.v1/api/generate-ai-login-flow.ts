@@ -22,7 +22,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../admin.core.v1/store";
 import { GenerateLoginFlowAPIResponseInterface } from "../models/ai-login-flow";
-import AutheticatorsRecord from "../models/authenticators-record";
+import AuthenticatorsRecord from "../models/authenticators-record";
 import { ClaimURI } from "../models/claim-uri";
 
 /**
@@ -44,7 +44,13 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 const generateLoginFlow = (
     userQuery: string,
     userClaims: ClaimURI[],
-    availableAuthenticators: AutheticatorsRecord[],
+    availableAuthenticators: {
+        enterprise: AuthenticatorsRecord[];
+        local: AuthenticatorsRecord[];
+        recovery: AuthenticatorsRecord[];
+        secondFactor: AuthenticatorsRecord[];
+        social: AuthenticatorsRecord[];
+    },
     traceId: string
 ): Promise<GenerateLoginFlowAPIResponseInterface> => {
     const requestConfig: AxiosRequestConfig = {
