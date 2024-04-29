@@ -1136,7 +1136,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && isFAPIAppCreationEnabled
                         && (
                             <div className="pt-0 mt-0">
-                                <div style={{ alignItems: "center", display: "flex" }}>
+                                <div style={ { alignItems: "center", display: "flex" } }>
                                     <Field
                                         data-componentid={ `${ testId }-fapi-app-checkbox` }
                                         name={ "isFAPIApp" }
@@ -1152,7 +1152,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         ] }
                                     />
                                     { isSAASDeployment && (
-                                        <div style={{ marginLeft: "10px", marginTop: "-10px" }}>
+                                        <div style={ { marginLeft: "10px", marginTop: "-10px" } }>
                                             <Chip
                                                 label="PREVIEW"
                                                 className="oxygen-menu-item-chip oxygen-chip-preview" />
