@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.2.8
+
+### Patch Changes
+
+- [#6101](https://github.com/wso2/identity-apps/pull/6101) [`15c1fee109`](https://github.com/wso2/identity-apps/commit/15c1fee1097417229b15c3e72e7acd30083d39c6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve error handling in AI features
+
 ## 2.2.7
 
 ### Patch Changes

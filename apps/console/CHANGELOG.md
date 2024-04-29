@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.15.37
+
+### Patch Changes
+
+- [#6101](https://github.com/wso2/identity-apps/pull/6101) [`15c1fee109`](https://github.com/wso2/identity-apps/commit/15c1fee1097417229b15c3e72e7acd30083d39c6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve error handling in AI features
+
+- Updated dependencies [[`e4f57c3ab9`](https://github.com/wso2/identity-apps/commit/e4f57c3ab91072e7105c74032bedefdad246ed6a), [`15c1fee109`](https://github.com/wso2/identity-apps/commit/15c1fee1097417229b15c3e72e7acd30083d39c6)]:
+  - @wso2is/features@2.15.31
+  - @wso2is/i18n@2.2.8
+
 ## 2.15.36
 
 ### Patch Changes
