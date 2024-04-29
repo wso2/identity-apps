@@ -234,7 +234,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         }
                     } }
                     inputProps={ {
-                        maxlength: 250
+                        maxlength: 1000
                     } }
                     InputProps={ {
                         className: "login-flow-ai-input-field-inner",
