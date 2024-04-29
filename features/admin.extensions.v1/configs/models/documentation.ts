@@ -81,6 +81,9 @@ interface ApplicationsDocumentationLinksInterface {
             signInMethod: {
                 learnMore: string;
                 conditionalAuthenticaion: {
+                    ai: {
+                        learnMore: string;
+                    }
                     apiReference: string;
                     learnMore: string;
                     template: {

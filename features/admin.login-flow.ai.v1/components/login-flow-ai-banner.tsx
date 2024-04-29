@@ -193,7 +193,8 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     <Typography className="login-flow-ai-banner-sub-heading">
                         { t("ai:aiLoginFlow.banner.input.subheading") }
                         <DocumentationLink
-                            link={ "develop.applications.editApplication.asgardeoTryitApplication.general.learnMore" }
+                            link={ "develop.applications.editApplication.common.signInMethod." +
+                            "conditionalAuthenticaion.ai.learnMore" }
                             isLinkRef={ true }>
                             <Trans i18nKey={ "extensions:common.learnMore" }>
                                 Learn more
