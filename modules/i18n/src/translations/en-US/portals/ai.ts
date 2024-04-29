@@ -50,6 +50,15 @@ export const ai: aiNS = {
                 description: "An error occurred while generating the login flow. Please try again.",
                 message: "An error occurred"
             },
+            generateInputError: {
+                description: "The input provided for the login flow generation is invalid. Please try again.",
+                message: "Invalid input provided"
+            },
+            generateLimitError: {
+                description: "You have exceeded the limit for login flow generation. " +
+                    "Please try again in a few moments.",
+                message: "Limit exceeded"
+            },
             generateResultError: {
                 description: "An error occurred while retrieving the results of the login flow generation. " +
                     "Please try again.",

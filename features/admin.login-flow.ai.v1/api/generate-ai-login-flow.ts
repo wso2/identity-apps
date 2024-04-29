@@ -81,7 +81,7 @@ const generateLoginFlow = (
             throw new IdentityAppsApiException(
                 errorMessage,
                 error.stack,
-                error.response?.data?.code,
+                error.response?.status,
                 error.request,
                 error.response,
                 error.config
