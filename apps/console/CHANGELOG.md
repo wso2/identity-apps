@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.15.36
+
+### Patch Changes
+
+- [#6093](https://github.com/wso2/identity-apps/pull/6093) [`e74cc7760e`](https://github.com/wso2/identity-apps/commit/e74cc7760e96130510625af061ec523dd0295d26) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvments to AI features
+
+* [#6088](https://github.com/wso2/identity-apps/pull/6088) [`c4bced3178`](https://github.com/wso2/identity-apps/commit/c4bced3178c80047c39ec732fc5ee7f05123536f) Thanks [@brionmario](https://github.com/brionmario)! - Add support to skip super tenant from app urls
+
+- [#6094](https://github.com/wso2/identity-apps/pull/6094) [`ae06330b69`](https://github.com/wso2/identity-apps/commit/ae06330b69786f795f59f67ff4b900cf9d1ef16c) Thanks [@brionmario](https://github.com/brionmario)! - Move SaaS My Account settings config to deployment level
+
+- Updated dependencies [[`94ee13b2bb`](https://github.com/wso2/identity-apps/commit/94ee13b2bb94e8e47ed33c004060d2856d42e7df), [`e74cc7760e`](https://github.com/wso2/identity-apps/commit/e74cc7760e96130510625af061ec523dd0295d26), [`7b07a9a027`](https://github.com/wso2/identity-apps/commit/7b07a9a027a6bd98451cc7422ae80b18bc28b97f), [`c4bced3178`](https://github.com/wso2/identity-apps/commit/c4bced3178c80047c39ec732fc5ee7f05123536f), [`ae06330b69`](https://github.com/wso2/identity-apps/commit/ae06330b69786f795f59f67ff4b900cf9d1ef16c)]:
+  - @wso2is/i18n@2.2.7
+  - @wso2is/features@2.15.30
+  - @wso2is/theme@2.0.76
+  - @wso2is/react-components@2.1.22
+  - @wso2is/dynamic-forms@2.0.51
+  - @wso2is/form@2.0.52
+
 ## 2.15.35
 
 ### Patch Changes

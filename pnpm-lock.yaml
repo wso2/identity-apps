@@ -521,25 +521,25 @@ importers:
         specifier: ^2.0.41
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
-        specifier: ^2.0.50
+        specifier: ^2.0.51
         version: link:../../modules/dynamic-forms
       '@wso2is/features':
-        specifier: ^2.15.29
+        specifier: ^2.15.30
         version: link:../../features
       '@wso2is/form':
-        specifier: ^2.0.51
+        specifier: ^2.0.52
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.0.31
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.2.6
+        specifier: ^2.2.7
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.21
+        specifier: ^2.1.22
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.75
+        specifier: ^2.0.76
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -861,19 +861,19 @@ importers:
         specifier: ^2.0.41
         version: link:../../modules/core
       '@wso2is/features':
-        specifier: ^2.15.29
+        specifier: ^2.15.30
         version: link:../../features
       '@wso2is/forms':
         specifier: ^2.0.31
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.2.6
+        specifier: ^2.2.7
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.21
+        specifier: ^2.1.22
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.75
+        specifier: ^2.0.76
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -1129,22 +1129,22 @@ importers:
         specifier: ^2.0.41
         version: link:../modules/core
       '@wso2is/dynamic-forms':
-        specifier: ^2.0.50
+        specifier: ^2.0.51
         version: link:../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.0.51
+        specifier: ^2.0.52
         version: link:../modules/form
       '@wso2is/forms':
         specifier: ^2.0.31
         version: link:../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.2.6
+        specifier: ^2.2.7
         version: link:../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.21
+        specifier: ^2.1.22
         version: link:../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.75
+        specifier: ^2.0.76
         version: link:../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -1430,7 +1430,7 @@ importers:
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
-        specifier: ^2.0.75
+        specifier: ^2.0.76
         version: link:../modules/theme
       rimraf:
         specifier: ^3.0.2
@@ -1597,7 +1597,7 @@ importers:
         specifier: ^2.0.41
         version: link:../core
       '@wso2is/react-components':
-        specifier: ^2.1.21
+        specifier: ^2.1.22
         version: link:../react-components
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -1685,7 +1685,7 @@ importers:
         specifier: ^2.0.41
         version: link:../core
       '@wso2is/react-components':
-        specifier: ^2.1.21
+        specifier: ^2.1.22
         version: link:../react-components
       '@wso2is/validation':
         specifier: ^2.0.4
@@ -1931,7 +1931,7 @@ importers:
         specifier: ^2.0.41
         version: link:../core
       '@wso2is/theme':
-        specifier: ^2.0.75
+        specifier: ^2.0.76
         version: link:../theme
       classnames:
         specifier: ^2.2.6
