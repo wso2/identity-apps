@@ -2331,6 +2331,10 @@ export interface ApplicationsNS {
                 message: string;
                 description: string;
             };
+            invalidScriptError: {
+                message: string;
+                description: string;
+            };
             genericError: {
                 message: string;
                 description: string;
