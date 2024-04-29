@@ -159,8 +159,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         }
 
         if (userStores) {
-            const availableUserStoreList: UserstoreDisplayItem[] = disabledUserstores
-                .includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME)
+            const availableUserStoreList: UserstoreDisplayItem[] = disabledUserstores?.includes(
+                RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME)
                 ? []
                 : [
                     {
