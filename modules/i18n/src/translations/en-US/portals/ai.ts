@@ -30,13 +30,13 @@ export const ai: aiNS = {
             full: {
                 button: "Try Login Flow AI",
                 heading: "Simplify Authentication Flow Setup with ",
-                subheading: "Configure your application's login flow effortlessly with Login AI, " +
+                subheading: "Configure your application's login flow effortlessly with Login Flow AI, " +
                     "by describing your desired authentication sequence, including authenticators and " +
                     "conditional authentication."
             },
             input: {
                 button: "Generate Login Flow",
-                heading: "Configure your login flow with ",
+                heading: "Configure Your Login Flow with ",
                 placeholder: "Input your login flow eg: have username and password as first step,"+
                 " and prompt for TOTP second factor if the user has 'manager' role.",
                 subheading: "AI-powered login configurations crafted to align with your application's"+

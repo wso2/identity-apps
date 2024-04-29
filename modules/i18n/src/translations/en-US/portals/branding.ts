@@ -182,7 +182,7 @@ export const branding: BrandingNS = {
                 button: "Generate Branding"
             },
             collapsed: {
-                heading: "Configure branding with ",
+                heading: "Configure Branding with ",
                 subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
                 button: "Try Branding AI"
             }
