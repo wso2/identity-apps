@@ -187,6 +187,29 @@ export interface BrandingNS {
                 button: string;
             };
         };
+        disclaimer: string;
+        notifications: {
+            generateError: {
+                description: string;
+                message: string;
+            };
+            generateLimitError: {
+                description: string;
+                message: string;
+            };
+            regenerateError: {
+                description: string;
+                message: string;
+            };
+            resetSuccess: {
+                description: string;
+                message: string;
+            };
+            renderingError: {
+                description: string;
+                message: string;
+            };
+        };
         screens: {
             loading: {
                 heading: string;
@@ -209,5 +232,7 @@ export interface BrandingNS {
                 };
             };
         };
+        title: string;
+        termsAndConditions: string;
     };
 }
