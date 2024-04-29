@@ -16,7 +16,7 @@
  * under the License.
  */
 
- .branding-ai-banner {
+.branding-ai-banner {
     &.hidden {
         display: none;
     }
@@ -31,16 +31,11 @@
     border: 1px solid #DCDAD8;
     border-radius: 8px;
     display: flex;
-
-    &.full {
-        justify-content: space-between;
-        padding: 32px 25px;
-    }
+    justify-content: space-between;
+    padding: 30px 25px;
 
     &.collapsed, &.input {
         flex-direction: column;
-        justify-content: space-between;
-        padding: 0px 25px 30px 25px;
     }
 }
 
@@ -54,14 +49,21 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 0px 25px 30px 25px;
+    padding: 30px 25px;
+}
+
+.branding-ai-banner-input-heading-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .branding-ai-banner-text-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 75%;
+    width: 70%;
 }
 
 .branding-ai-banner-close-icon {
@@ -113,4 +115,11 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.branding-ai-preview-chip {
+    color: #01698a;
+    background-color: #c3e6f6;
+    margin-bottom: 4px;
+    margin-left: 5px;
 }

@@ -18,9 +18,10 @@
 
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
-import { ChevronUpIcon, XMarkIcon }from "@oxygen-ui/react-icons";
+import { ChevronUpIcon }from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels } from "@wso2is/core/models";
@@ -71,13 +72,6 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
      */
     const handleCollapseClick = () => {
         setBannerState(BannerState.COLLAPSED);
-    };
-
-    /**
-     * Handles the click event of the delete button.
-     */
-    const handleDeleteButtonCLick = () => {
-        setBannerState(BannerState.NULL);
     };
 
     /**
@@ -144,6 +138,11 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="login-flow-ai-text">
                             { t("ai:aiLoginFlow.title") }
                         </span>
+                        <Chip
+                            size="small"
+                            label={ t("common:preview").toUpperCase() }
+                            className="login-flow-ai-preview-chip"
+                        />
                     </Typography>
                     <Typography className="login-flow-ai-banner-sub-heading">
                         { t("ai:aiLoginFlow.banner.full.subheading") }
@@ -173,14 +172,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     backgroundImage: `url(${ AIBannerInputBackground })`
                 } }
             >
-                <Box className="login-flow-ai-banner-close-icon">
-                    <IconButton
-                        onClick={ handleCollapseClick }
-                    >
-                        <ChevronUpIcon />
-                    </IconButton>
-                </Box>
-                <div className="login-flow-ai-banner-text-container">
+                <Box className="login-flow-ai-banner-inputh-heading-container">
                     <Typography
                         as="h3"
                         className="login-flow-ai-banner-heading"
@@ -189,7 +181,19 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="login-flow-ai-text">
                             { t("ai:aiLoginFlow.title") }
                         </span>
+                        <Chip
+                            size="small"
+                            label={ t("common:preview").toUpperCase() }
+                            className="login-flow-ai-preview-chip"
+                        />
                     </Typography>
+                    <IconButton
+                        onClick={ handleCollapseClick }
+                    >
+                        <ChevronUpIcon />
+                    </IconButton>
+                </Box>
+                <div className="login-flow-ai-banner-text-container">
                     <Typography className="login-flow-ai-banner-sub-heading">
                         { t("ai:aiLoginFlow.banner.input.subheading") }
                         <DocumentationLink
@@ -211,6 +215,18 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     value={ userPrompt }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                         setUserPrompt(e.target.value) }
+                    onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
+                        // Go to next line with shift + enter.
+                        if (e.key === "Enter" && e.shiftKey) {
+                            return;
+                        }
+
+                        // Handle the enter key press.
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleGenerateClick();
+                        }
+                    } }
                     InputProps={ {
                         className: "login-flow-ai-input-field-inner",
                         endAdornment: (
@@ -247,13 +263,6 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     backgroundImage: `url(${ AIBannerBackgroundWhite })`
                 } }
             >
-                <Box className="login-flow-ai-banner-close-icon">
-                    <IconButton
-                        onClick={ handleDeleteButtonCLick }
-                    >
-                        <XMarkIcon />
-                    </IconButton>
-                </Box>
                 <Box className="login-flow-ai-banner-button-container">
                     <div className="login-flow-ai-banner-text-container">
                         <Typography
@@ -264,6 +273,11 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                             <span className="login-flow-ai-text">
                                 { t("ai:aiLoginFlow.title") }
                             </span>
+                            <Chip
+                                size="small"
+                                label={ t("common:preview").toUpperCase() }
+                                className="login-flow-ai-preview-chip"
+                            />
                         </Typography>
                         <Typography className="login-flow-ai-banner-sub-heading">
                             { t("ai:aiLoginFlow.banner.input.subheading") }

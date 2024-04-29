@@ -28,6 +28,7 @@ import { AppState } from "../../admin.core.v1";
 import { useAILoginFlowGenerationResult } from "../api/use-ai-login-flow-generation-result";
 import LoginFlowAIBanner from "../components/login-flow-ai-banner";
 import LoginFlowAILoadingScreen from "../components/login-flow-ai-loading-screen";
+import { LOGIN_FLOW_AI_FEATURE_TAG } from "../constants/login-flow-ai-constants";
 import AILoginFlowContext from "../context/ai-login-flow-context";
 import { LoginFlowResultStatus } from "../models/ai-login-flow";
 
@@ -131,7 +132,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
                 ) : (
                     <>
                         {
-                            !applicationDisabledFeatures?.includes("applications.loginFlow.ai") && (
+                            !applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG) && (
                                 <LoginFlowAIBanner/>
                             )
                         }

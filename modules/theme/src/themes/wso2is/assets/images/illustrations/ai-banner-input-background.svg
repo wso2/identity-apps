@@ -21,11 +21,12 @@
 <svg width="1388" height="300" viewBox="0 0 1388 300" fill="none" xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink">
     <rect width="1388" height="300" rx="10" fill="white" />
-    <rect width="1388" height="300" rx="10" fill="url(#pattern0_3655_362)" fill-opacity="0.1"
+    <rect width="1388" height="300" rx="10" fill="url(#pattern0_3655_362)" fill-opacity="0.05"
         style="mix-blend-mode:multiply" />
-    <mask id="mask0_3655_362" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="2" width="1388" height="298">
-        <rect y="2" width="1388" height="298" rx="10" fill="white" />
-        <rect y="2" width="1388" height="298" rx="10" fill="url(#pattern1_3655_362)" />
+    <mask id="mask0_3655_362" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="280" y="2" width="1108"
+        height="298">
+        <rect x="280" y="2" width="1108" height="298" rx="10" fill="white" />
+        <rect x="280" y="2" width="1108" height="298" rx="10" fill="url(#pattern1_3655_362)" />
     </mask>
     <g mask="url(#mask0_3655_362)">
         <path d="M1289.68 24.7915L1244.32 36.4629L1253.16 70.889L1298.53 59.2175L1289.68 24.7915Z"
@@ -153,11 +154,11 @@
     <defs>
         <pattern id="pattern0_3655_362" patternContentUnits="objectBoundingBox" width="1" height="1">
             <use xlink:href="#image0_3655_362"
-                transform="matrix(0.000243097 0.000289813 -6.26177e-05 0.00112512 0.241756 -1.25355)" />
+                transform="matrix(0.00028198 0.000402919 -8.70653e-05 0.0013051 0.0937319 -1.26536)" />
         </pattern>
         <pattern id="pattern1_3655_362" patternContentUnits="objectBoundingBox" width="1" height="1">
             <use xlink:href="#image0_3655_362"
-                transform="matrix(0.000160751 0.000366187 -4.14066e-05 0.00142163 0.386646 -1.5839)" />
+                transform="matrix(0.000201374 0.000366187 -5.18704e-05 0.00142163 0.174889 -1.57999)" />
         </pattern>
         <linearGradient id="paint0_linear_3655_362" x1="1267" y1="30.6272" x2="1275.86" y2="65.0507"
             gradientUnits="userSpaceOnUse">

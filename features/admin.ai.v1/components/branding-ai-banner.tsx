@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { ChevronUpIcon, XMarkIcon } from "@oxygen-ui/react-icons";
+import { ChevronUpIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
@@ -78,13 +79,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
         setIsSubmitting(false);
     };
 
-    /**
-     * Handles the click event of the delete button.
-     */
-    const handleDeleteButtonCLick = () => {
-        setBannerState(BannerState.NULL);
-    };
-
     if (isGeneratingBranding) {
         return null;
     }
@@ -106,6 +100,11 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="branding-ai-text">
                             { t("branding:ai.title") }
                         </span>
+                        <Chip
+                            size="small"
+                            label={ t("common:preview").toUpperCase() }
+                            className="branding-ai-preview-chip"
+                        />
                     </Typography>
                     <Typography className="branding-ai-banner-sub-heading">
                         { t("branding:ai.banner.full.subHeading") }
@@ -135,14 +134,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     backgroundImage: `url(${ AIBannerInputBackground })`
                 } }
             >
-                <Box className="branding-ai-banner-close-icon">
-                    <IconButton
-                        onClick={ handleCollapseClick }
-                    >
-                        <ChevronUpIcon />
-                    </IconButton>
-                </Box>
-                <div className="branding-ai-banner-text-container">
+                <Box className="branding-ai-banner-input-heading-container">
                     <Typography
                         as="h3"
                         className="branding-ai-banner-heading"
@@ -151,7 +143,19 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="branding-ai-text">
                             { t("branding:ai.title") }
                         </span>
+                        <Chip
+                            size="small"
+                            label={ t("common:preview").toUpperCase() }
+                            className="branding-ai-preview-chip"
+                        />
                     </Typography>
+                    <IconButton
+                        onClick={ handleCollapseClick }
+                    >
+                        <ChevronUpIcon />
+                    </IconButton>
+                </Box>
+                <div className="branding-ai-banner-text-container">
                     <Typography className="branding-ai-banner-sub-heading">
                         { t("branding:ai.banner.input.subHeading") }
                         <DocumentationLink
@@ -171,6 +175,13 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     value={ websiteUrl }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                         setWebsiteUrl(e.target.value) }
+                    onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
+                        // Handle the enter key press.
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleGenerateClick();
+                        }
+                    } }
                     InputProps={ {
                         className: "branding-ai-input-field-inner",
                         endAdornment: (
@@ -207,13 +218,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     backgroundImage: `url(${ AIBannerBackgroundWhite })`
                 } }
             >
-                <Box className="branding-ai-banner-close-icon">
-                    <IconButton
-                        onClick={ handleDeleteButtonCLick }
-                    >
-                        <XMarkIcon />
-                    </IconButton>
-                </Box>
                 <Box className="branding-ai-banner-button-container">
                     <div className="branding-ai-banner-text-container">
                         <Typography
