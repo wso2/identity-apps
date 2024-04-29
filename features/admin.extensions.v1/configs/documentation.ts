@@ -186,6 +186,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 }
             },
             branding: {
+                ai: {
+                    learnMore: undefined
+                },
                 layout: {
                     custom: {
                         learnMore: undefined

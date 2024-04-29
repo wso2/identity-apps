@@ -219,6 +219,9 @@ interface AttributesDocumentationLinksInterface {
  * Interface for the Branding section documentation structure.
  */
 interface BrandingDocumentationLinksInterface {
+    ai: {
+        learnMore: string;
+    }
     layout: {
         custom: {
             learnMore: string;
