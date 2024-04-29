@@ -46,10 +46,10 @@ import {
 } from "./general";
 import { BrandingPreferencePreview } from "./preview";
 import ScreenDropdown from "./screen-dropdown";
-import ScreenVariationDropdown from './screen-variation-dropdown';
+import ScreenVariationDropdown from "./screen-variation-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import { commonConfig } from "../../admin.extensions.v1/configs";
 import { AppState } from "../../admin.core.v1/store";
+import { commonConfig } from "../../admin.extensions.v1/configs";
 import { BrandingPreferencesConstants } from "../constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";
