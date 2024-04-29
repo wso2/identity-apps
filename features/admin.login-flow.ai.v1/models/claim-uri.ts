@@ -16,9 +16,8 @@
  * under the License.
  */
 
-export enum BannerState {
-    FULL = "banner-full",
-    INPUT = "banner-input",
-    COLLAPSED = "banner-collapsed",
-    NULL = "banner-null"
+//Interface to define the claim URI.
+export interface ClaimURI {
+    description: string;
+    claimURI: string;
 }

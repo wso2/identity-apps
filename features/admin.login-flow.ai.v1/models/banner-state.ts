@@ -16,9 +16,10 @@
  * under the License.
  */
 
+// Enum to keep track of the states of the card component.
 export enum BannerState {
     FULL = "banner-full",
     INPUT = "banner-input",
     COLLAPSED = "banner-collapsed",
-    NULL = "banner-null"
+    NULL = "null",
 }

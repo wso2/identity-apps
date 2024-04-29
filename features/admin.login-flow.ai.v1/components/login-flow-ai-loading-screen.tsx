@@ -20,38 +20,41 @@ import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Typography from "@oxygen-ui/react/Typography";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { ReactComponent as LoadingPlaceholder }
     from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
-import useGetAIBrandingGenerationStatus from "../api/use-get-branding-generation-status";
+import { useAILoginFlowGenerationStatus } from "../api/use-ai-login-flow-generation-status";
 import {
     FACTS_ROTATION_DELAY,
     PROGRESS_UPDATE_INTERVAL,
     STATUS_PROGRESS_MAP,
     useGetFacts,
-    useGetStatusLabels } from "../constants/ai-branding-constants";
-import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
-import "./branding-ai-loading-screen.scss";
+    useGetStatusLabels
+} from "../constants/login-flow-ai-constants";
+import "./login-flow-ai-loading-screen.scss";
 
-/**
- * AI branding loading screen component.
- *
- * @returns ReactElement containing the AI branding loading screen.
- */
-export const LoadingScreen: FunctionComponent = (): ReactElement => {
+const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
+
     const { t } = useTranslation();
 
     const { getLink } = useDocumentation();
 
-    const [ factIndex, setFactIndex ] = useState<number>(0);
-    const [ currentProgress, setCurrentProgress ] = useState<number>(0);
+    const dispatch: Dispatch = useDispatch();
 
-    const { operationId } = useAIBrandingPreference();
-    const { data, isLoading } = useGetAIBrandingGenerationStatus(operationId);
-    const facts: string[] = useGetFacts();
     const statusLabels: Record<string, string> = useGetStatusLabels();
+
+    const facts: string[] = useGetFacts();
+
+    const { data, isLoading, error } = useAILoginFlowGenerationStatus(traceId);
+
+    const [ currentProgress, setCurrentProgress ] = useState<number>(0);
+    const [ factIndex, setFactIndex ] = useState<number>(0);
 
     const statusProgress: Record<string, number> = STATUS_PROGRESS_MAP;
 
@@ -81,6 +84,18 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
         return () => clearInterval(interval);
     }, [ factIndex ]);
 
+    useEffect(() => {
+        if (error) {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("ai:aiLoginFlow.notifications.generateStatusError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("ai:aiLoginFlow.notifications.generateStatusError.message")
+                })
+            );
+        }
+    }, [ error ]);
+
     /**
      * Get the current progress based on the status.
      *
@@ -107,8 +122,8 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
      * @returns The current status.
      */
     const getCurrentStatus = () => {
-        if (!data) return t("branding:ai.screens.loading.states.0");
-        let currentStatusLabel: string = "branding:ai.screens.loading.states.0";
+        if (!data) return t("ai:aiLoginFlow.screens.loading.states.0");
+        let currentStatusLabel: string = "ai:aiLoginFlow.screens.loading.states.0";
 
         Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
             if (value && statusLabels[key]) {
@@ -120,27 +135,27 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     };
 
     return (
-        <Box className="branding-ai-loading-screen-parent">
-            <Box className="branding-ai-loading-screen-container">
-                <Box className="branding-ai-loading-screen-illustration-container">
+        <Box className="login-flow-ai-loading-screen-parent">
+            <Box className="login-flow-ai-loading-screen-container">
+                <Box className="login-flow-ai-loading-screen-illustration-container">
                     <LoadingPlaceholder />
                 </Box>
-                <Box className="branding-ai-loading-screen-text-container">
+                <Box className="login-flow-ai-loading-screen-text-container">
                     <Box className="mb-5">
                         <Typography
                             variant="h5"
-                            className="branding-ai-loading-screen-heading"
+                            className="login-flow-ai-loading-screen-heading"
                         >
-                            { t("branding:ai.screens.loading.didYouKnow") }
+                            { t("ai:aiLoginFlow.didYouKnow") }
                         </Typography>
-                        <Typography className="branding-ai-loading-screen-sub-heading">
+                        <Typography className="login-flow-ai-loading-screen-sub-heading">
                             { facts[factIndex] }
                         </Typography>
                     </Box>
                     <Box sx={ { width: 1 } }>
-                        <Box className="branding-ai-loading-screen-loading-container">
+                        <Box className="login-flow-ai-loading-screen-loading-container">
                             { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
-                            <Typography className="branding-ai-loading-screen-loading-state">
+                            <Typography className="login-flow-ai-loading-screen-loading-state">
                                 { getCurrentStatus() }
                             </Typography>
                         </Box>
@@ -149,13 +164,15 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
                 </Box>
             </Box>
             <Typography variant="caption">
-                { t("branding:ai.disclaimer") }
+                { t("ai:aiLoginFlow.disclaimer") }
                 <DocumentationLink
                     link={ getLink("common.termsOfService") }
                 >
-                    { t("branding:ai.termsAndConditions") }
+                    { t("ai:aiLoginFlow.termsAndConditions") }
                 </DocumentationLink>
             </Typography>
         </Box>
     );
 };
+
+export default LoginFlowAILoadingScreen;
