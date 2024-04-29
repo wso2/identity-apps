@@ -43,7 +43,7 @@ export const ai: aiNS = {
                 " environment and authenticators."
             }
         },
-        didYouKnow: "Do you know?",
+        didYouKnow: "Did you know?",
         disclaimer: "Login Flow AI can make errors. Verify the information for accuracy.",
         notifications: {
             generateError: {
@@ -85,10 +85,10 @@ export const ai: aiNS = {
                 },
                 heading: "Generating your login flow",
                 states: {
-                    0: "Getting things started...",
-                    1: "Getting things started...",
+                    0: "Getting things started",
+                    1: "Getting things started",
                     10: "Applying final touches...",
-                    2: "Getting things started...",
+                    2: "Getting things started",
                     3: "Gathering essential data for your login flow...",
                     4: "Gathering essential data for your login flow...",
                     5: "Crafting the login flow script...",
