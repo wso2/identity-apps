@@ -50,7 +50,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
     const { isGeneratingLoginFlow } = useAILoginFlow();
 
-    const { availableAuthenticators, loading: isAuthenticatorsLoading } = useAvailableAuthenticators();
+    const { filteredAuthenticators, loading: isAuthenticatorsLoading } = useAvailableAuthenticators();
 
     const { claimURI, error: userClaimError } = useUserClaims();
 
@@ -96,7 +96,12 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
             return;
         }
 
-        if (availableAuthenticators?.length < 0) {
+        if (filteredAuthenticators.local.length === 0 &&
+            filteredAuthenticators.enterprise.length === 0 &&
+            filteredAuthenticators.recovery.length === 0 &&
+            filteredAuthenticators.secondFactor.length === 0 &&
+            filteredAuthenticators.social.length === 0
+        ) {
             dispatch(addAlert(
                 {
                     description: t("ai:aiLoginFlow.notifications.noAuthenticators.description"),
@@ -112,7 +117,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
         const traceID: string = uuidv4();
 
-        await generateAILoginFlow(userPrompt, claimURI, availableAuthenticators, traceID);
+        await generateAILoginFlow(userPrompt, claimURI, filteredAuthenticators, traceID);
         setBannerState(BannerState.COLLAPSED);
         setIsSubmitting(false);
     };
@@ -172,7 +177,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     backgroundImage: `url(${ AIBannerInputBackground })`
                 } }
             >
-                <Box className="login-flow-ai-banner-inputh-heading-container">
+                <Box className="login-flow-ai-banner-input-heading-container">
                     <Typography
                         as="h3"
                         className="login-flow-ai-banner-heading"
