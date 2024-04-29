@@ -21,7 +21,9 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../admin.core.v1/store";
-import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
+import { GenerateLoginFlowAPIResponseInterface } from "../models/ai-login-flow";
+import AuthenticatorsRecord from "../models/authenticators-record";
+import { ClaimURI } from "../models/claim-uri";
 
 /**
  * Get an axios instance.
@@ -30,39 +32,51 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Generate branding preference via Branding Preferences API.
+ * Generate login flow using AI.
  *
- * @param websiteUrl - website URL given by the end user.
- * @param tenantDomain -  tenant domain.
- * @returns generated branding API response.
+ * @param userQuery - user query.
+ * @param userClaims - user claims.
+ * @param availableAuthenticators - available authenticators.
+ * @param traceId - trace ID.
+ *
+ * @returns generated login flow.
  */
-const generateBrandingPreference = (
-    websiteUrl: string,
-    tenantDomain: string
-): Promise<GenerateBrandingAPIResponseInterface> => {
-
+const generateLoginFlow = (
+    userQuery: string,
+    userClaims: ClaimURI[],
+    availableAuthenticators: {
+        enterprise: AuthenticatorsRecord[];
+        local: AuthenticatorsRecord[];
+        recovery: AuthenticatorsRecord[];
+        secondFactor: AuthenticatorsRecord[];
+        social: AuthenticatorsRecord[];
+    },
+    traceId: string
+): Promise<GenerateLoginFlowAPIResponseInterface> => {
     const requestConfig: AxiosRequestConfig = {
         data: {
-            tenant_domain: tenantDomain,
-            website_url: websiteUrl
+            available_authenticators: availableAuthenticators,
+            user_claims: userClaims,
+            user_query: userQuery
         },
         headers: {
             "Accept": "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Trace-Id": traceId
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.brandingPreference}/generate`
+        url: `${store.getState().config.endpoints.applications}/loginflow/generate`
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<GenerateBrandingAPIResponseInterface>) => {
-            if (response.status !== 202) {
-                throw new Error("Failed to generate branding preference: ${response.statusText}");
+        .then((response: AxiosResponse<GenerateLoginFlowAPIResponseInterface>) => {
+            if (response.status !== 200) {
+                throw new Error(`Failed to generate login flow: ${response.statusText}`);
             }
 
             return response.data;
         }).catch((error: AxiosError) => {
-            const errorMessage: string = error.response?.data?.detail || "Unknown error occurred";
+            const errorMessage: string = error.response?.data?.message || "Unknown error occurred";
 
             throw new IdentityAppsApiException(
                 errorMessage,
@@ -75,4 +89,4 @@ const generateBrandingPreference = (
         });
 };
 
-export default generateBrandingPreference;
+export default generateLoginFlow;

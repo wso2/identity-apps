@@ -16,45 +16,49 @@
  * under the License.
  */
 
-import { ChevronUpIcon } from "@oxygen-ui/react-icons";
+import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
+import { ChevronUpIcon }from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
-import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import {
-    DocumentationLink,
-    GenericIcon,
-    useDocumentation
-} from "@wso2is/react-components";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { DocumentationLink, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { ReactComponent as AIIcon }
-    from "../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { v4 as uuidv4 } from "uuid";
+import { ReactComponent as AIIcon } from "../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
 import AIBannerBackgroundWhite from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
 import AIBannerInputBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-input-background.svg";
-import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
-import useGenerateAIBrandingPreference,
-{ GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
-import { BannerState } from "../models/types";
-import "./branding-ai-banner.scss";
+import useAvailableAuthenticators from "../api/use-available-authenticators";
+import useUserClaims from "../api/use-user-claims";
+import useAILoginFlow from "../hooks/use-ai-login-flow";
+import useGenerateAILoginFlow, { GenerateLoginFlowFunction } from "../hooks/use-generate-ai-login-flow";
+import { BannerState } from "../models/banner-state";
+import "./login-flow-ai-banner.scss";
 
-/**
- * Branding AI banner component.
- */
-export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
+const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
+
+    const dispatch: Dispatch = useDispatch();
+
+    const { isGeneratingLoginFlow } = useAILoginFlow();
+
+    const { filteredAuthenticators, loading: isAuthenticatorsLoading } = useAvailableAuthenticators();
+
+    const { claimURI, error: userClaimError } = useUserClaims();
+
+    const generateAILoginFlow: GenerateLoginFlowFunction = useGenerateAILoginFlow();
 
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
-    const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
+    const [ userPrompt, setUserPrompt ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-
-    const { isGeneratingBranding } = useAIBrandingPreference();
-    const generateAIBrandingPreference: GenerateAIBrandingPreferenceFunc = useGenerateAIBrandingPreference();
 
     /**
      * Handles the click event of the expand button.
@@ -74,32 +78,70 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
      * Handles the click event of the generate button.
      */
     const handleGenerateClick = async () => {
+        if (!userPrompt) {
+            return;
+        }
+
+        if (userClaimError) {
+            dispatch(addAlert(
+                {
+                    description: userClaimError?.response?.data?.description
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: userClaimError?.response?.data?.message
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                }
+            ));
+
+            return;
+        }
+
+        if (filteredAuthenticators.local.length === 0 &&
+            filteredAuthenticators.enterprise.length === 0 &&
+            filteredAuthenticators.recovery.length === 0 &&
+            filteredAuthenticators.secondFactor.length === 0 &&
+            filteredAuthenticators.social.length === 0
+        ) {
+            dispatch(addAlert(
+                {
+                    description: t("ai:aiLoginFlow.notifications.noAuthenticators.description"),
+                    level: AlertLevels.WARNING,
+                    message: t("ai:aiLoginFlow.notifications.noAuthenticators.message")
+                }
+            ));
+
+            return;
+        }
+
         setIsSubmitting(true);
-        await generateAIBrandingPreference(websiteUrl);
+
+        const traceID: string = uuidv4();
+
+        await generateAILoginFlow(userPrompt, claimURI, filteredAuthenticators, traceID);
         setBannerState(BannerState.COLLAPSED);
         setIsSubmitting(false);
     };
 
-    if (isGeneratingBranding) {
+    if (isGeneratingLoginFlow) {
         return null;
     }
 
     if (bannerState === BannerState.FULL) {
         return (
             <Box
-                className="branding-ai-banner full"
+                className="login-flow-ai-banner full"
                 style={ {
                     backgroundImage: `url(${ AIBannerBackgroundWhite })`
                 } }
             >
-                <div className="branding-ai-banner-text-container">
+                <div className="login-flow-ai-banner-text-container">
                     <Typography
                         as="h3"
-                        className="branding-ai-banner-heading"
+                        className="login-flow-ai-banner-heading"
                     >
-                        { t("branding:ai.banner.full.heading") }
-                        <span className="branding-ai-text">
-                            { t("branding:ai.title") }
+                        { t("ai:aiLoginFlow.banner.full.heading") }
+                        <span className="login-flow-ai-text">
+                            { t("ai:aiLoginFlow.title") }
                         </span>
                         <Chip
                             size="small"
@@ -107,8 +149,8 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     </Typography>
-                    <Typography className="branding-ai-banner-sub-heading">
-                        { t("branding:ai.banner.full.subHeading") }
+                    <Typography className="login-flow-ai-banner-sub-heading">
+                        { t("ai:aiLoginFlow.banner.full.subheading") }
                     </Typography>
                 </div>
                 <Button
@@ -121,7 +163,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         fill="white"
                         className="pr-2"
                     />
-                    { t("branding:ai.banner.full.button") }
+                    { t("ai:aiLoginFlow.banner.full.button") }
                 </Button>
             </Box>
         );
@@ -130,19 +172,19 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
     if (bannerState === BannerState.INPUT) {
         return (
             <Box
-                className="branding-ai-banner-input"
+                className="login-flow-ai-banner-input"
                 style={ {
                     backgroundImage: `url(${ AIBannerInputBackground })`
                 } }
             >
-                <Box className="branding-ai-banner-input-heading-container">
+                <Box className="login-flow-ai-banner-input-heading-container">
                     <Typography
                         as="h3"
-                        className="branding-ai-banner-heading"
+                        className="login-flow-ai-banner-heading"
                     >
-                        { t("branding:ai.banner.input.heading") }
-                        <span className="branding-ai-text">
-                            { t("branding:ai.title") }
+                        { t("ai:aiLoginFlow.banner.input.heading") }
+                        <span className="login-flow-ai-text">
+                            { t("ai:aiLoginFlow.title") }
                         </span>
                         <Chip
                             size="small"
@@ -156,11 +198,12 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <ChevronUpIcon />
                     </IconButton>
                 </Box>
-                <div className="branding-ai-banner-text-container">
-                    <Typography className="branding-ai-banner-sub-heading">
-                        { t("branding:ai.banner.input.subHeading") }
+                <div className="login-flow-ai-banner-text-container">
+                    <Typography className="login-flow-ai-banner-sub-heading">
+                        { t("ai:aiLoginFlow.banner.input.subheading") }
                         <DocumentationLink
-                            link={ getLink("develop.branding.ai.learnMore") }
+                            link={ "develop.applications.editApplication.common.signInMethod." +
+                            "conditionalAuthenticaion.ai.learnMore" }
                             isLinkRef={ true }>
                             <Trans i18nKey={ "extensions:common.learnMore" }>
                                 Learn more
@@ -170,30 +213,37 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                 </div>
                 <TextField
                     name="loginFlowInput"
-                    className="branding-ai-input-field mt-5"
-                    placeholder={ t("branding:ai.banner.input.placeholder") }
+                    className="login-flow-ai-input-field mt-5"
+                    placeholder={ t("ai:aiLoginFlow.banner.input.placeholder") }
                     fullWidth
-                    inputProps={ {
-                        maxlength: 75
-                    } }
-                    value={ websiteUrl }
+                    multiline
+                    maxRows={ 4 }
+                    value={ userPrompt }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                        setWebsiteUrl(e.target.value) }
+                        setUserPrompt(e.target.value) }
                     onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
+                        // Go to next line with shift + enter.
+                        if (e.key === "Enter" && e.shiftKey) {
+                            return;
+                        }
+
                         // Handle the enter key press.
                         if (e.key === "Enter") {
                             e.preventDefault();
                             handleGenerateClick();
                         }
                     } }
+                    inputProps={ {
+                        maxlength: 1000
+                    } }
                     InputProps={ {
-                        className: "branding-ai-input-field-inner",
+                        className: "login-flow-ai-input-field-inner",
                         endAdornment: (
-                            !isSubmitting ? (
+                            (!isSubmitting && !isAuthenticatorsLoading )? (
                                 <IconButton
-                                    className="branding-ai-input-button"
+                                    className="login-flow-ai-input-button"
                                     onClick={ () => handleGenerateClick() }
-                                    disabled={ !websiteUrl }
+                                    disabled={ !userPrompt }
                                 >
                                     <GenericIcon
                                         icon={ AIIcon }
@@ -217,20 +267,20 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
     if (bannerState === BannerState.COLLAPSED) {
         return (
             <Box
-                className="branding-ai-banner collapsed"
+                className="login-flow-ai-banner collapsed"
                 style={ {
                     backgroundImage: `url(${ AIBannerBackgroundWhite })`
                 } }
             >
-                <Box className="branding-ai-banner-button-container">
-                    <div className="branding-ai-banner-text-container">
+                <Box className="login-flow-ai-banner-button-container">
+                    <div className="login-flow-ai-banner-text-container">
                         <Typography
                             as="h3"
-                            className="branding-ai-banner-heading"
+                            className="login-flow-ai-banner-heading"
                         >
-                            { t("branding:ai.banner.input.heading") }
-                            <span className="branding-ai-text">
-                                { t("branding:ai.title") }
+                            { t("ai:aiLoginFlow.banner.collapsed.heading") }
+                            <span className="login-flow-ai-text">
+                                { t("ai:aiLoginFlow.title") }
                             </span>
                             <Chip
                                 size="small"
@@ -238,8 +288,8 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                                 className="oxygen-chip-beta mb-1 ml-2"
                             />
                         </Typography>
-                        <Typography className="branding-ai-banner-sub-heading">
-                            { t("branding:ai.banner.collapsed.subHeading") }
+                        <Typography className="login-flow-ai-banner-sub-heading">
+                            { t("ai:aiLoginFlow.banner.input.subheading") }
                             <DocumentationLink
                                 link={ "" }
                                 isLinkRef={ true }>
@@ -259,7 +309,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                             fill="white"
                             className="pr-2"
                         />
-                        { t("branding:ai.banner.collapsed.button") }
+                        { t("ai:aiLoginFlow.banner.collapsed.button") }
                     </Button>
                 </Box>
             </Box>
@@ -268,3 +318,5 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
 
     return null;
 };
+
+export default LoginFlowAIBanner;

@@ -171,20 +171,44 @@ export const branding: BrandingNS = {
     ai: {
         banner: {
             full: {
-                heading: "Simplify branding setup with Branding AI",
-                subHeading: "Elevate your organization's branding effortlessly with BrandingAI, simply by providing your website URL.",
+                heading: "Elevate Your Brand Identity with ",
+                subHeading: "Get a professional brand identity in seconds, just enter your website URL.",
                 button: "Try Branding AI"
             },
             input: {
-                heading: "Configure branding with Branding AI",
-                subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
+                heading: "Configure Branding with ",
+                subHeading: "Just enter your website URL. Get a unique brand identity that reflects your organization.",
                 placeholder: "Enter website URL",
                 button: "Generate Branding"
             },
             collapsed: {
-                heading: "Configure branding with Branding AI",
+                heading: "Configure Branding with ",
                 subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
                 button: "Try Branding AI"
+            }
+        },
+        disclaimer: "Branding AI can make errors. Verify the information for accuracy.",
+        notifications: {
+            generateError: {
+                description: "An error occurred while generating the branding.",
+                message: "Branding generation failed"
+            },
+            generateLimitError: {
+                description: "You have exceeded the limit for branding generation. " +
+                    "Please try again in a few moments.",
+                message: "Limit exceeded"
+            },
+            regenerateError: {
+                description: "An error occurred while regenerating the branding.",
+                message: "Branding regeneration failed"
+            },
+            resetSuccess: {
+                description: "Successfully reset the AI generated branding.",
+                message: "AI Branding reset successful"
+            },
+            renderingError: {
+                description: "An error occurred while rendering the website.",
+                message: "Website rendering failed"
             }
         },
         screens: {
@@ -192,7 +216,7 @@ export const branding: BrandingNS = {
                 heading: "Generating your branding",
                 didYouKnow: "Did you know?",
                 facts: {
-                    0: "{{productName}}'s advanced theming capabilities let you customize your site title, copyright info, and support email on login pages to match your brand identity",
+                    0: "{{productName}}'s advanced theming capabilities let you customize your site title, copyright info, and support email on login pages to match your brand identity.",
                     1: "You can enhance your login portal by updating links to your privacy policy, terms of service, and cookie policy for visible compliance with {{productName}}.",
                     2: "With {{productName}}'s branding features, you can ensure a consistent branding experience across all your applications."
                 },
@@ -208,7 +232,9 @@ export const branding: BrandingNS = {
                     8: "Branding Generation Completed!"
                 }
             }
-        }
+        },
+        title: "Branding AI",
+        termsAndConditions: "Terms and Conditions"
     },
     tabs: {
         preview: {

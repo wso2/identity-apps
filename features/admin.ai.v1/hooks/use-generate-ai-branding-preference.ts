@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTranslation } from "react-i18next";
@@ -64,7 +65,31 @@ const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => 
                     setGeneratingBranding(true);
                 }
             )
-            .catch(() => {
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.code === 429) {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("branding:ai.notifications.generateLimitError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("branding:ai.notifications.generateLimitError.message")
+                        })
+                    );
+
+                    return;
+                }
+
+                if (error?.message) {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: error?.message,
+                            level: AlertLevels.ERROR,
+                            message: t("branding:ai.notifications.generateError.message")
+                        })
+                    );
+
+                    return;
+                }
+
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t("branding:ai.notifications.generateError.description"),
