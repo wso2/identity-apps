@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,6 @@
 
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileSchemaInterface } from "@wso2is/core/models";
-import isEmpty from "lodash-es/isEmpty";
 import { AppConstants } from "../constants";
 import { UserManagementConstants } from "../constants/user-management-constants";
 import { AuthStateInterface } from "../models";
@@ -34,8 +33,12 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
     if (state.profileInfo.displayName) {
         return state.profileInfo.displayName;
     } else if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
-        const givenName = isEmpty(state.profileInfo.name.givenName) ? "" : state.profileInfo.name.givenName + " ";
-        const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
+        const givenName: string = state?.profileInfo?.name?.givenName ?? "";
+        const familyName: string = state?.profileInfo?.name?.familyName ?? "";
+
+        if (givenName && familyName) {
+            return givenName + " " + familyName;
+        }
 
         return givenName + familyName;
     } else if (state.profileInfo.userName) {
@@ -53,23 +56,24 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
  * Resolves the user's profile name.
  *
  * @param state - auth state.
- * @param isProfileInfoLoading - SCIM user profile loader status.
  * @returns Resolved profile name.
  */
-export const resolveUserProfileName = (state: AuthStateInterface, isProfileInfoLoading: boolean): string => {
+export const resolveUserProfileName = (state: AuthStateInterface): string => {
 
     if (isDisplayNameEnabled(state.profileSchemas, state.profileInfo.displayName)) {
         return state.profileInfo.displayName;
     } else if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
-        const givenName = isEmpty(state.profileInfo.name.givenName) ? "" : state.profileInfo.name.givenName + " ";
-        const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
+        const givenName: string = state?.profileInfo?.name?.givenName ?? "";
+        const familyName: string = state?.profileInfo?.name?.familyName ?? "";
+
+        if (givenName && familyName) {
+            return givenName + " " + familyName;
+        }
 
         return givenName + familyName;
-    } else if (!isProfileInfoLoading) {
+    } else {
         return resolveUserDisplayName(state);
     }
-
-    return null;
 };
 
 /**
@@ -101,7 +105,7 @@ export const resolveUsername = (username: string, userStoreDomain: string): stri
  * @returns Resolved user store embedded username.
  */
 export const resolveUserStoreEmbeddedUsername = (username: string): string => {
-    const parts = username.split("/");
+    const parts: string[] = username.split("/");
 
     if (parts.length === 1) {
         return username;
@@ -123,8 +127,8 @@ export const resolveUserStoreEmbeddedUsername = (username: string): string => {
  */
 export const resolveUserstore= (username: string): string => {
     // Userstore is index 0 and index 1 is username
-    const USERSTORE = 0;
-    const parts = username?.split("/");
+    const USERSTORE: number = 0;
+    const parts: string[] = username?.split("/");
 
     return parts[USERSTORE];
 };
