@@ -173,8 +173,9 @@
     {% endif %}
     {% if tenant_context is defined %}
     "tenantContext": {
-        "enableTenantQualifiedUrls": {{ tenant_context.enable_tenant_qualified_urls }},
-        "requireSuperTenantInUrls": {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls }}
+        "enableTenantQualifiedUrls": {{ tenant_context.enable_tenant_qualified_urls | default(true) }},
+        "requireSuperTenantInUrls": {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls | default(false) }},
+        "requireSuperTenantInAppUrls": {{ tenant_context.require_super_tenant_in_app_urls | default(true) }}
     },
     {% endif %}
     "ui": {

@@ -177,11 +177,14 @@ export const AppUtils: AppUtilsInterface = (function() {
                     : "" }`;
             }
 
-            const tenantPath: string = this.getTenantPath(true)
-                || `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            let tenantPath: string = this.getTenantPath(true);
             const appBaseName: string = _config.appBaseName
                 ? `/${_config.appBaseName}`
                 : "";
+
+            if (_config.tenantContext?.requireSuperTenantInAppUrls && !tenantPath) {
+                tenantPath = `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            }
 
             return `${ tenantPath }${ this.getOrganizationPath() }${ appBaseName }`;
         },
@@ -381,7 +384,6 @@ export const AppUtils: AppUtilsInterface = (function() {
          * @returns Tenant path.
          */
         getTenantPath: function(skipSuperTenant: boolean = false, forIdPUrls?: boolean) {
-
             if (skipSuperTenant && (this.getTenantName() === this.getSuperTenant() || this.getTenantName() === "")) {
                 return urlPathForSuperTenantOriginsFallback;
             }

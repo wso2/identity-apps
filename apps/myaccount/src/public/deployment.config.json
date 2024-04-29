@@ -44,7 +44,8 @@
     "legacyAuthzRuntime": false,
     "tenantContext": {
         "enableTenantQualifiedUrls": true,
-        "requireSuperTenantInUrls": false
+        "requireSuperTenantInUrls": false,
+        "requireSuperTenantInAppUrls": true
     },
     "ui": {
         "announcements": [],
