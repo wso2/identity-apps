@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.33
+
+### Patch Changes
+
+- [#6104](https://github.com/wso2/identity-apps/pull/6104) [`1d75d93220`](https://github.com/wso2/identity-apps/commit/1d75d93220650324a2340ae9e572b48f5ca84b5f) Thanks [@savindi7](https://github.com/savindi7)! - Update logic to disable Reset Password button in user profile.
+
 ## 2.15.32
 
 ### Patch Changes
