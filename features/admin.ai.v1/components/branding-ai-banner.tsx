@@ -174,7 +174,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     placeholder={ t("branding:ai.banner.input.placeholder") }
                     fullWidth
                     inputProps={ {
-                        maxlength: 50
+                        maxlength: 75
                     } }
                     value={ websiteUrl }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
