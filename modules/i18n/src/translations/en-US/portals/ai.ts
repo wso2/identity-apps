@@ -23,13 +23,13 @@ export const ai: aiNS = {
         banner: {
             collapsed: {
                 button: "Try Login Flow AI",
-                heading: "Configure your login flow with ",
+                heading: "Configure Your Login Flow with ",
                 subheading: "Enter your ideal login sequence and "+
                 "our AI adapts authenticators and context to configure the flow."
             },
             full: {
                 button: "Try Login Flow AI",
-                heading: "Simplify authentication flow setup with ",
+                heading: "Simplify Authentication Flow Setup with ",
                 subheading: "Configure your application's login flow effortlessly with Login AI, " +
                     "by describing your desired authentication sequence, including authenticators and " +
                     "conditional authentication."
@@ -43,7 +43,7 @@ export const ai: aiNS = {
                 " environment and authenticators."
             }
         },
-        didYouKnow: "Do you know?",
+        didYouKnow: "Did you know?",
         disclaimer: "Login Flow AI can make errors. Verify the information for accuracy.",
         notifications: {
             generateError: {
@@ -94,10 +94,10 @@ export const ai: aiNS = {
                 },
                 heading: "Generating your login flow",
                 states: {
-                    0: "Getting things started...",
-                    1: "Getting things started...",
+                    0: "Getting things started",
+                    1: "Getting things started",
                     10: "Applying final touches...",
-                    2: "Getting things started...",
+                    2: "Getting things started",
                     3: "Gathering essential data for your login flow...",
                     4: "Gathering essential data for your login flow...",
                     5: "Crafting the login flow script...",

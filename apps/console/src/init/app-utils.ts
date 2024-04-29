@@ -203,11 +203,14 @@ export const AppUtils: any = (function() {
                     : "" }`;
             }
 
-            const tenantPath: string = this.getTenantPath(true)
-                || `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            let tenantPath: string = this.getTenantPath(true);
             const appBaseName: string = _config.appBaseName
                 ? `/${_config.appBaseName}`
                 : "";
+
+            if (_config.tenantContext?.requireSuperTenantInAppUrls && !tenantPath) {
+                tenantPath = `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            }
 
             return `${ tenantPath }${ this.getOrganizationPath() }${ appBaseName }`;
         },
@@ -305,7 +308,6 @@ export const AppUtils: any = (function() {
                 organizationPrefix: this.getOrganizationPrefix(),
                 organizationType: this.getOrganizationType(),
                 productVersionConfig: _config.ui.productVersionConfig,
-                requireSuperTenantInUrls: _config.requireSuperTenantInUrls,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
                     login: this.constructAppPaths(_config.routePaths.login),
@@ -316,6 +318,7 @@ export const AppUtils: any = (function() {
                 session: _config.session,
                 superTenant: this.getSuperTenant(),
                 tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
+                tenantContext: _config.tenantContext,
                 tenantPath: this.getTenantPath(),
                 tenantPathWithoutSuperTenant: this.getTenantPath(true),
                 tenantPrefix: this.getTenantPrefix(),
@@ -468,7 +471,7 @@ export const AppUtils: any = (function() {
                 return (tenantName) ? tenantName : "";
             }
 
-            return (_config.requireSuperTenantInUrls)
+            return (_config.tenantContext?.requireSuperTenantInUrls)
                 ? this.getSuperTenant()
                 : "";
         },
@@ -481,14 +484,15 @@ export const AppUtils: any = (function() {
          * @returns Tenant path.
          */
         getTenantPath: function (skipSuperTenant: boolean = false) {
+            if (skipSuperTenant && (this.getTenantName() === this.getSuperTenant() || this.getTenantName() === "")) {
+                return urlPathForSuperTenantOriginsFallback;
+            }
+
+            const tenantDomain: string = this.getTenantName();
+
             if (_config.legacyAuthzRuntime) {
                 if (this.getOrganizationName()) {
                     return "";
-                }
-
-                if (skipSuperTenant
-                    && (this.getTenantName() === this.getSuperTenant() || this.getTenantName() === "")) {
-                    return urlPathForSuperTenantOriginsFallback;
                 }
 
                 // For non-SaaS apps, no need to have tenanted paths.
@@ -496,12 +500,12 @@ export const AppUtils: any = (function() {
                     return "/";
                 }
 
-                return (this.getTenantName() !== "") ?
-                    "/" + this.getTenantPrefix() + "/" + this.getTenantName() : "";
+                return (tenantDomain !== "") ?
+                    "/" + this.getTenantPrefix() + "/" + tenantDomain : "";
             }
 
-            return (this.getTenantName() !== "")
-                ? `/${this.getTenantPrefix()}/${this.getTenantName()}`
+            return (tenantDomain !== "")
+                ? `/${this.getTenantPrefix()}/${tenantDomain}`
                 : "";
         },
 
@@ -573,7 +577,6 @@ export const AppUtils: any = (function() {
                 "clientOrigin": window.location.origin,
                 "contextPath": _args.contextPath,
                 "legacyAuthzRuntime": _args.legacyAuthzRuntime || false,
-                "requireSuperTenantInUrls" : _args.requireSuperTenantInUrls || false,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
