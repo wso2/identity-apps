@@ -251,7 +251,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         if (brandingPreferenceFetchRequestError.response?.data?.code
             === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
             setIsBrandingConfigured(false);
-            setBrandingPreference(DEFAULT_PREFERENCE);
+            setBrandingPreference(overridenBrandingPreference ?? DEFAULT_PREFERENCE);
 
             return;
         }
@@ -263,7 +263,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             message: t("extensions:develop.branding.notifications.fetch.genericError.message")
         }));
 
-        setBrandingPreference(DEFAULT_PREFERENCE);
+        setBrandingPreference(overridenBrandingPreference ?? DEFAULT_PREFERENCE);
     }, [ brandingPreferenceFetchRequestError ]);
 
     /**
@@ -489,6 +489,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 if (setRequestLoadingState) {
                     setIsBrandingPreferenceUpdateRequestLoading(false);
                 }
+                mutateBrandingPreferenceFetchRequest();
             });
     };
 
