@@ -16,7 +16,7 @@
   ~ under the License.
 --%>
 
-<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.util.ArrayList" %>
@@ -49,6 +49,10 @@
 <%@ include file="tenant-resolve.jsp"%>
 
 <%! 
+    /**
+     * RecoveryStage represents the four steps of recovery in the 
+     * PasswordRecoveryAPI V2.
+     */
     public enum RecoveryStage {
 
         INITIATE("INITIATE"),
@@ -63,17 +67,27 @@
             this.value = value;
         }
 
+        /**
+         * Returns tye string value of the enum.
+         */
         public String getValue() {
 
             return value;
         }
 
+        /**
+         * Override the toStirng method of the object class.
+         */
         @Override
         public String toString() {
 
             return value;
         }
 
+        /**
+         * Compares enum with string based on it's value.
+         * @return boolean whether the passed string equals the value of the enum.
+         */
         public boolean equalsValue(String otherValue) {
 
             return this.value.equals(otherValue);
@@ -102,7 +116,7 @@
     /**
      * This redirects the flow to the error page with the provided error message.
      */
-    void redirectToErrorPageWithMessage(HttpServletRequest request, 
+    public void redirectToErrorPageWithMessage(HttpServletRequest request, 
         HttpServletResponse response, String errorMsg) throws ServletException, IOException {
         
         request.setAttribute("error", true);
@@ -136,16 +150,15 @@
         userNameClaim.setValue(MultitenantUtils.getTenantAwareUsername(username));
         userClaims.add(userNameClaim);
 
-        // STEP ONE : Initiate password recovery.
-        RecoveryInitRequest recoveryInitRequest = new RecoveryInitRequest();
-        recoveryInitRequest.setClaims(userClaims);
-
         String flawConfirmationCode = "";
         String recoveryCode = "";
         String channelId = "";
         String screenValue = "";
 
         try {
+            // Initiate password recovery.
+            RecoveryInitRequest recoveryInitRequest = new RecoveryInitRequest();
+            recoveryInitRequest.setClaims(userClaims);
             Map<String, String> requestHeaders = new HashedMap();
             if (request.getParameter("g-recaptcha-response") != null) {
                 requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
@@ -188,7 +201,7 @@
                 return;
             }
 
-            // STEP TWO : Get Recovery Information.
+            // Get Recovery Information.
             RecoveryRequest recoveryRequest = new RecoveryRequest();
             recoveryRequest.setChannelId(channelId);
             recoveryRequest.setRecoveryCode(recoveryCode);
@@ -202,7 +215,7 @@
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
-        // STEP THREE : Redirect to enter the OTP.
+        // Redirect to enter the OTP.
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
     } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
         String resendCode = request.getParameter("resendCode");
@@ -217,8 +230,8 @@
             ResendResponse resendResponse = 
                 recoveryApiV2.resendPasswordNotification(resendRequest, tenantDomain, requestHeaders);
             
-            /** Resend code re-attached to the reqeust to avoid value being missed after page refresh happening  
-            after the resend operation. */
+            /** Resend code re-attached to the reqeust to avoid value being missed after the page refresh that
+             *  happens after the resend operation. */
             request.setAttribute("resendCode", resendResponse.getResendCode());
             request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
         } catch (ApiException e) {
@@ -247,7 +260,7 @@
                 requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
             }
             ConfirmRequest confirmRequest = new ConfirmRequest();
-            // For local notification channels flowConfirmationCode is used as confirmation code
+            /** For local notification channels flowConfirmationCode is used as confirmation code. */
             confirmRequest.setConfirmationCode(flowConfirmationCode);
             confirmRequest.setOtp(OTPcode);
             ConfirmResponse confirmResponse = 

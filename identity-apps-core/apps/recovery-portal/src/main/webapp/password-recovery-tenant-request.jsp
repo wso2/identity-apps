@@ -45,19 +45,18 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
-    String username = IdentityManagementEndpointUtil.getStringValue(request.getParameter("username"));
-    String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
-    String sessionDataKey = IdentityManagementEndpointUtil.getStringValue(request.getParameter("sessionDataKey"));
-
-    String recaptchaResponse = request.getParameter("g-recaptcha-response");
+    final String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
+    final String sessionDataKey = IdentityManagementEndpointUtil.getStringValue(request.getParameter("sessionDataKey"));
+    final String recaptchaResponse = request.getParameter("g-recaptcha-response");
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
 
+    String username = IdentityManagementEndpointUtil.getStringValue(request.getParameter("username"));
+
     boolean isNotificationBasedRecoveryEnabled = false;
     boolean isChallengeQuestionsEnabled = false;
-
     boolean isEmailEnabled = false;
     boolean isSMSOTPEnabled = false;
     String recoveryCode = "";
