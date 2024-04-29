@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
 import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -99,6 +100,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
+import "./minimal-application-create-wizard.scss";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -792,6 +794,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         document.getElementById("notification-div")?.scrollIntoView({ behavior: "smooth" });
     };
 
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+
     /**
      * Checks whether the application name is valid.
      * @param value - Application name as a form value.
@@ -1132,20 +1136,29 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && isFAPIAppCreationEnabled
                         && (
                             <div className="pt-0 mt-0">
-                                <Field
-                                    data-componentid={ `${ testId }-fapi-app-checkbox` }
-                                    name={ "isFAPIApp" }
-                                    required={ false }
-                                    type="checkbox"
-                                    value={ [ "isFAPIApp" ] }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.generalDetails" +
-                                                ".fields.isFapiApp.label" ),
-                                            value: "fapiApp"
-                                        }
-                                    ] }
-                                />
+                                <div style={{ alignItems: "center", display: "flex" }}>
+                                    <Field
+                                        data-componentid={ `${ testId }-fapi-app-checkbox` }
+                                        name={ "isFAPIApp" }
+                                        required={ false }
+                                        type="checkbox"
+                                        value={ [ "isFAPIApp" ] }
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.generalDetails" +
+                                                    ".fields.isFapiApp.label" ),
+                                                value: "fapiApp"
+                                            }
+                                        ] }
+                                    />
+                                    { isSAASDeployment && (
+                                        <div style={{ marginLeft: "10px", marginTop: "-10px" }}>
+                                            <Chip
+                                                label="PREVIEW"
+                                                className="oxygen-menu-item-chip oxygen-chip-preview" />
+                                        </div>
+                                    ) }
+                                </div>
                                 <Hint compact>
                                     { t("applications:forms.generalDetails.fields" +
                                         ".isFapiApp.hint" ) }

@@ -22,13 +22,14 @@ import {
     DocumentationLink,
     EmphasizedSegment,
     Heading,
+    Link,
     useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppState } from "../../../admin.core.v1";
+import { AppConstants, AppState, history } from "../../../admin.core.v1";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
@@ -39,7 +40,7 @@ import {
     OIDCApplicationConfigurationInterface,
     SAMLApplicationConfigurationInterface
 } from "../../models";
-import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
+import { MTLSOIDCConfigurations, OIDCConfigurations, SAMLConfigurations } from "../help-panel";
 import { WSFederationConfigurations } from "../help-panel/ws-fed-configurations";
 
 /**
@@ -62,6 +63,10 @@ interface InfoPropsInterface extends LoadableComponentInterface, IdentifiableCom
      * Id of the application template
      */
     templateId: string;
+    /**
+     * Application id.
+     */
+    appId: string;
 }
 
 /**
@@ -76,6 +81,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
 ): ReactElement => {
 
     const {
+        appId,
         inboundProtocols,
         isOIDCConfigLoading,
         isSAMLConfigLoading,
@@ -93,6 +99,13 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
     const [ isWSFed, setIsWSFed ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
+
+    /**
+     * Index of the protocols tab.
+     */
+    const PROTOCOLS_TAB_INDEX: number = 1;
+
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     useEffect(() => {
         if (inboundProtocols == undefined) {
@@ -155,6 +168,40 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                             oidcConfigurations={ oidcConfigurations }
                                             templateId={ templateId }
                                         />
+
+                                        { isSAASDeployment && (
+                                            <>
+                                                <Heading ellipsis as="h4">
+                                                    Mutual TLS Server Endpoints
+                                                </Heading>
+                                                <Heading as="h6" color="grey" compact>
+                                                    The following server endpoints will be useful for you to implement
+                                                     and configure authentication for your application using OpenID
+                                                     Connect where MTLS client authentication or certificate token
+                                                     binding is appplicable. Navigate to
+                                                    <Link
+                                                        external={ false }
+                                                        onClick={ () => {
+                                                            history.push(
+                                                                AppConstants.getPaths()
+                                                                    .get("APPLICATION_SIGN_IN_METHOD_EDIT")
+                                                                    .replace(":id", appId)
+                                                                    .replace(
+                                                                        ":tabName",
+                                                                        `#tab=${ PROTOCOLS_TAB_INDEX }`
+                                                                    )
+                                                            );
+                                                        } }
+                                                    > protocol </Link>
+                                                    tab to configure MTLS and certificate token binding.
+                                                </Heading>
+                                                <Divider hidden/>
+                                                <MTLSOIDCConfigurations
+                                                    oidcConfigurations={ oidcConfigurations }
+                                                    templateId={ templateId }
+                                                />
+                                            </>
+                                        ) }
                                     </>
                                 ) }
                                 { isOIDC && isSAML ? (
