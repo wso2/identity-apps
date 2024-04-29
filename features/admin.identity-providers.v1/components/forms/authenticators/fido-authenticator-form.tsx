@@ -16,14 +16,22 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink, Message, URLInput, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
+import { updateFidoConfigs, useFIDOConnectorConfigs } from "features/admin.identity-providers.v1/api/fido-configs";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
@@ -31,7 +39,9 @@ import {
     CommonPluggableComponentPropertyInterface,
     FIDOAuthenticatorFormFieldsInterface,
     FIDOAuthenticatorFormInitialValuesInterface,
-    FIDOAuthenticatorFormPropsInterface
+    FIDOAuthenticatorFormPropsInterface,
+    FIDOConfigsInterface,
+    FIDOConnectorConfigsAttributeInterface
 } from "../../../models";
 
 const FORM_ID: string = "fido-authenticator-form";
@@ -55,6 +65,8 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         [ "data-componentid" ]: testId
     } = props;
 
+    const dispatch: Dispatch = useDispatch();
+
     const { t } = useTranslation();
 
     const { getLink } = useDocumentation();
@@ -66,6 +78,76 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         setIsPasskeyProgressiveEnrollmentEnabled
     ] = useState<boolean>(undefined);
     const [ isReadOnly ] = useState<boolean>(isSubOrganization() || readOnly);
+    const [ isFIDOConfigsSubmitting, setIsFIDOConfigsSubmitting ] = useState<boolean>(false);
+    const [ FIDOTrustedOrigins, setFIDOTrustedOrigins ] = useState<string>("");
+
+    const {
+        data: fidoConnectorConfigs,
+        isLoading: fidoConnectorConfigFetchRequestIsLoading,
+        error: fidoConnectorConfigFetchError,
+        mutate: mutateFIDOConnectorConfigs
+    } = useFIDOConnectorConfigs();
+
+    console.log(FIDOTrustedOrigins);
+
+    /**
+     * Retrieve the list of FIDO trusted origins from the FIDO connector configuration response.
+     */
+    const initialFIDOTrustedOriginsList: string = useMemo(() => {
+        if (fidoConnectorConfigFetchRequestIsLoading) {
+            return "";
+        }
+
+        if (fidoConnectorConfigs?.attributes
+            && Array.isArray(fidoConnectorConfigs?.attributes)
+            && fidoConnectorConfigs?.attributes.length > 0) {
+            const trustedOriginsAttribute: FIDOConnectorConfigsAttributeInterface = fidoConnectorConfigs?.attributes
+                ?.find(
+                    (attribute: FIDOConnectorConfigsAttributeInterface) =>
+                        attribute?.key === IdentityProviderManagementConstants.FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY
+                );
+
+            if (trustedOriginsAttribute) {
+                setFIDOTrustedOrigins(trustedOriginsAttribute?.value);
+
+                return trustedOriginsAttribute?.value;
+            }
+        }
+
+        return "";
+    }, [ fidoConnectorConfigs ]);
+
+    /**
+     * Handle errors that occur during the FIDO connector config fetch request.
+     */
+    useEffect(() => {
+        if (!fidoConnectorConfigFetchError) {
+            return;
+        }
+
+        if (fidoConnectorConfigFetchError?.response?.data?.code ===
+            IdentityProviderManagementConstants.FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE) {
+            return;
+        }
+
+        if (fidoConnectorConfigFetchError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: fidoConnectorConfigFetchError?.response?.data?.description,
+                level: AlertLevels.ERROR,
+                message: t("authenticationProvider:notifications.getFIDOConnectorConfigs.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("authenticationProvider:notifications." +
+                "getFIDOConnectorConfigs.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("authenticationProvider:notifications." +
+                "getFIDOConnectorConfigs.genericError.message")
+        }));
+    }, [ fidoConnectorConfigFetchError ]);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -107,6 +189,62 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
     }, [ originalInitialValues ]);
 
     /**
+     * Update FIDO connector configs.
+     */
+    const updateFIDOConnectorConfigs = () => {
+        setIsFIDOConfigsSubmitting(true);
+
+        const payload: FIDOConfigsInterface = {
+            attributes: [
+                {
+                    key: IdentityProviderManagementConstants.FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY,
+                    value: FIDOTrustedOrigins
+                }
+            ],
+            name: IdentityProviderManagementConstants.FIDO_CONNECTOR_CONFIG_NAME
+        };
+
+        updateFidoConfigs(payload)
+            .then(() => {
+                addAlert({
+                    description: t("authenticationProvider:" +
+                        "notifications.updateFIDOConnectorConfigs." +
+                        "success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("authenticationProvider:notifications." +
+                        "updateFIDOConnectorConfigs.success.message")
+                });
+
+                mutateFIDOConnectorConfigs();
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
+                    addAlert({
+                        description: t("authenticationProvider:" +
+                            "notifications.updateFIDOConnectorConfigs." +
+                            "error.description", { description: error.response.data.description }),
+                        level: AlertLevels.ERROR,
+                        message: t("authenticationProvider:notifications." +
+                            "updateFIDOConnectorConfigs.error.message")
+                    });
+
+                    return;
+                }
+
+                addAlert({
+                    description: t("authenticationProvider:" +
+                        "notifications.updateFIDOConnectorConfigs." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:" +
+                        "notifications.updateFIDOConnectorConfigs." +
+                        "genericError.message")
+                });
+            })
+            .finally(() => setIsFIDOConfigsSubmitting(false));
+    };
+
+    /**
      * Prepare form values for submitting.
      *
      * @param values - Form values.
@@ -115,10 +253,17 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
     const getUpdatedConfigurations = (values: FIDOAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
 
+        if (initialFIDOTrustedOriginsList !== FIDOTrustedOrigins) {
+            updateFIDOConnectorConfigs();
+        }
+
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
         for (const [ name, value ] of Object.entries(values)) {
             if (name) {
+                if (name === IdentityProviderManagementConstants.FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY) {
+                    continue;
+                }
 
                 const moderatedName: string = name.replace(/_/g, ".");
 
@@ -219,6 +364,47 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-usernameless-authentication` }
             />
+            <URLInput
+                urlState={ FIDOTrustedOrigins }
+                setURLState={ setFIDOTrustedOrigins }
+                labelName={
+                    t("applications:forms." +
+                            "spaProtocolSettingsWizard.fields.callBackUrls.label")
+                }
+                placeholder={
+                    t("applications:forms.inboundOIDC." +
+                            "fields.callBackUrls.placeholder")
+                }
+                validationErrorMsg={
+                    t("applications:forms." +
+                            "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
+                }
+                emptyErrorMessage={
+                    t("applications:forms." +
+                        "spaProtocolSettingsWizard.fields.callBackUrls.validations.empty")
+                }
+                computerWidth={ 10 }
+                hint={
+                    t("applications:" +
+                        "forms.inboundOIDC.fields.callBackUrls.hint")
+                }
+                addURLTooltip={ t("common:addURL") }
+                duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                data-testid={ `${ testId }-fido-trusted-origin-input` }
+                required = { false }
+                showPredictions={ false }
+                isAllowEnabled={ false }
+                onlyOrigin
+                validation={ (value: string) => {
+                    if (!(URLUtils.isURLValid(value, true)
+                        && (URLUtils.isHttpUrl(value)
+                        || URLUtils.isHttpsUrl(value)))) {
+                        return false;
+                    }
+
+                    return true;
+                } }
+            />
             <Field.Button
                 form={ FORM_ID }
                 size="small"
@@ -226,8 +412,8 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 ariaLabel="FIDO authenticator update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ isSubmitting }
-                loading={ isSubmitting }
+                disabled={ isSubmitting || isFIDOConfigsSubmitting }
+                loading={ isSubmitting || isFIDOConfigsSubmitting }
                 label={ t("common:update") }
                 hidden={ isReadOnly }
             />

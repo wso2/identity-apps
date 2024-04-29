@@ -1262,6 +1262,16 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 message: ""
             }
         },
+        getFIDOConnectorConfigs: {
+            error: {
+                description: "{{ description }}",
+                message: "Retrieval Error"
+            },
+            genericError: {
+                description: "An error occurred while retrieving Passkey connector configs.",
+                message: "Retrieval Error"
+            }
+        },
         getIDP: {
             error: {
                 description: "{{ description }}",
@@ -1427,6 +1437,20 @@ export const authenticationProvider:AuthenticationProviderNS = {
             },
             success: {
                 description: "Successfully updated the Email OTP connector.",
+                message: "Update successful"
+            }
+        },
+        updateFIDOConnectorConfigs: {
+            error: {
+                description: "{{ description }}",
+                message: "Update error"
+            },
+            genericError: {
+                description: "An error occurred while updating Passkey Connector configs.",
+                message: "Update error"
+            },
+            success: {
+                description: "Successfully updated the Passkey connector.",
                 message: "Update successful"
             }
         },
