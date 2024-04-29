@@ -1,5 +1,14 @@
 # @wso2is/features
 
+## 2.15.32
+
+### Patch Changes
+
+- [#6102](https://github.com/wso2/identity-apps/pull/6102) [`26b59da530`](https://github.com/wso2/identity-apps/commit/26b59da5309040967c71a60f9c0a65b3e0e600e7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - AI feature improvement
+
+- Updated dependencies [[`26b59da530`](https://github.com/wso2/identity-apps/commit/26b59da5309040967c71a60f9c0a65b3e0e600e7)]:
+  - @wso2is/i18n@2.2.9
+
 ## 2.15.31
 
 ### Patch Changes
