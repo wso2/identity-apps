@@ -78,6 +78,30 @@ const useGenerateAILoginFlow = (): GenerateLoginFlowFunction => {
                 }
             )
             .catch((error: IdentityAppsApiException) => {
+                if (error?.code === 422) {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("ai:aiLoginFlow.notifications.generateInputError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("ai:aiLoginFlow.notifications.generateInputError.message")
+                        })
+                    );
+
+                    return;
+                }
+
+                if (error?.code === 429) {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("ai:aiLoginFlow.notifications.generateLimitError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("ai:aiLoginFlow.notifications.generateLimitError.message")
+                        })
+                    );
+
+                    return;
+                }
+
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t("ai:aiLoginFlow.notifications.generateError.description"),

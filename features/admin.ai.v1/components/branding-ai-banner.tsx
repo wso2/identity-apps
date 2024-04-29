@@ -41,7 +41,6 @@ import useGenerateAIBrandingPreference,
 import { BannerState } from "../models/types";
 import "./branding-ai-banner.scss";
 
-
 /**
  * Branding AI banner component.
  */
@@ -104,8 +103,8 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         </span>
                         <Chip
                             size="small"
-                            label={ t("common:preview").toUpperCase() }
-                            className="branding-ai-preview-chip"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
                         />
                     </Typography>
                     <Typography className="branding-ai-banner-sub-heading">
@@ -147,8 +146,8 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         </span>
                         <Chip
                             size="small"
-                            label={ t("common:preview").toUpperCase() }
-                            className="branding-ai-preview-chip"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
                         />
                     </Typography>
                     <IconButton
@@ -174,6 +173,9 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     className="branding-ai-input-field mt-5"
                     placeholder={ t("branding:ai.banner.input.placeholder") }
                     fullWidth
+                    inputProps={ {
+                        maxlength: 50
+                    } }
                     value={ websiteUrl }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                         setWebsiteUrl(e.target.value) }
@@ -230,6 +232,11 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                             <span className="branding-ai-text">
                                 { t("branding:ai.title") }
                             </span>
+                            <Chip
+                                size="small"
+                                label={ t("common:beta").toUpperCase() }
+                                className="oxygen-chip-beta mb-1 ml-2"
+                            />
                         </Typography>
                         <Typography className="branding-ai-banner-sub-heading">
                             { t("branding:ai.banner.collapsed.subHeading") }

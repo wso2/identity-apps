@@ -193,6 +193,11 @@ export const branding: BrandingNS = {
                 description: "An error occurred while generating the branding.",
                 message: "Branding generation failed"
             },
+            generateLimitError: {
+                description: "You have exceeded the limit for branding generation. " +
+                    "Please try again in a few moments.",
+                message: "Limit exceeded"
+            },
             regenerateError: {
                 description: "An error occurred while regenerating the branding.",
                 message: "Branding regeneration failed"
