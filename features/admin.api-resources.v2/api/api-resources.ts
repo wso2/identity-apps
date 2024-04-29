@@ -27,6 +27,7 @@ import useRequest, {
 import { store } from "../../admin.core.v1/store";
 import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface, UpdatedAPIResourceInterface }
     from "../models";
+import { required } from "features/admin.identity-providers.v1/components/utils";
 
 /**
  * Get an axios instance.
@@ -96,7 +97,8 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
     after?: string,
     before?: string,
     filter?: string,
-    shouldFetch: boolean = true
+    shouldFetch: boolean = true,
+    attributes?: string
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -107,6 +109,7 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
         method: HttpMethods.GET,
         params: {
             after,
+            attributes,
             before,
             filter
         },

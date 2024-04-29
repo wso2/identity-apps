@@ -154,6 +154,18 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                             />
                             <Header.Content>
                                 { shownName }
+                                <Header.Subheader>
+                                    {
+                                        APIResourceUtils.checkIfAPIResourcePropertyManaged(apiResource.properties) && (
+                                            <Label
+                                                size="mini"
+                                                className="choreo-label ml-0"
+                                            >
+                                                { t("extensions:develop.apiResource.managedByChoreoText") }
+                                            </Label>
+                                        )
+                                    }
+                                </Header.Subheader>
                             </Header.Content>
                         </Header>
                     );
