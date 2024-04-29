@@ -105,7 +105,7 @@ export const resolveUsername = (username: string, userStoreDomain: string): stri
  * @returns Resolved user store embedded username.
  */
 export const resolveUserStoreEmbeddedUsername = (username: string): string => {
-    const parts: string[] = username.split("/");
+    const parts: string[] = username?.split("/");
 
     if (parts.length === 1) {
         return username;
