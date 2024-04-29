@@ -145,8 +145,8 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         </span>
                         <Chip
                             size="small"
-                            label={ t("common:preview").toUpperCase() }
-                            className="login-flow-ai-preview-chip"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
                         />
                     </Typography>
                     <Typography className="login-flow-ai-banner-sub-heading">
@@ -188,8 +188,8 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         </span>
                         <Chip
                             size="small"
-                            label={ t("common:preview").toUpperCase() }
-                            className="login-flow-ai-preview-chip"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
                         />
                     </Typography>
                     <IconButton
@@ -232,6 +232,9 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                             e.preventDefault();
                             handleGenerateClick();
                         }
+                    } }
+                    inputProps={ {
+                        maxlength: 250
                     } }
                     InputProps={ {
                         className: "login-flow-ai-input-field-inner",
@@ -281,8 +284,8 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                             </span>
                             <Chip
                                 size="small"
-                                label={ t("common:preview").toUpperCase() }
-                                className="login-flow-ai-preview-chip"
+                                label={ t("common:beta").toUpperCase() }
+                                className="oxygen-chip-beta mb-1 ml-2"
                             />
                         </Typography>
                         <Typography className="login-flow-ai-banner-sub-heading">

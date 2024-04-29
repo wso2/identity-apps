@@ -62,15 +62,16 @@ const generateBrandingPreference = (
 
             return response.data;
         }).catch((error: AxiosError) => {
-            const errorMessage: string = error.response?.data?.message || "Unknown error occurred";
+            const errorMessage: string = error.response?.data?.detail || "Unknown error occurred";
 
             throw new IdentityAppsApiException(
                 errorMessage,
                 error.stack,
-                error.response?.data?.code,
+                error.response?.status,
                 error.request,
                 error.response,
-                error.config);
+                error.config
+            );
         });
 };
 
