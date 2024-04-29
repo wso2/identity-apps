@@ -132,7 +132,7 @@ const useSignIn = (): UseSignInInterface => {
         const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
             window["AppUtils"]?.getConfig()?.organizationName.length > 0;
 
-        if (!window["AppUtils"]?.getConfig()?.requireSuperTenantInUrls && isSuperTenant) {
+        if (!window["AppUtils"]?.getConfig()?.tenantContext?.requireSuperTenantInUrls && isSuperTenant) {
             // Removing super tenant from the server host.
             const customServerHostSplit: string[] = customServerHost?.split("/t/");
 

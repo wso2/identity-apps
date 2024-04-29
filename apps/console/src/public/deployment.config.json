@@ -159,9 +159,13 @@
     },
     "getProfileInfoFromIDToken": false,
     "superTenantProxy": "",
-    "requireSuperTenantInUrls" : false,
     "legacyAuthzRuntime": false,
     "legacyMode": false,
+    "tenantContext": {
+        "enableTenantQualifiedUrls": true,
+        "requireSuperTenantInUrls": false,
+        "requireSuperTenantInAppUrls": true
+    },
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
