@@ -172,13 +172,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                         { isSAASDeployment && (
                                             <>
                                                 <Heading ellipsis as="h4">
-                                                    Mutual TLS Server Endpoints
+                                                    { t("applications:edit.sections.info.mtlsOidcHeading") }
                                                 </Heading>
                                                 <Heading as="h6" color="grey" compact>
-                                                    The following server endpoints will be useful for you to implement
-                                                     and configure authentication for your application using OpenID
-                                                     Connect where MTLS client authentication or certificate token
-                                                     binding is appplicable. Navigate to
+                                                    { t("applications:edit.sections.info.mtlsOidcSubHeading") }
+                                                    Navigate to
                                                     <Link
                                                         external={ false }
                                                         onClick={ () => {

@@ -396,6 +396,8 @@ export interface ApplicationsNS {
                 tabName: string;
             };
             info: {
+                mtlsOidcHeading: string;
+                mtlsOidcSubHeading: string;
                 oidcHeading: string;
                 oidcSubHeading: string;
                 samlHeading: string;
