@@ -76,7 +76,7 @@ export interface APIResourceInterface {
     /**
      * API resource properties.
      */
-    properties?: Propoerty[];
+    properties?: Property[];
 }
 
 /**
@@ -128,7 +128,7 @@ export interface APIResourcePermissionInterface {
 /**
  * API resource property definition
  */
-export interface Propoerty {
+export interface Property {
     /**
      * Name of the property.
      */

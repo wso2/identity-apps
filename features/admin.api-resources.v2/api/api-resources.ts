@@ -27,7 +27,6 @@ import useRequest, {
 import { store } from "../../admin.core.v1/store";
 import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface, UpdatedAPIResourceInterface }
     from "../models";
-import { required } from "features/admin.identity-providers.v1/components/utils";
 
 /**
  * Get an axios instance.

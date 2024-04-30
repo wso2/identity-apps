@@ -19,7 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureConfigInterface } from "../../admin.core.v1";
 import { APIResourceCategories, APIResourcesConstants } from "../constants/api-resources-constants";
-import { Propoerty } from "../models/api-resources";
+import { Property } from "../models/api-resources";
 
 export class APIResourceUtils {
 
@@ -145,10 +145,10 @@ export class APIResourceUtils {
      * @param properties - API resource properties.
      * @returns - `true` if the API resource is managed by Choreo and `false` otherwise.
      */
-    public static checkIfAPIResourcePropertyManaged = (properties: Propoerty[]): boolean => {
+    public static checkIfAPIResourcePropertyManaged = (properties: Property[]): boolean => {
         if (properties && properties?.length > 0) {
-            const isChoreoAPIProperty: Propoerty =
-            properties.find((property: Propoerty) => property?.name === APIResourcesConstants.IS_CHOREO_API);
+            const isChoreoAPIProperty: Property =
+            properties.find((property: Property) => property?.name === APIResourcesConstants.IS_CHOREO_API);
 
             return isChoreoAPIProperty ? isChoreoAPIProperty?.value === "true" : false;
         }
