@@ -1132,9 +1132,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         onActionClick={ (): void => {
                                                             setOpenChangePasswordModal(true);
                                                         } }
-                                                        isButtonDisabled={ accountLocked
-                                                            ? accountLocked
-                                                            : user[ userConfig.userProfileSchema ]?.accountLocked }
+                                                        isButtonDisabled={ accountLocked }
                                                         buttonDisableHint={ t("user:editUser." +
                                                             "dangerZoneGroup.passwordResetZone.buttonHint") }
                                                     />
