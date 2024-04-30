@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
 import { AppState } from "../../admin.core.v1";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useAILoginFlowGenerationResult } from "../api/use-ai-login-flow-generation-result";
 import LoginFlowAIBanner from "../components/login-flow-ai-banner";
 import LoginFlowAILoadingScreen from "../components/login-flow-ai-loading-screen";
@@ -46,6 +47,8 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
         state.config.ui.features?.applications?.disabledFeatures);
@@ -131,7 +134,8 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
                 ) : (
                     <>
                         {
-                            !applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG) && (
+                            !applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG) &&
+                            !isSubOrganization() && (
                                 <LoginFlowAIBanner/>
                             )
                         }

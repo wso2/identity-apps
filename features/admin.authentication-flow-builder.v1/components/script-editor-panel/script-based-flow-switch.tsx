@@ -38,6 +38,7 @@ import { AdaptiveScriptUtils } from "../../../admin.applications.v1/utils/adapti
 import { AppState } from "../../../admin.core.v1/store";
 import { LOGIN_FLOW_AI_FEATURE_TAG } from "../../../admin.login-flow.ai.v1/constants/login-flow-ai-constants";
 import useAILoginFlow from "../../../admin.login-flow.ai.v1/hooks/use-ai-login-flow";
+import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import "./script-based-flow-switch.scss";
 
@@ -72,6 +73,8 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
 
     const { aiGeneratedLoginFlow } = useAILoginFlow();
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
 
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
@@ -84,6 +87,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
     useEffect(() => {
         // Enable conditional authentication script for AI generated authentication sequence.
         if (!applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG)
+            && !isSubOrganization()
             && aiGeneratedLoginFlow?.script
             && !AdaptiveScriptUtils.isDefaultScript(
                 aiGeneratedLoginFlow.script,
