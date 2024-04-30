@@ -115,13 +115,13 @@ const useAvailableAuthenticators = (): {
                         socialAuthenticators.push({
                             description: authenticator.description,
                             idp: authenticator.idp,
-                            name: authenticator.name
+                            name: authenticator?.defaultAuthenticator?.name
                         });
                     } else {
                         enterpriseAuthenticators.push({
                             description: authenticator.description,
                             idp: authenticator.idp,
-                            name: authenticator.name
+                            name: authenticator?.defaultAuthenticator?.name
                         });
                     }
                 });
