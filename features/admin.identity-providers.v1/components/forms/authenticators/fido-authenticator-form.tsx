@@ -366,7 +366,11 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             />
             <URLInput
                 urlState={ FIDOTrustedOrigins }
-                setURLState={ setFIDOTrustedOrigins }
+                setURLState={ (urls: string) => {
+                    if (urls !== undefined) {
+                        setFIDOTrustedOrigins(urls);
+                    }
+                } }
                 labelName={
                     t("applications:forms." +
                             "spaProtocolSettingsWizard.fields.callBackUrls.label")
@@ -394,7 +398,6 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 required = { false }
                 showPredictions={ false }
                 isAllowEnabled={ false }
-                onlyOrigin
                 validation={ (value: string) => {
                     if (!(URLUtils.isURLValid(value, true)
                         && (URLUtils.isHttpUrl(value)
