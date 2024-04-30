@@ -28,6 +28,7 @@ import useAIBrandingPreference from "../../admin.ai.v1/hooks/use-ai-branding-pre
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
@@ -48,6 +49,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         isGeneratingBranding,
         mergedBrandingPreference
     } = useAIBrandingPreference();
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     return (
         <PageLayout
@@ -74,7 +77,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             className="branding-page"
         >
             {
-                !disabledFeatures.includes(AI_BRANDING_FEATURE_ID) && (
+                !disabledFeatures.includes(AI_BRANDING_FEATURE_ID) && !isSubOrganization() && (
                     <BrandingAIBanner/>
                 )
             }
