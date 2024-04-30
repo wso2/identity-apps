@@ -29,7 +29,7 @@ import {
 /**
  * Proptypes for the OIDC application configurations component.
  */
-interface OIDCConfigurationsPropsInterface extends IdentifiableComponentInterface {
+interface MtlsConfigurationsPropsInterface extends IdentifiableComponentInterface {
     /**
      * OIDC application configurations.
      */
@@ -47,14 +47,15 @@ interface OIDCConfigurationsPropsInterface extends IdentifiableComponentInterfac
   *
   * @returns MTLS OIDC application configurations Component.
   */
-export const MTLSOIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterface> = (
-    props: OIDCConfigurationsPropsInterface
+export const MTLSOIDCConfigurations: FunctionComponent<MtlsConfigurationsPropsInterface> = (
+    props: MtlsConfigurationsPropsInterface
 ): ReactElement => {
 
     const {
         oidcConfigurations,
         [ "data-componentid" ]: componentId
     } = props;
+
     const { t } = useTranslation();
 
     return (
