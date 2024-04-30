@@ -1151,11 +1151,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             }
                                         ] }
                                     />
-                                    { isSAASDeployment && (
+                                    { applicationConfig.advancedConfigurations.showFapiBetaChip && (
                                         <div className="oxygen-chip-div" >
                                             <Chip
-                                                label="PREVIEW"
-                                                className="oxygen-menu-item-chip oxygen-chip-preview" />
+                                                label="BETA"
+                                                className="oxygen-menu-item-chip oxygen-chip-beta" />
                                         </div>
                                     ) }
                                 </div>

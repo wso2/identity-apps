@@ -16,25 +16,15 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-react";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { Form, Grid } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { getHelpPanelIcons } from "../../configs/ui";
 import {
-    OIDCApplicationConfigurationInterface,
-    OIDCEndpointsInterface
+    OIDCApplicationConfigurationInterface
 } from "../../models";
-
-/**
- * Get an identity client instance.
- */
-const identityClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
 
 /**
  * Proptypes for the OIDC application configurations component.
@@ -63,42 +53,12 @@ export const MTLSOIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsIn
 
     const {
         oidcConfigurations,
-        [ "data-componentid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
-    const [ endpoints, setEndpoints ] = useState<OIDCEndpointsInterface>(undefined);
-
-    useEffect(() => {
-        if (endpoints !== undefined) {
-            return;
-        }
-
-        // Fetch the server endpoints for OIDC applications.
-        identityClient.getOIDCServiceEndpoints()
-            .then((response: OIDCEndpoints) => {
-                setEndpoints({
-                    authorize: response?.authorizationEndpoint,
-                    jwks: response?.jwksUri,
-                    logout: response?.endSessionEndpoint,
-                    oidcSessionIFrame: response?.checkSessionIframe,
-                    revoke: response?.revocationEndpoint,
-                    token: response?.tokenEndpoint
-                });
-            })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: t("applications:notifications.fetchOIDCServiceEndpoints" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:notifications.fetchOIDCServiceEndpoints." +
-                        "genericError.message")
-                }));
-            });
-    });
 
     return (
-        <Form>
+        <>
             <Grid verticalAlign="middle">
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
@@ -112,7 +72,7 @@ export const MTLSOIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsIn
                             verticalAlign="middle"
                             spaced="right"
                         />
-                        <label data-testid={ `${ testId }-mtls-pushed-authorization-request-label` }>
+                        <label data-componentid={ `${ componentId }-mtls-pushed-authorization-request-label` }>
                             { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.pushedAuthorizationRequest") }
                         </label>
@@ -120,7 +80,7 @@ export const MTLSOIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsIn
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.mtlsPushedAuthorizationRequestEndpoint  }
-                            data-testid={ `${ testId }-mtls-pushed-authorization-request-readonly-input` }
+                            data-componentid={ `${ componentId }-mtls-pushed-authorization-request-readonly-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -136,7 +96,7 @@ export const MTLSOIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsIn
                             verticalAlign="middle"
                             spaced="right"
                         />
-                        <label data-testid={ `${ testId }-mtls-token-label` }>
+                        <label data-componentid={ `${ componentId }-mtls-token-label` }>
                             { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.token") }
                         </label>
@@ -144,12 +104,12 @@ export const MTLSOIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsIn
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.mtlsTokenEndpoint  }
-                            data-testid={ `${ testId }-mtls-token-readonly-input` }
+                            data-componentid={ `${ componentId }-mtls-token-readonly-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </Form>
+        </>
     );
 };
 
