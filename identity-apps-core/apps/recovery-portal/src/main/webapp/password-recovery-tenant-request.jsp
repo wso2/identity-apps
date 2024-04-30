@@ -97,32 +97,32 @@ if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                         id="tenantBasedRecovery">
                         <input id="tenant-domain" type="text" name="tenantDomain" class="form-control align-center" 
                                 placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>">
-                            <%
-                                String callback = Encode.forHtmlAttribute
-                                        (request.getParameter("callback"));
-                                if (callback != null) {
-                            %>
-                            <div>
-                                <input type="hidden" name="callback" value="<%=callback %>"/>
-                            </div>
-                            <%
-                                }
-                            %>
-                            <div class="ui divider hidden"></div>
+                        <%
+                            String callback = Encode.forHtmlAttribute
+                                    (request.getParameter("callback"));
+                            if (callback != null) {
+                        %>
+                        <div>
+                            <input type="hidden" name="callback" value="<%=callback %>"/>
+                        </div>
+                        <%
+                            }
+                        %>
+                        <div class="ui divider hidden"></div>
 
-                            <div class="align-right buttons">
-                                <button id="recoverSubmit"
-                                        class="ui primary large button fluid"
-                                        type="submit">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Proceed.password.recovery")%>
-                                </button>
-                                <div class="mt-2 align-center">
-                                    <a href="javascript:goBack()" class="ui button secondary large fluid">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                                    </a>
-                                </div>
+                        <div class="align-right buttons">
+                            <button id="recoverSubmit"
+                                    class="ui primary large button fluid"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                "Proceed.password.recovery")%>
+                            </button>
+                            <div class="mt-2 align-center">
+                                <a href="javascript:goBack()" class="ui button secondary large fluid">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                                </a>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
