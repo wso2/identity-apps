@@ -88,8 +88,6 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         mutate: mutateFIDOConnectorConfigs
     } = useFIDOConnectorConfigs();
 
-    console.log(FIDOTrustedOrigins);
-
     /**
      * Retrieve the list of FIDO trusted origins from the FIDO connector configuration response.
      */
@@ -372,25 +370,21 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                     }
                 } }
                 labelName={
-                    t("applications:forms." +
-                            "spaProtocolSettingsWizard.fields.callBackUrls.label")
+                    t("authenticationProvider:forms." +
+                            "authenticatorSettings.fido2.trustedOrigins.label")
                 }
                 placeholder={
-                    t("applications:forms.inboundOIDC." +
-                            "fields.callBackUrls.placeholder")
+                    t("authenticationProvider:forms." +
+                            "authenticatorSettings.fido2.trustedOrigins.placeholder")
                 }
                 validationErrorMsg={
-                    t("applications:forms." +
-                            "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
-                }
-                emptyErrorMessage={
-                    t("applications:forms." +
-                        "spaProtocolSettingsWizard.fields.callBackUrls.validations.empty")
+                    t("authenticationProvider:forms." +
+                            "authenticatorSettings.fido2.trustedOrigins.validations.invalid")
                 }
                 computerWidth={ 10 }
                 hint={
-                    t("applications:" +
-                        "forms.inboundOIDC.fields.callBackUrls.hint")
+                    t("authenticationProvider:forms." +
+                        "authenticatorSettings.fido2.trustedOrigins.hint")
                 }
                 addURLTooltip={ t("common:addURL") }
                 duplicateURLErrorMessage={ t("common:duplicateURLError") }

@@ -350,6 +350,14 @@ export interface AuthenticationProviderNS {
                     hint: string;
                     label: string;
                 };
+                trustedOrigins: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        invalid: string;
+                    };
+                };
             };
             facebook: {
                 callbackUrl: {

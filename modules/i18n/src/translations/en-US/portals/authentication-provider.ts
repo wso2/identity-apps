@@ -394,6 +394,14 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 allowUsernamelessAuthentication: {
                     hint: "Please clear this checkbox to disable usernameless authentication.",
                     label: "Allow passkey usernameless authentication"
+                },
+                trustedOrigins: {
+                    hint: "Origins that should be trusted by the WebAuthn API.",
+                    label: "FIDO2 Trusted Origins",
+                    placeholder: "https://mydomain.io/register",
+                    validations: {
+                        invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL."
+                    }
                 }
             },
             github: {
