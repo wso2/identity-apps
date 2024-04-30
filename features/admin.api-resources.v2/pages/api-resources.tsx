@@ -84,7 +84,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
     const [ filter, setFilter ] = useState<string>(`type eq ${ APIResourcesConstants.BUSINESS }`);
-    const [ attributes, setAttributes ] = useState<string>(APIResourcesConstants.PROPERTIES);
+    const [ attributes ] = useState<string>(APIResourcesConstants.PROPERTIES);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
