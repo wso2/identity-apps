@@ -27,8 +27,8 @@ import { LoadingScreen } from "../../admin.ai.v1/components/branding-ai-loading-
 import useAIBrandingPreference from "../../admin.ai.v1/hooks/use-ai-branding-preference";
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
-import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
