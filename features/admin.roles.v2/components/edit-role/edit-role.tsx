@@ -81,9 +81,10 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(featureConfig,
-            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) ||
-            !hasRequiredScopes(featureConfig,
-                featureConfig?.scopes?.update, allowedScopes);
+            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
+            || !hasRequiredScopes(featureConfig,
+                featureConfig?.scopes?.update, allowedScopes)
+            || roleObject?.meta?.systemRole;
     }, [ featureConfig, allowedScopes ]);
 
     const isUserReadOnly: boolean = useMemo(() => {
