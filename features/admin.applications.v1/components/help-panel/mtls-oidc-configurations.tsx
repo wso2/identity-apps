@@ -33,7 +33,6 @@ import {
 
 /**
  * Get an identity client instance.
- *
  */
 const identityClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
 
@@ -41,6 +40,9 @@ const identityClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
  * Proptypes for the OIDC application configurations component.
  */
 interface OIDCConfigurationsPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * OIDC application configurations.
+     */
     oidcConfigurations: OIDCApplicationConfigurationInterface;
     /**
      * Application template ID.
