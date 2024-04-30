@@ -105,8 +105,6 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const [ , setIntermediateDissmissInterval ] = useState<number>(dismissInterval);
-
     const classes = classNames({
         absolute
     }, "");
@@ -204,12 +202,12 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
              * onMouseEnter will set the dissmissal value to 0 so untill mouse is left, the notification will
              * be shown.
              */
-            onMouseEnter={ () => setIntermediateDissmissInterval(0) }
+            onMouseEnter={ () => null }
             /**
              * onMouseLeave will reset the value to initial value passed via props and will dissmiss the
              * notification once the time is hit.
              */
-            onMouseLeave={ () => setIntermediateDissmissInterval(dismissInterval) }
+            onMouseLeave={ () => null }
             className={ `alert-wrapper ${ classes }` }
             data-componentid={ componentId }
             data-testid={ testId }
