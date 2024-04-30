@@ -131,6 +131,10 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
+        if (!legacyAuthzRuntime && !roleSearchFilter) {
+            return;
+        }
+
         // Fetch users to select as internal admins.
         if (administratorType === AdminAccountTypes.INTERNAL) {
             setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -147,12 +151,6 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         }
 
         const roleOptions: DropdownProps[] = [];
-        let roleOption: DropdownProps =
-            {
-                key: 0,
-                text: "",
-                value: ""
-            };
 
         if (userRoleOptions.length === 0) {
             setUserRoleOptionsRequestLoading(true);
@@ -166,12 +164,11 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                             (role.displayName?.split("/")?.length < 2 &&
                             role.displayName?.split("/")[0] !== "Application")
                         ) {
-                            roleOption = {
+                            roleOptions?.push({
                                 key: index,
-                                text: role.displayName,
-                                value: role.displayName
-                            };
-                            roleOptions.push(roleOption);
+                                text: role?.displayName,
+                                value: role?.displayName
+                            });
                         }
                     });
                     setUserRoleList(roleOptions);
@@ -179,8 +176,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                     setUserRoleOptionsRequestLoading(false);
                 });
         }
-        setUserRoleList(roleOptions);
-    }, []);
+    }, [ roleSearchFilter ]);
 
     useEffect(() => {
         if (userListMetaContent) {
