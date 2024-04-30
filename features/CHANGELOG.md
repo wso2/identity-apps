@@ -1,5 +1,17 @@
 # @wso2is/features
 
+## 2.15.36
+
+### Patch Changes
+
+- [#6113](https://github.com/wso2/identity-apps/pull/6113) [`8f9c18b05f`](https://github.com/wso2/identity-apps/commit/8f9c18b05fe577b814d1207b4c5c869ecfa131a3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add missing doclinks and optimize banner images in AI features
+
+- Updated dependencies [[`8f9c18b05f`](https://github.com/wso2/identity-apps/commit/8f9c18b05fe577b814d1207b4c5c869ecfa131a3)]:
+  - @wso2is/theme@2.0.77
+  - @wso2is/react-components@2.1.23
+  - @wso2is/dynamic-forms@2.0.52
+  - @wso2is/form@2.0.53
+
 ## 2.15.35
 
 ### Patch Changes
