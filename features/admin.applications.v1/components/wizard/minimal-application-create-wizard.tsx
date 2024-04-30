@@ -794,8 +794,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         document.getElementById("notification-div")?.scrollIntoView({ behavior: "smooth" });
     };
 
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
-
     /**
      * Checks whether the application name is valid.
      * @param value - Application name as a form value.
