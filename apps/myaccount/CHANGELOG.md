@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.5.54
+
+### Patch Changes
+
+- [#6091](https://github.com/wso2/identity-apps/pull/6091) [`9b8a8c86db`](https://github.com/wso2/identity-apps/commit/9b8a8c86db55e1ad096ccca013d7347368ad3b3d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the glitch in the my account name field
+
+- Updated dependencies [[`1757b8d52b`](https://github.com/wso2/identity-apps/commit/1757b8d52bc169b9a30f8c6444c71b7935e658e0)]:
+  - @wso2is/features@2.15.34
+
 ## 2.5.53
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.34
+
+### Patch Changes
+
+- [#6107](https://github.com/wso2/identity-apps/pull/6107) [`1757b8d52b`](https://github.com/wso2/identity-apps/commit/1757b8d52bc169b9a30f8c6444c71b7935e658e0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in social login in AI login flow
+
 ## 2.15.33
 
 ### Patch Changes
