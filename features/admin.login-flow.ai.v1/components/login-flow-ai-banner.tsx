@@ -26,7 +26,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, GenericIcon } from "@wso2is/react-components";
+import { DocumentationLink, GenericIcon, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -49,6 +49,8 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
     const dispatch: Dispatch = useDispatch();
 
     const { isGeneratingLoginFlow } = useAILoginFlow();
+
+    const { getLink } = useDocumentation();
 
     const { filteredAuthenticators, loading: isAuthenticatorsLoading } = useAvailableAuthenticators();
 
@@ -202,9 +204,9 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     <Typography className="login-flow-ai-banner-sub-heading">
                         { t("ai:aiLoginFlow.banner.input.subheading") }
                         <DocumentationLink
-                            link={ "develop.applications.editApplication.common.signInMethod." +
-                            "conditionalAuthenticaion.ai.learnMore" }
-                            isLinkRef={ true }>
+                            link={ getLink("develop.applications.editApplication.common.signInMethod." +
+                                "conditionalAuthenticaion.ai.learnMore") }
+                        >
                             <Trans i18nKey={ "extensions:common.learnMore" }>
                                 Learn more
                             </Trans>
@@ -291,8 +293,9 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         <Typography className="login-flow-ai-banner-sub-heading">
                             { t("ai:aiLoginFlow.banner.input.subheading") }
                             <DocumentationLink
-                                link={ "" }
-                                isLinkRef={ true }>
+                                link={ getLink("develop.applications.editApplication.common.signInMethod." +
+                                    "conditionalAuthenticaion.ai.learnMore") }
+                            >
                                 <Trans i18nKey={ "extensions:common.learnMore" }>
                                     Learn more
                                 </Trans>
