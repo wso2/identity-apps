@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.15.41
+
+### Patch Changes
+
+- [#6116](https://github.com/wso2/identity-apps/pull/6116) [`e89478794e`](https://github.com/wso2/identity-apps/commit/e89478794eb22afa0d52bc5a89dfe1c5765b098a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Disable AI features in sub-organizations
+
+- Updated dependencies [[`e89478794e`](https://github.com/wso2/identity-apps/commit/e89478794eb22afa0d52bc5a89dfe1c5765b098a), [`a2d6f4cc8e`](https://github.com/wso2/identity-apps/commit/a2d6f4cc8ec22fbb344895d4955a9f112a1d88aa)]:
+  - @wso2is/features@2.15.35
+
 ## 2.15.40
 
 ### Patch Changes
