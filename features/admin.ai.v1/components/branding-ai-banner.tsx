@@ -161,7 +161,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         { t("branding:ai.banner.input.subHeading") }
                         <DocumentationLink
                             link={ getLink("develop.branding.ai.learnMore") }
-                            isLinkRef={ true }>
+                        >
                             <Trans i18nKey={ "extensions:common.learnMore" }>
                                 Learn more
                             </Trans>
@@ -241,8 +241,8 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <Typography className="branding-ai-banner-sub-heading">
                             { t("branding:ai.banner.collapsed.subHeading") }
                             <DocumentationLink
-                                link={ "" }
-                                isLinkRef={ true }>
+                                link={ getLink("develop.branding.ai.learnMore") }
+                            >
                                 <Trans i18nKey={ "extensions:common.learnMore" }>
                                     Learn more
                                 </Trans>
