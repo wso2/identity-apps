@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.77
+
+### Patch Changes
+
+- [#6113](https://github.com/wso2/identity-apps/pull/6113) [`8f9c18b05f`](https://github.com/wso2/identity-apps/commit/8f9c18b05fe577b814d1207b4c5c869ecfa131a3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add missing doclinks and optimize banner images in AI features
+
 ## 2.0.76
 
 ### Patch Changes
