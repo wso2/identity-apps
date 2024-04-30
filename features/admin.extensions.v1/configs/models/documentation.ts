@@ -81,6 +81,9 @@ interface ApplicationsDocumentationLinksInterface {
             signInMethod: {
                 learnMore: string;
                 conditionalAuthenticaion: {
+                    ai: {
+                        learnMore: string;
+                    }
                     apiReference: string;
                     learnMore: string;
                     template: {
@@ -219,6 +222,9 @@ interface AttributesDocumentationLinksInterface {
  * Interface for the Branding section documentation structure.
  */
 interface BrandingDocumentationLinksInterface {
+    ai: {
+        learnMore: string;
+    }
     layout: {
         custom: {
             learnMore: string;

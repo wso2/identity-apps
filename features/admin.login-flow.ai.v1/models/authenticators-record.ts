@@ -16,9 +16,10 @@
  * under the License.
  */
 
-interface AutheticatorsRecord {
-    authenticator: string;
+interface AuthenticatorsRecord {
+    name: string;
+    description: string;
     idp: string;
 }
 
-export default AutheticatorsRecord;
+export default AuthenticatorsRecord;

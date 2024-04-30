@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { LOGIN_FLOW_AI_FEATURE_TAG } from "features/admin.login-flow.ai.v1/constants/login-flow-ai-constants";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { SignOnMethodsCore } from "./sign-on-methods-core";
@@ -100,7 +101,7 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
 
     let processedAuthenticationSequence: AuthenticationSequenceInterface = authenticationSequence;
 
-    if (!applicationDisabledFeatures?.includes("applications.loginFlow.ai")) {
+    if (!applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG)) {
         processedAuthenticationSequence = aiGeneratedLoginFlow ?? authenticationSequence;
     }
 

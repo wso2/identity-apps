@@ -16,12 +16,18 @@
  * under the License.
  */
 
-import { ReactNode } from "react";
+import { ExtendedFeatureResourceEndpointsInterfaceV2 } from "./models/endpoint";
 
-interface SmsProviderConfig {
-    renderAlternativeSmsProviderOptions: (options?: {
-        existingSMSProviders: string[]
-    }) => ReactNode
-}
-
-export default SmsProviderConfig;
+/**
+ * Get the resource endpoints for the extended features.
+ *
+ * @param serverHost - Server Host.
+ * @returns Interface for the resource endpoints of extended features.
+ */
+export const getExtendedFeatureResourceEndpointsV2 = (serverHost: string):
+    ExtendedFeatureResourceEndpointsInterfaceV2 => {
+    return {
+        organizationEndpointV2: `${ serverHost }/api/asgardeo-enterprise-login/v2/business-user-login/{organization}`,
+        organizationPatchEndpointV2: `${ serverHost }/api/asgardeo-enterprise-login/v2/business-user-login`
+    };
+};

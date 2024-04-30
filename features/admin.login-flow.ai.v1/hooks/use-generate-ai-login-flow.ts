@@ -25,13 +25,19 @@ import { Dispatch } from "redux";
 import useAILoginFlow from "./use-ai-login-flow";
 import generateLoginFlow from "../api/generate-ai-login-flow";
 import { GenerateLoginFlowAPIResponseInterface } from "../models/ai-login-flow";
-import AutheticatorsRecord from "../models/authenticators-record";
+import AuthenticatorsRecord from "../models/authenticators-record";
 import { ClaimURI } from "../models/claim-uri";
 
 export type GenerateLoginFlowFunction = (
     userQuery: string,
     userClaims: ClaimURI[],
-    availableAuthenticators: AutheticatorsRecord[],
+    availableAuthenticators: {
+        enterprise: AuthenticatorsRecord[];
+        local: AuthenticatorsRecord[];
+        recovery: AuthenticatorsRecord[];
+        secondFactor: AuthenticatorsRecord[];
+        social: AuthenticatorsRecord[];
+    },
     traceId: string
 ) => Promise<void>;
 
@@ -54,7 +60,13 @@ const useGenerateAILoginFlow = (): GenerateLoginFlowFunction => {
     const generateAILoginFlow = async (
         userQuery: string,
         userClaims: ClaimURI[],
-        availableAuthenticators: AutheticatorsRecord[],
+        availableAuthenticators: {
+            enterprise: AuthenticatorsRecord[];
+            local: AuthenticatorsRecord[];
+            recovery: AuthenticatorsRecord[];
+            secondFactor: AuthenticatorsRecord[];
+            social: AuthenticatorsRecord[];
+        },
         traceId: string
     ): Promise<void> => {
 
@@ -66,6 +78,30 @@ const useGenerateAILoginFlow = (): GenerateLoginFlowFunction => {
                 }
             )
             .catch((error: IdentityAppsApiException) => {
+                if (error?.code === 422) {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("ai:aiLoginFlow.notifications.generateInputError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("ai:aiLoginFlow.notifications.generateInputError.message")
+                        })
+                    );
+
+                    return;
+                }
+
+                if (error?.code === 429) {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("ai:aiLoginFlow.notifications.generateLimitError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("ai:aiLoginFlow.notifications.generateLimitError.message")
+                        })
+                    );
+
+                    return;
+                }
+
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t("ai:aiLoginFlow.notifications.generateError.description"),

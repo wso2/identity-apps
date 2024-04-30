@@ -18,9 +18,10 @@
 
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
-import { ChevronUpIcon, XMarkIcon }from "@oxygen-ui/react-icons";
+import { ChevronUpIcon }from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels } from "@wso2is/core/models";
@@ -49,7 +50,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
     const { isGeneratingLoginFlow } = useAILoginFlow();
 
-    const { availableAuthenticators, loading: isAuthenticatorsLoading } = useAvailableAuthenticators();
+    const { filteredAuthenticators, loading: isAuthenticatorsLoading } = useAvailableAuthenticators();
 
     const { claimURI, error: userClaimError } = useUserClaims();
 
@@ -74,13 +75,6 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
     };
 
     /**
-     * Handles the click event of the delete button.
-     */
-    const handleDeleteButtonCLick = () => {
-        setBannerState(BannerState.NULL);
-    };
-
-    /**
      * Handles the click event of the generate button.
      */
     const handleGenerateClick = async () => {
@@ -102,7 +96,12 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
             return;
         }
 
-        if (availableAuthenticators?.length < 0) {
+        if (filteredAuthenticators.local.length === 0 &&
+            filteredAuthenticators.enterprise.length === 0 &&
+            filteredAuthenticators.recovery.length === 0 &&
+            filteredAuthenticators.secondFactor.length === 0 &&
+            filteredAuthenticators.social.length === 0
+        ) {
             dispatch(addAlert(
                 {
                     description: t("ai:aiLoginFlow.notifications.noAuthenticators.description"),
@@ -118,7 +117,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
 
         const traceID: string = uuidv4();
 
-        await generateAILoginFlow(userPrompt, claimURI, availableAuthenticators, traceID);
+        await generateAILoginFlow(userPrompt, claimURI, filteredAuthenticators, traceID);
         setBannerState(BannerState.COLLAPSED);
         setIsSubmitting(false);
     };
@@ -144,6 +143,11 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="login-flow-ai-text">
                             { t("ai:aiLoginFlow.title") }
                         </span>
+                        <Chip
+                            size="small"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
+                        />
                     </Typography>
                     <Typography className="login-flow-ai-banner-sub-heading">
                         { t("ai:aiLoginFlow.banner.full.subheading") }
@@ -173,14 +177,7 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     backgroundImage: `url(${ AIBannerInputBackground })`
                 } }
             >
-                <Box className="login-flow-ai-banner-close-icon">
-                    <IconButton
-                        onClick={ handleCollapseClick }
-                    >
-                        <ChevronUpIcon />
-                    </IconButton>
-                </Box>
-                <div className="login-flow-ai-banner-text-container">
+                <Box className="login-flow-ai-banner-input-heading-container">
                     <Typography
                         as="h3"
                         className="login-flow-ai-banner-heading"
@@ -189,11 +186,24 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="login-flow-ai-text">
                             { t("ai:aiLoginFlow.title") }
                         </span>
+                        <Chip
+                            size="small"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
+                        />
                     </Typography>
+                    <IconButton
+                        onClick={ handleCollapseClick }
+                    >
+                        <ChevronUpIcon />
+                    </IconButton>
+                </Box>
+                <div className="login-flow-ai-banner-text-container">
                     <Typography className="login-flow-ai-banner-sub-heading">
                         { t("ai:aiLoginFlow.banner.input.subheading") }
                         <DocumentationLink
-                            link={ "develop.applications.editApplication.asgardeoTryitApplication.general.learnMore" }
+                            link={ "develop.applications.editApplication.common.signInMethod." +
+                            "conditionalAuthenticaion.ai.learnMore" }
                             isLinkRef={ true }>
                             <Trans i18nKey={ "extensions:common.learnMore" }>
                                 Learn more
@@ -211,6 +221,21 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     value={ userPrompt }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                         setUserPrompt(e.target.value) }
+                    onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
+                        // Go to next line with shift + enter.
+                        if (e.key === "Enter" && e.shiftKey) {
+                            return;
+                        }
+
+                        // Handle the enter key press.
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleGenerateClick();
+                        }
+                    } }
+                    inputProps={ {
+                        maxlength: 1000
+                    } }
                     InputProps={ {
                         className: "login-flow-ai-input-field-inner",
                         endAdornment: (
@@ -247,13 +272,6 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                     backgroundImage: `url(${ AIBannerBackgroundWhite })`
                 } }
             >
-                <Box className="login-flow-ai-banner-close-icon">
-                    <IconButton
-                        onClick={ handleDeleteButtonCLick }
-                    >
-                        <XMarkIcon />
-                    </IconButton>
-                </Box>
                 <Box className="login-flow-ai-banner-button-container">
                     <div className="login-flow-ai-banner-text-container">
                         <Typography
@@ -264,6 +282,11 @@ const LoginFlowAIBanner: FunctionComponent = (): ReactElement => {
                             <span className="login-flow-ai-text">
                                 { t("ai:aiLoginFlow.title") }
                             </span>
+                            <Chip
+                                size="small"
+                                label={ t("common:beta").toUpperCase() }
+                                className="oxygen-chip-beta mb-1 ml-2"
+                            />
                         </Typography>
                         <Typography className="login-flow-ai-banner-sub-heading">
                             { t("ai:aiLoginFlow.banner.input.subheading") }

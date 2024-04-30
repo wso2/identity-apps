@@ -25,6 +25,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -258,8 +259,40 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                         )
                     })
                 );
-            })
-            .finally(() => refetchApplication());
+            }).catch((error: AxiosError) => {
+                const INVALID_SCRIPT_CODE: string = "APP-60001";
+
+                if (error?.response?.data?.code === INVALID_SCRIPT_CODE) {
+                    dispatch(addAlert({
+                        description: t("applications:notifications.updateAuthenticationFlow" +
+                            ".invalidScriptError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.updateAuthenticationFlow" +
+                            ".invalidScriptError.message")
+                    }));
+
+                    return;
+                }
+
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.updateAuthenticationFlow" +
+                            ".error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateAuthenticationFlow" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.updateAuthenticationFlow" +
+                        ".genericError.message")
+                }));
+            }).finally(() => refetchApplication());
     };
 
     /**

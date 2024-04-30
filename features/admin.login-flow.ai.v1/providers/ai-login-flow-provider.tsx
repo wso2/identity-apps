@@ -28,6 +28,7 @@ import { AppState } from "../../admin.core.v1";
 import { useAILoginFlowGenerationResult } from "../api/use-ai-login-flow-generation-result";
 import LoginFlowAIBanner from "../components/login-flow-ai-banner";
 import LoginFlowAILoadingScreen from "../components/login-flow-ai-loading-screen";
+import { LOGIN_FLOW_AI_FEATURE_TAG } from "../constants/login-flow-ai-constants";
 import AILoginFlowContext from "../context/ai-login-flow-context";
 import { LoginFlowResultStatus } from "../models/ai-login-flow";
 
@@ -63,6 +64,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
     useEffect(() => {
         if (error) {
             setGeneratingLoginFlow(false);
+            setLoginFlowGenerationCompleted(false);
 
             dispatch(
                 addAlert<AlertInterface>({
@@ -77,6 +79,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
 
         if (data?.status === LoginFlowResultStatus.FAILED) {
             setGeneratingLoginFlow(false);
+            setLoginFlowGenerationCompleted(false);
 
             // if data.data contains an object error then use that as the error message
             const errorMessage: string = "error" in data.data
@@ -106,8 +109,8 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
      */
     const handleGenerate = (data: AuthenticationSequenceInterface) => {
         setAiGeneratedLoginFlow(data);
-        setLoginFlowGenerationCompleted(false);
         setGeneratingLoginFlow(false);
+        setLoginFlowGenerationCompleted(false);
     };
 
     return (
@@ -129,7 +132,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
                 ) : (
                     <>
                         {
-                            !applicationDisabledFeatures?.includes("applications.loginFlow.ai") && (
+                            !applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG) && (
                                 <LoginFlowAIBanner/>
                             )
                         }

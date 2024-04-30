@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -26,14 +24,7 @@ import useRequest, {
     SWRConfig
 } from "../../../../admin.core.v1/hooks/use-request";
 import { store } from "../../../../admin.core.v1/store";
-import { OrganizationInterface } from "../models/organization";
-
-/**
- * Initialize an axios Http client.
- *
- */
-const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().
-    httpRequest.bind(AsgardeoSPAClient.getInstance());
+import { OrganizationInterface } from "../../../../admin.extensions.v1/components/administrators/models";
 
 /**
  * Hook to get enterprise login enable config.
@@ -43,7 +34,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().
  *
  * @returns the organization config.
  */
-export const useOrganizationConfig =
+export const useOrganizationConfigV2 =
     <Data = OrganizationInterface, Error = RequestErrorInterface>
     (
         organization: string, requestOptions: SWRConfig<Data, Error>,
@@ -54,7 +45,7 @@ export const useOrganizationConfig =
                 "Content-Type": "application/json"
             },
             method: HttpMethods.GET,
-            url: store.getState().config.endpoints.organizationEndpoint.replace("{organization}", organization)
+            url: store.getState().config.endpoints.organizationEndpointV2.replace("{organization}", organization)
         };
 
         const { data, error, isValidating, mutate } = useRequest<Data, Error>(
@@ -68,31 +59,3 @@ export const useOrganizationConfig =
             mutate: mutate
         };
     };
-
-/**
- * Hook to update enterprise login enable config.
- *
- * @param isEnterpriseLoginEnabled - Enterpriselogin is enabled/disabled.
- *
- * @returns a promise containing the response.
- */
-export const updateOrganizationConfig = (isEnterpriseLoginEnabled: OrganizationInterface):
-    Promise<OrganizationInterface> => {
-
-    const requestConfig: AxiosRequestConfig = {
-        data: isEnterpriseLoginEnabled,
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.organizationPatchEndpoint
-    };
-
-    return httpClient(requestConfig).then((response: AxiosResponse) => {
-        return Promise.resolve(response.data);
-    }).catch((error: AxiosError) => {
-        return Promise.reject(error);
-    });
-};

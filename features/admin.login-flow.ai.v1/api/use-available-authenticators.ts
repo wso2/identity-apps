@@ -17,15 +17,43 @@
  */
 
 import { useEffect, useState } from "react";
+import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import { IdentityProviderManagementConstants } from "../../admin.identity-providers.v1/constants";
 import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
 import {
     IdentityProviderManagementUtils
 } from "../../admin.identity-providers.v1/utils/identity-provider-management-utils";
-import AutheticatorsRecord from "../models/authenticators-record";
+import AuthenticatorsRecord from "../models/authenticators-record";
 
-const useAvailableAuthenticators = (): { availableAuthenticators: AutheticatorsRecord[], loading: boolean } => {
-    const [ availableAuthenticators, setAvailableAuthenticators ] = useState<AutheticatorsRecord[]>([]);
+const useAvailableAuthenticators = (): {
+    filteredAuthenticators: {
+        enterprise: AuthenticatorsRecord[];
+        local: AuthenticatorsRecord[];
+        recovery: AuthenticatorsRecord[];
+        secondFactor: AuthenticatorsRecord[];
+        social: AuthenticatorsRecord[];
+    },
+    loading: boolean
+} => {
+    const { UIConfig } = useUIConfig();
+
     const [ loading, setLoading ] = useState<boolean>(true);
+    const [ filteredAuthenticators, setFilteredAuthenticators ] = useState<{
+        enterprise: AuthenticatorsRecord[];
+        local: AuthenticatorsRecord[];
+        recovery: AuthenticatorsRecord[];
+        secondFactor: AuthenticatorsRecord[];
+        social: AuthenticatorsRecord[];
+    }>({
+        enterprise: [],
+        local: [],
+        recovery: [],
+        secondFactor: [],
+        social: []
+    });
+
+    const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
 
     useEffect(() => {
         getAvailableAuthenticators();
@@ -35,41 +63,82 @@ const useAvailableAuthenticators = (): { availableAuthenticators: AutheticatorsR
         setLoading(true);
         IdentityProviderManagementUtils.getAllAuthenticators()
             .then((response: GenericAuthenticatorInterface[][]) => {
-                const updatedAuthenticators:AutheticatorsRecord[] = [];
                 /**
                  * Extract the local and federated authenticators from the response.
                  */
                 const localAuthenticators: GenericAuthenticatorInterface[] = response[0];
                 const federatedAuthenticators: GenericAuthenticatorInterface[] = response[1];
 
-                /**
-                 * Extract required information from local and federated authenticators and set them to the state.
-                 * @param authenticator - default authenticator name.
-                 * @param idp - identity provider name.
-                 */
+                const socialAuthenticators: AuthenticatorsRecord[] = [];
+                const enterpriseAuthenticators: AuthenticatorsRecord[] = [];
+                const secondFactorAuthenticators: AuthenticatorsRecord[] = [];
+                const recoveryAuthenticators: AuthenticatorsRecord[] = [];
+
+                const moderatedLocalAuthenticators: AuthenticatorsRecord[] = [];
+
                 localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-                    updatedAuthenticators.push({
-                        authenticator: authenticator.defaultAuthenticator.name,
-                        idp: authenticator.idp
-                    });
+                    if (hiddenAuthenticators.includes(authenticator.name)) {
+                        return;
+                    }
+
+                    if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                        recoveryAuthenticators.push({
+                            description: authenticator.description,
+                            idp: authenticator.idp,
+                            name: authenticator.name
+                        });
+                    } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
+                        secondFactorAuthenticators.push({
+                            description: authenticator.description,
+                            idp: authenticator.idp,
+                            name: authenticator.name
+                        });
+                    } else {
+                        moderatedLocalAuthenticators.push({
+                            description: authenticator.description,
+                            idp: authenticator.idp,
+                            name: authenticator.name
+                        });
+                    }
                 });
 
                 federatedAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-                    updatedAuthenticators.push({
-                        authenticator: authenticator.defaultAuthenticator.name,
-                        idp: authenticator.idp
+                    if (hiddenAuthenticators.includes(authenticator.name)) {
+                        return;
+                    }
 
-                    });
-
+                    if (
+                        ApplicationManagementConstants.SOCIAL_AUTHENTICATORS.includes(
+                            authenticator.defaultAuthenticator.authenticatorId
+                        )
+                    ) {
+                        socialAuthenticators.push({
+                            description: authenticator.description,
+                            idp: authenticator.idp,
+                            name: authenticator?.defaultAuthenticator?.name
+                        });
+                    } else {
+                        enterpriseAuthenticators.push({
+                            description: authenticator.description,
+                            idp: authenticator.idp,
+                            name: authenticator?.defaultAuthenticator?.name
+                        });
+                    }
                 });
 
-                setAvailableAuthenticators(updatedAuthenticators);
+                setFilteredAuthenticators({
+                    enterprise: enterpriseAuthenticators,
+                    local: moderatedLocalAuthenticators,
+                    recovery: recoveryAuthenticators,
+                    secondFactor: secondFactorAuthenticators,
+                    social: socialAuthenticators
+                });
             }).finally(() => {
                 setLoading(false);
             });
     };
 
-    return { availableAuthenticators, loading };
+    return { filteredAuthenticators, loading };
 };
 
 export default useAvailableAuthenticators;

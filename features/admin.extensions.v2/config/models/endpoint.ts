@@ -16,12 +16,16 @@
  * under the License.
  */
 
-import { ReactNode } from "react";
-
-interface SmsProviderConfig {
-    renderAlternativeSmsProviderOptions: (options?: {
-        existingSMSProviders: string[]
-    }) => ReactNode
+/**
+ * Interface for the resource endpoints of extended features.
+ */
+export interface ExtendedFeatureResourceEndpointsInterfaceV2 {
+    /**
+     * Resource endpoint to fetch business user login configuration.
+     */
+    organizationEndpointV2: string;
+    /**
+     * Resource endpoint to update business user login configuration.
+     */
+    organizationPatchEndpointV2: string;
 }
-
-export default SmsProviderConfig;

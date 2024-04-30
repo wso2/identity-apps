@@ -16,7 +16,14 @@
  * under the License.
  */
 
- .branding-ai-loading-screen-container {
+.branding-ai-loading-screen-parent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.branding-ai-loading-screen-container {
     display: flex;
     align-items: stretch;
     justify-content: center;

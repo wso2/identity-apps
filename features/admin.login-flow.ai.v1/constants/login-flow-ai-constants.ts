@@ -62,19 +62,21 @@ export const STATUS_SEQUENCE: string[] = [
 ];
 
 export const STATUS_PROGRESS_MAP: Record<string, number> = {
-    generating_login_flow_authenticators: 75,
-    generating_login_flow_script: 45,
-    generation_of_login_flow_authenticators_complete: 95,
-    generation_of_login_flow_script_complete: 70,
+    generating_login_flow_authenticators: 97,
+    generating_login_flow_script: 95,
+    generation_of_login_flow_authenticators_complete: 98,
+    generation_of_login_flow_script_complete: 96,
     login_flow_generation_complete: 100,
-    optimization_and_validation_complete: 20,
-    optimizing_and_validating_final_login_flow: 97,
-    optimizing_and_validating_user_query: 10,
-    retrieval_of_examples_complete: 40,
-    retrieving_examples: 25
+    optimization_and_validation_complete: 40,
+    optimizing_and_validating_final_login_flow: 99,
+    optimizing_and_validating_user_query: 20,
+    retrieval_of_examples_complete: 90,
+    retrieving_examples: 70
 };
 
 export const INITIAL_PROGRESS: number = 5;
 export const INCREMENT: number = 0.5;
 export const FACTS_ROTATION_DELAY: number = 8000;
 export const PROGRESS_UPDATE_INTERVAL: number = 100;
+
+export const LOGIN_FLOW_AI_FEATURE_TAG: string = "applications.loginFlow.ai";

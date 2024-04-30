@@ -171,13 +171,13 @@ export const branding: BrandingNS = {
     ai: {
         banner: {
             full: {
-                heading: "Simplify branding setup with ",
-                subHeading: "Elevate your organization's branding effortlessly with BrandingAI, simply by providing your website URL.",
+                heading: "Elevate Your Brand Identity with ",
+                subHeading: "Get a professional brand identity in seconds, just enter your website URL.",
                 button: "Try Branding AI"
             },
             input: {
-                heading: "Configure branding with ",
-                subHeading: "Enter your organization's website URL; our AI efficiently customizes branding elements to match your organization.",
+                heading: "Configure Branding with ",
+                subHeading: "Just enter your website URL. Get a unique brand identity that reflects your organization.",
                 placeholder: "Enter website URL",
                 button: "Generate Branding"
             },
@@ -187,10 +187,16 @@ export const branding: BrandingNS = {
                 button: "Try Branding AI"
             }
         },
+        disclaimer: "Branding AI can make errors. Verify the information for accuracy.",
         notifications: {
             generateError: {
                 description: "An error occurred while generating the branding.",
                 message: "Branding generation failed"
+            },
+            generateLimitError: {
+                description: "You have exceeded the limit for branding generation. " +
+                    "Please try again in a few moments.",
+                message: "Limit exceeded"
             },
             regenerateError: {
                 description: "An error occurred while regenerating the branding.",
@@ -227,7 +233,8 @@ export const branding: BrandingNS = {
                 }
             }
         },
-        title: "Branding AI"
+        title: "Branding AI",
+        termsAndConditions: "Terms and Conditions"
     },
     tabs: {
         preview: {
