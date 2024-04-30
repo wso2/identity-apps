@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -98,7 +98,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
 
         if (fidoConnectorConfigs?.attributes
             && Array.isArray(fidoConnectorConfigs?.attributes)
-            && fidoConnectorConfigs?.attributes.length > 0) {
+            && fidoConnectorConfigs?.attributes?.length > 0) {
             const trustedOriginsAttribute: FIDOConnectorConfigsAttributeInterface = fidoConnectorConfigs?.attributes
                 ?.find(
                     (attribute: FIDOConnectorConfigsAttributeInterface) =>

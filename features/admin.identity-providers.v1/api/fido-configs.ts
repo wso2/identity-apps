@@ -91,24 +91,24 @@ export const updateFidoConfigs = (
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
+            if (response?.status !== 200) {
                 throw new IdentityAppsApiException(
                     IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR,
                     null,
-                    response.status,
-                    response.request,
+                    response?.status,
+                    response?.request,
                     response,
-                    response.config);
+                    response?.config);
             }
 
             return Promise.resolve(response.data as FIDOConnectorConfigsInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR,
-                error.stack,
-                error.response?.data?.code,
-                error.request,
-                error.response,
-                error.config);
+                error?.stack,
+                error?.response?.data?.code,
+                error?.request,
+                error?.response,
+                error?.config);
         });
 };
