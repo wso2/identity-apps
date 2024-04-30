@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import { SignOnMethodsCore } from "./sign-on-methods-core";
 import { AppState, FeatureConfigInterface } from "../../../../../admin.core.v1";
 import useAILoginFlow from "../../../../../admin.login-flow.ai.v1/hooks/use-ai-login-flow";
+import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
@@ -96,12 +97,14 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
 
     const { aiGeneratedLoginFlow } = useAILoginFlow();
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
         state.config.ui.features?.applications?.disabledFeatures);
 
     let processedAuthenticationSequence: AuthenticationSequenceInterface = authenticationSequence;
 
-    if (!applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG)) {
+    if (!applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG) && !isSubOrganization()) {
         processedAuthenticationSequence = aiGeneratedLoginFlow ?? authenticationSequence;
     }
 
