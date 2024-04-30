@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-react";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -32,24 +32,15 @@ import {
 } from "../../models";
 
 /**
-  * OIDC application configurations Component.
-  *
-  * @param props - Props injected to the component.
-  *
-  * @returns OIDC application configurations Component.
-  */
-
-/**
  * Get an identity client instance.
  *
  */
 const identityClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
 
-
 /**
  * Proptypes for the OIDC application configurations component.
  */
-interface OIDCConfigurationsPropsInterface extends TestableComponentInterface {
+interface OIDCConfigurationsPropsInterface extends IdentifiableComponentInterface {
     oidcConfigurations: OIDCApplicationConfigurationInterface;
     /**
      * Application template ID.
@@ -57,20 +48,23 @@ interface OIDCConfigurationsPropsInterface extends TestableComponentInterface {
     templateId?: string;
 }
 
-
+/**
+  * MTLS OIDC application configurations Component.
+  *
+  * @param props - Props injected to the component.
+  *
+  * @returns MTLS OIDC application configurations Component.
+  */
 export const MTLSOIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterface> = (
     props: OIDCConfigurationsPropsInterface
 ): ReactElement => {
 
-    const { t } = useTranslation();
-
-    const dispatch: Dispatch = useDispatch();
-
     const {
         oidcConfigurations,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: testId
     } = props;
-
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
     const [ endpoints, setEndpoints ] = useState<OIDCEndpointsInterface>(undefined);
 
     useEffect(() => {
@@ -161,5 +155,5 @@ export const MTLSOIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsIn
  * Default props for the MTLS OIDC application Configurations component.
  */
 MTLSOIDCConfigurations.defaultProps = {
-    "data-testid": "applications-help-panel-mtls-oidc-configs"
+    "data-componentid": "applications-help-panel-mtls-oidc-configs"
 };
