@@ -35,6 +35,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
+import { RoleAudienceTypes } from "features/admin.roles.v2/constants";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
@@ -104,7 +105,6 @@ import {
 } from "../constants";
 import { UseOrganizationConfigType } from "../models/organization";
 import { AddAdministratorWizard } from "../wizard";
-import { RoleAudienceTypes } from "features/admin.roles.v2/constants";
 
 /**
  * Props for the Users page.
