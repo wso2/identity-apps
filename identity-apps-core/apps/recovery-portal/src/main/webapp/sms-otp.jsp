@@ -44,7 +44,8 @@
     private static final String LOCAL_SMS_OTP_AUTHENTICATOR_ID = "sms-otp-authenticator";
     private static final String RECOVERY_CONNECTOR = "account-recovery";
     private static final String ACCOUNT_MANAGEMENT_GOVERNANCE_DOMAIN = "Account Management";
-    private static final String PROP_ACCOUNT_PASSWORD_RECOVERY_OTP_LENGTH = "Recovery.Notification.Password.OTP.OTPLength";
+    private static final String PROP_ACCOUNT_PASSWORD_RECOVERY_OTP_LENGTH =
+        "Recovery.Notification.Password.OTP.OTPLength";
 %>
 
 <%
@@ -65,15 +66,23 @@
         // Exception is caught and ignored. otpLength will be kept as 10 to trigger the full input field.
     }
 
-    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry");
+    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error");
     boolean authenticationFailed = Boolean.parseBoolean((String)request.getAttribute("isAuthFailure"));
+    boolean resendFailed = Boolean.parseBoolean((String)request.getAttribute("isResendFailure"));
 
     if (authenticationFailed) {
         if (request.getAttribute("authFailureMsg") != null) {
-            errorMessage = (String)request.getAttribute("authFailureMsg");
-
-            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
+            String errorMessageAttr = (String)request.getAttribute("authFailureMsg");
+            if (errorMessageAttr.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry.code.invalid");
+            }
+        }
+    } else if (resendFailed) {
+        if (request.getAttribute("resendFailureMsg") != null) {
+            String errorMessageAttr = (String)request.getAttribute("resendFailureMsg");
+            if (errorMessageAttr.equalsIgnoreCase("resend.fail.message")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(
+                    recoveryResourceBundle, "resend.time.exceed.or.max.resend.count.exceed");
             }
         }
     }
@@ -125,7 +134,7 @@
                     </h2>
                     <div class="ui divider hidden"></div>
                     <%
-                        if (authenticationFailed) {
+                        if (authenticationFailed || resendFailed) {
                     %>
                     <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
                     </div>
@@ -148,6 +157,7 @@
 
                             <div class="field">
                                 <% if (request.getAttribute("screenValue") != null) { %>
+                                    <input type='hidden' name='screenValue' id='screenValue' value='<%=Encode.forHtmlContent((String)request.getAttribute("screenValue"))%>'/>
                                     <label for="password">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.code.sent.smsotp")%>
                                         (<%=Encode.forHtmlContent((String)request.getAttribute("screenValue"))%>)
@@ -234,11 +244,8 @@
                                 <div class="social-login blurring social-dimmer text-left">
                                     <div class="field text-left">
                                         <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "cannot.access.smsotp")%></label>
-
                                         <a
-                                            onclick="window.location.href = '<%= commonauthURL %>?idp=LOCAL&authenticator=backup-code-authenticator'+
-                                                        '&sessionDataKey=<%= Encode.forUriComponent(request.getParameter(\"sessionDataKey\")) %>' +
-                                                        '&multiOptionURI=<%= Encode.forUriComponent(request.getParameter(\"multiOptionURI\")) %>';"
+                                            onclick="window.location.href = '<%= commonauthURL %>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%= Encode.forUriComponent(request.getParameter("sessionDataKey")) %>&multiOptionURI=<%= Encode.forUriComponent(request.getParameter("multiOptionURI")) %>';"
                                             target="_blank"
                                             class="clickable-link text-left ui form"
                                             rel="noopener noreferrer"

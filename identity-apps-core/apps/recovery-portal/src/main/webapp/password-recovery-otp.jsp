@@ -16,7 +16,7 @@
   ~ under the License.
 --%>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.util.ArrayList" %>
@@ -219,6 +219,7 @@
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
     } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
         String resendCode = request.getParameter("resendCode");
+        String screenValue = request.getParameter("screenValue");
         // Sending resend request
         try {
             Map<String, String> requestHeaders = new HashedMap();
@@ -233,6 +234,7 @@
             /** Resend code re-attached to the reqeust to avoid value being missed after the page refresh that
              *  happens after the resend operation. */
             request.setAttribute("resendCode", resendResponse.getResendCode());
+            request.setAttribute("screenValue", screenValue);
             request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
         } catch (ApiException e) {
             if (!StringUtils.isBlank(username)) {
@@ -245,9 +247,10 @@
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
-            request.setAttribute("isAuthFailure","true");
-            request.setAttribute("authFailureMsg", "authentication.fail.message");
+            request.setAttribute("isResendFailure","true");
+            request.setAttribute("resendFailureMsg", "resend.fail.message");
             request.setAttribute("resendCode", resendCode);
+            request.setAttribute("screenValue", screenValue);
             request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
         }
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
