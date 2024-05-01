@@ -377,6 +377,7 @@
                         <input type="hidden" name="channel" value=""/>
                         <input type="hidden" name="sp" value="<%=sp %>"/>
                         <input type="hidden" name="spId" value="<%=spId %>"/>
+                        <input type="hidden" name="urlQuery" value="<%=request.getQueryString() %>"/>
 
                         <%
                             String callback = request.getParameter("callback");

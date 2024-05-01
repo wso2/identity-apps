@@ -197,7 +197,11 @@
              * Manage user don't have phone number set up in the account.
              */
             if (StringUtils.isBlank(channelId)) {
-                redirectToErrorPageWithMessage(request, response, "Channel.unavailable.for.user");
+                String recoveryPageQueryString = request.getParameter("urlQuery");
+                request.setAttribute("error", true);
+                request.setAttribute("errorMsg", "Channel.unavailable.for.user");
+                String redirectString = "recoveraccountrouter.do?" + recoveryPageQueryString;
+                request.getRequestDispatcher(redirectString).forward(request, response);
                 return;
             }
 
