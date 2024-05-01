@@ -287,35 +287,17 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
         if (
             serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
-            serverConfigurationConfig.autoEnableConnectorToggleProperty
+            serverConfigurationConfig.autoEnableConnectorToggleProperty &&
+            /* Recovery connector does not use  a connector property. If either email link or
+            * sms-otp recovery is enabled, the connector is considered to be enabled.*/
+            connectorId !== ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
         ) {
-            if (connectorId === ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID) {
-                if (ServerConfigurationsConstants.RECOVERY_EMAIL_LINK_ENABLE in values
-                || ServerConfigurationsConstants.RECOVERY_SMS_OTP_ENABLE in values) {
-                    const emailLinkEnabled: boolean = values[ ServerConfigurationsConstants
-                        .RECOVERY_EMAIL_LINK_ENABLE ] === true;
-                    const smsOtpEnabled: boolean = values[ ServerConfigurationsConstants
-                        .RECOVERY_SMS_OTP_ENABLE ] === true;
-                    const value: string = emailLinkEnabled || smsOtpEnabled
-                        ? "true"
-                        : "false";
-
-                    data.properties.push({
-                        name: GovernanceConnectorUtils.decodeConnectorPropertyName(
-                            serverConfigurationConfig.connectorToggleName[ connector?.name ]
-                        ),
-                        value: value
-                    });
-                }
-            }
-            else {
-                data.properties.push({
-                    name: GovernanceConnectorUtils.decodeConnectorPropertyName(
-                        serverConfigurationConfig.connectorToggleName[ connector?.name ]
-                    ),
-                    value: "true"
-                });
-            }
+            data.properties.push({
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(
+                    serverConfigurationConfig.connectorToggleName[ connector?.name ]
+                ),
+                value: "true"
+            });
         }
 
         setIsSubmitting(true);
