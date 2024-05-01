@@ -116,7 +116,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
         if (userListMetaContent) {
             const attributes: string = generateAttributesString(userListMetaContent.values());
 
-            getList(listItemLimit, listOffset, null, attributes, selectedUserStore);
+            getList(null, listOffset, null, attributes, selectedUserStore);
         }
     }, [ listOffset, listItemLimit, selectedUserStore ]);
 
