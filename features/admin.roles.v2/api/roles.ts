@@ -241,7 +241,9 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.rolesWithoutOrgPath + "/.search"
+        url: (isLegacyAuthzRuntime()
+            ? store?.getState()?.config?.endpoints?.rolesWithoutOrgPath
+            : store?.getState()?.config?.endpoints?.rolesV2) + "/.search"
     };
 
     return httpClient(requestConfig)

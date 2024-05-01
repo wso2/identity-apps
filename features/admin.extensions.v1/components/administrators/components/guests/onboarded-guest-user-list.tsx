@@ -43,6 +43,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import isLegacyAuthzRuntime from "../../../../../admin.authorization.v1/utils/get-legacy-authz-runtime";
 import {
     AppState,
     FeatureConfigInterface,
@@ -262,7 +263,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     setShowDeleteConfirmationModal(false);
                     setDeletingUser(undefined);
                 });
-        } else if (accountType === UserAccountTypes.CUSTOMER && "display" in user) {
+        } else if (isLegacyAuthzRuntime() && accountType === UserAccountTypes.CUSTOMER && "display" in user) {
             // Payload for the update role request.
             const roleData: PatchRoleDataInterface = {
                 Operations: [
