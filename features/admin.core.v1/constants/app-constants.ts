@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppThemeConfigInterface } from "@wso2is/core/models";
+import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { MultitenantConstants } from "./multitenant-constants";
 import { identityProviderConfig } from "../../admin.extensions.v1/configs";
@@ -175,6 +175,15 @@ export class AppConstants {
      */
     public static getAppTheme(): AppThemeConfigInterface {
         return window["AppUtils"]?.getConfig()?.ui?.theme;
+    }
+
+    /**
+     * Get the feature configuration of the administrators feature.
+     *
+     * @returns Feature access config for the administrators feature.
+     */
+    public static getAdministratorsFeatureConfig(): FeatureAccessConfigInterface {
+        return window["AppUtils"]?.getConfig()?.ui?.features?.administrators;
     }
 
     /**
@@ -490,7 +499,8 @@ export class AppConstants {
      * Route ids that are enabled in only for an organizations (Not allowed in root organization).
      */
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
-        "roles"
+        "roles",
+        ...(this.getAdministratorsFeatureConfig()?.enabled ? [ "consoleSettings" ] : [])
     ]
 
     /**

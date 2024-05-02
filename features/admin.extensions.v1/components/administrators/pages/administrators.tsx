@@ -35,6 +35,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
+import { RoleAudienceTypes } from "features/admin.roles.v2/constants";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
@@ -69,7 +70,7 @@ import {
     useOrganizationConfigV2
 } from "../../../../admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
 import { getRoleById, searchRoleList } from "../../../../admin.roles.v2/api/roles";
-import { SearchRoleInterface } from "../../../../admin.roles.v2/models/roles";
+import { RolesV2Interface, SearchRoleInterface } from "../../../../admin.roles.v2/models/roles";
 import { useServerConfigs } from "../../../../admin.server-configurations.v1";
 import { useInvitedUsersList, useUsersList } from "../../../../admin.users.v1/api";
 import { AddUserWizard } from "../../../../admin.users.v1/components/wizard/add-user-wizard";
@@ -753,7 +754,16 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         searchRoleList(searchData)
             .then((response: AxiosResponse) => {
                 if (response?.data?.Resources.length > 0) {
-                    const adminId: string = response?.data?.Resources[0]?.id;
+                    let adminId: string = response?.data?.Resources[0]?.id;
+
+                    if (!legacyAuthzRuntime && response?.data?.Resources?.length > 1) {
+                        const filteredRoleList: RolesV2Interface[] = response?.data?.Resources?.filter(
+                            (role: RolesV2Interface) => role?.audience?.type === RoleAudienceTypes.APPLICATION);
+
+                        if (filteredRoleList?.length > 0) {
+                            adminId = filteredRoleList[0]?.id;
+                        }
+                    }
 
                     setAdminRoleId(adminId);
                 }
