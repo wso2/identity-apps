@@ -38,7 +38,6 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import useAuthorization from "features/admin.authorization.v1/hooks/use-authorization";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -268,8 +267,6 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
 
             if ("value" in user) {
                 pathValue = `users[value eq ${user?.value}]`;
-            } else if ("display" in user) {
-                pathValue = `users[display eq ${user?.display}]`;
             } else if ("id" in user) {
                 pathValue = `users[value eq ${user?.id}]`;
             }

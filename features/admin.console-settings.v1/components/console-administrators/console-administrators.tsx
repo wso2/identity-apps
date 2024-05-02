@@ -27,13 +27,12 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import AdministratorsList from "./administrators-list/administrators-list";
 import InvitedAdministratorsList from "./invited-administrators/invited-administrators-list";
 import { UserStoreProperty, getAUserStore } from "../../../admin.core.v1";
+import { userstoresConfig } from "../../../admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useUserStores } from "../../../admin.userstores.v1/api";
-import { CONSUMER_USERSTORE } from "../../../admin.userstores.v1/constants";
 import { UserStoreDropdownItem, UserStoreListItem, UserStorePostData } from "../../../admin.userstores.v1/models";
 
 /**
@@ -57,8 +56,6 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     const [ activeAdministratorGroup, setActiveAdministratorGroup ] = useState("activeUsers");
     const [ availableUserStores, setAvailableUserStores ] = useState<UserStoreDropdownItem[]>([]);
 
-    const { t } = useTranslation();
-
     const {
         data: userStoreList,
         isLoading: isUserStoreListFetchRequestLoading
@@ -69,8 +66,8 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
             const storeOptions: UserStoreDropdownItem[] = [
                 {
                     key: -1,
-                    text: t("users:userstores.userstoreOptions.primary"),
-                    value: "primary"
+                    text: userstoresConfig?.primaryUserstoreName,
+                    value: userstoresConfig?.primaryUserstoreName
                 }
             ];
 
@@ -81,7 +78,7 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
             };
 
             userStoreList?.forEach((store: UserStoreListItem, index: number) => {
-                if (store.name !== CONSUMER_USERSTORE) {
+                if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName) {
                     getAUserStore(store.id).then((response: UserStorePostData) => {
                         const isDisabled: boolean = response.properties.find(
                             (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
