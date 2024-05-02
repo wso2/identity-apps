@@ -350,6 +350,14 @@ export interface AuthenticationProviderNS {
                     hint: string;
                     label: string;
                 };
+                trustedOrigins: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        invalid: string;
+                    };
+                };
             };
             facebook: {
                 callbackUrl: {
@@ -1419,6 +1427,16 @@ export interface AuthenticationProviderNS {
                 description: string;
             };
         };
+        getFIDOConnectorConfigs: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+        };
         getIDP: {
             error: {
                 message: string;
@@ -1704,6 +1722,20 @@ export interface AuthenticationProviderNS {
             };
         };
         updateEmailOTPAuthenticator: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        updateFIDOConnectorConfigs: {
             error: {
                 message: string;
                 description: string;

@@ -1021,3 +1021,37 @@ export interface FIDOAuthenticatorFormFieldsInterface {
      */
     FIDO_EnableUsernamelessAuthentication: CommonAuthenticatorFormFieldInterface;
 }
+
+/**
+ * Interface for FIDO connector configuration properties.
+ */
+export interface FIDOConnectorConfigsAttributeInterface {
+    /**
+     * Key of the attribute.
+     */
+    key: string;
+    /**
+     * Value of the attribute.
+     */
+    value: string;
+}
+
+/**
+ * Interface for FIDO connector configuration.
+ */
+export interface FIDOConnectorConfigsInterface {
+    /**
+     * Attributes of the FIDO connector configuration.
+     */
+    attributes: FIDOConnectorConfigsAttributeInterface[]
+}
+
+/**
+ * Interface for FIDO configuration.
+ */
+export interface FIDOConfigsInterface extends FIDOConnectorConfigsInterface{
+    /**
+     * Fido configuration name.
+     */
+    name: string;
+}

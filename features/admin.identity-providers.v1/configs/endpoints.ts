@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,13 +22,14 @@ import { IDPResourceEndpointsInterface } from "../models";
 /**
  * Get the resource endpoints for the IDP Management feature.
  *
- * @param {string} serverHost - Server Host.
- * @return {IDPResourceEndpointsInterface}
+ * @param serverHost - Server Host.
+ * @returns IDP Resources Endpoints list.
  */
 export const getIDPResourceEndpoints = (serverHost: string): IDPResourceEndpointsInterface => {
     return {
         authenticatorTags: `${ serverHost }/api/server/v1/authenticators/meta/tags`,
         authenticators: `${ serverHost }/api/server/v1/authenticators`,
+        fidoConfigs: `${ serverHost }/api/identity/config-mgt/v1.0/resource/fido-config`,
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,
         localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`,
         multiFactorAuthenticators: getServerConfigurationsResourceEndpoints(serverHost).multiFactorAuthenticators
