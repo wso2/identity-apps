@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.16.2
+
+### Patch Changes
+
+- [#6110](https://github.com/wso2/identity-apps/pull/6110) [`9ee015fad6`](https://github.com/wso2/identity-apps/commit/9ee015fad6a856de9519b731255ffa729241526a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix UX issues related to Administrator/Console Settings
+
 ## 2.16.1
 
 ### Patch Changes
