@@ -1,5 +1,18 @@
 # @wso2is/features
 
+## 2.16.1
+
+### Patch Changes
+
+- [#6109](https://github.com/wso2/identity-apps/pull/6109) [`6b1f272a26`](https://github.com/wso2/identity-apps/commit/6b1f272a260ef75703f7ca1943d19d0e222d61af) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add Saas My Account pages
+
+* [#6130](https://github.com/wso2/identity-apps/pull/6130) [`0ecfae750e`](https://github.com/wso2/identity-apps/commit/0ecfae750e6a186820084e316e246745d4b07881) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Update sms provider sender help texts.
+
+- [#6125](https://github.com/wso2/identity-apps/pull/6125) [`476b16bb06`](https://github.com/wso2/identity-apps/commit/476b16bb06d59ff1754c27eab26a44784340d785) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent subscription calls being sent inside suborganizations
+
+- Updated dependencies [[`6b1f272a26`](https://github.com/wso2/identity-apps/commit/6b1f272a260ef75703f7ca1943d19d0e222d61af), [`0ecfae750e`](https://github.com/wso2/identity-apps/commit/0ecfae750e6a186820084e316e246745d4b07881)]:
+  - @wso2is/i18n@2.2.10
+
 ## 2.16.0
 
 ### Minor Changes

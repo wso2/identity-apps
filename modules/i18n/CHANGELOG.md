@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.2.10
+
+### Patch Changes
+
+- [#6109](https://github.com/wso2/identity-apps/pull/6109) [`6b1f272a26`](https://github.com/wso2/identity-apps/commit/6b1f272a260ef75703f7ca1943d19d0e222d61af) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add Saas My Account pages
+
+* [#6130](https://github.com/wso2/identity-apps/pull/6130) [`0ecfae750e`](https://github.com/wso2/identity-apps/commit/0ecfae750e6a186820084e316e246745d4b07881) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Update sms provider sender help texts.
+
 ## 2.2.9
 
 ### Patch Changes
