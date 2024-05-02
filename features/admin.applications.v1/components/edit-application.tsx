@@ -197,9 +197,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
     const disabledApplicationFeatures: string[] = useSelector((state: AppState) =>
         state.config.ui.features.applications?.disabledFeatures);
-    const isMyAccountSimplifiedSettingsEnabled: boolean = ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID ===
-        application?.clientId &&
-        !disabledApplicationFeatures?.includes("applications.myaccount.simplifiedSettings");
+    const isMyAccountSimplifiedSettingsEnabled: boolean = 
+        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId
+        && !disabledApplicationFeatures?.includes("applications.myaccount.simplifiedSettings");
 
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
