@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
 import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
@@ -1134,10 +1135,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && isFAPIAppCreationEnabled
                         && (
                             <div className="pt-0 mt-0">
-                                <div className="app-type-checkbox" >
+                                <Box display="flex" alignItems="center">
                                     <Field
                                         data-componentid={ `${ testId }-fapi-app-checkbox` }
-                                        name={ "isFAPIApp" }
+                                        name="isFAPIApp"
                                         required={ false }
                                         type="checkbox"
                                         value={ [ "isFAPIApp" ] }
@@ -1149,14 +1150,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             }
                                         ] }
                                     />
-                                    { applicationConfig.advancedConfigurations.showFapiBetaChip && (
+                                    { applicationConfig.advancedConfigurations.showFapiFeatureStatusChip && (
                                         <div className="oxygen-chip-div" >
                                             <Chip
-                                                label="BETA"
+                                                label={ t("common:beta") }
                                                 className="oxygen-menu-item-chip oxygen-chip-beta" />
                                         </div>
                                     ) }
-                                </div>
+                                </Box>
                                 <Hint compact>
                                     { t("applications:forms.generalDetails.fields" +
                                         ".isFapiApp.hint" ) }

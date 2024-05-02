@@ -100,6 +100,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
     const [ isWSFed, setIsWSFed ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const mtlsEndpointsPresent: boolean = oidcConfigurations.mtlsTokenEndpoint !== undefined;
 
     /**
      * Index of the protocols tab.
@@ -168,7 +169,8 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                             templateId={ templateId }
                                         />
 
-                                        { applicationConfig.advancedConfigurations.showMtlsAliases && (
+                                        { applicationConfig.advancedConfigurations.showMtlsAliases &&
+                                        mtlsEndpointsPresent && (
                                             <>
                                                 <Heading ellipsis as="h4">
                                                     { t("applications:edit.sections.info.mtlsOidcHeading") }

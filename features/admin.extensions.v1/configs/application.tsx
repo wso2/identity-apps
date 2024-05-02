@@ -107,7 +107,7 @@ export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showDefaultMyAccountApplicationEditPage: true,
         showEnableAuthorization: true,
-        showFapiBetaChip: false,
+        showFapiFeatureStatusChip: false,
         showMtlsAliases: false,
         showMyAccount: true,
         showMyAccountStatus: false,
