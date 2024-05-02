@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.2.11
+
+### Patch Changes
+
+- [#6100](https://github.com/wso2/identity-apps/pull/6100) [`c2839fe3d8`](https://github.com/wso2/identity-apps/commit/c2839fe3d81fd128c9994a5e3d459bc4cf4ba3ad) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the trusted origins input field into the FIDO settings form
+
+- Updated dependencies [[`0656e0a717`](https://github.com/wso2/identity-apps/commit/0656e0a717e01ff7817a2643d6b6c869e033789f)]:
+  - @wso2is/core@2.0.42
+
 ## 2.2.10
 
 ### Patch Changes
