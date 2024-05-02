@@ -104,7 +104,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
         return prospectiveAdministrators?.Resources?.map((user: UserBasicInterface) => {
             return {
                 key: user.id,
-                label: getUserNameWithoutDomain(user.userName),
+                label: getUserNameWithoutDomain(user?.userName),
                 user
             };
         });
