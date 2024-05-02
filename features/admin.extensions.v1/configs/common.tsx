@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { UserGroupIcon } from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
-import React, { lazy } from "react";
+import { lazy } from "react";
 import { CommonConfig } from "./models";
 import { getSidePanelIcons } from "../../admin.core.v1/configs/ui";
 import { AppConstants } from "../../admin.core.v1/constants";
