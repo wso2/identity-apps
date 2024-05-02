@@ -17,7 +17,7 @@
  */
 
 import { Context, createContext } from "react";
-import { BrandingPreferenceInterface } from "../../admin.branding.v1/models";
+import { BrandingPreferenceInterface } from "../../common.branding.v1/models";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
 import { BannerState } from "../models/types";
 

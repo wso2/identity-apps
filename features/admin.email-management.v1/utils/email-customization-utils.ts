@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { CustomTextInterface } from "../../admin.branding.v1/models/custom-text-preference";
+import { BrandingPreferenceUtils } from "../../admin.branding.v1/utils";
+import processCustomTextTemplateLiterals from "../../admin.branding.v1/utils/process-custom-text-template-literals";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,
     PredefinedThemes,
     ThemeConfigInterface
-} from "../../admin.branding.v1/models";
-import { CustomTextInterface } from "../../admin.branding.v1/models/custom-text-preference";
-import { BrandingPreferenceUtils } from "../../admin.branding.v1/utils";
-import processCustomTextTemplateLiterals from "../../admin.branding.v1/utils/process-custom-text-template-literals";
+} from "../../common.branding.v1/models";
 
 export class EmailCustomizationUtils {
 
