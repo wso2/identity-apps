@@ -19,7 +19,6 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, Message, URLInput, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -392,15 +391,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 required = { false }
                 showPredictions={ false }
                 isAllowEnabled={ false }
-                validation={ (value: string) => {
-                    if (!(URLUtils.isURLValid(value, true)
-                        && (URLUtils.isHttpUrl(value)
-                        || URLUtils.isHttpsUrl(value)))) {
-                        return false;
-                    }
-
-                    return true;
-                } }
+                skipValidation
             />
             <Field.Button
                 form={ FORM_ID }

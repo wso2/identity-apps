@@ -396,11 +396,11 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     label: "Allow passkey usernameless authentication"
                 },
                 trustedOrigins: {
-                    hint: "Origins that should be trusted by the WebAuthn API.",
-                    label: "FIDO2 Trusted Origins",
+                    hint: "Origins from which FIDO-based authentication requests are initiated and need to be trusted by the server.",
+                    label: "Passkey Trusted Origins",
                     placeholder: "https://mydomain.io/register",
                     validations: {
-                        invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL."
+                        invalid: "The entered trusted origin is invalid."
                     }
                 }
             },
