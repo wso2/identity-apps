@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.15.38
+
+### Patch Changes
+
+- [#6127](https://github.com/wso2/identity-apps/pull/6127) [`d67f3d6f61`](https://github.com/wso2/identity-apps/commit/d67f3d6f61bee506e5924ccd8fdf2b3607df88ff) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add AILoginFlowProvider console settings login flow
+
 ## 2.15.37
 
 ### Patch Changes
