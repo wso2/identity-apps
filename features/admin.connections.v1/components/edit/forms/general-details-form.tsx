@@ -337,8 +337,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
-                            templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
-                            || templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE)
+                            templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
