@@ -44,7 +44,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import isLegacyAuthzRuntime from "../../../../../admin.authorization.v1/utils/get-legacy-authz-runtime";
 import {
     AppState,
     FeatureConfigInterface,
@@ -199,7 +198,6 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
-    const { legacyAuthzRuntime } = useAuthorization();
 
     /**
      * Set users list.
