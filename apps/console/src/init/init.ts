@@ -73,6 +73,7 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
         dispatchEvent(new MessageEvent("session-timeout", { data: state }));
     }
 
+    // Refresh session every SESSION_REFRESH_TIMEOUT seconds if the user is active.
     if (_sessionAgeCounter % SESSION_REFRESH_TIMEOUT === 0
             && _idleSecondsCounter < SESSION_REFRESH_TIMEOUT) {
         dispatchEvent(new MessageEvent(CommonConstants.SESSION_REFRESH_EVENT));

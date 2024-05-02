@@ -193,6 +193,9 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 setShowSessionTimeoutModal(JSON.parse(timeout));
             };
 
+            /**
+             * A listener to handle periodic session refresh.
+             */
             const sessionRefreshListener = (_: MessageEventInit) => {
                 if (onLoginAgain) {
                     onLoginAgain();
