@@ -1,5 +1,22 @@
 # @wso2is/features
 
+## 2.16.3
+
+### Patch Changes
+
+- [#6100](https://github.com/wso2/identity-apps/pull/6100) [`c2839fe3d8`](https://github.com/wso2/identity-apps/commit/c2839fe3d81fd128c9994a5e3d459bc4cf4ba3ad) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the trusted origins input field into the FIDO settings form
+
+* [#6112](https://github.com/wso2/identity-apps/pull/6112) [`0656e0a717`](https://github.com/wso2/identity-apps/commit/0656e0a717e01ff7817a2643d6b6c869e033789f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent editing, deleting and assigning groups/users to system roles
+
+* Updated dependencies [[`c2839fe3d8`](https://github.com/wso2/identity-apps/commit/c2839fe3d81fd128c9994a5e3d459bc4cf4ba3ad), [`0656e0a717`](https://github.com/wso2/identity-apps/commit/0656e0a717e01ff7817a2643d6b6c869e033789f)]:
+  - @wso2is/i18n@2.2.11
+  - @wso2is/core@2.0.42
+  - @wso2is/access-control@3.0.2
+  - @wso2is/dynamic-forms@2.0.53
+  - @wso2is/form@2.0.54
+  - @wso2is/forms@2.0.32
+  - @wso2is/react-components@2.1.24
+
 ## 2.16.2
 
 ### Patch Changes
