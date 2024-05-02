@@ -122,7 +122,7 @@ public class AppPortalUtils {
             portalPath = IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH);
         }
         if (!portalPath.startsWith("/")) {
-            portalPath += "/" + portalPath;
+            portalPath = "/" + portalPath;
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
