@@ -121,6 +121,9 @@ public class AppPortalUtils {
             StringUtils.isNotEmpty(IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH))) {
             portalPath = IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH);
         }
+        if (!portalPath.startsWith("/")) {
+            portalPath += "/" + portalPath;
+        }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
             if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
