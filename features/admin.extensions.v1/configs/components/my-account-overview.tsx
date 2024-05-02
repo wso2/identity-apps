@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Grid from "@oxygen-ui/react/Grid";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CopyInputField,
@@ -29,13 +30,15 @@ import {
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
 import { AppConstants, AppState, history } from "../../../admin.core.v1";
 
 export const MyAccountOverview: FunctionComponent<IdentifiableComponentInterface> = (
     props: IdentifiableComponentInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const {
+        ["data-componentid"]: componentId
+    } = props;
+
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const { t } = useTranslation();
@@ -72,31 +75,23 @@ export const MyAccountOverview: FunctionComponent<IdentifiableComponentInterface
                             } }
                         > Branding configurations
                         </Link>
-                        and allow sub organization users to access it.
+                        and share access to it with B2B organizations.
                     </Trans>
                 </Text>
-                <Grid verticalAlign="middle">
-                    <Grid.Column
-                        floated="left"
-                        mobile={ 16 }
-                        computer={ 9 }
-                    >
+                <Grid container alignItems="center">
+                    <Grid xs={ 6 }>
                         <Heading as="h6" compact>
                             { t("applications:myaccount.overview.shareApplication") }
                         </Heading>
-                    </Grid.Column>
+                    </Grid>
                     <Popup
                         trigger={ (
-                            <Grid.Column
-                                mobile={ 16 }
-                                computer={ 6 }
-                                className="pr-0"
-                            >
+                            <Grid xs={ 6 } className="pr-0">
                                 <CopyInputField
                                     value={ consumerAccountURL }
                                     data-componentid={ "application-consumer-account-link-copy-field" }
                                 />
-                            </Grid.Column>
+                            </Grid>
                         ) }
                         content={ t("applications:myaccount.popup") }
                         position="top center"

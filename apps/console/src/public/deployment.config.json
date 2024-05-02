@@ -341,10 +341,10 @@
                 }
             },
             "applications": {
-                "saasMyAccount": false,
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
-                    "applications.loginFlow.ai"
+                    "applications.loginFlow.ai",
+                    "applications.myAccountSimplifiedSettings"
                 ],
                 "enabled": true,
                 "scopes": {

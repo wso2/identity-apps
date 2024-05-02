@@ -195,6 +195,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
     const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
+    const myAccountSimplifiedSettings: boolean = !useSelector((state: AppState) =>
+        state.config.ui.features.applications?.disabledFeatures.includes("applications.myAccountSimplifiedSettings"));
+
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
@@ -230,7 +233,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (featureConfig) {
             if (!legacyAuthzRuntime && ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId
-                && featureConfig?.applications?.saasMyAccount) {
+                && myAccountSimplifiedSettings) {
                 panes.push({
                     componentId: "overview",
                     menuItem: t("applications:myaccount.overview.tabName"),
@@ -242,7 +245,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 && !isSubOrganization()
                 && (legacyAuthzRuntime ||
                     !(application?.clientId === ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID
-                        && featureConfig?.applications?.saasMyAccount))) {
+                        && myAccountSimplifiedSettings))) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -273,7 +276,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 && !isFragmentApp
                 && (legacyAuthzRuntime ||
                         !(application?.clientId === ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID
-                            && featureConfig?.applications?.saasMyAccount))
+                            && myAccountSimplifiedSettings))
             ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -394,7 +397,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                  && !isFragmentApp
                  && (legacyAuthzRuntime ||
                         !(application?.clientId === ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID
-                            && featureConfig?.applications?.saasMyAccount))) {
+                            && myAccountSimplifiedSettings))) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
