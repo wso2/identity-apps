@@ -96,7 +96,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
         }
     }, [ profileDetails?.profileInfo ]);
 
-    // Invoke me enpoint when navigate to Personal Info tab.
+    // Invoke me endpoint when navigate to Personal Info tab.
     useEffect(() => {
         dispatch(getProfileInformation(true));
     }, []);
