@@ -38,6 +38,7 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import useAuthorization from "features/admin.authorization.v1/hooks/use-authorization";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -198,6 +199,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const { legacyAuthzRuntime } = useAuthorization();
 
     /**
      * Set users list.
@@ -263,61 +265,23 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     setShowDeleteConfirmationModal(false);
                     setDeletingUser(undefined);
                 });
-        } else if (isLegacyAuthzRuntime() && accountType === UserAccountTypes.CUSTOMER && "display" in user) {
+        } else if (accountType === UserAccountTypes.CUSTOMER) {
+            let pathValue: string;
+
+            if ("value" in user) {
+                pathValue = `users[value eq ${user?.value}]`;
+            } else if ("display" in user) {
+                pathValue = `users[display eq ${user?.display}]`;
+            } else if ("id" in user) {
+                pathValue = `users[value eq ${user?.id}]`;
+            }
+
             // Payload for the update role request.
             const roleData: PatchRoleDataInterface = {
                 Operations: [
                     {
                         op: "remove",
-                        path: `users[display eq ${user.display}]`,
-                        value: {}
-                    }
-                ],
-                schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-            };
-
-            return updateRoleDetails(adminRoleId, roleData)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t(
-                            "invite:notifications.deleteInvite.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "users:notifications.deleteUser.success.message"
-                        )
-                    }));
-                    onUserDelete();
-                })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(addAlert({
-                            description: error.response.data.description,
-                            level: AlertLevels.ERROR,
-                            message: t("users:notifications.deleteUser.error.message")
-                        }));
-
-                        return;
-                    }
-                    dispatch(addAlert({
-                        description: t("users:notifications.deleteUser." +
-                            "genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("users:notifications.deleteUser.genericError" +
-                            ".message")
-                    }));
-                }).finally(() => {
-                    setLoading(false);
-                    setShowDeleteConfirmationModal(false);
-                    setDeletingUser(undefined);
-                });
-        } else if (accountType === UserAccountTypes.CUSTOMER && "id" in user) {
-
-            const roleData: PatchRoleDataInterface = {
-                Operations: [
-                    {
-                        op: "remove",
-                        path: `users[value eq ${user.id}]`,
+                        path: pathValue,
                         value: {}
                     }
                 ],
@@ -334,9 +298,9 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     onUserDelete();
                 })
                 .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
+                    if (error?.response?.data?.description) {
                         dispatch(addAlert({
-                            description: error.response.data.description,
+                            description: error?.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t("users:notifications.revokeAdmin.error.message")
                         }));
