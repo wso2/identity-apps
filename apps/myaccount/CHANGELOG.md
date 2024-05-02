@@ -1,5 +1,82 @@
 # @wso2is/myaccount
 
+## 2.5.56
+
+### Patch Changes
+
+- Updated dependencies [[`8f9c18b05f`](https://github.com/wso2/identity-apps/commit/8f9c18b05fe577b814d1207b4c5c869ecfa131a3)]:
+  - @wso2is/theme@2.0.77
+  - @wso2is/features@2.15.36
+  - @wso2is/react-components@2.1.23
+
+## 2.5.55
+
+### Patch Changes
+
+- Updated dependencies [[`e89478794e`](https://github.com/wso2/identity-apps/commit/e89478794eb22afa0d52bc5a89dfe1c5765b098a), [`a2d6f4cc8e`](https://github.com/wso2/identity-apps/commit/a2d6f4cc8ec22fbb344895d4955a9f112a1d88aa)]:
+  - @wso2is/features@2.15.35
+
+## 2.5.54
+
+### Patch Changes
+
+- [#6091](https://github.com/wso2/identity-apps/pull/6091) [`9b8a8c86db`](https://github.com/wso2/identity-apps/commit/9b8a8c86db55e1ad096ccca013d7347368ad3b3d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the glitch in the my account name field
+
+- Updated dependencies [[`1757b8d52b`](https://github.com/wso2/identity-apps/commit/1757b8d52bc169b9a30f8c6444c71b7935e658e0)]:
+  - @wso2is/features@2.15.34
+
+## 2.5.53
+
+### Patch Changes
+
+- [#6104](https://github.com/wso2/identity-apps/pull/6104) [`1d75d93220`](https://github.com/wso2/identity-apps/commit/1d75d93220650324a2340ae9e572b48f5ca84b5f) Thanks [@savindi7](https://github.com/savindi7)! - Update logic to disable Reset Password button in user profile.
+
+- Updated dependencies [[`1d75d93220`](https://github.com/wso2/identity-apps/commit/1d75d93220650324a2340ae9e572b48f5ca84b5f)]:
+  - @wso2is/features@2.15.33
+
+## 2.5.52
+
+### Patch Changes
+
+- Updated dependencies [[`26b59da530`](https://github.com/wso2/identity-apps/commit/26b59da5309040967c71a60f9c0a65b3e0e600e7)]:
+  - @wso2is/i18n@2.2.9
+  - @wso2is/features@2.15.32
+
+## 2.5.51
+
+### Patch Changes
+
+- Updated dependencies [[`e4f57c3ab9`](https://github.com/wso2/identity-apps/commit/e4f57c3ab91072e7105c74032bedefdad246ed6a), [`15c1fee109`](https://github.com/wso2/identity-apps/commit/15c1fee1097417229b15c3e72e7acd30083d39c6)]:
+  - @wso2is/features@2.15.31
+  - @wso2is/i18n@2.2.8
+
+## 2.5.50
+
+### Patch Changes
+
+- [#6088](https://github.com/wso2/identity-apps/pull/6088) [`c4bced3178`](https://github.com/wso2/identity-apps/commit/c4bced3178c80047c39ec732fc5ee7f05123536f) Thanks [@brionmario](https://github.com/brionmario)! - Add support to skip super tenant from app urls
+
+- Updated dependencies [[`94ee13b2bb`](https://github.com/wso2/identity-apps/commit/94ee13b2bb94e8e47ed33c004060d2856d42e7df), [`e74cc7760e`](https://github.com/wso2/identity-apps/commit/e74cc7760e96130510625af061ec523dd0295d26), [`7b07a9a027`](https://github.com/wso2/identity-apps/commit/7b07a9a027a6bd98451cc7422ae80b18bc28b97f), [`c4bced3178`](https://github.com/wso2/identity-apps/commit/c4bced3178c80047c39ec732fc5ee7f05123536f), [`ae06330b69`](https://github.com/wso2/identity-apps/commit/ae06330b69786f795f59f67ff4b900cf9d1ef16c)]:
+  - @wso2is/i18n@2.2.7
+  - @wso2is/features@2.15.30
+  - @wso2is/theme@2.0.76
+  - @wso2is/react-components@2.1.22
+
+## 2.5.49
+
+### Patch Changes
+
+- Updated dependencies [[`72eef0f393`](https://github.com/wso2/identity-apps/commit/72eef0f393dfafc57cf4429ed93293d5b69e1dcb)]:
+  - @wso2is/features@2.15.29
+
+## 2.5.48
+
+### Patch Changes
+
+- Updated dependencies [[`07bbb5ed78`](https://github.com/wso2/identity-apps/commit/07bbb5ed78f9f7ab0f1935705c20fa9650c164b5)]:
+  - @wso2is/i18n@2.2.6
+  - @wso2is/features@2.15.28
+
 ## 2.5.47
 
 ### Patch Changes

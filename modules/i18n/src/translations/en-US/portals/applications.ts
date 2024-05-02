@@ -2703,6 +2703,10 @@ export const applications: ApplicationsNS = {
                 description: "An error occurred while updating the authentication flow of the application.",
                 message: "Something went wrong"
             },
+            invalidScriptError: {
+                description: "The authentication script contains invalid syntax. Please correct the script and try again.",
+                message: "Invalid authentication script"
+            },
             success: {
                 description: "Successfully updated the authentication flow of the application.",
                 message: "Update successful"

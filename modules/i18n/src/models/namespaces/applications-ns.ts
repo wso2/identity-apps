@@ -2342,6 +2342,10 @@ export interface ApplicationsNS {
                 message: string;
                 description: string;
             };
+            invalidScriptError: {
+                message: string;
+                description: string;
+            };
             success: {
                 message: string;
                 description: string;

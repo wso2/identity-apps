@@ -16,16 +16,18 @@
  * under the License.
  */
 
-import { ChevronUpIcon, XMarkIcon } from "@oxygen-ui/react-icons";
+import { ChevronUpIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import {
     DocumentationLink,
-    GenericIcon
+    GenericIcon,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -39,13 +41,13 @@ import useGenerateAIBrandingPreference,
 import { BannerState } from "../models/types";
 import "./branding-ai-banner.scss";
 
-
 /**
  * Branding AI banner component.
  */
 export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
     const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
@@ -78,13 +80,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
         setIsSubmitting(false);
     };
 
-    /**
-     * Handles the click event of the delete button.
-     */
-    const handleDeleteButtonCLick = () => {
-        setBannerState(BannerState.NULL);
-    };
-
     if (isGeneratingBranding) {
         return null;
     }
@@ -106,6 +101,11 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="branding-ai-text">
                             { t("branding:ai.title") }
                         </span>
+                        <Chip
+                            size="small"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
+                        />
                     </Typography>
                     <Typography className="branding-ai-banner-sub-heading">
                         { t("branding:ai.banner.full.subHeading") }
@@ -135,14 +135,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     backgroundImage: `url(${ AIBannerInputBackground })`
                 } }
             >
-                <Box className="branding-ai-banner-close-icon">
-                    <IconButton
-                        onClick={ handleCollapseClick }
-                    >
-                        <ChevronUpIcon />
-                    </IconButton>
-                </Box>
-                <div className="branding-ai-banner-text-container">
+                <Box className="branding-ai-banner-input-heading-container">
                     <Typography
                         as="h3"
                         className="branding-ai-banner-heading"
@@ -151,12 +144,24 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="branding-ai-text">
                             { t("branding:ai.title") }
                         </span>
+                        <Chip
+                            size="small"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
+                        />
                     </Typography>
+                    <IconButton
+                        onClick={ handleCollapseClick }
+                    >
+                        <ChevronUpIcon />
+                    </IconButton>
+                </Box>
+                <div className="branding-ai-banner-text-container">
                     <Typography className="branding-ai-banner-sub-heading">
                         { t("branding:ai.banner.input.subHeading") }
                         <DocumentationLink
-                            link={ "" }
-                            isLinkRef={ true }>
+                            link={ getLink("develop.branding.ai.learnMore") }
+                        >
                             <Trans i18nKey={ "extensions:common.learnMore" }>
                                 Learn more
                             </Trans>
@@ -168,9 +173,19 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     className="branding-ai-input-field mt-5"
                     placeholder={ t("branding:ai.banner.input.placeholder") }
                     fullWidth
+                    inputProps={ {
+                        maxlength: 75
+                    } }
                     value={ websiteUrl }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                         setWebsiteUrl(e.target.value) }
+                    onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
+                        // Handle the enter key press.
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleGenerateClick();
+                        }
+                    } }
                     InputProps={ {
                         className: "branding-ai-input-field-inner",
                         endAdornment: (
@@ -207,13 +222,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     backgroundImage: `url(${ AIBannerBackgroundWhite })`
                 } }
             >
-                <Box className="branding-ai-banner-close-icon">
-                    <IconButton
-                        onClick={ handleDeleteButtonCLick }
-                    >
-                        <XMarkIcon />
-                    </IconButton>
-                </Box>
                 <Box className="branding-ai-banner-button-container">
                     <div className="branding-ai-banner-text-container">
                         <Typography
@@ -224,12 +232,17 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                             <span className="branding-ai-text">
                                 { t("branding:ai.title") }
                             </span>
+                            <Chip
+                                size="small"
+                                label={ t("common:beta").toUpperCase() }
+                                className="oxygen-chip-beta mb-1 ml-2"
+                            />
                         </Typography>
                         <Typography className="branding-ai-banner-sub-heading">
                             { t("branding:ai.banner.collapsed.subHeading") }
                             <DocumentationLink
-                                link={ "" }
-                                isLinkRef={ true }>
+                                link={ getLink("develop.branding.ai.learnMore") }
+                            >
                                 <Trans i18nKey={ "extensions:common.learnMore" }>
                                     Learn more
                                 </Trans>

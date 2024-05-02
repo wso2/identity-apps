@@ -193,6 +193,10 @@ export interface BrandingNS {
                 description: string;
                 message: string;
             };
+            generateLimitError: {
+                description: string;
+                message: string;
+            };
             regenerateError: {
                 description: string;
                 message: string;

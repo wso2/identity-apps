@@ -42,6 +42,8 @@ export interface aiNS{
         didYouKnow: string;
         notifications: {
             generateError: NotificationItem;
+            generateInputError: NotificationItem;
+            generateLimitError: NotificationItem;
             generateResultError: NotificationItem;
             generateResultFailed: NotificationItem;
             generateStatusError: NotificationItem;

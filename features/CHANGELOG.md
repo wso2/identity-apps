@@ -1,5 +1,89 @@
 # @wso2is/features
 
+## 2.15.36
+
+### Patch Changes
+
+- [#6113](https://github.com/wso2/identity-apps/pull/6113) [`8f9c18b05f`](https://github.com/wso2/identity-apps/commit/8f9c18b05fe577b814d1207b4c5c869ecfa131a3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add missing doclinks and optimize banner images in AI features
+
+- Updated dependencies [[`8f9c18b05f`](https://github.com/wso2/identity-apps/commit/8f9c18b05fe577b814d1207b4c5c869ecfa131a3)]:
+  - @wso2is/theme@2.0.77
+  - @wso2is/react-components@2.1.23
+  - @wso2is/dynamic-forms@2.0.52
+  - @wso2is/form@2.0.53
+
+## 2.15.35
+
+### Patch Changes
+
+- [#6116](https://github.com/wso2/identity-apps/pull/6116) [`e89478794e`](https://github.com/wso2/identity-apps/commit/e89478794eb22afa0d52bc5a89dfe1c5765b098a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Disable AI features in sub-organizations
+
+* [#6099](https://github.com/wso2/identity-apps/pull/6099) [`a2d6f4cc8e`](https://github.com/wso2/identity-apps/commit/a2d6f4cc8ec22fbb344895d4955a9f112a1d88aa) Thanks [@indeewari](https://github.com/indeewari)! - Adding new label for the managed APIs
+
+## 2.15.34
+
+### Patch Changes
+
+- [#6107](https://github.com/wso2/identity-apps/pull/6107) [`1757b8d52b`](https://github.com/wso2/identity-apps/commit/1757b8d52bc169b9a30f8c6444c71b7935e658e0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in social login in AI login flow
+
+## 2.15.33
+
+### Patch Changes
+
+- [#6104](https://github.com/wso2/identity-apps/pull/6104) [`1d75d93220`](https://github.com/wso2/identity-apps/commit/1d75d93220650324a2340ae9e572b48f5ca84b5f) Thanks [@savindi7](https://github.com/savindi7)! - Update logic to disable Reset Password button in user profile.
+
+## 2.15.32
+
+### Patch Changes
+
+- [#6102](https://github.com/wso2/identity-apps/pull/6102) [`26b59da530`](https://github.com/wso2/identity-apps/commit/26b59da5309040967c71a60f9c0a65b3e0e600e7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - AI feature improvement
+
+- Updated dependencies [[`26b59da530`](https://github.com/wso2/identity-apps/commit/26b59da5309040967c71a60f9c0a65b3e0e600e7)]:
+  - @wso2is/i18n@2.2.9
+
+## 2.15.31
+
+### Patch Changes
+
+- [#6080](https://github.com/wso2/identity-apps/pull/6080) [`e4f57c3ab9`](https://github.com/wso2/identity-apps/commit/e4f57c3ab91072e7105c74032bedefdad246ed6a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Allow arbitrary options to be passed to the extension for rendering alternative sms providers
+
+* [#6101](https://github.com/wso2/identity-apps/pull/6101) [`15c1fee109`](https://github.com/wso2/identity-apps/commit/15c1fee1097417229b15c3e72e7acd30083d39c6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve error handling in AI features
+
+* Updated dependencies [[`15c1fee109`](https://github.com/wso2/identity-apps/commit/15c1fee1097417229b15c3e72e7acd30083d39c6)]:
+  - @wso2is/i18n@2.2.8
+
+## 2.15.30
+
+### Patch Changes
+
+- [#6092](https://github.com/wso2/identity-apps/pull/6092) [`94ee13b2bb`](https://github.com/wso2/identity-apps/commit/94ee13b2bb94e8e47ed33c004060d2856d42e7df) Thanks [@chamathns](https://github.com/chamathns)! - Update documentation links for the AI features
+
+* [#6093](https://github.com/wso2/identity-apps/pull/6093) [`e74cc7760e`](https://github.com/wso2/identity-apps/commit/e74cc7760e96130510625af061ec523dd0295d26) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvments to AI features
+
+- [#6088](https://github.com/wso2/identity-apps/pull/6088) [`c4bced3178`](https://github.com/wso2/identity-apps/commit/c4bced3178c80047c39ec732fc5ee7f05123536f) Thanks [@brionmario](https://github.com/brionmario)! - Add support to skip super tenant from app urls
+
+* [#6094](https://github.com/wso2/identity-apps/pull/6094) [`ae06330b69`](https://github.com/wso2/identity-apps/commit/ae06330b69786f795f59f67ff4b900cf9d1ef16c) Thanks [@brionmario](https://github.com/brionmario)! - Move SaaS My Account settings config to deployment level
+
+* Updated dependencies [[`94ee13b2bb`](https://github.com/wso2/identity-apps/commit/94ee13b2bb94e8e47ed33c004060d2856d42e7df), [`e74cc7760e`](https://github.com/wso2/identity-apps/commit/e74cc7760e96130510625af061ec523dd0295d26), [`7b07a9a027`](https://github.com/wso2/identity-apps/commit/7b07a9a027a6bd98451cc7422ae80b18bc28b97f)]:
+  - @wso2is/i18n@2.2.7
+  - @wso2is/theme@2.0.76
+  - @wso2is/react-components@2.1.22
+  - @wso2is/dynamic-forms@2.0.51
+  - @wso2is/form@2.0.52
+
+## 2.15.29
+
+### Patch Changes
+
+- [#6075](https://github.com/wso2/identity-apps/pull/6075) [`72eef0f393`](https://github.com/wso2/identity-apps/commit/72eef0f393dfafc57cf4429ed93293d5b69e1dcb) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Use V2 API for business user login page
+
+## 2.15.28
+
+### Patch Changes
+
+- Updated dependencies [[`07bbb5ed78`](https://github.com/wso2/identity-apps/commit/07bbb5ed78f9f7ab0f1935705c20fa9650c164b5)]:
+  - @wso2is/i18n@2.2.6
+
 ## 2.15.27
 
 ### Patch Changes

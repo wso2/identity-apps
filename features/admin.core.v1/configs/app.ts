@@ -30,6 +30,7 @@ import { getConsoleSettingsResourceEndpoints } from "../../admin.console-setting
 import { getEmailTemplatesResourceEndpoints } from "../../admin.email-templates.v1";
 import { getFeatureGateResourceEndpoints } from "../../admin.extensions.v1/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "../../admin.extensions.v1/configs/endpoints";
+import { getExtendedFeatureResourceEndpointsV2 } from "../../admin.extensions.v2/config/endpoints";
 import { getGroupsResourceEndpoints } from "../../admin.groups.v1";
 import { getIDPResourceEndpoints } from "../../admin.identity-providers.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "../../admin.identity-verification-providers.v1";
@@ -284,6 +285,7 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
+            ...getExtendedFeatureResourceEndpointsV2(this.resolveServerHost()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),

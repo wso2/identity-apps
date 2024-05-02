@@ -1,5 +1,31 @@
 # @wso2is/i18n
 
+## 2.2.9
+
+### Patch Changes
+
+- [#6102](https://github.com/wso2/identity-apps/pull/6102) [`26b59da530`](https://github.com/wso2/identity-apps/commit/26b59da5309040967c71a60f9c0a65b3e0e600e7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - AI feature improvement
+
+## 2.2.8
+
+### Patch Changes
+
+- [#6101](https://github.com/wso2/identity-apps/pull/6101) [`15c1fee109`](https://github.com/wso2/identity-apps/commit/15c1fee1097417229b15c3e72e7acd30083d39c6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve error handling in AI features
+
+## 2.2.7
+
+### Patch Changes
+
+- [#6092](https://github.com/wso2/identity-apps/pull/6092) [`94ee13b2bb`](https://github.com/wso2/identity-apps/commit/94ee13b2bb94e8e47ed33c004060d2856d42e7df) Thanks [@chamathns](https://github.com/chamathns)! - Update documentation links for the AI features
+
+* [#6089](https://github.com/wso2/identity-apps/pull/6089) [`7b07a9a027`](https://github.com/wso2/identity-apps/commit/7b07a9a027a6bd98451cc7422ae80b18bc28b97f) Thanks [@chamathns](https://github.com/chamathns)! - Revise AI banner content
+
+## 2.2.6
+
+### Patch Changes
+
+- [#6084](https://github.com/wso2/identity-apps/pull/6084) [`07bbb5ed78`](https://github.com/wso2/identity-apps/commit/07bbb5ed78f9f7ab0f1935705c20fa9650c164b5) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix 18n issues in AI features
+
 ## 2.2.5
 
 ### Patch Changes
