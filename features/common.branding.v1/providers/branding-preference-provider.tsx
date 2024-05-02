@@ -23,13 +23,14 @@ import { Helmet } from "react-helmet";
 import { generateAsgardeoTheme } from "../branding/theme";
 import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts/branding-preference-context";
 import { BrandingPreferenceMeta } from "../meta";
+import { BrandingPreferenceAPIResponseInterface } from "../models";
 
 /**
  * Props interface for the BrandingPreferenceProvider.
  */
 export interface BrandingPreferenceProviderProps {
 
-    themePreference: any;
+    themePreference: BrandingPreferenceAPIResponseInterface;
 }
 
 /**
