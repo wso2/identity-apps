@@ -43,6 +43,7 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
+import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -53,6 +54,7 @@ import {
 } from "../../admin.core.v1";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "../../admin.extensions.v1";
+import { MyAccountOverview } from "../../admin.extensions.v1/configs/components/my-account-overview";
 import AILoginFlowProvider from "../../admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
@@ -187,11 +189,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
     const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
+    const disabledApplicationFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features.applications?.disabledFeatures);
+    const isMyAccountSimplifiedSettingsEnabled: boolean =
+        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId
+        && !disabledApplicationFeatures?.includes("applications.myaccount.simplifiedSettings");
+
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
@@ -226,9 +235,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         if (featureConfig) {
+            if (!legacyAuthzRuntime && isMyAccountSimplifiedSettingsEnabled) {
+                panes.push({
+                    componentId: "overview",
+                    menuItem: t("applications:myaccount.overview.tabName"),
+                    render: MyAccountOverviewTabPane
+                });
+            }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
-                && !isSubOrganization()) {
+                && !isSubOrganization()
+                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -257,6 +274,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
                 && !isFragmentApp
+                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)
             ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -374,8 +392,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                 && !isFragmentApp) {
-
+                 && !isFragmentApp
+                 && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -868,6 +886,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         });
         setShowClientSecretHashDisclaimerModal(true);
     };
+
+    const MyAccountOverviewTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <MyAccountOverview/>
+        </ResourceTab.Pane>
+    );
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>

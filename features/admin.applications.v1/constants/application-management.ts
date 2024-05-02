@@ -34,6 +34,7 @@ export class ApplicationManagementConstants {
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
     public static readonly MY_ACCOUNT_APP_NAME: string = "My Account";
+    public static readonly MY_ACCOUNT_CLIENT_ID: string = "MY_ACCOUNT";
     public static readonly CONSOLE_APP_NAME: string = "Console";
     public static readonly SYSTEM_APPS: string[] = [ this.CONSOLE_APP_NAME ];
     public static readonly DEFAULT_APPS: string[] = [ this.MY_ACCOUNT_APP_NAME ];

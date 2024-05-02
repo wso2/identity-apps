@@ -197,6 +197,9 @@ interface ApplicationsDocumentationLinksInterface {
     myaccount: {
         learnMore: string;
         smsOtp: string;
+        overview: {
+            learnMore: string;
+        }
     }
     roles: {
         learnMore: string;

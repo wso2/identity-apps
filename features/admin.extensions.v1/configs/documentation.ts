@@ -168,6 +168,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 },
                 myaccount: {
                     learnMore: undefined,
+                    overview: {
+                        learnMore: undefined
+                    },
                     smsOtp: undefined
                 },
                 newApplication: {
