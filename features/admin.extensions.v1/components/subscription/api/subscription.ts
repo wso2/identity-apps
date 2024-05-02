@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { HttpMethods } from "@wso2is/core/models";
+import { OrganizationType } from "features/admin.organizations.v1/constants";
+import { Config, store } from "../../../../admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "../../../../admin.core.v1/hooks/use-request";
-import { HttpMethods } from "@wso2is/core/models";
-import { Config } from "../../../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getDomainQueryParam } from "../../tenants/api/tenants";
 import { getTenantResourceEndpoints } from "../../tenants/configs";
 import { TenantTierRequestResponse } from "../models/subscription";
@@ -36,7 +36,7 @@ import { TenantTierRequestResponse } from "../models/subscription";
 const useTenantTier = <Data = TenantTierRequestResponse,
     Error = RequestErrorInterface> (): RequestResultInterface<Data, Error> => {
 
-    const { isFirstLevelOrganization } = useGetCurrentOrganizationType();
+    const organizationType: OrganizationType = store.getState().organization.organizationType;
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -48,7 +48,8 @@ const useTenantTier = <Data = TenantTierRequestResponse,
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(
-        Config.getDeploymentConfig().extensions?.subscriptionApiPath && isFirstLevelOrganization()
+        organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
+        && Config.getDeploymentConfig().extensions?.subscriptionApiPath
             ? requestConfig
             : null,
         {
