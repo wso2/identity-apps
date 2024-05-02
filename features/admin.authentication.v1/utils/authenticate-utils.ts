@@ -73,7 +73,7 @@ export class AuthenticateUtils {
             responseMode: window["AppUtils"]?.getConfig()?.idpConfigs?.responseMode ?? responseModeFallback,
             scope: window["AppUtils"]?.getConfig()?.idpConfigs?.scope ?? [ TokenConstants.SYSTEM_SCOPE ],
             sendCookiesInRequests: true,
-            sessionRefreshInterval: window[ "AppUtils" ]?.getConfig()?.session?.sessionRefreshTimeOut,
+            sessionRefreshInterval: -1,
             signInRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
             signOutRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
             storage: AuthenticateUtils.resolveStorage() as Storage.WebWorker,
