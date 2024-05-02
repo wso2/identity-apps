@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.16.4
+
+### Patch Changes
+
+- [#6136](https://github.com/wso2/identity-apps/pull/6136) [`b90b3cb939`](https://github.com/wso2/identity-apps/commit/b90b3cb939f5eeb251db01c5a5dcadf17c0ea5ab) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Make issuer tab visible for google connection
+
 ## 2.16.3
 
 ### Patch Changes
