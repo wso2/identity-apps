@@ -16,16 +16,17 @@
  * under the License.
  */
 
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { SignOnMethods } from "../../../admin.applications.v1/components/settings/sign-on-methods/sign-on-methods";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "../../../admin.core.v1/store";
 import { IdentityProviderManagementConstants } from "../../../admin.identity-providers.v1/constants";
-import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-login-flow.scss";
+import AILoginFlowProvider from "../../../admin.login-flow.ai.v1/providers/ai-login-flow-provider";
+import useConsoleSettings from "../../hooks/use-console-settings";
 
 /**
  * Props interface of {@link ConsoleLoginFlow}
@@ -66,22 +67,24 @@ const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
     }, [ featureConfig ]);
 
     return (
-        <div className="console-login-flow" data-componentid={ componentId }>
-            <SignOnMethods
-                application={ consoleConfigurations }
-                appId={ consoleConfigurations?.id }
-                authenticationSequence={ consoleConfigurations?.authenticationSequence }
-                clientId={ consoleConfigurations?.clientId }
-                isLoading={ isConsoleConfigurationsFetchRequestLoading }
-                onUpdate={ () => {
-                    mutateConsoleConfigurations();
-                } }
-                readOnly={ isReadOnly }
-                isSystemApplication={ true }
-                hiddenAuthenticators={ hiddenAuthenticators }
-                data-componentid={ `${componentId}-sign-on-methods` }
-            />
-        </div>
+        <AILoginFlowProvider>
+            <div className="console-login-flow" data-componentid={ componentId }>
+                <SignOnMethods
+                    application={ consoleConfigurations }
+                    appId={ consoleConfigurations?.id }
+                    authenticationSequence={ consoleConfigurations?.authenticationSequence }
+                    clientId={ consoleConfigurations?.clientId }
+                    isLoading={ isConsoleConfigurationsFetchRequestLoading }
+                    onUpdate={ () => {
+                        mutateConsoleConfigurations();
+                    } }
+                    readOnly={ isReadOnly }
+                    isSystemApplication={ true }
+                    hiddenAuthenticators={ hiddenAuthenticators }
+                    data-componentid={ `${componentId}-sign-on-methods` }
+                />
+            </div>
+        </AILoginFlowProvider>
     );
 };
 
