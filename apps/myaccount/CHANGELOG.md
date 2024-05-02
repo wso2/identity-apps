@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.5.59
+
+### Patch Changes
+
+- [#6126](https://github.com/wso2/identity-apps/pull/6126) [`e0d5424271`](https://github.com/wso2/identity-apps/commit/e0d54242718986e7090dc0e59b6ed8d707a092d6) Thanks [@lashinijay](https://github.com/lashinijay)! - Update profile info when navigate to Profile Info tab
+
 ## 2.5.58
 
 ### Patch Changes
