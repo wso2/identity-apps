@@ -19,7 +19,7 @@
 import {
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceSideImageLayoutInterface
-} from "../../models";
+} from "../../../common.branding.v1/models";
 
 /**
  * Initial values of the left image and right image layouts properties.

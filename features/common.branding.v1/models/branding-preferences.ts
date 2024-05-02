@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -159,6 +159,10 @@ export interface BrandingPreferenceURLInterface {
      * Link for Cookie Policy.
      */
     cookiePolicyURL: string;
+    /**
+     * Link for Self Sign Up.
+     */
+    selfSignUpURL?: string;
 }
 
 /**
@@ -558,9 +562,17 @@ export enum FontConfigurationStrategies {
  * Enum for preview screen types.
  */
 export enum PreviewScreenType {
+    COMMON = "common",
     LOGIN = "login",
     MY_ACCOUNT = "myaccount",
-    EMAIL_TEMPLATE = "email-template"
+    EMAIL_TEMPLATE = "email-template",
+    SIGN_UP = "sign-up",
+    EMAIL_OTP = "email-otp",
+    SMS_OTP = "sms-otp",
+    TOTP = "totp",
+    PASSWORD_RECOVERY = "password-recovery",
+    PASSWORD_RESET = "password-reset",
+    PASSWORD_RESET_SUCCESS = "password-reset-success"
 }
 
 /**
@@ -581,4 +593,9 @@ export enum PredefinedLayouts {
 export enum PredefinedThemes {
     LIGHT = "LIGHT",
     DARK = "DARK",
+}
+
+export enum BrandingSubFeatures {
+    DESIGN = "DESIGN",
+    CUSTOM_TEXT = "CUSTOM_TEXT"
 }

@@ -31,8 +31,8 @@ import PasswordResetSuccessFragment from "./fragments/password-reset-success-fra
 import SignUpFragment from "./fragments/sign-up-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
+import { BrandingPreferenceInterface, PreviewScreenType } from "../../../../common.branding.v1/models";
 import useBrandingPreference from "../../../hooks/use-branding-preference";
-import { BrandingPreferenceInterface, PreviewScreenType } from "../../../models";
 
 /**
  * Proptypes for the login box component of login screen skeleton.

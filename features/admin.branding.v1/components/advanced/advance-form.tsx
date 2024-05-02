@@ -26,9 +26,9 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardR
 import { Trans, useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { BrandingPreferenceInterface } from "../../../common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../../constants";
 import { BrandingURLPreferenceConstants } from "../../constants/url-preference-constants";
-import { BrandingPreferenceInterface } from "../../models";
 
 /**
  * Interface for Branding Preference Advance Form props.

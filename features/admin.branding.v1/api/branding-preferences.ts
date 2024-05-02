@@ -28,7 +28,7 @@ import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceInterface,
     BrandingPreferenceTypes
-} from "../models";
+} from "../common.branding.v1/models";
 
 /**
  * Get an axios instance.

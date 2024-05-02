@@ -18,8 +18,8 @@
 
 import { DARK_THEME } from "./dark-theme";
 import { LIGHT_THEME } from "./light-theme";
+import { DynamicBrandingPreferenceThemeInterface, PredefinedThemes } from "../../../common.branding.v1/models";
 import { ThemeSwatchUIConfigsInterface } from "../../components";
-import { DynamicBrandingPreferenceThemeInterface, PredefinedThemes } from "../../models";
 
 export const THEMES: DynamicBrandingPreferenceThemeInterface = {
     [ PredefinedThemes.LIGHT ]: LIGHT_THEME,

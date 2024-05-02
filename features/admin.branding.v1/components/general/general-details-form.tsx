@@ -23,8 +23,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Placeholder } from "semantic-ui-react";
 import { AppState } from "../../../admin.core.v1/store";
+import { BrandingPreferenceInterface } from "../../../common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../../constants";
-import { BrandingPreferenceInterface } from "../../models";
 
 /**
  * Interface for Branding Preference General Details Form props.

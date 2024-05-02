@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownProps, Form, Select } from "semantic-ui-react";
-import { PreviewScreenType } from "../models/branding-preferences";
+import { PreviewScreenType } from "../../common.branding.v1/models/branding-preferences";
 
 /**
  * Prop types for the language dropdown component.

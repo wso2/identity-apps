@@ -23,7 +23,7 @@ import {
     BrandingPreferenceAPIResponseInterface,
     BrandingSubFeatures,
     PreviewScreenType
-} from "../models/branding-preferences";
+} from "../../common.branding.v1/models/branding-preferences";
 import {
     CustomTextConfigurationModes,
     CustomTextInterface,

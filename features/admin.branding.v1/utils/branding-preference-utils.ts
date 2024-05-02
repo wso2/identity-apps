@@ -19,15 +19,15 @@
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
-import { BrandingPreferencesConstants } from "../constants";
-import { BrandingPreferenceMeta, LAYOUTS, PredefinedLayouts } from "../meta";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
     DynamicBrandingPreferenceLayoutInterface,
     PredefinedThemes
-} from "../models";
+} from "../../common.branding.v1/models";
+import { BrandingPreferencesConstants } from "../constants";
+import { BrandingPreferenceMeta, LAYOUTS, PredefinedLayouts } from "../meta";
 
 /**
  * Utility class for Branding Preference related operations.

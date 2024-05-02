@@ -52,16 +52,16 @@ import { ThemeSwatchAdapter, ThemeSwatchUIConfigsInterface } from "./theme-swatc
 import { commonConfig } from "../../../admin.extensions.v1/configs";
 import { AppConstants } from "../../../admin.core.v1/constants";
 import { AppState } from "../../../admin.core.v1/store";
-import { useLayout } from "../../api";
-import { BrandingPreferencesConstants } from "../../constants";
-import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
     FontConfigurationStrategies,
     PredefinedThemes
-} from "../../models";
+} from "../../../common.branding.v1/models";
+import { useLayout } from "../../api";
+import { BrandingPreferencesConstants } from "../../constants";
+import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";
 
 /**
  * Interface for Branding Preference Design Form props.

@@ -17,10 +17,10 @@
  */
 
 import React from "react";
+import { PredefinedThemes } from "../../../../common.branding.v1/models";
 import { render, screen } from "../../../../test-configs/utils";
 import "@testing-library/jest-dom";
 import { BrandingPreferenceMeta } from "../../../meta";
-import { PredefinedThemes } from "../../../models";
 import { ThemeSwatch } from "../theme-swatch";
 
 describe.skip("Test if the Theme Swatch component  is working as expected", () => {

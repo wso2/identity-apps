@@ -17,7 +17,7 @@
  */
 
 import cloneDeep from "lodash-es/cloneDeep";
-import { BrandingPreferenceAPIResponseInterface } from "../models";
+import { BrandingPreferenceAPIResponseInterface } from "../../common.branding.v1/models";
 import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
 
 /**

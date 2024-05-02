@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEventHandler, PropsWithChildren, ReactElement } from "react";
-import { BrandingPreferenceColorsInterface, PredefinedThemes } from "../../../models";
+import { BrandingPreferenceColorsInterface, PredefinedThemes } from "../../../../common.branding.v1/models";
 
 /**
  * Proptypes for the Theme Swatch component.

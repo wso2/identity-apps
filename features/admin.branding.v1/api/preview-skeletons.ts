@@ -24,7 +24,7 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../admin.core.v1/hooks/use-request";
-import { PreviewScreenType } from "../models/branding-preferences";
+import { PreviewScreenType } from "../../common.branding.v1/models/branding-preferences";
 
 /**
  * Custom hook that retrieves a preview skeleton's markup of a given screen type.
