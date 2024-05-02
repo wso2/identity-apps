@@ -1012,6 +1012,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const InfoTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <Info
+                appId={ application.id }
                 inboundProtocols={ application?.inboundProtocols }
                 isOIDCConfigLoading={ isOIDCConfigsLoading }
                 isSAMLConfigLoading={ isSAMLConfigsLoading }

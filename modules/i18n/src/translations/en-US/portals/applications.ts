@@ -451,6 +451,10 @@ export const applications: ApplicationsNS = {
                 tabName: "General"
             },
             info: {
+                mtlsOidcHeading: "Mutual TLS Server Endpoints",
+                mtlsOidcSubHeading: "The following server endpoints will be useful for you to implement " +
+                    "and configure authentication for your application using OpenID Connect where MTLS " +
+                    "client authentication or certificate token binding is applicable. ",
                 oidcHeading: "Server Endpoints",
                 oidcSubHeading: "The following server endpoints will be useful for you to implement and " +
                     "configure authentication for your application using OpenID Connect.",

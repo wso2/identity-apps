@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -98,6 +100,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
+import "./minimal-application-create-wizard.scss";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -1131,20 +1134,29 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && isFAPIAppCreationEnabled
                         && (
                             <div className="pt-0 mt-0">
-                                <Field
-                                    data-componentid={ `${ testId }-fapi-app-checkbox` }
-                                    name={ "isFAPIApp" }
-                                    required={ false }
-                                    type="checkbox"
-                                    value={ [ "isFAPIApp" ] }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.generalDetails" +
-                                                ".fields.isFapiApp.label" ),
-                                            value: "fapiApp"
-                                        }
-                                    ] }
-                                />
+                                <Box display="flex" alignItems="center">
+                                    <Field
+                                        data-componentid={ `${ testId }-fapi-app-checkbox` }
+                                        name="isFAPIApp"
+                                        required={ false }
+                                        type="checkbox"
+                                        value={ [ "isFAPIApp" ] }
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.generalDetails" +
+                                                    ".fields.isFapiApp.label" ),
+                                                value: "fapiApp"
+                                            }
+                                        ] }
+                                    />
+                                    { applicationConfig.advancedConfigurations.showFapiFeatureStatusChip && (
+                                        <div className="oxygen-chip-div" >
+                                            <Chip
+                                                label={ t("common:beta") }
+                                                className="oxygen-menu-item-chip oxygen-chip-beta" />
+                                        </div>
+                                    ) }
+                                </Box>
                                 <Hint compact>
                                     { t("applications:forms.generalDetails.fields" +
                                         ".isFapiApp.hint" ) }
