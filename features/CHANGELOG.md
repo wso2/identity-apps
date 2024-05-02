@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.15.37
+
+### Patch Changes
+
+- [#6087](https://github.com/wso2/identity-apps/pull/6087) [`0ed357528b`](https://github.com/wso2/identity-apps/commit/0ed357528b8404674a732cfd2283e4a487c3d0b7) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with listing unnecessary userstores
+
+* [#6123](https://github.com/wso2/identity-apps/pull/6123) [`0697ceacc0`](https://github.com/wso2/identity-apps/commit/0697ceacc0adc3f1869524df4c1d6f36955cb030) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Fix LDAP userstore pagination
+
 ## 2.15.36
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.68
+
+### Patch Changes
+
+- [#6124](https://github.com/wso2/identity-apps/pull/6124) [`a856fc6776`](https://github.com/wso2/identity-apps/commit/a856fc67768fafeba33c573ea56d57ce9b16dd4b) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix portal path issue
+
 ## 2.1.67
 
 ### Patch Changes

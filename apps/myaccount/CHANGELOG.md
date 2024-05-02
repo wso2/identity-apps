@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.5.57
+
+### Patch Changes
+
+- [#6087](https://github.com/wso2/identity-apps/pull/6087) [`0ed357528b`](https://github.com/wso2/identity-apps/commit/0ed357528b8404674a732cfd2283e4a487c3d0b7) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with listing unnecessary userstores
+
+- Updated dependencies [[`0ed357528b`](https://github.com/wso2/identity-apps/commit/0ed357528b8404674a732cfd2283e4a487c3d0b7), [`0697ceacc0`](https://github.com/wso2/identity-apps/commit/0697ceacc0adc3f1869524df4c1d6f36955cb030)]:
+  - @wso2is/features@2.15.37
+
 ## 2.5.56
 
 ### Patch Changes
