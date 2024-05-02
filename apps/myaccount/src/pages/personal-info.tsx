@@ -30,7 +30,7 @@ import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
-import { addAlert } from "../store/actions";
+import { addAlert, getProfileInformation } from "../store/actions";
 import { CommonUtils } from "../utils";
 
 /**
@@ -94,9 +94,12 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
         if (localCredentialExist && localCredentialExist == "false") {
             setIsNonLocalCredentialUser(true);
         }
-
     }, [ profileDetails?.profileInfo ]);
 
+    // Invoke me enpoint when navigate to Personal Info tab.
+    useEffect(() => {
+        dispatch(getProfileInformation(true));
+    }, []);
 
     return (
         <PageLayout
