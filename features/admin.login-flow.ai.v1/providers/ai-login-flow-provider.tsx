@@ -136,7 +136,9 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
                         {
                             !applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG) &&
                             !isSubOrganization() && (
-                                <LoginFlowAIBanner/>
+                                <div className="mb-2">
+                                    <LoginFlowAIBanner/>
+                                </div>
                             )
                         }
                         { children }
