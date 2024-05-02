@@ -348,7 +348,7 @@
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
                     "applications.loginFlow.ai",
-                    "applications.myAccountSimplifiedSettings",
+                    "applications.myaccount.simplifiedSettings",
                     "applications.myaccount.saasMyaccountSettings"
                 ],
                 "enabled": true,

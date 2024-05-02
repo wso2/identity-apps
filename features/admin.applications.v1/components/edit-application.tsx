@@ -195,8 +195,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
     const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
-    const myAccountSimplifiedSettings: boolean = !useSelector((state: AppState) =>
-        state.config.ui.features.applications?.disabledFeatures.includes("applications.myAccountSimplifiedSettings"));
+    const disabledApplicationFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features.applications?.disabledFeatures);
+    const isMyAccountSimplifiedSettingsEnabled: boolean = ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID ===
+        application?.clientId &&
+        !disabledApplicationFeatures?.includes("applications.myaccount.simplifiedSettings");
 
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -232,8 +235,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         if (featureConfig) {
-            if (!legacyAuthzRuntime && ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId
-                && myAccountSimplifiedSettings) {
+            if (!legacyAuthzRuntime && isMyAccountSimplifiedSettingsEnabled) {
                 panes.push({
                     componentId: "overview",
                     menuItem: t("applications:myaccount.overview.tabName"),
@@ -243,9 +245,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
                 && !isSubOrganization()
-                && (legacyAuthzRuntime ||
-                    !(application?.clientId === ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID
-                        && myAccountSimplifiedSettings))) {
+                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -274,9 +274,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
                 && !isFragmentApp
-                && (legacyAuthzRuntime ||
-                        !(application?.clientId === ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID
-                            && myAccountSimplifiedSettings))
+                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)
             ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -395,10 +393,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
                  && !isFragmentApp
-                 && (legacyAuthzRuntime ||
-                        !(application?.clientId === ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID
-                            && myAccountSimplifiedSettings))) {
-
+                 && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,

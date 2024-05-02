@@ -53,7 +53,7 @@ export const MyAccountOverview: FunctionComponent<IdentifiableComponentInterface
                     { t("applications:myaccount.overview.contentIntro") }
                     <DocumentationLink
                         link={ "develop.applications.myaccount.overview.learnMore" }
-                        isLinkRef = { true }
+                        isLinkRef
                     >
                         <Trans
                             i18nKey={ "extensions:common.learnMore" }
@@ -61,7 +61,8 @@ export const MyAccountOverview: FunctionComponent<IdentifiableComponentInterface
                             Learn More
                         </Trans>
                     </DocumentationLink>
-                    <br/><br/>
+                </Text>
+                <Text>
                     <Trans
                         i18nKey={ "applications:myaccount.overview.contentDescription" }
                     >

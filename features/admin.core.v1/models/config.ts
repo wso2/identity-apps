@@ -61,13 +61,6 @@ interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
     templates?: Record<string, any>[];
 }
 
-export interface ApplicationsFeatureAccessConfigInterface extends FeatureAccessConfigInterface {
-    /**
-     * Enable/Disable saasMyAccount.
-     */
-    saasMyAccount: boolean;
-}
-
 /**
  * Application configuration interface.
  */
@@ -87,7 +80,7 @@ export interface FeatureConfigInterface {
     /**
      * Application management feature.
      */
-    applications?: ApplicationsFeatureAccessConfigInterface;
+    applications?: FeatureAccessConfigInterface;
     /**
      * Application roles feature.
      */

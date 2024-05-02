@@ -273,6 +273,7 @@ export class AppConstants {
                 `${ AppConstants.getDeveloperViewBasePath() }/applications/:id:tabName`
             ],
             [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
+            [ "BRANDING", `${ AppConstants.getDeveloperViewBasePath() }/branding` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
             [ "CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings` ],
             [ "CLAIM_VERIFICATION_SETTINGS",
@@ -404,8 +405,7 @@ export class AppConstants {
             [ "INTERNAL_NOTIFICATION_SENDING",
                 `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
-                `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
-            [ "BRANDING", `${ AppConstants.getDeveloperViewBasePath() }/branding` ]
+                `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ]
         ]);
 
         return paths;
