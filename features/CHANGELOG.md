@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.16.0
+
+### Minor Changes
+
+- [#6097](https://github.com/wso2/identity-apps/pull/6097) [`6977b75151`](https://github.com/wso2/identity-apps/commit/6977b7515109d9666a16c109f4ccba40fb4f249e) Thanks [@RivinduM](https://github.com/RivinduM)! - Add MTLS endpoints to info portal
+
 ## 2.15.38
 
 ### Patch Changes
