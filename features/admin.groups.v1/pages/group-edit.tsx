@@ -18,6 +18,7 @@
 
 import { TabPageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
+import { userstoresConfig } from "features/admin.extensions.v1";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -72,13 +73,22 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
         history.push(AppConstants.getPaths().get("GROUPS"));
     };
 
+    const resolveGroupName = (): string => {
+        if (group && group.displayName.indexOf("/") !== -1) {
+            return group.displayName.split("/")[0] === userstoresConfig.primaryUserstoreName
+                ? group.displayName.split("/")[1] : group.displayName;
+        } else if (group) {
+            return group.displayName;
+        }
+    };
+
     return (
         <GroupManagementProvider>
             <TabPageLayout
                 isLoading={ isGroupDetailsRequestLoading }
                 title={
                     group && group.displayName ?
-                        group.displayName :
+                        resolveGroupName() :
                         t("pages:rolesEdit.title")
                 }
                 pageTitle={ t("pages:rolesEdit.title") }
