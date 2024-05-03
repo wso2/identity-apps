@@ -25,6 +25,7 @@ import {
     MultiValueAttributeInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface,
+    RolesMemberInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -190,6 +191,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     user[userConfig.userProfileSchema]?.accountLocked === true;
     const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
+    const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
+        role.display === administratorConfig.adminRoleName) ?? false;
+
 
     useEffect(() => {
 
@@ -1099,14 +1103,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser: boolean =
-            [ tenantAdmin, adminUsername ]?.includes(resolvedUsername) || authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean =
+            authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
                 {
                     (!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
-                    && !isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser ? (
+                    && (!isCurrentUserAdmin || !isUserCurrentLoggedInUser) ? (
                             <Show
                                 when={ featureConfig?.users?.scopes?.delete }
                             >
