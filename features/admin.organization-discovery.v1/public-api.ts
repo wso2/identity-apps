@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,10 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-export * from "./api";
-export * from "./components";
-export * from "./configs";
-export * from "./models";
-export * from "./pages";
-export * from "./api"
+export { default as AssignOrganizationDiscoverDomainsPage } from "./pages/assign-organization-discovery-domains-page";
+export { default as EditOrganizationDiscoveryDomainsPage } from "./pages/edit-organization-discovery-domains-page";
+export { default as OrganizationDiscoveryDomainsPage } from "./pages/organization-discovery-domains-page";

@@ -11,7 +11,6 @@
         "validation"
     ],
     "main": "dist/src/index.js",
-    "module": "src/index.ts",
     "types": "dist/types/index.d.ts",
     "scripts": {
         "prebuild": "pnpm clean:build",

@@ -1,33 +1,36 @@
 {
-    "extends": "../tsconfig.base.react.json",
+    "compileOnSave": false,
     "compilerOptions": {
-        "declaration": true,
-        "declarationDir": "dist/types",
-        "lib": [ "ESNext", "DOM", "DOM.Iterable", "ScriptHost" ],
-        "outDir": "dist/src",
-        "resolveJsonModule": true,
-        "skipDefaultLibCheck": true,
-        "types": [ "node", "webpack-env", "jest", "@testing-library/jest-dom" ]
+      "declaration": false,
+      "moduleResolution": "node",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "importHelpers": true,
+      "target": "es2015",
+      "module": "esnext",
+      "lib": [ "ESNext", "DOM", "DOM.Iterable" ],
+      "skipLibCheck": true,
+      "skipDefaultLibCheck": true,
+      "jsx": "react-jsx",
+      "allowJs": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": false,
+      "noImplicitOverride": false,
+      "noPropertyAccessFromIndexSignature": false,
+      "noImplicitReturns": false,
+      "noFallthroughCasesInSwitch": false,
+      "resolveJsonModule": true,
+      "baseUrl": ".",
+      "types": ["node", "jest"],
     },
-    "exclude": [
-        "build",
-        "cache",
-        "coverage",
-        "dist",
-        "node_modules",
-        "scripts",
-        "**/test-configs/*",
-        "jest.config.ts",
-        "**/tests/*",
-        "**/__tests__/*",
-        "**/__mocks__/*",
-        "**/*.test.js",
-        "**/*.test.jsx",
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "**/*.spec.js",
-        "**/*.spec.jsx",
-        "**/*.spec.ts",
-        "**/*.spec.tsx"
+    "exclude": ["node_modules", "tmp"],
+    "files": [],
+    "include": [],
+    "references": [
+      {
+        "path": "./tsconfig.lib.json"
+      }
     ]
-}
+  }
