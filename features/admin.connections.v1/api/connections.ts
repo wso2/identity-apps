@@ -17,7 +17,6 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -27,6 +26,7 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../admin.core.v1/hooks/use-request";
+import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { NotificationSenderSMSInterface } from "../models/authenticators";
@@ -774,7 +774,10 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
  * @param connection - Connection.
  * @returns A promise containing the response.
  */
-export const updateIdentityProviderDetails = (connection: ConnectionInterface): Promise<any> => {
+export const updateIdentityProviderDetails = (
+    connection: ConnectionInterface,
+    isADD: boolean = false
+): Promise<any> => {
 
     const { id, ...rest } = connection;
     const replaceOps: any = [];
@@ -782,7 +785,7 @@ export const updateIdentityProviderDetails = (connection: ConnectionInterface): 
     for (const key in rest) {
         if(rest[key] !== undefined) {
             replaceOps.push({
-                "operation": "REPLACE",
+                "operation": (isADD && key === "idpIssuerName") ? "ADD" : "REPLACE",
                 "path": "/" + key,
                 "value": rest[key]
             });

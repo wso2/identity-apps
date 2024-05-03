@@ -224,7 +224,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const handleFormSubmit = (updatedDetails: ConnectionInterface): void => {
         setIsSubmitting(true);
 
-        updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails })
+        updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails }, !editingIDP.idpIssuerName)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP." +
