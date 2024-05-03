@@ -65,11 +65,7 @@ import { Dispatch } from "redux";
 import "moment/locale/si";
 import "moment/locale/fr";
 
-/**
- * Main App component.
- *
- * @returns App Root component.
- */
+
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
     const featureGateConfigUpdated : FeatureGateInterface = { ...featureGateConfig };
 
