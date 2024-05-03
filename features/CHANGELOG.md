@@ -1,5 +1,15 @@
 # @wso2is/features
 
+## 2.16.5
+
+### Patch Changes
+
+- [#6140](https://github.com/wso2/identity-apps/pull/6140) [`c990bada3e`](https://github.com/wso2/identity-apps/commit/c990bada3e061fc68ffc6375d3938a239706e13d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix incorrect wellknown API call in sub org applications
+
+* [#6141](https://github.com/wso2/identity-apps/pull/6141) [`0ffa29b3e7`](https://github.com/wso2/identity-apps/commit/0ffa29b3e7c121511a99d9a0d68e2648c3df74a7) Thanks [@RivinduM](https://github.com/RivinduM)! - Update BETA label of FAPI app creation
+
+- [#6122](https://github.com/wso2/identity-apps/pull/6122) [`dc92a99c1d`](https://github.com/wso2/identity-apps/commit/dc92a99c1d8a684420797b5ba772580812fae0ed) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues in groups feature
+
 ## 2.16.4
 
 ### Patch Changes
