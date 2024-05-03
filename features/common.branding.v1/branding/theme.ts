@@ -52,8 +52,8 @@ export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) =
                     },
                     gradients: {
                         primary: {
-                            stop1: "#EB4F63",
-                            stop2: "#FA7B3F"
+                            stop1: brandingTheme?.colors?.primary?.main ?? "#EB4F63",
+                            stop2: brandingTheme?.colors?.primary?.main  ?? "#FA7B3F"
                         }
                     },
                     primary: {
@@ -78,8 +78,8 @@ export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) =
                     },
                     gradients: {
                         primary: {
-                            stop1: "#EB4F63",
-                            stop2: "#FA7B3F"
+                            stop1: brandingTheme?.colors?.primary?.main ?? "#EB4F63",
+                            stop2: brandingTheme?.colors?.primary?.main ?? "#FA7B3F"
                         }
                     },
                     primary: {
