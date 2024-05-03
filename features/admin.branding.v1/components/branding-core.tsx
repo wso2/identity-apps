@@ -52,7 +52,7 @@ import {
 } from "../../common.branding.v1/models";
 import { deleteBrandingPreference, updateBrandingPreference } from "../api";
 import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
-import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
+import useGetBrandingPreferenceResolve from "../../common.branding.v1/api/use-get-branding-preference-resolve";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
 import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
 import { BrandingPreferencesConstants } from "../constants";
