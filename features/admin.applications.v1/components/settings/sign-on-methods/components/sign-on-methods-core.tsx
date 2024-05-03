@@ -48,6 +48,7 @@ import {
 import {
     IdentityProviderManagementUtils
 } from "../../../../../admin.identity-providers.v1/utils/identity-provider-management-utils";
+import { OrganizationUtils } from "../../../../../admin.organizations.v1/utils";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
     ApplicationInterface,
@@ -270,6 +271,10 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                 setFacebookAuthenticators(facebook);
                 setMicrosoftAuthenticators(microsoft);
                 setAppleAuthenticators(apple);
+
+                // Add the organization authenticator to the connections list.
+                response[1].push(OrganizationUtils.getOrganizationAuthenticator());
+
                 setAuthenticators(response);
 
                 // Trigger the onsuccess callback and send the responses to the calller.

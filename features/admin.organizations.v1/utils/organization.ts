@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { store } from "../../admin.core.v1/store";
+import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
 import { OrganizationManagementConstants, OrganizationType } from "../constants";
 import { GenericOrganization } from "../models";
 
@@ -44,5 +45,14 @@ export class OrganizationUtils {
      */
     public static getOrganizationType(): OrganizationType{
         return store.getState().organization?.organizationType;
+    }
+
+    /**
+     * Get the Organization Authenticator.
+     *
+     * @returns The Organization Authenticator.
+     */
+    public static getOrganizationAuthenticator(): GenericAuthenticatorInterface {
+        return OrganizationManagementConstants.ORGANIZATION_AUTHENTICATOR;
     }
 }
