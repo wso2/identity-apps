@@ -55,6 +55,12 @@ export const ThemeProvider = (props: PropsWithChildren<BrandingPreferenceProvide
         [ brandingPreference?.preference?.theme ]
     );
 
+    const favicon: string = useMemo(() => {
+        return brandingPreference?.preference?.theme[
+            brandingPreference?.preference?.theme?.activeTheme
+        ].images?.favicon?.imgURL;
+    }, [ brandingPreference?.preference?.theme ]);
+
     const injectBrandingCSSSkeleton = () => {
         if (!brandingPreference?.preference?.theme || !brandingPreference?.preference?.configs?.isBrandingEnabled) {
             return;
@@ -62,10 +68,11 @@ export const ThemeProvider = (props: PropsWithChildren<BrandingPreferenceProvide
 
         return <style type="text/css">{ _theme }</style>;
     };
-
+    
     return (
         <BrandingPreferenceContext.Provider value={ contextValues }>
             <Helmet>
+                { favicon && <link rel="shortcut icon" href={ favicon } /> }
                 { injectBrandingCSSSkeleton() }
             </Helmet>
             <OxygenThemeProvider
