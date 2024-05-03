@@ -16,13 +16,17 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ConfirmationModal, ContentLoader, LabeledCard, Text } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import AuthenticationFlowBuilder
     from "../../../../../admin.authentication-flow-builder.v1/components/authentication-flow-builder";
@@ -149,6 +153,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
+    const dispatch: Dispatch = useDispatch();
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
     const isApplicationShared: boolean = application?.advancedConfigurations?.additionalSpProperties?.find(
@@ -276,6 +281,22 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                 // Reason for this is that the invoker needs the responses ASAP,
                 // but the state update takes time.
                 onSuccess && onSuccess(response, google, gitHub, facebook, microsoft, apple);
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: error.response.data?.message
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: t("secrets:errors.generic.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("secrets:errors.generic.message")
+                }));
             })
             .finally(() => {
                 setIsAuthenticatorsFetchRequestLoading(false);
