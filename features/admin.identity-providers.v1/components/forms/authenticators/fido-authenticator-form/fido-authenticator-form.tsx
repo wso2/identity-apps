@@ -29,8 +29,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { IdentityProviderManagementConstants } from "../../../constants";
+import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { IdentityProviderManagementConstants } from "../../../../constants";
 import {
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
@@ -41,7 +41,7 @@ import {
     FIDOAuthenticatorFormPropsInterface,
     FIDOConfigsInterface,
     FIDOConnectorConfigsAttributeInterface
-} from "../../../models";
+} from "../../../../models";
 
 const FORM_ID: string = "fido-authenticator-form";
 
