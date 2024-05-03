@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.5.66
+
+### Patch Changes
+
+- [#6145](https://github.com/wso2/identity-apps/pull/6145) [`d67eb137da`](https://github.com/wso2/identity-apps/commit/d67eb137da2cde0745ea4b14e330f3e1b6fafc0f) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Modify api operation if value is null
+
+- Updated dependencies [[`3ac5645982`](https://github.com/wso2/identity-apps/commit/3ac5645982b59a549a67d72f60c620df0941af5a), [`d67eb137da`](https://github.com/wso2/identity-apps/commit/d67eb137da2cde0745ea4b14e330f3e1b6fafc0f)]:
+  - @wso2is/features@2.16.6
+
 ## 2.5.65
 
 ### Patch Changes
