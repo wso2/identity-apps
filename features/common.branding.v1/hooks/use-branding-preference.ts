@@ -17,7 +17,8 @@
  */
 
 import { useContext } from "react";
-import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts";
+// import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts";
+import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts/branding-preference-context";
 import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceOrganizationDetailsInterface } from "../models";
 
 /**
