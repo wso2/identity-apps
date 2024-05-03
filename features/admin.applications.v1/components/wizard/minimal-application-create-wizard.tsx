@@ -1153,7 +1153,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                     { applicationConfig.advancedConfigurations.showFapiFeatureStatusChip && (
                                         <div className="oxygen-chip-div" >
                                             <Chip
-                                                label={ t("common:beta") }
+                                                label={ t("common:beta").toUpperCase() }
                                                 className="oxygen-menu-item-chip oxygen-chip-beta" />
                                         </div>
                                     ) }
