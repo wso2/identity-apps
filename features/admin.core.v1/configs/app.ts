@@ -82,9 +82,10 @@ export class Config {
             }
         }
 
-        if (skipAuthzRuntimePath) {
-            // removes the last occurrence of '/o' from serverOriginWithTenant
-            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant?.replace(/(\/o)(?!.*\1)/, "");
+        const serverOriginWithTenant: string = window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
+
+        if (skipAuthzRuntimePath && serverOriginWithTenant?.slice(-2) === "/o") {
+            return serverOriginWithTenant.substring(0,serverOriginWithTenant.lastIndexOf("/o"));
         }
 
         return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
