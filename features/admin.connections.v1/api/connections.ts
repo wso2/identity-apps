@@ -776,7 +776,7 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
  */
 export const updateIdentityProviderDetails = (
     connection: ConnectionInterface,
-    isADD: boolean = false
+    isAddOperation: boolean = false
 ): Promise<any> => {
 
     const { id, ...rest } = connection;
@@ -785,7 +785,7 @@ export const updateIdentityProviderDetails = (
     for (const key in rest) {
         if(rest[key] !== undefined) {
             replaceOps.push({
-                "operation": (isADD && key === "idpIssuerName") ? "ADD" : "REPLACE",
+                "operation": (isAddOperation && key === "idpIssuerName") ? "ADD" : "REPLACE",
                 "path": "/" + key,
                 "value": rest[key]
             });
