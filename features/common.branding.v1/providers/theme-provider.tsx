@@ -26,12 +26,21 @@ import { BrandingPreferenceMeta } from "../meta";
 import { BrandingPreferenceAPIResponseInterface } from "../models";
 
 /**
- * Props interface for the BrandingPreferenceProvider.
- */
-export interface BrandingPreferenceProviderProps {
-
+ * Props interface for the ThemeProvider.
+ */export interface ThemeProviderProps {
+    // The user's theme preference obtained from the BrandingPreferenceAPI.
     themePreference: BrandingPreferenceAPIResponseInterface;
+
+    // The default theme mode, either "light" or "dark".
+    defaultMode: "light" | "dark";
+
+    // The key used for storing the theme mode preference in local storage.
+    modeStorageKey: string;
+
+    // The title of the application.
+    appTitle?: string;
 }
+
 
 /**
  * Branding preference provider.
@@ -39,8 +48,14 @@ export interface BrandingPreferenceProviderProps {
  * @param props - Props for the client.
  * @returns Branding preference provider.
  */
-export const ThemeProvider = (props: PropsWithChildren<BrandingPreferenceProviderProps>): ReactElement => {
-    const { children, themePreference: brandingPreference } = props;
+export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): ReactElement => {
+    const { children,
+        appTitle,
+        themePreference: brandingPreference,
+        defaultMode,
+        modeStorageKey
+
+    } = props;
 
     const contextValues: BrandingPreferenceContextProps = useMemo(() => {
         if (!brandingPreference?.preference?.configs?.isBrandingEnabled) {
@@ -68,17 +83,18 @@ export const ThemeProvider = (props: PropsWithChildren<BrandingPreferenceProvide
 
         return <style type="text/css">{ _theme }</style>;
     };
-    
+
     return (
         <BrandingPreferenceContext.Provider value={ contextValues }>
             <Helmet>
+                { <title>{ appTitle }</title> }
                 { favicon && <link rel="shortcut icon" href={ favicon } /> }
                 { injectBrandingCSSSkeleton() }
             </Helmet>
             <OxygenThemeProvider
                 theme={ generateAsgardeoTheme(contextValues) }
-                defaultMode="light"
-                modeStorageKey="console-oxygen-mode"
+                defaultMode={ defaultMode }
+                modeStorageKey={ modeStorageKey }
             >
                 { children }
             </OxygenThemeProvider>
