@@ -83,7 +83,8 @@ export class Config {
         }
 
         if (skipAuthzRuntimePath) {
-            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant?.replace("/o/", "");
+            // removes the last occurrence of '/o' from serverOriginWithTenant
+            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant?.replace(/(\/o)(?!.*\1)/, "");
         }
 
         return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
