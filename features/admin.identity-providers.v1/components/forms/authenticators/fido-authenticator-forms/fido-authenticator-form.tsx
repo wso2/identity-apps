@@ -22,14 +22,15 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, Message, URLInput, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
-import { updateFidoConfigs, useFIDOConnectorConfigs } from "features/admin.identity-providers.v1/api/fido-configs";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { FIDOTrustedApps } from "./fido-trusted-apps";
 import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { updateFidoConfigs, useFIDOConnectorConfigs } from "../../../../api/fido-configs";
 import { IdentityProviderManagementConstants } from "../../../../constants";
 import {
     CommonAuthenticatorFormFieldMetaInterface,
@@ -277,6 +278,8 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         };
     };
 
+    let updateTrustedApps: () => Promise<boolean>;
+
     return (
         <Form
             id={ FORM_ID }
@@ -392,6 +395,13 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 showPredictions={ false }
                 isAllowEnabled={ false }
                 skipValidation
+                readOnly={ isReadOnly }
+            />
+            <FIDOTrustedApps
+                readOnly={ isReadOnly }
+                triggerSubmission={ (callback: () => Promise<boolean>) => {
+                    updateTrustedApps = callback;
+                } }
             />
             <Field.Button
                 form={ FORM_ID }

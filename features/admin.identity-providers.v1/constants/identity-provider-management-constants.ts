@@ -453,6 +453,14 @@ export class IdentityProviderManagementConstants {
 
     public static readonly FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE: string = "CONFIGM_00017";
 
+    public static readonly FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while updating the Passkey trusted apps.";
+
+    public static readonly FIDO_TRUSTED_APPS_UPDATE_ERROR: string = "An error occurred while updating the " +
+        "Passkey trusted apps.";
+
+    public static readonly FIDO_TRUSTED_APPS_SHA_SEPARATOR: string = "|";
+
     public static readonly BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR: string = "BasicAuthRequestPathAuthenticator";
     public static readonly OAUTH_REQUEST_PATH_AUTHENTICATOR: string = "OAuthRequestPathAuthenticator";
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,16 @@
  * under the License.
  */
 
-export * from "./apple-authenticator-form";
-export * from "./common-authenticator-form";
-export * from "./email-otp-authenticator-form";
-export * from "./facebook-authenticator-form";
-export * from "./fido-authenticator-forms/fido-authenticator-form";
-export * from "./github-authenticator-form";
-export * from "./google-authenticator-form";
-export * from "./microsoft-authenticator-form";
-export * from "./sms-otp-authenticator-form";
+/**
+ * Check whether the provided value is a valid SHA256 hash
+ *
+ * @param hash - SHA256 hash to validate.
+ * @returns Whether the provided value is a valid SHA256 hash or not.
+ */
+export const isValidSHA256 = (hash: string): boolean => {
+    // Check if the length is 64 characters after removing colons
+    // Check if it contains only hexadecimal characters
+    const sha256Regex: RegExp = /^[a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){63}$/;
+
+    return sha256Regex.test(hash);
+};

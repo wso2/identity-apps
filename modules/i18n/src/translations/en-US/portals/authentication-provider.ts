@@ -402,6 +402,41 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     validations: {
                         invalid: "The entered trusted origin is invalid."
                     }
+                },
+                trustedApps: {
+                    heading: "Passkey Trusted Apps",
+                    subHeading: "Apps from which FIDO-based authentication requests are initiated and need to be trusted by the server.",
+                    removeTrustedAppPopOver: "Remove the Trusted App",
+                    buttons: {
+                        addButton: "App",
+                        emptySearchButton: "View all API resources"
+                    },
+                    search: "Search trusted apps by app package name or app ID",
+                    placeHolderTexts: {
+                        emptyText: "There are no added Passkey Trusted Apps",
+                        errorText: {
+                            subtitles: {
+                                0: "An error occurred while retrieving the trusted apps.",
+                                1: "Please try again."
+                            },
+                            title: "Something went wrong"
+                        },
+                        emptySearch: {
+                            title: "No results found",
+                            subTitle: {
+                                0: "We couldn't find the trusted apps you searched for.",
+                                1: "Please try using a different parameter."
+                            }
+                        }
+                    }
+                },
+                trustedAppSHAValues: {
+                    hint: "The SHA256 fingerprints related to the signing certificate of your application.",
+                    label: "Key Hashes",
+                    placeholder: "D4:B9:A3:...",
+                    validations: {
+                        invalid: "The entered SHA256 fingerprint is invalid."
+                    }
                 }
             },
             github: {
@@ -1280,6 +1315,16 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 message: "Retrieval Error"
             }
         },
+        getFIDOTrustedApps: {
+            error: {
+                description: "{{ description }}",
+                message: "Retrieval Error"
+            },
+            genericError: {
+                description: "An error occurred while retrieving Passkey trusted apps.",
+                message: "Retrieval Error"
+            }
+        },
         getIDP: {
             error: {
                 description: "{{ description }}",
@@ -1459,6 +1504,20 @@ export const authenticationProvider:AuthenticationProviderNS = {
             },
             success: {
                 description: "Successfully updated the Passkey connector.",
+                message: "Update successful"
+            }
+        },
+        updateFIDOTrustedApps: {
+            error: {
+                description: "{{ description }}",
+                message: "Update error"
+            },
+            genericError: {
+                description: "An error occurred while updating Passkey Trusted Apps.",
+                message: "Update error"
+            },
+            success: {
+                description: "Successfully updated the Passkey Trusted Apps.",
                 message: "Update successful"
             }
         },
