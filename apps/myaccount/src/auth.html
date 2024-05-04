@@ -360,16 +360,26 @@
                     }
 
                     if (startupConfig.legacyAuthzRuntime) {
-                        authConfig.signInRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath()
-                            + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
-                        authConfig.signOutRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
+                        var basePath = applicationDomain.replace(/\/+$/, '');
+                        var baseRedirectURL = "<%= htmlWebpackPlugin.options.basename%>" ? basePath + '/' + "<%= htmlWebpackPlugin.options.basename%>" : basePath;
+
+                        authConfig.signInRedirectURL = baseRedirectURL;
+                        authConfig.signOutRedirectURL = baseRedirectURL;
                         authConfig.endpoints.authorizationEndpoint = getApiPath(
                             userTenant
-                                ? "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                                ? "/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize"
                                 : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize"
                         );
-                        authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/logout");
-                        authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/checksession");
+                        authConfig.logoutEndpointURL = getApiPath(
+                            userTenant
+                                ? "/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout"
+                                : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/logout",
+                        );
+                        authConfig.oidcSessionIFrameEndpointURL = getApiPath(
+                            userTenant
+                                ? "/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession"
+                                : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/checksession"
+                        );
                     }
 
                     auth.initialize(authConfig);
