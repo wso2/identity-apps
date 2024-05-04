@@ -4,7 +4,7 @@ name: PR Builder
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ hotfix-@wso2is/identity-apps-core@2.1.61 ]
     paths-ignore:
       - "**.md"
       - "LICENSE"
