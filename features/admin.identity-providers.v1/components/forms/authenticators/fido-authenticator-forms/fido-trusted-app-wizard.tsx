@@ -25,9 +25,9 @@ import {
     SelectionCard,
     URLInput
 } from "@wso2is/react-components";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, Divider, Grid, Modal } from "semantic-ui-react";
+import { Card, Grid, Modal } from "semantic-ui-react";
 import { getTechnologyLogos } from "../../../../../admin.core.v1";
 import { FIDOTrustedAppTypes } from "../../../../models";
 import "./fido-trusted-app-wizard.scss";

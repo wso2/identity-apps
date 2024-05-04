@@ -79,6 +79,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
     ] = useState<boolean>(undefined);
     const [ isReadOnly ] = useState<boolean>(isSubOrganization() || readOnly);
     const [ isFIDOConfigsSubmitting, setIsFIDOConfigsSubmitting ] = useState<boolean>(false);
+    const [ isFIDOTrustedAppsSubmitting, setIsFIDOTrustedAppsSubmitting ] = useState<boolean>(false);
     const [ FIDOTrustedOrigins, setFIDOTrustedOrigins ] = useState<string>("");
 
     const {
@@ -255,6 +256,9 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             updateFIDOConnectorConfigs();
         }
 
+        setIsFIDOTrustedAppsSubmitting(true);
+        updateTrustedApps().finally(() => setIsFIDOTrustedAppsSubmitting(false));
+
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
         for (const [ name, value ] of Object.entries(values)) {
@@ -410,8 +414,8 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 ariaLabel="FIDO authenticator update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ isSubmitting || isFIDOConfigsSubmitting }
-                loading={ isSubmitting || isFIDOConfigsSubmitting }
+                disabled={ isSubmitting || isFIDOConfigsSubmitting || isFIDOTrustedAppsSubmitting }
+                loading={ isSubmitting || isFIDOConfigsSubmitting || isFIDOTrustedAppsSubmitting }
                 label={ t("common:update") }
                 hidden={ isReadOnly }
             />
