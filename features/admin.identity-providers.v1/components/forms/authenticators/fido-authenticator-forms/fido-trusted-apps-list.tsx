@@ -38,7 +38,6 @@ import {
     FIDOTrustedAppsListInterface,
     FIDOTrustedAppsValuesInterface
 } from "../../../../models/identity-provider";
-import { isValidSHA256 } from "../../../../utils/validation-utils";
 
 /**
  * Prop types for the FIDO trusted apps list component.
@@ -322,8 +321,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
                     required = { false }
                     showPredictions={ false }
                     isAllowEnabled={ false }
-                    skipInternalValidation
-                    validation={ isValidSHA256 }
+                    skipValidation
                     readOnly={ readOnly }
                 />
             ): null

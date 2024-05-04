@@ -31,7 +31,6 @@ import { Card, Grid, Modal } from "semantic-ui-react";
 import { getTechnologyLogos } from "../../../../../admin.core.v1";
 import { FIDOTrustedAppTypes } from "../../../../models";
 import "./fido-trusted-app-wizard.scss";
-import { isValidSHA256 } from "../../../../utils/validation-utils";
 
 /**
  * The props interface for the 'FIDOTrustedAppWizard' component.
@@ -212,8 +211,7 @@ export const FIDOTrustedAppWizard: FunctionComponent<FIDOTrustedAppWizardPropsIn
                         required = { false }
                         showPredictions={ false }
                         isAllowEnabled={ false }
-                        skipInternalValidation
-                        validation={ isValidSHA256 }
+                        skipValidation
                         readOnly={ selectedAppType === FIDOTrustedAppTypes.IOS }
                     />
                 </Form>
