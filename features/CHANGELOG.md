@@ -1,5 +1,14 @@
 # @wso2is/features
 
+## 2.16.7
+
+### Patch Changes
+
+- [#6160](https://github.com/wso2/identity-apps/pull/6160) [`6b4207a88e`](https://github.com/wso2/identity-apps/commit/6b4207a88e02976c45f3ba6670eaa70679d172cc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the trusted apps section into the FIDO settings form
+
+- Updated dependencies [[`6b4207a88e`](https://github.com/wso2/identity-apps/commit/6b4207a88e02976c45f3ba6670eaa70679d172cc)]:
+  - @wso2is/i18n@2.2.12
+
 ## 2.16.6
 
 ### Patch Changes
