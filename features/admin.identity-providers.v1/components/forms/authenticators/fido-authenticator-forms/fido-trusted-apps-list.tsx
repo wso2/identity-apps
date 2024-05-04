@@ -158,6 +158,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
                         !readOnly &&
                             ( <PrimaryButton
                                 type="button"
+                                basic
                                 data-componentid={ `${componentId}-empty-placeholder-trusted-app-add-button` }
                                 onClick={ (): void => setIsTrustedAppsAddWizardOpen(true) }
                             >
@@ -261,7 +262,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
                 icon: "trash alternate",
                 onClick: () => updateTrustedApps(trustedApp?.appName, trustedApp?.appType, true),
                 popoverText: t("authenticationProvider:forms.authenticatorSettings." +
-                    "fido2.trustedApps..removeTrustedAppPopOver"),
+                    "fido2.trustedApps.removeTrustedAppPopOver"),
                 type: "icon"
             }
         ];

@@ -395,7 +395,10 @@ export interface AuthenticationProviderNS {
                             appName: {
                                 label: string;
                                 placeholder: string;
-                                requiredErrorMessage: string;
+                                validations: {
+                                    required: string;
+                                    duplicate: string;
+                                }
                             };
                             appType: {
                                 label: string;

@@ -29,6 +29,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { FIDOTrustedApps } from "./fido-trusted-apps";
+import { identityProviderConfig } from "../../../../../admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { updateFidoConfigs, useFIDOConnectorConfigs } from "../../../../api/fido-configs";
 import { IdentityProviderManagementConstants } from "../../../../constants";
@@ -205,32 +206,32 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
 
         updateFidoConfigs(payload)
             .then(() => {
-                addAlert({
+                dispatch(addAlert({
                     description: t("authenticationProvider:" +
                         "notifications.updateFIDOConnectorConfigs." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("authenticationProvider:notifications." +
                         "updateFIDOConnectorConfigs.success.message")
-                });
+                }));
 
                 mutateFIDOConnectorConfigs();
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.description) {
-                    addAlert({
+                    dispatch(addAlert({
                         description: t("authenticationProvider:" +
                             "notifications.updateFIDOConnectorConfigs." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("authenticationProvider:notifications." +
                             "updateFIDOConnectorConfigs.error.message")
-                    });
+                    }));
 
                     return;
                 }
 
-                addAlert({
+                dispatch(addAlert({
                     description: t("authenticationProvider:" +
                         "notifications.updateFIDOConnectorConfigs." +
                         "genericError.description"),
@@ -238,10 +239,12 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                     message: t("authenticationProvider:" +
                         "notifications.updateFIDOConnectorConfigs." +
                         "genericError.message")
-                });
+                }));
             })
             .finally(() => setIsFIDOConfigsSubmitting(false));
     };
+
+    let updateTrustedApps: (callback: () => void) => void;
 
     /**
      * Prepare form values for submitting.
@@ -256,8 +259,10 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             updateFIDOConnectorConfigs();
         }
 
-        setIsFIDOTrustedAppsSubmitting(true);
-        updateTrustedApps().finally(() => setIsFIDOTrustedAppsSubmitting(false));
+        if (identityProviderConfig?.editIdentityProvider?.enableFIDOTrustedAppsConfiguration) {
+            setIsFIDOTrustedAppsSubmitting(true);
+            updateTrustedApps(() => setIsFIDOTrustedAppsSubmitting(false));
+        }
 
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
@@ -281,8 +286,6 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             properties
         };
     };
-
-    let updateTrustedApps: () => Promise<boolean>;
 
     return (
         <Form
@@ -401,12 +404,18 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 skipValidation
                 readOnly={ isReadOnly }
             />
-            <FIDOTrustedApps
-                readOnly={ isReadOnly }
-                triggerSubmission={ (callback: () => Promise<boolean>) => {
-                    updateTrustedApps = callback;
-                } }
-            />
+            {
+                identityProviderConfig?.editIdentityProvider?.enableFIDOTrustedAppsConfiguration
+                    ? (
+                        <FIDOTrustedApps
+                            readOnly={ isReadOnly }
+                            triggerSubmission={ (submitFunction: (callback: () => void) => void) => {
+                                updateTrustedApps = submitFunction;
+                            } }
+                        />
+                    )
+                    : null
+            }
             <Field.Button
                 form={ FORM_ID }
                 size="small"

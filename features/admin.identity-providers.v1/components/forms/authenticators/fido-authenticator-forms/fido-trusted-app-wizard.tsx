@@ -29,13 +29,17 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Grid, Modal } from "semantic-ui-react";
 import { getTechnologyLogos } from "../../../../../admin.core.v1";
-import { FIDOTrustedAppTypes } from "../../../../models";
+import { FIDOTrustedAppTypes, FIDOTrustedAppsValuesInterface } from "../../../../models";
 import "./fido-trusted-app-wizard.scss";
 
 /**
  * The props interface for the 'FIDOTrustedAppWizard' component.
  */
 interface FIDOTrustedAppWizardPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * List of added trusted apps.
+     */
+    trustedApps: FIDOTrustedAppsValuesInterface;
     /**
      * Function for adding a new trusted app.
      */
@@ -58,6 +62,7 @@ export const FIDOTrustedAppWizard: FunctionComponent<FIDOTrustedAppWizardPropsIn
 ): ReactElement => {
 
     const {
+        trustedApps,
         updateTrustedApps,
         closeWizard,
         ["data-componentid"]: componentId
@@ -72,7 +77,7 @@ export const FIDOTrustedAppWizard: FunctionComponent<FIDOTrustedAppWizardPropsIn
      * Handle the form submission.
      */
     const handleFormSubmit = (values: { appName: string }) => {
-        updateTrustedApps(values?.appName, selectedAppType, false, shaValues?.split(","));
+        updateTrustedApps(values?.appName, selectedAppType, false, shaValues ? shaValues?.split(",") : []);
         closeWizard();
     };
 
@@ -108,10 +113,17 @@ export const FIDOTrustedAppWizard: FunctionComponent<FIDOTrustedAppWizardPropsIn
                     triggerSubmit={ (submitFunction: () => void) => triggerFormSubmission = submitFunction }
                     validate={
                         (values: { appName: string }) => {
-                            if (!values.appName) {
+                            if (!values?.appName) {
                                 return {
                                     appName: t("authenticationProvider:forms.authenticatorSettings." +
-                                    "fido2.trustedApps.wizard.fields.appName.requiredErrorMessage")
+                                    "fido2.trustedApps.wizard.fields.appName.validations.required")
+                                };
+                            }
+
+                            if (trustedApps?.[selectedAppType]?.[values?.appName]) {
+                                return {
+                                    appName: t("authenticationProvider:forms.authenticatorSettings." +
+                                    "fido2.trustedApps.wizard.fields.appName.validations.duplicate")
                                 };
                             }
 
@@ -132,6 +144,14 @@ export const FIDOTrustedAppWizard: FunctionComponent<FIDOTrustedAppWizardPropsIn
                         maxLength={ APP_NAME_MAX_LENGTH }
                         minLength={ APP_NAME_MIN_LENGTH }
                         className="fido-trusted-app-name-field"
+                        validation={ (value: string) => {
+                            if (trustedApps?.[selectedAppType]?.[value]) {
+                                return t("authenticationProvider:forms.authenticatorSettings." +
+                                    "fido2.trustedApps.wizard.fields.appName.validations.duplicate");
+                            }
+
+                            return null;
+                        } }
                     />
                     <div className="app-type-selection-section">
                         <label className="app-type-label">
@@ -179,41 +199,46 @@ export const FIDOTrustedAppWizard: FunctionComponent<FIDOTrustedAppWizardPropsIn
                             />
                         </Card.Group>
                     </div>
-                    <URLInput
-                        urlState={ shaValues }
-                        setURLState={ (shaValues: string) => {
-                            if (shaValues !== undefined) {
-                                setSHAValues(shaValues);
-                            }
-                        } }
-                        labelName={
-                            t("authenticationProvider:forms." +
-                                    "authenticatorSettings.fido2.trustedAppSHAValues.label")
-                        }
-                        placeholder={
-                            t("authenticationProvider:forms." +
-                                    "authenticatorSettings.fido2.trustedAppSHAValues.placeholder")
-                        }
-                        validationErrorMsg={
-                            t("authenticationProvider:forms." +
-                                    "authenticatorSettings.fido2.trustedAppSHAValues.validations.invalid")
-                        }
-                        computerWidth={ 10 }
-                        hint={
-                            t("authenticationProvider:forms." +
-                                "authenticatorSettings.fido2.trustedAppSHAValues.hint")
-                        }
-                        addURLTooltip={ t("authenticationProvider:forms." +
-                                "authenticatorSettings.fido2.trustedAppSHAValues.add") }
-                        duplicateURLErrorMessage={ t("authenticationProvider:forms." +
-                                "authenticatorSettings.fido2.trustedAppSHAValues.validations.duplicate") }
-                        data-testid={ `${ componentId }-fido-trusted-app-key-hashes-input` }
-                        required = { false }
-                        showPredictions={ false }
-                        isAllowEnabled={ false }
-                        skipValidation
-                        readOnly={ selectedAppType === FIDOTrustedAppTypes.IOS }
-                    />
+                    {
+                        selectedAppType === FIDOTrustedAppTypes.ANDROID
+                            ? (
+                                <URLInput
+                                    urlState={ shaValues }
+                                    setURLState={ (shaValues: string) => {
+                                        if (shaValues !== undefined) {
+                                            setSHAValues(shaValues);
+                                        }
+                                    } }
+                                    labelName={
+                                        t("authenticationProvider:forms." +
+                                                "authenticatorSettings.fido2.trustedAppSHAValues.label")
+                                    }
+                                    placeholder={
+                                        t("authenticationProvider:forms." +
+                                                "authenticatorSettings.fido2.trustedAppSHAValues.placeholder")
+                                    }
+                                    validationErrorMsg={
+                                        t("authenticationProvider:forms." +
+                                                "authenticatorSettings.fido2.trustedAppSHAValues.validations.invalid")
+                                    }
+                                    computerWidth={ 10 }
+                                    hint={
+                                        t("authenticationProvider:forms." +
+                                            "authenticatorSettings.fido2.trustedAppSHAValues.hint")
+                                    }
+                                    addURLTooltip={ t("authenticationProvider:forms." +
+                                            "authenticatorSettings.fido2.trustedAppSHAValues.add") }
+                                    duplicateURLErrorMessage={ t("authenticationProvider:forms." +
+                                            "authenticatorSettings.fido2.trustedAppSHAValues.validations.duplicate") }
+                                    data-testid={ `${ componentId }-fido-trusted-app-key-hashes-input` }
+                                    required = { false }
+                                    showPredictions={ false }
+                                    isAllowEnabled={ false }
+                                    skipValidation
+                                />
+                            )
+                            : null
+                    }
                 </Form>
             </Modal.Content>
             <Modal.Actions>

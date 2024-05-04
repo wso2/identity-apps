@@ -440,7 +440,10 @@ export const authenticationProvider:AuthenticationProviderNS = {
                             appName: {
                                 label: "App Package Name or App ID",
                                 placeholder: "Enter the package name or ID of the application",
-                                requiredErrorMessage: "App package name or app ID is required"
+                                validations: {
+                                    required: "App package name or app ID is required",
+                                    duplicate: "This trusted app is already added"
+                                }
                             },
                             appType: {
                                 label: "Application Type"

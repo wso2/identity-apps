@@ -48,7 +48,7 @@ interface FIDOTrustedAppsPropsInterface extends IdentifiableComponentInterface {
      * invoked to submit form values. It returns a promise indicating whether the submission
      * was successful or not.
      */
-    triggerSubmission: (submissionCallback: () => Promise<boolean>) => void;
+    triggerSubmission: (submissionCallback: (callback: () => void) => void) => void;
 }
 
 /**
@@ -86,16 +86,18 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
      * Retrieve the list of FIDO trusted apps from the response data.
      */
     const initialFIDOTrustedAppsList: FIDOTrustedAppsValuesInterface = useMemo(() => {
+        const trustedApps: FIDOTrustedAppsValuesInterface = {
+            android: {},
+            ios: {}
+        };
+
         if (fidoTrustedAppsFetchRequestIsLoading) {
-            return null;
+            setFIDOTrustedApps(trustedApps);
+
+            return trustedApps;
         }
 
         if (fidoTrustedApps) {
-            const trustedApps: FIDOTrustedAppsValuesInterface = {
-                android: {},
-                ios: {}
-            };
-
             if (fidoTrustedApps?.android
                 && Array.isArray(fidoTrustedApps?.android)
                 && fidoTrustedApps?.android?.length > 0) {
@@ -125,17 +127,11 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
                     }
                 });
             }
-
-            if (Object.keys(trustedApps?.android)?.length > 0 || Object.keys(trustedApps?.ios)?.length > 0) {
-                setFIDOTrustedApps(trustedApps);
-
-                return trustedApps;
-            }
         }
 
-        setFIDOTrustedApps(null);
+        setFIDOTrustedApps(trustedApps);
 
-        return null;
+        return trustedApps;
     }, [ fidoTrustedApps ]);
 
     /**
@@ -180,56 +176,57 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
     /**
      * Update FIDO trusted apps.
      */
-    const updateFIDOTrustedApps = (): Promise<boolean> => {
-        if (!FIDOTrustedApps) {
-            return Promise.reject(false);
-        }
+    const updateFIDOTrustedApps = (callback: () => void) => {
+        if (!FIDOTrustedApps || isEqual(FIDOTrustedApps, initialFIDOTrustedAppsList)) {
+            callback();
 
-        if (isEqual(FIDOTrustedApps, initialFIDOTrustedAppsList)) {
-            return Promise.resolve(true);
+            return;
         }
 
         const androidApps: string[] = [];
 
         for (const appName in FIDOTrustedApps?.android) {
-            androidApps?.push(`${appName}${
-                IdentityProviderManagementConstants.FIDO_TRUSTED_APPS_SHA_SEPARATOR
-            }${FIDOTrustedApps?.android?.[appName]?.join(
-                IdentityProviderManagementConstants.FIDO_TRUSTED_APPS_SHA_SEPARATOR)}`);
+            if (FIDOTrustedApps?.android?.[appName]?.length > 0) {
+                FIDOTrustedApps?.android?.[appName]?.forEach((hash: string) => {
+                    androidApps?.push(`${appName}${
+                        IdentityProviderManagementConstants.FIDO_TRUSTED_APPS_SHA_SEPARATOR
+                    }${hash}`);
+                });
+            } else {
+                androidApps?.push(appName);
+            }
         }
 
         const iosApps: string[] = Object.keys(FIDOTrustedApps?.ios);
 
-        return updateFidoTrustedApps({ android: androidApps, ios: iosApps })
+        updateFidoTrustedApps({ android: androidApps, ios: iosApps })
             .then(() => {
-                addAlert({
+                dispatch(addAlert({
                     description: t("authenticationProvider:" +
                         "notifications.updateFIDOTrustedApps." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("authenticationProvider:notifications." +
                         "updateFIDOTrustedApps.success.message")
-                });
+                }));
 
                 mutateFIDOTrustedApps();
-
-                return true;
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.description) {
-                    addAlert({
+                    dispatch(addAlert({
                         description: t("authenticationProvider:" +
                             "notifications.updateFIDOTrustedApps." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("authenticationProvider:notifications." +
                             "updateFIDOTrustedApps.error.message")
-                    });
+                    }));
 
-                    return false;
+                    return;
                 }
 
-                addAlert({
+                dispatch(addAlert({
                     description: t("authenticationProvider:" +
                         "notifications.updateFIDOTrustedApps." +
                         "genericError.description"),
@@ -237,18 +234,14 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
                     message: t("authenticationProvider:" +
                         "notifications.updateFIDOTrustedApps." +
                         "genericError.message")
-                });
-
-                return false;
-            });
+                }));
+            }).finally(() => callback());
     };
 
     /**
      * Expose the function to call the submit action.
      */
-    useEffect(() => {
-        triggerSubmission(updateFIDOTrustedApps);
-    }, []);
+    triggerSubmission(updateFIDOTrustedApps);
 
     /**
      * Update the current list of trusted apps with the given app.
@@ -330,6 +323,7 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
             {
                 isTrustedAppsAddWizardOpen && (
                     <FIDOTrustedAppWizard
+                        trustedApps={ FIDOTrustedApps }
                         closeWizard={ (): void => setIsTrustedAppsAddWizardOpen(false) }
                         updateTrustedApps={ updateCurrentTrustedAppsList }
                     />

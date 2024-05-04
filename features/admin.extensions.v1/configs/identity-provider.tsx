@@ -124,6 +124,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     disableSMSOTPInSubOrgs: false,
     editIdentityProvider: {
         attributesSettings: true,
+        enableFIDOTrustedAppsConfiguration: true,
         getCertificateOptionsForTemplate: (templateId: string): { JWKS: boolean; PEM: boolean } | undefined => {
             if (templateId === SIWEIdPTemplate.templateId) {
                 return {
