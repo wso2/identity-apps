@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.1.70
+
+### Patch Changes
+
+- [#6152](https://github.com/wso2/identity-apps/pull/6152) [`818c00adf1`](https://github.com/wso2/identity-apps/commit/818c00adf17f07639834f5b9c839471faeac0bb8) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove runtime logic for enterprise login idp
+
+* [#6157](https://github.com/wso2/identity-apps/pull/6157) [`50aa715699`](https://github.com/wso2/identity-apps/commit/50aa715699a497864f41b150de9ad41f4fcce4db) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Revert removing enterprise idp based on legacy check
+
 ## 2.1.69
 
 ### Patch Changes
