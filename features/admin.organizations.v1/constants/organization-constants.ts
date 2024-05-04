@@ -17,6 +17,7 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
+import { AuthenticatorManagementConstants } from "../../admin.connections.v1";
 import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
 import { OrganizationInterface } from "../models";
 
@@ -68,16 +69,16 @@ export class OrganizationManagementConstants {
     public static readonly ORGANIZATION_AUTHENTICATOR: GenericAuthenticatorInterface = {
         authenticators: [
             {
-                authenticatorId: "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg",
+                authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
                 isEnabled: true,
-                name: "OrganizationAuthenticator",
+                name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
                 tags: [ "APIAuth" ]
             }
         ],
         defaultAuthenticator: {
-            authenticatorId: "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg",
+            authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
             isEnabled: true,
-            name: "OrganizationAuthenticator",
+            name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
             tags: [ "APIAuth" ]
         },
         description: "Identity provider for Organization SSO.",
