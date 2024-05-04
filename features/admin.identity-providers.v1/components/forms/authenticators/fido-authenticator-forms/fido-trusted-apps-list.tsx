@@ -21,7 +21,6 @@ import {
     EmphasizedSegment,
     EmptyPlaceholder,
     GenericIcon,
-    Heading,
     LinkButton,
     ListLayout,
     PrimaryButton,
@@ -212,45 +211,35 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
         >
             <Grid verticalAlign="middle">
                 <Grid.Row>
-                    <Grid.Column width={ 10 }>
+                    <Grid.Column width={ 16 }>
                         <Header.Content>
                             <Grid verticalAlign="middle">
                                 <Grid.Row>
                                     <Grid.Column width={ 16 }>
+                                        {
+                                            trustedApp?.appType === FIDOTrustedAppTypes.ANDROID
+                                                ? (
+                                                    <GenericIcon
+                                                        size="micro"
+                                                        icon={ getTechnologyLogos()?.android }
+                                                        verticalAlign="middle"
+                                                        floated="left"
+                                                    />
+                                                )
+                                                : (
+                                                    <GenericIcon
+                                                        size="micro"
+                                                        icon={ getTechnologyLogos()?.apple }
+                                                        floated="left"
+                                                        verticalAlign="middle"
+                                                    />
+                                                )
+                                        }
                                         { trustedApp?.appName }
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
                         </Header.Content>
-                    </Grid.Column>
-                    <Grid.Column width={ 6 }>
-                        {
-                            trustedApp?.appType === FIDOTrustedAppTypes.ANDROID
-                                ? (
-                                    <Heading as="h6" bold="500">
-                                        <GenericIcon
-                                            size="micro"
-                                            icon={ getTechnologyLogos()?.android }
-                                            verticalAlign="middle"
-                                            floated="left"
-                                        />
-                                        { t("authenticationProvider:forms.authenticatorSettings." +
-                                            "fido2.trustedApps.types.android") }
-                                    </Heading>
-                                )
-                                : (
-                                    <Heading as="h6" bold="500">
-                                        <GenericIcon
-                                            size="micro"
-                                            icon={ getTechnologyLogos()?.apple }
-                                            floated="left"
-                                            verticalAlign="middle"
-                                        />
-                                        { t("authenticationProvider:forms.authenticatorSettings." +
-                                            "fido2.trustedApps.types.ios") }
-                                    </Heading>
-                                )
-                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
