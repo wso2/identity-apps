@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/features",
-    "version": "2.16.6",
+    "version": "2.16.7",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -34,7 +34,7 @@
         "@wso2is/dynamic-forms": "^2.0.53",
         "@wso2is/form": "^2.0.54",
         "@wso2is/forms": "^2.0.32",
-        "@wso2is/i18n": "^2.2.11",
+        "@wso2is/i18n": "^2.2.12",
         "@wso2is/react-components": "^2.1.24",
         "@wso2is/theme": "^2.0.77",
         "@wso2is/validation": "^2.0.4",
