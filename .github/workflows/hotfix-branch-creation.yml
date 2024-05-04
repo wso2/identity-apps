@@ -106,6 +106,14 @@ jobs:
           # Change the branch name in the pr-builder.yml file.
           sed -i '/branches: \[ master \]/s/master/hotfix-'"${TAG//\//\\/}"'/' .github/workflows/pr-builder.yml
 
+          # Check out the release script from master branch.
+          #
+          # Note: This is done due to the hotfix workflow for identity-apps was added recently and therefore
+          # the related changes to release script are not present in the older app versions. We may be able to
+          # remove this line once the older app versions are not being used, as by that time, the updated release script
+          # will be present in app versions that need to be hotfixed.
+          git checkout master -- .github/workflows/scripts/release.sh
+
           # Add only modified files, hotfix-pr-creation-template.yml file, and commit changes.
           echo "Add only modified files."
           git add -u
