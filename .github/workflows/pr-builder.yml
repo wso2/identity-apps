@@ -4,7 +4,7 @@ name: PR Builder
 
 on:
   pull_request:
-    types: [ labeled ]
+    types: [ opened, synchronize, labeled ]
     branches: [ master ]
     paths-ignore:
       - "**.md"
@@ -22,7 +22,7 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
-    if: ${{github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
