@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.16.8
+
+### Patch Changes
+
+- [#6159](https://github.com/wso2/identity-apps/pull/6159) [`278ecb0690`](https://github.com/wso2/identity-apps/commit/278ecb0690b423acad61cb33f87765625fc400ff) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Revert "Enable head script extensions"
+
 ## 2.16.7
 
 ### Patch Changes
