@@ -30,6 +30,7 @@ export const getIDPResourceEndpoints = (serverHost: string): IDPResourceEndpoint
         authenticatorTags: `${ serverHost }/api/server/v1/authenticators/meta/tags`,
         authenticators: `${ serverHost }/api/server/v1/authenticators`,
         fidoConfigs: `${ serverHost }/api/identity/config-mgt/v1.0/resource/fido-config`,
+        fidoTrustedApps: `${ serverHost }/fido/trusted-apps-mgt`,
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,
         localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`,
         multiFactorAuthenticators: getServerConfigurationsResourceEndpoints(serverHost).multiFactorAuthenticators

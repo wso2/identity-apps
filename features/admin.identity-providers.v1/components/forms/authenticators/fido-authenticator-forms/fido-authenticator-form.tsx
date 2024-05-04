@@ -22,15 +22,17 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, Message, URLInput, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
-import { updateFidoConfigs, useFIDOConnectorConfigs } from "features/admin.identity-providers.v1/api/fido-configs";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { IdentityProviderManagementConstants } from "../../../constants";
+import { FIDOTrustedApps } from "./fido-trusted-apps";
+import { identityProviderConfig } from "../../../../../admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { updateFidoConfigs, useFIDOConnectorConfigs } from "../../../../api/fido-configs";
+import { IdentityProviderManagementConstants } from "../../../../constants";
 import {
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
@@ -41,7 +43,7 @@ import {
     FIDOAuthenticatorFormPropsInterface,
     FIDOConfigsInterface,
     FIDOConnectorConfigsAttributeInterface
-} from "../../../models";
+} from "../../../../models";
 
 const FORM_ID: string = "fido-authenticator-form";
 
@@ -78,6 +80,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
     ] = useState<boolean>(undefined);
     const [ isReadOnly ] = useState<boolean>(isSubOrganization() || readOnly);
     const [ isFIDOConfigsSubmitting, setIsFIDOConfigsSubmitting ] = useState<boolean>(false);
+    const [ isFIDOTrustedAppsSubmitting, setIsFIDOTrustedAppsSubmitting ] = useState<boolean>(false);
     const [ FIDOTrustedOrigins, setFIDOTrustedOrigins ] = useState<string>("");
 
     const {
@@ -203,32 +206,32 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
 
         updateFidoConfigs(payload)
             .then(() => {
-                addAlert({
+                dispatch(addAlert({
                     description: t("authenticationProvider:" +
                         "notifications.updateFIDOConnectorConfigs." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("authenticationProvider:notifications." +
                         "updateFIDOConnectorConfigs.success.message")
-                });
+                }));
 
                 mutateFIDOConnectorConfigs();
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.description) {
-                    addAlert({
+                    dispatch(addAlert({
                         description: t("authenticationProvider:" +
                             "notifications.updateFIDOConnectorConfigs." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("authenticationProvider:notifications." +
                             "updateFIDOConnectorConfigs.error.message")
-                    });
+                    }));
 
                     return;
                 }
 
-                addAlert({
+                dispatch(addAlert({
                     description: t("authenticationProvider:" +
                         "notifications.updateFIDOConnectorConfigs." +
                         "genericError.description"),
@@ -236,10 +239,12 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                     message: t("authenticationProvider:" +
                         "notifications.updateFIDOConnectorConfigs." +
                         "genericError.message")
-                });
+                }));
             })
             .finally(() => setIsFIDOConfigsSubmitting(false));
     };
+
+    let updateTrustedApps: (callback: () => void) => void;
 
     /**
      * Prepare form values for submitting.
@@ -252,6 +257,11 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
 
         if (initialFIDOTrustedOriginsList !== FIDOTrustedOrigins) {
             updateFIDOConnectorConfigs();
+        }
+
+        if (identityProviderConfig?.editIdentityProvider?.enableFIDOTrustedAppsConfiguration) {
+            setIsFIDOTrustedAppsSubmitting(true);
+            updateTrustedApps(() => setIsFIDOTrustedAppsSubmitting(false));
         }
 
         const properties: CommonPluggableComponentPropertyInterface[] = [];
@@ -392,7 +402,20 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 showPredictions={ false }
                 isAllowEnabled={ false }
                 skipValidation
+                readOnly={ isReadOnly }
             />
+            {
+                identityProviderConfig?.editIdentityProvider?.enableFIDOTrustedAppsConfiguration
+                    ? (
+                        <FIDOTrustedApps
+                            readOnly={ isReadOnly }
+                            triggerSubmission={ (submitFunction: (callback: () => void) => void) => {
+                                updateTrustedApps = submitFunction;
+                            } }
+                        />
+                    )
+                    : null
+            }
             <Field.Button
                 form={ FORM_ID }
                 size="small"
@@ -400,8 +423,8 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 ariaLabel="FIDO authenticator update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ isSubmitting || isFIDOConfigsSubmitting }
-                loading={ isSubmitting || isFIDOConfigsSubmitting }
+                disabled={ isSubmitting || isFIDOConfigsSubmitting || isFIDOTrustedAppsSubmitting }
+                loading={ isSubmitting || isFIDOConfigsSubmitting || isFIDOTrustedAppsSubmitting }
                 label={ t("common:update") }
                 hidden={ isReadOnly }
             />
