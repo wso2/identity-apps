@@ -366,31 +366,55 @@ export interface AuthenticationProviderNS {
                         addButton: string;
                         emptySearchButton: string;
                     };
-                    search: string,
+                    search: string;
                     placeHolderTexts: {
-                        emptyText: string,
+                        emptyText: string;
                         errorText: {
                             subtitles: {
-                                0: string,
-                                1: string
-                            },
-                            title: string
-                        },
+                                0: string;
+                                1: string;
+                            };
+                            title: string;
+                        };
                         emptySearch: {
-                            title: string,
+                            title: string;
                             subTitle: {
-                                0: string,
-                                1: string
-                            }
-                        }
-                    },
+                                0: string;
+                                1: string;
+                            };
+                        };
+                    };
+                    types: {
+                        android: string;
+                        ios: string;
+                    };
+                    wizard: {
+                        title: string;
+                        subTitle: string;
+                        fields: {
+                            appName: {
+                                label: string;
+                                placeholder: string;
+                                requiredErrorMessage: string;
+                            };
+                            appType: {
+                                label: string;
+                            };
+                        };
+                        buttons: {
+                            finish: string;
+                            cancel: string;
+                        };
+                    };
                 },
                 trustedAppSHAValues: {
                     hint: string;
                     label: string;
+                    add: string;
                     placeholder: string;
                     validations: {
                         invalid: string;
+                        duplicate: string;
                     };
                 };
             };

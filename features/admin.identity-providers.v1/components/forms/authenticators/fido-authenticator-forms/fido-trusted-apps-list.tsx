@@ -20,6 +20,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     EmphasizedSegment,
     EmptyPlaceholder,
+    GenericIcon,
+    Heading,
     LinkButton,
     ListLayout,
     PrimaryButton,
@@ -27,11 +29,10 @@ import {
     SegmentedAccordionTitleActionInterface,
     URLInput
 } from "@wso2is/react-components";
-import cloneDeep from "lodash-es/cloneDeep";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Header, Icon, Input } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1";
+import { getEmptyPlaceholderIllustrations, getTechnologyLogos } from "../../../../../admin.core.v1";
 import {
     FIDOTrustedAppTypes,
     FIDOTrustedAppsListInterface,
@@ -48,10 +49,10 @@ interface FIDOTrustedAppsList extends IdentifiableComponentInterface {
      */
     trustedApps: FIDOTrustedAppsValuesInterface;
     /**
-     * Function to modify the current list of trusted apps.
-     * @param values - Updated list of trusted apps.
+     * Function for update the trusted app.
      */
-    setTrustedApps: (values: FIDOTrustedAppsValuesInterface) => void;
+    updateTrustedApps: (
+        appName: string, appType: FIDOTrustedAppTypes, deleteApp?: boolean, shaValues?: string[]) => void,
     /**
      * Whether the FIDO trusted apps fetch request has failed or not.
      */
@@ -78,7 +79,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
 
     const {
         trustedApps,
-        setTrustedApps,
+        updateTrustedApps,
         isTrustedAppsFetchErrorOccurred,
         readOnly,
         setIsTrustedAppsAddWizardOpen,
@@ -158,6 +159,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
                     action={ (
                         !readOnly &&
                             ( <PrimaryButton
+                                type="button"
                                 data-componentid={ `${componentId}-empty-placeholder-trusted-app-add-button` }
                                 onClick={ (): void => setIsTrustedAppsAddWizardOpen(true) }
                             >
@@ -183,7 +185,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
                         "fido2.trustedApps.placeHolderTexts.emptySearch.subTitle.1") ] }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     action={
-                        (<LinkButton onClick={ clearSearchQuery }>
+                        (<LinkButton type="button" onClick={ clearSearchQuery }>
                             { t("authenticationProvider:forms.authenticatorSettings." +
                                 "fido2.trustedApps.buttons.emptySearchButton") }
                         </LinkButton>)
@@ -194,37 +196,6 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
         } else {
             return null;
         }
-    };
-
-    /**
-     * Update the current list of trusted apps with the given app.
-     *
-     * @param appName - Name of the updating app.
-     * @param appType - Type of the updating app.
-     * @param deleteApp - Whether the app should be removed.
-     * @param shaValues - SHA values associated with the app.
-     */
-    const updateCurrentTrustedAppsList = (
-        appName: string,
-        appType: FIDOTrustedAppTypes,
-        deleteApp?: boolean,
-        shaValues?: string[]
-    ) => {
-        const clonedTrustedApps: FIDOTrustedAppsValuesInterface = cloneDeep(trustedApps);
-
-        if (deleteApp) {
-            delete clonedTrustedApps?.[appType]?.[appName];
-        } else {
-            if (!clonedTrustedApps?.[appType]?.[appName]) {
-                clonedTrustedApps[appType][appName] = [];
-            }
-
-            if (shaValues) {
-                clonedTrustedApps[appType][appName] = shaValues;
-            }
-        }
-
-        setTrustedApps(clonedTrustedApps);
     };
 
     /**
@@ -242,7 +213,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
         >
             <Grid verticalAlign="middle">
                 <Grid.Row>
-                    <Grid.Column width={ 8 }>
+                    <Grid.Column width={ 10 }>
                         <Header.Content>
                             <Grid verticalAlign="middle">
                                 <Grid.Row>
@@ -252,6 +223,35 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
                                 </Grid.Row>
                             </Grid>
                         </Header.Content>
+                    </Grid.Column>
+                    <Grid.Column width={ 6 }>
+                        {
+                            trustedApp?.appType === FIDOTrustedAppTypes.ANDROID
+                                ? (
+                                    <Heading as="h6" bold="500">
+                                        <GenericIcon
+                                            size="micro"
+                                            icon={ getTechnologyLogos()?.android }
+                                            verticalAlign="middle"
+                                            floated="left"
+                                        />
+                                        { t("authenticationProvider:forms.authenticatorSettings." +
+                                            "fido2.trustedApps.types.android") }
+                                    </Heading>
+                                )
+                                : (
+                                    <Heading as="h6" bold="500">
+                                        <GenericIcon
+                                            size="micro"
+                                            icon={ getTechnologyLogos()?.apple }
+                                            floated="left"
+                                            verticalAlign="middle"
+                                        />
+                                        { t("authenticationProvider:forms.authenticatorSettings." +
+                                            "fido2.trustedApps.types.ios") }
+                                    </Heading>
+                                )
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -271,7 +271,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
             {
                 disabled: readOnly,
                 icon: "trash alternate",
-                onClick: () => updateCurrentTrustedAppsList(trustedApp?.appName, trustedApp?.appType, true),
+                onClick: () => updateTrustedApps(trustedApp?.appName, trustedApp?.appType, true),
                 popoverText: t("authenticationProvider:forms.authenticatorSettings." +
                     "fido2.trustedApps..removeTrustedAppPopOver"),
                 type: "icon"
@@ -293,7 +293,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
                     urlState={ trustedApp?.shaValues?.join(",") }
                     setURLState={ (shaValues: string) => {
                         if (shaValues !== undefined) {
-                            updateCurrentTrustedAppsList(
+                            updateTrustedApps(
                                 trustedApp?.appName, trustedApp?.appType, false, shaValues?.split(","));
                         }
                     } }
@@ -314,8 +314,10 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
                         t("authenticationProvider:forms." +
                             "authenticatorSettings.fido2.trustedAppSHAValues.hint")
                     }
-                    addURLTooltip={ t("common:addURL") }
-                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                    addURLTooltip={ t("authenticationProvider:forms." +
+                                "authenticatorSettings.fido2.trustedAppSHAValues.add") }
+                    duplicateURLErrorMessage={ t("authenticationProvider:forms." +
+                            "authenticatorSettings.fido2.trustedAppSHAValues.validations.duplicate") }
                     data-testid={ `${ componentId }-fido-trusted-app-key-hashes-input` }
                     required = { false }
                     showPredictions={ false }
@@ -382,7 +384,7 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
             : (
                 <Grid className="mt-3">
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <ListLayout
                                 showTopActionPanel={ true }
                                 showPagination={ false }
@@ -433,7 +435,9 @@ export const FIDOTrustedAppsList: FunctionComponent<FIDOTrustedAppsList> = (
                                                                     content={
                                                                         resolveTrustedAppsListItemHeader(trustedApp)
                                                                     }
-                                                                    hideChevron={ false }
+                                                                    hideChevron={
+                                                                        trustedApp?.appType === FIDOTrustedAppTypes.IOS
+                                                                    }
                                                                     actions={
                                                                         createAccordionAction(trustedApp)
                                                                     }

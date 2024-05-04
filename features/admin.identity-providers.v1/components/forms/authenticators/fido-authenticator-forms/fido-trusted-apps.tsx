@@ -20,15 +20,18 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Heading, PrimaryButton } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
+import isEqual from "lodash-es/isEqual";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
+import { FIDOTrustedAppWizard } from "./fido-trusted-app-wizard";
+import { FIDOTrustedAppsList } from "./fido-trusted-apps-list";
 import { updateFidoTrustedApps, useFIDOTrustedApps } from "../../../../api/fido-trusted-apps";
 import { IdentityProviderManagementConstants } from "../../../../constants";
-import { FIDOTrustedAppsValuesInterface } from "../../../../models";
-import { FIDOTrustedAppsList } from "./fido-trusted-apps-list";
+import { FIDOTrustedAppTypes, FIDOTrustedAppsValuesInterface } from "../../../../models";
 
 /**
  * Interface for the `FIDOTrustedApps` component props.
@@ -69,7 +72,6 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
     const { t } = useTranslation();
 
     const [ FIDOTrustedApps, setFIDOTrustedApps ] = useState<FIDOTrustedAppsValuesInterface>(null);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ hideTrustedAppsButton, setHideTrustedAppsButton ] = useState<boolean>(true);
     const [ isTrustedAppsAddWizardOpen, setIsTrustedAppsAddWizardOpen ] = useState<boolean>(false);
 
@@ -125,9 +127,13 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
             }
 
             if (Object.keys(trustedApps?.android)?.length > 0 || Object.keys(trustedApps?.ios)?.length > 0) {
+                setFIDOTrustedApps(trustedApps);
+
                 return trustedApps;
             }
         }
+
+        setFIDOTrustedApps(null);
 
         return null;
     }, [ fidoTrustedApps ]);
@@ -176,10 +182,12 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
      */
     const updateFIDOTrustedApps = (): Promise<boolean> => {
         if (!FIDOTrustedApps) {
-            return;
+            return Promise.reject(false);
         }
 
-        setIsSubmitting(true);
+        if (isEqual(FIDOTrustedApps, initialFIDOTrustedAppsList)) {
+            return Promise.resolve(true);
+        }
 
         const androidApps: string[] = [];
 
@@ -232,8 +240,7 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
                 });
 
                 return false;
-            })
-            .finally(() => setIsSubmitting(false));
+            });
     };
 
     /**
@@ -243,6 +250,37 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
         triggerSubmission(updateFIDOTrustedApps);
     }, []);
 
+    /**
+     * Update the current list of trusted apps with the given app.
+     *
+     * @param appName - Name of the updating app.
+     * @param appType - Type of the updating app.
+     * @param deleteApp - Whether the app should be removed.
+     * @param shaValues - SHA values associated with the app.
+     */
+    const updateCurrentTrustedAppsList = (
+        appName: string,
+        appType: FIDOTrustedAppTypes,
+        deleteApp?: boolean,
+        shaValues?: string[]
+    ) => {
+        const clonedTrustedApps: FIDOTrustedAppsValuesInterface = cloneDeep(FIDOTrustedApps);
+
+        if (deleteApp) {
+            delete clonedTrustedApps?.[appType]?.[appName];
+        } else {
+            if (!clonedTrustedApps?.[appType]?.[appName]) {
+                clonedTrustedApps[appType][appName] = [];
+            }
+
+            if (shaValues) {
+                clonedTrustedApps[appType][appName] = shaValues;
+            }
+        }
+
+        setFIDOTrustedApps(clonedTrustedApps);
+    };
+
     return (
         <Fragment>
             <EmphasizedSegment
@@ -251,7 +289,7 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
                 data-componentid={ `${componentId}-fido-trusted-apps-list` }>
                 <Grid>
                     <Grid.Row>
-                        <Grid.Column className="heading-wrapper" computer={ 10 } mobile={ 12 }>
+                        <Grid.Column className="heading-wrapper" computer={ 12 } mobile={ 14 }>
                             <Heading as="h4">
                                 { t("authenticationProvider:forms.authenticatorSettings.fido2.trustedApps.heading") }
                             </Heading>
@@ -268,6 +306,7 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
                                         basic
                                         size="medium"
                                         floated="right"
+                                        type="button"
                                         onClick={ (): void => setIsTrustedAppsAddWizardOpen(true) }
                                     >
                                         <Icon name="add" />
@@ -282,61 +321,20 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
                 <Divider hidden />
                 <FIDOTrustedAppsList
                     trustedApps={ FIDOTrustedApps }
-                    setTrustedApps={ setFIDOTrustedApps }
+                    updateTrustedApps={ updateCurrentTrustedAppsList }
                     isTrustedAppsFetchErrorOccurred={ !!fidoTrustedAppsFetchError }
                     readOnly={ readOnly }
                     setIsTrustedAppsAddWizardOpen={ setIsTrustedAppsAddWizardOpen }
                 />
             </EmphasizedSegment>
-            {/* {
-                removeSubscribedAPIResource && (
-                    <ConfirmationModal
-                        primaryActionLoading={ isUnsubscribeAPIResourceLoading }
-                        open={ removeSubscribedAPIResource !== null }
-                        onClose={ (): void => setRemoveSubscribedAPIResource(null) }
-                        type="negative"
-                        assertionHint={ t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                            ".apiSubscriptions.confirmations.unsubscribeAPIResource.assertionHint") }
-                        assertionType="checkbox"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => setRemoveSubscribedAPIResource(null) }
-                        onPrimaryActionClick={ (): void => handleAPIResourceUnsubscribe() }
-                        data-componentid={ `${componentId}-delete-confirmation-modal` }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header
-                            data-componentid={ `${componentId}-delete-confirmation-modal-header` }
-                        >
-                            { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                ".apiSubscriptions.confirmations.unsubscribeAPIResource.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            attached
-                            negative
-                            data-componentid={ `${componentId}-delete-confirmation-modal-message` }
-                        >
-                            { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                ".apiSubscriptions.confirmations.unsubscribeAPIResource.message") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content
-                            data-componentid={ `${componentId}-delete-confirmation-modal-content` }
-                        >
-                            { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                ".apiSubscriptions.confirmations.unsubscribeAPIResource.content") }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
+            {
+                isTrustedAppsAddWizardOpen && (
+                    <FIDOTrustedAppWizard
+                        closeWizard={ (): void => setIsTrustedAppsAddWizardOpen(false) }
+                        updateTrustedApps={ updateCurrentTrustedAppsList }
+                    />
                 )
             }
-            {
-                isAuthorizeAPIResourceWizardOpen && (
-                    <AuthorizeAPIResource
-                        templateId={ templateId }
-                        subscribedAPIResourcesListData={ subscribedAPIResourcesListData }
-                        closeWizard={ (): void => setIsAuthorizeAPIResourceWizardOpen(false) }
-                        handleCreateAPIResource= { handleCreateAPIResource } />
-                )
-            } */}
         </Fragment>
     );
 };
