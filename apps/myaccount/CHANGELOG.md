@@ -1,5 +1,13 @@
 # @wso2is/myaccount
 
+## 2.5.68
+
+### Patch Changes
+
+- [#6159](https://github.com/wso2/identity-apps/pull/6159) [`278ecb0690`](https://github.com/wso2/identity-apps/commit/278ecb0690b423acad61cb33f87765625fc400ff) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Revert "Enable head script extensions"
+
+* [#6155](https://github.com/wso2/identity-apps/pull/6155) [`977dc88817`](https://github.com/wso2/identity-apps/commit/977dc88817d10486930642567c074a447a641273) Thanks [@brionmario](https://github.com/brionmario)! - Update `legacyAuthzRuntime` IdP urls in the pre-auth html
+
 ## 2.5.67
 
 ### Patch Changes
