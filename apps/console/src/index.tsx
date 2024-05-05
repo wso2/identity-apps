@@ -30,7 +30,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { ConsoleTheme } from "./config/theme";
+import Theme from "./theme";
 import { ProtectedApp } from "./protected-app";
 
 // Set the runtime config in the context.
@@ -61,7 +61,7 @@ const RootWithConfig = (): ReactElement => {
 
     return (
         <AppSettingsProvider>
-            <ThemeProvider theme={ ConsoleTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
+            <ThemeProvider theme={ Theme } defaultMode="light" modeStorageKey="console-oxygen-mode">
                 <Provider store={ store }>
                     <UserPreferencesProvider<UserPreferencesInterface>>
                         <BrowserRouter>

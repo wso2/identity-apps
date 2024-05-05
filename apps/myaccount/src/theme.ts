@@ -19,10 +19,10 @@
 // eslint-disable-next-line no-restricted-imports
 import { Theme } from "@oxygen-ui/react";
 import { extendTheme } from "@oxygen-ui/react/theme";
-import { BrandingPreferenceContextProps } from "../contexts";
-import { ThemeConfigInterface } from "../models";
+import { BrandingPreferenceContextProps } from "./contexts";
+import { ThemeConfigInterface } from "./models";
 
-export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) => Theme = (
+const generateTheme: (branding: BrandingPreferenceContextProps) => Theme = (
     branding: BrandingPreferenceContextProps
 ) => {
     const mode: string = branding?.brandingPreference?.preference?.theme?.activeTheme.toLowerCase() ?? "light";
@@ -142,3 +142,5 @@ export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) =
         }
     });
 };
+
+export default generateTheme;

@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { Theme } from "@oxygen-ui/react/models";
+import { Theme as OxygenTheme } from "@oxygen-ui/react/models";
 import { extendTheme } from "@oxygen-ui/react/theme";
 
-export const ConsoleTheme: Theme = extendTheme({
+const Theme: OxygenTheme = extendTheme({
     colorSchemes: {
         dark: {
             palette: {
@@ -136,3 +136,5 @@ export const ConsoleTheme: Theme = extendTheme({
         }
     }
 });
+
+export default Theme;
