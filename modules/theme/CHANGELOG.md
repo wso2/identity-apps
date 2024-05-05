@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.78
+
+### Patch Changes
+
+- [#6172](https://github.com/wso2/identity-apps/pull/6172) [`4a402cf922`](https://github.com/wso2/identity-apps/commit/4a402cf922f0e6aea7a67bb8718c26f6b3c158b9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add max width to downtime banner title
+
 ## 2.0.77
 
 ### Patch Changes

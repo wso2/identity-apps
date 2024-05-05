@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 2.16.11
+
+### Patch Changes
+
+- [#6169](https://github.com/wso2/identity-apps/pull/6169) [`3c124e9286`](https://github.com/wso2/identity-apps/commit/3c124e92867e6504613cd152bd2fcb5e1a6e3291) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Consume ua-parser-js library through the helper class defined in core module
+
+* [#6166](https://github.com/wso2/identity-apps/pull/6166) [`5a82174ae1`](https://github.com/wso2/identity-apps/commit/5a82174ae145ad87dbcb872f7f1b79cdc96edb5c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Restructure console theme configuration
+
+* Updated dependencies [[`4a402cf922`](https://github.com/wso2/identity-apps/commit/4a402cf922f0e6aea7a67bb8718c26f6b3c158b9), [`3c124e9286`](https://github.com/wso2/identity-apps/commit/3c124e92867e6504613cd152bd2fcb5e1a6e3291)]:
+  - @wso2is/theme@2.0.78
+  - @wso2is/core@2.0.43
+  - @wso2is/features@2.16.8
+  - @wso2is/react-components@2.1.25
+  - @wso2is/access-control@3.0.3
+  - @wso2is/dynamic-forms@2.0.54
+  - @wso2is/form@2.0.55
+  - @wso2is/forms@2.0.33
+  - @wso2is/i18n@2.2.13
+
 ## 2.16.10
 
 ### Patch Changes
