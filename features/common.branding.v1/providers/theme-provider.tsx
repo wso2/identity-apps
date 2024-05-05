@@ -20,7 +20,7 @@
 import { ThemeProvider as OxygenThemeProvider } from "@oxygen-ui/react/theme";
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import { Helmet } from "react-helmet";
-import { generateAsgardeoTheme } from "../branding/theme";
+import { generateTheme } from "../branding/theme";
 import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts/branding-preference-context";
 import { BrandingPreferenceMeta } from "../meta";
 import { BrandingPreferenceAPIResponseInterface } from "../models";
@@ -92,7 +92,7 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
                 { injectBrandingCSSSkeleton() }
             </Helmet>
             <OxygenThemeProvider
-                theme={ generateAsgardeoTheme(contextValues) }
+                theme={ generateTheme(contextValues) }
                 defaultMode={ defaultMode }
                 modeStorageKey={ modeStorageKey }
             >

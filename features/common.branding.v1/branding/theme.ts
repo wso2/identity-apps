@@ -21,7 +21,7 @@ import { extendTheme } from "@oxygen-ui/react/theme";
 import { BrandingPreferenceContextProps } from "../contexts/branding-preference-context";
 import { ThemeConfigInterface } from "../models/branding-preferences";
 
-export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) => Theme = (
+export const generateTheme: (branding: BrandingPreferenceContextProps) => Theme = (
     branding: BrandingPreferenceContextProps
 ) => {
     const mode: string = branding?.brandingPreference?.preference?.theme?.activeTheme.toLowerCase() ?? "light";
