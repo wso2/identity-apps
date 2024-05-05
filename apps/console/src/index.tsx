@@ -30,8 +30,8 @@ import React, { ReactElement, useEffect, useState } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import Theme from "./theme";
 import { ProtectedApp } from "./protected-app";
+import Theme from "./theme";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
