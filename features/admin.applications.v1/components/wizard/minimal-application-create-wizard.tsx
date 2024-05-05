@@ -182,6 +182,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
+    const isManagementApplicationsEnabled: boolean = isFeatureEnabled(
+        featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_ADD_MANAGEMENT_APPLICATIONS")
+    );
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, any>>(undefined);
@@ -1100,6 +1104,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
                             (selectedTemplate?.templateId === "custom-application" ||
                             selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
+                            && isManagementApplicationsEnabled
                         ) && (
                             <div className="pt-0 mt-0">
                                 <Field
