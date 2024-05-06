@@ -93,8 +93,11 @@ export class BrandingPreferenceMeta {
                             imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath ?? "")
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.
-                                ui?.appLogo?.defaultLogoPath ?? "")
+                            imgURL: getAbsoluteLogoPath(
+                                window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultLogoPath ??
+                                window[ "AppUtils" ].getConfig().ui.appLogoPath ??
+                                ""
+                            )
                         }
                     }
                 },
@@ -107,8 +110,11 @@ export class BrandingPreferenceMeta {
                             imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appWhiteLogoPath ?? "")
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.
-                                ui?.appLogo?.defaultWhiteLogoPath ?? "")
+                            imgURL: getAbsoluteLogoPath(
+                                window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultWhiteLogoPath ??
+                                window[ "AppUtils" ].getConfig().ui.appWhiteLogoPath ??
+                                ""
+                            )
                         }
                     }
                 }
