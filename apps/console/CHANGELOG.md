@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.16.12
+
+### Patch Changes
+
+- [#6148](https://github.com/wso2/identity-apps/pull/6148) [`0c7aa5d3f0`](https://github.com/wso2/identity-apps/commit/0c7aa5d3f03bcf200aec2a610cd54171b8e36727) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with organization sso option hidden in the login flow
+
+- Updated dependencies [[`0c7aa5d3f0`](https://github.com/wso2/identity-apps/commit/0c7aa5d3f03bcf200aec2a610cd54171b8e36727)]:
+  - @wso2is/features@2.16.9
+
 ## 2.16.11
 
 ### Patch Changes
