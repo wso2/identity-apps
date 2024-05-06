@@ -55,11 +55,13 @@ import {
     AuthenticationSequenceInterface,
     AuthenticatorInterface
 } from "../../../../admin.applications.v1/models/application";
+import { AuthenticatorManagementConstants } from "../../../../admin.connections.v1";
 import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import {
     IdentityProviderManagementConstants
 } from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
+import { OrganizationManagementConstants } from "../../../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
@@ -278,6 +280,10 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
             authenticator = authenticators.find(
                 (item: GenericAuthenticatorInterface) => item.defaultAuthenticator.name === option.authenticator
+            );
+        } else if (option?.authenticator === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME) {
+            authenticator = authenticators?.find((item: GenericAuthenticatorInterface) =>
+                item?.id === OrganizationManagementConstants.ORGANIZATION_AUTHENTICATOR.id
             );
         } else {
             authenticator = authenticators.find((item: GenericAuthenticatorInterface) => item.idp === option.idp);
