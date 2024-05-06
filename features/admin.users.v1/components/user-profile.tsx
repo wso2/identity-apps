@@ -526,15 +526,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param locale - locale value.
      * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
      */
-    const  normalizeLocaleFormat = (locale: string, localeJoiningSymbol: LocaleJoiningSymbol): string => {
+    const normalizeLocaleFormat = (locale: string, localeJoiningSymbol: LocaleJoiningSymbol): string => {
         if (!locale) {
             return locale;
         }
 
-        let [ language, region ] = locale.split(/[-_]/);
+        const separatorIndex: number = locale.search(/[-_]/);
 
-        language = language.toLowerCase();
-        region = region.toUpperCase();
+        if (separatorIndex === -1) {
+            return normalizeLocaleFormat(UserManagementConstants.DEFAULT_LOCALE, localeJoiningSymbol);
+        }
+
+        const language: string = locale.substring(0, separatorIndex).toLowerCase();
+        const region: string = locale.substring(separatorIndex + 1).toUpperCase();
 
         return `${language}${localeJoiningSymbol}${region}`;
     };
