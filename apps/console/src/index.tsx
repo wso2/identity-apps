@@ -38,7 +38,8 @@ import Theme from "./theme";
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
-// Set the monaco editor loader config.
+// Manually load the `monaco` editor instance to use as an npm package instead of using CDN.
+// This enables the usage of the editor instance in offline mode.
 loader.config({ monaco });
 
 /**
