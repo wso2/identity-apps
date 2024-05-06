@@ -39,6 +39,13 @@ export interface aiNS{
             };
 
         };
+        confirmations: {
+            replacePrompt: {
+                message: string;
+                content: string;
+                header: string;
+            };
+        };
         didYouKnow: string;
         notifications: {
             generateError: NotificationItem;
@@ -50,6 +57,7 @@ export interface aiNS{
             noAuthenticators: NotificationItem;
             rateLimitError: NotificationItem;
         };
+        promptsHistory: string;
         screens: {
             loading:{
                 heading: string;

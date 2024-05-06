@@ -56,6 +56,15 @@ export interface AILoginFlowContextProps {
      * @param id - Operation ID.
      */
     setOperationId: (id: string) => void;
+    /**
+     * Prompt history.
+     */
+    promptHistory: string[];
+    /**
+     * Update the history with the new prompt.
+     * @param prompt - prompt to be set.
+     */
+    updatePromptHistory: (prompt: string) => void;
 }
 
 const AILoginFlowContext: Context<AILoginFlowContextProps> = createContext<

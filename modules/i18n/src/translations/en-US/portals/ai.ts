@@ -43,6 +43,13 @@ export const ai: aiNS = {
                 " environment and authenticators."
             }
         },
+        confirmations: {
+            replacePrompt: {
+                content: "This action is irreversible and will remove the existing prompt.",
+                header: "Replace prompt?",
+                message: "The prompt you have entered will replace the existing prompt. Do you wish to continue?"
+            }
+        },
         didYouKnow: "Did you know?",
         disclaimer: "Login Flow AI can make errors. Verify the information for accuracy.",
         notifications: {
@@ -82,6 +89,7 @@ export const ai: aiNS = {
                 message: "Rate limit exceeded"
             }
         },
+        promptsHistory: "Prompts history",
         screens: {
             loading: {
                 facts:{
