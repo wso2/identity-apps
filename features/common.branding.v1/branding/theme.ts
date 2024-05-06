@@ -18,14 +18,14 @@
 // eslint-disable-next-line no-restricted-imports
 import { Theme } from "@oxygen-ui/react";
 import { extendTheme } from "@oxygen-ui/react/theme";
-import { BrandingPreferenceContextProps } from "../contexts/branding-preference-context";
+import { ThemeProviderContextProps } from "../contexts/theme-provider-context";
 import { ThemeConfigInterface } from "../models/branding-preferences";
 
-export const generateTheme: (branding: BrandingPreferenceContextProps) => Theme = (
-    branding: BrandingPreferenceContextProps
+export const generateTheme: (branding: ThemeProviderContextProps) => Theme = (
+    branding: ThemeProviderContextProps
 ) => {
-    const mode: string = branding?.brandingPreference?.preference?.theme?.activeTheme.toLowerCase() ?? "light";
-    const brandingTheme: ThemeConfigInterface = branding?.brandingPreference?.preference?.theme[mode.toUpperCase()];
+    const mode: string = branding?.themePreference?.preference?.theme?.activeTheme.toLowerCase() ?? "light";
+    const brandingTheme: ThemeConfigInterface = branding?.themePreference?.preference?.theme[mode.toUpperCase()];
 
     return extendTheme({
         colorSchemes: {

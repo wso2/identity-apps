@@ -20,22 +20,22 @@ import { Context, createContext } from "react";
 import { BrandingPreferenceAPIResponseInterface } from "../models/branding-preferences";
 
 /**
- * Props interface for BrandingPreferenceContext.
+ * Props interface for ThemeProviderContext.
  */
-export type BrandingPreferenceContextProps = {
-    /**
-     * The branding preferences to be stored in the context.
-     */
-    brandingPreference: BrandingPreferenceAPIResponseInterface;
+export type ThemeProviderContextProps = {
+  /**
+   * The theme preferences to be stored in the context.
+   */
+  themePreference: BrandingPreferenceAPIResponseInterface;
 };
 
 /**
- * Context object for managing branding preferences.
- */
-export const BrandingPreferenceContext: Context<BrandingPreferenceContextProps> =
-  createContext<BrandingPreferenceContextProps>(undefined);
+* Context object for managing theme preferences.
+*/
+export const ThemeProviderContext: Context<ThemeProviderContextProps> =
+createContext<ThemeProviderContextProps>(undefined);
 
 /**
- * Display name for the BrandingPreferenceContext.
- */
-BrandingPreferenceContext.displayName = "BrandingPreferenceContext";
+* Display name for the ThemeProviderContext.
+*/
+ThemeProviderContext.displayName = "ThemeProviderContext";

@@ -20,9 +20,9 @@ import isEmpty from "lodash-es/isEmpty";
 import { BrandingPreferenceThemeInterface } from "../models/branding-preferences";
 
 /**
- * Class for the Branding Preference Metadata.
+ * Class for the Theme Preference Metadata.
  */
-export class BrandingPreferenceMeta {
+export class ThemePreferenceMeta {
     /* eslint-disable max-len */
     /**
      * Get the theme skeleton.

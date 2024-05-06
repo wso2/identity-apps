@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,20 +17,19 @@
  */
 
 import { useContext } from "react";
-// import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts";
-import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts/branding-preference-context";
+import { ThemeProviderContext, ThemeProviderContextProps } from "../contexts/theme-provider-context";
 import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceOrganizationDetailsInterface } from "../models";
 
 /**
- * Interface for the return type of the useBrandingPreference hook.
+ * Interface for the return type of the useThemeProvider hook.
  */
-export type UseBrandingPreferenceInterface = {
+export type UseThemeProviderInterface = {
     /**
      * Organization's basic details.
      */
     organizationDetails: BrandingPreferenceOrganizationDetailsInterface;
     /**
-     * The current theme object from the branding preference.
+     * The current theme object from the theme provider.
      */
     theme: any;
     /**
@@ -40,15 +39,15 @@ export type UseBrandingPreferenceInterface = {
 };
 
 /**
- * Hook that provides access to the branding preference context.
- * @returns An object containing the current branding preference theme and raw API response.
+ * Hook that provides access to the theme provider context.
+ * @returns An object containing the current theme from the theme provider and raw API response.
  */
-export const useBrandingPreference = (): UseBrandingPreferenceInterface => {
-    const { brandingPreference }: BrandingPreferenceContextProps = useContext(BrandingPreferenceContext);
+export const useThemeProvider = (): UseThemeProviderInterface => {
+    const { themePreference }: ThemeProviderContextProps = useContext(ThemeProviderContext);
 
     return {
-        organizationDetails: brandingPreference?.preference?.organizationDetails,
-        raw: brandingPreference,
-        theme: brandingPreference?.preference?.theme[brandingPreference?.preference?.theme?.activeTheme]
+        organizationDetails: themePreference?.preference?.organizationDetails,
+        raw: themePreference,
+        theme: themePreference?.preference?.theme[themePreference?.preference?.theme?.activeTheme]
     };
 };

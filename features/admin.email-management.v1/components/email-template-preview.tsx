@@ -29,9 +29,9 @@ import React, {
 import { useSelector } from "react-redux";
 import { BrandingPreferencesConstants } from "../../admin.branding.v1/constants";
 import useBrandingPreference from "../../admin.branding.v1/hooks/use-branding-preference";
-import { BrandingPreferenceThemeInterface } from "../../admin.branding.v1/models";
 import { BrandingPreferenceUtils } from "../../admin.branding.v1/utils";
 import { AppState } from "../../admin.core.v1";
+import { BrandingPreferenceThemeInterface } from "../../common.branding.v1/models";
 import { EmailTemplate } from "../models";
 import { EmailCustomizationUtils } from "../utils";
 

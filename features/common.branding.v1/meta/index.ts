@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./branding-preference-meta";
+export * from "./theme-provider-meta";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { Mode } from "@mui/system/cssVars/useCurrentColorScheme";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
+import { ThemeProviderContext } from "@wso2is/features/common.branding.v1/contexts/theme-provider-context";
 import { I18n } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
@@ -39,7 +40,6 @@ import { Redirect, Route, RouteProps, Router, Switch } from "react-router-dom";
 import { PreLoader, ProtectedRoute } from "./components";
 import { getBaseRoutes } from "./configs";
 import { AppConstants } from "./constants";
-import { BrandingPreferenceContext } from "./contexts";
 import { history } from "./helpers";
 import {
     ConfigReducerStateInterface,
@@ -66,16 +66,16 @@ export const App = (): ReactElement => {
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const { signOut, trySignInSilently } = useAuthContext();
-    const { brandingPreference } = useContext(BrandingPreferenceContext);
+    const { themePreference } = useContext(ThemeProviderContext);
 
     const { setMode } = useColorScheme();
 
     useEffect(() => {
-        const mode: Mode = brandingPreference?.preference?.theme?.activeTheme.toLowerCase() as Mode
+        const mode: Mode = themePreference?.preference?.theme?.activeTheme.toLowerCase() as Mode
             ?? "light" as Mode;
 
         setMode(mode);
-    }, [ brandingPreference ]);
+    }, [ themePreference ]);
 
     /**
      * Set the deployment configs in redux state.

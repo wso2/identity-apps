@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { useThemeProvider } from "@wso2is/features/common.branding.v1/hooks/use-theme-provider";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,7 +26,6 @@ import { Progress } from "semantic-ui-react";
 import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants, UIConstants } from "../../../constants";
 import { history } from "../../../helpers";
-import { useBrandingPreference } from "../../../hooks";
 import { ConfigReducerStateInterface, ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";
 import { CommonUtils } from "../../../utils";
@@ -57,7 +57,7 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
 
 
     const { t } = useTranslation();
-    const { organizationDetails } = useBrandingPreference();
+    const { organizationDetails } = useThemeProvider();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 

@@ -21,8 +21,8 @@ import { ThemeProvider as OxygenThemeProvider } from "@oxygen-ui/react/theme";
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { generateTheme } from "../branding/theme";
-import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts/branding-preference-context";
-import { BrandingPreferenceMeta } from "../meta";
+import { ThemeProviderContext, ThemeProviderContextProps } from "../contexts/theme-provider-context";
+import { ThemePreferenceMeta } from "../meta";
 import { BrandingPreferenceAPIResponseInterface } from "../models";
 
 /**
@@ -51,33 +51,33 @@ import { BrandingPreferenceAPIResponseInterface } from "../models";
 export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): ReactElement => {
     const { children,
         appTitle,
-        themePreference: brandingPreference,
+        themePreference,
         defaultMode,
         modeStorageKey
 
     } = props;
 
-    const contextValues: BrandingPreferenceContextProps = useMemo(() => {
-        if (!brandingPreference?.preference?.configs?.isBrandingEnabled) {
-            return { brandingPreference: undefined };
+    const contextValues: ThemeProviderContextProps = useMemo(() => {
+        if (!themePreference?.preference?.configs?.isBrandingEnabled) {
+            return { themePreference: undefined };
         }
 
-        return { brandingPreference };
-    }, [ brandingPreference ]);
+        return { themePreference };
+    }, [ themePreference ]);
 
     const _theme: string = useMemo(
-        () => BrandingPreferenceMeta.getThemeSkeleton(brandingPreference?.preference?.theme),
-        [ brandingPreference?.preference?.theme ]
+        () => ThemePreferenceMeta.getThemeSkeleton(themePreference?.preference?.theme),
+        [ themePreference?.preference?.theme ]
     );
 
     const favicon: string = useMemo(() => {
-        return brandingPreference?.preference?.theme[
-            brandingPreference?.preference?.theme?.activeTheme
+        return themePreference?.preference?.theme[
+            themePreference?.preference?.theme?.activeTheme
         ].images?.favicon?.imgURL;
-    }, [ brandingPreference?.preference?.theme ]);
+    }, [ themePreference?.preference?.theme ]);
 
     const injectBrandingCSSSkeleton = () => {
-        if (!brandingPreference?.preference?.theme || !brandingPreference?.preference?.configs?.isBrandingEnabled) {
+        if (!themePreference?.preference?.theme || !themePreference?.preference?.configs?.isBrandingEnabled) {
             return;
         }
 
@@ -85,7 +85,7 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
     };
 
     return (
-        <BrandingPreferenceContext.Provider value={ contextValues }>
+        <ThemeProviderContext.Provider value={ contextValues }>
             <Helmet>
                 { <title>{ appTitle }</title> }
                 { favicon && <link rel="shortcut icon" href={ favicon } /> }
@@ -98,6 +98,6 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
             >
                 { children }
             </OxygenThemeProvider>
-        </BrandingPreferenceContext.Provider>
+        </ThemeProviderContext.Provider>
     );
 };
