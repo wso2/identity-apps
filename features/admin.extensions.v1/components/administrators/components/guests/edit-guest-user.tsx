@@ -26,18 +26,16 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { UserRolesList } from "../../../../../admin.users.v1/components/user-roles-list"
-import { AppConstants } from "../../../../../admin.core.v1/constants";
 import { FeatureConfigInterface } from "../../../../../admin.core.v1/models";
 import { AppState } from "../../../../../admin.core.v1/store";
 import { ConnectorPropertyInterface, RealmConfigInterface } from "../../../../../admin.server-configurations.v1/models";
 import { UserProfile } from "../../../../../admin.users.v1/components/user-profile";
+import { UserRolesList } from "../../../../../admin.users.v1/components/user-roles-list";
 import { UserSessions } from "../../../../../admin.users.v1/components/user-sessions";
 import { UserManagementConstants } from "../../../../../admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "../../../../../admin.users.v1/utils/user-management-utils";
 import { administratorConfig } from "../../../../configs/administrator";
 import { SCIMConfigs } from "../../../../configs/scim";
-import { hiddenPermissions } from "../../../roles/meta";
 import { AdminAccountTypes } from "../../constants";
 
 interface EditGuestUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
@@ -90,8 +88,6 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ allowDeleteOnly, setAllowDeleteOnly ] = useState<boolean>(false);
