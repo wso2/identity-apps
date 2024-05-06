@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { UserRolesList } from "./user-roles-edit";
+import { UserRolesList } from "../../../../../admin.users.v1/components/user-roles-list"
 import { AppConstants } from "../../../../../admin.core.v1/constants";
 import { FeatureConfigInterface } from "../../../../../admin.core.v1/models";
 import { AppState } from "../../../../../admin.core.v1/store";
@@ -194,21 +194,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
                 menuItem: t("users:editUser.tab.menuItems.2"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <UserRolesList
-                            showDomain={ false }
-                            hideApplicationRoles={ true }
-                            isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
-                            onAlertFired={ handleAlerts }
-                            user={ user }
-                            handleUserUpdate={ handleUserUpdate }
-                            isReadOnly={ false }
-                            permissionsToHide={
-                                (AppConstants.getTenant() !== AppConstants.getSuperTenant())
-                                    ? hiddenPermissions
-                                    : []
-                            }
-                            realmConfigs={ realmConfigs }
-                        />
+                        <UserRolesList user={ user } />
                     </ResourceTab.Pane>
                 )
             }
