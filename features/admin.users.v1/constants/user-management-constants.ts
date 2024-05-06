@@ -152,7 +152,7 @@ export class UserManagementConstants {
 
     public static readonly MANAGED_BY_PARENT_TEXT: string = "Parent Organization";
 
-    public static readonly DEFAULT_LOCALE: string = "en_US";
+    public static readonly GLOBE: string = "globe";
 }
 
 /**
