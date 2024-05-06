@@ -88,7 +88,7 @@
     }
 
     String resetCode = (String) request.getAttribute("resetCode");
-    String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
+    String flowConfirmationCode = Encode.forHtmlAttribute(request.getParameter("flowConfirmationCode")); 
     boolean isForgotPasswordFlow = StringUtils.isNotBlank(resetCode);
 %>
 

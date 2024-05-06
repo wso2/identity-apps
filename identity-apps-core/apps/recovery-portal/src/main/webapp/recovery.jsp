@@ -58,15 +58,6 @@
 <% } %>
 
 <%
-
-    String ispwReEmCnf = request.getParameter("isPasswordRecoveryEmailConfirmation");
-    String isUsernameRec = request.getParameter("isUsernameRecovery");
-    String isPwRecWithClaNoti = request.getParameter("isPasswordRecoveryWithClaimsNotify");
-    String servProv = request.getParameter("sp");
-    String gCaptcha = request.getParameter("g-recaptcha-response");
-    String recCode = request.getParameter("recoveryCode");
-    String recoveryStage = request.getParameter("recoveryStage");
-
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
@@ -78,7 +69,7 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
-    String spId = request.getParameter("spId");
+    String spId = Encode.forHtmlAttribute(request.getParameter("spId"));
     String userTenantHint = request.getParameter("t");
     String applicationAccessUrl = "";
 
@@ -235,7 +226,7 @@
                             response);
                     return;
                 } else if(notificationChannel.equals("SMS")) {
-                    request.setAttribute("screenValue", request.getParameter("screenValue"));
+                    request.setAttribute("screenValue", Encode.forHtmlAttribute(request.getParameter("screenValue")));
                     request.setAttribute("resendCode", recoveryResponse.getResendCode());
                     request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
                     request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
@@ -288,10 +279,3 @@
         }
     }
 %>
-<html lang="en-US">
-<head>
-    <title></title>
-</head>
-<body>
-</body>
-</html>

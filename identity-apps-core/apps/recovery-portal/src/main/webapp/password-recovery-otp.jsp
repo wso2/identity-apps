@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@
 <%@ page import="javax.servlet.http.HttpServletResponse" %>
 <%@ page import="javax.servlet.ServletException" %>
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.AccountRecoveryType" %>
@@ -129,7 +130,7 @@
     final RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
     final String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
 
-    String recoveryStage = request.getParameter("recoveryStage");
+    String recoveryStage = Encode.forHtmlAttribute(request.getParameter("recoveryStage"));
 
     if (RecoveryStage.INITIATE.equalsValue(recoveryStage)) {
         // if otp is supported by a new channel (eg: email) update this value assignment. null means unsupported.
@@ -197,7 +198,7 @@
              * Manage user don't have phone number set up in the account.
              */
             if (StringUtils.isBlank(channelId)) {
-                String recoveryPageQueryString = request.getParameter("urlQuery");
+                String recoveryPageQueryString = Encode.forHtmlAttribute(request.getParameter("urlQuery"));
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", "Channel.unavailable.for.user");
                 String redirectString = "recoveraccountrouter.do?" + recoveryPageQueryString;
@@ -222,8 +223,8 @@
         // Redirect to enter the OTP.
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
     } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
-        String resendCode = request.getParameter("resendCode");
-        String screenValue = request.getParameter("screenValue");
+        String resendCode = Encode.forHtmlAttribute(request.getParameter("resendCode"));
+        String screenValue = Encode.forHtmlAttribute(request.getParameter("screenValue"));
         // Sending resend request
         try {
             Map<String, String> requestHeaders = new HashedMap();
@@ -255,12 +256,12 @@
             request.setAttribute("resendFailureMsg", "resend.fail.message");
             request.setAttribute("resendCode", resendCode);
             request.setAttribute("screenValue", screenValue);
-            request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
+            request.setAttribute("flowConfirmationCode", Encode.forHtmlAttribute(request.getParameter("flowConfirmationCode")));
         }
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
     } else if (RecoveryStage.CONFIRM.equalsValue(recoveryStage)) {
-        String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
-        String OTPcode = request.getParameter("OTPcode");
+        String flowConfirmationCode = Encode.forHtmlAttribute(request.getParameter("flowConfirmationCode")); 
+        String OTPcode = Encode.forHtmlAttribute(request.getParameter("OTPcode"));
         try {
             Map<String, String> requestHeaders = new HashedMap();
             if (request.getParameter("g-recaptcha-response") != null) {
@@ -286,16 +287,16 @@
             }
             request.setAttribute("isAuthFailure","true");
             request.setAttribute("authFailureMsg", "authentication.fail.message");
-            request.setAttribute("resendCode", request.getParameter("resendCode"));
-            request.setAttribute("flowConfirmationCode", request.getParameter("flowConfirmationCode"));
+            request.setAttribute("resendCode", Encode.forHtmlAttribute(request.getParameter("resendCode")));
+            request.setAttribute("flowConfirmationCode", Encode.forHtmlAttribute(request.getParameter("flowConfirmationCode")));
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
             return;
         }
-        request.setAttribute("spId", request.getParameter("spId"));
+        request.setAttribute("spId", Encode.forHtmlAttribute(request.getParameter("spId")));
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
     } else if (RecoveryStage.RESET.equalsValue(recoveryStage)) {
         request.setAttribute("useRecoveryV2API", "true");
-        request.setAttribute("spId", request.getParameter("spId"));
+        request.setAttribute("spId", Encode.forHtmlAttribute(request.getParameter("spId")));
         request.getRequestDispatcher("password-reset-complete.jsp").forward(request, response);
     } else {
         request.setAttribute("errorMsg", "Invalid password recovery stage.");
@@ -305,11 +306,3 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
     }
 %>
-
-<!doctype html>
-<html lang="en-US">
-<head>
-</head>
-<body>
-</body>
-</html>
