@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.16.10
+
+### Patch Changes
+
+- [#6179](https://github.com/wso2/identity-apps/pull/6179) [`95b7b2fbcf`](https://github.com/wso2/identity-apps/commit/95b7b2fbcffbee82b81fe9bcf5373e0b7a861ac6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the organization SSO authenticator identifying issue
+
+* [#6174](https://github.com/wso2/identity-apps/pull/6174) [`138f59a811`](https://github.com/wso2/identity-apps/commit/138f59a811486a209c425def296075ee18b5d2fb) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Separating the parent user invitation deployment configs
+
 ## 2.16.9
 
 ### Patch Changes
