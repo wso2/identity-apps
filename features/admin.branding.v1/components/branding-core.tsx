@@ -37,6 +37,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import useAIBrandingPreference from "../../admin.ai.v1/hooks/use-ai-branding-preference";
 import { EventPublisher, OrganizationType } from "../../admin.core.v1";
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
@@ -162,6 +163,10 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     const {
         mutateMultiple: mutateCustomTextPreferenceFetchRequests
     } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
+
+    const {
+        setMergedBrandingPreference
+    } = useAIBrandingPreference();
 
     const isBrandingPageLoading: boolean = useMemo(
         () =>
@@ -447,6 +452,8 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     }
 
                 }
+
+                setMergedBrandingPreference(null);
             })
             .catch((error: IdentityAppsApiException) => {
                 // Edge Case...Try again with POST, if Branding preference has been removed due to concurrent sessions.
@@ -578,6 +585,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         }
 
         setIsBrandingConfigured(false);
+        setMergedBrandingPreference(null);
         setBrandingPreference(DEFAULT_PREFERENCE);
         mutateBrandingPreferenceFetchRequest();
         mutateCustomTextPreferenceFetchRequests();
