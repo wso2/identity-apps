@@ -16,13 +16,11 @@
  * under the License.
  */
 
-import { loader } from "@monaco-editor/react";
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
-import * as monaco from "monaco-editor";
 import React, {
     FunctionComponent,
     LazyExoticComponent,
@@ -43,8 +41,6 @@ import replaceObjectKeySymbols from "../../utils/replace-object-key-symbols";
 import LocaleDropdown from "../locale-dropdown";
 import ScreenDropdown from "../screen-dropdown";
 import "./custom-text.scss";
-
-loader.config({ monaco });
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
     import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)

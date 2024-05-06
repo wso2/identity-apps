@@ -17,6 +17,7 @@
  */
 
 import { AuthProvider } from "@asgardeo/auth-react";
+import { loader } from "@monaco-editor/react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
 import { ContextUtils } from "@wso2is/core/utils";
 import { AuthenticateUtils } from "@wso2is/features/admin.authentication.v1";
@@ -26,6 +27,7 @@ import { AppConfigProvider } from "@wso2is/features/admin.core.v1/providers/app-
 import AppSettingsProvider from "@wso2is/features/admin.core.v1/providers/app-settings-provider";
 import UserPreferencesProvider from "@wso2is/features/admin.core.v1/providers/user-preferences-provider";
 import OrganizationsProvider from "@wso2is/features/admin.organizations.v1/providers/organizations-provider";
+import * as monaco from "monaco-editor";
 import React, { ReactElement, useEffect, useState } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -35,6 +37,9 @@ import Theme from "./theme";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
+// Set the monaco editor loader config.
+loader.config({ monaco });
 
 /**
  * Render root component with configs.

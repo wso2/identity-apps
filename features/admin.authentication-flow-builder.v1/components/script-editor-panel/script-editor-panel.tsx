@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DiffOnMount, Monaco, MonacoDiffEditor, loader } from "@monaco-editor/react";
+import { DiffOnMount, Monaco, MonacoDiffEditor } from "@monaco-editor/react";
 import Modal from "@mui/material/Modal";
 import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -30,7 +30,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import * as monaco from "monaco-editor";
 import React, {
     ChangeEvent,
     HTMLAttributes,
@@ -59,8 +58,6 @@ import "./script-editor-panel.scss";
  * Proptypes for the Script editor panel component.
  */
 export type ScriptEditorPanelPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
-
-loader.config({ monaco });
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
     import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
