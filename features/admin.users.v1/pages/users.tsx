@@ -743,7 +743,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             });
         }
         if (isSubOrganization() &&
-            featureConfig?.guestUser?.enabled &&
+            featureConfig?.parentUserInvitation?.enabled &&
             hasRequiredScopes(featureConfig?.guestUser, featureConfig?.guestUser?.scopes?.create, allowedScopes)) {
             dropDownOptions.push({
                 "data-componentid": `${componentId}-invite-parent-user`,
@@ -827,11 +827,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             render: renderUsersList
         });
 
-        panes.push({
-            componentId: "invitations",
-            menuItem: t("parentOrgInvitations:tab.invitationsTab"),
-            render: renderInvitationsList
-        });
+        if (featureConfig?.parentUserInvitation?.enabled) {
+            panes.push({
+                componentId: "invitations",
+                menuItem: t("parentOrgInvitations:tab.invitationsTab"),
+                render: renderInvitationsList
+            });
+        }
 
         return panes;
     };
