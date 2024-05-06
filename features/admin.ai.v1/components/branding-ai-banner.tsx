@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { ChevronUpIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
@@ -101,6 +102,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="branding-ai-text">
                             { t("branding:ai.title") }
                         </span>
+                        <AIIcon className="ai-icon"/>
                         <Chip
                             size="small"
                             label={ t("common:beta").toUpperCase() }
@@ -144,6 +146,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="branding-ai-text">
                             { t("branding:ai.title") }
                         </span>
+                        <AIIcon className="ai-icon"/>
                         <Chip
                             size="small"
                             label={ t("common:beta").toUpperCase() }
@@ -174,7 +177,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     placeholder={ t("branding:ai.banner.input.placeholder") }
                     fullWidth
                     inputProps={ {
-                        maxlength: 75
+                        maxlength: 150
                     } }
                     value={ websiteUrl }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -195,12 +198,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                                     onClick={ () => handleGenerateClick() }
                                     disabled={ !websiteUrl }
                                 >
-                                    <GenericIcon
-                                        icon={ AIIcon }
-                                        rounded
-                                        transparent
-                                        fill="white"
-                                    />
+                                    <SendOutlinedIcon className="branding-ai-input-button-icon"/>
                                 </IconButton>
                             ) : (
                                 <Box>
@@ -210,6 +208,16 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         )
                     } }
                 />
+                <Box className="branding-ai-disclaimer">
+                    <Typography variant="caption">
+                        { t("branding:ai.disclaimer") }
+                        <DocumentationLink
+                            link={ getLink("common.termsOfService") }
+                        >
+                            { t("branding:ai.termsAndConditions") }
+                        </DocumentationLink>
+                    </Typography>
+                </Box>
             </Box>
         );
     }
@@ -232,6 +240,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                             <span className="branding-ai-text">
                                 { t("branding:ai.title") }
                             </span>
+                            <AIIcon className="ai-icon"/>
                             <Chip
                                 size="small"
                                 label={ t("common:beta").toUpperCase() }

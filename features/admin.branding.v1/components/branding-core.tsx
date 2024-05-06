@@ -276,7 +276,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
      */
     useEffect(() => {
 
-        if (!theme) {
+        if (!theme || overridenBrandingPreference) {
             return;
         }
 
@@ -584,6 +584,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             }));
         }
 
+        setIsBrandingPublished(false);
         setIsBrandingConfigured(false);
         setMergedBrandingPreference(null);
         setBrandingPreference(DEFAULT_PREFERENCE);

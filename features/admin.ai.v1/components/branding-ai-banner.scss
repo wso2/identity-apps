@@ -82,13 +82,13 @@
 
 .branding-ai-banner-heading {
     font-size: 19px;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 5px;
 }
 
 .branding-ai-banner-sub-heading {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 400;
     color: #8D91A3;
 }
 
@@ -99,15 +99,24 @@
 .branding-ai-input-field-inner {
     background-color: #FEFEFE;
     border-radius: 40px;
-    border: 1px solid #CBCEDB;
     width: 100%;
-    padding: 5px 10px;
+    padding: 5px;
 }
 
 .branding-ai-input-button {
     background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
     padding: 10px;
     margin-left: 10px;
+
+    &.Mui-disabled {
+        background: #cdcdcd;
+    }
+}
+
+.branding-ai-input-button-icon {
+    color: #FFFFFF;
+    height: 16px;
+    width: 16px;
 }
 
 .branding-ai-text {
@@ -122,4 +131,18 @@
     background-color: #c3e6f6;
     margin-bottom: 4px;
     margin-left: 5px;
+}
+
+.branding-ai-disclaimer {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+    color: #8D91A3;
+    margin-top: 5px;
+}
+
+.ai-icon {
+    fill: var(--oxygen-palette-gradients-primary-stop2);
+    height: 16px;
+    width: 16px;
 }
