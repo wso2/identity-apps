@@ -21,6 +21,9 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%
+    final String CONSOLE = "Console";
+    final String MY_ACCOUNT = "My Account";
+    
     String TENANT_DOMAIN_KEY = "tenantDomain";
     String TENANT_DOMAIN_SHORT = "t";
     String USER_TENANT_DOMAIN_SHORT = "ut";
@@ -48,22 +51,22 @@
         tenantForTheming = tenantDomain;
         userTenant = tenantDomain;
 
-        spAppName = request.getParameter(SERVICE_PROVIDER_NAME_SHORT);
+        spAppName = Encode.forHtmlAttribute(request.getParameter(SERVICE_PROVIDER_NAME_SHORT));
         if (StringUtils.isBlank(spAppName) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT))) {
             spAppName = (String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT);
         }
 
-        spAppId = request.getParameter(SERVICE_PROVIDER_ID_SHORT);
+        spAppId = Encode.forHtmlAttribute(request.getParameter(SERVICE_PROVIDER_ID_SHORT));
         if (StringUtils.isBlank(spAppId) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT))) {
             spAppId = (String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT);
         }
 
-        String tenantDomainFromURL = request.getParameter(TENANT_DOMAIN_SHORT);
+        String tenantDomainFromURL = Encode.forHtmlAttribute(request.getParameter(TENANT_DOMAIN_SHORT));
         if (StringUtils.isBlank(tenantDomainFromURL) && StringUtils.isNotBlank((String) request.getAttribute(TENANT_DOMAIN_SHORT))) {
             tenantDomainFromURL = (String) request.getAttribute(TENANT_DOMAIN_SHORT);
         }
 
-        String tenantDomainOfUser = request.getParameter(USER_TENANT_DOMAIN_SHORT);
+        String tenantDomainOfUser = Encode.forHtmlAttribute(request.getParameter(USER_TENANT_DOMAIN_SHORT));
         if (StringUtils.isBlank(tenantDomainOfUser) && StringUtils.isNotBlank((String) request.getAttribute(USER_TENANT_DOMAIN_SHORT))) {
             tenantDomainOfUser = (String) request.getAttribute(USER_TENANT_DOMAIN_SHORT);
         }
@@ -71,7 +74,7 @@
         userTenantDomain = tenantDomainOfUser;
 
         if (StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)
-            && StringUtils.equals(spAppName, "Console")) {
+            && StringUtils.equals(spAppName, CONSOLE)) {
             tenantForTheming = IdentityManagementEndpointConstants.SUPER_TENANT;
         } else {
             if (StringUtils.isBlank(userTenantDomain)) {
@@ -83,40 +86,40 @@
             if (StringUtils.isNotBlank(tenantDomainOfUser)) {
                 tenantForTheming = tenantDomainOfUser;
             }
-            if (StringUtils.equals(spAppName, "My Account")
+            if (StringUtils.equals(spAppName, MY_ACCOUNT)
                 && StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
                 tenantForTheming = userTenantDomain;
                 userTenant = userTenantDomain;
             }
         }
     } else {
-        tenantDomain = request.getParameter(TENANT_DOMAIN_KEY);
+        tenantDomain = Encode.forHtmlAttribute(request.getParameter(TENANT_DOMAIN_KEY));
         if (StringUtils.isBlank(tenantDomain) && StringUtils.isNotBlank((String) request.getAttribute(TENANT_DOMAIN_KEY))) {
             tenantDomain = (String) request.getAttribute(TENANT_DOMAIN_KEY);
         }
 
-        String tenantDomainFromURL = request.getParameter(TENANT_DOMAIN_SHORT);
+        String tenantDomainFromURL = Encode.forHtmlAttribute(request.getParameter(TENANT_DOMAIN_SHORT));
         if (StringUtils.isBlank(tenantDomainFromURL) && StringUtils.isNotBlank((String) request.getAttribute(TENANT_DOMAIN_SHORT))) {
             tenantDomainFromURL = (String) request.getAttribute(TENANT_DOMAIN_SHORT);
         }
 
-        String tenantDomainOfUser = request.getParameter(USER_TENANT_DOMAIN_SHORT);
+        String tenantDomainOfUser = Encode.forHtmlAttribute(request.getParameter(USER_TENANT_DOMAIN_SHORT));
         if (StringUtils.isBlank(tenantDomainOfUser) && StringUtils.isNotBlank((String) request.getAttribute(USER_TENANT_DOMAIN_SHORT))) {
             tenantDomainOfUser = (String) request.getAttribute(USER_TENANT_DOMAIN_SHORT);
         }
 
-        spAppName = request.getParameter(SERVICE_PROVIDER_NAME_SHORT);
+        spAppName = Encode.forHtmlAttribute(request.getParameter(SERVICE_PROVIDER_NAME_SHORT));
         if (StringUtils.isBlank(spAppName) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT))) {
             spAppName = (String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT);
         }
 
-        spAppId = request.getParameter(SERVICE_PROVIDER_ID_SHORT);
+        spAppId = Encode.forHtmlAttribute(request.getParameter(SERVICE_PROVIDER_ID_SHORT));
         if (StringUtils.isBlank(spAppId) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT))) {
             spAppId = (String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT);
         }
 
         if (StringUtils.isBlank(tenantDomain)) {
-            tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+            tenantDomain = Encode.forHtmlAttribute(request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN));
             if (StringUtils.isBlank(tenantDomain) && StringUtils.isNotBlank((String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN))) {
                 tenantDomain = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
             }
@@ -131,7 +134,7 @@
         userTenantDomain = tenantDomainOfUser;
 
         if (StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)
-            && StringUtils.equals(spAppName, "Console")) {
+            && StringUtils.equals(spAppName, CONSOLE)) {
             tenantForTheming = IdentityManagementEndpointConstants.SUPER_TENANT;
         } else {
             if (StringUtils.isBlank(userTenantDomain)) {
@@ -143,7 +146,7 @@
             if (StringUtils.isNotBlank(tenantDomainOfUser)) {
                 tenantForTheming = tenantDomainOfUser;
             }
-            if (StringUtils.equals(spAppName, "My Account")
+            if (StringUtils.equals(spAppName, MY_ACCOUNT)
                 && StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
                 tenantForTheming = userTenantDomain;
                 userTenant = userTenantDomain;

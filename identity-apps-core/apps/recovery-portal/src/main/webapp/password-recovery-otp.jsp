@@ -176,7 +176,7 @@
                 return;
             }
             for(AccountRecoveryType recoveryType: resp) {
-                if (recoveryType.getMode().equals("recoverWithNotifications")) {
+                if ("recoverWithNotifications".equals(recoveryType.getMode())) {
                     RecoveryChannelInformation channelInfo = recoveryType.getChannelInfo();
                     recoveryCode = channelInfo.getRecoveryCode();
                     List<RecoveryChannel> channels = channelInfo.getChannels();
