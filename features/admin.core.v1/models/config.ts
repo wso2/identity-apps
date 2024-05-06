@@ -134,6 +134,10 @@ export interface FeatureConfigInterface {
      */
     guestUser?: FeatureAccessConfigInterface;
     /**
+     * Parent User Invite Feature
+     */
+    parentUserInvitation?: FeatureAccessConfigInterface;
+    /**
      * Identity provider management feature.
      */
     identityProviders?: FeatureAccessConfigInterface;

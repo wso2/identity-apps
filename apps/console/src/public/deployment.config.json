@@ -608,6 +608,25 @@
                     ]
                 }
             },
+            "parentUserInvitation": {
+                "enabled": true,
+                "disabledFeatures": [],
+                "scopes": {
+                    "delete": [
+                        "internal_guest_mgt_invite_delete",
+                        "internal_guest_mgt_user_delete"
+                    ],
+                    "read": [
+                        "internal_guest_mgt_invite_list"
+                    ],
+                    "create": [
+                        "internal_guest_mgt_invite_add"
+                    ],
+                    "update": [
+                        "internal_guest_mgt_invite_update"
+                    ]
+                }
+            },
             "identityProviders": {
                 "disabledFeatures": [],
                 "enabled": true,
