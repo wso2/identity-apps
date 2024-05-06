@@ -35,6 +35,7 @@ import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "../../../../../admin.identity-providers.v1/models/identity-provider";
+import { OrganizationManagementConstants } from "../../../../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
 
@@ -296,6 +297,10 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
                 authenticator = authenticators.find((item: GenericAuthenticatorInterface) =>
                     item.defaultAuthenticator.name === option.authenticator
+                );
+            } else if (option?.authenticator === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME) {
+                authenticator = authenticators?.find((item: GenericAuthenticatorInterface) =>
+                    item?.id === OrganizationManagementConstants.ORGANIZATION_AUTHENTICATOR.id
                 );
             } else {
                 authenticator = authenticators.find((item: GenericAuthenticatorInterface) =>
