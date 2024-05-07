@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.16.18
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+- Updated dependencies [[`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb)]:
+  - @wso2is/features@2.16.15
+  - @wso2is/access-control@3.0.4
+  - @wso2is/core@2.0.44
+  - @wso2is/dynamic-forms@2.0.57
+  - @wso2is/form@2.0.58
+  - @wso2is/forms@2.0.34
+  - @wso2is/i18n@2.2.16
+  - @wso2is/react-components@2.1.28
+  - @wso2is/theme@2.0.81
+  - @wso2is/validation@2.0.5
+
 ## 2.16.17
 
 ### Patch Changes
