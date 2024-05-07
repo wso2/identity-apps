@@ -12,7 +12,6 @@
 "@wso2is/react-components": patch
 "@wso2is/theme": patch
 "@wso2is/validation": patch
-"@wso2is/integration-tests": patch
 ---
 
 Fix CI build
