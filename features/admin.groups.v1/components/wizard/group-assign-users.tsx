@@ -35,7 +35,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, InputOnChangeData, Modal, Table } from "semantic-ui-react";
-import { 
+import {
     UIConstants,
     UserBasicInterface,
     UserListInterface,
@@ -443,13 +443,13 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
 
     return (
         <>
-            { isEdit 
+            { isEdit
                 ? (
                     <Grid>
                         <Grid.Row>
                             <Grid.Column computer={ 8 }>
                                 {
-                                    selectedUsers?.length > 0 
+                                    selectedUsers?.length > 0
                                         ? (
                                             <EmphasizedSegment className="user-role-edit-header-segment">
                                                 <Grid.Row>
@@ -458,8 +458,8 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                             data-testid={ `${ testId }-users-list-search-input` }
                                                             icon={ <Icon name="search"/> }
                                                             onChange={ handleAssignedUserListSearch }
-                                                            placeholder={ 
-                                                                t("roles:addRoleWizard" + 
+                                                            placeholder={
+                                                                t("roles:addRoleWizard" +
                                                                 ".users.assignUserModal.list.searchPlaceholder") }
                                                             floated="left"
                                                             size="small"
@@ -491,7 +491,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                                         <Table.Row key={ user.id }>
                                                                             <Table.Cell collapsing>
                                                                                 <UserAvatar
-                                                                                    data-testid={ 
+                                                                                    data-testid={
                                                                                         `${ testId }-users-list-
                                                                                         ${ user.userName }-avatar` }
                                                                                     name={ user.userName }
@@ -522,7 +522,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                     ] }
                                                     action={
                                                         (<PrimaryButton
-                                                            data-testid={ 
+                                                            data-testid={
                                                                 `${ testId }-users-list-empty-assign-users-button` }
                                                             onClick={ handleOpenAddNewGroupModal }
                                                             icon="plus"
