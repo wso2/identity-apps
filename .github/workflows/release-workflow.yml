@@ -22,16 +22,16 @@ name: Release
 
 on:
     push:
-        branches: [ hotfix-@wso2is/console@2.16.10 ]
+        branches: [ master ]
         paths-ignore:
             - "LICENSE"
         workflow_dispatch:
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
-    SHOULD_GENERATE_CHANGESET: 'false'
-    BRANCH: hotfix-@wso2is/console@2.16.10
-    IS_HOTFIX: 'true'
+    SHOULD_GENERATE_CHANGESET: 'true'
+    BRANCH: master
+    IS_HOTFIX: 'false'
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
     
@@ -180,5 +180,5 @@ jobs:
               id: perform-release
               working-directory: .github/workflows
               run: |
-                  PACKAGES=""[{\"name\":\"@wso2is/console\",\"version\":\"2.16.10\"}]""
+                  PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
                   bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }} ${{ env.IS_HOTFIX }}
