@@ -527,37 +527,39 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
      * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
      */
+    /**
+     * The function returns the normalized format of locale.
+     *
+     * @param locale - locale value.
+     * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+     * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
+     */
     const normalizeLocaleFormat = (
-        localeString: string,
+        locale: string,
         localeJoiningSymbol: LocaleJoiningSymbol,
         updateSupportedLanguage: boolean
     ): string => {
-        if (!localeString) {
-            return localeString;
+        if (!locale) {
+            return locale;
         }
 
-        const separatorIndex: number = localeString.search(/[-_]/);
+        const separatorIndex: number = locale.search(/[-_]/);
 
-        let language: string;
-        let region: string;
-        let normalizedLocale: string;
+        let normalizedLocale: string = locale;
 
         if (separatorIndex !== -1) {
-            language = localeString.substring(0, separatorIndex).toLowerCase();
-            region = localeString.substring(separatorIndex + 1).toUpperCase();
+            const language: string = locale.substring(0, separatorIndex).toLowerCase();
+            const region: string = locale.substring(separatorIndex + 1).toUpperCase();
+
             normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
-        } else {
-            normalizedLocale = localeString;
         }
 
-        if (updateSupportedLanguage) {
-            if (!supportedI18nLanguages[normalizedLocale]) {
-                supportedI18nLanguages[normalizedLocale] = {
-                    code: normalizedLocale,
-                    name: UserManagementConstants.GLOBE,
-                    namespaces: []
-                };
-            }
+        if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
+            supportedI18nLanguages[normalizedLocale] = {
+                code: normalizedLocale,
+                name: UserManagementConstants.GLOBE,
+                namespaces: []
+            };
         }
 
         return normalizedLocale;
