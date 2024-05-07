@@ -178,8 +178,8 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         setWebsiteUrl(e.target.value) }
                     onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
                         // Handle the enter key press.
-                        if (e.key === "Enter") {
-                            e.preventDefault();
+                        if (e?.key === "Enter") {
+                            e?.preventDefault();
                             handleGenerateClick();
                         }
                     } }

@@ -264,16 +264,16 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         maxRows={ 4 }
                         value={ userPrompt }
                         onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                            setUserPrompt(e.target.value) }
+                            setUserPrompt(e?.target?.value) }
                         onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
                             // Go to next line with shift + enter.
-                            if (e.key === "Enter" && e.shiftKey) {
+                            if (e?.key === "Enter" && e?.shiftKey) {
                                 return;
                             }
 
                             // Handle the enter key press.
-                            if (e.key === "Enter") {
-                                e.preventDefault();
+                            if (e?.key === "Enter") {
+                                e?.preventDefault();
                                 handleGenerateClick();
                             }
                         } }
