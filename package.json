@@ -201,6 +201,7 @@
     },
     "pnpm": {
         "overrides": {
+            "@mui/material": "5.13.0",
             "@types/react": "18.0.18",
             "webpack": "5.84.1"
         }
