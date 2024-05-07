@@ -201,7 +201,7 @@
     },
     "pnpm": {
         "overrides": {
-            "@types/react": "^18.0.18",
+            "@types/react": "18.0.18",
             "webpack": "5.84.1"
         }
     },
