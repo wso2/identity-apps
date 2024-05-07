@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.2.15
+
+### Patch Changes
+
+- [#6192](https://github.com/wso2/identity-apps/pull/6192) [`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
 ## 2.2.14
 
 ### Patch Changes

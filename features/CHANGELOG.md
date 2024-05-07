@@ -1,5 +1,20 @@
 # @wso2is/features
 
+## 2.16.13
+
+### Patch Changes
+
+- [#6192](https://github.com/wso2/identity-apps/pull/6192) [`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
+* [#6192](https://github.com/wso2/identity-apps/pull/6192) [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
+* Updated dependencies [[`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee), [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013)]:
+  - @wso2is/theme@2.0.80
+  - @wso2is/i18n@2.2.15
+  - @wso2is/react-components@2.1.27
+  - @wso2is/dynamic-forms@2.0.56
+  - @wso2is/form@2.0.57
+
 ## 2.16.12
 
 ### Patch Changes
