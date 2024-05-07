@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.16.12
+
+### Patch Changes
+
+- [#6183](https://github.com/wso2/identity-apps/pull/6183) [`df8f436eae`](https://github.com/wso2/identity-apps/commit/df8f436eaedba1a955980e21c2666fea1dd99cca) Thanks [@savindi7](https://github.com/savindi7)! - Use Monaco Editor as an npm package.
+
 ## 2.16.11
 
 ### Patch Changes
