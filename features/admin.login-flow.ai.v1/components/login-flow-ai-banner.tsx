@@ -34,13 +34,13 @@ import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, DocumentationLink, GenericIcon, useDocumentation } from "@wso2is/react-components";
+import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
-import { ReactComponent as AIIcon } from "../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
+import { ReactComponent as AIIcon } from "../../themes/wso2is/assets/images/icons/solid-icons/ai-icon.svg";
 import AIBannerBackgroundWhite from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
 import AIBannerInputBackgroundTall from
     "../../themes/wso2is/assets/images/illustrations/ai-banner-input-background-tall.svg";
@@ -183,6 +183,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         <span className="login-flow-ai-text">
                             { t("ai:aiLoginFlow.title") }
                         </span>
+                        <AIIcon className="ai-icon"/>
                         <Chip
                             size="small"
                             label={ t("common:beta").toUpperCase() }
@@ -198,11 +199,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     color="primary"
                     variant="contained"
                 >
-                    <GenericIcon
-                        icon={ AIIcon }
-                        fill="white"
-                        className="pr-2"
-                    />
+                    <AIIcon className="ai-icon primary-button"/>
                     { t("ai:aiLoginFlow.banner.full.button") }
                 </Button>
             </Box>
@@ -227,6 +224,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                             <span className="login-flow-ai-text">
                                 { t("ai:aiLoginFlow.title") }
                             </span>
+                            <AIIcon className="ai-icon"/>
                             <Chip
                                 size="small"
                                 label={ t("common:beta").toUpperCase() }
@@ -286,7 +284,10 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                                         onClick={ () => handleGenerateClick() }
                                         disabled={ !userPrompt }
                                     >
-                                        <SendOutlinedIcon className="login-flow-ai-input-button-icon"/>
+                                        <SendOutlinedIcon
+                                            className={
+                                                `login-flow-ai-input-button-icon ${ !userPrompt ? "disabled" : "" }` }
+                                        />
                                     </IconButton>
                                 ) : (
                                     <Box>
@@ -429,6 +430,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                             <span className="login-flow-ai-text">
                                 { t("ai:aiLoginFlow.title") }
                             </span>
+                            <AIIcon className="ai-icon"/>
                             <Chip
                                 size="small"
                                 label={ t("common:beta").toUpperCase() }
@@ -452,11 +454,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         color="primary"
                         variant="contained"
                     >
-                        <GenericIcon
-                            icon={ AIIcon }
-                            fill="white"
-                            className="pr-2"
-                        />
+                        <AIIcon className="ai-icon primary-button"/>
                         { t("ai:aiLoginFlow.banner.collapsed.button") }
                     </Button>
                 </Box>
