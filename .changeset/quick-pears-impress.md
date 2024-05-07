@@ -3,4 +3,4 @@
 "@wso2is/console": patch
 ---
 
-Adds sms otp configurations for the password recovery connector editor page.
+Add SMS OTP configurations for the password recovery connector edit page.

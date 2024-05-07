@@ -288,8 +288,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         if (
             serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
             serverConfigurationConfig.autoEnableConnectorToggleProperty &&
-            /* Recovery connector does not use  a connector property. If either email link or
-            * sms-otp recovery is enabled, the connector is considered to be enabled.*/
+            // Recovery connector does not use  a connector property. If either email link or
+            // sms-otp recovery is enabled, the connector is considered to be enabled.
             connectorId !== ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
         ) {
             data.properties.push({

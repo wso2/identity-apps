@@ -3580,7 +3580,7 @@ export const extensions: Extensions = {
                             },
                             maxResendCount: {
                                 hint: "Password recovery maximum resend count.",
-                                label: "Max resend attempts count",
+                                label: "Maximum resend attempts count",
                                 placeholder: "Enter max resend count",
                                 validations: {
                                     invalid: "Password recovery OTP resend count should be an integer.",
