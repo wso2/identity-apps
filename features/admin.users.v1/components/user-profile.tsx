@@ -525,18 +525,44 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      *
      * @param locale - locale value.
      * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+     * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
      */
-    const  normalizeLocaleFormat = (locale: string, localeJoiningSymbol: LocaleJoiningSymbol): string => {
+    /**
+     * The function returns the normalized format of locale.
+     *
+     * @param locale - locale value.
+     * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+     * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
+     */
+    const normalizeLocaleFormat = (
+        locale: string,
+        localeJoiningSymbol: LocaleJoiningSymbol,
+        updateSupportedLanguage: boolean
+    ): string => {
         if (!locale) {
             return locale;
         }
 
-        let [ language, region ] = locale.split(/[-_]/);
+        const separatorIndex: number = locale.search(/[-_]/);
 
-        language = language.toLowerCase();
-        region = region.toUpperCase();
+        let normalizedLocale: string = locale;
 
-        return `${language}${localeJoiningSymbol}${region}`;
+        if (separatorIndex !== -1) {
+            const language: string = locale.substring(0, separatorIndex).toLowerCase();
+            const region: string = locale.substring(separatorIndex + 1).toUpperCase();
+
+            normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
+        }
+
+        if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
+            supportedI18nLanguages[normalizedLocale] = {
+                code: normalizedLocale,
+                name: UserManagementConstants.GLOBE,
+                namespaces: []
+            };
+        }
+
+        return normalizedLocale;
     };
 
     /**
@@ -717,7 +743,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             .get("LOCALE")
                                             ? { [schemaNames[0]]: normalizeLocaleFormat(
                                                 values.get(schemaNames[0]) as string,
-                                                LocaleJoiningSymbol.UNDERSCORE
+                                                LocaleJoiningSymbol.UNDERSCORE,
+                                                false
                                             ) }
                                             : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
@@ -853,7 +880,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             .get("LOCALE")
                                             ? { [schemaNames[0]]: normalizeLocaleFormat(
                                                 values.get(schemaNames[0]) as string,
-                                                LocaleJoiningSymbol.UNDERSCORE
+                                                LocaleJoiningSymbol.UNDERSCORE,
+                                                false
                                             ) }
                                             : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
@@ -1307,7 +1335,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             { fieldName })
                     }
                     type="dropdown"
-                    value={ normalizeLocaleFormat(profileInfo.get(schema?.name), LocaleJoiningSymbol.HYPHEN) }
+                    value={ normalizeLocaleFormat(profileInfo.get(schema?.name), LocaleJoiningSymbol.HYPHEN, true) }
                     children={ [ {
                         "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
                         key: "empty-locale" as string,
@@ -1320,10 +1348,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return {
                                     "data-testid": `${ testId }-profile-form-locale-dropdown-`
                                         +  supportedI18nLanguages[key].code as string,
-                                    flag: supportedI18nLanguages[key].flag,
+                                    flag: supportedI18nLanguages[key].flag ?? UserManagementConstants.GLOBE,
                                     key: supportedI18nLanguages[key].code as string,
-                                    text: `${supportedI18nLanguages[key].name as string},
-                                                ${supportedI18nLanguages[key].code as string}`,
+                                    text: supportedI18nLanguages[key].name === UserManagementConstants.GLOBE
+                                        ? supportedI18nLanguages[key].code
+                                        : `${supportedI18nLanguages[key].name as string},
+                                            ${supportedI18nLanguages[key].code as string}`,
                                     value: supportedI18nLanguages[key].code as string
                                 };
                             })
