@@ -15,4 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export * from "./pages";
+
+export * from "./pages/identity-verification-provider-edit";
+export * from "./pages/identity-verification-provider-template";
+export * from "./pages/identity-verification-providers";

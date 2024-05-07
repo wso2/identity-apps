@@ -15,8 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export * from "./api";
-export * from "./data";
-export * from "./models";
-export * from "./store";
-export * from "./store";
+
+export * from "./pages";
+

@@ -28,38 +28,59 @@ const nodePolyfills = require("rollup-plugin-polyfill-node");
 const scss = require("rollup-plugin-scss");
 const styles = require("rollup-plugin-styles");
 const svg = require("rollup-plugin-svg");
-const pkg = require("./package.json");
-
-// const onwarn = (warning, warn) => {
-//     if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
-//         return;
-//     }
-//     warn(warning);
-// };
 
 module.exports = [
     {
         cache: false,
-        input: "./index.ts",
+        input: [
+            "./index.ts",
+            "./admin.api-resources.v2/public-api.ts",
+            "./admin.application-roles.v1/public-api.ts",
+            "./admin.applications.v1/public-api.ts",
+            "./admin.authentication.v1/public-api.ts",
+            "./admin.authorization.v1/public-api.ts",
+            "./admin.branding.v1/public-api.ts",
+            "./admin.certificates.v1/public-api.ts",
+            "./admin.claims.v1/public-api.ts",
+            "./admin.connections.v1/public-api.ts",
+            "./admin.console-settings.v1/public-api.ts",
+            "./admin.core.v1/public-api.ts",
+            "./admin.email-and-sms.v1/public-api.ts",
+            "./admin.email-management.v1/public-api.ts",
+            "./admin.email-providers.v1/public-api.ts",
+            "./admin.email-templates.v1/public-api.ts",
+            "./admin.extensions.v1/public-api.ts",
+            "./admin.groups.v1/public-api.ts",
+            "./admin.identity-providers.v1/public-api.ts",
+            "./admin.identity-verification-providers.v1/public-api.ts",
+            "./admin.layouts.v1/public-api.ts",
+            "./admin.oidc-scopes.v1/public-api.ts",
+            "./admin.org-insights.v1/public-api.ts",
+            "./admin.organization-discovery.v1/public-api.ts",
+            "./admin.organizations.v1/public-api.ts",
+            "./admin.parent-roles.v1/public-api.ts",
+            "./admin.private-key-jwt.v1/public-api.ts",
+            "./admin.provisioning.v1/public-api.ts",
+            "./admin.remote-repository-configuration.v1/public-api.ts",
+            "./admin.roles.v2/public-api.ts",
+            "./admin.saml2-configuration.v1/public-api.ts",
+            "./admin.secrets.v1/public-api.ts",
+            "./admin.session-management.v1/public-api.ts",
+            "./admin.sms-providers.v1/public-api.ts",
+            "./admin.tenants.v1/public-api.ts",
+            "./admin.users.v1/public-api.ts",
+            "./admin.userstores.v1/public-api.ts",
+            "./admin.validation.v1/public-api.ts",
+            "./admin.views.v1/public-api.ts",
+            "./admin.workflow-approvals.v1/public-api.ts",
+            "./admin.wsfed-configuration.v1/public-api.ts"
+        ],
         output: [
             {
-                file: pkg.main,
-                format: "cjs",
-                inlineDynamicImports: true,
-                sourcemap: true
-            },
-            {
-                file: pkg.umd,
-                format: "umd",
-                inlineDynamicImports: true,
-                name: "core",
-                sourcemap: true
-            },
-            {
-                file: pkg.module,
+                dir: "dist/esm",
                 format: "esm",
-                inlineDynamicImports: true,
-                sourcemap: true
+                preserveModules: true,
+                preserveModulesRoot: "."
             }
         ],
         plugins: [
@@ -72,19 +93,16 @@ module.exports = [
             nodePolyfills(),
             commonjs(),
             typescript({
-                declaration: true,
-                declarationDir: "dist",
-                tsconfig: "./tsconfig.lib.json"
+                tsconfig: "./tsconfig.json"
             }),
             dynamicImportVars(),
             styles({ mode: "inject" })
         ]
-        // onwarn,
     },
     {
         cache: false,
         external: [ /\.(sass|scss|css)$/ ],
-        input: "dist/esm/index.d.ts",
+        input: "dist/esm/types/index.d.ts",
         output: [ { file: "dist/index.d.ts", format: "esm" } ],
         plugins: [ dts.default() ]
     }

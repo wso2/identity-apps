@@ -10,6 +10,7 @@
     "module": "dist/esm/index.js",
     "scripts": {
         "build": "pnpm build",
+        "compile":"pnpm rollup -c",
         "postinstall": "node scripts/post-install.js",
         "copy:themes:features": "node scripts/copy-themes-to-features.js",
         "clean:themes:features": "pnpm rimraf ./themes",

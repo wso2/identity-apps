@@ -15,11 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export * from "./admin.ai.v1/public-api";
+
 export * from "./admin.api-resources.v2/public-api";
 export * from "./admin.application-roles.v1/public-api";
 export * from "./admin.applications.v1/public-api";
 export * from "./admin.authentication.v1/public-api";
+export * from "./admin.authorization.v1/public-api";
 export * from "./admin.branding.v1/public-api";
 export * from "./admin.certificates.v1/public-api";
 export * from "./admin.claims.v1/public-api";
