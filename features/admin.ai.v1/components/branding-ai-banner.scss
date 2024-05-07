@@ -98,27 +98,24 @@
 
 .branding-ai-input-field-inner {
     background-color: #FEFEFE;
-    border-radius: 40px;
     width: 100%;
     padding: 5px;
 }
 
 .branding-ai-input-button {
-    background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
     padding: 10px;
     margin-left: 10px;
-
-    &.Mui-disabled {
-        background: #cdcdcd;
-    }
 }
 
 .branding-ai-input-button-icon {
-    color: #FFFFFF;
-    height: 16px;
-    width: 16px;
-}
+    color: var(--oxygen-palette-gradients-primary-stop2);
+    height: 20px;
+    width: 20px;
 
+    &.disabled {
+        color: #cdcdcd;
+    }
+}
 .branding-ai-text {
     background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
     background-clip: text;
@@ -135,14 +132,29 @@
 
 .branding-ai-disclaimer {
     display: flex;
-    justify-content: center;
     width: 60%;
     color: #8D91A3;
     margin-top: 5px;
+    margin-left: 2px;
+
 }
 
 .ai-icon {
     fill: var(--oxygen-palette-gradients-primary-stop2);
-    height: 16px;
-    width: 16px;
+    height: 25px;
+    width: 25px;
+    margin-left: 1px;
+    transform: rotate(180deg);
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+
+    &.primary-button {
+        fill: white;
+        height: 15px;
+        width: 15px;
+        margin-right: 5px;
+    }
 }
