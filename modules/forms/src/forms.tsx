@@ -16,7 +16,15 @@
  * under the License.
  */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+    ForwardRefExoticComponent,
+    PropsWithChildren,
+    RefAttributes,
+    forwardRef,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { Form, Ref } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isFilePickerField,
@@ -42,8 +50,9 @@ interface FormPropsInterface {
  * This is a Forms component.
  * @deprecated This module is deprecated. Use `@wso2is/form` instead.
  */
-export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> =
-    React.forwardRef((props: React.PropsWithChildren<FormPropsInterface>, ref): JSX.Element => {
+export const Forms: ForwardRefExoticComponent<
+    PropsWithChildren<FormPropsInterface> & RefAttributes<HTMLElement>
+    > = forwardRef<HTMLElement, PropsWithChildren<FormPropsInterface>>((props, ref) => {
 
         const {
             onSubmit,
