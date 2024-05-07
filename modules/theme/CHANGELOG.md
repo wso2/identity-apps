@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.79
+
+### Patch Changes
+
+- [#6184](https://github.com/wso2/identity-apps/pull/6184) [`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add prompt history to AI Login Flow feature
+
 ## 2.0.78
 
 ### Patch Changes
