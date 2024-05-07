@@ -18,6 +18,7 @@
 
 import { Context, createContext } from "react";
 import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
+import { BannerState } from "../models/banner-state";
 
 export interface AILoginFlowContextProps {
     /**
@@ -56,6 +57,32 @@ export interface AILoginFlowContextProps {
      * @param id - Operation ID.
      */
     setOperationId: (id: string) => void;
+    /**
+     * Prompt history.
+     */
+    promptHistory: string[];
+    /**
+     * Update the history with the new prompt.
+     * @param prompt - prompt to be set.
+     */
+    updatePromptHistory: (prompt: string) => void;
+    /**
+     * user prompt.
+     */
+    userPrompt: string;
+    /**
+     * set user prompt.
+     */
+    setUserPrompt: (prompt: string) => void;
+    /**
+     * Banner state.
+     */
+    bannerState: BannerState;
+    /**
+     * Set the banner state.
+     * @param state - State to be set.
+     */
+    setBannerState: (state: BannerState) => void;
 }
 
 const AILoginFlowContext: Context<AILoginFlowContextProps> = createContext<

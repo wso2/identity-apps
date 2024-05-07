@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import IconButton from "@oxygen-ui/react/IconButton";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
@@ -43,13 +44,11 @@ import "./branding-ai-loading-screen.scss";
 export const LoadingScreen: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
 
-    const { getLink } = useDocumentation();
-
     const [ factIndex, setFactIndex ] = useState<number>(0);
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
 
-    const { operationId } = useAIBrandingPreference();
-    const { data, isLoading } = useGetAIBrandingGenerationStatus(operationId);
+    const { operationId, setBrandingGenerationCompleted, setGeneratingBranding } = useAIBrandingPreference();
+    const { data } = useGetAIBrandingGenerationStatus(operationId);
     const facts: string[] = useGetFacts();
     const statusLabels: Record<string, string> = useGetStatusLabels();
 
@@ -119,43 +118,47 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
         return t(currentStatusLabel);
     };
 
+    const handleGenerateCancel = () => {
+        setGeneratingBranding(false);
+        setBrandingGenerationCompleted(false);
+    };
+
     return (
-        <Box className="branding-ai-loading-screen-parent">
-            <Box className="branding-ai-loading-screen-container">
-                <Box className="branding-ai-loading-screen-illustration-container">
-                    <LoadingPlaceholder />
+        <Box className="branding-ai-loading-screen-container">
+            <Box className="branding-ai-loading-screen-illustration-container">
+                <LoadingPlaceholder />
+            </Box>
+            <Box className="branding-ai-loading-screen-text-container">
+                <Box className="mb-5">
+                    <Typography
+                        variant="h5"
+                        className="branding-ai-loading-screen-heading"
+                    >
+                        { t("branding:ai.screens.loading.didYouKnow") }
+                    </Typography>
+                    <Typography className="branding-ai-loading-screen-sub-heading">
+                        { facts[factIndex] }
+                    </Typography>
                 </Box>
-                <Box className="branding-ai-loading-screen-text-container">
-                    <Box className="mb-5">
-                        <Typography
-                            variant="h5"
-                            className="branding-ai-loading-screen-heading"
+                <Box sx={ { width: 1 } }>
+                    <Box className="branding-ai-loading-screen-loading-container">
+                        <Typography className="branding-ai-loading-screen-loading-state">
+                            { getCurrentStatus() }
+                        </Typography>
+                        <Tooltip
+                            title="Cancel"
+                            placement="top"
                         >
-                            { t("branding:ai.screens.loading.didYouKnow") }
-                        </Typography>
-                        <Typography className="branding-ai-loading-screen-sub-heading">
-                            { facts[factIndex] }
-                        </Typography>
+                            <IconButton
+                                onClick={ handleGenerateCancel }
+                            >
+                                <XMarkIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
-                    <Box sx={ { width: 1 } }>
-                        <Box className="branding-ai-loading-screen-loading-container">
-                            { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
-                            <Typography className="branding-ai-loading-screen-loading-state">
-                                { getCurrentStatus() }
-                            </Typography>
-                        </Box>
-                        <LinearProgress variant="determinate" value={ currentProgress } />
-                    </Box>
+                    <LinearProgress variant="buffer" value={ currentProgress } valueBuffer={ currentProgress + 1 }  />
                 </Box>
             </Box>
-            <Typography variant="caption">
-                { t("branding:ai.disclaimer") }
-                <DocumentationLink
-                    link={ getLink("common.termsOfService") }
-                >
-                    { t("branding:ai.termsAndConditions") }
-                </DocumentationLink>
-            </Typography>
         </Box>
     );
 };
