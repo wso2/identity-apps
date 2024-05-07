@@ -377,12 +377,8 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                 }
                 <ConfirmationModal
                     onClose={ (): void => setShowReplaceConfirmationModal(false) }
-                    type="negative"
+                    type="warning"
                     open={ showReplaceConfirmationModal }
-                    assertionHint={
-                        t("extensions:develop.branding.confirmations.revertBranding.assertionHint")
-                    }
-                    assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ (): void => setShowReplaceConfirmationModal(false) }
@@ -400,7 +396,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
-                        negative
+                        warning
                         data-componentid={ `${ componentId }-propmt-replace-confirmation-modal-message` }
                     >
                         {
