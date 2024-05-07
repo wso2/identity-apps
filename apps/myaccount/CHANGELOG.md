@@ -1,5 +1,44 @@
 # @wso2is/myaccount
 
+## 2.5.36
+
+### Patch Changes
+
+- Updated dependencies [[`01d27ac6db`](https://github.com/wso2/identity-apps/commit/01d27ac6db717f1d1bcdffbccdd644188ec7fa33)]:
+  - @wso2is/features@2.15.16
+
+## 2.5.35
+
+### Patch Changes
+
+- [#6040](https://github.com/wso2/identity-apps/pull/6040) [`30fde0c49b`](https://github.com/wso2/identity-apps/commit/30fde0c49bb1fb60a4a7b06f533b8f2af514f15d) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve invite parent users as admins wizard and disable iproov as a first factor authenticator
+
+- Updated dependencies [[`30fde0c49b`](https://github.com/wso2/identity-apps/commit/30fde0c49bb1fb60a4a7b06f533b8f2af514f15d)]:
+  - @wso2is/features@2.15.15
+  - @wso2is/i18n@2.2.3
+
+## 2.5.34
+
+### Patch Changes
+
+- Updated dependencies [[`fd72a16b08`](https://github.com/wso2/identity-apps/commit/fd72a16b0873b5c0c71828f4e12f661208190e2e)]:
+  - @wso2is/i18n@2.2.2
+  - @wso2is/features@2.15.14
+
+## 2.5.33
+
+### Patch Changes
+
+- Updated dependencies [[`759ce2692a`](https://github.com/wso2/identity-apps/commit/759ce2692a83a9f6043d179d20dbc04a1f7ace93)]:
+  - @wso2is/features@2.15.13
+
+## 2.5.32
+
+### Patch Changes
+
+- Updated dependencies [[`9807a001d2`](https://github.com/wso2/identity-apps/commit/9807a001d2ccfb21b3557239992e0bb0884d49a5)]:
+  - @wso2is/features@2.15.12
+
 ## 2.5.31
 
 ### Patch Changes

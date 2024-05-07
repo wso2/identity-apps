@@ -37,11 +37,10 @@ import {
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface
 } from "@wso2is/features/admin.core.v1/models";
-import { AppState, store } from "@wso2is/features/admin.core.v1/store";
+import { AppState } from "@wso2is/features/admin.core.v1/store";
 import { commonConfig } from "@wso2is/features/admin.extensions.v1";
 import { useGetAllFeatures } from "@wso2is/features/admin.extensions.v1/components/feature-gate/api/feature-gate";
 import { featureGateConfig } from "@wso2is/features/admin.extensions.v1/configs/feature-gate";
-import { OrganizationUtils } from "@wso2is/features/admin.organizations.v1/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
@@ -78,7 +77,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently, getDecodedIDToken, signOut, state } = useAuthContext();
+    const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
@@ -96,14 +95,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
-    const [ orgId, setOrgId ] = useState<string>();
     const [ featureGateConfigData, setFeatureGateConfigData ] =
         useState<FeatureGateInterface | null>(featureGateConfigUpdated);
 
     const {
         data: allFeatures,
         error: featureGateAPIException
-    } = useGetAllFeatures(orgId, state.isAuthenticated);
+    } = useGetAllFeatures();
 
     /**
      * Set the deployment configs in redux state.
@@ -219,24 +217,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         }
         eventPublisher.publish("page-visit-console-landing-page");
     }, [ uuid ]);
-
-    useEffect(() => {
-        if(state.isAuthenticated) {
-            if (OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
-            || store.getState().organization.isFirstLevelOrganization) {
-                getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
-                    const orgName: string = response.org_name;
-                    // Set org_name instead of org_uuid as the API expects org_name
-                    // as it resolves tenant uuid from it.
-
-                    setOrgId(orgName);
-                });
-            } else {
-                // Set the sub org id to the current organization id.
-                setOrgId(store.getState().organization.organization.id);
-            }
-        }
-    }, [ state ]);
 
     useEffect(() => {
         if (allFeatures instanceof IdentityAppsApiException || featureGateAPIException) {

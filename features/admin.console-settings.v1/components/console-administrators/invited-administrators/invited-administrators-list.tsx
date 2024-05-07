@@ -258,7 +258,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                         onClick={ () => setShowInviteNewAdministratorModal(true) }
                     >
                         <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
-                        Invite New User
+                        Invite Parent User
                     </PrimaryButton>
                 </Show>
             ) }

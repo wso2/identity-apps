@@ -29,7 +29,7 @@ export const consoleSettings: ConsoleSettingsNS = {
             action: "Add Administrator",
             options: {
                 addExistingUser: "Add Existing User",
-                inviteNewUser: "Invite New User"
+                inviteParentUser: "Invite Parent User"
             }
         },
         edit: {
