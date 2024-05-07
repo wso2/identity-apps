@@ -90,17 +90,6 @@ jobs:
           # Change the Release workflow to work with the hotfix branch.
           echo "Changing the Release workflow to work with the hotfix branch."
 
-          # Check out the release script and release workflow from master branch.
-          #
-          # Note: This is done due to the hotfix workflow for identity-apps was added recently and therefore
-          # the related changes to release script[1] are not present in the older app versions. We may be able to
-          # remove this line once the older app versions are not being used, as by that time, the updated release script
-          # will be present in app versions that need to be hotfixed.
-          #
-          # [1] https://github.com/wso2/identity-apps/pull/6049
-          git checkout master -- .github/workflows/scripts/release.sh
-          git checkout master -- .github/workflows/release-workflow.yml
-
           # Change the branch name in the release.yml file.
           sed -i '/branches: \[ master \]/s/master/hotfix-'"${TAG//\//\\/}"'/' .github/workflows/release-workflow.yml
           sed -i 's/BRANCH: .*/BRANCH: hotfix-'"${TAG//\//\\/}"'/' .github/workflows/release-workflow.yml
