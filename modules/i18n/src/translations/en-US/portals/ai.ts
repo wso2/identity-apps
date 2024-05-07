@@ -47,7 +47,7 @@ export const ai: aiNS = {
             replacePrompt: {
                 content: "This action is irreversible and will remove the existing prompt.",
                 header: "Replace prompt?",
-                message: "The prompt you have entered will replace the existing prompt. Do you wish to continue?"
+                message: "The prompt you have selected will replace the existing prompt. Do you wish to continue?"
             }
         },
         didYouKnow: "Did you know?",
