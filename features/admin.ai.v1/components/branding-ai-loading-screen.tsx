@@ -20,7 +20,6 @@ import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Typography from "@oxygen-ui/react/Typography";
-import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
@@ -42,8 +41,6 @@ import "./branding-ai-loading-screen.scss";
  */
 export const LoadingScreen: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
-
-    const { getLink } = useDocumentation();
 
     const [ factIndex, setFactIndex ] = useState<number>(0);
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
@@ -120,42 +117,32 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     };
 
     return (
-        <Box className="branding-ai-loading-screen-parent">
-            <Box className="branding-ai-loading-screen-container">
-                <Box className="branding-ai-loading-screen-illustration-container">
-                    <LoadingPlaceholder />
+        <Box className="branding-ai-loading-screen-container">
+            <Box className="branding-ai-loading-screen-illustration-container">
+                <LoadingPlaceholder />
+            </Box>
+            <Box className="branding-ai-loading-screen-text-container">
+                <Box className="mb-5">
+                    <Typography
+                        variant="h5"
+                        className="branding-ai-loading-screen-heading"
+                    >
+                        { t("branding:ai.screens.loading.didYouKnow") }
+                    </Typography>
+                    <Typography className="branding-ai-loading-screen-sub-heading">
+                        { facts[factIndex] }
+                    </Typography>
                 </Box>
-                <Box className="branding-ai-loading-screen-text-container">
-                    <Box className="mb-5">
-                        <Typography
-                            variant="h5"
-                            className="branding-ai-loading-screen-heading"
-                        >
-                            { t("branding:ai.screens.loading.didYouKnow") }
-                        </Typography>
-                        <Typography className="branding-ai-loading-screen-sub-heading">
-                            { facts[factIndex] }
+                <Box sx={ { width: 1 } }>
+                    <Box className="branding-ai-loading-screen-loading-container">
+                        { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
+                        <Typography className="branding-ai-loading-screen-loading-state">
+                            { getCurrentStatus() }
                         </Typography>
                     </Box>
-                    <Box sx={ { width: 1 } }>
-                        <Box className="branding-ai-loading-screen-loading-container">
-                            { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
-                            <Typography className="branding-ai-loading-screen-loading-state">
-                                { getCurrentStatus() }
-                            </Typography>
-                        </Box>
-                        <LinearProgress variant="determinate" value={ currentProgress } />
-                    </Box>
+                    <LinearProgress variant="determinate" value={ currentProgress } />
                 </Box>
             </Box>
-            <Typography variant="caption">
-                { t("branding:ai.disclaimer") }
-                <DocumentationLink
-                    link={ getLink("common.termsOfService") }
-                >
-                    { t("branding:ai.termsAndConditions") }
-                </DocumentationLink>
-            </Typography>
         </Box>
     );
 };

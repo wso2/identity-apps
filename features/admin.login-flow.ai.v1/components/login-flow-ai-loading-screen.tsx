@@ -22,7 +22,6 @@ import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Typography from "@oxygen-ui/react/Typography";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -42,8 +41,6 @@ import "./login-flow-ai-loading-screen.scss";
 const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
 
     const { t } = useTranslation();
-
-    const { getLink } = useDocumentation();
 
     const dispatch: Dispatch = useDispatch();
 
@@ -135,42 +132,32 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
     };
 
     return (
-        <Box className="login-flow-ai-loading-screen-parent">
-            <Box className="login-flow-ai-loading-screen-container">
-                <Box className="login-flow-ai-loading-screen-illustration-container">
-                    <LoadingPlaceholder />
+        <Box className="login-flow-ai-loading-screen-container">
+            <Box className="login-flow-ai-loading-screen-illustration-container">
+                <LoadingPlaceholder />
+            </Box>
+            <Box className="login-flow-ai-loading-screen-text-container">
+                <Box className="mb-5">
+                    <Typography
+                        variant="h5"
+                        className="login-flow-ai-loading-screen-heading"
+                    >
+                        { t("ai:aiLoginFlow.didYouKnow") }
+                    </Typography>
+                    <Typography className="login-flow-ai-loading-screen-sub-heading">
+                        { facts[factIndex] }
+                    </Typography>
                 </Box>
-                <Box className="login-flow-ai-loading-screen-text-container">
-                    <Box className="mb-5">
-                        <Typography
-                            variant="h5"
-                            className="login-flow-ai-loading-screen-heading"
-                        >
-                            { t("ai:aiLoginFlow.didYouKnow") }
-                        </Typography>
-                        <Typography className="login-flow-ai-loading-screen-sub-heading">
-                            { facts[factIndex] }
+                <Box sx={ { width: 1 } }>
+                    <Box className="login-flow-ai-loading-screen-loading-container">
+                        { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
+                        <Typography className="login-flow-ai-loading-screen-loading-state">
+                            { getCurrentStatus() }
                         </Typography>
                     </Box>
-                    <Box sx={ { width: 1 } }>
-                        <Box className="login-flow-ai-loading-screen-loading-container">
-                            { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
-                            <Typography className="login-flow-ai-loading-screen-loading-state">
-                                { getCurrentStatus() }
-                            </Typography>
-                        </Box>
-                        <LinearProgress variant="determinate" value={ currentProgress } />
-                    </Box>
+                    <LinearProgress variant="determinate" value={ currentProgress } />
                 </Box>
             </Box>
-            <Typography variant="caption">
-                { t("ai:aiLoginFlow.disclaimer") }
-                <DocumentationLink
-                    link={ getLink("common.termsOfService") }
-                >
-                    { t("ai:aiLoginFlow.termsAndConditions") }
-                </DocumentationLink>
-            </Typography>
         </Box>
     );
 };

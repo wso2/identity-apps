@@ -57,6 +57,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
     const [ operationId, setOperationId ] = useState<string>();
     const [ isGeneratingLoginFlow, setGeneratingLoginFlow ] = useState<boolean>(false);
     const [ loginFlowGenerationCompleted, setLoginFlowGenerationCompleted ] = useState<boolean>(false);
+    const [ promptHistory, setPromptHistory ] = useState<string[]>([]);
 
     /**
      * Custom hook to get the login flow generation result.
@@ -115,6 +116,16 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
         setLoginFlowGenerationCompleted(false);
     };
 
+    const updatePromptHistory = (prompt: string) => {
+        // Only keep the last 3 prompts
+        // If the prompt is already in the history, remove it and add it to the top
+        if (promptHistory.includes(prompt)) {
+            setPromptHistory([ prompt, ...promptHistory.filter((item: string) => item !== prompt) ]);
+        } else {
+            setPromptHistory([ prompt, ...promptHistory.slice(0, 2) ]);
+        }
+    };
+
     return (
         <AILoginFlowContext.Provider
             value={ {
@@ -123,9 +134,11 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
                 isGeneratingLoginFlow,
                 loginFlowGenerationCompleted,
                 operationId,
+                promptHistory,
                 setGeneratingLoginFlow,
                 setLoginFlowGenerationCompleted,
-                setOperationId
+                setOperationId,
+                updatePromptHistory
             } }
         >
             {
