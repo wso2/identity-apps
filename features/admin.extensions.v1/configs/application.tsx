@@ -105,8 +105,9 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
-        showDefaultMyAccountApplicationEditPage: true,
         showEnableAuthorization: true,
+        showFapiFeatureStatusChip: false,
+        showMtlsAliases: false,
         showMyAccount: true,
         showMyAccountStatus: false,
         showReturnAuthenticatedIdPs: true,
@@ -408,7 +409,7 @@ export const applicationConfig: ApplicationConfig = {
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
-                legacyMode?.apiResourcesV1 &&
+                legacyMode?.apiResourcesV2 &&
                 (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === MobileAppTemplate?.id

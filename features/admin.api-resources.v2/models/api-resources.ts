@@ -73,6 +73,10 @@ export interface APIResourceInterface {
      * Subdirectory of the API resource.
      */
     self?: string;
+    /**
+     * API resource properties.
+     */
+    properties?: Property[];
 }
 
 /**
@@ -119,6 +123,20 @@ export interface APIResourcePermissionInterface {
      * Description of the API resource permission.
      */
     description?: string;
+}
+
+/**
+ * API resource property definition
+ */
+export interface Property {
+    /**
+     * Name of the property.
+     */
+    name: string;
+    /**
+     * Value of the property.
+     */
+    value?: string;
 }
 
 /**

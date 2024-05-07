@@ -44,7 +44,7 @@ jobs:
                 node-version: [lts/*]
                 maven-version: [3.8.6]
                 java-version: [1.8]
-                pnpm-version: [8.7.4]
+                pnpm-version: [latest]
         steps:
             - name: ⬇️ Checkout
               id: checkout
@@ -181,4 +181,4 @@ jobs:
               working-directory: .github/workflows
               run: |
                   PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
-                  bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }}
+                  bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }} ${{ env.IS_HOTFIX }}

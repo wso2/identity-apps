@@ -1,5 +1,330 @@
 # @wso2is/myaccount
 
+## 2.5.75
+
+### Patch Changes
+
+- [#6183](https://github.com/wso2/identity-apps/pull/6183) [`df8f436eae`](https://github.com/wso2/identity-apps/commit/df8f436eaedba1a955980e21c2666fea1dd99cca) Thanks [@savindi7](https://github.com/savindi7)! - Use Monaco Editor as an npm package.
+
+- Updated dependencies [[`df8f436eae`](https://github.com/wso2/identity-apps/commit/df8f436eaedba1a955980e21c2666fea1dd99cca)]:
+  - @wso2is/features@2.16.12
+
+## 2.5.74
+
+### Patch Changes
+
+- Updated dependencies [[`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e), [`e300a87114`](https://github.com/wso2/identity-apps/commit/e300a871141b86a5f1f16835793dd1f89cfbb493), [`c1a49829ae`](https://github.com/wso2/identity-apps/commit/c1a49829ae13b5aae0433e6bd1f26b95c8dfdd1c)]:
+  - @wso2is/theme@2.0.79
+  - @wso2is/i18n@2.2.14
+  - @wso2is/features@2.16.11
+  - @wso2is/react-components@2.1.26
+
+## 2.5.73
+
+### Patch Changes
+
+- [#6174](https://github.com/wso2/identity-apps/pull/6174) [`138f59a811`](https://github.com/wso2/identity-apps/commit/138f59a811486a209c425def296075ee18b5d2fb) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Separating the parent user invitation deployment configs
+
+- Updated dependencies [[`95b7b2fbcf`](https://github.com/wso2/identity-apps/commit/95b7b2fbcffbee82b81fe9bcf5373e0b7a861ac6), [`138f59a811`](https://github.com/wso2/identity-apps/commit/138f59a811486a209c425def296075ee18b5d2fb)]:
+  - @wso2is/features@2.16.10
+
+## 2.5.72
+
+### Patch Changes
+
+- [#6148](https://github.com/wso2/identity-apps/pull/6148) [`0c7aa5d3f0`](https://github.com/wso2/identity-apps/commit/0c7aa5d3f03bcf200aec2a610cd54171b8e36727) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with organization sso option hidden in the login flow
+
+- Updated dependencies [[`0c7aa5d3f0`](https://github.com/wso2/identity-apps/commit/0c7aa5d3f03bcf200aec2a610cd54171b8e36727)]:
+  - @wso2is/features@2.16.9
+
+## 2.5.71
+
+### Patch Changes
+
+- [#6169](https://github.com/wso2/identity-apps/pull/6169) [`3c124e9286`](https://github.com/wso2/identity-apps/commit/3c124e92867e6504613cd152bd2fcb5e1a6e3291) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Consume ua-parser-js library through the helper class defined in core module
+
+- Updated dependencies [[`4a402cf922`](https://github.com/wso2/identity-apps/commit/4a402cf922f0e6aea7a67bb8718c26f6b3c158b9), [`3c124e9286`](https://github.com/wso2/identity-apps/commit/3c124e92867e6504613cd152bd2fcb5e1a6e3291)]:
+  - @wso2is/theme@2.0.78
+  - @wso2is/core@2.0.43
+  - @wso2is/features@2.16.8
+  - @wso2is/react-components@2.1.25
+  - @wso2is/access-control@3.0.3
+  - @wso2is/forms@2.0.33
+  - @wso2is/i18n@2.2.13
+
+## 2.5.70
+
+### Patch Changes
+
+- Updated dependencies [[`6b4207a88e`](https://github.com/wso2/identity-apps/commit/6b4207a88e02976c45f3ba6670eaa70679d172cc)]:
+  - @wso2is/i18n@2.2.12
+  - @wso2is/features@2.16.7
+
+## 2.5.69
+
+### Patch Changes
+
+- [#6162](https://github.com/wso2/identity-apps/pull/6162) [`ab71575f59`](https://github.com/wso2/identity-apps/commit/ab71575f590f8ee9f40f36d84d5bd90f5d8803ea) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable head script extensions
+
+## 2.5.68
+
+### Patch Changes
+
+- [#6159](https://github.com/wso2/identity-apps/pull/6159) [`278ecb0690`](https://github.com/wso2/identity-apps/commit/278ecb0690b423acad61cb33f87765625fc400ff) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Revert "Enable head script extensions"
+
+* [#6155](https://github.com/wso2/identity-apps/pull/6155) [`977dc88817`](https://github.com/wso2/identity-apps/commit/977dc88817d10486930642567c074a447a641273) Thanks [@brionmario](https://github.com/brionmario)! - Update `legacyAuthzRuntime` IdP urls in the pre-auth html
+
+## 2.5.67
+
+### Patch Changes
+
+- [#6147](https://github.com/wso2/identity-apps/pull/6147) [`4382fe18e2`](https://github.com/wso2/identity-apps/commit/4382fe18e20d48e1e0bac1210b5755664b139714) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable head script extensions
+
+## 2.5.66
+
+### Patch Changes
+
+- [#6145](https://github.com/wso2/identity-apps/pull/6145) [`d67eb137da`](https://github.com/wso2/identity-apps/commit/d67eb137da2cde0745ea4b14e330f3e1b6fafc0f) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Modify api operation if value is null
+
+- Updated dependencies [[`3ac5645982`](https://github.com/wso2/identity-apps/commit/3ac5645982b59a549a67d72f60c620df0941af5a), [`d67eb137da`](https://github.com/wso2/identity-apps/commit/d67eb137da2cde0745ea4b14e330f3e1b6fafc0f)]:
+  - @wso2is/features@2.16.6
+
+## 2.5.65
+
+### Patch Changes
+
+- [#6122](https://github.com/wso2/identity-apps/pull/6122) [`dc92a99c1d`](https://github.com/wso2/identity-apps/commit/dc92a99c1d8a684420797b5ba772580812fae0ed) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues in groups feature
+
+- Updated dependencies [[`c990bada3e`](https://github.com/wso2/identity-apps/commit/c990bada3e061fc68ffc6375d3938a239706e13d), [`0ffa29b3e7`](https://github.com/wso2/identity-apps/commit/0ffa29b3e7c121511a99d9a0d68e2648c3df74a7), [`dc92a99c1d`](https://github.com/wso2/identity-apps/commit/dc92a99c1d8a684420797b5ba772580812fae0ed)]:
+  - @wso2is/features@2.16.5
+
+## 2.5.64
+
+### Patch Changes
+
+- Updated dependencies [[`b90b3cb939`](https://github.com/wso2/identity-apps/commit/b90b3cb939f5eeb251db01c5a5dcadf17c0ea5ab)]:
+  - @wso2is/features@2.16.4
+
+## 2.5.63
+
+### Patch Changes
+
+- Updated dependencies [[`c2839fe3d8`](https://github.com/wso2/identity-apps/commit/c2839fe3d81fd128c9994a5e3d459bc4cf4ba3ad), [`0656e0a717`](https://github.com/wso2/identity-apps/commit/0656e0a717e01ff7817a2643d6b6c869e033789f)]:
+  - @wso2is/i18n@2.2.11
+  - @wso2is/features@2.16.3
+  - @wso2is/core@2.0.42
+  - @wso2is/access-control@3.0.2
+  - @wso2is/forms@2.0.32
+  - @wso2is/react-components@2.1.24
+
+## 2.5.62
+
+### Patch Changes
+
+- Updated dependencies [[`9ee015fad6`](https://github.com/wso2/identity-apps/commit/9ee015fad6a856de9519b731255ffa729241526a)]:
+  - @wso2is/features@2.16.2
+
+## 2.5.61
+
+### Patch Changes
+
+- Updated dependencies [[`6b1f272a26`](https://github.com/wso2/identity-apps/commit/6b1f272a260ef75703f7ca1943d19d0e222d61af), [`0ecfae750e`](https://github.com/wso2/identity-apps/commit/0ecfae750e6a186820084e316e246745d4b07881), [`476b16bb06`](https://github.com/wso2/identity-apps/commit/476b16bb06d59ff1754c27eab26a44784340d785)]:
+  - @wso2is/i18n@2.2.10
+  - @wso2is/features@2.16.1
+
+## 2.5.60
+
+### Patch Changes
+
+- Updated dependencies [[`6977b75151`](https://github.com/wso2/identity-apps/commit/6977b7515109d9666a16c109f4ccba40fb4f249e)]:
+  - @wso2is/features@2.16.0
+
+## 2.5.59
+
+### Patch Changes
+
+- [#6126](https://github.com/wso2/identity-apps/pull/6126) [`e0d5424271`](https://github.com/wso2/identity-apps/commit/e0d54242718986e7090dc0e59b6ed8d707a092d6) Thanks [@lashinijay](https://github.com/lashinijay)! - Update profile info when navigate to Profile Info tab
+
+## 2.5.58
+
+### Patch Changes
+
+- Updated dependencies [[`d67f3d6f61`](https://github.com/wso2/identity-apps/commit/d67f3d6f61bee506e5924ccd8fdf2b3607df88ff)]:
+  - @wso2is/features@2.15.38
+
+## 2.5.57
+
+### Patch Changes
+
+- [#6087](https://github.com/wso2/identity-apps/pull/6087) [`0ed357528b`](https://github.com/wso2/identity-apps/commit/0ed357528b8404674a732cfd2283e4a487c3d0b7) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with listing unnecessary userstores
+
+- Updated dependencies [[`0ed357528b`](https://github.com/wso2/identity-apps/commit/0ed357528b8404674a732cfd2283e4a487c3d0b7), [`0697ceacc0`](https://github.com/wso2/identity-apps/commit/0697ceacc0adc3f1869524df4c1d6f36955cb030)]:
+  - @wso2is/features@2.15.37
+
+## 2.5.56
+
+### Patch Changes
+
+- Updated dependencies [[`8f9c18b05f`](https://github.com/wso2/identity-apps/commit/8f9c18b05fe577b814d1207b4c5c869ecfa131a3)]:
+  - @wso2is/theme@2.0.77
+  - @wso2is/features@2.15.36
+  - @wso2is/react-components@2.1.23
+
+## 2.5.55
+
+### Patch Changes
+
+- Updated dependencies [[`e89478794e`](https://github.com/wso2/identity-apps/commit/e89478794eb22afa0d52bc5a89dfe1c5765b098a), [`a2d6f4cc8e`](https://github.com/wso2/identity-apps/commit/a2d6f4cc8ec22fbb344895d4955a9f112a1d88aa)]:
+  - @wso2is/features@2.15.35
+
+## 2.5.54
+
+### Patch Changes
+
+- [#6091](https://github.com/wso2/identity-apps/pull/6091) [`9b8a8c86db`](https://github.com/wso2/identity-apps/commit/9b8a8c86db55e1ad096ccca013d7347368ad3b3d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the glitch in the my account name field
+
+- Updated dependencies [[`1757b8d52b`](https://github.com/wso2/identity-apps/commit/1757b8d52bc169b9a30f8c6444c71b7935e658e0)]:
+  - @wso2is/features@2.15.34
+
+## 2.5.53
+
+### Patch Changes
+
+- [#6104](https://github.com/wso2/identity-apps/pull/6104) [`1d75d93220`](https://github.com/wso2/identity-apps/commit/1d75d93220650324a2340ae9e572b48f5ca84b5f) Thanks [@savindi7](https://github.com/savindi7)! - Update logic to disable Reset Password button in user profile.
+
+- Updated dependencies [[`1d75d93220`](https://github.com/wso2/identity-apps/commit/1d75d93220650324a2340ae9e572b48f5ca84b5f)]:
+  - @wso2is/features@2.15.33
+
+## 2.5.52
+
+### Patch Changes
+
+- Updated dependencies [[`26b59da530`](https://github.com/wso2/identity-apps/commit/26b59da5309040967c71a60f9c0a65b3e0e600e7)]:
+  - @wso2is/i18n@2.2.9
+  - @wso2is/features@2.15.32
+
+## 2.5.51
+
+### Patch Changes
+
+- Updated dependencies [[`e4f57c3ab9`](https://github.com/wso2/identity-apps/commit/e4f57c3ab91072e7105c74032bedefdad246ed6a), [`15c1fee109`](https://github.com/wso2/identity-apps/commit/15c1fee1097417229b15c3e72e7acd30083d39c6)]:
+  - @wso2is/features@2.15.31
+  - @wso2is/i18n@2.2.8
+
+## 2.5.50
+
+### Patch Changes
+
+- [#6088](https://github.com/wso2/identity-apps/pull/6088) [`c4bced3178`](https://github.com/wso2/identity-apps/commit/c4bced3178c80047c39ec732fc5ee7f05123536f) Thanks [@brionmario](https://github.com/brionmario)! - Add support to skip super tenant from app urls
+
+- Updated dependencies [[`94ee13b2bb`](https://github.com/wso2/identity-apps/commit/94ee13b2bb94e8e47ed33c004060d2856d42e7df), [`e74cc7760e`](https://github.com/wso2/identity-apps/commit/e74cc7760e96130510625af061ec523dd0295d26), [`7b07a9a027`](https://github.com/wso2/identity-apps/commit/7b07a9a027a6bd98451cc7422ae80b18bc28b97f), [`c4bced3178`](https://github.com/wso2/identity-apps/commit/c4bced3178c80047c39ec732fc5ee7f05123536f), [`ae06330b69`](https://github.com/wso2/identity-apps/commit/ae06330b69786f795f59f67ff4b900cf9d1ef16c)]:
+  - @wso2is/i18n@2.2.7
+  - @wso2is/features@2.15.30
+  - @wso2is/theme@2.0.76
+  - @wso2is/react-components@2.1.22
+
+## 2.5.49
+
+### Patch Changes
+
+- Updated dependencies [[`72eef0f393`](https://github.com/wso2/identity-apps/commit/72eef0f393dfafc57cf4429ed93293d5b69e1dcb)]:
+  - @wso2is/features@2.15.29
+
+## 2.5.48
+
+### Patch Changes
+
+- Updated dependencies [[`07bbb5ed78`](https://github.com/wso2/identity-apps/commit/07bbb5ed78f9f7ab0f1935705c20fa9650c164b5)]:
+  - @wso2is/i18n@2.2.6
+  - @wso2is/features@2.15.28
+
+## 2.5.47
+
+### Patch Changes
+
+- Updated dependencies [[`9176386cc0`](https://github.com/wso2/identity-apps/commit/9176386cc0f3a9cfc745955529f68e4416965dbe)]:
+  - @wso2is/features@2.15.27
+
+## 2.5.46
+
+### Patch Changes
+
+- Updated dependencies [[`b6d50cdad8`](https://github.com/wso2/identity-apps/commit/b6d50cdad8a5508baa11443f7c578c351a0a5485)]:
+  - @wso2is/i18n@2.2.5
+  - @wso2is/features@2.15.26
+
+## 2.5.45
+
+### Patch Changes
+
+- Updated dependencies [[`5a5d2104fe`](https://github.com/wso2/identity-apps/commit/5a5d2104fe72c676419c439d80d02d58f1b84ead)]:
+  - @wso2is/features@2.15.25
+
+## 2.5.44
+
+### Patch Changes
+
+- [#6061](https://github.com/wso2/identity-apps/pull/6061) [`828714e36d`](https://github.com/wso2/identity-apps/commit/828714e36dc69917f0ef1a5ebf16614cfdfaa589) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with fetching tenant associations when the org is switched
+
+- Updated dependencies [[`a991e74cc2`](https://github.com/wso2/identity-apps/commit/a991e74cc2060d153c14118d68743b95a36df997), [`9d6cbb7a56`](https://github.com/wso2/identity-apps/commit/9d6cbb7a567c12aa9a56f44ba5528001481d2232), [`828714e36d`](https://github.com/wso2/identity-apps/commit/828714e36dc69917f0ef1a5ebf16614cfdfaa589)]:
+  - @wso2is/features@2.15.24
+
+## 2.5.43
+
+### Patch Changes
+
+- Updated dependencies [[`b7097d6fd2`](https://github.com/wso2/identity-apps/commit/b7097d6fd28e08fcaaa68e02727443531dde2a86), [`bd05cfb945`](https://github.com/wso2/identity-apps/commit/bd05cfb94509ac4e55315e609268fd371daa56ed)]:
+  - @wso2is/features@2.15.23
+  - @wso2is/theme@2.0.75
+  - @wso2is/i18n@2.2.4
+  - @wso2is/react-components@2.1.21
+
+## 2.5.42
+
+### Patch Changes
+
+- Updated dependencies [[`76db512659`](https://github.com/wso2/identity-apps/commit/76db5126590c215e503b742665bdc9e47ff577ae)]:
+  - @wso2is/features@2.15.22
+
+## 2.5.41
+
+### Patch Changes
+
+- Updated dependencies [[`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501)]:
+  - @wso2is/theme@2.0.74
+  - @wso2is/features@2.15.21
+  - @wso2is/react-components@2.1.20
+
+## 2.5.40
+
+### Patch Changes
+
+- Updated dependencies [[`a6487983d4`](https://github.com/wso2/identity-apps/commit/a6487983d428ed5e8364db1b6fa5c1b0fd7d68e7)]:
+  - @wso2is/features@2.15.20
+
+## 2.5.39
+
+### Patch Changes
+
+- Updated dependencies [[`1d9eb6f1a4`](https://github.com/wso2/identity-apps/commit/1d9eb6f1a46650b55ad3279869cca94f87ce8309)]:
+  - @wso2is/features@2.15.19
+
+## 2.5.38
+
+### Patch Changes
+
+- Updated dependencies [[`b3f72aa483`](https://github.com/wso2/identity-apps/commit/b3f72aa483c5118d1d1380406ff3d8f531499a43)]:
+  - @wso2is/features@2.15.18
+
+## 2.5.37
+
+### Patch Changes
+
+- [#6051](https://github.com/wso2/identity-apps/pull/6051) [`2865d28b24`](https://github.com/wso2/identity-apps/commit/2865d28b24137d73d4f8a6e65a9bdf9742c46f0f) Thanks [@brionmario](https://github.com/brionmario)! - Fix My Account logout issues with Super Tenant Proxies
+
+- Updated dependencies [[`11237a0fb6`](https://github.com/wso2/identity-apps/commit/11237a0fb6570e6215175a103973ea02144f1d06)]:
+  - @wso2is/features@2.15.17
+
 ## 2.5.36
 
 ### Patch Changes

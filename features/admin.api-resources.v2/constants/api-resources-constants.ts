@@ -43,6 +43,10 @@ export class APIResourcesConstants {
     public static readonly SYSTEM_FEATURE: string = "SYSTEM_FEATURE";
     public static readonly BUSINESS: string = "BUSINESS";
 
+    // API Resource required attributes
+    public static readonly PROPERTIES: string = "properties";
+    public static readonly IS_CHOREO_API: string = "isChoreoAPI";
+
     /**
      * Get the API resource paths as a map.
      *

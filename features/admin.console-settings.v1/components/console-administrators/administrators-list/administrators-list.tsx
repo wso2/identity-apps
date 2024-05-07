@@ -41,6 +41,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../../admin.core.v1";
+import { userstoresConfig } from "../../../../admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 import { PRIMARY_USERSTORE } from "../../../../admin.userstores.v1/constants";
@@ -128,7 +129,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ showAddExistingUserWizard, setShowAddExistingUserWizard ] = useState<boolean>(false);
     const [ showInviteNewAdministratorModal, setShowInviteNewAdministratorModal ] = useState<boolean>(false);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(PRIMARY_USERSTORE.toLocaleLowerCase());
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig?.primaryUserstoreName);
 
     const {
         administrators,

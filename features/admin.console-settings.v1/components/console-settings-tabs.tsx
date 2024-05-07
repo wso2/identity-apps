@@ -19,13 +19,15 @@
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import ConsoleAdministrators from "./console-administrators/console-administrators";
 import ConsoleLoginFlow from "./console-login-flow/console-login-flow";
 import ConsoleProtocol from "./console-protocol/console-protocol";
 import ConsoleRolesList from "./console-roles/console-roles-list";
+import { AppState } from "../../admin.core.v1";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { ConsoleSettingsModes, ConsoleSettingsTabIDs } from "../models/ui";
 import "./console-settings-tabs.scss";
@@ -79,6 +81,8 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
     const { t } = useTranslation();
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const administratorsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.administrators);
 
     const consoleTabs: ConsoleSettingsTabInterface[] = useMemo(
         () =>
@@ -92,7 +96,8 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     pane: <ConsoleAdministrators />,
                     value: ConsoleSettingsTabIDs.ADMINISTRATORS
                 },
-                {
+                ((administratorsFeatureConfig?.enabled && !isSubOrganization())
+                    || !administratorsFeatureConfig?.enabled) && {
                     className: "console-roles-list",
                     "data-componentid": `${componentId}-tab-roles`,
                     "data-tabid": ConsoleSettingsModes.ROLES,
@@ -121,7 +126,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     value: ConsoleSettingsTabIDs.PROTOCOL
                 }
             ]
-                .filter((tab: ConsoleSettingsTabInterface) => !tab || !tab.hidden)
+                .filter((tab: ConsoleSettingsTabInterface) => tab && !tab?.hidden)
                 .map((tab: ConsoleSettingsTabInterface, index: number) => ({ ...tab, value: index })),
         []
     );

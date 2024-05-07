@@ -31,12 +31,15 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosResponse } from "axios";
+import { ApplicationManagementConstants } from "features/admin.applications.v1/constants";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FormEvent, ReactElement, useCallback, useEffect, useState } from "react";
+import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
+import { useApplicationList } from "../../../../../admin.applications.v1/api/application";
+import useAuthorization from "../../../../../admin.authorization.v1/hooks/use-authorization";
 import {
     SharedUserStoreUtils,
     UIConstants,
@@ -79,6 +82,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         [ "data-componentid"]: componentId
     } = props;
 
+    const { legacyAuthzRuntime } = useAuthorization();
+
     const [ userRoleOptions, setUserRoleList ] = useState([]);
     const [ rolesList, setRolesList ] = useState<RolesInterface[]>([]);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
@@ -93,6 +98,32 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    /**
+     * Retrieve the application data for the console application, filtering by name.
+     */
+    const { data: applicationListData } = useApplicationList(
+        null,
+        null,
+        null,
+        `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`,
+        !legacyAuthzRuntime
+    );
+
+    /**
+     * Build the roles filter to search for roles specific to the console application.
+     */
+    const roleSearchFilter: string = useMemo(() => {
+        if (legacyAuthzRuntime) {
+            return null;
+        }
+
+        if (applicationListData?.applications && applicationListData?.applications?.length > 0) {
+            return `audience.value eq ${applicationListData?.applications[0]?.id}`;
+        }
+
+        return null;
+    }, [ applicationListData ]);
+
     // Username input validation error messages.
     const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("users:guestUsers.fields." +
         "username.validations.regExViolation");
@@ -100,6 +131,10 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
+        if (!legacyAuthzRuntime && !roleSearchFilter) {
+            return;
+        }
+
         // Fetch users to select as internal admins.
         if (administratorType === AdminAccountTypes.INTERNAL) {
             setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -116,16 +151,10 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         }
 
         const roleOptions: DropdownProps[] = [];
-        let roleOption: DropdownProps =
-            {
-                key: 0,
-                text: "",
-                value: ""
-            };
 
         if (userRoleOptions.length === 0) {
             setUserRoleOptionsRequestLoading(true);
-            getRolesList(null)
+            getRolesList(null, roleSearchFilter)
                 .then((response: AxiosResponse) => {
                     setRolesList(response.data.Resources);
                     response.data.Resources.map((role: RolesInterface, index: number) => {
@@ -135,12 +164,11 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                             (role.displayName?.split("/")?.length < 2 &&
                             role.displayName?.split("/")[0] !== "Application")
                         ) {
-                            roleOption = {
+                            roleOptions?.push({
                                 key: index,
-                                text: role.displayName,
-                                value: role.displayName
-                            };
-                            roleOptions.push(roleOption);
+                                text: role?.displayName,
+                                value: role?.displayName
+                            });
                         }
                     });
                     setUserRoleList(roleOptions);
@@ -148,8 +176,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                     setUserRoleOptionsRequestLoading(false);
                 });
         }
-        setUserRoleList(roleOptions);
-    }, []);
+    }, [ roleSearchFilter ]);
 
     useEffect(() => {
         if (userListMetaContent) {

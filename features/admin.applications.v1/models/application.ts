@@ -674,6 +674,8 @@ export interface OIDCApplicationConfigurationInterface {
     sessionIframeEndpoint?: string;
     webFingerEndpoint?: string;
     dynamicClientRegistrationEndpoint?: string;
+    mtlsTokenEndpoint?: string;
+    mtlsPushedAuthorizationRequestEndpoint?: string;
 }
 
 /**

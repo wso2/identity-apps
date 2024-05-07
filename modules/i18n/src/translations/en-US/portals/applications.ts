@@ -451,6 +451,10 @@ export const applications: ApplicationsNS = {
                 tabName: "General"
             },
             info: {
+                mtlsOidcHeading: "Mutual TLS Server Endpoints",
+                mtlsOidcSubHeading: "The following server endpoints will be useful for you to implement " +
+                    "and configure authentication for your application using OpenID Connect where MTLS " +
+                    "client authentication or certificate token binding is applicable. ",
                 oidcHeading: "Server Endpoints",
                 oidcSubHeading: "The following server endpoints will be useful for you to implement and " +
                     "configure authentication for your application using OpenID Connect.",
@@ -2297,6 +2301,13 @@ export const applications: ApplicationsNS = {
                 description: "Couldn't retrieve My Account portal status.",
                 message: "Something went wrong"
             }
+        },
+        overview: {
+            tabName: "Overview",
+            heading: "Welcome to My Account",
+            contentIntro: "My Account is a one-stop portal for your users' self-service needs providing extensive account management capabilities.",
+            contentDescription: "You can configure the login flow of the My Account, apply custom <1>branding configurations</1> and share access to it with B2B organizations.",
+            shareApplication: "Share this link with your users to access the My Account portal."
         }
     },
     featureGate: {
@@ -2695,6 +2706,10 @@ export const applications: ApplicationsNS = {
             genericError: {
                 description: "An error occurred while updating the authentication flow of the application.",
                 message: "Something went wrong"
+            },
+            invalidScriptError: {
+                description: "The authentication script contains invalid syntax. Please correct the script and try again.",
+                message: "Invalid authentication script"
             },
             success: {
                 description: "Successfully updated the authentication flow of the application.",

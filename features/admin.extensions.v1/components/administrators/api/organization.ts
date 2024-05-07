@@ -76,7 +76,8 @@ export const useOrganizationConfig =
  *
  * @returns a promise containing the response.
  */
-export const updateOrganizationConfig = (isEnterpriseLoginEnabled: OrganizationInterface): Promise<any> => {
+export const updateOrganizationConfig = (isEnterpriseLoginEnabled: OrganizationInterface):
+    Promise<OrganizationInterface> => {
 
     const requestConfig: AxiosRequestConfig = {
         data: isEnterpriseLoginEnabled,
@@ -90,7 +91,7 @@ export const updateOrganizationConfig = (isEnterpriseLoginEnabled: OrganizationI
     };
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
-        return Promise.resolve(response);
+        return Promise.resolve(response.data);
     }).catch((error: AxiosError) => {
         return Promise.reject(error);
     });

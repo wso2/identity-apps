@@ -41,6 +41,7 @@ import "./branding-ai-loading-screen.scss";
  */
 export const LoadingScreen: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
+
     const [ factIndex, setFactIndex ] = useState<number>(0);
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
 
@@ -116,34 +117,30 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     };
 
     return (
-        <Box className="loading-screen-container">
-            <Box className="loading-screen-content">
-                <Box className="loading-screen-row">
-                    <Box className="loading-screen-facts">
-                        <Box className="loading-screen-facts-content">
-                            <Typography variant="h5" className="loading-screen-facts-text">
-                                { t("branding:ai.screens.loading.didYouKnow") }
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                align="justify"
-                                className="loading-screen-facts-detail">
-                                { facts[factIndex] }
-                            </Typography>
-                        </Box>
-                    </Box>
-                    <Box className="loading-screen-placeholder">
-                        <LoadingPlaceholder />
-                    </Box>
-                </Box>
-                <Box className="loading-screen-progress">
-                    <LinearProgress variant="determinate" value={ currentProgress } />
-                </Box>
-                <Box className="loading-screen-status">
-                    { isLoading && <CircularProgress size={ 20 } className="loading-screen-status-progress" /> }
-                    <Typography variant="h6">
-                        { getCurrentStatus() }
+        <Box className="branding-ai-loading-screen-container">
+            <Box className="branding-ai-loading-screen-illustration-container">
+                <LoadingPlaceholder />
+            </Box>
+            <Box className="branding-ai-loading-screen-text-container">
+                <Box className="mb-5">
+                    <Typography
+                        variant="h5"
+                        className="branding-ai-loading-screen-heading"
+                    >
+                        { t("branding:ai.screens.loading.didYouKnow") }
                     </Typography>
+                    <Typography className="branding-ai-loading-screen-sub-heading">
+                        { facts[factIndex] }
+                    </Typography>
+                </Box>
+                <Box sx={ { width: 1 } }>
+                    <Box className="branding-ai-loading-screen-loading-container">
+                        { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
+                        <Typography className="branding-ai-loading-screen-loading-state">
+                            { getCurrentStatus() }
+                        </Typography>
+                    </Box>
+                    <LinearProgress variant="determinate" value={ currentProgress } />
                 </Box>
             </Box>
         </Box>

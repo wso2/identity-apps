@@ -42,6 +42,11 @@
         "checkSessionInterval": 3.0
     },
     "legacyAuthzRuntime": false,
+    "tenantContext": {
+        "enableTenantQualifiedUrls": true,
+        "requireSuperTenantInUrls": false,
+        "requireSuperTenantInAppUrls": true
+    },
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",

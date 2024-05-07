@@ -18,9 +18,9 @@
 
 import { AuthParams, AuthReactConfig, ResponseMode, SPAUtils, Storage } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
+import { UserAgentParser } from "@wso2is/core/helpers";
 import { StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import UAParser from "ua-parser-js";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
 import { Config } from "../../admin.core.v1";
 
@@ -56,7 +56,8 @@ export class AuthenticateUtils {
             clientID: window["AppUtils"]?.getConfig()?.clientID,
             clockTolerance: window[ "AppUtils" ]?.getConfig().idpConfigs?.clockTolerance,
             disableTrySignInSilently: new URL(location.href).searchParams.get("disable_silent_sign_in") === "true",
-            enableOIDCSessionManagement: false,
+            enableOIDCSessionManagement: window["AppUtils"]?.getConfig().idpConfigs?.enableOIDCSessionManagement
+                ?? true,
             enablePKCE: window["AppUtils"]?.getConfig()?.idpConfigs?.enablePKCE ?? true,
             endpoints: {
                 authorizationEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.authorizeEndpointURL,
@@ -89,12 +90,12 @@ export class AuthenticateUtils {
     public static resolveStorage(): Storage {
 
         const storageFallback: Storage =
-            new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
+            new UserAgentParser().browser.name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
 
         if (window["AppUtils"]?.getConfig()?.idpConfigs?.storage) {
             if (
                 window["AppUtils"].getConfig().idpConfigs.storage === Storage.WebWorker &&
-                new UAParser().getBrowser().name === "IE"
+                new UserAgentParser().browser.name === "IE"
             ) {
                 return Storage.SessionStorage;
             }

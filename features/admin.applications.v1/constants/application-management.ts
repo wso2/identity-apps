@@ -34,6 +34,7 @@ export class ApplicationManagementConstants {
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
     public static readonly MY_ACCOUNT_APP_NAME: string = "My Account";
+    public static readonly MY_ACCOUNT_CLIENT_ID: string = "MY_ACCOUNT";
     public static readonly CONSOLE_APP_NAME: string = "Console";
     public static readonly SYSTEM_APPS: string[] = [ this.CONSOLE_APP_NAME ];
     public static readonly DEFAULT_APPS: string[] = [ this.MY_ACCOUNT_APP_NAME ];
@@ -70,6 +71,7 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_INFO", "applications.edit.info")
         .set("FAPI_APP_CREATION", "applications.create.fapi")
         .set("APPLICATION_NATIVE_AUTHENTICATION", "applications.native.authentication")
+        .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
@@ -414,12 +416,17 @@ export class ApplicationManagementConstants {
      * Form element constraints.
      */
     public static readonly FORM_FIELD_CONSTRAINTS: {
+        ACCESS_URL_ALLOWED_PLACEHOLDERS: string[],
         ACCESS_URL_MAX_LENGTH: number,
         ACCESS_URL_MIN_LENGTH: number,
         APP_DESCRIPTION_PATTERN: RegExp,
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
+        ACCESS_URL_ALLOWED_PLACEHOLDERS: [
+            "\\${UserTenantHint}",
+            "\\${organizationIdHint}"
+        ],
         ACCESS_URL_MAX_LENGTH: 200,
         ACCESS_URL_MIN_LENGTH: 3,
         APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),

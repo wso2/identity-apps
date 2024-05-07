@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { UserGroupIcon } from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
-import React, { lazy } from "react";
+import { lazy } from "react";
 import { CommonConfig } from "./models";
 import { getSidePanelIcons } from "../../admin.core.v1/configs/ui";
 import { AppConstants } from "../../admin.core.v1/constants";
@@ -75,36 +74,6 @@ export const commonConfig: CommonConfig = {
                 name: "Administrators",
                 order: 5,
                 path: AppConstants.getPaths().get("ADMINISTRATORS"),
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() =>
-                            import("../../admin.groups.v1/pages/group-edit")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "groupsEdit",
-                        name: "console:manage.features.sidePanel.editGroups",
-                        path: AppConstants.getPaths().get("GROUP_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("../../admin.groups.v1/pages/groups")),
-                exact: true,
-                icon: {
-                    icon: <UserGroupIcon className="icon" fill="black" />
-                },
-                id: "groups",
-                name: "Groups",
-                order: 6,
-                path: AppConstants.getPaths().get("GROUPS"),
                 protected: true,
                 showOnSidePanel: true
             },

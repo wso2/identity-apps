@@ -33,9 +33,10 @@ import { SDKMetaInterface } from "../../application-templates/templates/single-p
 export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
+        showFapiFeatureStatusChip: boolean;
+        showMtlsAliases: boolean;
         showMyAccount: boolean;
         showMyAccountStatus: boolean;
-        showDefaultMyAccountApplicationEditPage: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
     };

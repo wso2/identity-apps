@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,6 @@
  */
 
 import TimerWorker from "@wso2is/core/workers/timer.worker";
-import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
@@ -115,8 +114,8 @@ document.onkeypress = function() {
     _idleSecondsCounter = 0;
 };
 
-// Run the timer in main thread if the browser is Internet Explorer.
-if (new UAParser().getBrowser().name === "IE") {
+// Run the timer in main thread if the browser doesn't support worker threads.
+if (typeof Worker === "undefined") {
     window.setInterval(() => {
         _idleSecondsCounter++;
         _sessionAgeCounter++;

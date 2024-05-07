@@ -46,6 +46,9 @@ import {
     FeatureConfigInterface
 } from "../../admin.core.v1";
 import { history } from "../../admin.core.v1/helpers";
+import {
+    useSMSNotificationSenders
+}from "../../admin.extensions.v1/components/identity-providers/api/identity-provider";
 import smsProviderConfig from "../../admin.extensions.v1/configs/sms-provider";
 import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
 import { providerCards } from "../configs/provider-cards";
@@ -123,6 +126,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         mutate: mutateSMSProviderConfig,
         error: smsProviderConfigFetchRequestError
     } = useSMSProviders();
+    const {
+        mutate: mutateNotificationSendersFetchRequest
+    } = useSMSNotificationSenders();
+
     const [ isLoading, setIsLoading ] = useState(true);
     const [ isChoreoSMSOTPProvider, setChoreoSMSOTPProvider ] = useState<boolean>(false);
     const [ existingSMSProviders, setExistingSMSProviders ] = useState<string[]>([]);
@@ -358,6 +365,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             }).finally(() => {
                 setIsSubmitting(false);
                 mutateSMSProviderConfig();
+                mutateNotificationSendersFetchRequest();
             });
     };
 
@@ -602,7 +610,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                     onSubmit={ handleSubmit }
                                                     data-componentid={ "custom-sms-provider" }
                                                 />
-                                                { smsProviderConfig.renderAlternativeSmsProviderOptions() }
+                                                { smsProviderConfig.renderAlternativeSmsProviderOptions({
+                                                    existingSMSProviders
+                                                }) }
                                             </>
                                         ) }
                                         { smsProviderSettings?.selectedProvider ===

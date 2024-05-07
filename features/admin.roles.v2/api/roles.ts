@@ -241,7 +241,9 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.rolesWithoutOrgPath + "/.search"
+        url: (isLegacyAuthzRuntime()
+            ? store?.getState()?.config?.endpoints?.rolesWithoutOrgPath
+            : store?.getState()?.config?.endpoints?.rolesV2) + "/.search"
     };
 
     return httpClient(requestConfig)
@@ -443,10 +445,11 @@ export const updateRolesBulk = (roleIds: string[], roleData: PatchRoleDataInterf
  * TODO: Return `response.data` rather than `response` and stop returning any.
  *
  * @param domain - User store domain.
+ * @param filter - Search filter.
  * @returns A promise containing the roles list.
  * @throws `IdentityAppsApiException`
  */
-export const getRolesList = (domain: string): Promise<RoleListInterface | any> => {
+export const getRolesList = (domain: string, filter?: string): Promise<RoleListInterface | any> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -454,7 +457,8 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         },
         method: HttpMethods.GET,
         params: {
-            domain
+            domain,
+            filter
         },
         url: isLegacyAuthzRuntime() ?
             store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2

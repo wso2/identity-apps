@@ -16,11 +16,10 @@
  * under the License.
  */
 
-// eslint-disable-next-line no-restricted-imports
-import { Theme } from "@oxygen-ui/react";
+import { Theme as OxygenTheme } from "@oxygen-ui/react/models";
 import { extendTheme } from "@oxygen-ui/react/theme";
 
-export const AsgardeoTheme: Theme = extendTheme({
+const Theme: OxygenTheme = extendTheme({
     colorSchemes: {
         dark: {
             palette: {
@@ -137,3 +136,5 @@ export const AsgardeoTheme: Theme = extendTheme({
         }
     }
 });
+
+export default Theme;

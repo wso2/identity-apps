@@ -17,6 +17,7 @@
  */
 
 import { AuthProvider } from "@asgardeo/auth-react";
+import { loader } from "@monaco-editor/react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
 import { ContextUtils } from "@wso2is/core/utils";
 import { AuthenticateUtils } from "@wso2is/features/admin.authentication.v1";
@@ -26,15 +27,20 @@ import { AppConfigProvider } from "@wso2is/features/admin.core.v1/providers/app-
 import AppSettingsProvider from "@wso2is/features/admin.core.v1/providers/app-settings-provider";
 import UserPreferencesProvider from "@wso2is/features/admin.core.v1/providers/user-preferences-provider";
 import OrganizationsProvider from "@wso2is/features/admin.organizations.v1/providers/organizations-provider";
+import * as monaco from "monaco-editor";
 import React, { ReactElement, useEffect, useState } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { AsgardeoTheme } from "./branding/theme";
 import { ProtectedApp } from "./protected-app";
+import Theme from "./theme";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
+// Manually load the `monaco` editor instance to use as an npm package instead of using CDN.
+// This enables the usage of the editor instance in offline mode.
+loader.config({ monaco });
 
 /**
  * Render root component with configs.
@@ -61,7 +67,7 @@ const RootWithConfig = (): ReactElement => {
 
     return (
         <AppSettingsProvider>
-            <ThemeProvider theme={ AsgardeoTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
+            <ThemeProvider theme={ Theme } defaultMode="light" modeStorageKey="console-oxygen-mode">
                 <Provider store={ store }>
                     <UserPreferencesProvider<UserPreferencesInterface>>
                         <BrowserRouter>

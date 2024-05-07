@@ -4,6 +4,7 @@ name: PR Builder
 
 on:
   pull_request:
+    types: [ opened, synchronize, labeled ]
     branches: [ master ]
     paths-ignore:
       - "**.md"
@@ -21,11 +22,12 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
+        pnpm-version: [ latest ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -84,11 +86,12 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
+    if: ${{github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
+        pnpm-version: [ latest ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -148,7 +151,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
+        pnpm-version: [ latest ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -208,7 +211,7 @@ jobs:
         node-version: [ lts/* ]
         maven-version: [ 3.8.6 ]
         java-version: [ 1.8 ]
-        pnpm-version: [ 8.7.4 ]
+        pnpm-version: [ latest ]
     steps:
       - name: ⬇️ Checkout
         id: checkout

@@ -69,12 +69,15 @@ import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.APPLICATIO
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.AppPortal.CONSOLE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_PORTAL_PATH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_APP;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_PORTAL_PATH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.PROFILE_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
 
@@ -110,6 +113,17 @@ public class AppPortalUtils {
         oAuthConsumerAppDTO.setOAuthVersion(VERSION_2);
         oAuthConsumerAppDTO.setOauthConsumerKey(consumerKey);
         oAuthConsumerAppDTO.setOauthConsumerSecret(consumerSecret);
+        if (CONSOLE_APP.equals(applicationName) &&
+            StringUtils.isNotEmpty(IdentityUtil.getProperty(CONSOLE_PORTAL_PATH))) {
+            portalPath = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
+        }
+        if (MYACCOUNT_APP.equals(applicationName) &&
+            StringUtils.isNotEmpty(IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH))) {
+            portalPath = IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH);
+        }
+        if (!portalPath.startsWith("/")) {
+            portalPath = "/" + portalPath;
+        }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
             if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {

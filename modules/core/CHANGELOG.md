@@ -1,5 +1,17 @@
 # @wso2is/core
 
+## 2.0.43
+
+### Patch Changes
+
+- [#6169](https://github.com/wso2/identity-apps/pull/6169) [`3c124e9286`](https://github.com/wso2/identity-apps/commit/3c124e92867e6504613cd152bd2fcb5e1a6e3291) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Consume ua-parser-js library through the helper class defined in core module
+
+## 2.0.42
+
+### Patch Changes
+
+- [#6112](https://github.com/wso2/identity-apps/pull/6112) [`0656e0a717`](https://github.com/wso2/identity-apps/commit/0656e0a717e01ff7817a2643d6b6c869e033789f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent editing, deleting and assigning groups/users to system roles
+
 ## 2.0.41
 
 ### Patch Changes

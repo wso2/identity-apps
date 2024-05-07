@@ -197,8 +197,13 @@ export interface BrandingNS {
                 button: string;
             };
         };
+        disclaimer: string;
         notifications: {
             generateError: {
+                description: string;
+                message: string;
+            };
+            generateLimitError: {
                 description: string;
                 message: string;
             };
@@ -237,5 +242,7 @@ export interface BrandingNS {
                 };
             };
         };
+        title: string;
+        termsAndConditions: string;
     };
 }
