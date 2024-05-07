@@ -98,7 +98,6 @@
 
 .branding-ai-input-field-inner {
     background-color: #FEFEFE;
-    border-radius: 40px;
     width: 100%;
     padding: 5px;
 }
@@ -133,16 +132,17 @@
 
 .branding-ai-disclaimer {
     display: flex;
-    justify-content: center;
     width: 60%;
     color: #8D91A3;
     margin-top: 5px;
+    margin-left: 2px;
+
 }
 
 .ai-icon {
     fill: var(--oxygen-palette-gradients-primary-stop2);
-    height: 15px;
-    width: 15px;
+    height: 25px;
+    width: 25px;
     margin-left: 1px;
     transform: rotate(180deg);
     -moz-transform: scale(-1, 1);
@@ -153,6 +153,8 @@
 
     &.primary-button {
         fill: white;
+        height: 15px;
+        width: 15px;
         margin-right: 5px;
     }
 }

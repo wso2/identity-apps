@@ -63,7 +63,15 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
 
     const dispatch: Dispatch = useDispatch();
 
-    const { isGeneratingLoginFlow, promptHistory, updatePromptHistory } = useAILoginFlow();
+    const {
+        bannerState,
+        isGeneratingLoginFlow,
+        promptHistory,
+        updatePromptHistory,
+        userPrompt,
+        setBannerState,
+        setUserPrompt
+    } = useAILoginFlow();
 
     const { getLink } = useDocumentation();
 
@@ -73,8 +81,6 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
 
     const generateAILoginFlow: GenerateLoginFlowFunction = useGenerateAILoginFlow();
 
-    const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
-    const [ userPrompt, setUserPrompt ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ showHistory, setShowHistory ] = useState<boolean>(false);
     const [ showReplaceConfirmationModal, setShowReplaceConfirmationModal ] = useState<boolean>(false);
@@ -199,7 +205,6 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     color="primary"
                     variant="contained"
                 >
-                    <AIIcon className="ai-icon primary-button"/>
                     { t("ai:aiLoginFlow.banner.full.button") }
                 </Button>
             </Box>
@@ -454,7 +459,6 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         color="primary"
                         variant="contained"
                     >
-                        <AIIcon className="ai-icon primary-button"/>
                         { t("ai:aiLoginFlow.banner.collapsed.button") }
                     </Button>
                 </Box>

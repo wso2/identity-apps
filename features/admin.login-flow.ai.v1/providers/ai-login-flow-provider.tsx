@@ -31,6 +31,7 @@ import LoginFlowAILoadingScreen from "../components/login-flow-ai-loading-screen
 import { LOGIN_FLOW_AI_FEATURE_TAG } from "../constants/login-flow-ai-constants";
 import AILoginFlowContext from "../context/ai-login-flow-context";
 import { LoginFlowResultStatus } from "../models/ai-login-flow";
+import { BannerState } from "../models/banner-state";
 
 export type AILoginFlowProviderProps = unknown;
 
@@ -58,6 +59,8 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
     const [ isGeneratingLoginFlow, setGeneratingLoginFlow ] = useState<boolean>(false);
     const [ loginFlowGenerationCompleted, setLoginFlowGenerationCompleted ] = useState<boolean>(false);
     const [ promptHistory, setPromptHistory ] = useState<string[]>([]);
+    const [ userPrompt, setUserPrompt ] = useState<string>("");
+    const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
 
     /**
      * Custom hook to get the login flow generation result.
@@ -130,15 +133,19 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
         <AILoginFlowContext.Provider
             value={ {
                 aiGeneratedLoginFlow,
+                bannerState,
                 handleGenerate,
                 isGeneratingLoginFlow,
                 loginFlowGenerationCompleted,
                 operationId,
                 promptHistory,
+                setBannerState,
                 setGeneratingLoginFlow,
                 setLoginFlowGenerationCompleted,
                 setOperationId,
-                updatePromptHistory
+                setUserPrompt,
+                updatePromptHistory,
+                userPrompt
             } }
         >
             {

@@ -76,7 +76,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
     const handleGenerateClick = async () => {
         setIsSubmitting(true);
         await generateAIBrandingPreference(websiteUrl);
-        setBannerState(BannerState.COLLAPSED);
+        setBannerState(BannerState.INPUT);
         setIsSubmitting(false);
     };
 
@@ -117,7 +117,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     color="primary"
                     variant="contained"
                 >
-                    <AIIcon className="ai-icon primary-button"/>
                     { t("branding:ai.banner.full.button") }
                 </Button>
             </Box>
@@ -195,7 +194,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                                 >
                                     <SendOutlinedIcon
                                         className={
-                                            `login-flow-ai-input-button-icon ${ !websiteUrl ? "disabled" : "" }` }
+                                            `branding-ai-input-button-icon ${ !websiteUrl ? "disabled" : "" }` }
                                     />
                                 </IconButton>
                             ) : (
@@ -261,7 +260,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         color="primary"
                         variant="contained"
                     >
-                        <AIIcon className="ai-icon primary-button"/>
                         { t("branding:ai.banner.collapsed.button") }
                     </Button>
                 </Box>
