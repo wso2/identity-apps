@@ -177,7 +177,7 @@ export interface BrandingNS {
         "email-link": string;
         "base": string;
         "multi": string;
-    }
+    };
     ai: {
         banner: {
             full: {
