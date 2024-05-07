@@ -1,5 +1,28 @@
 # @wso2is/features
 
+## 2.16.12
+
+### Patch Changes
+
+- [#6183](https://github.com/wso2/identity-apps/pull/6183) [`df8f436eae`](https://github.com/wso2/identity-apps/commit/df8f436eaedba1a955980e21c2666fea1dd99cca) Thanks [@savindi7](https://github.com/savindi7)! - Use Monaco Editor as an npm package.
+
+## 2.16.11
+
+### Patch Changes
+
+- [#6184](https://github.com/wso2/identity-apps/pull/6184) [`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add prompt history to AI Login Flow feature
+
+* [#6182](https://github.com/wso2/identity-apps/pull/6182) [`e300a87114`](https://github.com/wso2/identity-apps/commit/e300a871141b86a5f1f16835793dd1f89cfbb493) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix organization SSO authenticator issues
+
+- [#6177](https://github.com/wso2/identity-apps/pull/6177) [`c1a49829ae`](https://github.com/wso2/identity-apps/commit/c1a49829ae13b5aae0433e6bd1f26b95c8dfdd1c) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix nullpointer when showing locale with invalid formats
+
+- Updated dependencies [[`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e)]:
+  - @wso2is/theme@2.0.79
+  - @wso2is/i18n@2.2.14
+  - @wso2is/react-components@2.1.26
+  - @wso2is/dynamic-forms@2.0.55
+  - @wso2is/form@2.0.56
+
 ## 2.16.10
 
 ### Patch Changes

@@ -26,6 +26,7 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import JsonMinimizerPlugin from "json-minimizer-webpack-plugin";
+import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import webpack, {
     Configuration,
     RuleSetRule,
@@ -386,6 +387,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         new webpack.ProvidePlugin({
             process: "process/browser"
         }) as unknown as WebpackPluginInstance
+    );
+
+    config.plugins.push(
+        new MonacoWebpackPlugin() as unknown as WebpackPluginInstance
     );
 
     // Ignore all the locale files in moment.
