@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.16.14
+
+### Patch Changes
+
+- [#6190](https://github.com/wso2/identity-apps/pull/6190) [`6ff4f5724d4deb5d95927c847b3cb4a08d6b9c1e`](https://github.com/wso2/identity-apps/commit/6ff4f5724d4deb5d95927c847b3cb4a08d6b9c1e) Thanks [@dhaura](https://github.com/dhaura)! - Update license header and remove trailing spaces in group-assign-users.tsx
+
 ## 2.16.13
 
 ### Patch Changes
