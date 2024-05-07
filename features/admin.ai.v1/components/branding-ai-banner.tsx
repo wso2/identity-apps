@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { ChevronUpIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
@@ -26,13 +27,12 @@ import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import {
     DocumentationLink,
-    GenericIcon,
     useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ReactComponent as AIIcon }
-    from "../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
+    from "../../themes/wso2is/assets/images/icons/solid-icons/ai-icon.svg";
 import AIBannerBackgroundWhite from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
 import AIBannerInputBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-input-background.svg";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
@@ -76,7 +76,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
     const handleGenerateClick = async () => {
         setIsSubmitting(true);
         await generateAIBrandingPreference(websiteUrl);
-        setBannerState(BannerState.COLLAPSED);
+        setBannerState(BannerState.INPUT);
         setIsSubmitting(false);
     };
 
@@ -101,6 +101,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="branding-ai-text">
                             { t("branding:ai.title") }
                         </span>
+                        <AIIcon className="ai-icon"/>
                         <Chip
                             size="small"
                             label={ t("common:beta").toUpperCase() }
@@ -116,11 +117,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     color="primary"
                     variant="contained"
                 >
-                    <GenericIcon
-                        icon={ AIIcon }
-                        fill="white"
-                        className="pr-2"
-                    />
                     { t("branding:ai.banner.full.button") }
                 </Button>
             </Box>
@@ -144,6 +140,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         <span className="branding-ai-text">
                             { t("branding:ai.title") }
                         </span>
+                        <AIIcon className="ai-icon"/>
                         <Chip
                             size="small"
                             label={ t("common:beta").toUpperCase() }
@@ -174,15 +171,15 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     placeholder={ t("branding:ai.banner.input.placeholder") }
                     fullWidth
                     inputProps={ {
-                        maxlength: 75
+                        maxlength: 2048
                     } }
                     value={ websiteUrl }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                         setWebsiteUrl(e.target.value) }
                     onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
                         // Handle the enter key press.
-                        if (e.key === "Enter") {
-                            e.preventDefault();
+                        if (e?.key === "Enter") {
+                            e?.preventDefault();
                             handleGenerateClick();
                         }
                     } }
@@ -195,11 +192,9 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                                     onClick={ () => handleGenerateClick() }
                                     disabled={ !websiteUrl }
                                 >
-                                    <GenericIcon
-                                        icon={ AIIcon }
-                                        rounded
-                                        transparent
-                                        fill="white"
+                                    <SendOutlinedIcon
+                                        className={
+                                            `branding-ai-input-button-icon ${ !websiteUrl ? "disabled" : "" }` }
                                     />
                                 </IconButton>
                             ) : (
@@ -210,6 +205,16 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         )
                     } }
                 />
+                <Box className="branding-ai-disclaimer">
+                    <Typography variant="caption">
+                        { t("branding:ai.disclaimer") }
+                        <DocumentationLink
+                            link={ getLink("common.termsOfService") }
+                        >
+                            { t("branding:ai.termsAndConditions") }
+                        </DocumentationLink>
+                    </Typography>
+                </Box>
             </Box>
         );
     }
@@ -232,6 +237,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                             <span className="branding-ai-text">
                                 { t("branding:ai.title") }
                             </span>
+                            <AIIcon className="ai-icon"/>
                             <Chip
                                 size="small"
                                 label={ t("common:beta").toUpperCase() }
@@ -254,11 +260,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                         color="primary"
                         variant="contained"
                     >
-                        <GenericIcon
-                            icon={ AIIcon }
-                            fill="white"
-                            className="pr-2"
-                        />
                         { t("branding:ai.banner.collapsed.button") }
                     </Button>
                 </Box>
