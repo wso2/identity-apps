@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.75
+
+### Patch Changes
+
+- [#6209](https://github.com/wso2/identity-apps/pull/6209) [`d0be112acff7175af164286e54d267e3e8b53978`](https://github.com/wso2/identity-apps/commit/d0be112acff7175af164286e54d267e3e8b53978) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Update the testid of the invitation accept page
+
 ## 2.1.74
 
 ### Patch Changes

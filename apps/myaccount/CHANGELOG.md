@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.5.82
+
+### Patch Changes
+
+- [#6213](https://github.com/wso2/identity-apps/pull/6213) [`c7d98e3dce516f9b5c4d6e8f7b4b464600513584`](https://github.com/wso2/identity-apps/commit/c7d98e3dce516f9b5c4d6e8f7b4b464600513584) Thanks [@brionmario](https://github.com/brionmario)! - [Temp] Revert https://github.com/wso2/identity-apps/pull/6183/files
+
+- Updated dependencies [[`c6727a6a0b18f3f8e440ce1e3c9218df5d407476`](https://github.com/wso2/identity-apps/commit/c6727a6a0b18f3f8e440ce1e3c9218df5d407476), [`c7d98e3dce516f9b5c4d6e8f7b4b464600513584`](https://github.com/wso2/identity-apps/commit/c7d98e3dce516f9b5c4d6e8f7b4b464600513584)]:
+  - @wso2is/features@2.17.1
+
 ## 2.5.81
 
 ### Patch Changes
