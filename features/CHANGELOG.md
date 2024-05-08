@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.17.1
+
+### Patch Changes
+
+- [#6144](https://github.com/wso2/identity-apps/pull/6144) [`c6727a6a0b18f3f8e440ce1e3c9218df5d407476`](https://github.com/wso2/identity-apps/commit/c6727a6a0b18f3f8e440ce1e3c9218df5d407476) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Handle exceptions thrown in the network request for getting all authenticators
+
+* [#6213](https://github.com/wso2/identity-apps/pull/6213) [`c7d98e3dce516f9b5c4d6e8f7b4b464600513584`](https://github.com/wso2/identity-apps/commit/c7d98e3dce516f9b5c4d6e8f7b4b464600513584) Thanks [@brionmario](https://github.com/brionmario)! - [Temp] Revert https://github.com/wso2/identity-apps/pull/6183/files
+
 ## 2.17.0
 
 ### Minor Changes
