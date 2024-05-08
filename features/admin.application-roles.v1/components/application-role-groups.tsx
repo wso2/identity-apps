@@ -40,7 +40,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
 import AssignGroupWizard from "./assign-group-wizard";
-import { AppState, FeatureConfigInterface, UIConstants } from "../../admin.core.v1";
+import { UIConstants } from "../../admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "../../admin.core.v1/modes/config";
+import { AppState } from "../../admin.core.v1/store";
 import {
     updateApplicationRoleMappedGroups,
     useApplicationRoleMappedGroups
