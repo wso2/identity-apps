@@ -185,6 +185,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
+    const isManagementApplicationsEnabled: boolean = isFeatureEnabled(
+        featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_ADD_MANAGEMENT_APPLICATIONS")
+    );
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, any>>(undefined);
@@ -336,12 +340,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
         // If the application is a OIDC standard-based application
-        if (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-            && (selectedTemplate?.templateId === "custom-application"
-                || selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)) {
-            application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2
-                ? true
-                : false;
+        if (
+            legacyAuthzRuntime &&
+            isManagementApplicationsEnabled &&
+            customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
+            (selectedTemplate?.templateId === "custom-application" ||
+                selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
+        ) {
+            application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2 ? true : false;
         }
 
         // Adding `APPLICATION` as the default audience for the associated roles,
@@ -1103,6 +1109,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
                             (selectedTemplate?.templateId === "custom-application" ||
                             selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
+                            && isManagementApplicationsEnabled
                         ) && (
                             <div className="pt-0 mt-0">
                                 <Field
