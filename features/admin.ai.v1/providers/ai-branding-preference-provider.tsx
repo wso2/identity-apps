@@ -160,6 +160,7 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
                 operationId,
                 setBrandingGenerationCompleted,
                 setGeneratingBranding,
+                setMergedBrandingPreference,
                 setOperationId
             } }
         >

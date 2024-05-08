@@ -1,5 +1,40 @@
 # @wso2is/react-components
 
+## 2.2.0
+
+### Minor Changes
+
+- [#6135](https://github.com/wso2/identity-apps/pull/6135) [`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Move session refresh logic to Application level
+
+### Patch Changes
+
+- Updated dependencies [[`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5)]:
+  - @wso2is/core@2.0.45
+
+## 2.1.28
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+- Updated dependencies [[`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb)]:
+  - @wso2is/core@2.0.44
+  - @wso2is/theme@2.0.81
+
+## 2.1.27
+
+### Patch Changes
+
+- Updated dependencies [[`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee), [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013)]:
+  - @wso2is/theme@2.0.80
+
+## 2.1.26
+
+### Patch Changes
+
+- Updated dependencies [[`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e)]:
+  - @wso2is/theme@2.0.79
+
 ## 2.1.25
 
 ### Patch Changes

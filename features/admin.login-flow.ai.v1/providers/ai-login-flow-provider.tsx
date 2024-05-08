@@ -31,6 +31,7 @@ import LoginFlowAILoadingScreen from "../components/login-flow-ai-loading-screen
 import { LOGIN_FLOW_AI_FEATURE_TAG } from "../constants/login-flow-ai-constants";
 import AILoginFlowContext from "../context/ai-login-flow-context";
 import { LoginFlowResultStatus } from "../models/ai-login-flow";
+import { BannerState } from "../models/banner-state";
 
 export type AILoginFlowProviderProps = unknown;
 
@@ -57,6 +58,9 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
     const [ operationId, setOperationId ] = useState<string>();
     const [ isGeneratingLoginFlow, setGeneratingLoginFlow ] = useState<boolean>(false);
     const [ loginFlowGenerationCompleted, setLoginFlowGenerationCompleted ] = useState<boolean>(false);
+    const [ promptHistory, setPromptHistory ] = useState<string[]>([]);
+    const [ userPrompt, setUserPrompt ] = useState<string>("");
+    const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
 
     /**
      * Custom hook to get the login flow generation result.
@@ -115,17 +119,33 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
         setLoginFlowGenerationCompleted(false);
     };
 
+    const updatePromptHistory = (prompt: string) => {
+        // Only keep the last 3 prompts
+        // If the prompt is already in the history, remove it and add it to the top
+        if (promptHistory.includes(prompt)) {
+            setPromptHistory([ prompt, ...promptHistory.filter((item: string) => item !== prompt) ]);
+        } else {
+            setPromptHistory([ prompt, ...promptHistory.slice(0, 2) ]);
+        }
+    };
+
     return (
         <AILoginFlowContext.Provider
             value={ {
                 aiGeneratedLoginFlow,
+                bannerState,
                 handleGenerate,
                 isGeneratingLoginFlow,
                 loginFlowGenerationCompleted,
                 operationId,
+                promptHistory,
+                setBannerState,
                 setGeneratingLoginFlow,
                 setLoginFlowGenerationCompleted,
-                setOperationId
+                setOperationId,
+                setUserPrompt,
+                updatePromptHistory,
+                userPrompt
             } }
         >
             {

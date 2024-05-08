@@ -1,5 +1,97 @@
 # @wso2is/features
 
+## 2.17.0
+
+### Minor Changes
+
+- [#6135](https://github.com/wso2/identity-apps/pull/6135) [`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Move session refresh logic to Application level
+
+### Patch Changes
+
+- Updated dependencies [[`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5)]:
+  - @wso2is/react-components@2.2.0
+  - @wso2is/core@2.0.45
+  - @wso2is/dynamic-forms@2.0.58
+  - @wso2is/form@2.0.59
+  - @wso2is/access-control@3.0.5
+  - @wso2is/forms@2.0.35
+  - @wso2is/i18n@2.2.17
+
+## 2.16.17
+
+### Patch Changes
+
+- [#6207](https://github.com/wso2/identity-apps/pull/6207) [`f99d54c605a6b66ca819c3a5d8c84faa14d4dc5a`](https://github.com/wso2/identity-apps/commit/f99d54c605a6b66ca819c3a5d8c84faa14d4dc5a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the email template preview issues
+
+* [#6176](https://github.com/wso2/identity-apps/pull/6176) [`66d927c6c19200543ca59d83480c5ce10ec514c8`](https://github.com/wso2/identity-apps/commit/66d927c6c19200543ca59d83480c5ce10ec514c8) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify admin role view
+
+## 2.16.16
+
+### Patch Changes
+
+- [#6199](https://github.com/wso2/identity-apps/pull/6199) [`4301300b2e55cc54430994c2da348df9f4df9f9b`](https://github.com/wso2/identity-apps/commit/4301300b2e55cc54430994c2da348df9f4df9f9b) Thanks [@dhaura](https://github.com/dhaura)! - Consider enterprise user schema when displaying user profiles in Console.
+
+## 2.16.15
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+- Updated dependencies [[`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb)]:
+  - @wso2is/access-control@3.0.4
+  - @wso2is/core@2.0.44
+  - @wso2is/dynamic-forms@2.0.57
+  - @wso2is/form@2.0.58
+  - @wso2is/forms@2.0.34
+  - @wso2is/i18n@2.2.16
+  - @wso2is/react-components@2.1.28
+  - @wso2is/theme@2.0.81
+  - @wso2is/validation@2.0.5
+
+## 2.16.14
+
+### Patch Changes
+
+- [#6190](https://github.com/wso2/identity-apps/pull/6190) [`6ff4f5724d4deb5d95927c847b3cb4a08d6b9c1e`](https://github.com/wso2/identity-apps/commit/6ff4f5724d4deb5d95927c847b3cb4a08d6b9c1e) Thanks [@dhaura](https://github.com/dhaura)! - Update license header and remove trailing spaces in group-assign-users.tsx
+
+## 2.16.13
+
+### Patch Changes
+
+- [#6192](https://github.com/wso2/identity-apps/pull/6192) [`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
+* [#6192](https://github.com/wso2/identity-apps/pull/6192) [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
+* Updated dependencies [[`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee), [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013)]:
+  - @wso2is/theme@2.0.80
+  - @wso2is/i18n@2.2.15
+  - @wso2is/react-components@2.1.27
+  - @wso2is/dynamic-forms@2.0.56
+  - @wso2is/form@2.0.57
+
+## 2.16.12
+
+### Patch Changes
+
+- [#6183](https://github.com/wso2/identity-apps/pull/6183) [`df8f436eae`](https://github.com/wso2/identity-apps/commit/df8f436eaedba1a955980e21c2666fea1dd99cca) Thanks [@savindi7](https://github.com/savindi7)! - Use Monaco Editor as an npm package.
+
+## 2.16.11
+
+### Patch Changes
+
+- [#6184](https://github.com/wso2/identity-apps/pull/6184) [`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add prompt history to AI Login Flow feature
+
+* [#6182](https://github.com/wso2/identity-apps/pull/6182) [`e300a87114`](https://github.com/wso2/identity-apps/commit/e300a871141b86a5f1f16835793dd1f89cfbb493) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix organization SSO authenticator issues
+
+- [#6177](https://github.com/wso2/identity-apps/pull/6177) [`c1a49829ae`](https://github.com/wso2/identity-apps/commit/c1a49829ae13b5aae0433e6bd1f26b95c8dfdd1c) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix nullpointer when showing locale with invalid formats
+
+- Updated dependencies [[`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e)]:
+  - @wso2is/theme@2.0.79
+  - @wso2is/i18n@2.2.14
+  - @wso2is/react-components@2.1.26
+  - @wso2is/dynamic-forms@2.0.55
+  - @wso2is/form@2.0.56
+
 ## 2.16.10
 
 ### Patch Changes
