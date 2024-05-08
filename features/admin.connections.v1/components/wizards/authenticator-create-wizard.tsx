@@ -129,6 +129,9 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         [ "data-componentid" ]: componentId
     } = props;
 
+    console.log("availableTemplates", availableTemplates);
+
+
     const [ initWizard, setInitWizard ] = useState<boolean>(true);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

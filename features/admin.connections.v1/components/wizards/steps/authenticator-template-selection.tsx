@@ -68,6 +68,8 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
     } = props;
 
     const { t } = useTranslation();
+    console.log("Manual mode options", manualModeOptions);
+
 
     const [ selectedTemplate, setSelectedTemplate ] = useState<ConnectionInterface>(undefined);
     const [ selectedManualModeOption, setSelectedManualModeOption ] = useState<any>(undefined);
