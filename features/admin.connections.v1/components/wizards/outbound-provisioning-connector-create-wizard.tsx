@@ -40,6 +40,7 @@ import {
 } from "../../api/connections";
 import useGetOutboundProvisioningConnectors from "../../api/use-get-outbound-provisioning-connectors";
 import { getOutboundProvisioningConnectorWizardIcons } from "../../configs/ui";
+import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import {
     ConnectionInterface,
     OutboundProvisioningConnectorInterface,
@@ -137,7 +138,11 @@ export const OutboundProvisioningConnectorCreateWizard:
                 }
 
                 const filteredConnectorList: OutboundProvisioningConnectorListItemInterface[]
-                    = outboundProvisioningConnectorsList;
+                    = outboundProvisioningConnectorsList.filter(
+                        (connector: OutboundProvisioningConnectorListItemInterface) => {
+                            return connector.connectorId !== AuthenticatorManagementConstants
+                                .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID;
+                        });
 
                 return filteredConnectorList.map((connector: OutboundProvisioningConnectorListItemInterface) => {
                     const metadata: OutboundProvisioningConnectorMetaDataInterface
