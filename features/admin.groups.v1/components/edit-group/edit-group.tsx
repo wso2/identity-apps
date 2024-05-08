@@ -139,10 +139,8 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
         getUsersList(null, null, null, null, userstore)
             .then((response: UserListInterface) => {
-                if (response.Resources?.length > 0) {
-                    setUsersList(response.Resources);
-                    setSelectedUsersList(filterUsersList([ ...response.Resources ]));
-                }
+                setUsersList(response.Resources);
+                setSelectedUsersList(filterUsersList(response.Resources));
             })
             .catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
@@ -178,7 +176,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
      */
     const filterUsersList = (usersToFilter: UserBasicInterface[]): UserBasicInterface[] => {
 
-        if (!group?.members || !Array.isArray(group.members) || group.members.length < 1) {
+        if (!group?.members || !Array.isArray(group.members) || group.members.length < 1 || !usersToFilter) {
             return;
         }
 
