@@ -138,6 +138,8 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isEditingSystemRolesAllowed: boolean =
+        useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
 
     const isRoleReadOnly: boolean = useMemo(() => {
         return (
@@ -175,7 +177,9 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                 getRolesList(null)
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
                         const systemRolesFilteredRolesList: RolesV2Interface[] =
-                            response?.data?.Resources?.filter((role: RolesV2Interface) => !role.meta.systemRole);
+                            isEditingSystemRolesAllowed
+                                ? response?.data?.Resources?.filter((role: RolesV2Interface) => !role.meta.systemRole)
+                                : response?.data?.Resources;
 
                         setRoleList(systemRolesFilteredRolesList);
                     });
