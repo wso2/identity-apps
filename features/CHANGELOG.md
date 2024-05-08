@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.16.17
+
+### Patch Changes
+
+- [#6207](https://github.com/wso2/identity-apps/pull/6207) [`f99d54c605a6b66ca819c3a5d8c84faa14d4dc5a`](https://github.com/wso2/identity-apps/commit/f99d54c605a6b66ca819c3a5d8c84faa14d4dc5a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the email template preview issues
+
+* [#6176](https://github.com/wso2/identity-apps/pull/6176) [`66d927c6c19200543ca59d83480c5ce10ec514c8`](https://github.com/wso2/identity-apps/commit/66d927c6c19200543ca59d83480c5ce10ec514c8) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify admin role view
+
 ## 2.16.16
 
 ### Patch Changes
