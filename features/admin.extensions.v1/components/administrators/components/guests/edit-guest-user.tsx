@@ -21,11 +21,14 @@ import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Message, ResourceTab } from "@wso2is/react-components";
+import useAuthorization from "features/admin.authorization.v1/hooks/use-authorization";
 import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
+import { UserRolesList as LegacyUserRolesList } from "./user-roles-edit";
+import { AppConstants } from "../../../../../admin.core.v1/constants";
 import { FeatureConfigInterface } from "../../../../../admin.core.v1/models";
 import { AppState } from "../../../../../admin.core.v1/store";
 import { ConnectorPropertyInterface, RealmConfigInterface } from "../../../../../admin.server-configurations.v1/models";
@@ -36,6 +39,7 @@ import { UserManagementConstants } from "../../../../../admin.users.v1/constants
 import { UserManagementUtils } from "../../../../../admin.users.v1/utils/user-management-utils";
 import { administratorConfig } from "../../../../configs/administrator";
 import { SCIMConfigs } from "../../../../configs/scim";
+import { hiddenPermissions } from "../../../roles/meta";
 import { AdminAccountTypes } from "../../constants";
 
 interface EditGuestUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
@@ -86,8 +90,11 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ allowDeleteOnly, setAllowDeleteOnly ] = useState<boolean>(false);
@@ -190,7 +197,26 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
                 menuItem: t("users:editUser.tab.menuItems.2"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <UserRolesList user={ user } />
+                        { legacyAuthzRuntime ?
+                            (<LegacyUserRolesList
+                                showDomain={ false }
+                                hideApplicationRoles={ true }
+                                isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
+                                onAlertFired={ handleAlerts }
+                                user={ user }
+                                handleUserUpdate={ handleUserUpdate }
+                                isReadOnly={ false }
+                                permissionsToHide={
+                                    (AppConstants.getTenant() !== AppConstants.getSuperTenant())
+                                        ? hiddenPermissions
+                                        : []
+                                }
+                                realmConfigs={ realmConfigs }
+                            />)
+                            : <UserRolesList user={ user } /> }
+
+
+
                     </ResourceTab.Pane>
                 )
             }
