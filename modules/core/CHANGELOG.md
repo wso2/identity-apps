@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.45
+
+### Patch Changes
+
+- [#6135](https://github.com/wso2/identity-apps/pull/6135) [`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Move session refresh logic to Application level
+
 ## 2.0.44
 
 ### Patch Changes
