@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.17.3
+
+### Patch Changes
+
+- [#6202](https://github.com/wso2/identity-apps/pull/6202) [`4bcb6efd50e85a3e5b7b045e8f16d0c43aa98f9a`](https://github.com/wso2/identity-apps/commit/4bcb6efd50e85a3e5b7b045e8f16d0c43aa98f9a) Thanks [@brionmario](https://github.com/brionmario)! - Add RBAC support to application roles
+
+* [#6168](https://github.com/wso2/identity-apps/pull/6168) [`53c2ce76e7875421529bc58a9b117dbe92bae057`](https://github.com/wso2/identity-apps/commit/53c2ce76e7875421529bc58a9b117dbe92bae057) Thanks [@brionmario](https://github.com/brionmario)! - Add support to disable management apps
+
 ## 2.17.2
 
 ### Patch Changes

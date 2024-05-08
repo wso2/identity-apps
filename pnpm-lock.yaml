@@ -519,7 +519,7 @@ importers:
         specifier: ^2.0.58
         version: link:../../modules/dynamic-forms
       '@wso2is/features':
-        specifier: ^2.17.2
+        specifier: ^2.17.3
         version: link:../../features
       '@wso2is/form':
         specifier: ^2.0.59
@@ -850,7 +850,7 @@ importers:
         specifier: ^2.0.45
         version: link:../../modules/core
       '@wso2is/features':
-        specifier: ^2.17.2
+        specifier: ^2.17.3
         version: link:../../features
       '@wso2is/forms':
         specifier: ^2.0.35
