@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -73,7 +73,7 @@ export class AuthenticateUtils {
             responseMode: window["AppUtils"]?.getConfig()?.idpConfigs?.responseMode ?? responseModeFallback,
             scope: window["AppUtils"]?.getConfig()?.idpConfigs?.scope ?? [ TokenConstants.SYSTEM_SCOPE ],
             sendCookiesInRequests: true,
-            sessionRefreshInterval: window[ "AppUtils" ]?.getConfig()?.session?.sessionRefreshTimeOut,
+            sessionRefreshInterval: -1,
             signInRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
             signOutRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
             storage: AuthenticateUtils.resolveStorage() as Storage.WebWorker,
