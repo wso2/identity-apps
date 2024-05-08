@@ -16,6 +16,7 @@
  * under the License.
  */
 
-export * from "./pages/identity-verification-provider-edit";
-export * from "./pages/identity-verification-provider-template";
-export * from "./pages/identity-verification-providers";
+export { default as IdentityVerificationProviderEditPage } from "./pages/identity-verification-provider-edit";
+export { default as IdentityVerificationProviderTemplateSelectPage}
+    from "./pages/identity-verification-provider-template";
+export { default as IdentityVerificationProvidersPage } from "./pages/identity-verification-providers";
