@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.16.16
+
+### Patch Changes
+
+- [#6199](https://github.com/wso2/identity-apps/pull/6199) [`4301300b2e55cc54430994c2da348df9f4df9f9b`](https://github.com/wso2/identity-apps/commit/4301300b2e55cc54430994c2da348df9f4df9f9b) Thanks [@dhaura](https://github.com/dhaura)! - Consider enterprise user schema when displaying user profiles in Console.
+
 ## 2.16.15
 
 ### Patch Changes
