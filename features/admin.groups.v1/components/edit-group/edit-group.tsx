@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -32,6 +31,7 @@ import { BasicGroupDetails } from "./edit-group-basic";
 import { EditGroupRoles } from "./edit-group-roles";
 import { GroupRolesV1List } from "./edit-group-roles-v1";
 import { GroupUsersList } from "./edit-group-users";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "../../../admin.core.v1/models";
 import { AppState } from "../../../admin.core.v1/store";
 import { getUsersList } from "../../../admin.users.v1/api";
@@ -139,8 +139,10 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
         getUsersList(null, null, null, null, userstore)
             .then((response: UserListInterface) => {
-                setUsersList(response.Resources);
-                setSelectedUsersList(filterUsersList([ ...response.Resources ]));
+                if (response.Resources?.length > 0) {
+                    setUsersList(response.Resources);
+                    setSelectedUsersList(filterUsersList([ ...response.Resources ]));
+                }
             })
             .catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
