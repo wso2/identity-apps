@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -31,9 +32,11 @@ import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
+import { FeatureConfigInterface } from "../../../admin.core.v1/models/config";
+import { AppState } from "../../../admin.core.v1/store";
 import {
     updateIdentityProviderAssignedGroups,
     useIdentityProviderAssignedGroups
@@ -61,6 +64,12 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasApplicationRolesUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.applicationRoles?.scopes?.update
+    );
 
     const [ isLoading, setLoading ] = useState<boolean>(true);
     const [ isGroupListRequestLoading, setGroupListRequestLoading ] = useState<boolean>(true);
@@ -305,6 +314,7 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
                                         groupList?.map((group: string, index: number)=> {
                                             return (
                                                 <TransferListItem
+                                                    readOnly={ !hasApplicationRolesUpdatePermissions }
                                                     style={ { height: "100%" } }
                                                     handleItemChange={ () =>
                                                         handleUnassignedItemCheckboxChange(group) }
@@ -324,7 +334,7 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
                         </Grid.Column>
                     </Grid.Row>
                     {
-                        groupList?.length > 0 && (
+                        hasApplicationRolesUpdatePermissions && groupList?.length > 0 && (
                             <PrimaryButton
                                 className="ml-6 mb-5"
                                 size="small"
