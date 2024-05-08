@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.17.2
+
+### Patch Changes
+
+- [#6210](https://github.com/wso2/identity-apps/pull/6210) [`1161a8b83249f2a4b2074fa6e9f9462556184f75`](https://github.com/wso2/identity-apps/commit/1161a8b83249f2a4b2074fa6e9f9462556184f75) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Fix error during user fetch
+
 ## 2.17.1
 
 ### Patch Changes
