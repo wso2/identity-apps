@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.17.5
+
+### Patch Changes
+
+- [#6221](https://github.com/wso2/identity-apps/pull/6221) [`0bc46b679cb17b58e93a2896f1a4a12437d7b975`](https://github.com/wso2/identity-apps/commit/0bc46b679cb17b58e93a2896f1a4a12437d7b975) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show the groups page based on the availability of application roles
+
+* [#6222](https://github.com/wso2/identity-apps/pull/6222) [`35beeca02117863c7f0e362d0539b8319ab2d2a0`](https://github.com/wso2/identity-apps/commit/35beeca02117863c7f0e362d0539b8319ab2d2a0) Thanks [@brionmario](https://github.com/brionmario)! - Fix circular dependency in My Account
+
 ## 2.17.4
 
 ### Patch Changes
