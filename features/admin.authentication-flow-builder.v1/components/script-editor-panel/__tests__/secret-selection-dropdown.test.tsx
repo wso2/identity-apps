@@ -25,13 +25,14 @@ import SecretSelectionDropdown, { SecretSelectionDropdownPropsInterface } from "
 describe("SecretSelectionDropdown", () => {
     const defaultProps: SecretSelectionDropdownPropsInterface = {
         onOpen: jest.fn(),
-        onSecretSelect: jest.fn()
+        onSecretSelect: jest.fn(),
+        open: true
     };
 
     it("renders the SecretSelectionDropdown component", () => {
         render(<SecretSelectionDropdown { ...defaultProps } />, { allowedScopes: fullPermissions });
 
-        const secretSelectionDropdown: Element = screen.getByTestId("secret-selection-dropdown");
+        const secretSelectionDropdown: Element = screen.getByTestId("secret-selection-dropdown-popover");
 
         expect(secretSelectionDropdown).toBeInTheDocument();
     });

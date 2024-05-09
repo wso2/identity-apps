@@ -31,7 +31,6 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosResponse } from "axios";
-import { ApplicationManagementConstants } from "features/admin.applications.v1/constants";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -39,6 +38,7 @@ import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useSta
 import { useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
 import { useApplicationList } from "../../../../../admin.applications.v1/api/application";
+import { ApplicationManagementConstants } from "../../../../../admin.applications.v1/constants";
 import useAuthorization from "../../../../../admin.authorization.v1/hooks/use-authorization";
 import {
     SharedUserStoreUtils,

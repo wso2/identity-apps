@@ -18,7 +18,7 @@
     ],
     "targets": {
         "build-prepare": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
@@ -105,7 +105,7 @@
             }
         },
         "build-windup": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
@@ -118,7 +118,7 @@
             }
         },
         "build": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     "pnpm nx run console:build-prepare",
@@ -130,7 +130,7 @@
             }
         },
         "clean": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
@@ -143,7 +143,7 @@
             }
         },
         "serve-prepare": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
@@ -177,7 +177,7 @@
             }
         },
         "serve": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     "pnpm nx run console:serve-prepare",
@@ -188,7 +188,7 @@
             }
         },
         "lint": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm lint",
                 "cwd": "apps/console",
@@ -196,7 +196,7 @@
             }
         },
         "test": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
                 "cwd": "apps/console",

@@ -1,5 +1,18 @@
 # @wso2is/myaccount
 
+## 2.5.87
+
+### Patch Changes
+
+- [#6196](https://github.com/wso2/identity-apps/pull/6196) [`1dae0ff06f97c2e04526b1aaa77d5cd144271718`](https://github.com/wso2/identity-apps/commit/1dae0ff06f97c2e04526b1aaa77d5cd144271718) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix myaccount redirecting to non-tenanted path on privileged user SLO
+
+## 2.5.86
+
+### Patch Changes
+
+- Updated dependencies [[`0bc46b679cb17b58e93a2896f1a4a12437d7b975`](https://github.com/wso2/identity-apps/commit/0bc46b679cb17b58e93a2896f1a4a12437d7b975), [`35beeca02117863c7f0e362d0539b8319ab2d2a0`](https://github.com/wso2/identity-apps/commit/35beeca02117863c7f0e362d0539b8319ab2d2a0)]:
+  - @wso2is/features@2.17.5
+
 ## 2.5.85
 
 ### Patch Changes

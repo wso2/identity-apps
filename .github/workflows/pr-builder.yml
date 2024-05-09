@@ -144,7 +144,6 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
-    if: false
     needs: [ lint, typecheck ]
     runs-on: ubuntu-latest
     strategy:
@@ -192,9 +191,13 @@ jobs:
 
       - name: 🃏 Run Jest & Collect Coverage
         id: run-jest-test-and-coverage
-        run: pnpm test:unit:coverage
+        # TODO: Update the command to "test:unit:coverage" once the coverage command related issues
+        # are sorted out
+        run: pnpm test:unit
 
       - name: 🤖 Aggregate Test Coverage
+        # TODO: Enable this step once the coverage command related issues are fixed
+        if: false
         id: aggregate-coverage-reports
         run: |
           pnpm test:unit:coverage:aggregate
@@ -203,7 +206,7 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ typecheck ]
+    needs: [ test, typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:

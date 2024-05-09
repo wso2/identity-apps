@@ -18,7 +18,7 @@
 
 // import { AuthProvider } from "@asgardeo/auth-react";
 import {  RenderResult, render as rtlRender } from "@testing-library/react";
-// import { AccessControlProvider } from "@wso2is/access-control";
+import { AccessControlProvider } from "@wso2is/access-control";
 import React, { PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { mockStore } from "./__mocks__/redux/redux-store";
@@ -42,8 +42,8 @@ import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
 const render = (
     ui: ReactElement,
     {
-        // allowedScopes = "internal_login",
-        // featureConfig = window[ "AppUtils" ].getConfig().ui.features,
+        allowedScopes = "internal_login",
+        featureConfig = window[ "AppUtils" ].getConfig().ui.features,
         initialState = ReduxStoreStateMock,
         store = mockStore(initialState),
         ...renderOptions
@@ -63,13 +63,15 @@ const render = (
             <Provider store={ store }>
                 { /* Temporarily commenting out the AccessControlProvider due to issues with mocking
                     window["AppUtils"] */ }
-                { /* <AccessControlProvider
+                <AccessControlProvider
                     allowedScopes={ allowedScopes }
                     features={ featureConfig }
-                    permissions={ AccessControlUtils.getPermissions(featureConfig, allowedScopes) }
+                    isLegacyRuntimeEnabled={ false }
+                    organizationType="FIRST_LEVEL_ORGANIZATION"
                 >
-                </AccessControlProvider> */ }
-                { children }
+                    { children }
+                </AccessControlProvider>
+
             </Provider>
             // </AuthProvider>
         );

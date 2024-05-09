@@ -17,8 +17,6 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AuthenticatorManagementConstants } from "../../admin.connections.v1";
-import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
 import { OrganizationInterface } from "../models";
 
 export class OrganizationManagementConstants {
@@ -65,30 +63,6 @@ export class OrganizationManagementConstants {
         "suborganizations:notifications.duplicateOrgError.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
-
-    public static readonly ORGANIZATION_AUTHENTICATOR: GenericAuthenticatorInterface = {
-        authenticators: [
-            {
-                authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
-                isEnabled: true,
-                name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
-                tags: [ "APIAuth" ]
-            }
-        ],
-        defaultAuthenticator: {
-            authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
-            isEnabled: true,
-            name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
-            tags: [ "APIAuth" ]
-        },
-        description: "Identity provider for Organization SSO.",
-        displayName: "SSO",
-        id: "sso",
-        idp: "SSO",
-        image: "assets/images/logos/sso.svg",
-        isEnabled: true,
-        name: "SSO"
-    };
 }
 
 export enum ORGANIZATION_TYPE {
