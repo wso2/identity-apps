@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.17.4
+
+### Patch Changes
+
+- [#6218](https://github.com/wso2/identity-apps/pull/6218) [`9c1fcee2598632c01e2b4cdee15e38a36b24e62f`](https://github.com/wso2/identity-apps/commit/9c1fcee2598632c01e2b4cdee15e38a36b24e62f) Thanks [@brionmario](https://github.com/brionmario)! - Fix Typo
+
 ## 2.17.3
 
 ### Patch Changes
