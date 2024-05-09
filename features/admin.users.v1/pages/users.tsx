@@ -63,6 +63,7 @@ import {
     history
 } from "../../admin.core.v1";
 import { userstoresConfig } from "../../admin.extensions.v1";
+import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
 import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
@@ -494,7 +495,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
 
             return resource;
-        });
+        }).filter(resource => !resource[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg);
+
+        if (clonedUserList.totalResults && clonedUserList.totalResults > 0) {
+            console.log(clonedUserList?.Resources?.length);
+            clonedUserList.totalResults = clonedUserList?.Resources?.length;
+        }
 
         return moderateUsersList(clonedUserList, modifiedLimit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
     };
