@@ -27,12 +27,11 @@ import React, {
     useState
 } from "react";
 import { useSelector } from "react-redux";
-import useGetBrandingPreference from "../../admin.branding.v1/api/use-get-branding-preference";
 import { BrandingPreferencesConstants } from "../../admin.branding.v1/constants";
 import useBrandingPreference from "../../admin.branding.v1/hooks/use-branding-preference";
 import { BrandingPreferenceThemeInterface } from "../../admin.branding.v1/models";
 import { BrandingPreferenceUtils } from "../../admin.branding.v1/utils";
-import { AppState, store } from "../../admin.core.v1";
+import { AppState } from "../../admin.core.v1";
 import { EmailTemplate } from "../models";
 import { EmailCustomizationUtils } from "../utils";
 
@@ -59,7 +58,7 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
         ["data-componentid"]: testId
     } = props;
 
-    const { customText } = useBrandingPreference();
+    const { preference: brandingPreference, customText } = useBrandingPreference();
 
     const [ , setIsIframeReady ] = useState(false);
     const [
@@ -67,13 +66,8 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
         setPredefinedThemes
     ] = useState<BrandingPreferenceThemeInterface>(BrandingPreferencesConstants.DEFAULT_PREFERENCE.theme);
 
-    const organizationName: string = store.getState().auth.tenantDomain;
+    const organizationName: string = useSelector((state: AppState) => state?.organization?.organization?.name);
     const theme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
-
-    const {
-        data: brandingPreference,
-        isLoading: isBrandingPreferenceLoading
-    } = useGetBrandingPreference(organizationName);
 
     const emailTemplateBody: string = useMemo(() => {
         if (emailTemplate?.body) {
@@ -91,7 +85,6 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
         emailTemplate?.body,
         organizationName,
         brandingPreference?.preference,
-        isBrandingPreferenceLoading,
         predefinedThemes
     ]);
 
