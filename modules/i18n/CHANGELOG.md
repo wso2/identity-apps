@@ -1,5 +1,55 @@
 # @wso2is/i18n
 
+## 2.2.17
+
+### Patch Changes
+
+- Updated dependencies [[`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5)]:
+  - @wso2is/core@2.0.45
+
+## 2.2.16
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+- Updated dependencies [[`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb)]:
+  - @wso2is/core@2.0.44
+
+## 2.2.15
+
+### Patch Changes
+
+- [#6192](https://github.com/wso2/identity-apps/pull/6192) [`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
+## 2.2.14
+
+### Patch Changes
+
+- [#6184](https://github.com/wso2/identity-apps/pull/6184) [`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add prompt history to AI Login Flow feature
+
+## 2.2.13
+
+### Patch Changes
+
+- Updated dependencies [[`3c124e9286`](https://github.com/wso2/identity-apps/commit/3c124e92867e6504613cd152bd2fcb5e1a6e3291)]:
+  - @wso2is/core@2.0.43
+
+## 2.2.12
+
+### Patch Changes
+
+- [#6160](https://github.com/wso2/identity-apps/pull/6160) [`6b4207a88e`](https://github.com/wso2/identity-apps/commit/6b4207a88e02976c45f3ba6670eaa70679d172cc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the trusted apps section into the FIDO settings form
+
+## 2.2.11
+
+### Patch Changes
+
+- [#6100](https://github.com/wso2/identity-apps/pull/6100) [`c2839fe3d8`](https://github.com/wso2/identity-apps/commit/c2839fe3d81fd128c9994a5e3d459bc4cf4ba3ad) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the trusted origins input field into the FIDO settings form
+
+- Updated dependencies [[`0656e0a717`](https://github.com/wso2/identity-apps/commit/0656e0a717e01ff7817a2643d6b6c869e033789f)]:
+  - @wso2is/core@2.0.42
+
 ## 2.2.10
 
 ### Patch Changes

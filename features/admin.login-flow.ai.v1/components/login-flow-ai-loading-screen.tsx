@@ -15,14 +15,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import IconButton from "@oxygen-ui/react/IconButton";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -38,20 +38,24 @@ import {
     useGetStatusLabels
 } from "../constants/login-flow-ai-constants";
 import "./login-flow-ai-loading-screen.scss";
+import useAILoginFlow from "../hooks/use-ai-login-flow";
 
 const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
 
     const { t } = useTranslation();
 
-    const { getLink } = useDocumentation();
-
     const dispatch: Dispatch = useDispatch();
 
     const statusLabels: Record<string, string> = useGetStatusLabels();
 
+    const {
+        setGeneratingLoginFlow,
+        setLoginFlowGenerationCompleted
+    } = useAILoginFlow();
+
     const facts: string[] = useGetFacts();
 
-    const { data, isLoading, error } = useAILoginFlowGenerationStatus(traceId);
+    const { data, error } = useAILoginFlowGenerationStatus(traceId);
 
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
     const [ factIndex, setFactIndex ] = useState<number>(0);
@@ -134,43 +138,47 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
         return t(currentStatusLabel);
     };
 
+    const handleGenerateCancel = () => {
+        setGeneratingLoginFlow(false);
+        setLoginFlowGenerationCompleted(false);
+    };
+
     return (
-        <Box className="login-flow-ai-loading-screen-parent">
-            <Box className="login-flow-ai-loading-screen-container">
-                <Box className="login-flow-ai-loading-screen-illustration-container">
-                    <LoadingPlaceholder />
+        <Box className="login-flow-ai-loading-screen-container">
+            <Box className="login-flow-ai-loading-screen-illustration-container">
+                <LoadingPlaceholder />
+            </Box>
+            <Box className="login-flow-ai-loading-screen-text-container">
+                <Box className="mb-5">
+                    <Typography
+                        variant="h5"
+                        className="login-flow-ai-loading-screen-heading"
+                    >
+                        { t("ai:aiLoginFlow.didYouKnow") }
+                    </Typography>
+                    <Typography className="login-flow-ai-loading-screen-sub-heading">
+                        { facts[factIndex] }
+                    </Typography>
                 </Box>
-                <Box className="login-flow-ai-loading-screen-text-container">
-                    <Box className="mb-5">
-                        <Typography
-                            variant="h5"
-                            className="login-flow-ai-loading-screen-heading"
+                <Box sx={ { width: 1 } }>
+                    <Box className="login-flow-ai-loading-screen-loading-container">
+                        <Typography className="login-flow-ai-loading-screen-loading-state">
+                            { getCurrentStatus() }
+                        </Typography>
+                        <Tooltip
+                            title="Cancel"
+                            placement="top"
                         >
-                            { t("ai:aiLoginFlow.didYouKnow") }
-                        </Typography>
-                        <Typography className="login-flow-ai-loading-screen-sub-heading">
-                            { facts[factIndex] }
-                        </Typography>
+                            <IconButton
+                                onClick={ handleGenerateCancel }
+                            >
+                                <XMarkIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
-                    <Box sx={ { width: 1 } }>
-                        <Box className="login-flow-ai-loading-screen-loading-container">
-                            { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
-                            <Typography className="login-flow-ai-loading-screen-loading-state">
-                                { getCurrentStatus() }
-                            </Typography>
-                        </Box>
-                        <LinearProgress variant="determinate" value={ currentProgress } />
-                    </Box>
+                    <LinearProgress variant="buffer" value={ currentProgress } valueBuffer={ currentProgress + 1 }  />
                 </Box>
             </Box>
-            <Typography variant="caption">
-                { t("ai:aiLoginFlow.disclaimer") }
-                <DocumentationLink
-                    link={ getLink("common.termsOfService") }
-                >
-                    { t("ai:aiLoginFlow.termsAndConditions") }
-                </DocumentationLink>
-            </Typography>
         </Box>
     );
 };

@@ -1,5 +1,55 @@
 # @wso2is/identity-apps-core
 
+## 2.1.75
+
+### Patch Changes
+
+- [#6209](https://github.com/wso2/identity-apps/pull/6209) [`d0be112acff7175af164286e54d267e3e8b53978`](https://github.com/wso2/identity-apps/commit/d0be112acff7175af164286e54d267e3e8b53978) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Update the testid of the invitation accept page
+
+## 2.1.74
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+- Updated dependencies [[`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb)]:
+  - @wso2is/theme@2.0.81
+
+## 2.1.73
+
+### Patch Changes
+
+- Updated dependencies [[`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee), [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013)]:
+  - @wso2is/theme@2.0.80
+
+## 2.1.72
+
+### Patch Changes
+
+- Updated dependencies [[`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e)]:
+  - @wso2is/theme@2.0.79
+
+## 2.1.71
+
+### Patch Changes
+
+- Updated dependencies [[`4a402cf922`](https://github.com/wso2/identity-apps/commit/4a402cf922f0e6aea7a67bb8718c26f6b3c158b9)]:
+  - @wso2is/theme@2.0.78
+
+## 2.1.70
+
+### Patch Changes
+
+- [#6152](https://github.com/wso2/identity-apps/pull/6152) [`818c00adf1`](https://github.com/wso2/identity-apps/commit/818c00adf17f07639834f5b9c839471faeac0bb8) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove runtime logic for enterprise login idp
+
+* [#6157](https://github.com/wso2/identity-apps/pull/6157) [`50aa715699`](https://github.com/wso2/identity-apps/commit/50aa715699a497864f41b150de9ad41f4fcce4db) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Revert removing enterprise idp based on legacy check
+
+## 2.1.69
+
+### Patch Changes
+
+- [#6138](https://github.com/wso2/identity-apps/pull/6138) [`5afa9ad1ea`](https://github.com/wso2/identity-apps/commit/5afa9ad1eafa040999395f92ec6264458109c9bf) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix portal path issue
+
 ## 2.1.68
 
 ### Patch Changes

@@ -4,11 +4,11 @@ name: PR Builder
 
 on:
   pull_request:
+    types: [ opened, synchronize, labeled ]
     branches: [ master ]
     paths-ignore:
       - "**.md"
       - "LICENSE"
-  workflow_dispatch:
 
 # Avoid running multiple builds for the same PR.
 concurrency:
@@ -21,6 +21,7 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -84,6 +85,7 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
+    if: ${{github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     strategy:
       matrix:

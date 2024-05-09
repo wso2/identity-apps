@@ -82,8 +82,10 @@ export class Config {
             }
         }
 
-        if (skipAuthzRuntimePath) {
-            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant?.replace("/o/", "");
+        const serverOriginWithTenant: string = window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
+
+        if (skipAuthzRuntimePath && serverOriginWithTenant?.slice(-2) === "/o") {
+            return serverOriginWithTenant.substring(0,serverOriginWithTenant.lastIndexOf("/o"));
         }
 
         return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;

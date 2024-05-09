@@ -72,6 +72,7 @@ export class ApplicationManagementConstants {
         .set("FAPI_APP_CREATION", "applications.create.fapi")
         .set("APPLICATION_NATIVE_AUTHENTICATION", "applications.native.authentication")
         .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
+        .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.

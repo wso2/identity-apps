@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -107,6 +107,16 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     );
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasApplicationRolesReadPermissions: boolean = useRequiredScopes(
+        featureConfig?.applicationRoles?.scopes?.read
+    );
+    const hasApplicationRolesUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.applicationRoles?.scopes?.update
+    );
+    const hasApplicationRolesDeletePermissions: boolean = useRequiredScopes(
+        featureConfig?.applicationRoles?.scopes?.delete
+    );
 
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -376,7 +386,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         return [
             {
                 "data-componentid": `${ componentId }-item-edit-button`,
-                hidden: (): boolean => isSharedApplication,
+                hidden: (): boolean => !hasApplicationRolesUpdatePermissions || isSharedApplication,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, role: RoleListItemInterface): void => handleRoleEdit(role),
                 popupText: (): string => t("common:edit"),
@@ -384,7 +394,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             },
             {
                 "data-componentid": `${ componentId }-item-delete-button`,
-                hidden: (): boolean => isSharedApplication,
+                hidden: (): boolean => !hasApplicationRolesDeletePermissions || isSharedApplication,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RoleListItemInterface): void => handleRoleDelete(role),
                 popupText: (): string => t("common:delete"),
@@ -392,7 +402,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             },
             {
                 "data-componentid": `${ componentId }-item-view-button`,
-                hidden: (): boolean => !isSharedApplication,
+                hidden: (): boolean => !hasApplicationRolesReadPermissions || !isSharedApplication,
                 icon: (): SemanticICONS => "eye",
                 onClick: (e: SyntheticEvent, role: RoleListItemInterface): void => handleRoleEdit(role),
                 popupText: (): string => t("common:view"),
@@ -485,9 +495,12 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             return (
                 <EmptyPlaceholder
                     className={ "list-placeholder" }
-                    action={ !isSharedApplication &&
-                        (<Show
-                            when={ featureConfig?.applications?.scopes?.create }
+                    action={ !isSharedApplication && (
+                        <Show
+                            when={
+                                featureConfig?.applications?.scopes?.create &&
+                                featureConfig?.applicationRoles?.scopes?.create
+                            }
                         >
                             <PrimaryButton
                                 onClick={ () => { setShowWizard(true); } }>
@@ -495,8 +508,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 { t("extensions:develop.applications.edit.sections.roles.placeHolders." +
                                     "emptyList.action") }
                             </PrimaryButton>
-                        </Show>)
-                    }
+                        </Show>
+                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("extensions:develop.applications.edit.sections.roles.placeHolders." +
@@ -538,21 +551,28 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             </DocumentationLink>
                         </Heading>
                     </Grid.Column>
-                    <Grid.Column className="action-wrapper" computer={ 6 }>
-                        <div className="floated right action">
-                            {
-                                (roleList.length > 0) && !isSharedApplication && (
-                                    <PrimaryButton
-                                        data-componentid={ `${ componentId }-add-new-role-button` }
-                                        onClick={ () => setShowWizard(true) }
-                                    >
-                                        <Icon name="add" />
-                                        { t("extensions:develop.applications.edit.sections.roles.buttons.newRole") }
-                                    </PrimaryButton>
-                                )
-                            }
-                        </div>
-                    </Grid.Column>
+                    <Show
+                        when={
+                            featureConfig?.applications?.scopes?.create &&
+                            featureConfig?.applicationRoles?.scopes?.create
+                        }
+                    >
+                        <Grid.Column className="action-wrapper" computer={ 6 }>
+                            <div className="floated right action">
+                                {
+                                    (roleList.length > 0) && !isSharedApplication && (
+                                        <PrimaryButton
+                                            data-componentid={ `${ componentId }-add-new-role-button` }
+                                            onClick={ () => setShowWizard(true) }
+                                        >
+                                            <Icon name="add" />
+                                            { t("extensions:develop.applications.edit.sections.roles.buttons.newRole") }
+                                        </PrimaryButton>
+                                    )
+                                }
+                            </div>
+                        </Grid.Column>
+                    </Show>
                 </Grid.Row>
             </Grid>
             <Divider hidden />
@@ -578,14 +598,16 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             data-componentid={ `${ componentId }-list-layout` }
                         >
                             <DataTable<RoleListItemInterface>
+                                readOnly={ true }
                                 className="application-roles-table"
                                 isLoading={ false }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 actions={ resolveTableActions() }
                                 columns={ resolveTableColumns() }
                                 data={ roleList }
-                                onRowClick={ (e: SyntheticEvent, role: RoleListItemInterface): void =>
-                                    handleRoleEdit(role) }
+                                onRowClick={ (_: SyntheticEvent, role: RoleListItemInterface): void => {
+                                    handleRoleEdit(role);
+                                } }
                                 placeholders={ showPlaceholders() }
                                 showHeader={ false }
                                 transparent={ !isLoading && (showPlaceholders() !== null) }
@@ -614,7 +636,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 selectedRole={ roleListItem }
                 appId={ appId }
                 showEditRoleModal={ showEditModal }
-                isReadOnly={ isSharedApplication }
+                isReadOnly={ !hasApplicationRolesUpdatePermissions || isSharedApplication }
             />
             {
                 deletingRole && (

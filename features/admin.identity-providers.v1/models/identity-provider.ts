@@ -1021,3 +1021,101 @@ export interface FIDOAuthenticatorFormFieldsInterface {
      */
     FIDO_EnableUsernamelessAuthentication: CommonAuthenticatorFormFieldInterface;
 }
+
+/**
+ * Interface for FIDO connector configuration properties.
+ */
+export interface FIDOConnectorConfigsAttributeInterface {
+    /**
+     * Key of the attribute.
+     */
+    key: string;
+    /**
+     * Value of the attribute.
+     */
+    value: string;
+}
+
+/**
+ * Interface for FIDO connector configuration.
+ */
+export interface FIDOConnectorConfigsInterface {
+    /**
+     * Attributes of the FIDO connector configuration.
+     */
+    attributes: FIDOConnectorConfigsAttributeInterface[]
+}
+
+/**
+ * Interface for FIDO configuration.
+ */
+export interface FIDOConfigsInterface extends FIDOConnectorConfigsInterface{
+    /**
+     * Fido configuration name.
+     */
+    name: string;
+}
+
+/**
+ * Interface for FIDO trusted apps.
+ */
+export interface FIDOTrustedAppsValuesInterface {
+    /**
+     * List of FIDO Trusted Android Apps.
+     */
+    android: FIDOTrustedAppTypeInterface;
+    /**
+     * List of FIDO Trusted IOS Apps.
+     */
+    ios: FIDOTrustedAppTypeInterface
+}
+
+/**
+ * Interface for FIDO trusted app type.
+ */
+export interface FIDOTrustedAppTypeInterface {
+    /**
+     * App names with their corresponding SHA values.
+     */
+    [appName: string]: string[]
+}
+
+/**
+ * Interface for FIDO trusted apps response.
+ */
+export interface FIDOTrustedAppsResponseInterface {
+    /**
+     * List of FIDO Trusted Android Apps.
+     */
+    android: string[];
+    /**
+     * List of FIDO Trusted IOS Apps.
+     */
+    ios: string[]
+}
+
+/**
+ * Types of FIDO trusted apps.
+ */
+export enum FIDOTrustedAppTypes {
+    ANDROID = "android",
+    IOS = "ios"
+}
+
+/**
+ * FIDO trusted apps list interface.
+ */
+export interface FIDOTrustedAppsListInterface {
+    /**
+     * Name of the trusted app.
+     */
+    appName: string;
+    /**
+     * Type of the trusted app.
+     */
+    appType: FIDOTrustedAppTypes;
+    /**
+     * SHA values associated with the current app.
+     */
+    shaValues?: string[];
+}

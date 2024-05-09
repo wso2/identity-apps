@@ -49,21 +49,22 @@
     flex-direction: row;
     margin-bottom: 10px;
     align-items: center;
+    justify-content: space-between;
 }
 
 .login-flow-ai-loading-screen-heading {
     font-size: 19px;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 5px;
 }
 
 .login-flow-ai-loading-screen-sub-heading {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 400;
     color: #6a6d7b;
 }
 
 .login-flow-ai-loading-screen-loading-state {
-    font-size: 17px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 500;
 }

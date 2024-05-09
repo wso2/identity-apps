@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,8 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
+import { AuthenticatorManagementConstants } from "../../admin.connections.v1";
+import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
 import { OrganizationInterface } from "../models";
 
 export class OrganizationManagementConstants {
@@ -64,6 +66,29 @@ export class OrganizationManagementConstants {
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
 
+    public static readonly ORGANIZATION_AUTHENTICATOR: GenericAuthenticatorInterface = {
+        authenticators: [
+            {
+                authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+                isEnabled: true,
+                name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
+                tags: [ "APIAuth" ]
+            }
+        ],
+        defaultAuthenticator: {
+            authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+            isEnabled: true,
+            name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
+            tags: [ "APIAuth" ]
+        },
+        description: "Identity provider for Organization SSO.",
+        displayName: "SSO",
+        id: "sso",
+        idp: "SSO",
+        image: "assets/images/logos/sso.svg",
+        isEnabled: true,
+        name: "SSO"
+    };
 }
 
 export enum ORGANIZATION_TYPE {
@@ -106,5 +131,5 @@ export enum OrganizationType {
     SUBORGANIZATION = "SUBORGANIZATION",
     TENANT = "TENANT",
     FIRST_LEVEL_ORGANIZATION = "FIRST_LEVEL_ORGANIZATION",
-    SUPER_ORGANIZATION= "SUPER_ORGANIZATION"
+    SUPER_ORGANIZATION = "SUPER_ORGANIZATION"
 }

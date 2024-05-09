@@ -151,6 +151,8 @@ export class UserManagementConstants {
     public static readonly GROUPS_ATTRIBUTE: string = "groups";
 
     public static readonly MANAGED_BY_PARENT_TEXT: string = "Parent Organization";
+
+    public static readonly GLOBE: string = "globe";
 }
 
 /**

@@ -20,15 +20,18 @@ import { DecodedIDTokenPayload } from "@asgardeo/auth-react";
 
 export default {
     getDecodedIDToken: (): Promise<DecodedIDTokenPayload> => {
-        return new Promise((resolve, reject) => {
+        return new Promise((
+            resolve: (value: DecodedIDTokenPayload | PromiseLike<DecodedIDTokenPayload>) => void,
+            _reject: (reason?: any) => void
+        ) => {
             resolve({
                 aud: "",
-                sub: "",
-                iss: "",
                 email: "",
+                iss: "",
                 preferred_username: "",
-                tenant_domain: "",
-            })
+                sub: "",
+                tenant_domain: ""
+            });
         });
     }
 };

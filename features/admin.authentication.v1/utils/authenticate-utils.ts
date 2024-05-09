@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,9 +18,9 @@
 
 import { AuthParams, AuthReactConfig, ResponseMode, SPAUtils, Storage } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
+import { UserAgentParser } from "@wso2is/core/helpers";
 import { StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import UAParser from "ua-parser-js";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
 import { Config } from "../../admin.core.v1";
 
@@ -73,7 +73,7 @@ export class AuthenticateUtils {
             responseMode: window["AppUtils"]?.getConfig()?.idpConfigs?.responseMode ?? responseModeFallback,
             scope: window["AppUtils"]?.getConfig()?.idpConfigs?.scope ?? [ TokenConstants.SYSTEM_SCOPE ],
             sendCookiesInRequests: true,
-            sessionRefreshInterval: window[ "AppUtils" ]?.getConfig()?.session?.sessionRefreshTimeOut,
+            sessionRefreshInterval: -1,
             signInRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
             signOutRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
             storage: AuthenticateUtils.resolveStorage() as Storage.WebWorker,
@@ -90,12 +90,12 @@ export class AuthenticateUtils {
     public static resolveStorage(): Storage {
 
         const storageFallback: Storage =
-            new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
+            new UserAgentParser().browser.name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
 
         if (window["AppUtils"]?.getConfig()?.idpConfigs?.storage) {
             if (
                 window["AppUtils"].getConfig().idpConfigs.storage === Storage.WebWorker &&
-                new UAParser().getBrowser().name === "IE"
+                new UserAgentParser().browser.name === "IE"
             ) {
                 return Storage.SessionStorage;
             }

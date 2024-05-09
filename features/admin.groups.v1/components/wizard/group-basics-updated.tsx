@@ -21,6 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Code, Hint } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
+import { userstoresConfig } from "features/admin.extensions.v1";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -31,7 +32,7 @@ import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from
 import { RootOnlyComponent } from "../../../admin.organizations.v1/components/root-only-component";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getAUserStore, getUserStoreList } from "../../../admin.userstores.v1/api/user-stores";
-import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
+import { UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
 import { UserStoreProperty } from "../../../admin.userstores.v1/models";
 
 /**
@@ -161,8 +162,8 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
-                text: "Primary",
-                value: PRIMARY_USERSTORE
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreName
             }
         ];
 
