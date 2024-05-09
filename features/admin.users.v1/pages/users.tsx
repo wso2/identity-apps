@@ -49,6 +49,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
+import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -63,8 +64,8 @@ import {
     history
 } from "../../admin.core.v1";
 import { userstoresConfig } from "../../admin.extensions.v1";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
 import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -127,6 +128,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();
+    const { legacyAuthzRuntime }  = useAuthorization();
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
@@ -495,10 +497,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
 
             return resource;
-        }).filter(resource => !resource[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg);
+        });
+
+        if (legacyAuthzRuntime) {
+            clonedUserList.Resources = clonedUserList?.Resources?.filter((resource: UserBasicInterface) => 
+                !resource[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg);
+        }
 
         if (clonedUserList.totalResults && clonedUserList.totalResults > 0) {
-            console.log(clonedUserList?.Resources?.length);
             clonedUserList.totalResults = clonedUserList?.Resources?.length;
         }
 
