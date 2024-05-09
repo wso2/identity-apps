@@ -16,7 +16,8 @@
  * under the License.
  */
 
-export * from "./pages";
+export { default as CertificatesKeystore } from "./pages/certificates-keystore";
+export { default as CertificatesTruststore } from "./pages/certificates-truststore";
 
 
 

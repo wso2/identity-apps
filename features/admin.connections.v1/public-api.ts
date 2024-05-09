@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export * from "./pages/connection-templates";
-export * from "./pages/connections";
-export * from "./pages/connection-edit";
+export { default as ConnectionTemplatesPage } from "./pages/connection-templates";
+export { default as ConnectionsPage } from "./pages/connections";
+export { default as ConnectionEditPage } from "./pages/connection-edit";

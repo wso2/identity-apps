@@ -15,4 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export * from "./pages";
+
+export { default as UserStores } from "./pages/user-stores";
+export { default as UserStoresEditPage } from "./pages/user-stores-edit";
+export { default as UserstoresTemplates } from "./pages/userstores-templates";

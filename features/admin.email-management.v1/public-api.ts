@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./pages";
+export { default as EmailCustomizationPage } from "./pages/email-customization";
 

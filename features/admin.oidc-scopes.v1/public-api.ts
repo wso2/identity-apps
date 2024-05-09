@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export * from "./pages";
+export { default as OIDCScopesPage } from "./pages/oidc-scopes";
+export { default as OIDCScopesEditPage } from "./pages/oidc-scopes-edit";

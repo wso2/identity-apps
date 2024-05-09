@@ -16,5 +16,9 @@
  * under the License.
  */
 
-export * from "./pages";
-
+export { default as ClaimDialectsPage }  from "./pages/claim-dialects";
+export { default as ExternalDialectEditPage } from "./pages/external-dialect-edit";
+export { default as LocalClaimsPage } from "./pages/local-claims";
+export { default as LocalClaimsEditPage } from "./pages/local-claims-edit";
+export { default as AttributeMappings } from "./pages/attribute-mappings";
+export { default as AttributeVerificationSettingsFormPage } from "./pages/attribute-verification-settings";

@@ -15,4 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export * from "./pages";
+
+export { default as EmailTemplateEditPage } from "./pages/email-template-edit-page";
+export { default as EmailTemplateTypesPage } from "./pages/email-template-types-page";
+export { default as EmailTemplatesPage } from "./pages/email-templates-page";

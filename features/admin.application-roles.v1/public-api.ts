@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export * from "./pages";
+export { default as ApplicationRolesPage } from "./pages/application-roles";
+export { default as ApplicationRoleEditPage } from "./pages/application-role-edit";

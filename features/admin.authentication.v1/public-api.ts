@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export * from "./pages";
+export { default as SignOut } from "./pages/sign-out";
 export * from "./utils";
 export { default as useSignIn } from "./hooks/use-sign-in";

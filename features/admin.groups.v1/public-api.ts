@@ -15,4 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export * from "./pages";
+
+export { default as GroupsPage } from "./pages/groups";
+export { default as GroupEditPage } from "./pages/group-edit";

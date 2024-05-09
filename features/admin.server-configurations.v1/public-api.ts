@@ -15,4 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export * from "./pages";
+
+export { default as GovernanceConnectorsPage } from "./pages/governance-connectors";
+export { default as ConnectorEditPage } from "./pages/connector-edit-page";
+export { default as ConnectorListingPage } from "./pages/connector-listing-page";
+export { default as MultiAttributeLoginEdit } from "./pages/multi-attribute-login-edit";
