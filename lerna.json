@@ -2,8 +2,7 @@
     "packages": [
         "apps/*",
         "identity-apps-core",
-        "modules/*",
-        "tests"
+        "modules/*"
     ],
     "version": "2.0.0"
 }
