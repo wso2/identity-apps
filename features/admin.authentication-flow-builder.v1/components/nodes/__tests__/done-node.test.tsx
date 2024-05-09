@@ -44,6 +44,7 @@ describe.skip("DoneNode", () => {
                         onUpdate={ jest.fn() }
                         isLoading={ false }
                         readOnly={ false }
+                        authenticationSequence={ {} }
                     >
                         <ReactFlowProvider>
                             <DoneNode { ...defaultProps } />
@@ -73,6 +74,7 @@ describe.skip("DoneNode", () => {
                         onUpdate={ jest.fn() }
                         isLoading={ false }
                         readOnly={ false }
+                        authenticationSequence={ {} }
                     >
                         <ReactFlowProvider>
                             <DoneNode { ...defaultProps } />
@@ -104,6 +106,7 @@ describe.skip("DoneNode", () => {
                         onUpdate={ jest.fn() }
                         isLoading={ false }
                         readOnly={ false }
+                        authenticationSequence={ {} }
                     >
                         <ReactFlowProvider>
                             <DoneNode { ...defaultProps } />

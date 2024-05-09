@@ -46,6 +46,7 @@ describe.skip("AuthenticationFlowBuilder", () => {
                         onUpdate={ jest.fn() }
                         isLoading={ false }
                         readOnly={ false }
+                        authenticationSequence={ {} }
                     >
                         <AuthenticationFlowBuilder { ...defaultProps } />
                     </AuthenticationFlowProvider>
