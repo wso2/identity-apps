@@ -30,6 +30,12 @@ const scss = require("rollup-plugin-scss");
 const styles = require("rollup-plugin-styles");
 const svg = require("rollup-plugin-svg");
 
+const onwarn = (warning, warn) => {
+    if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
+        return;
+    }
+    warn(warning);
+};
 
 module.exports = [
     {
@@ -77,6 +83,7 @@ module.exports = [
             "./admin.workflow-approvals.v1/public-api.ts",
             "./admin.wsfed-configuration.v1/public-api.ts"
         ],
+        onwarn,
         output: [
             {
                 dir: "dist/esm",
@@ -99,6 +106,7 @@ module.exports = [
             }),
             dynamicImportVars(),
             styles({ mode: "inject" }),
+            //Generate package.json in dist/esm including 'exports' entry points to publish the bundled JS package
             generatePackageJson({
                 baseContents: (pkg) => ({
                     ...pkg, // Include fields from the root package.json
