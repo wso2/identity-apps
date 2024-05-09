@@ -376,7 +376,11 @@ export class ApplicationManagementConstants {
     public static readonly TOTP_HANDLERS: string[] = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS,
-        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR,
+        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle Email OTP.
