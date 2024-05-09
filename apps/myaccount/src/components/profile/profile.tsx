@@ -41,7 +41,7 @@ import {
     UserAvatar,
     useMediaContext
 } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
@@ -51,6 +51,7 @@ import { Dispatch } from "redux";
 import { Container, DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
 import {
     fetchPasswordValidationConfig,
+    getPreference,
     getUsernameConfiguration,
     updateProfileImageURL,
     updateProfileInfo
@@ -62,6 +63,9 @@ import {
     AlertLevels,
     AuthStateInterface, BasicProfileInterface, ConfigReducerStateInterface,
     FeatureConfigInterface,
+    PreferenceConnectorResponse,
+    PreferenceProperty,
+    PreferenceRequest,
     ProfileSchema,
     ValidationFormInterface
 } from "../../models";
@@ -70,6 +74,7 @@ import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { CommonUtils } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
+import { Console } from "console";
 
 /**
  * Prop types for the basic details component.
@@ -120,6 +125,82 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ showEmail, setShowEmail ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+
+    const USER_CLAIM_UPDATE_CONNECTOR: string = "user-claim-update";
+    const ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
+    const ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
+    const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<string>(null);
+    const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<string>(null);
+
+    /**
+     * The following method gets the preference for verification on mobile and email update.
+     */
+    const getPreferences = (): void => {
+
+        const userClaimUpdateConnector: PreferenceRequest[] = [
+            {
+                "connector-name": USER_CLAIM_UPDATE_CONNECTOR,
+                properties: [
+                    ENABLE_EMAIL_VERIFICATION,
+                    ENABLE_MOBILE_VERIFICATION
+                ]
+            }
+        ];
+
+        getPreference(userClaimUpdateConnector)
+            .then((response: PreferenceConnectorResponse[]) => {
+                if (response) {
+                    const userClaimUpdateOptions: PreferenceConnectorResponse[] = response;
+                    const responseProperties: PreferenceProperty[] = userClaimUpdateOptions[0].properties;
+
+                    responseProperties.forEach((prop: PreferenceProperty) => {
+                        if (prop.name === ENABLE_EMAIL_VERIFICATION) {
+                            setIsEmailVerificationEnabled(prop.value.toLowerCase());
+                        }
+                        if (prop.name === ENABLE_MOBILE_VERIFICATION) {
+                            setIsMobileVerificationEnabled(prop.value.toLowerCase());
+                        }
+                    });
+                } else {
+                    onAlertFired({
+                        description: t(
+                            "myAccount:sections.accountRecovery.preference.notifications.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t("myAccount:sections.accountRecovery.preference.notifications.genericError.message")
+                    });
+                }
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    onAlertFired({
+                        description: t(
+                            "myAccount:sections.accountRecovery.preference.notifications.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t("myAccount:sections.accountRecovery.preference.notifications..error.message")
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t(
+                        "myAccount:sections.accountRecovery.preference.notifications.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("myAccount:sections.accountRecovery.preference.notifications.genericError.message")
+                });
+            })
+    };
+
+    /**
+     * Load verification on update preferences.
+     */
+    useEffect(() => {
+        getPreferences();
+    }, []);
 
     /**
      * Interface for the canonical attributes.
@@ -692,7 +773,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return (
                 isFeatureEnabled(
                     featureConfig?.personalInfo,
-                    AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
+                    String(isMobileVerificationEnabled)
                 ) && checkSchemaType(schema.name, "mobile")
                     ? (
                         <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>

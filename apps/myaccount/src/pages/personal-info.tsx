@@ -18,7 +18,6 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AxiosError } from "axios";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Message, PageLayout } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -30,17 +29,12 @@ import { AppConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { 
-        AlertInterface, 
-        AlertLevels,
-        AuthStateInterface, 
-        FeatureConfigInterface,
-        PreferenceConnectorResponse,
-        PreferenceProperty,
-        PreferenceRequest
+    AlertInterface,
+    AuthStateInterface,
+    FeatureConfigInterface
 } from "../models";
 import { AppState } from "../store";
 import { addAlert, getProfileInformation } from "../store/actions";
-import { getPreference } from "../api";
 import { CommonUtils } from "../utils";
 
 /**
@@ -86,87 +80,6 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
-
-    const USER_CLAIM_UPDATE_CONNECTOR: string = "user-claim-update";
-    const ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
-    const ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";  
-    const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
-    const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
-    const [ isVerificationDetailsLoding, setIsVerificationDetailsLoding ] = useState<boolean>(false);
-
-    /**
-     * The following method gets the preference for verification on mobile and email update.
-     */
-    const getPreferences = (): void => {
-        setIsVerificationDetailsLoding(true);
-
-        const userClaimUpdateConnector: PreferenceRequest[] = [
-            {
-                "connector-name": USER_CLAIM_UPDATE_CONNECTOR,
-                properties: [
-                    ENABLE_EMAIL_VERIFICATION,
-                    ENABLE_MOBILE_VERIFICATION
-                ]
-            }
-        ];
-
-        getPreference(userClaimUpdateConnector)
-        .then((response: PreferenceConnectorResponse[]) => {
-            if (response) {
-                const userClaimUpdateOptions: PreferenceConnectorResponse[] = response;
-                const responseProperties: PreferenceProperty[] = userClaimUpdateOptions[0].properties;
-
-                responseProperties.forEach((prop: PreferenceProperty) => {
-                    if (prop.name === ENABLE_EMAIL_VERIFICATION) {
-                        setIsEmailVerificationEnabled(prop.value.toLowerCase() == "true" ? true : false);
-                    }
-                    if (prop.name === ENABLE_MOBILE_VERIFICATION) {
-                        setIsMobileVerificationEnabled(prop.value.toLowerCase() == "true" ? true : false);
-                    }
-                });
-            } else {
-                onAlertFired({
-                    description: t(
-                        "myAccount:sections.accountRecovery.preference.notifications.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t("myAccount:sections.accountRecovery.preference.notifications.genericError.message")
-                });
-            }
-        })
-        .catch((error: AxiosError) => {
-            if (error.response && error.response.data && error.response.data.detail) {
-                onAlertFired({
-                    description: t(
-                        "myAccount:sections.accountRecovery.preference.notifications.error.description",
-                        { description: error.response.data.detail }
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t("myAccount:sections.accountRecovery.preference.notifications..error.message")
-                });
-
-                return;
-            }
-
-            onAlertFired({
-                description: t(
-                    "myAccount:sections.accountRecovery.preference.notifications.genericError.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t("myAccount:sections.accountRecovery.preference.notifications.genericError.message")
-            });
-        })
-        .finally(() => {
-            setIsVerificationDetailsLoding(false);
-        });
-    }
-
-    /**
-     * Load verification on update preferences.
-     */
-    useEffect(() => {
-        getPreferences();
-    }, []);
 
     /**
      * Checks if the user is a user without local credentials.
