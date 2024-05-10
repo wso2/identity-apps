@@ -772,255 +772,256 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 innerPlaceholder += " in the format YYYY-MM-DD";
             }
 
-            return (isMobileVerificationEnabled && checkSchemaType(schema.name, "mobile")
-                ? (
-                    <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
-                        <p>
-                            { t("myAccount:components.profile.messages.mobileVerification.content") }
-                        </p>
-                        <Grid padded={ true }>
-                            <Grid.Row columns={ 2 }>
-                                < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                                    <List.Content>{ fieldName }</List.Content>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                    <List.Content>
-                                        <List.Description className="with-max-length">
-                                            {
-                                                isProfileInfoLoading || profileSchemaLoader
-                                                    ? (
-                                                        <Placeholder><Placeholder.Line /></Placeholder>
-                                                    )
-                                                    : profileInfo.get(schema.name)
-                                                    || (
-                                                        <a
-                                                            className="placeholder-text"
-                                                            tabIndex={ 0 }
-                                                            onClick={ () => {
-                                                                setShowMobileUpdateWizard(true);
-                                                            } }
-                                                            onKeyPress={ (
-                                                                { key }: React.KeyboardEvent<HTMLAnchorElement>
-                                                            ) =>
-                                                            {
-                                                                if (key === "Enter") {
+            return (
+                isMobileVerificationEnabled && checkSchemaType(schema.name, "mobile")
+                    ? (
+                        <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
+                            <p>
+                                { t("myAccount:components.profile.messages.mobileVerification.content") }
+                            </p>
+                            <Grid padded={ true }>
+                                <Grid.Row columns={ 2 }>
+                                    < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                                        <List.Content>{ fieldName }</List.Content>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                                        <List.Content>
+                                            <List.Description className="with-max-length">
+                                                {
+                                                    isProfileInfoLoading || profileSchemaLoader
+                                                        ? (
+                                                            <Placeholder><Placeholder.Line /></Placeholder>
+                                                        )
+                                                        : profileInfo.get(schema.name)
+                                                        || (
+                                                            <a
+                                                                className="placeholder-text"
+                                                                tabIndex={ 0 }
+                                                                onClick={ () => {
                                                                     setShowMobileUpdateWizard(true);
-                                                                }
-                                                            }
-                                                            }
-                                                            data-testid={
-                                                                `${testId}-schema-mobile-editing-section-${
-                                                                    schema.name.replace(".", "-")
-                                                                }-placeholder`
-                                                            }
-                                                        >
-                                                            { t("myAccount:components.profile.forms.generic." +
-                                                                "inputs.placeholder", {
-                                                                fieldName: fieldName.toLowerCase() })
-                                                            }
-                                                        </a>
-                                                    )
-                                            }
-                                        </List.Description>
-                                    </List.Content>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                                    <PrimaryButton
-                                        floated="left"
-                                        onClick={ () => {
-                                            setShowMobileUpdateWizard(true);
-                                        } }
-                                    >
-                                        { t("common:update").toString() }
-                                    </PrimaryButton>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                                    <LinkButton
-                                        floated="left"
-                                        onClick={ () => {
-                                            dispatch(setActiveForm(null));
-                                        } }
-                                    >
-                                        { t("common:cancel").toString() }
-                                    </LinkButton>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid >
-                    </EditSection>
-                )
-                : (
-                    <EditSection data-testid={ `${testId}-schema-editing-section` }>
-                        <Grid>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column width={ 4 }>{ fieldName }</Grid.Column>
-                                <Grid.Column width={ 12 }>
-                                    <Forms
-                                        onSubmit={ (values: Map<string, FormValue>) => {
-                                            handleSubmit(values, schema.name, schema.extended, schema);
-                                        } }
-                                    >
-                                        { checkSchemaType(schema.name, "country") ? (
-                                            <Field
-                                                autoFocus={ true }
-                                                label=""
-                                                name={ schema.name }
-                                                placeholder={ t("myAccount:components.profile.forms." +
-                                                    "countryChangeForm.inputs.country.placeholder") }
-                                                required={ schema.required }
-                                                requiredErrorMessage={
-                                                    t("myAccount:components.profile.forms.generic" +
-                                                        ".inputs.validations.empty", { fieldName })
-                                                }
-                                                type="dropdown"
-                                                children={ countryList
-                                                    ? countryList.map((list: DropdownItemProps) => {
-                                                        return {
-                                                            "data-testid": `${testId}-${list.value as string}`,
-                                                            flag: list.flag,
-                                                            key: list.key as string,
-                                                            text: list.text as string,
-                                                            value: list.value as string
-                                                        };
-                                                    }) : [] }
-                                                value={ resolveProfileInfoSchemaValue(schema) }
-                                                disabled={ false }
-                                                clearable={ !schema.required }
-                                                search
-                                                selection
-                                                fluid
-                                            />
-                                        ) : (
-                                            <Field
-                                                autoFocus={ true }
-                                                label=""
-                                                name={ schema.name }
-                                                placeholder={ innerPlaceholder }
-                                                required={ schema.required }
-                                                requiredErrorMessage={
-                                                    t("myAccount:components.profile.forms.generic." +
-                                                        "inputs.validations.empty", { fieldName })
-                                                }
-                                                type="text"
-                                                validation={ (value: string, validation: Validation) => {
-                                                    if (!RegExp(schema.regEx).test(value)) {
-                                                        validation.isValid = false;
-                                                        if (checkSchemaType(schema.name, "emails")) {
-                                                            validation.errorMessages.push(
-                                                                t("myAccount:components.profile.forms." +
-                                                                "emailChangeForm.inputs.email.validations." +
-                                                                "invalidFormat")
-                                                            );
-                                                        } else if (checkSchemaType(schema.name, ProfileConstants.
-                                                            SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))) {
-                                                            validation.errorMessages.push(t(
-                                                                profileConfig?.attributes?.
-                                                                    getRegExpValidationError(
-                                                                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY
-                                                                            .get("PHONE_NUMBERS")
-                                                                    ),
+                                                                } }
+                                                                onKeyPress={ (
+                                                                    { key }: React.KeyboardEvent<HTMLAnchorElement>
+                                                                ) =>
                                                                 {
-                                                                    fieldName
+                                                                    if (key === "Enter") {
+                                                                        setShowMobileUpdateWizard(true);
+                                                                    }
                                                                 }
-                                                            )
-                                                            );
-                                                        } else if (checkSchemaType(schema.name,
-                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
-                                                            validation.errorMessages.push(
-                                                                t("myAccount:components.profile.forms." +
-                                                                "dateChangeForm.inputs.date.validations." +
-                                                                "invalidFormat", { fieldName })
-                                                            );
-                                                        } else {
-                                                            validation.errorMessages.push(
-                                                                t(
-                                                                    "myAccount:components.profile.forms." +
-                                                                "generic.inputs.validations.invalidFormat",
+                                                                }
+                                                                data-testid={
+                                                                    `${testId}-schema-mobile-editing-section-${
+                                                                        schema.name.replace(".", "-")
+                                                                    }-placeholder`
+                                                                }
+                                                            >
+                                                                { t("myAccount:components.profile.forms.generic." +
+                                                                    "inputs.placeholder", {
+                                                                    fieldName: fieldName.toLowerCase() })
+                                                                }
+                                                            </a>
+                                                        )
+                                                }
+                                            </List.Description>
+                                        </List.Content>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                                        <PrimaryButton
+                                            floated="left"
+                                            onClick={ () => {
+                                                setShowMobileUpdateWizard(true);
+                                            } }
+                                        >
+                                            { t("common:update").toString() }
+                                        </PrimaryButton>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                                        <LinkButton
+                                            floated="left"
+                                            onClick={ () => {
+                                                dispatch(setActiveForm(null));
+                                            } }
+                                        >
+                                            { t("common:cancel").toString() }
+                                        </LinkButton>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid >
+                        </EditSection>
+                    )
+                    : (
+                        <EditSection data-testid={ `${testId}-schema-editing-section` }>
+                            <Grid>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 4 }>{ fieldName }</Grid.Column>
+                                    <Grid.Column width={ 12 }>
+                                        <Forms
+                                            onSubmit={ (values: Map<string, FormValue>) => {
+                                                handleSubmit(values, schema.name, schema.extended, schema);
+                                            } }
+                                        >
+                                            { checkSchemaType(schema.name, "country") ? (
+                                                <Field
+                                                    autoFocus={ true }
+                                                    label=""
+                                                    name={ schema.name }
+                                                    placeholder={ t("myAccount:components.profile.forms." +
+                                                        "countryChangeForm.inputs.country.placeholder") }
+                                                    required={ schema.required }
+                                                    requiredErrorMessage={
+                                                        t("myAccount:components.profile.forms.generic" +
+                                                            ".inputs.validations.empty", { fieldName })
+                                                    }
+                                                    type="dropdown"
+                                                    children={ countryList
+                                                        ? countryList.map((list: DropdownItemProps) => {
+                                                            return {
+                                                                "data-testid": `${testId}-${list.value as string}`,
+                                                                flag: list.flag,
+                                                                key: list.key as string,
+                                                                text: list.text as string,
+                                                                value: list.value as string
+                                                            };
+                                                        }) : [] }
+                                                    value={ resolveProfileInfoSchemaValue(schema) }
+                                                    disabled={ false }
+                                                    clearable={ !schema.required }
+                                                    search
+                                                    selection
+                                                    fluid
+                                                />
+                                            ) : (
+                                                <Field
+                                                    autoFocus={ true }
+                                                    label=""
+                                                    name={ schema.name }
+                                                    placeholder={ innerPlaceholder }
+                                                    required={ schema.required }
+                                                    requiredErrorMessage={
+                                                        t("myAccount:components.profile.forms.generic." +
+                                                            "inputs.validations.empty", { fieldName })
+                                                    }
+                                                    type="text"
+                                                    validation={ (value: string, validation: Validation) => {
+                                                        if (!RegExp(schema.regEx).test(value)) {
+                                                            validation.isValid = false;
+                                                            if (checkSchemaType(schema.name, "emails")) {
+                                                                validation.errorMessages.push(
+                                                                    t("myAccount:components.profile.forms." +
+                                                                    "emailChangeForm.inputs.email.validations." +
+                                                                    "invalidFormat")
+                                                                );
+                                                            } else if (checkSchemaType(schema.name, ProfileConstants.
+                                                                SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))) {
+                                                                validation.errorMessages.push(t(
+                                                                    profileConfig?.attributes?.
+                                                                        getRegExpValidationError(
+                                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                                                                .get("PHONE_NUMBERS")
+                                                                        ),
                                                                     {
                                                                         fieldName
                                                                     }
                                                                 )
-                                                            );
-                                                        }
-                                                    // Validate date format and the date is before the current date
-                                                    } else if(checkSchemaType(schema.name,
-                                                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))){
-                                                        if (!moment(value, "YYYY-MM-DD",true).isValid()) {
-                                                            validation.isValid = false;
-                                                            validation.errorMessages
-                                                                .push(t("myAccount:components.profile.forms."
-                                                                + "dateChangeForm.inputs.date.validations."
-                                                                + "invalidFormat", {
-                                                                    field: fieldName
-                                                                }));
-                                                        } else {
-                                                            if (moment().isBefore(value)) {
+                                                                );
+                                                            } else if (checkSchemaType(schema.name,
+                                                                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
+                                                                validation.errorMessages.push(
+                                                                    t("myAccount:components.profile.forms." +
+                                                                    "dateChangeForm.inputs.date.validations." +
+                                                                    "invalidFormat", { fieldName })
+                                                                );
+                                                            } else {
+                                                                validation.errorMessages.push(
+                                                                    t(
+                                                                        "myAccount:components.profile.forms." +
+                                                                    "generic.inputs.validations.invalidFormat",
+                                                                        {
+                                                                            fieldName
+                                                                        }
+                                                                    )
+                                                                );
+                                                            }
+                                                        // Validate date format and the date is before the current date
+                                                        } else if(checkSchemaType(schema.name,
+                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))){
+                                                            if (!moment(value, "YYYY-MM-DD",true).isValid()) {
                                                                 validation.isValid = false;
                                                                 validation.errorMessages
                                                                     .push(t("myAccount:components.profile.forms."
                                                                     + "dateChangeForm.inputs.date.validations."
-                                                                    + "futureDateError", {
+                                                                    + "invalidFormat", {
                                                                         field: fieldName
                                                                     }));
+                                                            } else {
+                                                                if (moment().isBefore(value)) {
+                                                                    validation.isValid = false;
+                                                                    validation.errorMessages
+                                                                        .push(t("myAccount:components.profile.forms."
+                                                                        + "dateChangeForm.inputs.date.validations."
+                                                                        + "futureDateError", {
+                                                                            field: fieldName
+                                                                        }));
+                                                                }
                                                             }
                                                         }
-                                                    }
-                                                } }
-                                                value={ resolveProfileInfoSchemaValue(schema) }
-                                                maxLength={
-                                                    schema.name === "emails"
-                                                        ? 50
-                                                        : (
-                                                            fieldName.toLowerCase().includes("uri")
-                                                            || fieldName.toLowerCase().includes("url")
-                                                        )
-                                                            ? 1024
+                                                    } }
+                                                    value={ resolveProfileInfoSchemaValue(schema) }
+                                                    maxLength={
+                                                        schema.name === "emails"
+                                                            ? 50
                                                             : (
-                                                                schema.maxLength
-                                                                    ? schema.maxLength
-                                                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                                                                fieldName.toLowerCase().includes("uri")
+                                                                || fieldName.toLowerCase().includes("url")
                                                             )
-                                                }
-                                            />
-                                        )
-                                        }
-                                        <Field
-                                            hidden={ true }
-                                            type="divider"
-                                        />
-                                        <Form.Group>
+                                                                ? 1024
+                                                                : (
+                                                                    schema.maxLength
+                                                                        ? schema.maxLength
+                                                                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                                                                )
+                                                    }
+                                                />
+                                            )
+                                            }
                                             <Field
-                                                size="small"
-                                                type="submit"
-                                                value={ t("common:save").toString() }
-                                                data-testid={
-                                                    `${testId}-schema-mobile-editing-section-${
-                                                        schema.name.replace(".", "-")
-                                                    }-save-button`
-                                                }
+                                                hidden={ true }
+                                                type="divider"
                                             />
-                                            <Field
-                                                className="link-button"
-                                                onClick={ () => {
-                                                    dispatch(setActiveForm(null));
-                                                } }
-                                                size="small"
-                                                type="button"
-                                                value={ t("common:cancel").toString() }
-                                                data-testid={
-                                                    `${testId}-schema-mobile-editing-section-${
-                                                        schema.name.replace(".", "-")
-                                                    }-cancel-button`
-                                                }
-                                            />
-                                        </Form.Group>
-                                    </ Forms>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </EditSection >
-                )
+                                            <Form.Group>
+                                                <Field
+                                                    size="small"
+                                                    type="submit"
+                                                    value={ t("common:save").toString() }
+                                                    data-testid={
+                                                        `${testId}-schema-mobile-editing-section-${
+                                                            schema.name.replace(".", "-")
+                                                        }-save-button`
+                                                    }
+                                                />
+                                                <Field
+                                                    className="link-button"
+                                                    onClick={ () => {
+                                                        dispatch(setActiveForm(null));
+                                                    } }
+                                                    size="small"
+                                                    type="button"
+                                                    value={ t("common:cancel").toString() }
+                                                    data-testid={
+                                                        `${testId}-schema-mobile-editing-section-${
+                                                            schema.name.replace(".", "-")
+                                                        }-cancel-button`
+                                                    }
+                                                />
+                                            </Form.Group>
+                                        </ Forms>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </EditSection >
+                    )
             );
         } else {
             const fieldName: string = t("myAccount:components.profile.fields." + schema.displayName,
