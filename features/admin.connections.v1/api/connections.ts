@@ -565,34 +565,6 @@ export const getOutboundProvisioningConnectorMetadata = (
 };
 
 /**
- * Fetch the list of outbound provisioning connectors.
- *
- * @returns A promise containing the response.
- */
-export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisioningConnectorListItemInterface[]> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.identityProviders + "/meta/outbound-provisioning-connectors"
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to fetch outbound provisioning connectors"));
-            }
-
-            return Promise.resolve(response.data as OutboundProvisioningConnectorListItemInterface[]);
-        }).catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
  * Update a outbound provisioning connector of a specified IDP.
  *
  * @param idpId - ID of the Identity Provider.
