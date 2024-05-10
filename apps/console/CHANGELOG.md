@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.17.6
+
+### Patch Changes
+
+- [#6227](https://github.com/wso2/identity-apps/pull/6227) [`ad005f630a54d3606ccd2719819b9429fa18b66c`](https://github.com/wso2/identity-apps/commit/ad005f630a54d3606ccd2719819b9429fa18b66c) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Hide Organization creator in the sub org's user list in old runtime
+
 ## 2.17.5
 
 ### Patch Changes
