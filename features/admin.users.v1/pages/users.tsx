@@ -500,7 +500,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         });
 
         if (legacyAuthzRuntime) {
-            clonedUserList.Resources = clonedUserList?.Resources?.filter((resource: UserBasicInterface) => 
+            clonedUserList.Resources = clonedUserList?.Resources?.filter((resource: UserBasicInterface) =>
                 !resource[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg);
         }
 
