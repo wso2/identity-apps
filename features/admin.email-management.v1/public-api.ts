@@ -17,4 +17,3 @@
  */
 
 export { default as EmailCustomizationPage } from "./pages/email-customization";
-

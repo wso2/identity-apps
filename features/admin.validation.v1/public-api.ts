@@ -15,5 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 export { default as ValidationConfigEditPage } from "./pages/validation-config-edit";
 export { default as ValidationConfigPage } from "./pages/validation-config";

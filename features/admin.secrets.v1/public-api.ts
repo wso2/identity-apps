@@ -15,5 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 export { default as SecretsPage } from "./pages/secrets";
 export { default as SecretsEditPage } from "./pages/secret-edit";

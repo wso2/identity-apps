@@ -26,7 +26,6 @@ export * from "./store";
 export * from "./utils";
 export * from "./api";
 
-
 /**
  * Export the components.
  */
@@ -37,7 +36,6 @@ export * from "./components/modals/help-panel-modal";
 
 export * from "./components/vertical-stepper/vertical-stepper";
 export * from "./components/vertical-stepper/step";
-
 
 /**
  * Export constants.

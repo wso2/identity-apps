@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 export { default as AssignOrganizationDiscoverDomainsPage } from "./pages/assign-organization-discovery-domains-page";
 export { default as EditOrganizationDiscoveryDomainsPage } from "./pages/edit-organization-discovery-domains-page";
 export { default as OrganizationDiscoveryDomainsPage } from "./pages/organization-discovery-domains-page";

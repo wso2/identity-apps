@@ -18,5 +18,3 @@
 
 export { default as APIResourcesEditPage } from "./pages/api-resource-edit";
 export { default as APIResourcesPage } from "./pages/api-resources";
-
-

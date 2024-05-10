@@ -19,4 +19,3 @@
 export { default as IdentityProviderEditPage } from "./pages/identity-provider-edit";
 export { default as IdentityProviderTemplateSelectPage } from "./pages/identity-provider-template";
 export { default as IdentityProvidersPage } from "./pages/identity-providers";
-
