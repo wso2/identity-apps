@@ -252,6 +252,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isCustomClaimMappingMergeEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,
             isDialectAddingEnabled: undefined,
+            isEditingSystemRolesAllowed: undefined,
             isGroupAndRoleSeparationEnabled: undefined,
             isHeaderAvatarLabelAllowed: undefined,
             isLeftNavigationCategorized: undefined,

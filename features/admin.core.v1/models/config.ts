@@ -412,6 +412,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     systemAppsIdentifiers: string[];
     /**
+     * Is editing system roles allowed
+     */
+    isEditingSystemRolesAllowed: boolean;
+    /**
      * Show App Switch button in the Header.
      */
     showAppSwitchButton?: boolean;
