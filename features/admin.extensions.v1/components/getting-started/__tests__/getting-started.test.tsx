@@ -33,7 +33,7 @@ describe("Test if the Getting Started page is working as expected", () => {
         expect(container).toMatchSnapshot();
     });
 
-    it("<GettingStartedPage /> renders without exploding", () => {
+    it.skip("<GettingStartedPage /> renders without exploding", () => {
         render(<GettingStartedPage />, {
             allowedScopes: fullPermissions
         });

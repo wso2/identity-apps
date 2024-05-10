@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { XMarkIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
@@ -57,7 +57,7 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         const targetProgress: number = getProgress();
 
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setCurrentProgress((prevProgress: number) => {
                 if (prevProgress >= targetProgress) {
                     clearInterval(interval);
@@ -73,7 +73,7 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     }, [ data ]);
 
     useEffect(() => {
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setFactIndex((factIndex + 1) % facts.length);
         }, FACTS_ROTATION_DELAY);
 
