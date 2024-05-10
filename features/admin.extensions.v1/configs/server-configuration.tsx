@@ -31,7 +31,6 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     GovernanceConnectorUtils,
-    // ServerConfigurationsConstants,
     UpdateGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigPropertyInterface,
     UpdateMultipleGovernanceConnectorsInterface
