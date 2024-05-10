@@ -94,49 +94,47 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
             </Heading>
             <Card.Group className="authenticators-grid mt-3">
                 {
-                    connectorList?.map((connector: OutboundProvisioningConnectorMetaDataInterface, index: number) => {
-                        return (
-                            <Card
-                                key={ index }
-                                onClick={ (): void => handleConnectorSelection(connector) }
-                                selected={
-                                    selectedConnector
-                                        ? selectedConnector?.connectorId === connector?.connectorId
-                                        : index === 0
-                                }
-                                className={
-                                    selectedConnector?.connectorId === connector?.connectorId
-                                        ? "selection-info-card selected"
-                                        : "selection-info-card"
-                                }
-                                size="small"
-                                data-testid={ `${ testId }-connector-${ index }` }
-                            >
-                                <Card.Content className="p-4">
-                                    <GenericIcon
-                                        icon={ connector.icon }
-                                        size="micro"
-                                        floated="left"
-                                        shape="square"
-                                        className="theme-icon hover-rounded card-image"
-                                        inline
-                                        transparent
-                                    />
-                                    <Card.Header
-                                        textAlign="left"
-                                        className="card-header ellipsis pt-1"
-                                    >
-                                        { connector.displayName ?? connector.name }
-                                    </Card.Header>
-                                    <Card.Description
-                                        className="card-description"
-                                    >
-                                        { connector.description }
-                                    </Card.Description>
-                                </Card.Content>
-                            </Card>
-                        );
-                    })
+                    connectorList?.map((connector: OutboundProvisioningConnectorMetaDataInterface, index: number) => (
+                        <Card
+                            key={ index }
+                            onClick={ (): void => handleConnectorSelection(connector) }
+                            selected={
+                                selectedConnector
+                                    ? selectedConnector?.connectorId === connector?.connectorId
+                                    : index === 0
+                            }
+                            className={
+                                selectedConnector?.connectorId === connector?.connectorId
+                                    ? "selection-info-card selected"
+                                    : "selection-info-card"
+                            }
+                            size="small"
+                            data-testid={ `${ testId }-connector-${ index }` }
+                        >
+                            <Card.Content className="p-4">
+                                <GenericIcon
+                                    icon={ connector.icon }
+                                    size="micro"
+                                    floated="left"
+                                    shape="square"
+                                    className="theme-icon hover-rounded card-image"
+                                    inline
+                                    transparent
+                                />
+                                <Card.Header
+                                    textAlign="left"
+                                    className="card-header ellipsis pt-1"
+                                >
+                                    { connector.displayName ?? connector.name }
+                                </Card.Header>
+                                <Card.Description
+                                    className="card-description"
+                                >
+                                    { connector.description }
+                                </Card.Description>
+                            </Card.Content>
+                        </Card>
+                    ))
                 }
             </Card.Group>
         </Forms>

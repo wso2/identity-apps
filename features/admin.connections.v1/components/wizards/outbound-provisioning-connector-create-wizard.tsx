@@ -139,17 +139,17 @@ export const OutboundProvisioningConnectorCreateWizard:
 
                 const filteredConnectorList: OutboundProvisioningConnectorListItemInterface[]
                     = outboundProvisioningConnectorsList.filter(
-                        (connector: OutboundProvisioningConnectorListItemInterface) => {
-                            return connector.connectorId !== AuthenticatorManagementConstants
-                                .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID;
-                        });
+                        (connector: OutboundProvisioningConnectorListItemInterface) =>
+                            connector.connectorId !== AuthenticatorManagementConstants
+                                .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID
+                    );
 
                 return filteredConnectorList.map((connector: OutboundProvisioningConnectorListItemInterface) => {
                     const metadata: OutboundProvisioningConnectorMetaDataInterface
                         = getOutboundProvisioningConnectorsMetaData()
-                            .find((meta: OutboundProvisioningConnectorMetaDataInterface) => {
-                                return meta.connectorId === connector.connectorId;
-                            });
+                            .find((meta: OutboundProvisioningConnectorMetaDataInterface) =>
+                                meta.connectorId === connector.connectorId
+                            );
 
                     return {
                         ...connector,
