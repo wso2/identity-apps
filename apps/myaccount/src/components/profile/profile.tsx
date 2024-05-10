@@ -163,10 +163,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 } else {
                     onAlertFired({
                         description: t(
-                            "myAccount:sections.accountRecovery.preference.notifications.genericError.description"
+                            "myAccount:sections.verificationOnUpdate.preference.notifications.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("myAccount:sections.accountRecovery.preference.notifications.genericError.message")
+                        message: t(
+                            "myAccount:sections.verificationOnUpdate.preference.notifications.genericError.message"
+                        )
                     });
                 }
             })
@@ -174,11 +176,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
                         description: t(
-                            "myAccount:sections.accountRecovery.preference.notifications.error.description",
+                            "myAccount:sections.verificationOnUpdate.preference.notifications.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("myAccount:sections.accountRecovery.preference.notifications..error.message")
+                        message: t("myAccount:sections.verificationOnUpdate.preference.notifications..error.message")
                     });
 
                     return;
@@ -186,10 +188,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 onAlertFired({
                     description: t(
-                        "myAccount:sections.accountRecovery.preference.notifications.genericError.description"
+                        "myAccount:sections.verificationOnUpdate.preference.notifications.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: t("myAccount:sections.accountRecovery.preference.notifications.genericError.message")
+                    message: t("myAccount:sections.verificationOnUpdate.preference.notifications.genericError.message")
                 });
             });
     };
