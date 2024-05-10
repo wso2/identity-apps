@@ -4,11 +4,11 @@ name: PR Builder
 
 on:
   pull_request:
+    types: [ opened, synchronize, labeled ]
     branches: [ master ]
     paths-ignore:
       - "**.md"
       - "LICENSE"
-  workflow_dispatch:
 
 # Avoid running multiple builds for the same PR.
 concurrency:
@@ -21,6 +21,7 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -84,6 +85,7 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
+    if: ${{github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -142,7 +144,6 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
-    if: false
     needs: [ lint, typecheck ]
     runs-on: ubuntu-latest
     strategy:
@@ -190,9 +191,13 @@ jobs:
 
       - name: 🃏 Run Jest & Collect Coverage
         id: run-jest-test-and-coverage
-        run: pnpm test:unit:coverage
+        # TODO: Update the command to "test:unit:coverage" once the coverage command related issues
+        # are sorted out
+        run: pnpm test:unit
 
       - name: 🤖 Aggregate Test Coverage
+        # TODO: Enable this step once the coverage command related issues are fixed
+        if: false
         id: aggregate-coverage-reports
         run: |
           pnpm test:unit:coverage:aggregate
@@ -201,7 +206,7 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ typecheck ]
+    needs: [ test, typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:

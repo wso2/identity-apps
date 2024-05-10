@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,20 +17,20 @@
  */
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
-import { useRequiredScopes } from "@wso2is/access-control";
+import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { setI18nConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
 import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
+import useAuthorization from "@wso2is/features/admin.authorization.v1/hooks/use-authorization";
 import { EventPublisher, PreLoader } from "@wso2is/features/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/features/admin.core.v1/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/features/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
 import { history } from "@wso2is/features/admin.core.v1/helpers";
 import useResourceEndpoints from "@wso2is/features/admin.core.v1/hooks/use-resource-endpoints";
-import useRoutes from "@wso2is/features/admin.core.v1/hooks/use-routes";
 import {
     ConfigReducerStateInterface,
     DocumentationLinksInterface,
@@ -39,16 +39,13 @@ import {
 } from "@wso2is/features/admin.core.v1/models";
 import { AppState } from "@wso2is/features/admin.core.v1/store";
 import { commonConfig } from "@wso2is/features/admin.extensions.v1";
-import {
-    GovernanceCategoryForOrgsInterface,
-    useGovernanceConnectorCategories
-} from "@wso2is/features/admin.server-configurations.v1";
+import { useGetAllFeatures } from "@wso2is/features/admin.extensions.v1/components/feature-gate/api/feature-gate";
+import { featureGateConfig } from "@wso2is/features/admin.extensions.v1/configs/feature-gate";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
     DocumentationProvider,
-    GovernanceConnectorProvider,
     MediaContextProvider,
     NetworkErrorModal,
     SessionManagementProvider,
@@ -56,6 +53,7 @@ import {
 } from "@wso2is/react-components";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
+import set from "lodash-es/set";
 import * as moment from "moment";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -73,14 +71,15 @@ import "moment/locale/fr";
  * @returns App Root component.
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
+    const featureGateConfigUpdated : FeatureGateInterface = { ...featureGateConfig };
 
     const dispatch: Dispatch<any> = useDispatch();
 
-    const { filterRoutes } = useRoutes();
-
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently, getDecodedIDToken, signOut, state } = useAuthContext();
+    const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
+
+    const { legacyAuthzRuntime }  = useAuthorization();
 
     const { setResourceEndpoints } = useResourceEndpoints();
 
@@ -91,28 +90,18 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
-    const isFirstLevelOrg: boolean = useSelector(
-        (state: AppState) => state.organization.isFirstLevelOrganization
-    );
-    const featureConfig: FeatureConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features
-    );
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
-    const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
-    const [ governanceConnectors, setGovernanceConnectors ] = useState<GovernanceCategoryForOrgsInterface[]>([]);
-
-    const hasGovernanceConnectorsReadScope: boolean = useRequiredScopes(
-        featureConfig?.governanceConnectors?.scopes?.read);
+    const [ featureGateConfigData, setFeatureGateConfigData ] =
+        useState<FeatureGateInterface | null>(featureGateConfigUpdated);
 
     const {
-        data: originalConnectorCategories,
-        error: connectorCategoriesFetchRequestError
-    } = useGovernanceConnectorCategories(
-        featureConfig?.server?.enabled && isFirstLevelOrg &&
-        hasGovernanceConnectorsReadScope);
+        data: allFeatures,
+        error: featureGateAPIException
+    } = useGetAllFeatures();
 
     /**
      * Set the deployment configs in redux state.
@@ -230,22 +219,31 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     }, [ uuid ]);
 
     useEffect(() => {
-        if (!state.isAuthenticated) {
+        if (allFeatures instanceof IdentityAppsApiException || featureGateAPIException) {
             return;
         }
 
-        filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
-    }, [ filterRoutes, governanceConnectors, state.isAuthenticated, isFirstLevelOrg ]);
-
-    useEffect(() => {
-        if (!originalConnectorCategories ||
-            originalConnectorCategories instanceof IdentityAppsApiException ||
-            connectorCategoriesFetchRequestError) {
+        if (!allFeatures) {
             return;
         }
 
-        setGovernanceConnectors(originalConnectorCategories);
-    }, [ originalConnectorCategories ]);
+        if (allFeatures?.length > 0) {
+            allFeatures.forEach((feature: AllFeatureInterface )=> {
+                // converting the identifier to path.
+                const path: string = feature.featureIdentifier.replace(/-/g, ".");
+                // Obtain the status and set it to the feature gate config.
+                const featureStatusPath: string = `${ path }.status`;
+
+                set(featureGateConfigUpdated,featureStatusPath, feature.featureStatus);
+
+                const featureTagPath: string = `${ path }.tags`;
+
+                set(featureGateConfigUpdated,featureTagPath, feature.featureTags);
+
+                setFeatureGateConfigData(featureGateConfigUpdated);
+            });
+        }
+    }, [ allFeatures ]);
 
     /**
      * Set the value of Session Timed Out.
@@ -311,17 +309,22 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             });
     };
 
-    if (!routesFiltered || isEmpty(config?.deployment) || isEmpty(config?.endpoints)) {
+    if (isEmpty(config?.deployment) || isEmpty(config?.endpoints)) {
         return <PreLoader/>;
     }
 
     return (
         <Router history={ history }>
             <div className="container-fluid">
-                <GovernanceConnectorProvider connectorCategories={ governanceConnectors }>
-                    <DocumentationProvider<DocumentationLinksInterface> links={ DocumentationLinks }>
-                        <Suspense fallback={ <PreLoader /> }>
-                            <MediaContextProvider>
+                <DocumentationProvider<DocumentationLinksInterface> links={ DocumentationLinks }>
+                    <Suspense fallback={ <PreLoader /> }>
+                        <MediaContextProvider>
+                            <AccessControlProvider
+                                allowedScopes={ allowedScopes }
+                                features={ featureGateConfigData }
+                                isLegacyRuntimeEnabled={ legacyAuthzRuntime }
+                                organizationType={ organizationType }
+                            >
                                 <SessionManagementProvider
                                     onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                     onSessionLogout={ handleSessionLogout }
@@ -508,10 +511,10 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                         </Switch>
                                     </>
                                 </SessionManagementProvider>
-                            </MediaContextProvider>
-                        </Suspense>
-                    </DocumentationProvider>
-                </GovernanceConnectorProvider>
+                            </AccessControlProvider>
+                        </MediaContextProvider>
+                    </Suspense>
+                </DocumentationProvider>
             </div>
         </Router>
     );

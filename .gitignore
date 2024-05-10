@@ -118,10 +118,6 @@ identity-apps-core/apps/*/src/main/webapp/libs/themes
 identity-apps-core/apps/*/src/main/webapp/extensions/layouts
 identity-apps-core/apps/*/src/main/webapp/includes/layouts
 
-# Integration test module.
-tests/output/
-tests/dist/
-
 .classpath
 .settings
 .factorypath

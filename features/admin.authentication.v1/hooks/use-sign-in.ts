@@ -53,6 +53,7 @@ import {
     setOrganizationType,
     setUserOrganizationId
 } from "../../admin.core.v1/store/actions/organization";
+import { CONSUMER_USERSTORE } from "../../admin.extensions.v1/components/administrators/constants/users";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
 import useOrganizationSwitch from "../../admin.organizations.v1/hooks/use-organization-switch";
 import useOrganizations from "../../admin.organizations.v1/hooks/use-organizations";
@@ -131,7 +132,7 @@ const useSignIn = (): UseSignInInterface => {
         const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
             window["AppUtils"]?.getConfig()?.organizationName.length > 0;
 
-        if (!window["AppUtils"]?.getConfig()?.requireSuperTenantInUrls && isSuperTenant) {
+        if (!window["AppUtils"]?.getConfig()?.tenantContext?.requireSuperTenantInUrls && isSuperTenant) {
             // Removing super tenant from the server host.
             const customServerHostSplit: string[] = customServerHost?.split("/t/");
 
@@ -266,7 +267,7 @@ const useSignIn = (): UseSignInInterface => {
         let logoutRedirectUrl: string;
 
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
-        const isPrivilegedUser: boolean =
+        let isPrivilegedUser: boolean =
             idToken?.amr?.length > 0
                 ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
                 : false;
@@ -284,18 +285,40 @@ const useSignIn = (): UseSignInInterface => {
             || idToken.org_name === tenantDomainFromSubject
             || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
 
-        const tenantDomain: string = transformTenantDomain(orgName);
+        const tenantDomain: string = isFirstLevelOrg ? transformTenantDomain(orgName) : orgIdIdToken;
 
         const firstName: string = idToken?.given_name;
         const lastName: string = idToken?.family_name;
         const fullName: string = firstName ? firstName + (lastName ? " " + lastName : "") : response.email;
+
+        const __experimental__platformIdP: {
+            enabled: boolean;
+            homeRealmId: string;
+        } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
+        if (__experimental__platformIdP?.enabled) {
+            isPrivilegedUser = idToken?.sub?.startsWith(`${ CONSUMER_USERSTORE }/`);
+
+            if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
+                const redirectUrl: URL = new URL(
+                    window["AppUtils"].getConfig().clientOriginWithTenant.replace(
+                        window["AppUtils"].getConfig().tenant,
+                        idToken.default_tenant
+                    )
+                );
+
+                redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                window.location.href = redirectUrl.href;
+            }
+        }
 
         await dispatch(
             setSignIn<AuthenticatedUserInfo & TenantListInterface>(
                 Object.assign(
                     CommonAuthenticateUtils.getSignInState(
                         response,
-                        transformTenantDomain(response.orgName)
+                        tenantDomain
                     ), {
                         associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
                         defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
@@ -447,6 +470,52 @@ const useSignIn = (): UseSignInInterface => {
                 sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                 sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
 
+                let signOutRedirectURL: URL = null;
+
+                try {
+                    signOutRedirectURL = new URL(deriveLogoutRedirectForSubOrgLogins(
+                        logoutRedirectUrl,
+                        userOrganizationId,
+                        orgIdIdToken
+                    ));
+                } catch(e) {
+                    signOutRedirectURL = null;
+                }
+
+                // If the experimental Platform IdP is enabled and the user is not a privileged user,
+                // We need to append the `homeRealmId` of the platform IdP as a `fidp` query
+                // param to the post logout redirect URL.
+                if (__experimental__platformIdP?.enabled && !isPrivilegedUser) {
+                    if (!signOutRedirectURL) {
+                        signOutRedirectURL = new URL(window["AppUtils"]?.getConfig()?.logoutCallbackURL);
+                    }
+
+                    signOutRedirectURL.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                    // `updateConfig` doesn't seem to be updating the SDK config after initializing.
+                    // Hence the updated `signOutRedirectURL` is not taken for logout.
+                    // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/222
+                    // TODO: Remove this workaround once the above issue is fixed.
+                    Object.entries(sessionStorage).forEach(([ key, value ]: [ key: string, value: string ]) => {
+                        if (key.startsWith(LOGOUT_URL) && key.includes(window["AppUtils"]?.getConfig()?.clientID)) {
+                            const _signOutRedirectURL: URL = new URL(value);
+
+                            const postLogoutRedirectUri: URL = new URL(
+                                _signOutRedirectURL.searchParams.get("post_logout_redirect_uri")
+                            );
+
+                            postLogoutRedirectUri.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                            _signOutRedirectURL.searchParams.set(
+                                "post_logout_redirect_uri",
+                                postLogoutRedirectUri?.href
+                            );
+
+                            sessionStorage.setItem(key, _signOutRedirectURL.href);
+                        }
+                    });
+                }
+
                 updateConfig({
                     endpoints: {
                         authorizationEndpoint: authorizationEndpoint,
@@ -454,11 +523,7 @@ const useSignIn = (): UseSignInInterface => {
                         endSessionEndpoint: logoutUrl.split("?")[0],
                         tokenEndpoint: tokenEndpoint
                     },
-                    signOutRedirectURL: deriveLogoutRedirectForSubOrgLogins(
-                        logoutRedirectUrl,
-                        userOrganizationId,
-                        orgIdIdToken
-                    )
+                    signOutRedirectURL: signOutRedirectURL?.href
                 });
             })
             .catch((error: any) => {

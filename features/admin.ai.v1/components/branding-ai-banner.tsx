@@ -16,17 +16,25 @@
  * under the License.
  */
 
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import IconButton from "@oxygen-ui/react/IconButton";
+import TextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
+import { ChevronUpIcon } from "@oxygen-ui/react-icons";
 import {
     DocumentationLink,
-    GenericIcon
+    useDocumentation
 } from "@wso2is/react-components";
-import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Header, Icon, Input, Segment } from "semantic-ui-react";
 import { ReactComponent as AIIcon }
-    from "../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
+    from "../../themes/wso2is/assets/images/icons/solid-icons/ai-icon.svg";
+import AIBannerBackgroundWhite from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
+import AIBannerInputBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-input-background.svg";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
 import useGenerateAIBrandingPreference,
 { GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
@@ -39,8 +47,11 @@ import "./branding-ai-banner.scss";
 export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
+
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
     const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const { isGeneratingBranding } = useAIBrandingPreference();
     const generateAIBrandingPreference: GenerateAIBrandingPreferenceFunc = useGenerateAIBrandingPreference();
@@ -63,130 +74,198 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
      * Handles the click event of the generate button.
      */
     const handleGenerateClick = async () => {
+        setIsSubmitting(true);
         await generateAIBrandingPreference(websiteUrl);
-        setBannerState(BannerState.COLLAPSED);
+        setBannerState(BannerState.INPUT);
+        setIsSubmitting(false);
     };
 
-    return (
-        <>
-            {
-                isGeneratingBranding ? (
-                    null
-                )
-                    :
+    if (isGeneratingBranding) {
+        return null;
+    }
 
-                    (<div
-                        className={
-                            classNames(
-                                "branding-card",
-                                "branding-card-banner-full"
-                            )
-                        }>
+    if (bannerState === BannerState.FULL) {
+        return (
+            <Box
+                className="branding-ai-banner full"
+                style={ {
+                    backgroundImage: `url(${ AIBannerBackgroundWhite })`
+                } }
+            >
+                <div className="branding-ai-banner-text-container">
+                    <Typography
+                        as="h3"
+                        className="branding-ai-banner-heading"
+                    >
+                        { t("branding:ai.banner.full.heading") }
+                        <span className="branding-ai-text">
+                            { t("branding:ai.title") }
+                        </span>
+                        <AIIcon className="ai-icon"/>
+                        <Chip
+                            size="small"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
+                        />
+                    </Typography>
+                    <Typography className="branding-ai-banner-sub-heading">
+                        { t("branding:ai.banner.full.subHeading") }
+                    </Typography>
+                </div>
+                <Button
+                    onClick={ handleExpandClick }
+                    color="primary"
+                    variant="contained"
+                >
+                    { t("branding:ai.banner.full.button") }
+                </Button>
+            </Box>
+        );
+    }
 
-                        { bannerState === BannerState.FULL && (
-                            <Segment basic>
-                                <div className="branding-card-banner-full-heading">
-                                    <div>
-                                        <Header as="h3">{ t("branding:ai.banner.full.heading") }</Header>
-                                        <p>{ t("branding:ai.banner.full.subHeading") }</p>
-                                    </div>
-                                    <Button onClick={ handleExpandClick } color="secondary" variant="outlined">
-                                        <GenericIcon
-                                            icon={ AIIcon }
-                                            className="branding-card-banner-full-button"
-                                        />
-                                        { t("branding:ai.banner.full.button") }
-                                    </Button>
-                                </div>
-                            </Segment>
-                        ) }
-                        { bannerState === BannerState.INPUT && (
-                            <Segment>
-                                <div className="branding-card-banner-input">
-                                    <Icon
-                                        name="dropdown"
-                                        onClick={ handleCollapseClick }
-                                        className="branding-card-banner-input-icon"
+    if (bannerState === BannerState.INPUT) {
+        return (
+            <Box
+                className="branding-ai-banner-input"
+                style={ {
+                    backgroundImage: `url(${ AIBannerInputBackground })`
+                } }
+            >
+                <Box className="branding-ai-banner-input-heading-container">
+                    <Typography
+                        as="h3"
+                        className="branding-ai-banner-heading"
+                    >
+                        { t("branding:ai.banner.input.heading") }
+                        <span className="branding-ai-text">
+                            { t("branding:ai.title") }
+                        </span>
+                        <AIIcon className="ai-icon"/>
+                        <Chip
+                            size="small"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
+                        />
+                    </Typography>
+                    <IconButton
+                        onClick={ handleCollapseClick }
+                    >
+                        <ChevronUpIcon />
+                    </IconButton>
+                </Box>
+                <div className="branding-ai-banner-text-container">
+                    <Typography className="branding-ai-banner-sub-heading">
+                        { t("branding:ai.banner.input.subHeading") }
+                        <DocumentationLink
+                            link={ getLink("develop.branding.ai.learnMore") }
+                        >
+                            <Trans i18nKey={ "extensions:common.learnMore" }>
+                                Learn more
+                            </Trans>
+                        </DocumentationLink>
+                    </Typography>
+                </div>
+                <TextField
+                    name="loginFlowInput"
+                    className="branding-ai-input-field mt-5"
+                    placeholder={ t("branding:ai.banner.input.placeholder") }
+                    fullWidth
+                    inputProps={ {
+                        maxlength: 2048
+                    } }
+                    value={ websiteUrl }
+                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                        setWebsiteUrl(e?.target?.value) }
+                    onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
+                        // Handle the enter key press.
+                        if (e?.key === "Enter") {
+                            e?.preventDefault();
+                            handleGenerateClick();
+                        }
+                    } }
+                    InputProps={ {
+                        className: "branding-ai-input-field-inner",
+                        endAdornment: (
+                            !isSubmitting ? (
+                                <IconButton
+                                    className="branding-ai-input-button"
+                                    onClick={ () => handleGenerateClick() }
+                                    disabled={ !websiteUrl }
+                                >
+                                    <SendOutlinedIcon
+                                        className={
+                                            `branding-ai-input-button-icon ${ !websiteUrl ? "disabled" : "" }` }
                                     />
+                                </IconButton>
+                            ) : (
+                                <Box>
+                                    <CircularProgress color="primary" size={ 25 } className="mr-2 mt-1" />
+                                </Box>
+                            )
+                        )
+                    } }
+                />
+                <Box className="branding-ai-disclaimer">
+                    <Typography variant="caption">
+                        { t("branding:ai.disclaimer") }
+                        <DocumentationLink
+                            link={ getLink("common.termsOfService") }
+                        >
+                            { t("branding:ai.termsAndConditions") }
+                        </DocumentationLink>
+                    </Typography>
+                </Box>
+            </Box>
+        );
+    }
 
-                                    <div className="branding-card-banner-input-content">
-                                        <div>
-                                            <Header as="h3" className="branding-card-banner-input-heading">
-                                                { t("branding:ai.banner.input.heading") }
-                                            </Header>
-                                            <p>{ t("branding:ai.banner.input.subHeading") }
-                                                <DocumentationLink
-                                                    link={ "develop.ai.branding.learnMore" }
-                                                    isLinkRef = { true }
-                                                >
-                                                    <Trans
-                                                        i18nKey={ "extensions:common.learnMore" }
-                                                    >
-                                                        { t("extensions:common.learnMore") }
-                                                    </Trans>
-                                                </DocumentationLink>
-                                            </p>
-                                        </div>
-                                        <div className="branding-card-banner-input-actions">
-                                            <Input
-                                                className="branding-input-field"
-                                                placeholder={ t("branding:ai.banner.input.placeholder") }
-                                                value={ websiteUrl }
-                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                                    setWebsiteUrl(e.target.value) }
-                                            />
-                                            <Button
-                                                onClick={ handleGenerateClick }
-                                                color="secondary"
-                                                variant="outlined"
-                                                className="branding-card-banner-input-button"
-                                            >
-                                                <GenericIcon
-                                                    className="branding-card-banner-input-button-icon"
-                                                    icon={ AIIcon }
-                                                />
-                                                { t("branding:ai.banner.input.button") }
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Segment>
-                        ) }
-                        { bannerState === BannerState.COLLAPSED && (
-                            <Segment>
-                                <div className="branding-card-banner-collapsed">
-                                    <div>
-                                        <Header as="h3" className="branding-card-banner-collapsed-heading">
-                                            { t("branding:ai.banner.input.heading") }</Header>
-                                        <p>{ t("branding:ai.banner.collapsed.subHeading") }
-                                            <DocumentationLink
-                                                link={ "develop.applications.editApplication.asgardeoTryitApplication" +
-                                                        ".general.learnMore" }
-                                                isLinkRef
-                                            >
-                                                <Trans
-                                                    i18nKey={ "extensions:common.learnMore" }
-                                                >
-                                                    Learn More
-                                                </Trans>
-                                            </DocumentationLink>
-                                        </p>
-                                    </div>
-                                    <Button
-                                        onClick={ () => setBannerState(BannerState.INPUT) }
-                                        color="secondary"
-                                        variant="outlined"
-                                    >
-                                        <GenericIcon
-                                            className="branding-card-banner-collapsed-button"
-                                            icon={ AIIcon }
-                                        />
-                                        { t("branding:ai.banner.collapsed.button") }
-                                    </Button>
-                                </div>
-                            </Segment>
-                        ) }
-                    </div>)
-            }
-        </>
-    );};
+    if (bannerState === BannerState.COLLAPSED) {
+        return (
+            <Box
+                className="branding-ai-banner collapsed"
+                style={ {
+                    backgroundImage: `url(${ AIBannerBackgroundWhite })`
+                } }
+            >
+                <Box className="branding-ai-banner-button-container">
+                    <div className="branding-ai-banner-text-container">
+                        <Typography
+                            as="h3"
+                            className="branding-ai-banner-heading"
+                        >
+                            { t("branding:ai.banner.input.heading") }
+                            <span className="branding-ai-text">
+                                { t("branding:ai.title") }
+                            </span>
+                            <AIIcon className="ai-icon"/>
+                            <Chip
+                                size="small"
+                                label={ t("common:beta").toUpperCase() }
+                                className="oxygen-chip-beta mb-1 ml-2"
+                            />
+                        </Typography>
+                        <Typography className="branding-ai-banner-sub-heading">
+                            { t("branding:ai.banner.collapsed.subHeading") }
+                            <DocumentationLink
+                                link={ getLink("develop.branding.ai.learnMore") }
+                            >
+                                <Trans i18nKey={ "extensions:common.learnMore" }>
+                                    Learn more
+                                </Trans>
+                            </DocumentationLink>
+                        </Typography>
+                    </div>
+                    <Button
+                        onClick={ handleExpandClick }
+                        color="primary"
+                        variant="contained"
+                    >
+                        { t("branding:ai.banner.collapsed.button") }
+                    </Button>
+                </Box>
+            </Box>
+        );
+    }
+
+    return null;
+};

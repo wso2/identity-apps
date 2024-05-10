@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -79,6 +79,7 @@
     String sp = Encode.forJava(request.getParameter("sp"));
     String userStoreDomain = request.getParameter(USERSTORE_DOMAIN);
     String type = request.getParameter("type");
+    String orgId = request.getParameter("orgid");
     String username = null;
     String tenantAwareUsername = null;
     String applicationName = null;
@@ -123,6 +124,8 @@
                     applicationName);
             applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
                     applicationAccessURLWithoutEncoding, userTenantDomain);
+            applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.getOrganizationIdHintReplacedURL(
+                    applicationAccessURLWithoutEncoding, orgId);
         } catch (ApplicationDataRetrievalClientException e) {
             // Ignored and fallback to login page url.
         }

@@ -30,6 +30,7 @@ import { getConsoleSettingsResourceEndpoints } from "../../admin.console-setting
 import { getEmailTemplatesResourceEndpoints } from "../../admin.email-templates.v1";
 import { getFeatureGateResourceEndpoints } from "../../admin.extensions.v1/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "../../admin.extensions.v1/configs/endpoints";
+import { getExtendedFeatureResourceEndpointsV2 } from "../../admin.extensions.v2/config/endpoints";
 import { getGroupsResourceEndpoints } from "../../admin.groups.v1";
 import { getIDPResourceEndpoints } from "../../admin.identity-providers.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "../../admin.identity-verification-providers.v1";
@@ -81,8 +82,10 @@ export class Config {
             }
         }
 
-        if (skipAuthzRuntimePath) {
-            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant?.replace("/o", "");
+        const serverOriginWithTenant: string = window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
+
+        if (skipAuthzRuntimePath && serverOriginWithTenant?.slice(-2) === "/o") {
+            return serverOriginWithTenant.substring(0,serverOriginWithTenant.lastIndexOf("/o"));
         }
 
         return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
@@ -113,6 +116,7 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
+            __experimental__platformIdP: window[ "AppUtils" ]?.getConfig()?.__experimental__platformIdP,
             accountApp: window[ "AppUtils" ]?.getConfig()?.accountApp,
             adminApp: window[ "AppUtils" ]?.getConfig()?.adminApp,
             allowMultipleAppProtocols: window[ "AppUtils" ]?.getConfig()?.allowMultipleAppProtocols,
@@ -124,6 +128,7 @@ export class Config {
             clientHost: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             clientID: window[ "AppUtils" ]?.getConfig()?.clientID,
             clientOrigin: window[ "AppUtils" ]?.getConfig()?.clientOrigin,
+            clientOriginWithTenant: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             customServerHost: window[ "AppUtils" ]?.getConfig()?.customServerHost,
             developerApp: window[ "AppUtils" ]?.getConfig()?.developerApp,
             docSiteURL: window[ "AppUtils" ]?.getConfig()?.docSiteUrl,
@@ -282,6 +287,7 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
+            ...getExtendedFeatureResourceEndpointsV2(this.resolveServerHost()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),

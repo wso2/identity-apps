@@ -16,14 +16,16 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/features/admin.core.v1/store";
+
 /**
- * @fileoverview Mocks the Redux store state.
+ * Mocks the Redux store state.
  *
  * @remarks If you add new attributes to the reducers, you will need to add them to this file.
  */
 
 /* eslint-disable sort-keys, max-len */
-const ReduxStoreStateMock = {
+const ReduxStoreStateMock: AppState = {
     accessControl: {
         isDevelopAllowed: true,
         isManageAllowed: true

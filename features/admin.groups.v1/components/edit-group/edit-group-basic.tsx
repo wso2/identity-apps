@@ -37,6 +37,7 @@ import {
     UserStoreProperty,
     history
 } from "../../../admin.core.v1";
+import { userstoresConfig } from "../../../admin.extensions.v1";
 import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
 import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
 
@@ -101,7 +102,8 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
     useEffect(() => {
         if (groupObject && groupObject.displayName.indexOf("/") !== -1) {
             setNameValue(groupObject.displayName.split("/")[1]);
-            setLableText(groupObject.displayName.split("/")[0]);
+            setLableText(groupObject.displayName.split("/")[0] === userstoresConfig.primaryUserstoreName
+                ? "" : groupObject.displayName.split("/")[0]);
         } else if (groupObject) {
             setNameValue(groupObject.displayName);
         }

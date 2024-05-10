@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -58,6 +58,7 @@
     String callback = request.getParameter("callback");
     String sp = Encode.forJava(request.getParameter("sp"));
     String spAccessUrl = "";
+    String orgId = request.getParameter("orgid");
     if (StringUtils.isBlank(callback)) {
         callback = request.getParameter("redirect_uri");
     }
@@ -144,6 +145,7 @@
         request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
         request.setAttribute("passwordExpired", passwordExpired);
         request.setAttribute("sp", sp);
+        request.setAttribute("orgid", orgId);
         request.getRequestDispatcher("passwordreset.do").forward(request, response);
     } else {
         request.setAttribute("error", true);

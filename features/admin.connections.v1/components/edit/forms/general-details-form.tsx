@@ -24,8 +24,8 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../admin.extensions.v1";
 import { AppState, ConfigReducerStateInterface } from "../../../../admin.core.v1";
+import { identityProviderConfig } from "../../../../admin.extensions.v1";
 import { IdentityProviderManagementConstants } from "../../../../admin.identity-providers.v1/constants";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
@@ -305,7 +305,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     />
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
-                            templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
+                            templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                            || templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview window.document Mocks.
+ * window.document Mocks.
  *
  * @remarks If you had to mock a certain document object,
  * document the reason and any references clearly in this file.
@@ -28,7 +28,7 @@
  * @see {@link https://github.com/jsdom/jsdom/issues/3002}
  */
 document.createRange = () => {
-    const range = new Range();
+    const range: Range = new Range();
 
     range.getBoundingClientRect = jest.fn();
 

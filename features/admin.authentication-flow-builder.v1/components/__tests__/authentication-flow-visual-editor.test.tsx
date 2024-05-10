@@ -19,6 +19,7 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
+import UserPreferenceProvider from "../../../admin.core.v1/providers/user-preferences-provider";
 import { render, screen } from "../../../test-configs/utils";
 import AuthenticationFlowVisualEditor, {
     AuthenticationFlowVisualEditorPropsInterface
@@ -31,7 +32,11 @@ describe("AuthenticationFlowVisualEditor", () => {
     };
 
     it("renders the AuthenticationFlowVisualEditor component", () => {
-        render(<AuthenticationFlowVisualEditor { ...defaultProps } />, { allowedScopes: fullPermissions });
+        render(
+            <UserPreferenceProvider>
+                <AuthenticationFlowVisualEditor { ...defaultProps } />
+            </UserPreferenceProvider>
+            , { allowedScopes: fullPermissions });
 
         const authenticationFlowVisualEditor: Element = screen.getByTestId("authentication-flow-visual-editor");
 

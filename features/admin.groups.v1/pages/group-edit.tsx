@@ -22,6 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
+import { userstoresConfig } from "../../admin.extensions.v1";
 import { getGroupById } from "../api";
 import { EditGroup } from "../components";
 import { GroupsInterface } from "../models";
@@ -72,13 +73,22 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
         history.push(AppConstants.getPaths().get("GROUPS"));
     };
 
+    const resolveGroupName = (): string => {
+        if (group && group.displayName.indexOf("/") !== -1) {
+            return group.displayName.split("/")[0] === userstoresConfig.primaryUserstoreName
+                ? group.displayName.split("/")[1] : group.displayName;
+        } else if (group) {
+            return group.displayName;
+        }
+    };
+
     return (
         <GroupManagementProvider>
             <TabPageLayout
                 isLoading={ isGroupDetailsRequestLoading }
                 title={
                     group && group.displayName ?
-                        group.displayName :
+                        resolveGroupName() :
                         t("pages:rolesEdit.title")
                 }
                 pageTitle={ t("pages:rolesEdit.title") }

@@ -12,9 +12,8 @@
         "identity-apps-core": "identity-apps-core",
         "myaccount": "apps/myaccount",
         "react-components": "modules/react-components",
-        "tests": "tests",
         "theme": "modules/theme",
         "validation": "modules/validation",
-        "features": "features"    
+        "features": "features"
     }
 }

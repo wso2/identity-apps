@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { PlusIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
@@ -30,6 +29,7 @@ import Paper from "@oxygen-ui/react/Paper";
 import Radio from "@oxygen-ui/react/Radio";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     ChangeEvent,
@@ -55,12 +55,14 @@ import {
     AuthenticationSequenceInterface,
     AuthenticatorInterface
 } from "../../../../admin.applications.v1/models/application";
+import { AuthenticatorManagementConstants } from "../../../../admin.connections.v1";
 import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
 import {
     IdentityProviderManagementConstants
 } from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
 import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { OrganizationUtils } from "../../../../admin.organizations.v1/utils/organization";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
 
@@ -278,6 +280,10 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
             authenticator = authenticators.find(
                 (item: GenericAuthenticatorInterface) => item.defaultAuthenticator.name === option.authenticator
+            );
+        } else if (option?.authenticator === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME) {
+            authenticator = authenticators?.find((item: GenericAuthenticatorInterface) =>
+                item?.id === OrganizationUtils.getOrganizationAuthenticator().id
             );
         } else {
             authenticator = authenticators.find((item: GenericAuthenticatorInterface) => item.idp === option.idp);

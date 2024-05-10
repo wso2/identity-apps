@@ -49,8 +49,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
-import { userstoresConfig } from "../../admin.extensions.v1";
-import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -64,6 +62,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
+import { userstoresConfig } from "../../admin.extensions.v1";
+import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -554,6 +554,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         } else {
             setSelectedUserStore(data.value as string);
         }
+        setListOffset(0);
     };
 
     const onUserDelete = (): void => {
@@ -684,7 +685,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         />) : null
                 }
                 showPagination={ true }
-                totalPages={ Math.ceil(usersList?.totalResults / listItemLimit) }
+                totalPages={ resolveTotalPages() }
                 totalListSize={ usersList?.totalResults }
                 paginationOptions={ {
                     disableNextButton: !isNextPageAvailable
@@ -742,7 +743,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             });
         }
         if (isSubOrganization() &&
-            featureConfig?.guestUser?.enabled &&
+            featureConfig?.parentUserInvitation?.enabled &&
             hasRequiredScopes(featureConfig?.guestUser, featureConfig?.guestUser?.scopes?.create, allowedScopes)) {
             dropDownOptions.push({
                 "data-componentid": `${componentId}-invite-parent-user`,
@@ -826,11 +827,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             render: renderUsersList
         });
 
-        panes.push({
-            componentId: "invitations",
-            menuItem: t("parentOrgInvitations:tab.invitationsTab"),
-            render: renderInvitationsList
-        });
+        if (featureConfig?.parentUserInvitation?.enabled) {
+            panes.push({
+                componentId: "invitations",
+                menuItem: t("parentOrgInvitations:tab.invitationsTab"),
+                render: renderInvitationsList
+            });
+        }
 
         return panes;
     };

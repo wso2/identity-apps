@@ -19,16 +19,23 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
+import UserPreferenceProvider from "../../../../admin.core.v1/providers/user-preferences-provider";
 import { render, screen } from "../../../../test-configs/utils";
 import AdaptiveScriptResetConfirmationModal, {
     AdaptiveScriptResetConfirmationModalPropsInterface
 } from "../adaptive-script-reset-confirmation-modal";
 
 describe("AdaptiveScriptResetConfirmationModal", () => {
-    const defaultProps: AdaptiveScriptResetConfirmationModalPropsInterface = {};
+    const defaultProps: AdaptiveScriptResetConfirmationModalPropsInterface = {
+        open: true
+    };
 
     it("renders the AdaptiveScriptResetConfirmationModal component", () => {
-        render(<AdaptiveScriptResetConfirmationModal { ...defaultProps } />, { allowedScopes: fullPermissions });
+        render(
+            <UserPreferenceProvider>
+                <AdaptiveScriptResetConfirmationModal { ...defaultProps } />
+            </UserPreferenceProvider>
+            , { allowedScopes: fullPermissions });
 
         const adaptiveScriptResetConfirmationModal: Element =
             screen.getByTestId("adaptive-script-reset-confirmation-modal");

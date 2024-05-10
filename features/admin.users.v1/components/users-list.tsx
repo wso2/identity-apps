@@ -52,7 +52,6 @@ import {
 import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
 import { userConfig } from "../../admin.extensions.v1/configs/user";
 import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { RealmConfigInterface } from "../../admin.server-configurations.v1";
 import { deleteUser } from "../api";
 import { UserManagementConstants } from "../constants";
@@ -151,7 +150,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         onColumnSelectionChange,
         onListItemClick,
         onSearchQueryClear,
-        realmConfigs,
         searchQuery,
         selection,
         showListItemActions,
@@ -165,14 +163,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
+    const isAuthUserPrivileged: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const handleUserEdit = (userId: string) => {
         history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));
@@ -253,6 +250,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     const renderUserIdp = (user: UserBasicInterface): string => {
+        if (user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg) {
+            return UserManagementConstants.MANAGED_BY_PARENT_TEXT;
+        }
+
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]?.toUpperCase()
             : userstoresConfig.primaryUserstoreName;
@@ -313,12 +314,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 <div>
                                     { header as ReactNode }
                                     {
-                                        user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg && (
-                                            <Label size="mini" className="client-id-label">
-                                                { t("parentOrgInvitations:" +
-                                                "invitedUserLabel") }
-                                            </Label>
-                                        )
+                                        userConfig?.disableManagedByColumn
+                                            && user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg
+                                            && (
+                                                <Label size="mini" className="client-id-label">
+                                                    { t("parentOrgInvitations:invitedUserLabel") }
+                                                </Label>
+                                            )
                                     }
                                 </div>
                                 {
@@ -483,8 +485,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || (getUserNameWithoutDomain(user?.userName) === realmConfigs?.adminUser && !isSubOrganization())
-                    || authenticatedUser === getUserNameWithoutDomain(user?.userName);
+                    || authenticatedUser === getUserNameWithoutDomain(user?.userName) && isAuthUserPrivileged;
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {

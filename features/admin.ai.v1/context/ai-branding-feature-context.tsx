@@ -60,6 +60,11 @@ export interface AIBrandingFeatureContextProps {
      * @param id - Operation ID.
      */
     setOperationId: (id: string) => void;
+    /**
+     * Set the merged branding preference.
+     * @param preference - Branding preference to be set.
+     */
+    setMergedBrandingPreference: (preference: BrandingPreferenceInterface) => void;
 }
 
 /**

@@ -181,4 +181,4 @@ jobs:
               working-directory: .github/workflows
               run: |
                   PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
-                  bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }}
+                  bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }} ${{ env.IS_HOTFIX }}

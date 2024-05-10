@@ -31,8 +31,8 @@ import React, { ReactElement, useEffect, useState } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { AsgardeoTheme } from "./branding/theme";
 import { ProtectedApp } from "./protected-app";
+import Theme from "./theme";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
@@ -68,7 +68,7 @@ const RootWithConfig = (): ReactElement => {
             } }
         >
             <AppSettingsProvider>
-                <ThemeProvider theme={ AsgardeoTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
+                <ThemeProvider theme={ Theme } defaultMode="light" modeStorageKey="console-oxygen-mode">
                     <Provider store={ store }>
                         <UserPreferencesProvider<UserPreferencesInterface>>
                             <BrowserRouter>
@@ -96,4 +96,5 @@ const rootElement: HTMLElement = document.getElementById("root");
 
 // Moved back to the legacy mode due to unpredictable state update issue.
 // Tracked here: https://github.com/wso2/product-is/issues/14912
+// eslint-disable-next-line react/no-deprecated
 ReactDOM.render(<RootWithConfig />, rootElement);

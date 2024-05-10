@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import useBrandingPreference from "features/admin.branding.v1/hooks/use-branding-preference";
-import { BrandingPreferenceInterface } from "features/admin.branding.v1/models";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import isObject from "lodash-es/isObject";
@@ -30,6 +30,12 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import useBrandingPreference from "../../admin.branding.v1/hooks/use-branding-preference";
+import { BrandingPreferenceInterface } from "../../admin.branding.v1/models";
+import { BrandingPreferenceUtils } from "../../admin.branding.v1/utils";
 import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
 import AIFeatureContext from "../context/ai-branding-feature-context";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
@@ -47,13 +53,18 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
 ): ReactElement => {
 
     const { children } = props;
+    const { t } = useTranslation();
 
-    const { preference } = useBrandingPreference();
-
+    const dispatch: Dispatch<any> = useDispatch();
     const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
     const [ operationId, setOperationId ] = useState<string>();
     const [ brandingGenerationCompleted, setBrandingGenerationCompleted ] = useState(false);
+
+    const { preference } = useBrandingPreference();
+
+    const brandingPreference: BrandingPreferenceInterface = preference?.preference ??
+        BrandingPreferenceUtils.getDefaultBrandingPreference();
 
     /**
      * Removes empty keys from an object.
@@ -94,6 +105,20 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
      */
     const handleGenerate = (data: BrandingGenerationResultAPIResponseInterface) => {
 
+
+        if (data.status !== "COMPLETED" || !data.data) {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("branding:ai.notifications.generateError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("branding:ai.notifications.generateError.message")
+                }));
+            setBrandingGenerationCompleted(false);
+            setGeneratingBranding(false);
+
+            return;
+        }
+
         const newBrandingPreference: BrandingPreferenceInterface = getMergedBrandingPreference(data.data);
 
         setMergedBrandingPreference(newBrandingPreference);
@@ -113,9 +138,9 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
         const { theme } = removeEmptyKeys(data);
         const { activeTheme, LIGHT, DARK } = theme;
 
-        const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(preference.preference), {
+        const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(brandingPreference), {
             theme: {
-                ...preference.preference.theme,
+                ...brandingPreference.theme,
                 DARK: DARK,
                 LIGHT: LIGHT,
                 activeTheme: activeTheme
@@ -135,6 +160,7 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
                 operationId,
                 setBrandingGenerationCompleted,
                 setGeneratingBranding,
+                setMergedBrandingPreference,
                 setOperationId
             } }
         >

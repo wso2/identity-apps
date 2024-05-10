@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Mocks of Global objects.
+ * Mocks of Global objects.
  *
  * @remarks If you had to mock a certain global object,
  * document the reason and any references clearly in this file.

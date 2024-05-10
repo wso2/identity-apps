@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -45,6 +45,7 @@
     String username = request.getParameter("username");
     String userStoreDomain = request.getParameter("userstoredomain");
     String type = request.getParameter("type");
+    String orgId = request.getParameter("orgid");
     String spId = request.getParameter("spId");
     String sp = Encode.forJava(request.getParameter("sp"));
     boolean passwordExpired = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("passwordExpired"));
@@ -247,6 +248,13 @@
                             %>
                             <div>
                                 <input type="hidden" name="type" value="<%=Encode.forHtmlAttribute(type) %>"/>
+                            </div>
+                            <%
+                                }
+                                if (StringUtils.isNotBlank(orgId)) {
+                            %>
+                            <div>
+                                <input type="hidden" name="orgid" value="<%=Encode.forHtmlAttribute(orgId) %>"/>
                             </div>
                             <%
                                 }
