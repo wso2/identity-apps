@@ -93,9 +93,7 @@
                 }
             },
             "personalInfo": {
-                "disabledFeatures": [
-                    "profileInfo.mobileVerification"
-                ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "create": [],
