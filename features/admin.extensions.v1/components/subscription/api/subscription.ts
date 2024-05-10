@@ -17,13 +17,13 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { OrganizationType } from "features/admin.organizations.v1/constants";
 import { Config, store } from "../../../../admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "../../../../admin.core.v1/hooks/use-request";
+import { OrganizationType } from "../../../../admin.organizations.v1/constants";
 import { getDomainQueryParam } from "../../tenants/api/tenants";
 import { getTenantResourceEndpoints } from "../../tenants/configs";
 import { TenantTierRequestResponse } from "../models/subscription";

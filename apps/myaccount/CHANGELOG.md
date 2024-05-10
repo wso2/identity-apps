@@ -1,5 +1,48 @@
 # @wso2is/myaccount
 
+## 2.5.87
+
+### Patch Changes
+
+- [#6196](https://github.com/wso2/identity-apps/pull/6196) [`1dae0ff06f97c2e04526b1aaa77d5cd144271718`](https://github.com/wso2/identity-apps/commit/1dae0ff06f97c2e04526b1aaa77d5cd144271718) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix myaccount redirecting to non-tenanted path on privileged user SLO
+
+## 2.5.86
+
+### Patch Changes
+
+- Updated dependencies [[`0bc46b679cb17b58e93a2896f1a4a12437d7b975`](https://github.com/wso2/identity-apps/commit/0bc46b679cb17b58e93a2896f1a4a12437d7b975), [`35beeca02117863c7f0e362d0539b8319ab2d2a0`](https://github.com/wso2/identity-apps/commit/35beeca02117863c7f0e362d0539b8319ab2d2a0)]:
+  - @wso2is/features@2.17.5
+
+## 2.5.85
+
+### Patch Changes
+
+- Updated dependencies [[`9c1fcee2598632c01e2b4cdee15e38a36b24e62f`](https://github.com/wso2/identity-apps/commit/9c1fcee2598632c01e2b4cdee15e38a36b24e62f)]:
+  - @wso2is/features@2.17.4
+
+## 2.5.84
+
+### Patch Changes
+
+- Updated dependencies [[`4bcb6efd50e85a3e5b7b045e8f16d0c43aa98f9a`](https://github.com/wso2/identity-apps/commit/4bcb6efd50e85a3e5b7b045e8f16d0c43aa98f9a), [`53c2ce76e7875421529bc58a9b117dbe92bae057`](https://github.com/wso2/identity-apps/commit/53c2ce76e7875421529bc58a9b117dbe92bae057)]:
+  - @wso2is/features@2.17.3
+
+## 2.5.83
+
+### Patch Changes
+
+- Updated dependencies [[`1161a8b83249f2a4b2074fa6e9f9462556184f75`](https://github.com/wso2/identity-apps/commit/1161a8b83249f2a4b2074fa6e9f9462556184f75)]:
+  - @wso2is/features@2.17.2
+
+## 2.5.82
+
+### Patch Changes
+
+- [#6213](https://github.com/wso2/identity-apps/pull/6213) [`c7d98e3dce516f9b5c4d6e8f7b4b464600513584`](https://github.com/wso2/identity-apps/commit/c7d98e3dce516f9b5c4d6e8f7b4b464600513584) Thanks [@brionmario](https://github.com/brionmario)! - [Temp] Revert https://github.com/wso2/identity-apps/pull/6183/files
+
+- Updated dependencies [[`c6727a6a0b18f3f8e440ce1e3c9218df5d407476`](https://github.com/wso2/identity-apps/commit/c6727a6a0b18f3f8e440ce1e3c9218df5d407476), [`c7d98e3dce516f9b5c4d6e8f7b4b464600513584`](https://github.com/wso2/identity-apps/commit/c7d98e3dce516f9b5c4d6e8f7b4b464600513584)]:
+  - @wso2is/features@2.17.1
+
 ## 2.5.81
 
 ### Patch Changes

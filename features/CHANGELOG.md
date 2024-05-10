@@ -1,5 +1,41 @@
 # @wso2is/features
 
+## 2.17.5
+
+### Patch Changes
+
+- [#6221](https://github.com/wso2/identity-apps/pull/6221) [`0bc46b679cb17b58e93a2896f1a4a12437d7b975`](https://github.com/wso2/identity-apps/commit/0bc46b679cb17b58e93a2896f1a4a12437d7b975) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show the groups page based on the availability of application roles
+
+* [#6222](https://github.com/wso2/identity-apps/pull/6222) [`35beeca02117863c7f0e362d0539b8319ab2d2a0`](https://github.com/wso2/identity-apps/commit/35beeca02117863c7f0e362d0539b8319ab2d2a0) Thanks [@brionmario](https://github.com/brionmario)! - Fix circular dependency in My Account
+
+## 2.17.4
+
+### Patch Changes
+
+- [#6218](https://github.com/wso2/identity-apps/pull/6218) [`9c1fcee2598632c01e2b4cdee15e38a36b24e62f`](https://github.com/wso2/identity-apps/commit/9c1fcee2598632c01e2b4cdee15e38a36b24e62f) Thanks [@brionmario](https://github.com/brionmario)! - Fix Typo
+
+## 2.17.3
+
+### Patch Changes
+
+- [#6202](https://github.com/wso2/identity-apps/pull/6202) [`4bcb6efd50e85a3e5b7b045e8f16d0c43aa98f9a`](https://github.com/wso2/identity-apps/commit/4bcb6efd50e85a3e5b7b045e8f16d0c43aa98f9a) Thanks [@brionmario](https://github.com/brionmario)! - Add RBAC support to application roles
+
+* [#6168](https://github.com/wso2/identity-apps/pull/6168) [`53c2ce76e7875421529bc58a9b117dbe92bae057`](https://github.com/wso2/identity-apps/commit/53c2ce76e7875421529bc58a9b117dbe92bae057) Thanks [@brionmario](https://github.com/brionmario)! - Add support to disable management apps
+
+## 2.17.2
+
+### Patch Changes
+
+- [#6210](https://github.com/wso2/identity-apps/pull/6210) [`1161a8b83249f2a4b2074fa6e9f9462556184f75`](https://github.com/wso2/identity-apps/commit/1161a8b83249f2a4b2074fa6e9f9462556184f75) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Fix error during user fetch
+
+## 2.17.1
+
+### Patch Changes
+
+- [#6144](https://github.com/wso2/identity-apps/pull/6144) [`c6727a6a0b18f3f8e440ce1e3c9218df5d407476`](https://github.com/wso2/identity-apps/commit/c6727a6a0b18f3f8e440ce1e3c9218df5d407476) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Handle exceptions thrown in the network request for getting all authenticators
+
+* [#6213](https://github.com/wso2/identity-apps/pull/6213) [`c7d98e3dce516f9b5c4d6e8f7b4b464600513584`](https://github.com/wso2/identity-apps/commit/c7d98e3dce516f9b5c4d6e8f7b4b464600513584) Thanks [@brionmario](https://github.com/brionmario)! - [Temp] Revert https://github.com/wso2/identity-apps/pull/6183/files
+
 ## 2.17.0
 
 ### Minor Changes

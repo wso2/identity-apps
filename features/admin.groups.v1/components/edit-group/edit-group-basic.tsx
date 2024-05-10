@@ -24,7 +24,6 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import { userstoresConfig } from "features/admin.extensions.v1";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -38,6 +37,7 @@ import {
     UserStoreProperty,
     history
 } from "../../../admin.core.v1";
+import { userstoresConfig } from "../../../admin.extensions.v1";
 import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
 import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
 
