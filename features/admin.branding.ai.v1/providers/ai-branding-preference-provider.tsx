@@ -18,8 +18,6 @@
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import useBrandingPreference from "features/admin.branding.v1/hooks/use-branding-preference";
-import { BrandingPreferenceInterface } from "features/admin.branding.v1/models";
 import { AppState } from "features/admin.core.v1/store";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
@@ -37,6 +35,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AI_BRANDING_FEATURE_ID } from "../../admin.branding.v1/constants/ai-branding-constants";
+import useBrandingPreference from "../../admin.branding.v1/hooks/use-branding-preference";
+import { BrandingPreferenceInterface } from "../../admin.branding.v1/models";
 import { BrandingPreferenceUtils } from "../../admin.branding.v1/utils";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";

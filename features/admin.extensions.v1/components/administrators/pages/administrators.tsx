@@ -35,7 +35,6 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import { RoleAudienceTypes } from "features/admin.roles.v2/constants";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
@@ -70,6 +69,7 @@ import {
     useOrganizationConfigV2
 } from "../../../../admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
 import { getRoleById, searchRoleList } from "../../../../admin.roles.v2/api/roles";
+import { RoleAudienceTypes } from "../../../../admin.roles.v2/constants";
 import { RolesV2Interface, SearchRoleInterface } from "../../../../admin.roles.v2/models/roles";
 import { useServerConfigs } from "../../../../admin.server-configurations.v1";
 import { useInvitedUsersList, useUsersList } from "../../../../admin.users.v1/api";

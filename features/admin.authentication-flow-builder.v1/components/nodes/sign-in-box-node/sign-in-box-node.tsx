@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { PlusIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
@@ -30,6 +29,7 @@ import Paper from "@oxygen-ui/react/Paper";
 import Radio from "@oxygen-ui/react/Radio";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     ChangeEvent,
@@ -61,8 +61,8 @@ import {
     IdentityProviderManagementConstants
 } from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
-import { OrganizationManagementConstants } from "../../../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { OrganizationUtils } from "../../../../admin.organizations.v1/utils/organization";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
 
@@ -283,7 +283,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         } else if (option?.authenticator === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME) {
             authenticator = authenticators?.find((item: GenericAuthenticatorInterface) =>
-                item?.id === OrganizationManagementConstants.ORGANIZATION_AUTHENTICATOR.id
+                item?.id === OrganizationUtils.getOrganizationAuthenticator().id
             );
         } else {
             authenticator = authenticators.find((item: GenericAuthenticatorInterface) => item.idp === option.idp);
