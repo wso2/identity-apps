@@ -178,8 +178,8 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
                         const systemRolesFilteredRolesList: RolesV2Interface[] =
                             isEditingSystemRolesAllowed
-                                ? response?.data?.Resources?.filter((role: RolesV2Interface) => !role.meta.systemRole)
-                                : response?.data?.Resources;
+                                ? response?.data?.Resources
+                                : response?.data?.Resources?.filter((role: RolesV2Interface) => !role.meta.systemRole);
 
                         setRoleList(systemRolesFilteredRolesList);
                     });

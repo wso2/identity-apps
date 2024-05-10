@@ -1150,7 +1150,7 @@
             "Console",
             "My Account"
         ],
-        "isEditingSystemRolesAllowed": false,
+        "isEditingSystemRolesAllowed": true,
         "isXacmlConnectorEnabled": false,
         "administratorRoleDisplayName": "Administrator",
         "useRoleClaimAsGroupClaim": false,
