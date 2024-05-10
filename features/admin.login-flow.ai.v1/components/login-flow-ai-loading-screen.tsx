@@ -65,7 +65,7 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
     useEffect(() => {
         const targetProgress: number = getProgress();
 
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: NodeJS.Timeout | number = setInterval(() => {
             setCurrentProgress((prevProgress: number) => {
                 if (prevProgress >= targetProgress) {
                     clearInterval(interval);
@@ -81,7 +81,7 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
     }, [ data ]);
 
     useEffect(() => {
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: NodeJS.Timeout | number = setInterval(() => {
             setFactIndex((factIndex + 1) % facts.length);
         }, FACTS_ROTATION_DELAY);
 
