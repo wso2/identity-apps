@@ -13,7 +13,7 @@
     ],
     "targets": {
         "build": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "commands": [
                     {
@@ -26,7 +26,7 @@
             }
         },
         "test": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
                 "cwd": "features",

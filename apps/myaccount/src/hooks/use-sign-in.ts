@@ -455,6 +455,23 @@ const useSignIn = (): UseSignInInterface => {
                 sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                 sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
 
+                // `updateConfig` doesn't seem to be updating the SDK config after initializing.
+                // Hence the updated `signOutRedirectURL` is not taken for logout.
+                // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/222
+                // TODO: Remove this workaround once the above issue is fixed.
+                Object.entries(sessionStorage).forEach(([ key, value ]: [ key: string, value: string ]) => {
+                    if (key.startsWith(LOGOUT_URL) && key.includes(window["AppUtils"]?.getConfig()?.clientID)) {
+                        const _signOutRedirectURL: URL = new URL(value);
+
+                        _signOutRedirectURL.searchParams.set(
+                            "post_logout_redirect_uri",
+                            new URL(logoutRedirectUrl)?.href
+                        );
+
+                        sessionStorage.setItem(key, _signOutRedirectURL.href);
+                    }
+                });
+
                 updateConfig({
                     endpoints: {
                         authorizationEndpoint: authorizationEndpoint,

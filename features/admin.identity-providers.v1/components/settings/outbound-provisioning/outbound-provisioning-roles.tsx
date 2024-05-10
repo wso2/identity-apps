@@ -21,7 +21,6 @@ import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterf
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint, Popup } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import { AppState, FeatureConfigInterface } from "features/admin.core.v1";
 import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
@@ -30,6 +29,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getRolesList } from "../../../../admin.roles.v2/api";
 import { updateIDPRoleMappings } from "../../../api";

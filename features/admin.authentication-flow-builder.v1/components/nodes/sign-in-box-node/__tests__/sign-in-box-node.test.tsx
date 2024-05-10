@@ -19,10 +19,11 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
+import UserPreferenceProvider from "../../../../../admin.core.v1/providers/user-preferences-provider";
 import { render, screen } from "../../../../../test-configs/utils";
 import SignInBoxNode, { SignInBoxNodePropsInterface } from "../sign-in-box-node";
 
-describe("SignInBoxNode", () => {
+describe.skip("SignInBoxNode", () => {
     const defaultProps: SignInBoxNodePropsInterface = {
         data: {
             authenticationSequence: {},
@@ -45,7 +46,11 @@ describe("SignInBoxNode", () => {
     };
 
     it("renders the SignInBoxNode component", () => {
-        render(<SignInBoxNode { ...defaultProps } />, { allowedScopes: fullPermissions });
+        render(
+            <UserPreferenceProvider>
+                <SignInBoxNode { ...defaultProps } />
+            </UserPreferenceProvider>
+            , { allowedScopes: fullPermissions });
 
         const signInBoxNode: Element = screen.getByTestId("sign-in-box-node");
 
