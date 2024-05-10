@@ -1445,6 +1445,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "验证更新首选项时出错"
+                    },
+                    genericError: {
+                        description: "验证更新首选项时发生错误",
+                        message: "出了些问题"
+                    },
+                    success: {
+                        description: "已成功检索更新首选项的验证",
+                        message: "验证更新偏好检索成功"
+                    }
+                }
+            }
         }
     },
     "modals": {

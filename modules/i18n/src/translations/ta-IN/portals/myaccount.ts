@@ -1614,6 +1614,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "புதுப்பிப்பு விருப்பத்தேர்வில் சரிபார்ப்பைப் பெறுவதில் பிழை"
+                    },
+                    genericError: {
+                        description: "புதுப்பிப்பு விருப்பத்தேர்வில் சரிபார்ப்பைப் பெறுவதில் பிழை ஏற்பட்டது",
+                        message: "ஏதோ தவறு நடந்துவிட்டது"
+                    },
+                    success: {
+                        description: "புதுப்பிப்பு விருப்பத்தேர்வில் சரிபார்ப்பு வெற்றிகரமாக மீட்டெடுக்கப்பட்டது",
+                        message: "புதுப்பிப்பு விருப்பத்தேர்வு மீட்டெடுப்பின் சரிபார்ப்பு வெற்றிகரமாக உள்ளது"
+                    }
+                }
+            }
         }
     },
     modals: {
