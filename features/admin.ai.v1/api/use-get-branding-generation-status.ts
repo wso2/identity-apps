@@ -60,7 +60,7 @@ export const useGetAIBrandingGenerationStatus = (
         });
 
     useEffect(() => {
-        const interval: NodeJS.Timeout| number = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             if (!isValidating && !data?.status?.branding_generation_completed) {
                 mutate();
             }
