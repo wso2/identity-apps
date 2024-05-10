@@ -74,7 +74,6 @@ import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { CommonUtils } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
-import { Console } from "console";
 
 /**
  * Prop types for the basic details component.
@@ -192,7 +191,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     level: AlertLevels.ERROR,
                     message: t("myAccount:sections.accountRecovery.preference.notifications.genericError.message")
                 });
-            })
+            });
     };
 
     /**

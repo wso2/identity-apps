@@ -28,11 +28,7 @@ import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from ".
 import { AppConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
-import { 
-    AlertInterface,
-    AuthStateInterface,
-    FeatureConfigInterface
-} from "../models";
+import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert, getProfileInformation } from "../store/actions";
 import { CommonUtils } from "../utils";
@@ -43,7 +39,6 @@ import { CommonUtils } from "../utils";
  */
 interface PersonalInfoPagePropsInterface extends TestableComponentInterface {
     enableNonLocalCredentialUserView?: boolean;
-    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -57,7 +52,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
 ): ReactElement => {
 
     const {
-        enableNonLocalCredentialUserView, onAlertFired
+        enableNonLocalCredentialUserView
     } = props;
 
     const { t } = useTranslation();
