@@ -16,42 +16,33 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import AILoadingScreen from "../../common.ai.v1/components/components/ai-loading-screen";
-import { useAILoginFlowGenerationStatus } from "../api/use-ai-login-flow-generation-status";
+import useGetAIBrandingGenerationStatus from "../api/use-get-branding-generation-status";
 import {
     FACTS_ROTATION_DELAY,
     PROGRESS_UPDATE_INTERVAL,
     STATUS_PROGRESS_MAP,
     useGetFacts,
-    useGetStatusLabels
-} from "../constants/login-flow-ai-constants";
-import useAILoginFlow from "../hooks/use-ai-login-flow";
+    useGetStatusLabels } from "../constants/ai-branding-constants";
+import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
 
-const LoginFlowAILoadingScreen = (): ReactElement => {
-
+/**
+ * AI branding loading screen component.
+ *
+ * @returns ReactElement containing the AI branding loading screen.
+ */
+export const BrandingAILoadingScreen: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
 
-    const dispatch: Dispatch = useDispatch();
-
-    const statusLabels: Record<string, string> = useGetStatusLabels();
-
-    const {
-        setGeneratingLoginFlow,
-        setLoginFlowGenerationCompleted
-    } = useAILoginFlow();
-
-    const facts: string[] = useGetFacts();
-
-    const { data, error } = useAILoginFlowGenerationStatus();
-
-    const [ currentProgress, setCurrentProgress ] = useState<number>(0);
     const [ factIndex, setFactIndex ] = useState<number>(0);
+    const [ currentProgress, setCurrentProgress ] = useState<number>(0);
+
+    const { operationId, setBrandingGenerationCompleted, setGeneratingBranding } = useAIBrandingPreference();
+    const { data } = useGetAIBrandingGenerationStatus(operationId);
+    const facts: string[] = useGetFacts();
+    const statusLabels: Record<string, string> = useGetStatusLabels();
 
     const statusProgress: Record<string, number> = STATUS_PROGRESS_MAP;
 
@@ -81,18 +72,6 @@ const LoginFlowAILoadingScreen = (): ReactElement => {
         return () => clearInterval(interval);
     }, [ factIndex ]);
 
-    useEffect(() => {
-        if (error) {
-            dispatch(
-                addAlert<AlertInterface>({
-                    description: t("ai:aiLoginFlow.notifications.generateStatusError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("ai:aiLoginFlow.notifications.generateStatusError.message")
-                })
-            );
-        }
-    }, [ error ]);
-
     /**
      * Get the current progress based on the status.
      *
@@ -119,8 +98,8 @@ const LoginFlowAILoadingScreen = (): ReactElement => {
      * @returns The current status.
      */
     const getCurrentStatus = () => {
-        if (!data) return t("ai:aiLoginFlow.screens.loading.states.0");
-        let currentStatusLabel: string = "ai:aiLoginFlow.screens.loading.states.0";
+        if (!data) return t("branding:ai.screens.loading.states.0");
+        let currentStatusLabel: string = "branding:ai.screens.loading.states.0";
 
         Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
             if (value && statusLabels[key]) {
@@ -132,8 +111,8 @@ const LoginFlowAILoadingScreen = (): ReactElement => {
     };
 
     const handleGenerateCancel = () => {
-        setGeneratingLoginFlow(false);
-        setLoginFlowGenerationCompleted(false);
+        setGeneratingBranding(false);
+        setBrandingGenerationCompleted(false);
     };
 
     return (
@@ -145,5 +124,3 @@ const LoginFlowAILoadingScreen = (): ReactElement => {
         />
     );
 };
-
-export default LoginFlowAILoadingScreen;

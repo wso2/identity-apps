@@ -37,7 +37,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useAIBrandingPreference from "../../admin.ai.v1/hooks/use-ai-branding-preference";
+import useAIBrandingPreference from "../../admin.branding.ai.v1/hooks/use-ai-branding-preference";
 import { EventPublisher, OrganizationType } from "../../admin.core.v1";
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
@@ -63,10 +63,7 @@ import { BrandingPreferenceUtils } from "../utils";
 /**
  * Prop-types for the branding core component.
  */
-interface BrandingCoreInterface extends IdentifiableComponentInterface {
-
-    brandingPreference?: BrandingPreferenceInterface;
-}
+type BrandingCoreInterface = IdentifiableComponentInterface;
 
 /**
  * Branding core.
@@ -79,14 +76,8 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 ): ReactElement => {
 
     const {
-        brandingPreference: overridenBrandingPreference,
         ["data-componentid"]: componentId
     } = props;
-
-    const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
-    const { isGreaterThanComputerViewport } = useMediaContext();
-    const { organizationType } = useGetCurrentOrganizationType();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
@@ -96,6 +87,30 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state?.organization?.organization
     );
+
+    const { t } = useTranslation();
+
+    const dispatch: Dispatch = useDispatch();
+
+    const { isGreaterThanComputerViewport } = useMediaContext();
+
+    const { organizationType } = useGetCurrentOrganizationType();
+
+    const {
+        mergedBrandingPreference: overridenBrandingPreference,
+        setMergedBrandingPreference
+    } = useAIBrandingPreference();
+
+    const {
+        data: originalBrandingPreference,
+        isLoading: isBrandingPreferenceFetchRequestLoading,
+        error: brandingPreferenceFetchRequestError,
+        mutate: mutateBrandingPreferenceFetchRequest
+    } = useGetBrandingPreferenceResolve(tenantDomain);
+
+    const {
+        mutateMultiple: mutateCustomTextPreferenceFetchRequests
+    } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
 
     const [ isBrandingConfigured, setIsBrandingConfigured ] = useState<boolean>(true);
     const [
@@ -152,21 +167,6 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         featureConfig?.branding?.scopes?.update,
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
-
-    const {
-        data: originalBrandingPreference,
-        isLoading: isBrandingPreferenceFetchRequestLoading,
-        error: brandingPreferenceFetchRequestError,
-        mutate: mutateBrandingPreferenceFetchRequest
-    } = useGetBrandingPreferenceResolve(tenantDomain);
-
-    const {
-        mutateMultiple: mutateCustomTextPreferenceFetchRequests
-    } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
-
-    const {
-        setMergedBrandingPreference
-    } = useAIBrandingPreference();
 
     const isBrandingPageLoading: boolean = useMemo(
         () =>

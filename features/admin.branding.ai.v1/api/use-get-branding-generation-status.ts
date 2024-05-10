@@ -24,15 +24,24 @@ import useRequest, {
     RequestResultInterface
 } from "../../admin.core.v1/hooks/use-request";
 import { store } from "../../admin.core.v1/store";
-import useAILoginFlow from "../hooks/use-ai-login-flow";
-import { AILoginFlowGenerationStatusAPIResponseInterface } from "../models/ai-login-flow";
+import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
+import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding-preferences";
 
-export const useAILoginFlowGenerationStatus = ():
-    RequestResultInterface<AILoginFlowGenerationStatusAPIResponseInterface, RequestErrorInterface> =>{
+/**
+ * Hook to get the AI branding generation status from the API.
+ *
+ * @param operationId - A unique identifier for the branding generation operation status.
+ */
+export const useGetAIBrandingGenerationStatus = (
+    operationId: string
+): RequestResultInterface<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface> => {
 
-    const [ isLoading, setIsLoading ] = useState<boolean>(true);
+    const { organizationType } = useGetCurrentOrganizationType();
+    const { setBrandingGenerationCompleted } = useAIBrandingPreference();
 
-    const { setLoginFlowGenerationCompleted, operationId } = useAILoginFlow();
+    const [ isLoading, setIsLoading ] = useState(true);
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -40,31 +49,33 @@ export const useAILoginFlowGenerationStatus = ():
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.applications}/loginflow/status/${operationId}`
+        url: organizationType === OrganizationType.SUBORGANIZATION
+            ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/status/${operationId}`
+            : `${store.getState().config.endpoints.brandingPreference}/status/${operationId}`
     };
 
     const { data, error, isValidating, mutate } =
-        useRequest<AILoginFlowGenerationStatusAPIResponseInterface, RequestErrorInterface>(requestConfig, {
+        useRequest<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface>(requestConfig, {
             shouldRetryOnError: false
         });
 
     useEffect(() => {
         const interval: NodeJS.Timeout = setInterval(() => {
-            if (!isValidating && !data?.status?.login_flow_generation_complete) {
+            if (!isValidating && !data?.status?.branding_generation_completed) {
                 mutate();
             }
         }, 1000);
 
-        if (data?.status?.login_flow_generation_complete) {
+        if (data?.status?.branding_generation_completed) {
             setIsLoading(false);
             clearInterval(interval);
-            setLoginFlowGenerationCompleted(true);
+            setBrandingGenerationCompleted(true);
         } else {
             setIsLoading(true);
         }
 
         return () => clearInterval(interval);
-    }, [ data, isValidating ]);
+    }, [ data, isValidating, mutate ]);
 
     return {
         data,
@@ -74,3 +85,5 @@ export const useAILoginFlowGenerationStatus = ():
         mutate
     };
 };
+
+export default useGetAIBrandingGenerationStatus;
