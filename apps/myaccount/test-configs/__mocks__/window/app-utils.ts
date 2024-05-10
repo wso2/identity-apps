@@ -116,9 +116,7 @@ interface CustomWindow extends Window {
                         }
                     },
                     personalInfo: {
-                        disabledFeatures: [
-                            "profileInfo.mobileVerification"
-                        ],
+                        disabledFeatures: [],
                         enabled: true,
                         scopes: {
                             create: [],
