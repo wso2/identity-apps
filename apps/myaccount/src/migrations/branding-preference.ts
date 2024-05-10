@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { BrandingPreferenceAPIResponseInterface, PredefinedThemes } from "@wso2is/features/common.branding.v1/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
 import { THEMES } from "../meta";
-import { BrandingPreferenceAPIResponseInterface, PredefinedThemes } from "../models";
 
 /**
  * Migrates a branding preference API response to include the default themes.

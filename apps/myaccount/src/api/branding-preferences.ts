@@ -17,6 +17,10 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
+import {
+    BrandingPreferenceAPIResponseInterface,
+    BrandingPreferenceTypes
+} from "@wso2is/features/common.branding.v1/models";
 import { I18nConstants } from "../constants";
 import {
     RequestConfigInterface,
@@ -25,7 +29,6 @@ import {
     useRequest
 } from "../hooks/use-request";
 import { getMigratedBrandingPreference } from "../migrations/branding-preference";
-import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceTypes } from "../models";
 import { store } from "../store";
 
 /**

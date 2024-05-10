@@ -43,10 +43,10 @@ import { BrandingPreferenceAPIResponseInterface } from "../models";
 
 
 /**
- * Branding preference provider.
+ * Theme provider.
  *
  * @param props - Props for the client.
- * @returns Branding preference provider.
+ * @returns Theme provider.
  */
 export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): ReactElement => {
     const { children,
@@ -76,6 +76,7 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
         ].images?.favicon?.imgURL;
     }, [ themePreference?.preference?.theme ]);
 
+    // Function to inject branding CSS skeleton into the document head.
     const injectBrandingCSSSkeleton = () => {
         if (!themePreference?.preference?.theme || !themePreference?.preference?.configs?.isBrandingEnabled) {
             return;
