@@ -46,3 +46,13 @@ global.ResizeObserver = class {
 
     }
 };
+
+global.console = {
+    ...console,
+    // uncomment to ignore a specific log level
+    debug: jest.fn(),
+    error: jest.fn(),
+    info: jest.fn(),
+    log: jest.fn()
+    // warn: jest.fn(),
+};
