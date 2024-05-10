@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.76
+
+### Patch Changes
+
+- [#6233](https://github.com/wso2/identity-apps/pull/6233) [`35c1d9adf591048c698b837117c6d9e08d9d70b6`](https://github.com/wso2/identity-apps/commit/35c1d9adf591048c698b837117c6d9e08d9d70b6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Restrict showing the maintenance banner for console app related authn and recovery flows
+
 ## 2.1.75
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.18.0
+
+### Minor Changes
+
+- [#6217](https://github.com/wso2/identity-apps/pull/6217) [`5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13`](https://github.com/wso2/identity-apps/commit/5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add support to display custom outbound provisioning connectors
+
+### Patch Changes
+
+- Updated dependencies [[`2f26bd622b68d20836b718db7735794470882b22`](https://github.com/wso2/identity-apps/commit/2f26bd622b68d20836b718db7735794470882b22), [`ecd8c4c52baa9286cce6441bf3428c2f371b9576`](https://github.com/wso2/identity-apps/commit/ecd8c4c52baa9286cce6441bf3428c2f371b9576), [`5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13`](https://github.com/wso2/identity-apps/commit/5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13)]:
+  - @wso2is/features@2.18.0
+
 ## 2.17.6
 
 ### Patch Changes
