@@ -25,10 +25,13 @@ import MissingSocialAuthenticatorSelectionModal, {
     MissingSocialAuthenticatorSelectionModalPropsInterface
 } from "../missing-social-authenticator-selection-modal";
 
-describe.skip("MissingSocialAuthenticatorSelectionModal", () => {
-    const defaultProps: MissingSocialAuthenticatorSelectionModalPropsInterface = {
+describe("MissingSocialAuthenticatorSelectionModal", () => {
+    const defaultProps: MissingSocialAuthenticatorSelectionModalPropsInterface & {
+        open: boolean
+    } = {
         authenticatorCategoryDisplayName: "Microsoft",
-        authenticatorCategoryTemplate: "microsoft-idp"
+        authenticatorCategoryTemplate: "microsoft-idp",
+        open: true
     };
 
     it("renders the MissingSocialAuthenticatorSelectionModal component", () => {

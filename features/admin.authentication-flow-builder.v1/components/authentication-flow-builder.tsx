@@ -364,7 +364,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         );
 
     return (
-        <Box className="sign-in-method-split-view">
+        <Box
+            className="sign-in-method-split-view"
+            data-componentid={ componentId }
+        >
             <SidePanelDrawer
                 open={ isPredefinedFlowsSidePanelDrawerOpen }
                 className={
