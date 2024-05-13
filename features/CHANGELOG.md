@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.18.3
+
+### Patch Changes
+
+- [#6238](https://github.com/wso2/identity-apps/pull/6238) [`931c4df0ca2166d5d57eac06624d173b0adc8889`](https://github.com/wso2/identity-apps/commit/931c4df0ca2166d5d57eac06624d173b0adc8889) Thanks [@savindi7](https://github.com/savindi7)! - Fix app redirect URL validation.
+
 ## 2.18.2
 
 ### Patch Changes
