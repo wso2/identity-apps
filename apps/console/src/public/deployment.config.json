@@ -233,7 +233,7 @@
             },
             "applicationRoles": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [],
                     "read": [],
