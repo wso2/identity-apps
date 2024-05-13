@@ -3650,7 +3650,7 @@ export const extensions: Extensions = {
                     recoveryOptionSubHeadingSMS: "SMS OTP",
                     recoveryOptionHeading: "Recovery Option Selection",
                     otpConfigHeading: "OTP Code Configuration",
-                    otherConfigHeading: "Recovery Attempts Limitation",
+                    failedAttemptConfigHeading: "Recovery Attempts Limitation",
                     connectorDescription: "Enable self-service password recovery for users " + "on the login page.",
                     heading: "Password Recovery",
                     notification: {

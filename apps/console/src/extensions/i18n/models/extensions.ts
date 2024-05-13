@@ -3052,7 +3052,7 @@ export interface Extensions {
                     recoveryOptionSubHeadingSMS: string;
                     recoveryOptionHeading: string;
                     otpConfigHeading: string;
-                    otherConfigHeading: string;
+                    failedAttemptConfigHeading: string;
                     connectorDescription: string;
                     heading: string;
                     notification: {

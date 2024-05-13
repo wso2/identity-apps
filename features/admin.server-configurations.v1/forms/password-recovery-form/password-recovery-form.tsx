@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Chip from "@oxygen-ui/react/Chip";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
@@ -511,6 +512,9 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionSubHeadingSMS") as ReactNode }
+                    <Chip
+                        label="BETA"
+                        className="oxygen-menu-item-chip oxygen-chip-beta" />
                 </Heading>
                 <Field.Checkbox
                     ariaLabel="enableSMSBasedRecovery"
@@ -572,6 +576,9 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.otpConfigHeading") as ReactNode }
+                    <Chip
+                        label="BETA"
+                        className="oxygen-menu-item-chip oxygen-chip-beta" />
                 </Heading>
                 <Field.Checkbox
                     ariaLabel="passwordRecoveryOtpUseUppercase"
@@ -669,7 +676,10 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 <Divider/>
                 <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
-                            "passwordRecovery.otherConfigHeading") as ReactNode }
+                            "passwordRecovery.failedAttemptConfigHeading") as ReactNode }
+                    <Chip
+                        label="BETA"
+                        className="oxygen-menu-item-chip oxygen-chip-beta" />
                 </Heading>
                 <Field.Input
                     ariaLabel="maxFailedAttemptCount"
