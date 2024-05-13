@@ -39,9 +39,27 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
+import {
+    ArrowLoopRightUserIcon,
+    BuildingGearIcon,
+    CircleUserIcon,
+    EnvelopeAtIcon,
+    EnvelopeMagnifyingGlassIcon,
+    GearIcon,
+    HexagonTwoIcon,
+    PadlockAsteriskIcon,
+    ShareNodesIcon,
+    ShieldCheckIcon,
+    ShieldUserPencilIcon,
+    UserBriefcaseIcon,
+    UserDatabaseIcon,
+    UserDocumentIcon,
+    UserGearIcon,
+    UserPlusIcon
+} from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants, AppState, history } from "../../admin.core.v1";
@@ -49,7 +67,6 @@ import { serverConfigurationConfig } from "../../admin.extensions.v1";
 import "./governance-connector-grid.scss";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
-
 /**
  * Props for the Governance connector configuration categories page.
  */
