@@ -169,9 +169,9 @@
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
             %>
-            <jsp:include page="extensions/product-title.jsp"/>
+                <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
@@ -319,9 +319,9 @@
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
             %>
-            <jsp:include page="extensions/product-footer.jsp"/>
+                <jsp:include page="extensions/product-footer.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
+                <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
         <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
