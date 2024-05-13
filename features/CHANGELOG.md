@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.18.1
+
+### Patch Changes
+
+- [#6226](https://github.com/wso2/identity-apps/pull/6226) [`c2866febec26052bb1c27c11d6534d80a0bf163a`](https://github.com/wso2/identity-apps/commit/c2866febec26052bb1c27c11d6534d80a0bf163a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Provide the capability to configure TOTP with standard-based OIDC or SAML connections
+
 ## 2.18.0
 
 ### Minor Changes
