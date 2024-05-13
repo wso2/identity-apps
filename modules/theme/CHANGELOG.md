@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.82
+
+### Patch Changes
+
+- [#6242](https://github.com/wso2/identity-apps/pull/6242) [`9beedd16003ce305af2a7497652fd35dcd787814`](https://github.com/wso2/identity-apps/commit/9beedd16003ce305af2a7497652fd35dcd787814) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Set a minimum height for the product logo
+
 ## 2.0.81
 
 ### Patch Changes
