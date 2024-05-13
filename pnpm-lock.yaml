@@ -468,7 +468,7 @@ importers:
   apps/console:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.1
+        specifier: ^4.0.4
         version: 4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@18.3.1)(react-router-dom@4.3.1)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
@@ -820,7 +820,7 @@ importers:
   apps/myaccount:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.1
+        specifier: ^4.0.4
         version: 4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@18.3.1)(react-router-dom@4.3.1)(react@18.3.1)
       '@babel/polyfill':
         specifier: ^7.0.0
@@ -1070,7 +1070,7 @@ importers:
   features:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.1
+        specifier: ^4.0.4
         version: 4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@18.3.1)(react-router-dom@4.3.1)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
@@ -19870,8 +19870,8 @@ importers:
   modules/core:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.1
-        version: 4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@16.14.0)(react-router-dom@6.23.1)(react@16.14.0)
+        specifier: ^4.0.4
+        version: 4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@16.14.0)(react-router-dom@6.23.0)(react@16.14.0)
       '@braintree/sanitize-url':
         specifier: ^5.0.0
         version: 5.0.2
@@ -20662,7 +20662,7 @@ packages:
     resolution: {integrity: sha512-XTb/+jPPBAnNGlZYeHVz2Ut5hI8DeJiMmX5YcAijiAvtW4Ove82lT4aLXm+FL8XmCYc+61hFNG1QLf8q2nMfSQ==}
     dev: false
 
-  /@asgardeo/auth-react@4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@16.14.0)(react-router-dom@6.23.1)(react@16.14.0):
+  /@asgardeo/auth-react@4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@16.14.0)(react-router-dom@6.23.0)(react@16.14.0):
     resolution: {integrity: sha512-PltiGPAUVyekEOun9BMte3H2AmFsihiLisobjax5NxdkpDurvrgUR9xCUh7qKkoQQHq4N1Y5crc8UpCg+hkLmQ==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
