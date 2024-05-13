@@ -51,6 +51,6 @@ export class SIWEConstants {
     public static readonly SWE_AUTHENTICATOR_PROPERTY_KEYS: Record<string, string> = {
         CALLBACK_URL: "callbackUrl",
         CLIENT_ID: "ClientId",
-        CLIENT_SECRETE: "ClientSecret"
+        CLIENT_SECRET: "ClientSecret"
     }
 }

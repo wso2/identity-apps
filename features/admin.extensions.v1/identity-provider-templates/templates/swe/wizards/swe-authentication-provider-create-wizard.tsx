@@ -250,7 +250,7 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
                 identityProvider?.federatedAuthenticators?.authenticators[ 0 ]?.properties?.filter(
                     (item: CommonPluggableComponentPropertyInterface) =>
                         item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_ID
-                            && item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRETE
+                            && item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRET
                             && item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CALLBACK_URL
                 );
 
@@ -261,7 +261,7 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
                     "value": values.clientId.toString()
                 },
                 {
-                    "key": SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRETE,
+                    "key": SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRET,
                     "value": values.clientSecret.toString()
                 },
                 {
