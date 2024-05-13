@@ -149,7 +149,8 @@
                 "id": "QWNjb3VudERpc2FibGU",
                 "displayName": "Account Disabled"
             }
-        ]
+        ],
+        "outboundProvisioningConnectors": []
     },
     "session": {
         "sessionRefreshTimeOut": 300.0,
@@ -1150,6 +1151,7 @@
             "Console",
             "My Account"
         ],
+        "isEditingSystemRolesAllowed": true,
         "isXacmlConnectorEnabled": false,
         "administratorRoleDisplayName": "Administrator",
         "useRoleClaimAsGroupClaim": false,

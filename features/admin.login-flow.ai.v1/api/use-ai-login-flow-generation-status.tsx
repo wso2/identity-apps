@@ -50,7 +50,7 @@ export const useAILoginFlowGenerationStatus = (
         });
 
     useEffect(() => {
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             if (!isValidating && !data?.status?.login_flow_generation_complete) {
                 mutate();
             }

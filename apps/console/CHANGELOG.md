@@ -1,5 +1,91 @@
 # @wso2is/console
 
+## 2.18.0
+
+### Minor Changes
+
+- [#6217](https://github.com/wso2/identity-apps/pull/6217) [`5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13`](https://github.com/wso2/identity-apps/commit/5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add support to display custom outbound provisioning connectors
+
+### Patch Changes
+
+- Updated dependencies [[`2f26bd622b68d20836b718db7735794470882b22`](https://github.com/wso2/identity-apps/commit/2f26bd622b68d20836b718db7735794470882b22), [`ecd8c4c52baa9286cce6441bf3428c2f371b9576`](https://github.com/wso2/identity-apps/commit/ecd8c4c52baa9286cce6441bf3428c2f371b9576), [`5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13`](https://github.com/wso2/identity-apps/commit/5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13)]:
+  - @wso2is/features@2.18.0
+
+## 2.17.6
+
+### Patch Changes
+
+- [#6227](https://github.com/wso2/identity-apps/pull/6227) [`ad005f630a54d3606ccd2719819b9429fa18b66c`](https://github.com/wso2/identity-apps/commit/ad005f630a54d3606ccd2719819b9429fa18b66c) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Hide Organization creator in the sub org's user list in old runtime
+
+## 2.17.5
+
+### Patch Changes
+
+- Updated dependencies [[`0bc46b679cb17b58e93a2896f1a4a12437d7b975`](https://github.com/wso2/identity-apps/commit/0bc46b679cb17b58e93a2896f1a4a12437d7b975), [`35beeca02117863c7f0e362d0539b8319ab2d2a0`](https://github.com/wso2/identity-apps/commit/35beeca02117863c7f0e362d0539b8319ab2d2a0)]:
+  - @wso2is/features@2.17.5
+
+## 2.17.4
+
+### Patch Changes
+
+- Updated dependencies [[`9c1fcee2598632c01e2b4cdee15e38a36b24e62f`](https://github.com/wso2/identity-apps/commit/9c1fcee2598632c01e2b4cdee15e38a36b24e62f)]:
+  - @wso2is/features@2.17.4
+
+## 2.17.3
+
+### Patch Changes
+
+- Updated dependencies [[`4bcb6efd50e85a3e5b7b045e8f16d0c43aa98f9a`](https://github.com/wso2/identity-apps/commit/4bcb6efd50e85a3e5b7b045e8f16d0c43aa98f9a), [`53c2ce76e7875421529bc58a9b117dbe92bae057`](https://github.com/wso2/identity-apps/commit/53c2ce76e7875421529bc58a9b117dbe92bae057)]:
+  - @wso2is/features@2.17.3
+
+## 2.17.2
+
+### Patch Changes
+
+- Updated dependencies [[`1161a8b83249f2a4b2074fa6e9f9462556184f75`](https://github.com/wso2/identity-apps/commit/1161a8b83249f2a4b2074fa6e9f9462556184f75)]:
+  - @wso2is/features@2.17.2
+
+## 2.17.1
+
+### Patch Changes
+
+- [#6213](https://github.com/wso2/identity-apps/pull/6213) [`c7d98e3dce516f9b5c4d6e8f7b4b464600513584`](https://github.com/wso2/identity-apps/commit/c7d98e3dce516f9b5c4d6e8f7b4b464600513584) Thanks [@brionmario](https://github.com/brionmario)! - [Temp] Revert https://github.com/wso2/identity-apps/pull/6183/files
+
+- Updated dependencies [[`c6727a6a0b18f3f8e440ce1e3c9218df5d407476`](https://github.com/wso2/identity-apps/commit/c6727a6a0b18f3f8e440ce1e3c9218df5d407476), [`c7d98e3dce516f9b5c4d6e8f7b4b464600513584`](https://github.com/wso2/identity-apps/commit/c7d98e3dce516f9b5c4d6e8f7b4b464600513584)]:
+  - @wso2is/features@2.17.1
+
+## 2.17.0
+
+### Minor Changes
+
+- [#6135](https://github.com/wso2/identity-apps/pull/6135) [`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Move session refresh logic to Application level
+
+### Patch Changes
+
+- Updated dependencies [[`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5)]:
+  - @wso2is/react-components@2.2.0
+  - @wso2is/features@2.17.0
+  - @wso2is/core@2.0.45
+  - @wso2is/dynamic-forms@2.0.58
+  - @wso2is/form@2.0.59
+  - @wso2is/access-control@3.0.5
+  - @wso2is/forms@2.0.35
+  - @wso2is/i18n@2.2.17
+
+## 2.16.20
+
+### Patch Changes
+
+- Updated dependencies [[`f99d54c605a6b66ca819c3a5d8c84faa14d4dc5a`](https://github.com/wso2/identity-apps/commit/f99d54c605a6b66ca819c3a5d8c84faa14d4dc5a), [`66d927c6c19200543ca59d83480c5ce10ec514c8`](https://github.com/wso2/identity-apps/commit/66d927c6c19200543ca59d83480c5ce10ec514c8)]:
+  - @wso2is/features@2.16.17
+
+## 2.16.19
+
+### Patch Changes
+
+- Updated dependencies [[`4301300b2e55cc54430994c2da348df9f4df9f9b`](https://github.com/wso2/identity-apps/commit/4301300b2e55cc54430994c2da348df9f4df9f9b)]:
+  - @wso2is/features@2.16.16
+
 ## 2.16.18
 
 ### Patch Changes

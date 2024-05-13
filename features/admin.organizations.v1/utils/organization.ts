@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { AuthenticatorManagementConstants } from "../../admin.connections.v1/constants/autheticator-constants";
 import { store } from "../../admin.core.v1/store";
 import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
-import { OrganizationManagementConstants, OrganizationType } from "../constants";
+import { OrganizationManagementConstants, OrganizationType } from "../constants/organization-constants";
 import { GenericOrganization } from "../models";
 
 export class OrganizationUtils {
@@ -53,6 +54,28 @@ export class OrganizationUtils {
      * @returns The Organization Authenticator.
      */
     public static getOrganizationAuthenticator(): GenericAuthenticatorInterface {
-        return OrganizationManagementConstants.ORGANIZATION_AUTHENTICATOR;
+        return {
+            authenticators: [
+                {
+                    authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+                    isEnabled: true,
+                    name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
+                    tags: [ "APIAuth" ]
+                }
+            ],
+            defaultAuthenticator: {
+                authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+                isEnabled: true,
+                name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
+                tags: [ "APIAuth" ]
+            },
+            description: "Identity provider for Organization SSO.",
+            displayName: "SSO",
+            id: "sso",
+            idp: "SSO",
+            image: "assets/images/logos/sso.svg",
+            isEnabled: true,
+            name: "SSO"
+        };
     }
 }

@@ -21,6 +21,8 @@ import { AllFeatureInterface } from "@wso2is/access-control";
 import { HttpMethods } from "@wso2is/core/models";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
+import { Config } from "../../../../admin.core.v1/configs/app";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
@@ -40,12 +42,14 @@ export const useGetAllFeatures = <
 >(): RequestResultInterface<Data, Error> => {
     const [ orgIdentifier, setOrgIdentifier ] = useState<string>();
     const { getDecodedIDToken } = useAuthContext();
-
+    const { legacyAuthzRuntime }  = useAuthorization();
     const organizationType: OrganizationType = useSelector(
         (state: AppState) => state.organization.organizationType
     );
 
-    const baseUrl: string = window["AppUtils"]?.getServerOriginWithTenant(false);
+    const baseUrl: string = legacyAuthzRuntime
+        ? Config.resolveServerHostforFG(false)
+        : window["AppUtils"]?.getServerOriginWithTenant(false);
 
     // TODO: Remove this config once the deployment issues are sorted out.
     const isFeatureGateEnabled: boolean = useSelector((state: AppState) => state?.config?.ui?.isFeatureGateEnabled);

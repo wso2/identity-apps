@@ -17,7 +17,6 @@
  */
 
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-import { ChevronUpIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
@@ -25,6 +24,7 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { ChevronUpIcon } from "@oxygen-ui/react-icons";
 import {
     DocumentationLink,
     useDocumentation
@@ -175,11 +175,11 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     } }
                     value={ websiteUrl }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                        setWebsiteUrl(e.target.value) }
+                        setWebsiteUrl(e?.target?.value) }
                     onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
                         // Handle the enter key press.
-                        if (e.key === "Enter") {
-                            e.preventDefault();
+                        if (e?.key === "Enter") {
+                            e?.preventDefault();
                             handleGenerateClick();
                         }
                     } }

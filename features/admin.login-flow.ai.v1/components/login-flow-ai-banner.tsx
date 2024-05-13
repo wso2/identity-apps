@@ -20,7 +20,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
-import { ChevronUpIcon }from "@oxygen-ui/react-icons";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
@@ -32,6 +31,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { ChevronUpIcon }from "@oxygen-ui/react-icons";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
@@ -264,16 +264,16 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         maxRows={ 4 }
                         value={ userPrompt }
                         onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                            setUserPrompt(e.target.value) }
+                            setUserPrompt(e?.target?.value) }
                         onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
                             // Go to next line with shift + enter.
-                            if (e.key === "Enter" && e.shiftKey) {
+                            if (e?.key === "Enter" && e?.shiftKey) {
                                 return;
                             }
 
                             // Handle the enter key press.
-                            if (e.key === "Enter") {
-                                e.preventDefault();
+                            if (e?.key === "Enter") {
+                                e?.preventDefault();
                                 handleGenerateClick();
                             }
                         } }

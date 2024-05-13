@@ -58,7 +58,7 @@ import {
     handleGetOutboundProvisioningConnectorMetadataError,
     handleUpdateOutboundProvisioningConnectorError
 } from "../../../utils/connection-utils";
-import { OutboundConnectors as OutboundConnectorsLocalMetadata } from "../../meta/connectors";
+import { getOutboundProvisioningConnectorsMetaData } from "../../meta/connectors";
 import {
     OutboundProvisioningConnectorCreateWizard
 } from "../../wizards/outbound-provisioning-connector-create-wizard";
@@ -155,7 +155,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             resolve({
                                 data: data,
                                 id: connectorId,
-                                localMeta: OutboundConnectorsLocalMetadata?.find(
+                                localMeta: getOutboundProvisioningConnectorsMetaData()?.find(
                                     (meta: OutboundProvisioningConnectorMetaDataInterface) => {
                                         return meta.connectorId === connectorId;
                                     }
