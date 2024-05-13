@@ -16,24 +16,6 @@
  * under the License.
  */
 
-import {
-    ArrowLoopRightUserIcon,
-    BuildingGearIcon,
-    CircleUserIcon,
-    EnvelopeAtIcon,
-    EnvelopeMagnifyingGlassIcon,
-    GearIcon,
-    HexagonTwoIcon,
-    PadlockAsteriskIcon,
-    ShareNodesIcon,
-    ShieldCheckIcon,
-    ShieldUserPencilIcon,
-    UserBriefcaseIcon,
-    UserDatabaseIcon,
-    UserDocumentIcon,
-    UserGearIcon,
-    UserPlusIcon
-} from "@oxygen-ui/react-icons";
 import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
@@ -70,6 +52,7 @@ import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } fr
 /**
  * Props for the Governance connector configuration categories page.
  */
+
 export interface GovernanceConnectorCategoriesGridInterface extends
     IdentifiableComponentInterface, LoadableComponentInterface {
         /**
