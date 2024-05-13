@@ -375,6 +375,7 @@ export class GovernanceConnectorUtils {
                         header: I18n.instance.t("pages:emailDomainDiscovery.title"),
                         id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
+                        status: "new",
                         testId: "email-domain-discovery-card"
                     }
                 ],

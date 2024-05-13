@@ -41,10 +41,11 @@ import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { AppConstants, AppState, history } from "../../admin.core.v1";
 import { serverConfigurationConfig } from "../../admin.extensions.v1";
-import { AppConstants, history } from "../../admin.core.v1";
 import "./governance-connector-grid.scss";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
@@ -82,7 +83,13 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
     } = props;
 
     const { t } = useTranslation();
+    const showStatusLabel: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.showStatusLabel);
 
+
+    useEffect(() => {
+        console.log(showStatusLabel);        
+    }, []);
     /**
      * Combine the connectors and dynamic connectors and group them by category.
      */
@@ -245,7 +252,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                         <div>
                                                             <Typography variant="h6">
                                                                 { connector.header }
-                                                                { connector.status &&
+                                                                { showStatusLabel && connector.status &&
                                                                 (
                                                                     <Chip
                                                                         size="small"

@@ -182,6 +182,7 @@
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
+        "showStatusLabel": false,
         "features": {
             "administrators": {
                 "disabledFeatures": [],
