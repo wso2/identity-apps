@@ -420,6 +420,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     showAppSwitchButton?: boolean;
     /**
+     * Show Label for the feature.
+     */
+    showStatusLabel?: boolean;
+    /**
      * Hidden userstores
      */
     hiddenUserStores: string[];
