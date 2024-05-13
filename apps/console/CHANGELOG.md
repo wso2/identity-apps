@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.18.2
+
+### Patch Changes
+
+- Updated dependencies [[`77c1b97834932cfc3cec372d4005d3d5e1de1e46`](https://github.com/wso2/identity-apps/commit/77c1b97834932cfc3cec372d4005d3d5e1de1e46), [`9beedd16003ce305af2a7497652fd35dcd787814`](https://github.com/wso2/identity-apps/commit/9beedd16003ce305af2a7497652fd35dcd787814)]:
+  - @wso2is/features@2.18.2
+  - @wso2is/theme@2.0.82
+  - @wso2is/react-components@2.2.1
+  - @wso2is/dynamic-forms@2.0.59
+  - @wso2is/form@2.0.60
+
 ## 2.18.1
 
 ### Patch Changes
