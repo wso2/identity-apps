@@ -131,10 +131,10 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
                 className="overview"
                 data-testid={ `${testId}-settings-section` }
                 header={ t("myAccount:components.overview.widgets.profileStatus.header" ,
-                    { 
+                    {
                         productName: !isEmpty(organizationDetails?.displayName)
-                            ? organizationDetails?.displayName 
-                            : config?.ui?.productName 
+                            ? organizationDetails?.displayName
+                            : config?.ui?.productName
                     }
                 ) }
                 description={
