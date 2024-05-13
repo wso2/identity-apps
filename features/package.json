@@ -43,6 +43,7 @@
         "country-language": "^0.1.7",
         "deep-equal": "^2.2.2",
         "file-saver": "^2.0.5",
+        "framer-motion": "^11.1.9",
         "history": "^4.9.0",
         "html-react-parser": "^2.0.0",
         "i18next": "^21.9.1",
