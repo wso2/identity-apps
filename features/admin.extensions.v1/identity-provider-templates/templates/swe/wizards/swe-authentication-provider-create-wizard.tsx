@@ -249,9 +249,9 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties =
                 identityProvider?.federatedAuthenticators?.authenticators[ 0 ]?.properties?.filter(
                     (item: CommonPluggableComponentPropertyInterface) =>
-                        item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_ID
-                            && item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRET
-                            && item.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CALLBACK_URL
+                        item?.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_ID
+                            && item?.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRET
+                            && item?.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CALLBACK_URL
                 );
 
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
