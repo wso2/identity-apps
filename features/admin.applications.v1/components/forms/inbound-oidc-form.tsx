@@ -1621,7 +1621,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                                             return false;
                                         }
-                                        if (value.startsWith("http://") || value.startsWith("https://")) {
+                                        if (URLUtils.isURLValid(value)) {
                                             if (URLUtils.isHttpUrl(value) || URLUtils.isHttpsUrl(value)) {
                                                 setCallbackURLsErrorLabel(null);
 

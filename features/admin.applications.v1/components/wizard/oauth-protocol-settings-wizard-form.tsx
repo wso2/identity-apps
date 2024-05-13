@@ -540,7 +540,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
                                                 return false;
                                             }
-                                            if (value.startsWith("http://") || value.startsWith("https://")) {
+                                            if (URLUtils.isURLValid(value)) {
                                                 if (URLUtils.isHttpUrl(value) || URLUtils.isHttpsUrl(value)) {
                                                     setCallbackURLsErrorLabel(null);
 
