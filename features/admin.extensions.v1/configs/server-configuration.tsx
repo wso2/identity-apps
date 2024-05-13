@@ -16,6 +16,8 @@
  * under the License.
  */
 
+/* eslint-disable sort-keys */
+
 import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
 import { Card, Divider, Grid, Header } from "semantic-ui-react";
@@ -29,11 +31,13 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     GovernanceConnectorUtils,
-    ServerConfigurationsConstants,
     UpdateGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigPropertyInterface,
     UpdateMultipleGovernanceConnectorsInterface
 } from "../../admin.server-configurations.v1";
+import {
+    ServerConfigurationsConstants
+} from "../../admin.server-configurations.v1/constants/server-configurations-constants";
 import { ValidationFormInterface } from "../../admin.validation.v1/models";
 import {
     updatePasswordExpiryProperties,

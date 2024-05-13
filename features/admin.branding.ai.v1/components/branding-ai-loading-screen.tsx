@@ -49,7 +49,7 @@ export const BrandingAILoadingScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         const targetProgress: number = getProgress();
 
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setCurrentProgress((prevProgress: number) => {
                 if (prevProgress >= targetProgress) {
                     clearInterval(interval);
@@ -65,7 +65,7 @@ export const BrandingAILoadingScreen: FunctionComponent = (): ReactElement => {
     }, [ data ]);
 
     useEffect(() => {
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setFactIndex((factIndex + 1) % facts.length);
         }, FACTS_ROTATION_DELAY);
 
