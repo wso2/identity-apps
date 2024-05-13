@@ -85,11 +85,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
     const { t } = useTranslation();
     const showStatusLabel: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.showStatusLabel);
-
-
-    useEffect(() => {
-        console.log(showStatusLabel);        
-    }, []);
+    
     /**
      * Combine the connectors and dynamic connectors and group them by category.
      */
