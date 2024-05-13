@@ -105,7 +105,12 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     /**
      * Index of the protocols tab.
      */
-    const PROTOCOLS_TAB_INDEX: number = 1;
+    let PROTOCOLS_TAB_INDEX;
+    if (templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
+        PROTOCOLS_TAB_INDEX = 1;
+    } else {
+        PROTOCOLS_TAB_INDEX = 2;
+    }
 
     useEffect(() => {
         if (inboundProtocols == undefined) {
