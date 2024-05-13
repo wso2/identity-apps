@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,8 @@
  */
 
 /**
- * @fileoverview Mocks SVGs loaded with `SVGR` plugin.
+ * Mocks SVGs loaded with `SVGR` plugin.
  */
 
 export default "SvgrURL";
-export const ReactComponent = "div";
+export const ReactComponent: string = "div";

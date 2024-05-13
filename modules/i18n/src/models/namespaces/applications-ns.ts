@@ -397,6 +397,8 @@ export interface ApplicationsNS {
                 tabName: string;
             };
             info: {
+                mtlsOidcHeading: string;
+                mtlsOidcSubHeading: string;
                 oidcHeading: string;
                 oidcSubHeading: string;
                 samlHeading: string;
@@ -1989,6 +1991,13 @@ export interface ApplicationsNS {
                 message: string;
             };
         };
+        overview: {
+            tabName: string;
+            heading: string;
+            contentIntro: string;
+            contentDescription: string;
+            shareApplication: string;
+        };
     };
     featureGate: {
         enabledFeatures: {
@@ -2354,6 +2363,10 @@ export interface ApplicationsNS {
                 description: string;
             };
             genericError: {
+                message: string;
+                description: string;
+            };
+            invalidScriptError: {
                 message: string;
                 description: string;
             };

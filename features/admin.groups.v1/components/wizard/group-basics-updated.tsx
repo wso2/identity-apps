@@ -28,10 +28,11 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../..";
 import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "../../../admin.core.v1";
+import { userstoresConfig } from "../../../admin.extensions.v1";
 import { RootOnlyComponent } from "../../../admin.organizations.v1/components/root-only-component";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getAUserStore, getUserStoreList } from "../../../admin.userstores.v1/api/user-stores";
-import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
+import { UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
 import { UserStoreProperty } from "../../../admin.userstores.v1/models";
 
 /**
@@ -161,8 +162,8 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
-                text: "Primary",
-                value: PRIMARY_USERSTORE
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreName
             }
         ];
 

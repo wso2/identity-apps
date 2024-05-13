@@ -991,6 +991,9 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 endSessionEndpoint: response.data.end_session_endpoint,
                 introspectionEndpoint: response.data.introspection_endpoint,
                 jwksEndpoint: response.data.jwks_uri,
+                mtlsPushedAuthorizationRequestEndpoint:
+                    response.data.mtls_endpoint_aliases?.pushed_authorization_request_endpoint,
+                mtlsTokenEndpoint: response.data.mtls_endpoint_aliases?.token_endpoint,
                 pushedAuthorizationRequestEndpoint: response.data.pushed_authorization_request_endpoint,
                 sessionIframeEndpoint: response.data.check_session_iframe,
                 tokenEndpoint: response.data.token_endpoint,

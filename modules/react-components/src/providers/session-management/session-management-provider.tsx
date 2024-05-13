@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -193,11 +193,23 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 setShowSessionTimeoutModal(JSON.parse(timeout));
             };
 
+            /**
+             * A listener to handle periodic session refresh.
+             */
+            const sessionRefreshListener = (_: MessageEventInit) => {
+                if (onLoginAgain) {
+                    onLoginAgain();
+                }
+            };
+
             window.addEventListener("session-timeout", sessionTimeoutListener);
+
+            window.addEventListener(CommonConstants.SESSION_REFRESH_EVENT, sessionRefreshListener);
 
             return () => {
                 performCleanupTasks();
-                window.removeEventListener("session-timeout",sessionTimeoutListener);
+                window.removeEventListener("session-timeout", sessionTimeoutListener);
+                window.removeEventListener(CommonConstants.SESSION_REFRESH_EVENT, sessionRefreshListener);
             };
         }, []);
 

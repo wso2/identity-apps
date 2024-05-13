@@ -72,7 +72,7 @@ const getLicenseHeaderPattern = () => {
     const LICENSE_HEADER_DEFAULT_PATTERN = [
         "*",
         {
-            pattern: " Copyright \\(c\\) \\b(2019|202[0-4])(?:-(202[0-4]))?, WSO2 LLC. \\(https://www.wso2.com\\)\.$",
+            pattern: " Copyright \\(c\\) \\b(2019|202[0-4])(?:-(202[0-4]))?, WSO2 LLC. \\(https://www.wso2.com\\).$",
             template: " * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com)."
         },
         " *",
@@ -199,6 +199,12 @@ module.exports = {
             "rules": {
                 "header/header": "off"
             }
+        },
+        {
+            "files": [ "*.js" ],
+            "rules": {
+                "tsdoc/syntax": "off"
+            }
         }
     ],
     parserOptions: {
@@ -285,18 +291,19 @@ module.exports = {
                         name: "@oxygen-ui/react"
                     }
                 ],
-                patterns: [ 
+                patterns: [
                     "@wso2is/**/dist/**",
-                    "lodash/**", 
+                    "lodash/**",
                     "lodash/fp/**",
                     // prevents using absolute import paths such as "apps/console/src/**/*", "modules/react"
                     // TODO: show an error message in the editor when an absolute import is used[1]. Currently
                     // it's not working for some reason[2].
-                    // 
-                    // [1] https://eslint.org/docs/latest/rules/no-restricted-imports#options:~:text=%22no%2Drestricted%2Dimports%22%3A%20%5B%22error%22%2C%20%7B%0A%20%20%20%20%22patterns,deprecated%2C%20except%20the%20modules%20in%20import2/good.%22%0A%20%20%20%20%7D%5D%0A%7D%5D
-                    // [2] https://stackoverflow.com/questions/68126222/lint-rule-no-restricted-imports-throw-error-when-patterns-group-specified
+                    //
+                    // [1] https://eslint.org/docs/latest/rules/no-restricted-imports#group
+                    // [2] https://stackoverflow.com/q/68126222/8810941
                     "apps/**/*",
-                    "modules/**/*"
+                    "modules/**/*",
+                    "features/**/*"
                 ]
             }
         ],
@@ -340,8 +347,8 @@ module.exports = {
                 return: "parens"
             }
         ],
-        "react/no-danger": 2,
         "react/no-children-prop": 0,
+        "react/no-danger": 2,
         "react/prop-types": 1,
         semi: 1,
         "sort-imports": [

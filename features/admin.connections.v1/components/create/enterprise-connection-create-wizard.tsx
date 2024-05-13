@@ -20,10 +20,6 @@ import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import Backdrop from "@mui/material/Backdrop";
 import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
-import { ModalWithSidePanel } from "../../../admin.core.v1/components";
-import { getCertificateIllustrations } from "../../../admin.core.v1/configs/ui";
-import { ConfigReducerStateInterface } from "../../../admin.core.v1/models/reducer-state";
-import { AppState } from "../../../admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -68,8 +64,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
-import { commonConfig } from "../../../admin.extensions.v1";
 import { EventPublisher } from "../../../admin.core.v1";
+import { ModalWithSidePanel } from "../../../admin.core.v1/components";
+import { getCertificateIllustrations } from "../../../admin.core.v1/configs/ui";
+import { ConfigReducerStateInterface } from "../../../admin.core.v1/models/reducer-state";
+import { AppState } from "../../../admin.core.v1/store";
+import { commonConfig } from "../../../admin.extensions.v1";
 import { createConnection, useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
@@ -78,6 +78,7 @@ import {
     AuthProtocolTypes,
     ConnectionInterface,
     ConnectionTemplateInterface,
+    EnterpriseConnectionCreateWizardGeneralFormValuesInterface,
     GenericConnectionCreateWizardPropsInterface,
     IdpNameValidationCache
 } from "../../models/connection";
@@ -434,7 +435,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const wizardCommonFirstPage = () => (
         <WizardPage
-            validate={ (values: any) => {
+            validate={ (values: EnterpriseConnectionCreateWizardGeneralFormValuesInterface) => {
                 const errors: FormErrors = {};
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
@@ -465,18 +466,18 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     return values.toString().trimStart();
                 } }
                 listen={ idpNameValidation }
-                validation={ (values: any) => {
+                validation={ (value: string) => {
                     let errors: "";
 
-                    errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
-                    if (values && isUserInputIdpNameAlreadyTaken) {
+                    errors = composeValidators(required, length(IDP_NAME_LENGTH))(value);
+                    if (value && isUserInputIdpNameAlreadyTaken) {
                         errors = t("authenticationProvider:" +
                             "forms.generalDetails.name.validations.duplicate");
                     }
-                    if (!FormValidation.isValidResourceName(values)) {
+                    if (!FormValidation.isValidResourceName(value)) {
                         errors = t("authenticationProvider:" +
                             "templates.enterprise.validation.invalidName",
-                        { idpName: values });
+                        { idpName: value });
                     }
 
                     if (errors === "" || errors === undefined) {

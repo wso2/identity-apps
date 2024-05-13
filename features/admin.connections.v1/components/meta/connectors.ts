@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,32 +16,57 @@
  * under the License.
  */
 
+import { store } from "../../../admin.core.v1/store";
 import { getConnectorIcons } from "../../configs/ui";
 import { OutboundProvisioningConnectorMetaDataInterface } from "../../models/connection";
 
-export const OutboundConnectors: OutboundProvisioningConnectorMetaDataInterface[]  = [
-    {
-        connectorId: "Z29vZ2xlYXBwcw",
-        description: "Provision users to a google domain.",
-        displayName: "Google",
-        icon: getConnectorIcons().google,
-        name: "googleapps",
-        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/Z29vZ2xlYXBwcw"
-    },
-    {
-        connectorId: "c2FsZXNmb3JjZQ",
-        description: "Configure to provision users to Salesforce.",
-        displayName: "Salesforce",
-        icon: getConnectorIcons().salesforce,
-        name: "salesforce",
-        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2FsZXNmb3JjZQ"
-    },
-    {
-        connectorId: "U0NJTTI",
-        description: "Provision users to SCIM 2.0 applications.",
-        displayName: "SCIM2",
-        icon: getConnectorIcons().scim,
-        name: "scim",
-        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/U0NJTTI"
-    }
-];
+/**
+ * The metadata set of connectors shipped OOTB by Identity Server.
+ * @returns List of OutboundProvisioningConnectorMetaDataInterface.
+ */
+const getKnownOutboundProvisioningConnectorsMetaData = (): OutboundProvisioningConnectorMetaDataInterface[] => {
+    return [
+        {
+            connectorId: "Z29vZ2xlYXBwcw",
+            description: "Provision users to a google domain.",
+            displayName: "Google",
+            icon: getConnectorIcons().google,
+            name: "googleapps",
+            self: "/t/carbon.super/api/server/v1"
+                + "/identity-providers/meta/outbound-provisioning-connectors/Z29vZ2xlYXBwcw"
+        },
+        {
+            connectorId: "c2FsZXNmb3JjZQ",
+            description: "Configure to provision users to Salesforce.",
+            displayName: "Salesforce",
+            icon: getConnectorIcons().salesforce,
+            name: "salesforce",
+            self: "/t/carbon.super/api/server/v1"
+                + "/identity-providers/meta/outbound-provisioning-connectors/c2FsZXNmb3JjZQ"
+        },
+        {
+            connectorId: "U0NJTTI",
+            description: "Provision users to SCIM 2.0 applications.",
+            displayName: "SCIM2",
+            icon: getConnectorIcons().scim,
+            name: "scim",
+            self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/U0NJTTI"
+        }
+    ];
+};
+
+/**
+ * Get the metadata set of custom connectors that are added by user.
+ * @returns List of OutboundProvisioningConnectorMetaDataInterface.
+ */
+const getExternalConnectorMetadataExtensions = (): OutboundProvisioningConnectorMetaDataInterface[] => {
+
+    return store?.getState()?.config?.deployment?.extensions?.outboundProvisioningConnectors ?? [];
+};
+
+export const getOutboundProvisioningConnectorsMetaData = (): OutboundProvisioningConnectorMetaDataInterface[] => {
+    return [
+        ...getKnownOutboundProvisioningConnectorsMetaData(),
+        ...getExternalConnectorMetadataExtensions()
+    ];
+};

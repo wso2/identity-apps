@@ -96,7 +96,8 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
     after?: string,
     before?: string,
     filter?: string,
-    shouldFetch: boolean = true
+    shouldFetch: boolean = true,
+    attributes?: string
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -107,6 +108,7 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
         method: HttpMethods.GET,
         params: {
             after,
+            attributes,
             before,
             filter
         },

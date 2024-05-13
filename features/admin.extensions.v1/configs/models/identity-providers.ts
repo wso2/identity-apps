@@ -62,6 +62,7 @@ export interface IdentityProviderConfig {
         ) => ReactElement | null;
     },
     editIdentityProvider: {
+        enableFIDOTrustedAppsConfiguration: boolean;
         showAdvancedSettings: boolean;
         showIssuerSettings: boolean;
         showJitProvisioning: boolean;

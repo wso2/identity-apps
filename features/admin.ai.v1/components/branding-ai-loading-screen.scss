@@ -16,70 +16,55 @@
  * under the License.
  */
 
- .loading-screen-container {
-    align-items: center;
+.branding-ai-loading-screen-parent {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+}
 
-    .loading-screen-content {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        width: 75%;
+.branding-ai-loading-screen-container {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
 
-        .loading-screen-row {
-            align-items: center;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            margin-bottom: 20px;
+.branding-ai-loading-screen-illustration-container {
+    display: flex;
+    flex: 1;
+    justify-content: right;
+}
 
-            .loading-screen-facts {
-                align-items: center;
-                display: flex;
-                flex-direction: column;
-                margin-top: 2rem;
+.branding-ai-loading-screen-text-container {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 7rem 10rem 7rem 0;
+}
 
-                .loading-screen-facts-content {
-                    align-items: left;
-                    display: flex;
-                    flex-direction: column;
-                    max-width: 75%;
+.branding-ai-loading-screen-loading-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
 
-                    .loading-screen-facts-text {
-                        color: rgba(0, 0, 0, 0.6);
-                        font-weight: bold;
-                    }
+.branding-ai-loading-screen-heading {
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
 
-                    .loading-screen-facts-detail {
-                        color: #757575;
-                        height: 150px;
-                        margin-top: 2rem;
-                        overflow: auto;
-                    }
-                }
-            }
+.branding-ai-loading-screen-sub-heading {
+    font-size: 15px;
+    font-weight: 400;
+    color: #6a6d7b;
+}
 
-            .loading-screen-placeholder {
-                display: flex;
-                justify-content: left;
-            }
-        }
-
-        .loading-screen-progress {
-            width: 100%;
-        }
-
-        .loading-screen-status {
-            align-items: center;
-            display: flex;
-            justify-content: flex-start;
-            margin-top: 2rem;
-            width: 100%;
-
-            .loading-screen-status-progress {
-                margin-right: 2rem;
-            }
-        }
-    }
+.branding-ai-loading-screen-loading-state {
+    font-size: 15px;
+    font-weight: 400;
 }

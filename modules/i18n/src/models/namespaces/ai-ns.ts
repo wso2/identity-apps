@@ -15,13 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { NotificationItem } from "../common";
+
 export interface aiNS{
-    aiLoginFlow:{
-        banner:{
+    aiLoginFlow: {
+        banner: {
             full:{
                 heading: string;
-                subheading1: string;
-                subheading2: string;
+                subheading: string;
                 button: string;
             };
             input:{
@@ -37,7 +39,26 @@ export interface aiNS{
             };
 
         };
-        screens:{
+        confirmations: {
+            replacePrompt: {
+                message: string;
+                content: string;
+                header: string;
+            };
+        };
+        didYouKnow: string;
+        notifications: {
+            generateError: NotificationItem;
+            generateInputError: NotificationItem;
+            generateLimitError: NotificationItem;
+            generateResultError: NotificationItem;
+            generateResultFailed: NotificationItem;
+            generateStatusError: NotificationItem;
+            noAuthenticators: NotificationItem;
+            rateLimitError: NotificationItem;
+        };
+        promptsHistory: string;
+        screens: {
             loading:{
                 heading: string;
                 facts:{
@@ -60,6 +81,8 @@ export interface aiNS{
                 };
             };
         };
-
+        disclaimer: string;
+        termsAndConditions: string;
+        title: string;
     };
 }

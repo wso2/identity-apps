@@ -192,9 +192,9 @@ export class AppInsights {
                 const updatedPreferences: string[] = e["pref"];
 
                 if (updatedPreferences?.includes("C0002")){
-                    this.externalAppInsightsInstance.getCookieMgr().setEnabled(true);
+                    this.externalAppInsightsInstance?.getCookieMgr().setEnabled(true);
                 } else {
-                    this.externalAppInsightsInstance.getCookieMgr().setEnabled(false);
+                    this.externalAppInsightsInstance?.getCookieMgr().setEnabled(false);
                 }
             });
 

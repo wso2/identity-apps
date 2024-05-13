@@ -1,5 +1,129 @@
 # @wso2is/identity-apps-core
 
+## 2.1.76
+
+### Patch Changes
+
+- [#6233](https://github.com/wso2/identity-apps/pull/6233) [`35c1d9adf591048c698b837117c6d9e08d9d70b6`](https://github.com/wso2/identity-apps/commit/35c1d9adf591048c698b837117c6d9e08d9d70b6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Restrict showing the maintenance banner for console app related authn and recovery flows
+
+## 2.1.75
+
+### Patch Changes
+
+- [#6209](https://github.com/wso2/identity-apps/pull/6209) [`d0be112acff7175af164286e54d267e3e8b53978`](https://github.com/wso2/identity-apps/commit/d0be112acff7175af164286e54d267e3e8b53978) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Update the testid of the invitation accept page
+
+## 2.1.74
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+- Updated dependencies [[`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb)]:
+  - @wso2is/theme@2.0.81
+
+## 2.1.73
+
+### Patch Changes
+
+- Updated dependencies [[`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee), [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013)]:
+  - @wso2is/theme@2.0.80
+
+## 2.1.72
+
+### Patch Changes
+
+- Updated dependencies [[`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e)]:
+  - @wso2is/theme@2.0.79
+
+## 2.1.71
+
+### Patch Changes
+
+- Updated dependencies [[`4a402cf922`](https://github.com/wso2/identity-apps/commit/4a402cf922f0e6aea7a67bb8718c26f6b3c158b9)]:
+  - @wso2is/theme@2.0.78
+
+## 2.1.70
+
+### Patch Changes
+
+- [#6152](https://github.com/wso2/identity-apps/pull/6152) [`818c00adf1`](https://github.com/wso2/identity-apps/commit/818c00adf17f07639834f5b9c839471faeac0bb8) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove runtime logic for enterprise login idp
+
+* [#6157](https://github.com/wso2/identity-apps/pull/6157) [`50aa715699`](https://github.com/wso2/identity-apps/commit/50aa715699a497864f41b150de9ad41f4fcce4db) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Revert removing enterprise idp based on legacy check
+
+## 2.1.69
+
+### Patch Changes
+
+- [#6138](https://github.com/wso2/identity-apps/pull/6138) [`5afa9ad1ea`](https://github.com/wso2/identity-apps/commit/5afa9ad1eafa040999395f92ec6264458109c9bf) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix portal path issue
+
+## 2.1.68
+
+### Patch Changes
+
+- [#6124](https://github.com/wso2/identity-apps/pull/6124) [`a856fc6776`](https://github.com/wso2/identity-apps/commit/a856fc67768fafeba33c573ea56d57ce9b16dd4b) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix portal path issue
+
+## 2.1.67
+
+### Patch Changes
+
+- Updated dependencies [[`8f9c18b05f`](https://github.com/wso2/identity-apps/commit/8f9c18b05fe577b814d1207b4c5c869ecfa131a3)]:
+  - @wso2is/theme@2.0.77
+
+## 2.1.66
+
+### Patch Changes
+
+- Updated dependencies [[`e74cc7760e`](https://github.com/wso2/identity-apps/commit/e74cc7760e96130510625af061ec523dd0295d26)]:
+  - @wso2is/theme@2.0.76
+
+## 2.1.65
+
+### Patch Changes
+
+- [#6082](https://github.com/wso2/identity-apps/pull/6082) [`bd90514024`](https://github.com/wso2/identity-apps/commit/bd905140243fb8010357c10b229fb0da7878a874) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix login.jsp issue
+
+## 2.1.64
+
+### Patch Changes
+
+- [#6070](https://github.com/wso2/identity-apps/pull/6070) [`82e16875db`](https://github.com/wso2/identity-apps/commit/82e16875dbc3ca0dc157c176d61c37aeeee1d573) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide portal app path based on app base name
+
+* [#6078](https://github.com/wso2/identity-apps/pull/6078) [`d6061efeb8`](https://github.com/wso2/identity-apps/commit/d6061efeb89e1bdfd61f67df9d2f80032bc15024) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Add enterprise IDP for legecy authz runtime
+
+## 2.1.63
+
+### Patch Changes
+
+- [#6059](https://github.com/wso2/identity-apps/pull/6059) [`9b107d6cdc`](https://github.com/wso2/identity-apps/commit/9b107d6cdc5d92c62df1a7020da52a3bcde74831) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Avoid the nested if statement
+
+## 2.1.62
+
+### Patch Changes
+
+- Updated dependencies [[`bd05cfb945`](https://github.com/wso2/identity-apps/commit/bd05cfb94509ac4e55315e609268fd371daa56ed)]:
+  - @wso2is/theme@2.0.75
+
+## 2.1.61
+
+### Patch Changes
+
+- Updated dependencies [[`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501)]:
+  - @wso2is/theme@2.0.74
+
+## 2.1.60
+
+### Patch Changes
+
+- [#6032](https://github.com/wso2/identity-apps/pull/6032) [`9b867b0c73`](https://github.com/wso2/identity-apps/commit/9b867b0c7372822aedc9c70a548508b347963f65) Thanks [@AnuradhaSK](https://github.com/AnuradhaSK)! - Support replacing organizationid hint in access url for password reset flow
+
+## 2.1.59
+
+### Patch Changes
+
+- [#6039](https://github.com/wso2/identity-apps/pull/6039) [`00e6bef41f`](https://github.com/wso2/identity-apps/commit/00e6bef41f5b4b4a32a2097e732e8fb3dbb06ded) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Stop sharing the myaccount app with organizations by default
+
+* [#6046](https://github.com/wso2/identity-apps/pull/6046) [`b8bf6a9fef`](https://github.com/wso2/identity-apps/commit/b8bf6a9fef24e488bc22d985c7c2aa5799b53332) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Revert callback URL set when portal app creation
+
 ## 2.1.58
 
 ### Patch Changes

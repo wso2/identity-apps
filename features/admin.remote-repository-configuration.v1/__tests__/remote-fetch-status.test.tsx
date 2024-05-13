@@ -65,7 +65,7 @@ describe("UTC-4.0 - [Remote Fetch Configuration] - Configuration Status", () => 
         expect(screen.getByTestId("remote-fetch-details-status")).toBeInTheDocument();
     });
 
-    test("UTC-4.2 - Test trigger confirguration button click event", async () => {
+    test.skip("UTC-4.2 - Test trigger confirguration button click event", async () => {
         render(
             <Provider store={ store }>
                 <RemoteFetchStatus data-componentid="remote-fetch-details" />

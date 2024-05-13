@@ -42,7 +42,7 @@ import {
     getAUserStore,
     getEmptyPlaceholderIllustrations
 } from "../../admin.core.v1";
-import { commonConfig } from "../../admin.extensions.v1/configs";
+import { commonConfig, userstoresConfig } from "../../admin.extensions.v1/configs";
 import { RootOnlyComponent } from "../../admin.organizations.v1/components";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../admin.userstores.v1/api";
@@ -87,6 +87,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
+    const [ isUserStoresListRequestLoading, setUserStoresListRequestLoading ] = useState<boolean>(false);
+    const [ isUserStoreRequestLoading, setUserStoreRequestLoading ] = useState<boolean>(false);
     const [ userStore, setUserStore ] = useState(
         commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
@@ -159,8 +161,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
-                text: "Primary",
-                value: PRIMARY_USERSTORE
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreName
             }
         ];
 
@@ -171,6 +173,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         };
 
         if (isSuperOrganization() || isFirstLevelOrganization()) {
+            setUserStoresListRequestLoading(true);
             getUserStoreList()
                 .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
                     if (storeOptions?.length === 0) {
@@ -178,23 +181,29 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     }
 
                     response.data.map((store: UserstoreListResponseInterface, index: number) => {
-                        getAUserStore(store.id).then((response: UserStorePostData) => {
-                            const isDisabled: boolean = response.properties.find(
-                                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
+                            setUserStoreRequestLoading(true);
+                            getAUserStore(store.id).then((response: UserStorePostData) => {
+                                const isDisabled: boolean = response.properties.find(
+                                    (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
 
-                            if (!isDisabled) {
-                                storeOption = {
-                                    key: index,
-                                    text: store.name,
-                                    value: store.name
-                                };
-                                storeOptions.push(storeOption);
-                            }
-                        });
-                    }
-                    );
+                                if (!isDisabled) {
+                                    storeOption = {
+                                        key: index,
+                                        text: store.name,
+                                        value: store.name
+                                    };
+                                    storeOptions.push(storeOption);
+                                }
+                            }).finally(() => {
+                                setUserStoreRequestLoading(false);
+                            });
+                        }
+                    });
 
                     setUserStoresList(storeOptions);
+                }).finally(() => {
+                    setUserStoresListRequestLoading(false);
                 });
         }
 
@@ -350,7 +359,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             options={ userStoreOptions && userStoreOptions }
                             placeholder={ t("console:manage.features.groups.list.storeOptions") }
                             onChange={ handleDomainChange }
-                            defaultValue={ PRIMARY_USERSTORE }
+                            loading={ isUserStoresListRequestLoading || isUserStoreRequestLoading }
+                            defaultValue={ userstoresConfig.primaryUserstoreName }
                         />
                     </RootOnlyComponent>
                 ) }

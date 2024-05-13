@@ -57,9 +57,6 @@
     {% if console.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ console.super_tenant_proxy_name }}",
     {% endif %}
-    {% if tenant_context.enable_tenant_qualified_urls is defined && tenant_context.require_super_tenant_in_urls is defined %}
-    "requireSuperTenantInUrls" : {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls }},
-    {% endif %}
     {% if console.doc_site_path is defined %}
     "docSiteUrl": "{{ console.doc_site_path }}",
     {% endif %}
@@ -173,6 +170,13 @@
     {% endif %}
     {% if legacy_mode.enabled is defined %}
     "legacyMode": {{ legacy_mode.enabled }},
+    {% endif %}
+    {% if tenant_context is defined %}
+    "tenantContext": {
+        "enableTenantQualifiedUrls": {{ tenant_context.enable_tenant_qualified_urls | default(true) }},
+        "requireSuperTenantInUrls": {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls | default(false) }},
+        "requireSuperTenantInAppUrls": {{ tenant_context.require_super_tenant_in_app_urls | default(true) }}
+    },
     {% endif %}
     "ui": {
         "announcements": [
@@ -942,6 +946,36 @@
                 "scopes": {
                     {% if console.guest_user.scopes is defined %}
                     {% for operation, scopes in console.guest_user.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.parent_user_invitation is defined %}
+            "parentUserInvitation": {
+                "disabledFeatures": [
+                    {% if console.parent_user_invitation.disabled_features is defined %}
+                    {% for feature in console.parent_user_invitation.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.parent_user_invitation.enabled is defined %} {{ console.parent_user_invitation.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.parent_user_invitation.scopes is defined %}
+                    {% for operation, scopes in console.parent_user_invitation.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -1791,6 +1825,9 @@
                 {% endfor %}
             {% endif %}
         ],
+        {% if console.ui.is_editing_system_roles_allowed is defined %}
+        "isEditingSystemRolesAllowed": {{ console.ui.is_editing_system_roles_allowed }},
+        {% endif %}
         {% if console.ui.isXacmlConnectorEnabled is defined %}
         "isXacmlConnectorEnabled": {{ console.ui.isXacmlConnectorEnabled }},
         {% endif %}

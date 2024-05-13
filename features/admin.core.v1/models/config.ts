@@ -134,6 +134,10 @@ export interface FeatureConfigInterface {
      */
     guestUser?: FeatureAccessConfigInterface;
     /**
+     * Parent User Invite Feature
+     */
+    parentUserInvitation?: FeatureAccessConfigInterface;
+    /**
      * Identity provider management feature.
      */
     identityProviders?: FeatureAccessConfigInterface;
@@ -412,6 +416,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * System apps list.
      */
     systemAppsIdentifiers: string[];
+    /**
+     * Is editing system roles allowed
+     */
+    isEditingSystemRolesAllowed: boolean;
     /**
      * Show App Switch button in the Header.
      */

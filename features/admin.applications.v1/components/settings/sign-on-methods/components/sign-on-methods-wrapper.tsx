@@ -18,8 +18,12 @@
 
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useSelector } from "react-redux";
 import { SignOnMethodsCore } from "./sign-on-methods-core";
-import { FeatureConfigInterface } from "../../../../../admin.core.v1";
+import { AppState, FeatureConfigInterface } from "../../../../../admin.core.v1";
+import { LOGIN_FLOW_AI_FEATURE_TAG } from "../../../../../admin.login-flow.ai.v1/constants/login-flow-ai-constants";
+import useAILoginFlow from "../../../../../admin.login-flow.ai.v1/hooks/use-ai-login-flow";
+import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
@@ -91,11 +95,24 @@ export const SignOnMethodsWrapper: FunctionComponent<SignOnMethodsWrapperPropsIn
         [ "data-componentid" ]: componentId
     } = props;
 
+    const { aiGeneratedLoginFlow } = useAILoginFlow();
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.applications?.disabledFeatures);
+
+    let processedAuthenticationSequence: AuthenticationSequenceInterface = authenticationSequence;
+
+    if (!applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG) && !isSubOrganization()) {
+        processedAuthenticationSequence = aiGeneratedLoginFlow ?? authenticationSequence;
+    }
+
     return (
         <SignOnMethodsCore
             application={ application }
             appId={ appId }
-            authenticationSequence={ authenticationSequence }
+            authenticationSequence={ processedAuthenticationSequence }
             clientId={ clientId }
             isLoading={ isLoading }
             onUpdate={ onUpdate }

@@ -17,9 +17,11 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import IconButton from "@oxygen-ui/react/IconButton";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
@@ -41,11 +43,12 @@ import "./branding-ai-loading-screen.scss";
  */
 export const LoadingScreen: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
+
     const [ factIndex, setFactIndex ] = useState<number>(0);
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
 
-    const { operationId } = useAIBrandingPreference();
-    const { data, isLoading } = useGetAIBrandingGenerationStatus(operationId);
+    const { operationId, setBrandingGenerationCompleted, setGeneratingBranding } = useAIBrandingPreference();
+    const { data } = useGetAIBrandingGenerationStatus(operationId);
     const facts: string[] = useGetFacts();
     const statusLabels: Record<string, string> = useGetStatusLabels();
 
@@ -54,7 +57,7 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         const targetProgress: number = getProgress();
 
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setCurrentProgress((prevProgress: number) => {
                 if (prevProgress >= targetProgress) {
                     clearInterval(interval);
@@ -70,7 +73,7 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     }, [ data ]);
 
     useEffect(() => {
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setFactIndex((factIndex + 1) % facts.length);
         }, FACTS_ROTATION_DELAY);
 
@@ -115,35 +118,45 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
         return t(currentStatusLabel);
     };
 
+    const handleGenerateCancel = () => {
+        setGeneratingBranding(false);
+        setBrandingGenerationCompleted(false);
+    };
+
     return (
-        <Box className="loading-screen-container">
-            <Box className="loading-screen-content">
-                <Box className="loading-screen-row">
-                    <Box className="loading-screen-facts">
-                        <Box className="loading-screen-facts-content">
-                            <Typography variant="h5" className="loading-screen-facts-text">
-                                { t("branding:ai.screens.loading.didYouKnow") }
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                align="justify"
-                                className="loading-screen-facts-detail">
-                                { facts[factIndex] }
-                            </Typography>
-                        </Box>
-                    </Box>
-                    <Box className="loading-screen-placeholder">
-                        <LoadingPlaceholder />
-                    </Box>
-                </Box>
-                <Box className="loading-screen-progress">
-                    <LinearProgress variant="determinate" value={ currentProgress } />
-                </Box>
-                <Box className="loading-screen-status">
-                    { isLoading && <CircularProgress size={ 20 } className="loading-screen-status-progress" /> }
-                    <Typography variant="h6">
-                        { getCurrentStatus() }
+        <Box className="branding-ai-loading-screen-container">
+            <Box className="branding-ai-loading-screen-illustration-container">
+                <LoadingPlaceholder />
+            </Box>
+            <Box className="branding-ai-loading-screen-text-container">
+                <Box className="mb-5">
+                    <Typography
+                        variant="h5"
+                        className="branding-ai-loading-screen-heading"
+                    >
+                        { t("branding:ai.screens.loading.didYouKnow") }
                     </Typography>
+                    <Typography className="branding-ai-loading-screen-sub-heading">
+                        { facts[factIndex] }
+                    </Typography>
+                </Box>
+                <Box sx={ { width: 1 } }>
+                    <Box className="branding-ai-loading-screen-loading-container">
+                        <Typography className="branding-ai-loading-screen-loading-state">
+                            { getCurrentStatus() }
+                        </Typography>
+                        <Tooltip
+                            title="Cancel"
+                            placement="top"
+                        >
+                            <IconButton
+                                onClick={ handleGenerateCancel }
+                            >
+                                <XMarkIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                    <LinearProgress variant="buffer" value={ currentProgress } valueBuffer={ currentProgress + 1 }  />
                 </Box>
             </Box>
         </Box>
