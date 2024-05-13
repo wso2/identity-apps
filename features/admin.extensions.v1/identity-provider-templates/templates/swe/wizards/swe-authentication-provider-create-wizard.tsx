@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,6 +48,7 @@ import {
     IdentityProviderInterface
 } from "../../../../../admin.identity-providers.v1/models";
 import { IdentityProviderManagementUtils } from "../../../../../admin.identity-providers.v1/utils";
+import { SIWEConstants } from "../../../../components/identity-providers/constants/swe-constants";
 import { identityProviderConfig } from "../../../../configs/identity-provider";
 
 /**
@@ -248,21 +249,23 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties =
                 identityProvider?.federatedAuthenticators?.authenticators[ 0 ]?.properties?.filter(
                     (item: CommonPluggableComponentPropertyInterface) =>
-                        item.key !== "ClientId" && item.key !== "ClientSecret" && item.key !== "callbackUrl"
+                        item?.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_ID
+                            && item?.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRET
+                            && item?.key !== SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CALLBACK_URL
                 );
 
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
                 ...identityProvider.federatedAuthenticators.authenticators[ 0 ].properties,
                 {
-                    "key": "ClientId",
+                    "key": SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_ID,
                     "value": values.clientId.toString()
                 },
                 {
-                    "key": "ClientSecret",
+                    "key": SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CLIENT_SECRET,
                     "value": values.clientSecret.toString()
                 },
                 {
-                    "key": "callbackUrl",
+                    "key": SIWEConstants.SWE_AUTHENTICATOR_PROPERTY_KEYS.CALLBACK_URL,
                     "value": IdentityProviderManagementUtils.getCommonAuthEndpoint()
                 }
             ];
