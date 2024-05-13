@@ -19,8 +19,11 @@
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 <script src="libs/themes/wso2is/semantic.min.js"></script>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Arrays" %>
 
 <%
     // Determining whether the application user is going to login is Console, as the maintenance banner
