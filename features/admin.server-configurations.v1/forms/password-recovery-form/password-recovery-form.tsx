@@ -25,7 +25,9 @@ import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Divider, Label } from "semantic-ui-react";
+import { AppState } from "../../../admin.core.v1";
 import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import {
@@ -180,6 +182,8 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
+    const showSmsOtpPasswordRecoveryBetaChip: boolean =
+        useSelector((state: AppState) => state?.config?.ui?.showSmsOtpPasswordRecoveryBetaChip);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -512,9 +516,13 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionSubHeadingSMS") as ReactNode }
-                    <Chip
-                        label="BETA"
-                        className="oxygen-menu-item-chip oxygen-chip-beta" />
+                    {
+                        showSmsOtpPasswordRecoveryBetaChip ?
+                            (<Chip
+                                label="BETA"
+                                className="oxygen-menu-item-chip oxygen-chip-beta" />)
+                            : <></>
+                    }
                 </Heading>
                 <Field.Checkbox
                     ariaLabel="enableSMSBasedRecovery"
@@ -576,9 +584,13 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.otpConfigHeading") as ReactNode }
-                    <Chip
-                        label="BETA"
-                        className="oxygen-menu-item-chip oxygen-chip-beta" />
+                    {
+                        showSmsOtpPasswordRecoveryBetaChip ?
+                            (<Chip
+                                label="BETA"
+                                className="oxygen-menu-item-chip oxygen-chip-beta" />)
+                            : <></>
+                    }
                 </Heading>
                 <Field.Checkbox
                     ariaLabel="passwordRecoveryOtpUseUppercase"
@@ -677,9 +689,13 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.failedAttemptConfigHeading") as ReactNode }
-                    <Chip
-                        label="BETA"
-                        className="oxygen-menu-item-chip oxygen-chip-beta" />
+                    {
+                        showSmsOtpPasswordRecoveryBetaChip ?
+                            (<Chip
+                                label="BETA"
+                                className="oxygen-menu-item-chip oxygen-chip-beta" />)
+                            : <></>
+                    }
                 </Heading>
                 <Field.Input
                     ariaLabel="maxFailedAttemptCount"
