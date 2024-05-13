@@ -61,8 +61,6 @@ const render = (
         //     getAuthParams={ AuthenticateUtils.getAuthParams }
         // >
             <Provider store={ store }>
-                { /* Temporarily commenting out the AccessControlProvider due to issues with mocking
-                    window["AppUtils"] */ }
                 <AccessControlProvider
                     allowedScopes={ allowedScopes }
                     features={ featureConfig }
@@ -71,7 +69,6 @@ const render = (
                 >
                     { children }
                 </AccessControlProvider>
-
             </Provider>
             // </AuthProvider>
         );

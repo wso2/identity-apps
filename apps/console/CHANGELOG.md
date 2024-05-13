@@ -1,5 +1,47 @@
 # @wso2is/console
 
+## 2.18.3
+
+### Patch Changes
+
+- Updated dependencies [[`931c4df0ca2166d5d57eac06624d173b0adc8889`](https://github.com/wso2/identity-apps/commit/931c4df0ca2166d5d57eac06624d173b0adc8889)]:
+  - @wso2is/features@2.18.3
+
+## 2.18.2
+
+### Patch Changes
+
+- Updated dependencies [[`77c1b97834932cfc3cec372d4005d3d5e1de1e46`](https://github.com/wso2/identity-apps/commit/77c1b97834932cfc3cec372d4005d3d5e1de1e46), [`9beedd16003ce305af2a7497652fd35dcd787814`](https://github.com/wso2/identity-apps/commit/9beedd16003ce305af2a7497652fd35dcd787814)]:
+  - @wso2is/features@2.18.2
+  - @wso2is/theme@2.0.82
+  - @wso2is/react-components@2.2.1
+  - @wso2is/dynamic-forms@2.0.59
+  - @wso2is/form@2.0.60
+
+## 2.18.1
+
+### Patch Changes
+
+- Updated dependencies [[`c2866febec26052bb1c27c11d6534d80a0bf163a`](https://github.com/wso2/identity-apps/commit/c2866febec26052bb1c27c11d6534d80a0bf163a)]:
+  - @wso2is/features@2.18.1
+
+## 2.18.0
+
+### Minor Changes
+
+- [#6217](https://github.com/wso2/identity-apps/pull/6217) [`5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13`](https://github.com/wso2/identity-apps/commit/5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add support to display custom outbound provisioning connectors
+
+### Patch Changes
+
+- Updated dependencies [[`2f26bd622b68d20836b718db7735794470882b22`](https://github.com/wso2/identity-apps/commit/2f26bd622b68d20836b718db7735794470882b22), [`ecd8c4c52baa9286cce6441bf3428c2f371b9576`](https://github.com/wso2/identity-apps/commit/ecd8c4c52baa9286cce6441bf3428c2f371b9576), [`5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13`](https://github.com/wso2/identity-apps/commit/5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13)]:
+  - @wso2is/features@2.18.0
+
+## 2.17.6
+
+### Patch Changes
+
+- [#6227](https://github.com/wso2/identity-apps/pull/6227) [`ad005f630a54d3606ccd2719819b9429fa18b66c`](https://github.com/wso2/identity-apps/commit/ad005f630a54d3606ccd2719819b9429fa18b66c) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Hide Organization creator in the sub org's user list in old runtime
+
 ## 2.17.5
 
 ### Patch Changes

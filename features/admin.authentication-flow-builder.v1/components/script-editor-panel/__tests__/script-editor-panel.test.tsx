@@ -45,6 +45,7 @@ describe.skip("ScriptEditorPanel", () => {
                         onUpdate={ jest.fn() }
                         isLoading={ false }
                         readOnly={ false }
+                        authenticationSequence={ {} }
                     >
                         <ScriptEditorPanel { ...defaultProps } />
                     </AuthenticationFlowProvider>

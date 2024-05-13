@@ -46,3 +46,11 @@ global.ResizeObserver = class {
 
     }
 };
+
+global.console = {
+    ...console,
+    debug: jest.fn(),
+    error: jest.fn(),
+    info: jest.fn(),
+    log: jest.fn()
+};

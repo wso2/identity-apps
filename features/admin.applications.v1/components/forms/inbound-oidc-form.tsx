@@ -1609,26 +1609,29 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     skipInternalValidation= {
                                         template.templateId === ApplicationManagementConstants.MOBILE
+                                        || CustomApplicationTemplate?.id === template?.id
                                     }
                                     validation={ (value: string) => {
-                                        if (
-                                            !(isMobileApplication)
-                                            && CustomApplicationTemplate?.id !== template?.id
-                                            && !(URLUtils.isURLValid(value, true) &&
-                                                (URLUtils.isHttpUrl(value)
-                                                || URLUtils.isHttpsUrl(value)))
-                                        ) {
+                                        if ((isMobileApplication || CustomApplicationTemplate?.id === template?.id)) {
+                                            if (URLUtils.isMobileDeepLink(value)) {
+                                                setCallbackURLsErrorLabel(null);
+
+                                                return true;
+                                            }
+
+                                            return false;
+                                        }
+                                        if (URLUtils.isURLValid(value)) {
+                                            if (URLUtils.isHttpUrl(value) || URLUtils.isHttpsUrl(value)) {
+                                                setCallbackURLsErrorLabel(null);
+
+                                                return true;
+                                            }
 
                                             return false;
                                         }
 
-                                        if (!URLUtils.isMobileDeepLink(value)) {
-                                            return false;
-                                        }
-
-                                        setCallbackURLsErrorLabel(null);
-
-                                        return true;
+                                        return false;
                                     } }
                                     showError={ showURLError }
                                     setShowError={ setShowURLError }

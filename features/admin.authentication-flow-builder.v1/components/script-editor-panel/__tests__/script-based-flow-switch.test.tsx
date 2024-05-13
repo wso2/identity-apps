@@ -43,6 +43,7 @@ describe.skip("ScriptBasedFlowSwitch", () => {
                         onUpdate={ jest.fn() }
                         isLoading={ false }
                         readOnly={ false }
+                        authenticationSequence={ {} }
                     >
                         <ScriptBasedFlowSwitch { ...defaultProps } />
                     </AuthenticationFlowProvider>

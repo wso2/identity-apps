@@ -161,8 +161,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
-                text: "Primary",
-                value: PRIMARY_USERSTORE
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreName
             }
         ];
 
@@ -181,22 +181,24 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     }
 
                     response.data.map((store: UserstoreListResponseInterface, index: number) => {
-                        setUserStoreRequestLoading(true);
-                        getAUserStore(store.id).then((response: UserStorePostData) => {
-                            const isDisabled: boolean = response.properties.find(
-                                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
+                            setUserStoreRequestLoading(true);
+                            getAUserStore(store.id).then((response: UserStorePostData) => {
+                                const isDisabled: boolean = response.properties.find(
+                                    (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
 
-                            if (!isDisabled) {
-                                storeOption = {
-                                    key: index,
-                                    text: store.name,
-                                    value: store.name
-                                };
-                                storeOptions.push(storeOption);
-                            }
-                        }).finally(() => {
-                            setUserStoreRequestLoading(false);
-                        });
+                                if (!isDisabled) {
+                                    storeOption = {
+                                        key: index,
+                                        text: store.name,
+                                        value: store.name
+                                    };
+                                    storeOptions.push(storeOption);
+                                }
+                            }).finally(() => {
+                                setUserStoreRequestLoading(false);
+                            });
+                        }
                     });
 
                     setUserStoresList(storeOptions);
