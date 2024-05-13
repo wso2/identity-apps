@@ -142,20 +142,16 @@
                         <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %>
                         </span>
                     </a>
-                    <%
-                        if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
-                    %>
+                <%
+                    if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
+                %>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
-                        </p>
-                        <div class="ui divider hidden"></div>
-                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
-                    <%
-                        } else {
-                    %>
-                        </p>
-                    <%
-                        }
-                    %>
+                </p>
+                <div class="ui divider hidden"></div>
+                <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                <% } else { %>
+                </p>
+                <% } %>
                 <div class="ui divider hidden"></div>
                 <% if (isValidCallback) { %>
                 <div id="action-buttons" class="buttons">
