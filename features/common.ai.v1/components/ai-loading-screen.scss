@@ -33,6 +33,16 @@
     display: flex;
     flex: 1;
     justify-content: right;
+
+    /**
+    * The following styles are used to hide the illustration container
+    * when the screen is in a loading state.
+    * This is done to prevent the illustration from overlapping with the
+    * loading animation.
+    */
+    &.hidden {
+        visibility: hidden;
+    }
 }
 
 .ai-loading-screen-text-container {
@@ -42,6 +52,7 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 7rem 10rem 7rem 0;
+    z-index: 2;
 }
 
 .ai-loading-screen-loading-container {
@@ -67,4 +78,10 @@
 .ai-loading-screen-loading-state {
     font-size: 15px;
     font-weight: 400;
+}
+
+.ai-loading-screen-animation-container {
+    position: absolute;
+    left: 50px;
+    margin-top: 50px;
 }

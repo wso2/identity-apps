@@ -22,7 +22,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import AILoadingScreen from "../../common.ai.v1/components/components/ai-loading-screen";
+import AILoadingScreen from "../../common.ai.v1/components/ai-loading-screen";
 import { useAILoginFlowGenerationStatus } from "../api/use-ai-login-flow-generation-status";
 import {
     FACTS_ROTATION_DELAY,
