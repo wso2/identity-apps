@@ -172,7 +172,7 @@
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
-        "showSmsOtpPasswordRecoveryBetaChip": false,
+        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "features": {
             "administrators": {
                 "disabledFeatures": [],

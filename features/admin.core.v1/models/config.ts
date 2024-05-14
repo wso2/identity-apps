@@ -453,7 +453,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
     /**
      * Config if beta tag should be displayed for sms otp for password recovery feature.
      */
-    showSmsOtpPasswordRecoveryBetaChip?: boolean;
+    showSmsOtpPwdRecoveryFeatureStatusChip?: boolean;
 }
 
 /**
