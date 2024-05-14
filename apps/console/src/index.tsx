@@ -39,7 +39,7 @@ ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
 // Function to check the status of the Monaco CDN.
 // If the CDN is not available, the default CDN will be used.
-async function checkCDNStatus() {
+const checkCDNStatus = async () => {
     try {
         const response: Response = await fetch("https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs/loader.js");
 
@@ -57,9 +57,9 @@ async function checkCDNStatus() {
             });
         }
     } catch (error) {
-        //Use default CDN.
+        // Use default CDN.
     }
-}
+};
 
 checkCDNStatus();
 
