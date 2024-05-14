@@ -1,37 +1,10 @@
 <%--
- ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  ~
  ~ This software is the property of WSO2 LLC. and its suppliers, if any.
  ~ Dissemination of any information or reproduction of any material contained
  ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
  ~ You may not alter or remove any copyright or other notice from copies of this content.
---%>
-
-<%--  
-    This template is used to keep an user waiting using the adaptive auth dynamic prompt capability.
-    An example prompt usage in adaptive script is shown below. The parameters are optional and if not provided,
-    the default values will be used.
-
-    prompt("internalWait", {
-        "type": "<WAITING_METHOD>",
-        "data": {
-            "greeting": "<GREETING_TEXT>",
-            "message": "<WAITING_MESSAGE>",
-            "pollingEndpoint": "<POLLING_ENDPOINT>",
-            "requestMethod": "<POLLING_REQUEST_METHOD>",
-            "contentType": "<POLLING_REQUEST_CONTENT_TYPE>",
-            "requestData": "<POLLING_REQUEST_DATA>",
-            "pollingInterval": "<POLLING_INTERVAL_SECONDS>",
-            "timeout": "<TIMEOUT_SECONDS>"
-        }
-    }, {
-        onSuccess: function(context) {
-            Log.info("Successfully redirected back from waiting page.");
-        },
-        onFail: function(context, data) {
-            Log.info("Error occurred during the prompt.");
-        }
-    });
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
