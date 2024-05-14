@@ -70,7 +70,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
     const applicationRolesFeatureConfig: FeatureAccessConfigInterface
         = store.getState()?.config?.ui?.features?.applicationRoles;
-    const showStatusLabel: boolean = window["AppUtils"]?.getConfig()?.ui?.showStatusLabel;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -1326,8 +1325,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("../../admin.api-resources.v2/pages/api-resources")
             ),
             exact: true,
-            featureStatus: showStatusLabel ? "NEW" : "",
-            featureStatusLabel: showStatusLabel? "common:new": "",
             icon: {
                 icon: getSidePanelIcons().apiResources
             },
@@ -1403,8 +1400,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 ],
                 component: lazy(() => import("../../admin.roles.v2/pages/role")),
                 exact: true,
-                featureStatus: showStatusLabel ? "NEW" : "",
-                featureStatusLabel: showStatusLabel? "common:new": "",
                 icon: {
                     icon: getSidePanelIcons().applicationRoles
                 },
