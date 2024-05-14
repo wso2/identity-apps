@@ -23,6 +23,7 @@ import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon }from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AnimationProps, Variants, motion } from "framer-motion";
 import React, { PropsWithChildren, ReactElement, useState } from "react";
 import AIText from "./ai-text";
 import AIBannerBackgroundTall
@@ -57,59 +58,82 @@ const AIBannerTall = (props: PropsWithChildren<AIBannerTallProps>): ReactElement
 
     const [ showContent, setShowContent ] = useState<boolean>(true);
 
+    const variants: Variants = {
+        collapsed: {
+            backgroundPosition: "calc(100% - 20px) -40px, right top"
+        },
+        expanded: {
+            backgroundPosition: "calc(100% - 20px) -20px, right top"
+        }
+    };
+
+    const transitions: AnimationProps["transition"] = {
+        delay: 0.2,
+        duration: 0.5,
+        repeat: 0, type:
+        "spring"
+    };
+
+
     return (
-        <Accordion
-            className="ai-banner-container"
-            defaultExpanded
-            disableGutters
-            elevation={ 0 }
-            sx={ {
-                "&:before": {
-                    display: "none"
-                }
-            } }
+        <motion.div
+            className="ai-banner-motion-container"
             style={ {
                 backgroundImage: `url(${ AIBot }), url(${ AIBannerBackgroundTall })`
             } }
-            onChange={ () => setShowContent(!showContent) }
-
+            animate={ showContent ? "expanded" : "collapsed" }
+            variants={ variants }
+            transition={ transitions }
         >
-            <AccordionSummary
-                className="ai-banner-content"
-                expandIcon={ (
-                    <IconButton
-                        className="ai-banner-collapse-button"
-                    >
-                        <ChevronDownIcon
-                            className="ai-banner-caret-icon"
-                            size={ 14 }
-                            fill="black"
-                        />
-                    </IconButton>
-                ) }
+            <Accordion
+                className="ai-banner-container"
+                defaultExpanded
+                disableGutters
+                elevation={ 0 }
+                sx={ {
+                    "&:before": {
+                        display: "none"
+                    }
+                } }
+                onChange={ () => setShowContent(!showContent) }
             >
-                <Box className="ai-banner-text-container">
-                    <Typography
-                        as="h3"
-                        className="ai-banner-heading"
-                    >
-                        { title }
-                        <AIText>
-                            { aiText }
-                        </AIText>
-                        {
-                            titleLabel
-                        }
-                    </Typography>
-                    <Typography className="ai-banner-sub-heading">
-                        { description }
-                    </Typography>
+                <AccordionSummary
+                    className="ai-banner-content"
+                    expandIcon={ (
+                        <IconButton
+                            className="ai-banner-collapse-button"
+                        >
+                            <ChevronDownIcon
+                                className="ai-banner-caret-icon"
+                                size={ 14 }
+                                fill="black"
+                            />
+                        </IconButton>
+                    ) }
+                >
+                    <Box className="ai-banner-text-container">
+                        <Typography
+                            as="h3"
+                            className="ai-banner-heading"
+                        >
+                            { title }
+                            <AIText>
+                                { aiText }
+                            </AIText>
+                            {
+                                titleLabel
+                            }
+                        </Typography>
+                        <Typography className="ai-banner-sub-heading">
+                            { description }
+                        </Typography>
+                    </Box>
+                </AccordionSummary>
+                <Box className="ai-banner-children">
+                    { children }
                 </Box>
-            </AccordionSummary>
-            <Box className="ai-banner-children">
-                { children }
-            </Box>
-        </Accordion>
+            </Accordion>
+        </motion.div>
     );
 };
 

@@ -219,72 +219,35 @@ const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement =>
     );
 };
 
-interface ControlPointInterface {
-    x: number;
-    y: number;
-    range: number;
-}
-
-interface PathInterface {
-    x: number;
-    y: number;
-}
-
 const AIBotBackground = () => {
-    const controls: AnimationControls = useAnimation();
-
-    const generateRandomPath = () => {
-        // Define control points with ranges for random adjustments
-        const controlPoints: ControlPointInterface[] = [
-            { range: 10, x: 392, y: 13 },
-            { range: 20 , x: 302, y: -8 },
-            { range: 10, x: 239, y: -0.9 }
-        ];
-
-        const newPath: PathInterface[] = controlPoints.map((point: ControlPointInterface) => {
-            const { x, y, range } = point;
-
-            return {
-                x: x + Math.random() * range * 2 - range,
-                y: y + Math.random() * range * 2 - range
-            };
-        });
-
-        // Construct a new path string from the adjusted points
-        const d: string = newPath.reduce((acc: string, point: PathInterface, i: number) => {
-            if (i === 0) {
-                return `M${point.x} ${point.y}`;
-            } else {
-                return `${acc} L${point.x} ${point.y}`;
-            }
-        }, "") + "Z"; // Close the path
-
-        return d;
+    const variants = {
+        initial: {
+            d: "M392.977 13.9464C302.035 -8.72303 239.862 -0.914526 155.959 22.3894C72.0554 45.6932 15.8244 91.819 2.35496 150.717C-11.1611 209.513 38.2351 287.396 65.6669 329.308C93.1398 371.066 157.434 420.013 276.75 363.12C396.067 306.228 389.659 344.301 488.403 305.249C587.147 266.197 574.867 148.208 561.846 103.181C524.66 -0.820409 483.918 36.6159 392.977 13.9464Z"
+        },
+        animate: {
+            d: "M392.977 23.9464C312.035 -18.723 249.862 10.0855 165.959 12.3894C82.0554 35.6932 25.8244 101.819 12.3549 160.717C-1.16112 219.513 48.2351 277.396 75.6669 319.308C103.14 361.066 167.434 410.013 286.75 353.12C406.067 296.228 399.659 324.301 498.403 285.249C597.147 246.197 584.867 128.208 571.846 83.181C534.66 -20.8204 493.918 46.6159 402.977 23.9464Z"
+        }
     };
-
-    useEffect(() => {
-        const interval: NodeJS.Timeout = setInterval(() => {
-            const newPath: string = generateRandomPath();
-
-            controls.start( { d: newPath } );
-        }, 3000); // Adjust path every 3000 ms
-
-        return () => clearInterval(interval);
-    }, [ controls ]);
 
     return (
         <g>
             <motion.path
-                initial={ { d: generateRandomPath() } }
-                animate={ controls }
-                transition={ { duration: 2.5, ease: "linear" } }
                 opacity="0.06"
+                initial="initial"
+                animate="animate"
+                variants={variants}
+                transition={{
+                    duration: 10,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut"
+                }}
                 fill="url(#paint0_linear_3568_6057)"
             />
             <defs>
                 <linearGradient id="paint0_linear_3568_6057" x1="413.377" y1="-27.8262" x2="152.311" y2="397.647" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#EE575C" />
-                    <stop offset="1" stopColor="#F67147" />
+                    <stop stop-color="#EE575C" />
+                    <stop offset="1" stop-color="#F67147" />
                 </linearGradient>
             </defs>
         </g>

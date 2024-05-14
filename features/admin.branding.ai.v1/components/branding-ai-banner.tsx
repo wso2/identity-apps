@@ -46,11 +46,15 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
-    const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    const { isGeneratingBranding } = useAIBrandingPreference();
+    const {
+        bannerState,
+        isGeneratingBranding,
+        setBannerState,
+        setWebsiteUrl,
+        websiteUrl
+    } = useAIBrandingPreference();
     const generateAIBrandingPreference: GenerateAIBrandingPreferenceFunc = useGenerateAIBrandingPreference();
 
     /**

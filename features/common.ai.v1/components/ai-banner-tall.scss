@@ -16,14 +16,18 @@
  * under the License.
  */
 
-.ai-banner-container {
+.ai-banner-motion-container {
     background: #ffffff;
     background-size: auto 350px, auto 550px;
     background-repeat: no-repeat;
-    background-position: calc(100% - 20px) -2px, right top;
+    background-position: calc(100% - 20px) -40px, right top;
     border: 1px solid #DCDAD8;
     border-radius: 8px;
     padding: 35px 30px;
+}
+
+.ai-banner-container {
+    background: transparent;
 }
 
 .ai-banner-content {

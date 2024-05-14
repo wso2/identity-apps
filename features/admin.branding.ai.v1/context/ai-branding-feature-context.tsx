@@ -19,6 +19,7 @@
 import { Context, createContext } from "react";
 import { BrandingPreferenceInterface } from "../../admin.branding.v1/models";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
+import { BannerState } from "../models/types";
 
 /**
  * Props interface for AIBrandingFeatureContext.
@@ -65,6 +66,23 @@ export interface AIBrandingFeatureContextProps {
      * @param preference - Branding preference to be set.
      */
     setMergedBrandingPreference: (preference: BrandingPreferenceInterface) => void;
+    /**
+     * user prompt.
+     */
+    websiteUrl: string;
+    /**
+     * set user prompt.
+     */
+    setWebsiteUrl: (prompt: string) => void;
+    /**
+     * Banner state.
+     */
+    bannerState: BannerState;
+    /**
+     * Set the banner state.
+     * @param state - State to be set.
+     */
+    setBannerState: (state: BannerState) => void;
 }
 
 /**

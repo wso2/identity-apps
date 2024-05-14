@@ -44,6 +44,7 @@ import { BrandingAIBanner } from "../components/branding-ai-banner";
 import { BrandingAILoadingScreen } from "../components/branding-ai-loading-screen";
 import AIFeatureContext from "../context/ai-branding-feature-context";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
+import { BannerState } from "../models/types";
 
 type AIBrandingPreferenceProviderProps = PropsWithChildren;
 
@@ -72,6 +73,8 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
     const [ operationId, setOperationId ] = useState<string>();
     const [ brandingGenerationCompleted, setBrandingGenerationCompleted ] = useState(false);
+    const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
+    const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
 
     const { preference } = useBrandingPreference();
 
@@ -165,15 +168,19 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     return (
         <AIFeatureContext.Provider
             value={ {
+                bannerState,
                 brandingGenerationCompleted,
                 handleGenerate,
                 isGeneratingBranding,
                 mergedBrandingPreference,
                 operationId,
+                setBannerState,
                 setBrandingGenerationCompleted,
                 setGeneratingBranding,
                 setMergedBrandingPreference,
-                setOperationId
+                setOperationId,
+                setWebsiteUrl,
+                websiteUrl
             } }
         >
             {
