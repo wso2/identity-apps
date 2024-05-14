@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { PropsWithChildren, ReactElement, ReactNode } from "react";
 import { ReactComponent as AIIcon }
-    from "../../../themes/wso2is/assets/images/icons/solid-icons/ai-icon.svg";
+    from "../../themes/wso2is/assets/images/icons/solid-icons/ai-icon.svg";
 import "./ai-text.scss";
 
 /**

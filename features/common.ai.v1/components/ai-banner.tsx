@@ -22,7 +22,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement } from "react";
 import AIText from "./ai-text";
-import AIBannerBackground from "../../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
+import AIBannerBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
 import "./ai-banner.scss";
 
 /**

@@ -30,7 +30,7 @@ import "./ai-loading-screen.scss";
 import { useSelector } from "react-redux";
 import AIBotAnimatedWithBackGround from "./ai-bot-animated-with-bg";
 import { ReactComponent as LoadingPlaceholder }
-    from "../../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
+    from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 import { AppState } from "../../admin.core.v1/store";
 import { ANIMATED_BOT_FEATURE_TAG } from "../constants/ai-common-constants";
 

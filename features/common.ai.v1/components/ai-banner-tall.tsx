@@ -24,10 +24,11 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon }from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { PropsWithChildren, ReactElement, useState } from "react";
-import AIBotAnimated from "./ai-bot-animated";
 import AIText from "./ai-text";
 import AIBannerBackgroundTall
-    from "../../../themes/wso2is/assets/images/illustrations/ai-banner-input-background-tall.png";
+    from "../../themes/wso2is/assets/images/illustrations/ai-banner-input-background-tall.png";
+import AIBot
+    from "../../themes/wso2is/assets/images/illustrations/ai-bot.svg";
 import "./ai-banner.scss";
 import "./ai-banner-tall.scss";
 
@@ -68,7 +69,7 @@ const AIBannerTall = (props: PropsWithChildren<AIBannerTallProps>): ReactElement
                 }
             } }
             style={ {
-                backgroundImage: `url(${ null }), url(${ AIBannerBackgroundTall })`
+                backgroundImage: `url(${ AIBot }), url(${ AIBannerBackgroundTall })`
             } }
             onChange={ () => setShowContent(!showContent) }
 
@@ -104,7 +105,6 @@ const AIBannerTall = (props: PropsWithChildren<AIBannerTallProps>): ReactElement
                         { description }
                     </Typography>
                 </Box>
-                <AIBotAnimated />
             </AccordionSummary>
             <Box className="ai-banner-children">
                 { children }
