@@ -66,7 +66,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                 id: group.value,
                 name: group.display
             };
-        });    
+        });
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -110,7 +110,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
 
     /**
      * Show error if group list fetch request failed.
-     */ 
+     */
     useEffect(() => {
         if (groupListFetchRequestError) {
             dispatch(
@@ -154,7 +154,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
     /**
      * Handles the search query for the groups list.
      */
-    const searchGroups: DebouncedFunc<(query: string) => void> = 
+    const searchGroups: DebouncedFunc<(query: string) => void> =
         useCallback(debounce((query: string) => {
             query = !isEmpty(query) ? query : null;
             setGroupSearchValue(query);
@@ -162,7 +162,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
 
     /**
      * Handle the restore groups.
-     * 
+     *
      * @param remainingGroups - remaining groups
      */
     const handleRestoreGroups = (remainingGroups: IdentityProviderGroupInterface[]) => {
@@ -195,7 +195,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 options={ selectedGroupsOptions ? selectedGroupsOptions : [] }
                                 value={ selectedGroupsOptions ? selectedGroupsOptions : [] }
                                 data-componentid={ `${ componentId }-local-groups-accordion` }
-                                getOptionLabel={ (group: IdentityProviderGroupInterface) => 
+                                getOptionLabel={ (group: IdentityProviderGroupInterface) =>
                                     group.name }
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                     <TextField
@@ -205,10 +205,10 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                     />
                                 ) }
                                 renderTags={ (
-                                    value: IdentityProviderGroupInterface[], 
+                                    value: IdentityProviderGroupInterface[],
                                     getTagProps: AutocompleteRenderGetTagProps
                                 ) => value.map((option: IdentityProviderGroupInterface, index: number) => (
-                                    <RenderChip 
+                                    <RenderChip
                                         { ...getTagProps({ index }) }
                                         key={ index }
                                         primaryText={ RoleManagementUtils.getDisplayName(option.name) }
@@ -220,7 +220,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                     />
                                 )) }
                                 renderOption={ (
-                                    props: HTMLAttributes<HTMLLIElement>, 
+                                    props: HTMLAttributes<HTMLLIElement>,
                                     option: IdentityProviderGroupInterface
                                 ) => (
                                     <AutoCompleteRenderOption
@@ -247,24 +247,24 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                     />
                                 ) }
                                 onChange={ (event: SyntheticEvent, groups: IdentityProviderGroupInterface[]) => {
-                                    setSelectedGroupsOptions(groups); 
+                                    setSelectedGroupsOptions(groups);
                                 } }
                                 filterOptions={ (groups: IdentityProviderGroupInterface[]) => groups }
-                                onInputChange={ 
+                                onInputChange={
                                     (event: SyntheticEvent, newValue: string) => {
                                         setGroupSearchLoading(true);
                                         searchGroups(newValue);
-                                    } 
+                                    }
                                 }
-                                isOptionEqualToValue={ 
-                                    (option: IdentityProviderGroupInterface, value: IdentityProviderGroupInterface) => 
-                                        option.id === value.id 
+                                isOptionEqualToValue={
+                                    (option: IdentityProviderGroupInterface, value: IdentityProviderGroupInterface) =>
+                                        option.id === value.id
                                 }
                                 renderTags={ (
-                                    value: IdentityProviderGroupInterface[], 
+                                    value: IdentityProviderGroupInterface[],
                                     getTagProps: AutocompleteRenderGetTagProps
                                 ) => value.map((option: IdentityProviderGroupInterface, index: number) => (
-                                    <RenderChip 
+                                    <RenderChip
                                         { ...getTagProps({ index }) }
                                         key={ index }
                                         primaryText={ RoleManagementUtils.getDisplayName(option.name) }
@@ -283,7 +283,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 )) }
                                 renderOption={ (
                                     props: HTMLAttributes<HTMLLIElement>,
-                                    option: IdentityProviderGroupInterface, 
+                                    option: IdentityProviderGroupInterface,
                                     { selected }: { selected: boolean }
                                 ) => (
                                     <AutoCompleteRenderOption
@@ -297,7 +297,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                         )
                 }
 
-                {   
+                {
                     removedGroupsOptions?.length > 0
                         ? (
                             <Autocomplete
@@ -307,8 +307,8 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 options={ removedGroupsOptions }
                                 value={ removedGroupsOptions }
                                 data-componentid={ `${ componentId }-local-groups-accordion` }
-                                getOptionLabel={ 
-                                    (group: IdentityProviderGroupInterface) => 
+                                getOptionLabel={
+                                    (group: IdentityProviderGroupInterface) =>
                                         group.name
                                 }
                                 onChange={ (
@@ -326,7 +326,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                     />
                                 ) }
                                 renderTags={ (
-                                    value: IdentityProviderGroupInterface[], 
+                                    value: IdentityProviderGroupInterface[],
                                     getTagProps: AutocompleteRenderGetTagProps
                                 ) => value.map((option: IdentityProviderGroupInterface, index: number) => (
                                     <RenderChip
@@ -347,7 +347,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                     />
                                 )) }
                                 renderOption={ (
-                                    props: HTMLAttributes<HTMLLIElement>, 
+                                    props: HTMLAttributes<HTMLLIElement>,
                                     option: IdentityProviderGroupInterface
                                 ) => (
                                     <AutoCompleteRenderOption
@@ -358,14 +358,14 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 ) }
                             />
                         ) : null
-                } 
+                }
                 {
-                    !isReadOnly 
+                    !isReadOnly
                         ? (
                             <Button
                                 className="role-assigned-button"
-                                variant="contained" 
-                                loading={ isUpdating } 
+                                variant="contained"
+                                loading={ isUpdating }
                                 onClick={ onUpdate }
                                 disabled={ initialSelectedGroupsOptions === selectedGroupsOptions }
                                 data-componentid={ `${ componentId }-local-groups-update-button` }
