@@ -1,5 +1,20 @@
 # @wso2is/identity-apps-core
 
+## 2.2.0
+
+### Minor Changes
+
+- [#5817](https://github.com/wso2/identity-apps/pull/5817) [`186c8e7bf9640ef6cbb0a56d4f12dd881355e639`](https://github.com/wso2/identity-apps/commit/186c8e7bf9640ef6cbb0a56d4f12dd881355e639) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Adds sms otp support to password recovery flows.
+
+## 2.1.77
+
+### Patch Changes
+
+- [#6245](https://github.com/wso2/identity-apps/pull/6245) [`4e736d3c0617d32d7a975b7aa8981d160c02486c`](https://github.com/wso2/identity-apps/commit/4e736d3c0617d32d7a975b7aa8981d160c02486c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add missing class imports
+
+- Updated dependencies [[`9beedd16003ce305af2a7497652fd35dcd787814`](https://github.com/wso2/identity-apps/commit/9beedd16003ce305af2a7497652fd35dcd787814)]:
+  - @wso2is/theme@2.0.82
+
 ## 2.1.76
 
 ### Patch Changes

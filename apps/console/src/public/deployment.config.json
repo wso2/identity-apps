@@ -183,6 +183,7 @@
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
         "showStatusLabel": false,
+        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "features": {
             "administrators": {
                 "disabledFeatures": [],
@@ -234,7 +235,7 @@
             },
             "applicationRoles": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [],
                     "read": [],
