@@ -1,5 +1,27 @@
 # @wso2is/i18n
 
+## 2.2.17
+
+### Patch Changes
+
+- Updated dependencies [[`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5)]:
+  - @wso2is/core@2.0.45
+
+## 2.2.16
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+- Updated dependencies [[`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb)]:
+  - @wso2is/core@2.0.44
+
+## 2.2.15
+
+### Patch Changes
+
+- [#6192](https://github.com/wso2/identity-apps/pull/6192) [`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
 ## 2.2.14
 
 ### Patch Changes

@@ -41,7 +41,11 @@ export class URLUtils {
      * @returns True if the url is a http url.
      */
     public static isHttpUrl(url: string): boolean {
-        return !!url.trim().match(PatternConstants.HTTP_URL_REGEX_PATTERN);
+        if (url.startsWith("http://")) {
+            return !!url.trim().match(PatternConstants.HTTP_URL_REGEX_PATTERN);
+        }
+
+        return false;
     }
 
     /**
@@ -52,7 +56,11 @@ export class URLUtils {
      * @returns True if the url is a https url.
      */
     public static isHttpsUrl(url: string): boolean {
-        return !!url.trim().match(PatternConstants.HTTPS_URL_REGEX_PATTERN);
+        if (url.startsWith("https://")) {
+            return !!url.trim().match(PatternConstants.HTTPS_URL_REGEX_PATTERN);
+        }
+
+        return false;
     }
 
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -72,6 +72,7 @@ export class ApplicationManagementConstants {
         .set("FAPI_APP_CREATION", "applications.create.fapi")
         .set("APPLICATION_NATIVE_AUTHENTICATION", "applications.native.authentication")
         .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
+        .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
@@ -375,7 +376,11 @@ export class ApplicationManagementConstants {
     public static readonly TOTP_HANDLERS: string[] = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS,
-        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR,
+        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle Email OTP.

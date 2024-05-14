@@ -302,7 +302,8 @@ module.exports = {
                     // [1] https://eslint.org/docs/latest/rules/no-restricted-imports#group
                     // [2] https://stackoverflow.com/q/68126222/8810941
                     "apps/**/*",
-                    "modules/**/*"
+                    "modules/**/*",
+                    "features/**/*"
                 ]
             }
         ],

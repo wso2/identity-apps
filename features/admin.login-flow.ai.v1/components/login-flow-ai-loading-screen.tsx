@@ -15,11 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import Box from "@oxygen-ui/react/Box";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import IconButton from "@oxygen-ui/react/IconButton";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { useEffect, useState } from "react";
@@ -37,6 +38,7 @@ import {
     useGetStatusLabels
 } from "../constants/login-flow-ai-constants";
 import "./login-flow-ai-loading-screen.scss";
+import useAILoginFlow from "../hooks/use-ai-login-flow";
 
 const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
 
@@ -46,9 +48,14 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
 
     const statusLabels: Record<string, string> = useGetStatusLabels();
 
+    const {
+        setGeneratingLoginFlow,
+        setLoginFlowGenerationCompleted
+    } = useAILoginFlow();
+
     const facts: string[] = useGetFacts();
 
-    const { data, isLoading, error } = useAILoginFlowGenerationStatus(traceId);
+    const { data, error } = useAILoginFlowGenerationStatus(traceId);
 
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
     const [ factIndex, setFactIndex ] = useState<number>(0);
@@ -58,7 +65,7 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
     useEffect(() => {
         const targetProgress: number = getProgress();
 
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setCurrentProgress((prevProgress: number) => {
                 if (prevProgress >= targetProgress) {
                     clearInterval(interval);
@@ -74,7 +81,7 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
     }, [ data ]);
 
     useEffect(() => {
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setFactIndex((factIndex + 1) % facts.length);
         }, FACTS_ROTATION_DELAY);
 
@@ -131,6 +138,11 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
         return t(currentStatusLabel);
     };
 
+    const handleGenerateCancel = () => {
+        setGeneratingLoginFlow(false);
+        setLoginFlowGenerationCompleted(false);
+    };
+
     return (
         <Box className="login-flow-ai-loading-screen-container">
             <Box className="login-flow-ai-loading-screen-illustration-container">
@@ -150,12 +162,21 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
                 </Box>
                 <Box sx={ { width: 1 } }>
                     <Box className="login-flow-ai-loading-screen-loading-container">
-                        { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
                         <Typography className="login-flow-ai-loading-screen-loading-state">
                             { getCurrentStatus() }
                         </Typography>
+                        <Tooltip
+                            title="Cancel"
+                            placement="top"
+                        >
+                            <IconButton
+                                onClick={ handleGenerateCancel }
+                            >
+                                <XMarkIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
-                    <LinearProgress variant="determinate" value={ currentProgress } />
+                    <LinearProgress variant="buffer" value={ currentProgress } valueBuffer={ currentProgress + 1 }  />
                 </Box>
             </Box>
         </Box>

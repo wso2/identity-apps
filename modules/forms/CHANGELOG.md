@@ -1,5 +1,21 @@
 # @wso2is/forms
 
+## 2.0.35
+
+### Patch Changes
+
+- Updated dependencies [[`84979a7505525ba134771c988750dca9ce0159d5`](https://github.com/wso2/identity-apps/commit/84979a7505525ba134771c988750dca9ce0159d5)]:
+  - @wso2is/core@2.0.45
+
+## 2.0.34
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+- Updated dependencies [[`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb)]:
+  - @wso2is/core@2.0.44
+
 ## 2.0.33
 
 ### Patch Changes

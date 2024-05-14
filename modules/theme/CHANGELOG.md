@@ -1,5 +1,25 @@
 # @wso2is/theme
 
+## 2.0.82
+
+### Patch Changes
+
+- [#6242](https://github.com/wso2/identity-apps/pull/6242) [`9beedd16003ce305af2a7497652fd35dcd787814`](https://github.com/wso2/identity-apps/commit/9beedd16003ce305af2a7497652fd35dcd787814) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Set a minimum height for the product logo
+
+## 2.0.81
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+## 2.0.80
+
+### Patch Changes
+
+- [#6192](https://github.com/wso2/identity-apps/pull/6192) [`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
+* [#6192](https://github.com/wso2/identity-apps/pull/6192) [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
 ## 2.0.79
 
 ### Patch Changes

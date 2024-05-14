@@ -149,7 +149,8 @@
                 "id": "QWNjb3VudERpc2FibGU",
                 "displayName": "Account Disabled"
             }
-        ]
+        ],
+        "outboundProvisioningConnectors": []
     },
     "session": {
         "sessionRefreshTimeOut": 300.0,
@@ -181,6 +182,7 @@
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
+        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "features": {
             "administrators": {
                 "disabledFeatures": [],
@@ -232,7 +234,7 @@
             },
             "applicationRoles": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [],
                     "read": [],
@@ -1150,6 +1152,7 @@
             "Console",
             "My Account"
         ],
+        "isEditingSystemRolesAllowed": true,
         "isXacmlConnectorEnabled": false,
         "administratorRoleDisplayName": "Administrator",
         "useRoleClaimAsGroupClaim": false,

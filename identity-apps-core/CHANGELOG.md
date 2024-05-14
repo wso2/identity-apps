@@ -1,5 +1,42 @@
 # @wso2is/identity-apps-core
 
+## 2.1.77
+
+### Patch Changes
+
+- [#6245](https://github.com/wso2/identity-apps/pull/6245) [`4e736d3c0617d32d7a975b7aa8981d160c02486c`](https://github.com/wso2/identity-apps/commit/4e736d3c0617d32d7a975b7aa8981d160c02486c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add missing class imports
+
+- Updated dependencies [[`9beedd16003ce305af2a7497652fd35dcd787814`](https://github.com/wso2/identity-apps/commit/9beedd16003ce305af2a7497652fd35dcd787814)]:
+  - @wso2is/theme@2.0.82
+
+## 2.1.76
+
+### Patch Changes
+
+- [#6233](https://github.com/wso2/identity-apps/pull/6233) [`35c1d9adf591048c698b837117c6d9e08d9d70b6`](https://github.com/wso2/identity-apps/commit/35c1d9adf591048c698b837117c6d9e08d9d70b6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Restrict showing the maintenance banner for console app related authn and recovery flows
+
+## 2.1.75
+
+### Patch Changes
+
+- [#6209](https://github.com/wso2/identity-apps/pull/6209) [`d0be112acff7175af164286e54d267e3e8b53978`](https://github.com/wso2/identity-apps/commit/d0be112acff7175af164286e54d267e3e8b53978) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Update the testid of the invitation accept page
+
+## 2.1.74
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+- Updated dependencies [[`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb)]:
+  - @wso2is/theme@2.0.81
+
+## 2.1.73
+
+### Patch Changes
+
+- Updated dependencies [[`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee), [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013)]:
+  - @wso2is/theme@2.0.80
+
 ## 2.1.72
 
 ### Patch Changes

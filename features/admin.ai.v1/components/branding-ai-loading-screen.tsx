@@ -17,9 +17,11 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import IconButton from "@oxygen-ui/react/IconButton";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
@@ -45,8 +47,8 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     const [ factIndex, setFactIndex ] = useState<number>(0);
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
 
-    const { operationId } = useAIBrandingPreference();
-    const { data, isLoading } = useGetAIBrandingGenerationStatus(operationId);
+    const { operationId, setBrandingGenerationCompleted, setGeneratingBranding } = useAIBrandingPreference();
+    const { data } = useGetAIBrandingGenerationStatus(operationId);
     const facts: string[] = useGetFacts();
     const statusLabels: Record<string, string> = useGetStatusLabels();
 
@@ -55,7 +57,7 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         const targetProgress: number = getProgress();
 
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setCurrentProgress((prevProgress: number) => {
                 if (prevProgress >= targetProgress) {
                     clearInterval(interval);
@@ -71,7 +73,7 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     }, [ data ]);
 
     useEffect(() => {
-        const interval: NodeJS.Timeout = setInterval(() => {
+        const interval: ReturnType<typeof setInterval> = setInterval(() => {
             setFactIndex((factIndex + 1) % facts.length);
         }, FACTS_ROTATION_DELAY);
 
@@ -116,6 +118,11 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
         return t(currentStatusLabel);
     };
 
+    const handleGenerateCancel = () => {
+        setGeneratingBranding(false);
+        setBrandingGenerationCompleted(false);
+    };
+
     return (
         <Box className="branding-ai-loading-screen-container">
             <Box className="branding-ai-loading-screen-illustration-container">
@@ -135,12 +142,21 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
                 </Box>
                 <Box sx={ { width: 1 } }>
                     <Box className="branding-ai-loading-screen-loading-container">
-                        { isLoading && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
                         <Typography className="branding-ai-loading-screen-loading-state">
                             { getCurrentStatus() }
                         </Typography>
+                        <Tooltip
+                            title="Cancel"
+                            placement="top"
+                        >
+                            <IconButton
+                                onClick={ handleGenerateCancel }
+                            >
+                                <XMarkIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
-                    <LinearProgress variant="determinate" value={ currentProgress } />
+                    <LinearProgress variant="buffer" value={ currentProgress } valueBuffer={ currentProgress + 1 }  />
                 </Box>
             </Box>
         </Box>

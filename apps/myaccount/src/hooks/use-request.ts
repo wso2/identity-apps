@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
-import { FetcherResponse } from "swr/infinite/dist";
+import { FetcherResponse } from "swr/dist/_internal";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
