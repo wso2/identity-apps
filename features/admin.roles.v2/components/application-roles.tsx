@@ -406,6 +406,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     options={ roleList }
                                     value={ selectedRoles ?? [] }
                                     disabled = { isReadOnly }
+                                    data-componentid={ `${ componentId }-assigned-roles-list` }
                                     getOptionLabel={
                                         (role: BasicRoleInterface) => role.name
                                     }
