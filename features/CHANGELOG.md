@@ -1,5 +1,30 @@
 # @wso2is/features
 
+## 2.19.0
+
+### Minor Changes
+
+- [#5808](https://github.com/wso2/identity-apps/pull/5808) [`0f1a69040f72fa58aba735b15264ced368f2d4ab`](https://github.com/wso2/identity-apps/commit/0f1a69040f72fa58aba735b15264ced368f2d4ab) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add SMS OTP configurations for the password recovery connector edit page.
+
+### Patch Changes
+
+- [#6236](https://github.com/wso2/identity-apps/pull/6236) [`9d38973b32d026ad58d4f8432bea5397222b378a`](https://github.com/wso2/identity-apps/commit/9d38973b32d026ad58d4f8432bea5397222b378a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fixed issue causing input value disappearance when configuring additional email domains in email domain discovery edit view
+
+* [#5817](https://github.com/wso2/identity-apps/pull/5817) [`186c8e7bf9640ef6cbb0a56d4f12dd881355e639`](https://github.com/wso2/identity-apps/commit/186c8e7bf9640ef6cbb0a56d4f12dd881355e639) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Adds sms otp support to password recovery flows.
+
+- [#6252](https://github.com/wso2/identity-apps/pull/6252) [`7f8fbab77ba415348883096f7590a7888f8dcb73`](https://github.com/wso2/identity-apps/commit/7f8fbab77ba415348883096f7590a7888f8dcb73) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add component ids
+
+- Updated dependencies [[`186c8e7bf9640ef6cbb0a56d4f12dd881355e639`](https://github.com/wso2/identity-apps/commit/186c8e7bf9640ef6cbb0a56d4f12dd881355e639)]:
+  - @wso2is/i18n@2.3.0
+
+## 2.18.4
+
+### Patch Changes
+
+- [#6047](https://github.com/wso2/identity-apps/pull/6047) [`45230ac3693311e287bd85c66c77ea96a90fa71f`](https://github.com/wso2/identity-apps/commit/45230ac3693311e287bd85c66c77ea96a90fa71f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add constants for the property keys
+
+* [#6250](https://github.com/wso2/identity-apps/pull/6250) [`e66c06769768ae564a68fb9b40c6b8add8ade58c`](https://github.com/wso2/identity-apps/commit/e66c06769768ae564a68fb9b40c6b8add8ade58c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make system roles not clickable when isEditingSystemRolesAllowed is false
+
 ## 2.18.3
 
 ### Patch Changes
