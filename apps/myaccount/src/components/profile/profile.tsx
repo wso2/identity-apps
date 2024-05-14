@@ -21,7 +21,6 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     getUserNameWithoutDomain,
     hasRequiredScopes,
-    isFeatureEnabled,
     resolveUserDisplayName,
     resolveUserEmails
 } from "@wso2is/core/helpers";
