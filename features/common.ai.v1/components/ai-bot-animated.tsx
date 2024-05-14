@@ -19,7 +19,14 @@
 // Disabling max-line-length for this file as it contains SVGs.
 /* eslint-disable max-len */
 import { Variants, motion } from "framer-motion";
-import React, { MutableRefObject, PropsWithChildren, ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+    MutableRefObject,
+    PropsWithChildren,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 
 interface AIBotAnimatedProps {
     shouldAnimate?: boolean;
@@ -29,8 +36,6 @@ const AIBotAnimated = (props: AIBotAnimatedProps): ReactElement => {
     const {
         shouldAnimate
     } = props;
-
-    const svgRef: MutableRefObject<SVGSVGElement> = useRef(null);
 
     const variants: Variants = {
         botAnimation: {
@@ -60,7 +65,6 @@ const AIBotAnimated = (props: AIBotAnimatedProps): ReactElement => {
     return (
         <>
             <svg
-                ref={ svgRef }
                 width="407"
                 height="412"
                 viewBox="0 0 407 412"
@@ -218,7 +222,7 @@ const AIBotAnimated = (props: AIBotAnimatedProps): ReactElement => {
     );
 };
 
-const AnimatedHead = (props: AIBotAnimatedProps) => {
+const AnimatedHead = (props: AIBotAnimatedProps): ReactElement => {
 
     const {
         shouldAnimate
@@ -268,7 +272,7 @@ const AnimatedHead = (props: AIBotAnimatedProps) => {
 
 };
 
-const AnimatedBotEyes = (props: AIBotAnimatedProps) => {
+const AnimatedBotEyes = (props: AIBotAnimatedProps): ReactElement => {
     const { shouldAnimate } = props;
 
     const leftEyeRef: MutableRefObject<SVGGElement> = useRef(null);
@@ -374,7 +378,7 @@ const AnimatedBotEyes = (props: AIBotAnimatedProps) => {
     );
 };
 
-const AnimatedTorso = () => {
+const AnimatedTorso = (): ReactElement => {
     return (
         <g id="Group 339">
             <path
@@ -405,7 +409,7 @@ const AnimatedTorso = () => {
     );
 };
 
-const AnimatedIcon = (props: PropsWithChildren) => {
+const AnimatedIcon = (props: PropsWithChildren): ReactElement => {
     const { children } = props;
 
     const variants: Variants = {
@@ -439,7 +443,7 @@ const AnimatedIcon = (props: PropsWithChildren) => {
 };
 
 
-const AnimatedCodeWindowIcon = () => (
+const AnimatedCodeWindowIcon = (): ReactElement => (
     <g id="code-window">
         <path
             id="Vector"
@@ -488,7 +492,7 @@ const AnimatedCodeWindowIcon = () => (
     </g>
 );
 
-const AnimatedDBIcon = () => (
+const AnimatedDBIcon = (): ReactElement => (
     <g id="Group 297">
         <path
             id="Union"
@@ -575,7 +579,7 @@ const AnimatedDBIcon = () => (
     </g>
 );
 
-const AnimatedMessageIcon = () => (
+const AnimatedMessageIcon = (): ReactElement => (
     <g id="Group 295">
         <path
             id="Path"
@@ -605,7 +609,7 @@ const AnimatedMessageIcon = () => (
     </g>
 );
 
-const AnimatedHourGlassIcon = () => (
+const AnimatedHourGlassIcon = (): ReactElement => (
     <g id="Group 294">
         <rect
             id="Rectangle 114"
@@ -694,7 +698,7 @@ const AnimatedHourGlassIcon = () => (
     </g>
 );
 
-const AnimatedCogWheelIcon = () => (
+const AnimatedCogWheelIcon = (): ReactElement => (
     <g id="Group 293">
         <path
             id="Star 2"
@@ -729,7 +733,7 @@ const AnimatedCogWheelIcon = () => (
     </g>
 );
 
-const AnimatedBoxIcon = () => (
+const AnimatedBoxIcon = (): ReactElement => (
     <g id="Group 340">
         <path
             id="Polygon 22"

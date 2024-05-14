@@ -18,19 +18,26 @@
 
 // Disabling max-line-length for this file as it contains SVGs.
 /* eslint-disable max-len */
-import { AnimationControls, Variants, motion, useAnimation } from "framer-motion";
-import React, { MutableRefObject, PropsWithChildren, ReactElement, useEffect, useRef, useState } from "react";
+
+import { Variants, motion } from "framer-motion";
+import React, {
+    MutableRefObject,
+    PropsWithChildren,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 
 interface AIBotAnimatedProps {
     shouldAnimate?: boolean;
 }
 
 const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement => {
+
     const {
         shouldAnimate
     } = props;
-
-    const svgRef: MutableRefObject<SVGSVGElement> = useRef(null);
 
     const variants: Variants = {
         botAnimation: {
@@ -60,7 +67,6 @@ const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement =>
     return (
         <>
             <svg
-                ref={ svgRef }
                 width="728"
                 height="702"
                 viewBox="0 0 728 702"
@@ -219,13 +225,13 @@ const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement =>
     );
 };
 
-const AIBotBackground = () => {
-    const variants = {
-        initial: {
-            d: "M392.977 13.9464C302.035 -8.72303 239.862 -0.914526 155.959 22.3894C72.0554 45.6932 15.8244 91.819 2.35496 150.717C-11.1611 209.513 38.2351 287.396 65.6669 329.308C93.1398 371.066 157.434 420.013 276.75 363.12C396.067 306.228 389.659 344.301 488.403 305.249C587.147 266.197 574.867 148.208 561.846 103.181C524.66 -0.820409 483.918 36.6159 392.977 13.9464Z"
-        },
+const AIBotBackground = (): ReactElement => {
+    const variants: Variants = {
         animate: {
             d: "M392.977 23.9464C312.035 -18.723 249.862 10.0855 165.959 12.3894C82.0554 35.6932 25.8244 101.819 12.3549 160.717C-1.16112 219.513 48.2351 277.396 75.6669 319.308C103.14 361.066 167.434 410.013 286.75 353.12C406.067 296.228 399.659 324.301 498.403 285.249C597.147 246.197 584.867 128.208 571.846 83.181C534.66 -20.8204 493.918 46.6159 402.977 23.9464Z"
+        },
+        initial: {
+            d: "M392.977 13.9464C302.035 -8.72303 239.862 -0.914526 155.959 22.3894C72.0554 45.6932 15.8244 91.819 2.35496 150.717C-11.1611 209.513 38.2351 287.396 65.6669 329.308C93.1398 371.066 157.434 420.013 276.75 363.12C396.067 306.228 389.659 344.301 488.403 305.249C587.147 266.197 574.867 148.208 561.846 103.181C524.66 -0.820409 483.918 36.6159 392.977 13.9464Z"
         }
     };
 
@@ -235,26 +241,26 @@ const AIBotBackground = () => {
                 opacity="0.06"
                 initial="initial"
                 animate="animate"
-                variants={variants}
-                transition={{
+                variants={ variants }
+                transition={ {
                     duration: 10,
+                    ease: "easeInOut",
                     repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut"
-                }}
+                    repeatType: "reverse"
+                } }
                 fill="url(#paint0_linear_3568_6057)"
             />
             <defs>
                 <linearGradient id="paint0_linear_3568_6057" x1="413.377" y1="-27.8262" x2="152.311" y2="397.647" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#EE575C" />
-                    <stop offset="1" stop-color="#F67147" />
+                    <stop stopColor="#EE575C" />
+                    <stop offset="1" stopColor="#F67147" />
                 </linearGradient>
             </defs>
         </g>
     );
 };
 
-const AnimatedHead = (props: AIBotAnimatedProps) => {
+const AnimatedHead = (props: AIBotAnimatedProps): ReactElement => {
 
     const {
         shouldAnimate
@@ -304,7 +310,7 @@ const AnimatedHead = (props: AIBotAnimatedProps) => {
 
 };
 
-const AnimatedBotEyes = (props: AIBotAnimatedProps) => {
+const AnimatedBotEyes = (props: AIBotAnimatedProps): ReactElement => {
     const { shouldAnimate } = props;
 
     const leftEyeRef: MutableRefObject<SVGGElement> = useRef(null);
@@ -313,10 +319,6 @@ const AnimatedBotEyes = (props: AIBotAnimatedProps) => {
     const [ rightPupilPosition, setRightPupilPosition ] = useState({ x: 0, y: 0 });
 
     const updateEyePosition = (event: MouseEvent) => {
-        if (!shouldAnimate) {
-            return;
-        }
-
         if (rightEyeRef.current) {
             const eyeRect: DOMRect = rightEyeRef.current.getBoundingClientRect(); // Get position and dimension of the eye
             const eyeCenterX: number = eyeRect.left + eyeRect.width / 2;
@@ -441,7 +443,7 @@ const AnimatedTorso = () => {
     );
 };
 
-const AnimatedIcon = (props: PropsWithChildren) => {
+const AnimatedIcon = (props: PropsWithChildren): ReactElement=> {
     const { children } = props;
 
     const variants: Variants = {
@@ -474,8 +476,7 @@ const AnimatedIcon = (props: PropsWithChildren) => {
     );
 };
 
-
-const AnimatedCodeWindowIcon = () => (
+const AnimatedCodeWindowIcon = (): ReactElement  => (
     <g id="code-window">
         <path
             id="Vector"
@@ -524,7 +525,7 @@ const AnimatedCodeWindowIcon = () => (
     </g>
 );
 
-const AnimatedDBIcon = () => (
+const AnimatedDBIcon = (): ReactElement => (
     <g id="Group 297">
         <path
             id="Union"
@@ -611,7 +612,7 @@ const AnimatedDBIcon = () => (
     </g>
 );
 
-const AnimatedMessageIcon = () => (
+const AnimatedMessageIcon = (): ReactElement => (
     <g id="Group 295">
         <path
             id="Path"
@@ -641,7 +642,7 @@ const AnimatedMessageIcon = () => (
     </g>
 );
 
-const AnimatedHourGlassIcon = () => (
+const AnimatedHourGlassIcon = (): ReactElement => (
     <g id="Group 294">
         <rect
             id="Rectangle 114"
@@ -730,7 +731,7 @@ const AnimatedHourGlassIcon = () => (
     </g>
 );
 
-const AnimatedCogWheelIcon = () => (
+const AnimatedCogWheelIcon = (): ReactElement => (
     <g id="Group 293">
         <path
             id="Star 2"
@@ -765,7 +766,7 @@ const AnimatedCogWheelIcon = () => (
     </g>
 );
 
-const AnimatedBoxIcon = () => (
+const AnimatedBoxIcon = (): ReactElement => (
     <g id="Group 340">
         <path
             id="Polygon 22"
