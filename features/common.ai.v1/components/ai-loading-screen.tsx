@@ -23,7 +23,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { motion } from "framer-motion";
+import { Variants, motion } from "framer-motion";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import "./ai-loading-screen.scss";
@@ -66,6 +66,13 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
 
     const isAnimatedBotDisabled: boolean = AIDisabledFeatures?.includes(ANIMATED_BOT_FEATURE_TAG);
 
+    // Define animation variants
+    const factVariants: Variants = {
+        hidden: { opacity: 0, y: -20 },
+        visible: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: 20 }
+    };
+
     return (
         <motion.div animate="botAnimation">
             <Box
@@ -90,9 +97,18 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
                         >
                             { t("branding:ai.screens.loading.didYouKnow") }
                         </Typography>
-                        <Typography className="ai-loading-screen-sub-heading">
-                            { fact }
-                        </Typography>
+                        <motion.div
+                            key={ fact }
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                            variants={ factVariants }
+                            transition={{ duration: 1, type: "spring" }}
+                        >
+                            <Typography className="ai-loading-screen-sub-heading">
+                                { fact }
+                            </Typography>
+                        </motion.div>
                     </Box>
                     <Box sx={ { width: 1 } }>
                         <Box className="ai-loading-screen-loading-container">

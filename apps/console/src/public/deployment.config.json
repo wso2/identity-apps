@@ -196,7 +196,7 @@
             },
             "ai": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "feature": [],
                     "update": [],

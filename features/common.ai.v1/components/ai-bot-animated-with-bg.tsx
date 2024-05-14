@@ -67,6 +67,7 @@ const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement =>
     return (
         <>
             <svg
+                className="ai-loading-screen-animation"
                 width="728"
                 height="702"
                 viewBox="0 0 728 702"
