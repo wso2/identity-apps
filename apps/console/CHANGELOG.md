@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.18.5
+
+### Patch Changes
+
+- [#5808](https://github.com/wso2/identity-apps/pull/5808) [`0f1a69040f72fa58aba735b15264ced368f2d4ab`](https://github.com/wso2/identity-apps/commit/0f1a69040f72fa58aba735b15264ced368f2d4ab) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add SMS OTP configurations for the password recovery connector edit page.
+
+- Updated dependencies [[`9d38973b32d026ad58d4f8432bea5397222b378a`](https://github.com/wso2/identity-apps/commit/9d38973b32d026ad58d4f8432bea5397222b378a), [`0f1a69040f72fa58aba735b15264ced368f2d4ab`](https://github.com/wso2/identity-apps/commit/0f1a69040f72fa58aba735b15264ced368f2d4ab), [`186c8e7bf9640ef6cbb0a56d4f12dd881355e639`](https://github.com/wso2/identity-apps/commit/186c8e7bf9640ef6cbb0a56d4f12dd881355e639), [`7f8fbab77ba415348883096f7590a7888f8dcb73`](https://github.com/wso2/identity-apps/commit/7f8fbab77ba415348883096f7590a7888f8dcb73)]:
+  - @wso2is/features@2.19.0
+  - @wso2is/i18n@2.3.0
+
 ## 2.18.4
 
 ### Patch Changes
