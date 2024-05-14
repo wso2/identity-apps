@@ -1,4 +1,8 @@
 {
+    "__experimental__platformIdP": {
+        "enabled": false,
+        "homeRealmId": ""
+    },
     "consoleApp": {
         "path": "/getting-started",
         "origin": "https://localhost:9000"
@@ -38,6 +42,11 @@
         "checkSessionInterval": 3.0
     },
     "legacyAuthzRuntime": false,
+    "tenantContext": {
+        "enableTenantQualifiedUrls": true,
+        "requireSuperTenantInUrls": false,
+        "requireSuperTenantInAppUrls": true
+    },
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",

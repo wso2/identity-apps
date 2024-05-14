@@ -262,61 +262,21 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     setShowDeleteConfirmationModal(false);
                     setDeletingUser(undefined);
                 });
-        } else if (accountType === UserAccountTypes.CUSTOMER && "display" in user) {
+        } else if (accountType === UserAccountTypes.CUSTOMER) {
+            let pathValue: string;
+
+            if ("value" in user) {
+                pathValue = `users[value eq ${user?.value}]`;
+            } else if ("id" in user) {
+                pathValue = `users[value eq ${user?.id}]`;
+            }
+
             // Payload for the update role request.
             const roleData: PatchRoleDataInterface = {
                 Operations: [
                     {
                         op: "remove",
-                        path: `users[display eq ${user.display}]`,
-                        value: {}
-                    }
-                ],
-                schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-            };
-
-            return updateRoleDetails(adminRoleId, roleData)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t(
-                            "invite:notifications.deleteInvite.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "users:notifications.deleteUser.success.message"
-                        )
-                    }));
-                    onUserDelete();
-                })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(addAlert({
-                            description: error.response.data.description,
-                            level: AlertLevels.ERROR,
-                            message: t("users:notifications.deleteUser.error.message")
-                        }));
-
-                        return;
-                    }
-                    dispatch(addAlert({
-                        description: t("users:notifications.deleteUser." +
-                            "genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("users:notifications.deleteUser.genericError" +
-                            ".message")
-                    }));
-                }).finally(() => {
-                    setLoading(false);
-                    setShowDeleteConfirmationModal(false);
-                    setDeletingUser(undefined);
-                });
-        } else if (accountType === UserAccountTypes.CUSTOMER && "id" in user) {
-
-            const roleData: PatchRoleDataInterface = {
-                Operations: [
-                    {
-                        op: "remove",
-                        path: `users[value eq ${user.id}]`,
+                        path: pathValue,
                         value: {}
                     }
                 ],
@@ -333,9 +293,9 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     onUserDelete();
                 })
                 .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
+                    if (error?.response?.data?.description) {
                         dispatch(addAlert({
-                            description: error.response.data.description,
+                            description: error?.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t("users:notifications.revokeAdmin.error.message")
                         }));

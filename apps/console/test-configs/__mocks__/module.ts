@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import * as crypto from "crypto";
 
 /**
- * @fileoverview Mocks of NPM Modules.
+ * Mocks of NPM Modules.
  *
  * @remarks If you had to mock a certain npm module,
  * document the reason and any references clearly in this file.
@@ -30,7 +30,7 @@ import * as crypto from "crypto";
  * This can cause issues when t is used as a hook dependency.
  */
 const t = (key: string, object: any) => {
-    const placeholders = object ? Object.values(object).map(val => val).join(".") : "";
+    const placeholders: any = object ? Object.values(object).map((val:unknown) => val).join(".") : "";
 
     return key + placeholders;
 };
@@ -41,7 +41,9 @@ const t = (key: string, object: any) => {
  */
 jest.mock("react-i18next", () => ({
     // this mock makes sure any components using the translate hook can use it without a warning being shown
-    Trans: ({ children }) => children,
+    Trans: ({ children }: {
+        children: any
+    }) => children,
     useTranslation: () => ({
         t
     })

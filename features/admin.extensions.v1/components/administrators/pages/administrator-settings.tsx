@@ -25,9 +25,17 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Icon, Message } from "semantic-ui-react";
+import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
 import { history, store } from "../../../../admin.core.v1";
+import {
+    updateOrganizationConfigV2
+} from "../../../../admin.extensions.v2/components/administrators/api/updateOrganizationConfigV2";
+import {
+    useOrganizationConfigV2
+} from "../../../../admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
 import { updateOrganizationConfig, useOrganizationConfig } from "../api/organization";
 import { AdministratorConstants } from "../constants";
+import { OrganizationInterface, UseOrganizationConfigType } from "../models/organization";
 
 /**
  * Props for the Administration Settings page.
@@ -52,6 +60,12 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
     const { ["data-componentid"]: testId } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const { legacyAuthzRuntime }  = useAuthorization();
+
+    const useOrgConfig: UseOrganizationConfigType = legacyAuthzRuntime
+        ? useOrganizationConfig : useOrganizationConfigV2;
+    const updateOrgConfig: (isEnterpriseLoginEnabled: OrganizationInterface) =>
+        Promise<any> = legacyAuthzRuntime ? updateOrganizationConfig : updateOrganizationConfigV2;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
@@ -62,7 +76,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
         data: organizationConfig,
         isLoading: isOrgConfigRequestLoading,
         error: orgConfigFetchRequestError
-    } = useOrganizationConfig(
+    } = useOrgConfig(
         organizationName,
         {
             revalidateIfStale: false
@@ -115,7 +129,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
 
         setIsEnterpriseLoginEnabled(data.checked);
 
-        updateOrganizationConfig(isEnterpriseLoginEnabledConfig)
+        updateOrgConfig(isEnterpriseLoginEnabledConfig)
             .then(() => {
                 dispatch(addAlert({
                     description: t("extensions:manage.users.administratorSettings.success.description"),

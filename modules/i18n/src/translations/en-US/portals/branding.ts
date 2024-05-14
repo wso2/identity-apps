@@ -83,7 +83,7 @@ export const branding: BrandingNS = {
                     hint: "The placeholder of the identifier input field in the password recovery box. If not set, {{productName}} defaults are used.",
                     warning: "<0>IMPORTANT</0>: Customizing the password recovery identifier placeholder will replace the dynamic placeholder when {{feature}} are <1>configured</1>."
                 },
-                "password.recovery.button": {
+                "password.recovery.button.email.link": {
                     hint: "The text that appears on the main action button of the password recovery box. If not set, {{productName}} defaults are used."
                 },
                 "password.recovery.heading": {
@@ -167,6 +167,74 @@ export const branding: BrandingNS = {
         "sign-up": "Sign Up",
         "sms-otp": "SMS OTP",
         "totp": "TOTP"
+    },
+    ai: {
+        banner: {
+            full: {
+                heading: "Elevate Your Brand Identity with ",
+                subHeading: "Get a professional brand identity in seconds, just enter your website URL.",
+                button: "Try Branding AI"
+            },
+            input: {
+                heading: "Configure Branding with ",
+                subHeading: "Just enter your website URL. Get a unique brand identity that reflects your organization.",
+                placeholder: "Enter website URL",
+                button: "Generate Branding"
+            },
+            collapsed: {
+                heading: "Configure branding with ",
+                subHeading: "Enter your organization's website URL. Our AI efficiently customizes branding elements to match your organization.",
+                button: "Try Branding AI"
+            }
+        },
+        disclaimer: "Branding AI can make errors. Verify the information for accuracy.",
+        notifications: {
+            generateError: {
+                description: "An error occurred while generating the branding.",
+                message: "Branding generation failed"
+            },
+            generateLimitError: {
+                description: "You have exceeded the limit for branding generation. " +
+                    "Please try again in a few moments.",
+                message: "Limit exceeded"
+            },
+            regenerateError: {
+                description: "An error occurred while regenerating the branding.",
+                message: "Branding regeneration failed"
+            },
+            resetSuccess: {
+                description: "Successfully reset the AI generated branding.",
+                message: "AI Branding reset successful"
+            },
+            renderingError: {
+                description: "An error occurred while rendering the website.",
+                message: "Website rendering failed"
+            }
+        },
+        screens: {
+            loading: {
+                heading: "Generating your branding",
+                didYouKnow: "Did you know?",
+                facts: {
+                    0: "{{productName}}'s advanced theming capabilities let you customize your site title, copyright info, and support email on login pages to match your brand identity.",
+                    1: "You can enhance your login portal by updating links to your privacy policy, terms of service, and cookie policy for visible compliance with {{productName}}.",
+                    2: "With {{productName}}'s branding features, you can ensure a consistent branding experience across all your applications."
+                },
+                states: {
+                    0: "Getting things started",
+                    1: "Analyzing your webpage...",
+                    2: "Gathering visual elements...",
+                    3: "Gathering visual elements...",
+                    4: "Creating your branding theme...",
+                    5: "Creating your branding theme...",
+                    6: "Creating your branding theme...",
+                    7: "Applying final touches...",
+                    8: "Branding Generation Completed!"
+                }
+            }
+        },
+        title: "Branding AI",
+        termsAndConditions: "Terms and Conditions"
     },
     tabs: {
         preview: {

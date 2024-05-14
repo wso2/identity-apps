@@ -25,6 +25,7 @@ import {
     MultiValueAttributeInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface,
+    RolesMemberInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -62,7 +63,7 @@ import {
 } from "../../admin.roles.v2/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../admin.server-configurations.v1";
 import { updateUserInfo } from "../api";
-import { AdminAccountTypes, UserManagementConstants } from "../constants";
+import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
 /**
@@ -186,9 +187,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
-    const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked;
+    const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
+    user[userConfig.userProfileSchema]?.accountLocked === true;
     const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
+    const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
+        role.display === administratorConfig.adminRoleName) ?? false;
+
 
     useEffect(() => {
 
@@ -310,10 +315,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
+                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
 
                                 return;
@@ -391,10 +396,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
 
                                 return;
@@ -513,6 +518,44 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         return username;
+    };
+
+    /**
+     * The function returns the normalized format of locale.
+     *
+     * @param locale - locale value.
+     * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+     * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
+     */
+    const normalizeLocaleFormat = (
+        locale: string,
+        localeJoiningSymbol: LocaleJoiningSymbol,
+        updateSupportedLanguage: boolean
+    ): string => {
+        if (!locale) {
+            return locale;
+        }
+
+        const separatorIndex: number = locale.search(/[-_]/);
+
+        let normalizedLocale: string = locale;
+
+        if (separatorIndex !== -1) {
+            const language: string = locale.substring(0, separatorIndex).toLowerCase();
+            const region: string = locale.substring(separatorIndex + 1).toUpperCase();
+
+            normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
+        }
+
+        if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
+            supportedI18nLanguages[normalizedLocale] = {
+                code: normalizedLocale,
+                name: UserManagementConstants.GLOBE,
+                namespaces: []
+            };
+        }
+
+        return normalizedLocale;
     };
 
     /**
@@ -689,7 +732,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS")
                                         ? { emails: [ values.get(schema.name) ] }
-                                        : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                            .get("LOCALE")
+                                            ? { [schemaNames[0]]: normalizeLocaleFormat(
+                                                values.get(schemaNames[0]) as string,
+                                                LocaleJoiningSymbol.UNDERSCORE,
+                                                false
+                                            ) }
+                                            : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
                                 if(schema.extended) {
@@ -819,7 +869,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS")
                                         ? { emails: [ values.get(schema.name) ] }
-                                        : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                            .get("LOCALE")
+                                            ? { [schemaNames[0]]: normalizeLocaleFormat(
+                                                values.get(schemaNames[0]) as string,
+                                                LocaleJoiningSymbol.UNDERSCORE,
+                                                false
+                                            ) }
+                                            : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
                                 if(schema.extended) {
@@ -1067,14 +1124,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser: boolean =
-            [ tenantAdmin, adminUsername ]?.includes(resolvedUsername) || authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean =
+            authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
                 {
                     (!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
-                    && !isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser ? (
+                    && (!isCurrentUserAdmin || !isUserCurrentLoggedInUser) ? (
                             <Show
                                 when={ featureConfig?.users?.scopes?.delete }
                             >
@@ -1100,9 +1157,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         onActionClick={ (): void => {
                                                             setOpenChangePasswordModal(true);
                                                         } }
-                                                        isButtonDisabled={ accountLocked
-                                                            ? accountLocked
-                                                            : user[ userConfig.userProfileSchema ]?.accountLocked }
+                                                        isButtonDisabled={ accountLocked }
                                                         buttonDisableHint={ t("user:editUser." +
                                                             "dangerZoneGroup.passwordResetZone.buttonHint") }
                                                     />
@@ -1273,7 +1328,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             { fieldName })
                     }
                     type="dropdown"
-                    value={ profileInfo.get(schema?.name) }
+                    value={ normalizeLocaleFormat(profileInfo.get(schema?.name), LocaleJoiningSymbol.HYPHEN, true) }
                     children={ [ {
                         "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
                         key: "empty-locale" as string,
@@ -1286,10 +1341,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return {
                                     "data-testid": `${ testId }-profile-form-locale-dropdown-`
                                         +  supportedI18nLanguages[key].code as string,
-                                    flag: supportedI18nLanguages[key].flag,
+                                    flag: supportedI18nLanguages[key].flag ?? UserManagementConstants.GLOBE,
                                     key: supportedI18nLanguages[key].code as string,
-                                    text: `${supportedI18nLanguages[key].name as string},
-                                                ${supportedI18nLanguages[key].code as string}`,
+                                    text: supportedI18nLanguages[key].name === UserManagementConstants.GLOBE
+                                        ? supportedI18nLanguages[key].code
+                                        : `${supportedI18nLanguages[key].name as string},
+                                            ${supportedI18nLanguages[key].code as string}`,
                                     value: supportedI18nLanguages[key].code as string
                                 };
                             })

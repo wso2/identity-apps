@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { Config } from "@wso2is/features/admin.core.v1/configs";
+import { handlers as extendedHandlers } from "@wso2is/features/test-configs/__mocks__/server/handlers";
 import { ResponseComposition, RestContext, RestHandler, RestRequest, rest } from "msw";
-import { handlers as extendedHandlers } from "../../../src/extensions/test-configs/__mocks__/server/handlers";
-import { Config } from "../../../src/features/core/configs";
 
 /**
  * MSW Request Handlers.

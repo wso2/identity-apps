@@ -27,9 +27,10 @@ import {
     LightbulbOnIcon,
     LinearNodesIcon,
     NodesIcon,
-    UserCircleDotIcon
+    UserCircleDotIcon,
+    UserGroupIcon
 } from "@oxygen-ui/react-icons";
-import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
@@ -43,6 +44,7 @@ import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../admin.l
 import { ServerConfigurationsConstants } from "../../admin.server-configurations.v1";
 import { AppView, FullScreenView } from "../../admin.views.v1";
 import { AppConstants } from "../constants";
+import { store } from "../store";
 
 /**
  * Get App View Routes.
@@ -66,6 +68,8 @@ import { AppConstants } from "../constants";
 export const getAppViewRoutes = (): RouteInterface[] => {
 
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
+    const applicationRolesFeatureConfig: FeatureAccessConfigInterface
+        = store.getState()?.config?.ui?.features?.applicationRoles;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -286,6 +290,36 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "console:manage.features.sidePanel.users",
             order: 2,
             path: AppConstants.getPaths().get("USERS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("../../admin.groups.v1/pages/group-edit")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "groupsEdit",
+                    name: "console:manage.features.sidePanel.editGroups",
+                    path: AppConstants.getPaths().get("GROUP_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../admin.groups.v1/pages/groups")),
+            exact: true,
+            icon: {
+                icon: <UserGroupIcon className="icon" fill="black" />
+            },
+            id: "groups",
+            name: "Groups",
+            order: 6,
+            path: AppConstants.getPaths().get("GROUPS"),
             protected: true,
             showOnSidePanel: true
         },
@@ -1389,6 +1423,72 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 showOnSidePanel: !legacyMode?.rolesV1
             }
         );
+    }
+
+    if (applicationRolesFeatureConfig?.enabled) {
+        defaultRoutes.push(
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../admin.extensions.v1/components/groups/pages/groups-edit")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "groupsEdit",
+                        name: "console:manage.features.sidePanel.editGroups",
+                        path: AppConstants.getPaths().get("GROUP_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../admin.extensions.v1/components/groups/pages/groups")),
+                exact: true,
+                icon: {
+                    icon: <UserGroupIcon className="icon" fill="black" />
+                },
+                id: "groups",
+                name: "Groups",
+                order: 6,
+                path: AppConstants.getPaths().get("GROUPS"),
+                protected: true,
+                showOnSidePanel: true
+            }
+        );
+    } else {
+        defaultRoutes.push({
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("../../admin.groups.v1/pages/group-edit")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "groupsEdit",
+                    name: "console:manage.features.sidePanel.editGroups",
+                    path: AppConstants.getPaths().get("GROUP_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../admin.groups.v1/pages/groups")),
+            exact: true,
+            icon: {
+                icon: <UserGroupIcon className="icon" fill="black" />
+            },
+            id: "groups",
+            name: "Groups",
+            order: 6,
+            path: AppConstants.getPaths().get("GROUPS"),
+            protected: true,
+            showOnSidePanel: true
+        });
     }
 
     const routes: RouteInterface[] = values(

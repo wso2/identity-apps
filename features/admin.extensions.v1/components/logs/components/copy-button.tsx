@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,7 @@ import { Button, Icon } from "semantic-ui-react";
 const CopyButton = (props: { value: string }):ReactElement => {
     const { value } = props;
     const [ icon, setIcon ] = useState<string>("copy");
-    const timeRef: MutableRefObject<NodeJS.Timeout> = useRef(null);
+    const timeRef: MutableRefObject<ReturnType<typeof setInterval>> = useRef(null);
     const { t } = useTranslation();
 
     const handleCopy: () => void = () => {

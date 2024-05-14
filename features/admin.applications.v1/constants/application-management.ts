@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,6 +34,7 @@ export class ApplicationManagementConstants {
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
     public static readonly MY_ACCOUNT_APP_NAME: string = "My Account";
+    public static readonly MY_ACCOUNT_CLIENT_ID: string = "MY_ACCOUNT";
     public static readonly CONSOLE_APP_NAME: string = "Console";
     public static readonly SYSTEM_APPS: string[] = [ this.CONSOLE_APP_NAME ];
     public static readonly DEFAULT_APPS: string[] = [ this.MY_ACCOUNT_APP_NAME ];
@@ -70,6 +71,8 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_INFO", "applications.edit.info")
         .set("FAPI_APP_CREATION", "applications.create.fapi")
         .set("APPLICATION_NATIVE_AUTHENTICATION", "applications.native.authentication")
+        .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
+        .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
@@ -348,7 +351,9 @@ export class ApplicationManagementConstants {
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID
+        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR,
+        IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
@@ -371,7 +376,11 @@ export class ApplicationManagementConstants {
     public static readonly TOTP_HANDLERS: string[] = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS,
-        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR,
+        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle Email OTP.
@@ -412,12 +421,17 @@ export class ApplicationManagementConstants {
      * Form element constraints.
      */
     public static readonly FORM_FIELD_CONSTRAINTS: {
+        ACCESS_URL_ALLOWED_PLACEHOLDERS: string[],
         ACCESS_URL_MAX_LENGTH: number,
         ACCESS_URL_MIN_LENGTH: number,
         APP_DESCRIPTION_PATTERN: RegExp,
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
+        ACCESS_URL_ALLOWED_PLACEHOLDERS: [
+            "\\${UserTenantHint}",
+            "\\${organizationIdHint}"
+        ],
         ACCESS_URL_MAX_LENGTH: 200,
         ACCESS_URL_MIN_LENGTH: 3,
         APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),

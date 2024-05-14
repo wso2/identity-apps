@@ -51,6 +51,21 @@ export interface CommonConfigInterface<T, S, U, V, W> {
  */
 export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S = Record<string, unknown>> {
     /**
+     * EXPERIMENTAL CONFIG -: Platform IdP configurations.
+     * @remarks
+     * If this is enabled, the sign-in logic will have a few extensions.
+     */
+    __experimental__platformIdP: {
+        /**
+         * Is the application fronted with a platform IdP.
+         */
+        enabled: true;
+        /**
+         * The Home Realm Id of the Platform IdP.
+         */
+        homeRealmId: string;
+    };
+    /**
      * Base name of the application (tenant qualified).
      * ex: `/t/wos2.com/sample-portal`
      */
@@ -88,6 +103,11 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      * Origin of the client application. Usually same as `clientHost`.
      */
     clientOrigin: string;
+    /**
+     * Origin of the client application with the tenant domain.
+     * ex: `https://localhost:9001/t/wso2.com/console`
+     */
+    clientOriginWithTenant: string;
     /**
      * Portal Documentation configs.
      */

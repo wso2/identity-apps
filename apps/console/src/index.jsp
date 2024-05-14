@@ -199,9 +199,11 @@
                     return "";
                 }
 
-                function getTenantPath() {
-                    return getTenantName() !== ""
-                        ? "/" + startupConfig.tenantPrefix + "/" + getTenantName()
+                function getTenantPath(tenantDomain) {
+                    var _tenantDomain = tenantDomain ? tenantDomain : getTenantName();
+
+                    return _tenantDomain !== ""
+                        ? "/" + startupConfig.tenantPrefix + "/" + _tenantDomain
                         : "";
                 };
 
@@ -217,14 +219,18 @@
                     var tenantDomain = getTenantName();
 
                     if (!tenantDomain) {
-                        tenantDomain = startupConfig.superTenant;
+                        if (startupConfig.superTenantProxy) {
+                            tenantDomain = startupConfig.superTenantProxy;
+                        } else {
+                            tenantDomain = startupConfig.superTenant;
+                        }
                     }
 
                     if (path) {
-                        return serverOrigin + getTenantPath() + path;
+                        return serverOrigin + getTenantPath(tenantDomain) + path;
                     }
 
-                    return serverOrigin + getTenantPath();
+                    return serverOrigin + getTenantPath(tenantDomain);
                 }
 
                 /**
@@ -316,6 +322,21 @@
                     return authParams;
                 }
 
+                /**
+                 * Retrieves the super tenant.
+                 * If a super tenant proxy is defined in the startup configuration, it is returned;
+                 * otherwise, the super tenant directly from the startup configuration is returned.
+                 *
+                 * @returns {string} The super tenant.
+                 */
+                function getSuperTenant() {
+                    if (startupConfig.superTenantProxy) {
+                        return startupConfig.superTenantProxy;
+                    }
+
+                    startupConfig.superTenant;
+                }
+
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
@@ -343,10 +364,10 @@
                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     authConfig.signOutRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
                     authConfig.endpoints.authorizationEndpoint = getApiPath(userTenant
-                            ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
-                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize");
-                    authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout");
-                    authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession");
+                            ? "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                            : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize");
+                    authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/logout");
+                    authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/checksession");
                 }
 
                 var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");

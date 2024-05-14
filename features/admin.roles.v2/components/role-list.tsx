@@ -101,6 +101,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isEditingSystemRolesAllowed: boolean =
+        useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(userRolesFeatureConfig,
@@ -279,6 +281,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const resolveTableActions = (): TableActionsInterface[] => {
         return [
             {
+                hidden: (role: RolesInterface) => role?.meta?.systemRole,
                 icon: (): SemanticICONS =>
                     !isReadOnly
                         ? "pencil alternate"
@@ -292,14 +295,19 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 renderer: "semantic-icon"
             },
             {
-                hidden: (role: RolesInterface) => isSubOrg ||
-                    (role?.displayName === CommonRoleConstants.ADMIN_ROLE ||
+                hidden: (role: RolesInterface) => {
+                    return isSubOrg
+                    || role?.meta?.systemRole
+                    || (
+                        role?.displayName === CommonRoleConstants.ADMIN_ROLE ||
                         role?.displayName === CommonRoleConstants.ADMIN_GROUP ||
-                        role?.displayName === administratorRoleDisplayName)
+                        role?.displayName === administratorRoleDisplayName
+                    )
                     || !isFeatureEnabled(userRolesFeatureConfig,
                         RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
                     || !hasRequiredScopes(userRolesFeatureConfig,
-                        userRolesFeatureConfig?.scopes?.delete, allowedScopes),
+                        userRolesFeatureConfig?.scopes?.delete, allowedScopes);
+                },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     onRoleDeleteClicked(role);
@@ -319,7 +327,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 columns={ resolveTableColumns() }
                 data={ roleList?.Resources }
                 onRowClick={
-                    (e: SyntheticEvent, role: RolesInterface): void => {
+                    (_e: SyntheticEvent, role: RolesInterface): void => {
+                        if (!isEditingSystemRolesAllowed && role?.meta?.systemRole) {
+                            return;
+                        }
                         handleRoleEdit(role?.id);
                     }
                 }

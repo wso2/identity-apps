@@ -30,6 +30,8 @@ SCRIPT_LOCATION="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 PACKAGES=$1
 # The GitHub Action run number.
 GITHUB_RUN_NUMBER=$2
+# Variable to determine whether the current release is a hotfix
+IS_HOTFIX=$3
 # The release branch name.
 RELEASE_BRANCH=release-action-$GITHUB_RUN_NUMBER
 
@@ -44,6 +46,22 @@ process_console_package() {
     if [ -z "$releaseVersion" ]; then
         echo "Please provide a release version as an argument."
         return 0
+    fi
+
+    if [ "$IS_HOTFIX" = "true" ]; then
+        echo "Hotfix detected. Publishing the package as a hotfix."
+
+        search_tag=$tag-hotfix
+        echo "Search Tag: $search_tag"
+
+        hotfix_count=$(git tag | grep $search_tag | wc -l)
+        echo "Hotfix count: $hotfix_count"
+
+        next_hotfix_no=$((hotfix_count + 1))
+        echo "Next Hotfix number: $next_hotfix_no"
+
+        releaseVersion=$search_tag-$next_hotfix_no
+        echo "Hotfix release tag: $tag"
     fi
 
     goToRootDirectory &&
@@ -72,6 +90,22 @@ process_myaccount_package() {
         return 0
     fi
 
+    if [ "$IS_HOTFIX" = "true" ]; then
+        echo "Hotfix detected. Publishing the package as a hotfix."
+
+        search_tag=$tag-hotfix
+        echo "Search Tag: $search_tag"
+
+        hotfix_count=$(git tag | grep $search_tag | wc -l)
+        echo "Hotfix count: $hotfix_count"
+
+        next_hotfix_no=$((hotfix_count + 1))
+        echo "Next Hotfix number: $next_hotfix_no"
+
+        releaseVersion=$search_tag-$next_hotfix_no
+        echo "Hotfix release tag: $tag"
+    fi
+
     goToRootDirectory &&
         cd "apps/myaccount/java" || exit 1 &&
         echo "Releasing myaccount version: $releaseVersion"
@@ -96,6 +130,22 @@ process_java_apps_package() {
     if [ -z "$releaseVersion" ]; then
         echo "Please provide a release version as an argument."
         return 0
+    fi
+
+    if [ "$IS_HOTFIX" = "true" ]; then
+        echo "Hotfix detected. Publishing the package as a hotfix."
+
+        search_tag=$tag-hotfix
+        echo "Search Tag: $search_tag"
+
+        hotfix_count=$(git tag | grep $search_tag | wc -l)
+        echo "Hotfix count: $hotfix_count"
+
+        next_hotfix_no=$((hotfix_count + 1))
+        echo "Next Hotfix number: $next_hotfix_no"
+
+        releaseVersion=$search_tag-$next_hotfix_no
+        echo "Hotfix release tag: $tag"
     fi
 
     goToRootDirectory &&

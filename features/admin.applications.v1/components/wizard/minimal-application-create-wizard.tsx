@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -98,6 +100,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
+import "./minimal-application-create-wizard.scss";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -181,6 +184,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("FAPI_APP_CREATION"));
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
+    );
+    const isManagementApplicationsEnabled: boolean = isFeatureEnabled(
+        featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_ADD_MANAGEMENT_APPLICATIONS")
     );
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
@@ -333,12 +340,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
         // If the application is a OIDC standard-based application
-        if (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-            && (selectedTemplate?.templateId === "custom-application"
-                || selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)) {
-            application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2
-                ? true
-                : false;
+        if (
+            legacyAuthzRuntime &&
+            isManagementApplicationsEnabled &&
+            customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
+            (selectedTemplate?.templateId === "custom-application" ||
+                selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
+        ) {
+            application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2 ? true : false;
         }
 
         // Adding `APPLICATION` as the default audience for the associated roles,
@@ -1100,6 +1109,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
                             (selectedTemplate?.templateId === "custom-application" ||
                             selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
+                            && isManagementApplicationsEnabled
                         ) && (
                             <div className="pt-0 mt-0">
                                 <Field
@@ -1131,20 +1141,29 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && isFAPIAppCreationEnabled
                         && (
                             <div className="pt-0 mt-0">
-                                <Field
-                                    data-componentid={ `${ testId }-fapi-app-checkbox` }
-                                    name={ "isFAPIApp" }
-                                    required={ false }
-                                    type="checkbox"
-                                    value={ [ "isFAPIApp" ] }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.generalDetails" +
-                                                ".fields.isFapiApp.label" ),
-                                            value: "fapiApp"
-                                        }
-                                    ] }
-                                />
+                                <Box display="flex" alignItems="center">
+                                    <Field
+                                        data-componentid={ `${ testId }-fapi-app-checkbox` }
+                                        name="isFAPIApp"
+                                        required={ false }
+                                        type="checkbox"
+                                        value={ [ "isFAPIApp" ] }
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.generalDetails" +
+                                                    ".fields.isFapiApp.label" ),
+                                                value: "fapiApp"
+                                            }
+                                        ] }
+                                    />
+                                    { applicationConfig.advancedConfigurations.showFapiFeatureStatusChip && (
+                                        <div className="oxygen-chip-div" >
+                                            <Chip
+                                                label={ t("common:beta").toUpperCase() }
+                                                className="oxygen-menu-item-chip oxygen-chip-beta" />
+                                        </div>
+                                    ) }
+                                </Box>
                                 <Hint compact>
                                     { t("applications:forms.generalDetails.fields" +
                                         ".isFapiApp.hint" ) }

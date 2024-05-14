@@ -107,7 +107,7 @@ const SecretDeleteConfirmationModal: FunctionComponent<SecretDeleteConfirmationM
             assertionType="checkbox"
             primaryAction={ t("secrets:modals.deleteSecret.primaryActionButtonText") }
             secondaryAction={ t("secrets:modals.deleteSecret.secondaryActionButtonText") }
-            data-componentid={ `${componentId}-delete-confirmation-modal` }
+            data-componentid={ componentId }
             onPrimaryActionClick={ () => handleSecretDelete() }
             onSecondaryActionClick={ (event: MouseEvent<HTMLElement>) => onClose(event, null) }
             { ...rest }

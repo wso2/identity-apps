@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -445,6 +445,22 @@ export class IdentityProviderManagementConstants {
     public static readonly IDENTITY_PROVIDER_CERTIFICATE_UPDATE_ERROR: string = "An error occurred while updating " +
         "the certificate of the connection.";
 
+    public static readonly FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while updating the Passkey connector configs.";
+
+    public static readonly FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: string = "An error occurred while updating the " +
+        "Passkey connector configs.";
+
+    public static readonly FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE: string = "CONFIGM_00017";
+
+    public static readonly FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while updating the Passkey trusted apps.";
+
+    public static readonly FIDO_TRUSTED_APPS_UPDATE_ERROR: string = "An error occurred while updating the " +
+        "Passkey trusted apps.";
+
+    public static readonly FIDO_TRUSTED_APPS_SHA_SEPARATOR: string = "|";
+
     public static readonly BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR: string = "BasicAuthRequestPathAuthenticator";
     public static readonly OAUTH_REQUEST_PATH_AUTHENTICATOR: string = "OAuthRequestPathAuthenticator";
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
@@ -452,6 +468,7 @@ export class IdentityProviderManagementConstants {
     public static readonly X509_AUTHENTICATOR: string = "x509CertificateAuthenticator";
     public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
     public static readonly TOTP_AUTHENTICATOR: string = "totp";
+    public static readonly IPROOV_AUTHENTICATOR: string = "IproovAuthenticator";
     public static readonly EMAIL_OTP_AUTHENTICATOR: string = "email-otp-authenticator";
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
@@ -562,4 +579,14 @@ export class IdentityProviderManagementConstants {
      )
 
      public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
+
+    /**
+     * Name of the FIDO connector configuration.
+     */
+    public static readonly FIDO_CONNECTOR_CONFIG_NAME: string = "fido-connector";
+
+    /**
+     * Attribute key for the trusted origins in the FIDO connector configuration.
+     */
+    public static readonly FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY: string = "FIDO2TrustedOrigins";
 }

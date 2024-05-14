@@ -1,4 +1,8 @@
 {
+    "__experimental__platformIdP": {
+        "enabled": false,
+        "homeRealmId": ""
+    },
     "accountApp": {
         "path": "/myaccount/overview"
     },
@@ -35,6 +39,7 @@
     "idpConfigs": {
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",
         "oidcSessionIFrameEndpointURL": "${serverOrigin}/oidc/checksession",
+        "enableOIDCSessionManagement": true,
         "baseUrls": [],
         "clockTolerance": 300,
         "storage": "webWorker",
@@ -144,7 +149,8 @@
                 "id": "QWNjb3VudERpc2FibGU",
                 "displayName": "Account Disabled"
             }
-        ]
+        ],
+        "outboundProvisioningConnectors": []
     },
     "session": {
         "sessionRefreshTimeOut": 300.0,
@@ -154,9 +160,13 @@
     },
     "getProfileInfoFromIDToken": false,
     "superTenantProxy": "",
-    "requireSuperTenantInUrls" : false,
     "legacyAuthzRuntime": false,
     "legacyMode": false,
+    "tenantContext": {
+        "enableTenantQualifiedUrls": true,
+        "requireSuperTenantInUrls": false,
+        "requireSuperTenantInAppUrls": true
+    },
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -172,6 +182,7 @@
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
+        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "features": {
             "administrators": {
                 "disabledFeatures": [],
@@ -223,7 +234,7 @@
             },
             "applicationRoles": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [],
                     "read": [],
@@ -242,7 +253,7 @@
                 }
             },
             "branding": {
-                "disabledFeatures": [ "branding.hostnameUrlBranding" ],
+                "disabledFeatures": [ "branding.hostnameUrlBranding", "branding.ai" ],
                 "enabled": true,
                 "scopes": {
                     "feature": [
@@ -337,7 +348,10 @@
             },
             "applications": {
                 "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
+                    "applications.loginFlow.legacyEditor",
+                    "applications.loginFlow.ai",
+                    "applications.myaccount.simplifiedSettings",
+                    "applications.myaccount.saasMyaccountSettings"
                 ],
                 "enabled": true,
                 "scopes": {
@@ -578,6 +592,25 @@
                 }
             },
             "guestUser": {
+                "enabled": true,
+                "disabledFeatures": [],
+                "scopes": {
+                    "delete": [
+                        "internal_guest_mgt_invite_delete",
+                        "internal_guest_mgt_user_delete"
+                    ],
+                    "read": [
+                        "internal_guest_mgt_invite_list"
+                    ],
+                    "create": [
+                        "internal_guest_mgt_invite_add"
+                    ],
+                    "update": [
+                        "internal_guest_mgt_invite_update"
+                    ]
+                }
+            },
+            "parentUserInvitation": {
                 "enabled": true,
                 "disabledFeatures": [],
                 "scopes": {
@@ -1119,6 +1152,7 @@
             "Console",
             "My Account"
         ],
+        "isEditingSystemRolesAllowed": true,
         "isXacmlConnectorEnabled": false,
         "administratorRoleDisplayName": "Administrator",
         "useRoleClaimAsGroupClaim": false,

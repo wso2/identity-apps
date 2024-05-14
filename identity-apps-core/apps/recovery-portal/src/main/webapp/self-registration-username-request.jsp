@@ -208,12 +208,10 @@
             }
         }
     }
-    if (isFederated) {
-        if (federatedAuthenticators.length() == 1) {
-            JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
-            String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
-            isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
-        }
+    if (isFederated && federatedAuthenticators.length() == 1) {
+        JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
+        String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
+        isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
     }
 
     if (request.getParameter(Constants.MISSING_CLAIMS) != null) {
@@ -1295,7 +1293,7 @@
 
     <script>
         const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
-        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^.{|}~-]+$/;  
+        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^.{|}~-]+$/;
         var registrationDataKey = "registrationData";
         var passwordField = $("#passwordUserInput");
         var $registerForm = $("#register");

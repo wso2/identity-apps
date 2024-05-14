@@ -530,27 +530,27 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
                                         }
                                         validation={ (value: string) => {
-                                            if (
-                                                !(selectedTemplate.templateId === ApplicationManagementConstants.MOBILE)
-                                            ) {
-                                                if ((
-                                                    !(URLUtils.isURLValid(value, true)
-                                                    && (URLUtils.isHttpUrl(value)
-                                                    || URLUtils.isHttpsUrl(value)))
-                                                )) {
-                                                    return false;
-                                                }
-                                            }
+                                            if (selectedTemplate.templateId === ApplicationManagementConstants.MOBILE) {
+                                                if (URLUtils.isMobileDeepLink(value)) {
+                                                    setCallbackURLsErrorLabel(null);
 
-                                            if (!URLUtils.isMobileDeepLink(value)) {
+                                                    return true;
+                                                }
                                                 setIsDeepLinkError(true);
 
                                                 return false;
                                             }
+                                            if (URLUtils.isURLValid(value)) {
+                                                if (URLUtils.isHttpUrl(value) || URLUtils.isHttpsUrl(value)) {
+                                                    setCallbackURLsErrorLabel(null);
 
-                                            setCallbackURLsErrorLabel(null);
+                                                    return true;
+                                                }
 
-                                            return true;
+                                                return false;
+                                            }
+
+                                            return false;
                                         } }
                                         computerWidth={ 10 }
                                         setShowError={ setShowURLError }

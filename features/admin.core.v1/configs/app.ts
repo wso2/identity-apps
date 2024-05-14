@@ -19,8 +19,6 @@
 import { DocumentationConstants } from "@wso2is/core/constants";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
-import { getFeatureGateResourceEndpoints } from "../../admin.extensions.v1/components/feature-gate/configs";
-import { getExtendedFeatureResourceEndpoints } from "../../admin.extensions.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "../../admin.api-resources.v2/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../admin.applications.v1/configs/endpoints";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
@@ -30,6 +28,9 @@ import { getClaimResourceEndpoints } from "../../admin.claims.v1/configs/endpoin
 import { getConnectionResourceEndpoints } from "../../admin.connections.v1";
 import { getConsoleSettingsResourceEndpoints } from "../../admin.console-settings.v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../admin.email-templates.v1";
+import { getFeatureGateResourceEndpoints } from "../../admin.extensions.v1/components/feature-gate/configs";
+import { getExtendedFeatureResourceEndpoints } from "../../admin.extensions.v1/configs/endpoints";
+import { getExtendedFeatureResourceEndpointsV2 } from "../../admin.extensions.v2/config/endpoints";
 import { getGroupsResourceEndpoints } from "../../admin.groups.v1";
 import { getIDPResourceEndpoints } from "../../admin.identity-providers.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "../../admin.identity-verification-providers.v1";
@@ -81,8 +82,10 @@ export class Config {
             }
         }
 
-        if (skipAuthzRuntimePath) {
-            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant?.replace("/o", "");
+        const serverOriginWithTenant: string = window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
+
+        if (skipAuthzRuntimePath && serverOriginWithTenant?.slice(-2) === "/o") {
+            return serverOriginWithTenant.substring(0,serverOriginWithTenant.lastIndexOf("/o"));
         }
 
         return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
@@ -113,6 +116,7 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
+            __experimental__platformIdP: window[ "AppUtils" ]?.getConfig()?.__experimental__platformIdP,
             accountApp: window[ "AppUtils" ]?.getConfig()?.accountApp,
             adminApp: window[ "AppUtils" ]?.getConfig()?.adminApp,
             allowMultipleAppProtocols: window[ "AppUtils" ]?.getConfig()?.allowMultipleAppProtocols,
@@ -124,6 +128,7 @@ export class Config {
             clientHost: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             clientID: window[ "AppUtils" ]?.getConfig()?.clientID,
             clientOrigin: window[ "AppUtils" ]?.getConfig()?.clientOrigin,
+            clientOriginWithTenant: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             customServerHost: window[ "AppUtils" ]?.getConfig()?.customServerHost,
             developerApp: window[ "AppUtils" ]?.getConfig()?.developerApp,
             docSiteURL: window[ "AppUtils" ]?.getConfig()?.docSiteUrl,
@@ -229,7 +234,8 @@ export class Config {
                 I18nConstants.GROUPS_NAMESPACE,
                 I18nConstants.APPLICATIONS_NAMESPACE,
                 I18nConstants.IDP_NAMESPACE,
-                I18nConstants.API_RESOURCES_NAMESPACE
+                I18nConstants.API_RESOURCES_NAMESPACE,
+                I18nConstants.AI_NAMESPACE
             ],
             preload: []
         };
@@ -281,6 +287,7 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
+            ...getExtendedFeatureResourceEndpointsV2(this.resolveServerHost()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
@@ -343,6 +350,7 @@ export class Config {
             isCustomClaimMappingMergeEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isCustomClaimMappingMergeEnabled,
             isDefaultDialectEditingEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isDefaultDialectEditingEnabled,
             isDialectAddingEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isDialectAddingEnabled,
+            isEditingSystemRolesAllowed:  window[ "AppUtils" ]?.getConfig()?.ui?.isEditingSystemRolesAllowed,
             isFeatureGateEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isFeatureGateEnabled,
             isGroupAndRoleSeparationEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isGroupAndRoleSeparationEnabled,
             isHeaderAvatarLabelAllowed: window[ "AppUtils" ]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
@@ -362,6 +370,8 @@ export class Config {
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
+            showSmsOtpPwdRecoveryFeatureStatusChip:
+                window[ "AppUtils" ]?.getConfig()?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
             useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim

@@ -17,14 +17,14 @@
  */
 
 import { ThemeProvider } from "@oxygen-ui/react/theme";
-import { AppState } from "apps/myaccount/src/store";
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { useGetBrandingPreference } from "../api";
-import { generateAsgardeoTheme } from "../branding/theme";
 import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts";
 import { BrandingPreferenceMeta } from "../meta";
+import { AppState } from "../store";
+import generateTheme from "../theme";
 
 /**
  * Props interface for the BrandingPreferenceProvider.
@@ -101,9 +101,9 @@ export const BrandingPreferenceProvider = (props: PropsWithChildren<BrandingPref
                 { injectBaseTheme() }
                 { injectBrandingCSSSkeleton() }
             </Helmet>
-            <ThemeProvider 
-                theme={ generateAsgardeoTheme(contextValues) } 
-                defaultMode="light"  
+            <ThemeProvider
+                theme={ generateTheme(contextValues) }
+                defaultMode="light"
                 modeStorageKey="myaccount-oxygen-mode"
             >
                 { children }

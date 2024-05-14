@@ -16,10 +16,8 @@
  * under the License.
  */
 
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { applicationConfig } from "../../admin.extensions.v1";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
@@ -27,7 +25,6 @@ import React, { PropsWithChildren, ReactElement, useCallback, useEffect, useMemo
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { identityProviderConfig } from "../../admin.extensions.v1/configs/identity-provider";
 import { useGetAdaptiveAuthTemplates } from "../../admin.applications.v1/api";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import {
@@ -43,7 +40,10 @@ import { AuthenticatorManagementConstants } from "../../admin.connections.v1/con
 import { AuthenticatorMeta } from "../../admin.connections.v1/meta/authenticator-meta";
 import { ConnectionInterface } from "../../admin.connections.v1/models/connection";
 import { ConnectionsManagementUtils } from "../../admin.connections.v1/utils/connection-utils";
+import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "../../admin.core.v1/store";
+import { applicationConfig } from "../../admin.extensions.v1";
+import { identityProviderConfig } from "../../admin.extensions.v1/configs/identity-provider";
 import {
     IdentityProviderManagementConstants
 } from "../../admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -95,6 +95,10 @@ export interface AuthenticationFlowProviderProps {
      * List of hidden authenticators.
      */
     hiddenAuthenticators: string[];
+    /**
+     * Authentication sequence passed from sign-on-methods-core component.
+     */
+    authenticationSequence: AuthenticationSequenceInterface;
 }
 
 /**
@@ -111,7 +115,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         isSystemApplication,
         onUpdate,
         onAuthenticatorsRefetch,
-        hiddenAuthenticators
+        hiddenAuthenticators,
+        authenticationSequence: initialAuthenticationSequence
     } = props;
 
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
@@ -161,6 +166,16 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             });
         }
     }, []);
+
+    /**
+     * On initialAuthenticationSequence change,
+     * if the authentication sequence passed is not empty, set it to the state.
+     */
+    useEffect(() => {
+        if (initialAuthenticationSequence) {
+            setAuthenticationSequence(initialAuthenticationSequence);
+        }
+    }, [ initialAuthenticationSequence ]);
 
     /**
      * Separates out the different authenticators to their relevant categories.

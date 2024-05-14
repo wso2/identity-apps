@@ -42,6 +42,7 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
+            __experimental__platformIdP: window[ "AppUtils" ]?.getConfig()?.__experimental__platformIdP,
             appBaseName: window["AppUtils"]?.getConfig()?.appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"]?.getConfig()?.appBase,
             appHomePath: window["AppUtils"]?.getConfig()?.routes?.home,
@@ -50,6 +51,7 @@ export class Config {
             clientHost: window["AppUtils"]?.getConfig()?.clientOriginWithTenant,
             clientID: window["AppUtils"]?.getConfig()?.clientID,
             clientOrigin: window["AppUtils"]?.getConfig()?.clientOrigin,
+            clientOriginWithTenant: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             consoleApp: window["AppUtils"]?.getConfig()?.consoleApp,
             customServerHost: window["AppUtils"]?.getConfig()?.customServerHost,
             idpConfigs: window["AppUtils"]?.getConfig()?.idpConfigs,

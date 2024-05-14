@@ -36,6 +36,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
     UIConfigInterface> = {
 
         deployment: {
+            __experimental__platformIdP: null,
             accountApp: {
                 basePath: "",
                 displayName: "",
@@ -57,6 +58,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientHost: "",
             clientID: "",
             clientOrigin: "",
+            clientOriginWithTenant: "",
             customServerHost: "",
             developerApp: {
                 basePath: "",
@@ -105,6 +107,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             deleteSecret: "",
             deleteSecretType: "",
             externalClaims: "",
+            fidoConfigs: "",
+            fidoTrustedApps: "",
             getSecret: "",
             getSecretList: "",
             getSecretType: "",
@@ -249,6 +253,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isCustomClaimMappingMergeEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,
             isDialectAddingEnabled: undefined,
+            isEditingSystemRolesAllowed: undefined,
             isGroupAndRoleSeparationEnabled: undefined,
             isHeaderAvatarLabelAllowed: undefined,
             isLeftNavigationCategorized: undefined,
@@ -263,6 +268,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             productVersionConfig: null,
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
+            showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             systemAppsIdentifiers: [],
             theme: {
                 name: "",

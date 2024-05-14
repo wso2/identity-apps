@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppThemeConfigInterface } from "@wso2is/core/models";
+import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { MultitenantConstants } from "./multitenant-constants";
 import { identityProviderConfig } from "../../admin.extensions.v1/configs";
@@ -178,6 +178,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the feature configuration of the administrators feature.
+     *
+     * @returns Feature access config for the administrators feature.
+     */
+    public static getAdministratorsFeatureConfig(): FeatureAccessConfigInterface {
+        return window["AppUtils"]?.getConfig()?.ui?.features?.administrators;
+    }
+
+    /**
      * Get the My Account path.
      *
      * @returns The My Account path.
@@ -274,6 +283,7 @@ export class AppConstants {
                 `${ AppConstants.getDeveloperViewBasePath() }/applications/:id:tabName`
             ],
             [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
+            [ "BRANDING", `${ AppConstants.getDeveloperViewBasePath() }/branding` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
             [ "CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings` ],
             [ "CLAIM_VERIFICATION_SETTINGS",
@@ -490,7 +500,8 @@ export class AppConstants {
      * Route ids that are enabled in only for an organizations (Not allowed in root organization).
      */
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
-        "roles"
+        "roles",
+        ...(this.getAdministratorsFeatureConfig()?.enabled ? [ "consoleSettings" ] : [])
     ]
 
     /**

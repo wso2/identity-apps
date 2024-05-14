@@ -132,6 +132,26 @@ const useSignIn = (): UseSignInInterface => {
                 || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomain);
         const userOrganizationId: string = idToken.user_org;
 
+        const __experimental__platformIdP: {
+            enabled: boolean;
+            homeRealmId: string;
+        } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
+        if (__experimental__platformIdP?.enabled) {
+            if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
+                const redirectUrl: URL = new URL(
+                    window["AppUtils"].getConfig().clientOriginWithTenant.replace(
+                        window["AppUtils"].getConfig().tenant,
+                        idToken.default_tenant
+                    )
+                );
+
+                redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                window.location.href = redirectUrl.href;
+            }
+        }
+
         // Update the organization name with the newly resolved org.
         if (!isFirstLevelOrg) {
             window["AppUtils"].updateOrganizationName(idToken.org_id);
@@ -149,6 +169,7 @@ const useSignIn = (): UseSignInInterface => {
         } else {
             orgType = OrganizationType.SUBORGANIZATION;
         }
+
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
@@ -203,15 +224,6 @@ const useSignIn = (): UseSignInInterface => {
                     );
                 }
 
-                // If super tenant proxy is configured, `authorize` endpoint is updated with the configured
-                // super tenant proxy.
-                if (window["AppUtils"].getConfig().superTenantProxy) {
-                    authorizationEndpoint = authorizationEndpoint.replace(
-                        window["AppUtils"].getConfig().superTenant,
-                        window["AppUtils"].getConfig().superTenantProxy
-                    );
-                }
-
                 // If `oidc session iframe` endpoint is overridden, save that in the session.
                 if (window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
                     oidcSessionIframeEndpoint = resolveIdpURLSAfterTenantResolves(
@@ -225,6 +237,23 @@ const useSignIn = (): UseSignInInterface => {
                     tokenEndpoint = resolveIdpURLSAfterTenantResolves(
                         tokenEndpoint,
                         window["AppUtils"].getConfig().idpConfigs.tokenEndpointURL
+                    );
+                }
+
+                // If super tenant proxy is configured,
+                // update the endpoints with the configured super tenant proxy.
+                if (window["AppUtils"].getConfig().superTenantProxy) {
+                    authorizationEndpoint = authorizationEndpoint.replace(
+                        window["AppUtils"].getConfig().superTenant,
+                        window["AppUtils"].getConfig().superTenantProxy
+                    );
+                    oidcSessionIframeEndpoint = oidcSessionIframeEndpoint.replace(
+                        window["AppUtils"].getConfig().superTenant,
+                        window["AppUtils"].getConfig().superTenantProxy
+                    );
+                    tokenEndpoint = tokenEndpoint.replace(
+                        window["AppUtils"].getConfig().superTenant,
+                        window["AppUtils"].getConfig().superTenantProxy
                     );
                 }
 
@@ -425,6 +454,23 @@ const useSignIn = (): UseSignInInterface => {
                 sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
                 sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                 sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
+
+                // `updateConfig` doesn't seem to be updating the SDK config after initializing.
+                // Hence the updated `signOutRedirectURL` is not taken for logout.
+                // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/222
+                // TODO: Remove this workaround once the above issue is fixed.
+                Object.entries(sessionStorage).forEach(([ key, value ]: [ key: string, value: string ]) => {
+                    if (key.startsWith(LOGOUT_URL) && key.includes(window["AppUtils"]?.getConfig()?.clientID)) {
+                        const _signOutRedirectURL: URL = new URL(value);
+
+                        _signOutRedirectURL.searchParams.set(
+                            "post_logout_redirect_uri",
+                            new URL(logoutRedirectUrl)?.href
+                        );
+
+                        sessionStorage.setItem(key, _signOutRedirectURL.href);
+                    }
+                });
 
                 updateConfig({
                     endpoints: {

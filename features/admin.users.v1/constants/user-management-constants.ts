@@ -103,7 +103,8 @@ export class UserManagementConstants {
         .set("USERNAME", "userName")
         .set("NAME", "name")
         .set("DISPLAY_NAME", "displayName")
-        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User");
+        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User")
+        .set("LOCALE", "locale");
 
     /**
      * Set of SCIM2 enterprise attributes.
@@ -148,6 +149,10 @@ export class UserManagementConstants {
     public static readonly ERROR_COLLABORATOR_USER_LIMIT_REACHED: string = "ASG-UIM-10010";
     // Query param to exclude groups from getUserList API call.
     public static readonly GROUPS_ATTRIBUTE: string = "groups";
+
+    public static readonly MANAGED_BY_PARENT_TEXT: string = "Parent Organization";
+
+    public static readonly GLOBE: string = "globe";
 }
 
 /**
@@ -294,4 +299,14 @@ export enum InvitationStatus {
     ACCEPTED = "Accepted",
     PENDING = "Pending",
     EXPIRED = "Expired"
+}
+
+/**
+ * Enum for locale joining symbol.
+ *
+ * @readonly
+ */
+export enum LocaleJoiningSymbol {
+    HYPHEN = "-",
+    UNDERSCORE = "_"
 }

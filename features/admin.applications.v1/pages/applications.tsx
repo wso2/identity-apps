@@ -130,6 +130,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+    const applicationDisabledFeatures: string[] = useSelector((state: AppState) => {
+        return state.config.ui.features?.applications?.disabledFeatures;
+    });
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -391,7 +394,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Navigate to the my account edit page.
      */
     const navigateToMyAccountSettings = (): void => {
-        if (applicationConfig?.advancedConfigurations?.showDefaultMyAccountApplicationEditPage) {
+        if (
+            applicationDisabledFeatures?.includes(
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_MYACCOUNT_SAAS_SETTINGS")
+            )
+        ) {
             if (strongAuth) {
                 history.push({
                     pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(

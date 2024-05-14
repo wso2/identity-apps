@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Mocks the Redux store.
+ * Mocks the Redux store.
  */
 
 import { Middleware } from "redux";
@@ -26,7 +26,7 @@ import thunk from "redux-thunk";
 
 /**
  * Middleware for the Redux store.
- * @see {@link src/features/core/store/index.ts} for middleware used in the actual store.
+ * @see {@link @wso2is/features/admin.core.v1/store/index.ts#configureStore} for middleware used in the actual store.
  */
 const middleware: Middleware[] = [
     thunk
@@ -34,6 +34,5 @@ const middleware: Middleware[] = [
 
 /**
  * Configure mock store.
- * @type {MockStoreCreator<any, Dispatch<AnyAction>>}
  */
 export const mockStore: MockStoreCreator<any, Record<string, unknown>> = configureStore(middleware);
