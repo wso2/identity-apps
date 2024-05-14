@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.19.1
+
+### Patch Changes
+
+- [#6254](https://github.com/wso2/identity-apps/pull/6254) [`11177fe926a093a06fa66fc4f46d19a5d8ebfb26`](https://github.com/wso2/identity-apps/commit/11177fe926a093a06fa66fc4f46d19a5d8ebfb26) Thanks [@brionmario](https://github.com/brionmario)! - Filter out system apps from app selection list
+
+* [#6257](https://github.com/wso2/identity-apps/pull/6257) [`e3ef7e1620f39f4c6c058ae69ba28efdc416948a`](https://github.com/wso2/identity-apps/commit/e3ef7e1620f39f4c6c058ae69ba28efdc416948a) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add component ids
+
 ## 2.19.0
 
 ### Minor Changes
