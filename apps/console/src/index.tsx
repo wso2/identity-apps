@@ -17,6 +17,7 @@
  */
 
 import { AuthProvider } from "@asgardeo/auth-react";
+import { loader } from "@monaco-editor/react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
 import { ContextUtils } from "@wso2is/core/utils";
 import { AuthenticateUtils } from "@wso2is/features/admin.authentication.v1";
@@ -35,6 +36,32 @@ import Theme from "./theme";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
+// Function to check the status of the Monaco CDN.
+// If the CDN is not available, the default CDN will be used.
+async function checkCDNStatus() {
+    try {
+        const response: Response = await fetch("https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs/loader.js");
+
+        if (response.ok) {
+            loader.config({
+                paths: {
+                    vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs"
+                }
+            });
+        } else {
+            loader.config({
+                paths: {
+                    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs"
+                }
+            });
+        }
+    } catch (error) {
+        //Use default CDN.
+    }
+}
+
+checkCDNStatus();
 
 /**
  * Render root component with configs.
