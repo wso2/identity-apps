@@ -56,7 +56,8 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
         initialSelectedGroups,
         onUpdate,
         onSelectedGroupsListChange,
-        isUpdating
+        isUpdating,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const initialSelectedGroupsOptions: IdentityProviderGroupInterface[] = initialSelectedGroups?.map(
@@ -193,6 +194,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 disableCloseOnSelect
                                 options={ selectedGroupsOptions ? selectedGroupsOptions : [] }
                                 value={ selectedGroupsOptions ? selectedGroupsOptions : [] }
+                                data-componentid={ `${ componentId }-local-groups-accordion` }
                                 getOptionLabel={ (group: IdentityProviderGroupInterface) => 
                                     group.name }
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
@@ -235,6 +237,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 loading={ isGroupListFetchRequestLoading || isGroupSearchLoading }
                                 options={ groupsOptions }
                                 value={ selectedGroupsOptions ? selectedGroupsOptions : [] }
+                                data-componentid={ `${ componentId }-local-groups-accordion` }
                                 getOptionLabel={ (group: IdentityProviderGroupInterface) => group.name }
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                     <TextField
@@ -303,6 +306,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 loading={ isGroupListFetchRequestLoading || isGroupSearchLoading }
                                 options={ removedGroupsOptions }
                                 value={ removedGroupsOptions }
+                                data-componentid={ `${ componentId }-local-groups-accordion` }
                                 getOptionLabel={ 
                                     (group: IdentityProviderGroupInterface) => 
                                         group.name
@@ -364,6 +368,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 loading={ isUpdating } 
                                 onClick={ onUpdate }
                                 disabled={ initialSelectedGroupsOptions === selectedGroupsOptions }
+                                data-componentid={ `${ componentId }-local-groups-update-button` }
                             >
                                 { t("common:update") }
                             </Button>
@@ -378,5 +383,6 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
  * Default props for the component.
  */
 EditRoleLocalGroupsAccordion.defaultProps = {
+    "data-componentid": "edit-role-local-groups",
     isReadOnly: false
 };
