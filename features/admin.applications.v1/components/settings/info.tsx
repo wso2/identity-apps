@@ -105,7 +105,8 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     /**
      * Index of the protocols tab.
      */
-    let PROTOCOLS_TAB_INDEX;
+    let PROTOCOLS_TAB_INDEX: number;
+
     if (templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
         PROTOCOLS_TAB_INDEX = 1;
     } else {
