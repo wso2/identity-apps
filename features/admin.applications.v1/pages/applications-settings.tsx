@@ -161,7 +161,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({
-                description: t("jwtPrivateKeyConfiguration:notifications.success.description"),
+                description: t("console:develop.pages.applicationsSettings.notifications.success.description"),
                 level: AlertLevels.SUCCESS,
                 message: t(
                     "console:develop.pages.applicationsSettings.notifications.success.message"
