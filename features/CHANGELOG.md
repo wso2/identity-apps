@@ -1,5 +1,13 @@
 # @wso2is/features
 
+## 2.18.4
+
+### Patch Changes
+
+- [#6047](https://github.com/wso2/identity-apps/pull/6047) [`45230ac3693311e287bd85c66c77ea96a90fa71f`](https://github.com/wso2/identity-apps/commit/45230ac3693311e287bd85c66c77ea96a90fa71f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add constants for the property keys
+
+* [#6250](https://github.com/wso2/identity-apps/pull/6250) [`e66c06769768ae564a68fb9b40c6b8add8ade58c`](https://github.com/wso2/identity-apps/commit/e66c06769768ae564a68fb9b40c6b8add8ade58c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make system roles not clickable when isEditingSystemRolesAllowed is false
+
 ## 2.18.3
 
 ### Patch Changes
