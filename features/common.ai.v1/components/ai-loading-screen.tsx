@@ -68,9 +68,9 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
 
     // Define animation variants
     const factVariants: Variants = {
+        exit: { opacity: 0, y: 20 },
         hidden: { opacity: 0, y: -20 },
-        visible: { opacity: 1, y: 0 },
-        exit: { opacity: 0, y: 20 }
+        visible: { opacity: 1, y: 0 }
     };
 
     return (
@@ -103,7 +103,7 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
                             animate="visible"
                             exit="exit"
                             variants={ factVariants }
-                            transition={{ duration: 1, type: "spring" }}
+                            transition={ { duration: 1, type: "spring" } }
                         >
                             <Typography className="ai-loading-screen-sub-heading">
                                 { fact }
