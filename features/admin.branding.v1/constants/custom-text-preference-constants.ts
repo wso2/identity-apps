@@ -164,7 +164,7 @@ export class CustomTextPreferenceConstants {
         },
         PASSWORD_RECOVERY: {
             BODY: "password.recovery.body",
-            BUTTON: "password.recovery.button",
+            BUTTON: "password.recovery.button.email.link",
             HEADING: "password.recovery.heading",
             IDENTIFIER: {
                 INPUT: {
