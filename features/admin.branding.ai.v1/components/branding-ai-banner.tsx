@@ -44,9 +44,8 @@ import "./branding-ai-banner.scss";
 export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
 
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const { getLink } = useDocumentation();
 
     const {
         bannerState,
@@ -55,7 +54,10 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
         setWebsiteUrl,
         websiteUrl
     } = useAIBrandingPreference();
+
     const generateAIBrandingPreference: GenerateAIBrandingPreferenceFunc = useGenerateAIBrandingPreference();
+
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Handles the click event of the expand button.
@@ -149,7 +151,7 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                                     >
                                         <SendOutlinedIcon
                                             className={ `branding-ai-input-button-icon
-                                                ${ !websiteUrl.trim() ? "disabled" : "" }` }
+                                                ${ !websiteUrl.trim() && "disabled" }` }
                                         />
                                     </IconButton>
                                 ) : (

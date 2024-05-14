@@ -193,6 +193,17 @@
                     "delete": []
                 }
             },
+            "ai": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "feature": [],
+                    "update": [],
+                    "delete": [],
+                    "read": [],
+                    "create": []
+                }
+            },
             "analytics": {
                 "disabledFeatures": [],
                 "enabled": true,

@@ -74,7 +74,6 @@ const AIBannerTall = (props: PropsWithChildren<AIBannerTallProps>): ReactElement
         "spring"
     };
 
-
     return (
         <motion.div
             className="ai-banner-motion-container"

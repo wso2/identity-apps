@@ -275,7 +275,6 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                                     }
                                 } }
                                 onChange={ () => setShowHistory(!showHistory) }
-
                             >
                                 <AccordionSummary className="login-flow-ai-banner-history-title">
                                     <Button
@@ -347,7 +346,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            negative
+                            warning
                             data-componentid={ `${ componentId }-propmt-replace-confirmation-modal-message` }
                         >
                             {

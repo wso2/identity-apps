@@ -29,9 +29,9 @@ import { useTranslation } from "react-i18next";
 import "./ai-loading-screen.scss";
 import { useSelector } from "react-redux";
 import AIBotAnimatedWithBackGround from "./ai-bot-animated-with-bg";
+import { AppState } from "../../admin.core.v1/store";
 import { ReactComponent as LoadingPlaceholder }
     from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
-import { AppState } from "../../admin.core.v1/store";
 import { ANIMATED_BOT_FEATURE_TAG } from "../constants/ai-common-constants";
 
 /**
@@ -62,7 +62,7 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
     const { t } = useTranslation();
 
     const AIDisabledFeatures: string[] = useSelector((state: AppState) =>
-        state.config.ui.features?.applications?.disabledFeatures);
+        state.config.ui.features?.ai?.disabledFeatures);
 
     const isAnimatedBotDisabled: boolean = AIDisabledFeatures?.includes(ANIMATED_BOT_FEATURE_TAG);
 
