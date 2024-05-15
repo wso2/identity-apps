@@ -27,13 +27,12 @@ import { store } from "../../admin.core.v1/store";
 import useAILoginFlow from "../hooks/use-ai-login-flow";
 import { AILoginFlowGenerationStatusAPIResponseInterface } from "../models/ai-login-flow";
 
-export const useAILoginFlowGenerationStatus = (
-    operationId: string
-): RequestResultInterface<AILoginFlowGenerationStatusAPIResponseInterface, RequestErrorInterface> =>{
+export const useAILoginFlowGenerationStatus = ():
+    RequestResultInterface<AILoginFlowGenerationStatusAPIResponseInterface, RequestErrorInterface> =>{
 
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
-    const { setLoginFlowGenerationCompleted } = useAILoginFlow();
+    const { setLoginFlowGenerationCompleted, operationId } = useAILoginFlow();
 
     const requestConfig: RequestConfigInterface = {
         headers: {

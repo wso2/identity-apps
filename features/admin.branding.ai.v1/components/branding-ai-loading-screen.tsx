@@ -16,16 +16,9 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
-import IconButton from "@oxygen-ui/react/IconButton";
-import LinearProgress from "@oxygen-ui/react/LinearProgress";
-import Tooltip from "@oxygen-ui/react/Tooltip";
-import Typography from "@oxygen-ui/react/Typography";
-import { XMarkIcon } from "@oxygen-ui/react-icons";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ReactComponent as LoadingPlaceholder }
-    from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
+import AILoadingScreen from "../../common.ai.v1/components/ai-loading-screen";
 import useGetAIBrandingGenerationStatus from "../api/use-get-branding-generation-status";
 import {
     FACTS_ROTATION_DELAY,
@@ -34,14 +27,13 @@ import {
     useGetFacts,
     useGetStatusLabels } from "../constants/ai-branding-constants";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
-import "./branding-ai-loading-screen.scss";
 
 /**
  * AI branding loading screen component.
  *
  * @returns ReactElement containing the AI branding loading screen.
  */
-export const LoadingScreen: FunctionComponent = (): ReactElement => {
+const BrandingAILoadingScreen: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
 
     const [ factIndex, setFactIndex ] = useState<number>(0);
@@ -124,41 +116,13 @@ export const LoadingScreen: FunctionComponent = (): ReactElement => {
     };
 
     return (
-        <Box className="branding-ai-loading-screen-container">
-            <Box className="branding-ai-loading-screen-illustration-container">
-                <LoadingPlaceholder />
-            </Box>
-            <Box className="branding-ai-loading-screen-text-container">
-                <Box className="mb-5">
-                    <Typography
-                        variant="h5"
-                        className="branding-ai-loading-screen-heading"
-                    >
-                        { t("branding:ai.screens.loading.didYouKnow") }
-                    </Typography>
-                    <Typography className="branding-ai-loading-screen-sub-heading">
-                        { facts[factIndex] }
-                    </Typography>
-                </Box>
-                <Box sx={ { width: 1 } }>
-                    <Box className="branding-ai-loading-screen-loading-container">
-                        <Typography className="branding-ai-loading-screen-loading-state">
-                            { getCurrentStatus() }
-                        </Typography>
-                        <Tooltip
-                            title="Cancel"
-                            placement="top"
-                        >
-                            <IconButton
-                                onClick={ handleGenerateCancel }
-                            >
-                                <XMarkIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                    <LinearProgress variant="buffer" value={ currentProgress } valueBuffer={ currentProgress + 1 }  />
-                </Box>
-            </Box>
-        </Box>
+        <AILoadingScreen
+            currentLoadingState={ getCurrentStatus() }
+            currentProgress={ currentProgress }
+            fact={ facts[factIndex] }
+            handleGenerateCancel={ handleGenerateCancel }
+        />
     );
 };
+
+export default BrandingAILoadingScreen;

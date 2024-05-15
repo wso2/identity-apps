@@ -31,14 +31,20 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { AI_BRANDING_FEATURE_ID } from "../../admin.branding.v1/constants/ai-branding-constants";
 import useBrandingPreference from "../../admin.branding.v1/hooks/use-branding-preference";
 import { BrandingPreferenceInterface } from "../../admin.branding.v1/models";
 import { BrandingPreferenceUtils } from "../../admin.branding.v1/utils";
+import { AppState } from "../../admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
+import BrandingAIBanner from "../components/branding-ai-banner";
+import BrandingAILoadingScreen from "../components/branding-ai-loading-screen";
 import AIFeatureContext from "../context/ai-branding-feature-context";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
+import { BannerState } from "../models/types";
 
 type AIBrandingPreferenceProviderProps = PropsWithChildren;
 
@@ -53,13 +59,22 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
 ): ReactElement => {
 
     const { children } = props;
+
     const { t } = useTranslation();
 
-    const dispatch: Dispatch<any> = useDispatch();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const dispatch: Dispatch = useDispatch();
+
+    const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.branding?.disabledFeatures);
+
     const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
     const [ operationId, setOperationId ] = useState<string>();
     const [ brandingGenerationCompleted, setBrandingGenerationCompleted ] = useState(false);
+    const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
+    const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
 
     const { preference } = useBrandingPreference();
 
@@ -153,18 +168,38 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
     return (
         <AIFeatureContext.Provider
             value={ {
+                bannerState,
                 brandingGenerationCompleted,
                 handleGenerate,
                 isGeneratingBranding,
                 mergedBrandingPreference,
                 operationId,
+                setBannerState,
                 setBrandingGenerationCompleted,
                 setGeneratingBranding,
                 setMergedBrandingPreference,
-                setOperationId
+                setOperationId,
+                setWebsiteUrl,
+                websiteUrl
             } }
         >
-            { children }
+            {
+                isGeneratingBranding ? (
+                    <BrandingAILoadingScreen />
+                ) : (
+                    <>
+                        {
+                            !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
+                            !isSubOrganization() && (
+                                <div className="mb-2">
+                                    <BrandingAIBanner/>
+                                </div>
+                            )
+                        }
+                        { children }
+                    </>
+                )
+            }
         </AIFeatureContext.Provider>
     );
 };
