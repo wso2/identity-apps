@@ -47,6 +47,7 @@ import {
     UserRoleInterface,
     getUsersList
 } from "../../../../../admin.core.v1";
+import { AppConfigs } from "../../../../../admin.core.v1/configs/app-configs";
 import { EventPublisher } from "../../../../../admin.core.v1/utils";
 import { getRolesList } from "../../../../../admin.roles.v2/api";
 import { UserInviteInterface, UserListInterface } from "../../../../../admin.users.v1/models/user";
@@ -436,8 +437,9 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                                         // Check whether username is a valid email.
                                         // check username validity against userstore regex
                                         if (value && (!FormValidation.email(value) || !SharedUserStoreUtils
-                                            .validateInputAgainstRegEx(value, window["AppUtils"].getConfig().extensions
-                                                .collaboratorUsernameRegex))) {
+                                            .validateInputAgainstRegEx(value,
+                                                AppConfigs.getAppUtils().getConfig().extensions
+                                                    .collaboratorUsernameRegex))) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
                                         }

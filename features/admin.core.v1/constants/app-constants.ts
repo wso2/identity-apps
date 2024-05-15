@@ -19,6 +19,7 @@
 import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { MultitenantConstants } from "./multitenant-constants";
+import { AppConfigs } from "../../admin.core.v1/configs/app-configs";
 import { identityProviderConfig } from "../../admin.extensions.v1/configs";
 import {
     GovernanceCategoryForOrgsInterface,
@@ -44,7 +45,7 @@ export class AppConstants {
      * @returns The admin view base path.
      */
     public static getAdminViewBasePath(): string {
-        return window["AppUtils"]?.getConfig()?.adminApp.basePath;
+        return AppConfigs.getAppUtils()?.getConfig()?.adminApp.basePath;
     }
 
     /**
@@ -53,7 +54,7 @@ export class AppConstants {
      * @returns The admin view home path.
      */
     public static getAdminViewHomePath(): string {
-        return window["AppUtils"]?.getConfig()?.adminApp.path;
+        return AppConfigs.getAppUtils()?.getConfig()?.adminApp.path;
     }
 
     /**
@@ -71,7 +72,7 @@ export class AppConstants {
      * @returns The developer view base path.
      */
     public static getDeveloperViewBasePath(): string {
-        return window["AppUtils"]?.getConfig()?.developerApp.basePath;
+        return AppConfigs.getAppUtils()?.getConfig()?.developerApp.basePath;
     }
 
     /**
@@ -80,7 +81,7 @@ export class AppConstants {
      * @returns The developer view home path.
      */
     public static getDeveloperViewHomePath(): string {
-        return window["AppUtils"]?.getConfig()?.developerApp.path;
+        return AppConfigs.getAppUtils()?.getConfig()?.developerApp.path;
     }
 
     /**
@@ -102,7 +103,7 @@ export class AppConstants {
      * @returns The tenant qualified app base name.
      */
     public static getTenantQualifiedAppBasename(): string {
-        return window["AppUtils"]?.getConfig()?.appBaseWithTenant;
+        return AppConfigs.getAppUtils()?.getConfig()?.appBaseWithTenant;
     }
 
     /**
@@ -120,7 +121,7 @@ export class AppConstants {
      * @returns The app base name.
      */
     public static getAppBasename(): string {
-        return window["AppUtils"]?.getConfig()?.appBase;
+        return AppConfigs.getAppUtils()?.getConfig()?.appBase;
     }
 
     /**
@@ -138,7 +139,7 @@ export class AppConstants {
      * @returns The app home path.
      */
     public static getAppHomePath(): string {
-        return window["AppUtils"]?.getConfig()?.routes.home;
+        return AppConfigs.getAppUtils()?.getConfig()?.routes.home;
     }
 
     /**
@@ -165,7 +166,7 @@ export class AppConstants {
      * @returns The app Client ID.
      */
     public static getClientID(): string {
-        return window["AppUtils"]?.getConfig()?.clientID;
+        return AppConfigs.getAppUtils()?.getConfig()?.clientID;
     }
 
     /**
@@ -174,7 +175,7 @@ export class AppConstants {
      * @returns App theme configs.
      */
     public static getAppTheme(): AppThemeConfigInterface {
-        return window["AppUtils"]?.getConfig()?.ui?.theme;
+        return AppConfigs.getAppUtils()?.getConfig()?.ui?.theme;
     }
 
     /**
@@ -183,7 +184,7 @@ export class AppConstants {
      * @returns Feature access config for the administrators feature.
      */
     public static getAdministratorsFeatureConfig(): FeatureAccessConfigInterface {
-        return window["AppUtils"]?.getConfig()?.ui?.features?.administrators;
+        return AppConfigs.getAppUtils()?.getConfig()?.ui?.features?.administrators;
     }
 
     /**
@@ -202,7 +203,7 @@ export class AppConstants {
      * @returns The tenant path.
      */
     public static getTenantPath(): string {
-        return window["AppUtils"]?.getConfig()?.tenantPath;
+        return AppConfigs.getAppUtils()?.getConfig()?.tenantPath;
     }
 
     /**
@@ -211,7 +212,7 @@ export class AppConstants {
      * @returns The tenant domain
      */
     public static getTenant(): string {
-        return window["AppUtils"]?.getConfig()?.tenant;
+        return AppConfigs.getAppUtils()?.getConfig()?.tenant;
     }
 
     /**
@@ -220,7 +221,7 @@ export class AppConstants {
      * @returns The super tenant domain.
      */
     public static getSuperTenant(): string {
-        return window["AppUtils"]?.getConfig()?.superTenant || MultitenantConstants.SUPER_TENANT_DISPLAY_NAME;
+        return AppConfigs.getAppUtils()?.getConfig()?.superTenant || MultitenantConstants.SUPER_TENANT_DISPLAY_NAME;
     }
 
     /**
@@ -229,7 +230,7 @@ export class AppConstants {
      * @returns The client origin.
      */
     public static getClientOrigin(): string {
-        return window["AppUtils"]?.getConfig()?.clientOrigin;
+        return AppConfigs.getAppUtils()?.getConfig()?.clientOrigin;
     }
 
     /**
@@ -238,7 +239,7 @@ export class AppConstants {
      * @returns The client origin with tenant.
      */
     public static getClientOriginWithTenant(): string {
-        return window["AppUtils"]?.getConfig()?.clientOriginWithTenant;
+        return AppConfigs.getAppUtils()?.getConfig()?.clientOriginWithTenant;
     }
 
     /**
@@ -340,10 +341,10 @@ export class AppConstants {
             [ "EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit` ],
             [ "LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes` ],
             [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],
-            [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
+            [ "LOGIN", AppConfigs.getAppUtils()?.getConfig()?.routes.login ],
             [ "LOGIN_AND_REGISTRATION", `${ AppConstants.getDeveloperViewBasePath() }/login-and-registration` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
-            [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
+            [ "LOGOUT", AppConfigs.getAppUtils()?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],
             [ "OIDC_SCOPES_EDIT", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes/:id` ],
             [ "PAGE_NOT_FOUND", `${ AppConstants.getMainViewBasePath() }/404` ],

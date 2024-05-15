@@ -19,6 +19,7 @@
 import { DocumentationConstants } from "@wso2is/core/constants";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import { AppConfigs } from "./app-configs";
 import { getAPIResourceEndpoints } from "../../admin.api-resources.v2/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../admin.applications.v1/configs/endpoints";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
@@ -153,7 +154,7 @@ export class Config {
             extensions: window[ "AppUtils" ]?.getConfig()?.extensions,
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
-            organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
+            organizationPrefix: AppConfigs.getAppUtils()?.getConfig()?.organizationPrefix,
             serverHost: window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant,
             serverOrigin: window[ "AppUtils" ]?.getConfig()?.serverOrigin,
             superTenant: window[ "AppUtils" ]?.getConfig()?.superTenant,
@@ -334,8 +335,8 @@ export class Config {
             enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
-            googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
-            governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,
+            googleOneTapEnabledTenants: AppConfigs.getAppUtils()?.getConfig()?.ui?.googleOneTapEnabledTenants,
+            governanceConnectors: AppConfigs.getAppUtils()?.getConfig()?.ui?.governanceConnectors,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
             hiddenAuthenticators: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenAuthenticators,
             hiddenConnectionTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenConnectionTemplates,
@@ -356,7 +357,8 @@ export class Config {
             isHeaderAvatarLabelAllowed: window[ "AppUtils" ]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
             isLeftNavigationCategorized: window[ "AppUtils" ]?.getConfig()?.ui?.isLeftNavigationCategorized,
             isMarketingConsentBannerEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isMarketingConsentBannerEnabled,
-            isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
+            isPasswordInputValidationEnabled:
+                AppConfigs.getAppUtils()?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isRequestPathAuthenticationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isRequestPathAuthenticationEnabled,
             isSAASDeployment: window[ "AppUtils" ]?.getConfig()?.ui?.isSAASDeployment,

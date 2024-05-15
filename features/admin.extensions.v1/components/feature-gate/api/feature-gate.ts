@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
 import { Config } from "../../../../admin.core.v1/configs/app";
+import { AppConfigs } from "../../../../admin.core.v1/configs/app-configs";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
@@ -49,7 +50,7 @@ export const useGetAllFeatures = <
 
     const baseUrl: string = legacyAuthzRuntime
         ? Config.resolveServerHostforFG(false)
-        : window["AppUtils"]?.getServerOriginWithTenant(false);
+        : AppConfigs.getAppUtils()?.getServerOriginWithTenant(false);
 
     // TODO: Remove this config once the deployment issues are sorted out.
     const isFeatureGateEnabled: boolean = useSelector((state: AppState) => state?.config?.ui?.isFeatureGateEnabled);

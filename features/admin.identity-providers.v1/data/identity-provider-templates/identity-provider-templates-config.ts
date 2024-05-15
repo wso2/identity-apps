@@ -38,11 +38,12 @@ import OrganizationEnterpriseIDPTemplate from
     "./templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdentityProviderTemplate
     from "./templates/saml-identity-provider/enterprise-saml-identity-provider.json";
+import { AppConstants, store } from "../../../admin.core.v1";
+import { AppConfigs } from "../../../admin.core.v1/configs/app-configs";
 import { ExtensionsManager, identityProviderConfig } from "../../../admin.extensions.v1";
 import {
     EnterpriseIdentityProviderTemplateExtension
 } from "../../../admin.extensions.v1/configs/identity-providers-templates";
-import { AppConstants, store } from "../../../admin.core.v1";
 import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
 
 /**
@@ -126,7 +127,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/google/create-wizard-help"))
                             },
-                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.google?.enabled
+                            enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.google?.enabled
                                 ?? identityProviderConfig.templates.google,
                             id: GoogleIDPTemplate.id,
                             resource: GoogleIDPTemplate
@@ -135,7 +136,8 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/facebook/create-wizard-help"))
                             },
-                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.facebook?.enabled
+                            enabled:
+                                AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.facebook?.enabled
                                 ?? identityProviderConfig.templates.facebook,
                             id: FacebookIDPTemplate.id,
                             resource: FacebookIDPTemplate
@@ -144,7 +146,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/github/create-wizard-help"))
                             },
-                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.github?.enabled
+                            enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.github?.enabled
                                 ?? identityProviderConfig.templates.github,
                             id: GitHubIDPTemplate.id,
                             resource: GitHubIDPTemplate
@@ -153,7 +155,8 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/microsoft/create-wizard-help"))
                             },
-                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.microsoft?.enabled
+                            enabled:
+                                AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.microsoft?.enabled
                                 ?? identityProviderConfig.templates.microsoft,
                             id: MicrosoftIDPTemplate.id,
                             resource: MicrosoftIDPTemplate
@@ -162,7 +165,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/apple/create-wizard-help"))
                             },
-                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.apple?.enabled
+                            enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.apple?.enabled
                                 ?? identityProviderConfig.templates.apple,
                             id: AppleIDPTemplate.id,
                             resource: AppleIDPTemplate
@@ -171,7 +174,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/hypr/create-wizard-help"))
                             },
-                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.hypr?.enabled
+                            enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.hypr?.enabled
                                 ?? identityProviderConfig.templates.hypr,
                             id: HYPRIDPTemplate.id,
                             resource: HYPRIDPTemplate
@@ -180,7 +183,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/iproov/create-wizard-help"))
                             },
-                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.iproov?.enabled
+                            enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.iproov?.enabled
                                 ?? identityProviderConfig.templates.iproov,
                             id: IproovIDPTemplate.id,
                             resource: IproovIDPTemplate
@@ -211,7 +214,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                     import("./templates/oidc-identity-provider/create-wizard-help")
                                 )
                             },
-                            enabled: window["AppUtils"].getConfig()
+                            enabled: AppConfigs.getAppUtils().getConfig()
                                 .ui.identityProviderTemplates?.enterpriseOIDC?.enabled
                                 ?? identityProviderConfig.templates.oidc,
                             id: EnterpriseOIDCIdentityProviderTemplate.id,
@@ -226,7 +229,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                     import("./templates/saml-identity-provider/saml-idp-wizard-help")
                                 ))
                             },
-                            enabled: window["AppUtils"].getConfig()
+                            enabled: AppConfigs.getAppUtils().getConfig()
                                 .ui.identityProviderTemplates?.enterpriseSAML?.enabled
                                     ?? identityProviderConfig.templates.saml,
                             id: EnterpriseSAMLIdentityProviderTemplate.id,
@@ -238,7 +241,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                     import("./templates/expert-mode/create-wizard-help")
                                 )
                             },
-                            enabled: window["AppUtils"].getConfig()
+                            enabled: AppConfigs.getAppUtils().getConfig()
                                 .ui.identityProviderTemplates?.expertMode?.enabled
                                     ?? identityProviderConfig.templates.expertMode,
                             id: ExpertModeIdentityProviderTemplate.id,

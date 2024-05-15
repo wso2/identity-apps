@@ -36,6 +36,7 @@ import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
+import { AppConfigs } from "./app-configs";
 import { getSidePanelIcons } from "./ui";
 import { APIResourcesConstants } from "../../admin.api-resources.v1/constants";
 import { commonConfig, identityProviderConfig } from "../../admin.extensions.v1";
@@ -67,7 +68,7 @@ import { store } from "../store";
 
 export const getAppViewRoutes = (): RouteInterface[] => {
 
-    const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
+    const legacyMode: LegacyModeInterface = AppConfigs.getAppUtils()?.getConfig()?.ui?.legacyMode;
     const applicationRolesFeatureConfig: FeatureAccessConfigInterface
         = store.getState()?.config?.ui?.features?.applicationRoles;
 

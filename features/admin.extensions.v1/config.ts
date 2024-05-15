@@ -17,6 +17,7 @@
  */
 
 import { ExtensionsConfigInterface } from "./models";
+import { AppConfigs } from "../admin.core.v1/configs/app-configs";
 
 export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
     sections: {
@@ -105,7 +106,7 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                     content: {
                         quickStart: "./identity-provider-templates/templates/google/quick-start.tsx"
                     },
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.google?.enabled ?? true,
+                    enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.google?.enabled ?? true,
                     id: "google-idp",
                     resource: "./identity-provider-templates/templates/google/google.json"
                 },
@@ -113,7 +114,7 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                     content: {
                         quickStart: "./identity-provider-templates/templates/github/quick-start.tsx"
                     },
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.github?.enabled ?? true,
+                    enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.github?.enabled ?? true,
                     id: "github-idp",
                     resource: "./identity-provider-templates/templates/github/github.json"
                 },
@@ -121,20 +122,21 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                     content: {
                         quickStart: "./identity-provider-templates/templates/facebook/quick-start.tsx"
                     },
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.facebook?.enabled ?? true,
+                    enabled:
+                        AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.facebook?.enabled ?? true,
                     id: "facebook-idp",
                     resource: "./identity-provider-templates/templates/facebook/facebook.json"
                 },
                 {
                     content: {},
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.
+                    enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.
                         enterpriseOIDC?.enabled ?? true,
                     id: "enterprise-oidc-idp",
                     resource: "./identity-provider-templates/templates/oidc/oidc.json"
                 },
                 {
                     content: {},
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.
+                    enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.
                         enterpriseSAML?.enabled ?? true,
                     id: "enterprise-saml-idp",
                     resource: "./identity-provider-templates/templates/saml/saml.json"
@@ -143,13 +145,15 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                     content: {
                         quickStart: "./identity-provider-templates/templates/microsoft/quick-start.tsx"
                     },
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.microsoft?.enabled ?? true,
+                    enabled:
+                        AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.microsoft?.enabled ?? true,
                     id: "microsoft-idp",
                     resource: "./identity-provider-templates/templates/microsoft/microsoft.json"
                 },
                 {
                     content: {},
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.linkedin?.enabled ?? true,
+                    enabled:
+                        AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.linkedin?.enabled ?? true,
                     id: "linkedin-idp",
                     resource: "./identity-provider-templates/templates/linkedin/linkedin.json"
                 },
@@ -157,7 +161,7 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                     content: {
                         quickStart: "./identity-provider-templates/templates/apple/quick-start.tsx"
                     },
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.apple?.enabled ?? true,
+                    enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.apple?.enabled ?? true,
                     id: "apple-idp",
                     resource: "./identity-provider-templates/templates/apple/apple.json"
                 },
@@ -165,7 +169,7 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                     content: {
                         quickStart: "./identity-provider-templates/templates/hypr/quick-start.tsx"
                     },
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.hypr?.enabled ?? true,
+                    enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.hypr?.enabled ?? true,
                     id: "hypr-idp",
                     resource: "./identity-provider-templates/templates/hypr/hypr.json"
                 },
@@ -174,13 +178,13 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                         quickStart: "./identity-provider-templates/templates/swe/quick-start.tsx",
                         wizardHelp: "./identity-provider-templates/templates/swe/create-wizard-help.tsx"
                     },
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.swe?.enabled ?? true,
+                    enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.swe?.enabled ?? true,
                     id: "swe-idp",
                     resource: "./identity-provider-templates/templates/swe/swe.json"
                 },
                 {
                     content: {},
-                    enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.
+                    enabled: AppConfigs.getAppUtils().getConfig().ui.identityProviderTemplates?.
                         trustedTokenIssuer?.enabled ?? true,
                     id: "trusted-token-issuer",
                     resource: "./identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json"

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../../admin.core.v1";
+import { AppConfigs } from "../../../admin.core.v1/configs/app-configs";
 
 /**
  * Initialize an axios Http client.
@@ -44,7 +45,7 @@ export const sendFeedback = (data: any): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: window["AppUtils"].getConfig().extensions.feedbackEndPoint
+        url: AppConfigs.getAppUtils().getConfig().extensions.feedbackEndPoint
     };
 
     return httpClient(requestConfig)

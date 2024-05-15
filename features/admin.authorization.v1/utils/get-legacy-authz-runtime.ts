@@ -16,13 +16,15 @@
  * under the License.
  */
 
+import { AppConfigs } from "../../admin.core.v1/configs/app-configs";
+
 /**
  * Gets the legacy authz runtime flag from the deployment config.
  *
  * @returns `boolean` True if legacy authz runtime is enabled and false if not.
  */
 const isLegacyAuthzRuntime = (): boolean => {
-    return window["AppUtils"]?.getConfig()?.legacyAuthzRuntime;
+    return AppConfigs.getAppUtils()?.getConfig()?.legacyAuthzRuntime;
 };
 
 export default isLegacyAuthzRuntime;

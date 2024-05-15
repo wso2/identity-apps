@@ -20,6 +20,7 @@ import { ITelemetryItem } from "@microsoft/applicationinsights-core-js";
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 import { v4 as uuidv4 } from "uuid";
+import { AppConfigs } from "../../admin.core.v1/configs/app-configs";
 import { history } from "../../admin.core.v1/helpers/history";
 import { store } from "../../admin.core.v1/store";
 
@@ -48,14 +49,14 @@ export class AppInsights {
     */
     private constructor() {
 
-        this.isEnabled = window["AppUtils"].getConfig().extensions?.applicationInsightsEnabled
-            ? window["AppUtils"].getConfig().extensions.applicationInsightsEnabled
+        this.isEnabled = AppConfigs.getAppUtils().getConfig().extensions?.applicationInsightsEnabled
+            ? AppConfigs.getAppUtils().getConfig().extensions.applicationInsightsEnabled
             : false;
         this.isInitialized = false;
 
-        this.isDependencyTrackingEnabled = window["AppUtils"].getConfig()
+        this.isDependencyTrackingEnabled = AppConfigs.getAppUtils().getConfig()
             .analytics?.metrics?.dependencyTrackingEnabled
-            ? window["AppUtils"].getConfig().analytics.metrics.dependencyTrackingEnabled
+            ? AppConfigs.getAppUtils().getConfig().analytics.metrics.dependencyTrackingEnabled
             : false;
 
         this.userId = store.getState().profile.profileInfo.userId;
@@ -106,19 +107,22 @@ export class AppInsights {
         // Create application insights instance if not already created.
         if (!this.externalAppInsightsInstance) {
             // Read configuration values.
-            const endpointUrl: string = window["AppUtils"].getConfig().extensions?.applicationInsightsProxyEndpoint
-                ? window["AppUtils"].getConfig().extensions.applicationInsightsProxyEndpoint
-                : "";
-            const instrumentationKey: string = window["AppUtils"].getConfig()
+            const endpointUrl: string =
+                AppConfigs.getAppUtils().getConfig().extensions?.applicationInsightsProxyEndpoint
+                    ? AppConfigs.getAppUtils().getConfig().extensions.applicationInsightsProxyEndpoint
+                    : "";
+            const instrumentationKey: string = AppConfigs.getAppUtils().getConfig()
                 .extensions?.applicationInsightsInstrumentationKey
-                ? window["AppUtils"].getConfig().extensions.applicationInsightsInstrumentationKey
+                ? AppConfigs.getAppUtils().getConfig().extensions.applicationInsightsInstrumentationKey
                 : "";
-            const cookieDomain: string = window["AppUtils"].getConfig().extensions?.applicationInsightsCookieDomain
-                ? window["AppUtils"].getConfig().extensions.applicationInsightsCookieDomain
-                : "";
-            const cookiePostfix: string = window["AppUtils"].getConfig().extensions?.applicationInsightsCookiePostfix
-                ? window["AppUtils"].getConfig().extensions.applicationInsightsCookiePostfix
-                : "";
+            const cookieDomain: string =
+                AppConfigs.getAppUtils().getConfig().extensions?.applicationInsightsCookieDomain
+                    ? AppConfigs.getAppUtils().getConfig().extensions.applicationInsightsCookieDomain
+                    : "";
+            const cookiePostfix: string =
+                AppConfigs.getAppUtils().getConfig().extensions?.applicationInsightsCookiePostfix
+                    ? AppConfigs.getAppUtils().getConfig().extensions.applicationInsightsCookiePostfix
+                    : "";
 
             // Disable if the instrumentation key is not provided.
             if (instrumentationKey == "") {

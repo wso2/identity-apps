@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import { AppConfigs } from "../configs/app-configs";
 import { getAppViewRoutes } from "../configs/routes";
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
@@ -111,7 +112,7 @@ const useRoutes = (): useRoutesInterface => {
                             }
                         }
                     } else {
-                        if (window["AppUtils"].getConfig().organizationName) {
+                        if (AppConfigs.getAppUtils().getConfig().organizationName) {
                             return [
                                 ...AppUtils.getHiddenRoutes()
                             ];
@@ -121,7 +122,7 @@ const useRoutes = (): useRoutesInterface => {
                     }
                 }
 
-                if (window["AppUtils"].getConfig().organizationName) {
+                if (AppConfigs.getAppUtils().getConfig().organizationName) {
                     return [
                         ...AppUtils.getHiddenRoutes()
                     ];
@@ -145,7 +146,7 @@ const useRoutes = (): useRoutesInterface => {
             return [ ...additionalRoutes ];
         };
 
-        let allowedRoutes: string[] = window["AppUtils"].getConfig().organizationName
+        let allowedRoutes: string[] = AppConfigs.getAppUtils().getConfig().organizationName
             ? AppConstants.ORGANIZATION_ENABLED_ROUTES
             : undefined;
 

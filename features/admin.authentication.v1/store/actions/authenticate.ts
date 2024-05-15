@@ -35,6 +35,7 @@ import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch } from "redux";
 import { Config } from "../../../admin.core.v1/configs";
+import { AppConfigs } from "../../../admin.core.v1/configs/app-configs";
 import { store } from "../../../admin.core.v1/store";
 import { getProfileInfo, getProfileSchemas } from "../../../admin.users.v1/api";
 
@@ -43,7 +44,7 @@ import { getProfileInfo, getProfileSchemas } from "../../../admin.users.v1/api";
  */
 export const getProfileInformation = (
     meEndpoint: string = Config.getServiceResourceEndpoints().me,
-    clientOrigin: string = window["AppUtils"].getConfig().clientOriginWithTenant,
+    clientOrigin: string = AppConfigs.getAppUtils().getConfig().clientOriginWithTenant,
     fetchProfileSchema: boolean = false
 ) => (dispatch: Dispatch): void => {
 

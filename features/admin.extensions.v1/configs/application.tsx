@@ -51,6 +51,7 @@ import {
 } from "../../admin.applications.v1/models";
 import { ClaimManagementConstants } from "../../admin.claims.v1/constants/claim-management-constants";
 import { EventPublisher, FeatureConfigInterface } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs/app-configs";
 import { AppConstants } from "../../admin.core.v1/constants";
 import { ApplicationRoles } from "../../admin.roles.v2/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
@@ -404,7 +405,7 @@ export const applicationConfig: ApplicationConfig = {
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
-            const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
+            const legacyMode: LegacyModeInterface = AppConfigs.getAppUtils()?.getConfig()?.ui?.legacyMode;
 
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
             if (
@@ -444,7 +445,7 @@ export const applicationConfig: ApplicationConfig = {
             if (apiResourceFeatureEnabled
                 && applicationRolesFeatureEnabled
                 && !legacyMode?.rolesV1
-                && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
+                && (!application?.advancedConfigurations?.fragment || AppConfigs.getAppUtils().getConfig().ui.features?.
                     applicationRoles?.enabled)
                 && (
                     application?.advancedConfigurations?.fragment ||

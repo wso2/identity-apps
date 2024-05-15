@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { AppConfigs } from "../../../../admin.core.v1/configs/app-configs";
 
 /**
  * Class containing user store constants.
@@ -32,12 +34,12 @@ export class RemoteUserStoreConstants {
 
     // Type ID of the on-prem customer user store.
     public static readonly OUTBOUND_USER_STORE_TYPE_ID: string = "V1NPdXRib3VuZFVzZXJTdG9yZU1hbmFnZXI";
-    public static readonly READONLY_LDAP_USER_STORE_TYPE_ID: string 
+    public static readonly READONLY_LDAP_USER_STORE_TYPE_ID: string
         = "VW5pcXVlSURSZWFkT25seUxEQVBVc2VyU3RvcmVNYW5hZ2Vy";
 
-    public static readonly READONLY_AD_USER_STORE_TYPE_ID: string 
+    public static readonly READONLY_AD_USER_STORE_TYPE_ID: string
         = "VW5pcXVlSURBY3RpdmVEaXJlY3RvcnlVc2VyU3RvcmVNYW5hZ2Vy";
-        
+
     public static readonly CUSTOMER_USERSTORE_ID: string = "REVGQVVMVA";
 
     // Already existing user store names
@@ -64,8 +66,8 @@ export class RemoteUserStoreConstants {
 
     public static getPaths(): Map<string, string> {
         return new Map<string, string>()
-            .set("REMOTE_USER_STORE_CREATE", 
-                `${ window["AppUtils"].getConfig().adminApp.basePath }/remote-user-store-create`);
+            .set("REMOTE_USER_STORE_CREATE",
+                `${ AppConfigs.getAppUtils().getConfig().adminApp.basePath }/remote-user-store-create`);
     }
 
 }

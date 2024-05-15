@@ -39,6 +39,7 @@ import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { Config } from "../../admin.core.v1/configs/app";
+import { AppConfigs } from "../../admin.core.v1/configs/app-configs";
 import { AppConstants, CommonConstants } from "../../admin.core.v1/constants";
 import useDeploymentConfig from "../../admin.core.v1/hooks/use-deployment-configs";
 import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
@@ -128,11 +129,11 @@ const useSignIn = (): UseSignInInterface => {
         // In case of failure customServerHost is set to the serverHost.
         let customServerHost: string = Config?.getDeploymentConfig()?.serverHost;
 
-        const isSuperTenant: boolean = window["AppUtils"]?.isSuperTenant();
+        const isSuperTenant: boolean =AppConfigs.getAppUtils().isSuperTenant();
         const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
-            window["AppUtils"]?.getConfig()?.organizationName.length > 0;
+       AppConfigs.getAppUtils().getConfig()?.organizationName.length > 0;
 
-        if (!window["AppUtils"]?.getConfig()?.tenantContext?.requireSuperTenantInUrls && isSuperTenant) {
+        if (!AppConfigs.getInstance().AppUtils.getConfig()?.tenantContext?.requireSuperTenantInUrls && isSuperTenant) {
             // Removing super tenant from the server host.
             const customServerHostSplit: string[] = customServerHost?.split("/t/");
 
@@ -143,11 +144,11 @@ const useSignIn = (): UseSignInInterface => {
 
         if (isSubOrganization) {
             customServerHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
-                window["AppUtils"]?.getConfig()?.organizationPrefix}/${
-                window["AppUtils"]?.getConfig()?.organizationName}`;
+                AppConfigs.getAppUtils()?.getConfig()?.organizationPrefix}/${
+                AppConfigs.getAppUtils()?.getConfig()?.organizationName}`;
         }
 
-        window["AppUtils"]?.updateCustomServerHost(customServerHost);
+        AppConfigs.getAppUtils()?.updateCustomServerHost(customServerHost);
 
         // Update store with custom server host.
         dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
@@ -167,7 +168,8 @@ const useSignIn = (): UseSignInInterface => {
      * @param wellKnownEndpoint - Wellknown discovery endpoint.
      */
     const setLegacyCustomServerHost = (orgType: string, wellKnownEndpoint: string): void => {
-        const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
+        const disabledFeatures: string[] =
+           AppConfigs.getAppUtils()?.getConfig()?.ui?.features?.branding?.disabledFeatures;
 
         if (disabledFeatures?.includes("branding.hostnameUrlBranding")) {
             return;
@@ -184,15 +186,15 @@ const useSignIn = (): UseSignInInterface => {
 
                 if (orgType === OrganizationType.SUBORGANIZATION) {
                     serverHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
-                        window["AppUtils"]?.getConfig()?.organizationPrefix
-                    }/${window["AppUtils"]?.getConfig()?.organizationName}`;
+                        AppConfigs.getAppUtils()?.getConfig()?.organizationPrefix
+                    }/${AppConfigs.getAppUtils()?.getConfig()?.organizationName}`;
                 }
 
-                window["AppUtils"]?.updateCustomServerHost(serverHost);
+                AppConfigs.getAppUtils()?.updateCustomServerHost(serverHost);
             })
             .catch((error: any) => {
                 // In case of failure customServerHost is set to the serverHost.
-                window["AppUtils"]?.updateCustomServerHost(Config?.getDeploymentConfig()?.serverHost);
+                AppConfigs.getAppUtils()?.updateCustomServerHost(Config?.getDeploymentConfig()?.serverHost);
 
                 throw error;
             })
@@ -294,15 +296,15 @@ const useSignIn = (): UseSignInInterface => {
         const __experimental__platformIdP: {
             enabled: boolean;
             homeRealmId: string;
-        } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+        } = AppConfigs.getAppUtils().getConfig()?.__experimental__platformIdP;
 
         if (__experimental__platformIdP?.enabled) {
             isPrivilegedUser = idToken?.sub?.startsWith(`${ CONSUMER_USERSTORE }/`);
 
             if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
                 const redirectUrl: URL = new URL(
-                    window["AppUtils"].getConfig().clientOriginWithTenant.replace(
-                        window["AppUtils"].getConfig().tenant,
+                    AppConfigs.getAppUtils().getConfig().clientOriginWithTenant.replace(
+                        AppConfigs.getAppUtils().getConfig().tenant,
                         idToken.default_tenant
                     )
                 );
@@ -334,7 +336,7 @@ const useSignIn = (): UseSignInInterface => {
 
         // Update the organization name with the newly resolved org.
         if (!isFirstLevelOrg) {
-            window["AppUtils"].updateOrganizationName(orgIdIdToken);
+            AppConfigs.getAppUtils().updateOrganizationName(orgIdIdToken);
         } else {
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
@@ -349,12 +351,13 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         dispatch(setOrganizationType(orgType));
-        window["AppUtils"].updateOrganizationType(orgType);
+        AppConfigs.getAppUtils().updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
 
-        if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
+        if (AppConfigs.getAppUtils().getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
-            const orgId: string = isFirstLevelOrg ? orgIdIdToken : window["AppUtils"].getConfig().organizationName;
+            const orgId: string = isFirstLevelOrg ? orgIdIdToken :
+                AppConfigs.getAppUtils().getConfig().organizationName;
 
             // Setting a dummy object until real data comes from the API
             dispatch(
@@ -438,32 +441,33 @@ const useSignIn = (): UseSignInInterface => {
                 let tokenEndpoint: string = response.tokenEndpoint;
 
                 // If `authorize` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL) {
+                if (AppConfigs.getAppUtils().getConfig().idpConfigs?.authorizeEndpointURL) {
                     authorizationEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                         authorizationEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.authorizeEndpointURL
+                        AppConfigs.getAppUtils().getConfig().idpConfigs.authorizeEndpointURL
                     );
                 }
 
                 // If `oidc session iframe` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
+                if (AppConfigs.getAppUtils().getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
                     oidcSessionIframeEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                         oidcSessionIframeEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.oidcSessionIFrameEndpointURL
+                        AppConfigs.getAppUtils().getConfig().idpConfigs.oidcSessionIFrameEndpointURL
                     );
                 }
 
                 // If `token` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL) {
+                if (AppConfigs.getAppUtils().getConfig().idpConfigs?.tokenEndpointURL) {
                     tokenEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                         tokenEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.tokenEndpointURL
+                        AppConfigs.getAppUtils().getConfig().idpConfigs.tokenEndpointURL
                     );
                 }
 
                 if (isPrivilegedUser) {
                     logoutRedirectUrl =
-                        window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login;
+                       AppConfigs.getAppUtils().getConfig().clientOrigin +
+                           AppConfigs.getAppUtils().getConfig().routes.login;
                 }
 
                 sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
@@ -487,7 +491,8 @@ const useSignIn = (): UseSignInInterface => {
                 // param to the post logout redirect URL.
                 if (__experimental__platformIdP?.enabled && !isPrivilegedUser) {
                     if (!signOutRedirectURL) {
-                        signOutRedirectURL = new URL(window["AppUtils"]?.getConfig()?.logoutCallbackURL);
+                        signOutRedirectURL =
+                            new URL(AppConfigs.getAppUtils()?.getConfig()?.logoutCallbackURL);
                     }
 
                     signOutRedirectURL.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
@@ -497,7 +502,8 @@ const useSignIn = (): UseSignInInterface => {
                     // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/222
                     // TODO: Remove this workaround once the above issue is fixed.
                     Object.entries(sessionStorage).forEach(([ key, value ]: [ key: string, value: string ]) => {
-                        if (key.startsWith(LOGOUT_URL) && key.includes(window["AppUtils"]?.getConfig()?.clientID)) {
+                        if (key.startsWith(LOGOUT_URL) &&
+                            key.includes(AppConfigs.getAppUtils()?.getConfig()?.clientID)) {
                             const _signOutRedirectURL: URL = new URL(value);
 
                             const postLogoutRedirectUri: URL = new URL(
@@ -533,7 +539,7 @@ const useSignIn = (): UseSignInInterface => {
         await dispatch(
             getProfileInformation(
                 Config.getServiceResourceEndpoints().me,
-                window["AppUtils"].getConfig().clientOriginWithTenant,
+                AppConfigs.getAppUtils().getConfig().clientOriginWithTenant,
                 true
             )
         );
@@ -614,7 +620,7 @@ const useSignIn = (): UseSignInInterface => {
 
         // Update the organization name with the newly resolved org.
         if (!isFirstLevelOrg) {
-            window["AppUtils"].updateOrganizationName(orgIdIdToken);
+            AppConfigs.getAppUtils().updateOrganizationName(orgIdIdToken);
         } else {
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
@@ -629,13 +635,14 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         dispatch(setOrganizationType(orgType));
-        window["AppUtils"].updateOrganizationType(orgType);
+        AppConfigs.getAppUtils().updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
-        if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
+        if (AppConfigs.getAppUtils().getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
-            const orgId: string = isFirstLevelOrg ? orgIdIdToken : window["AppUtils"].getConfig().organizationName;
+            const orgId: string = isFirstLevelOrg ? orgIdIdToken :
+                AppConfigs.getAppUtils().getConfig().organizationName;
 
             // Setting a dummy object until real data comes from the API
             dispatch(
@@ -763,32 +770,33 @@ const useSignIn = (): UseSignInInterface => {
                 let tokenEndpoint: string = response.tokenEndpoint;
 
                 // If `authorize` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL) {
+                if (AppConfigs.getAppUtils().getConfig().idpConfigs?.authorizeEndpointURL) {
                     authorizationEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                         authorizationEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.authorizeEndpointURL
+                        AppConfigs.getAppUtils().getConfig().idpConfigs.authorizeEndpointURL
                     );
                 }
 
                 // If `oidc session iframe` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
+                if (AppConfigs.getAppUtils().getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
                     oidcSessionIframeEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                         oidcSessionIframeEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.oidcSessionIFrameEndpointURL
+                        AppConfigs.getAppUtils().getConfig().idpConfigs.oidcSessionIFrameEndpointURL
                     );
                 }
 
                 // If `token` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL) {
+                if (AppConfigs.getAppUtils().getConfig().idpConfigs?.tokenEndpointURL) {
                     tokenEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                         tokenEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.tokenEndpointURL
+                        AppConfigs.getAppUtils().getConfig().idpConfigs.tokenEndpointURL
                     );
                 }
 
                 if (isPrivilegedUser) {
                     logoutRedirectUrl =
-                        window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login;
+                        AppConfigs.getAppUtils().getConfig().clientOrigin +
+                            AppConfigs.getAppUtils().getConfig().routes.login;
                 }
 
                 sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
@@ -812,7 +820,7 @@ const useSignIn = (): UseSignInInterface => {
         await dispatch(
             getProfileInformation(
                 Config.getServiceResourceEndpoints().me,
-                window["AppUtils"].getConfig().clientOriginWithTenant,
+                AppConfigs.getAppUtils().getConfig().clientOriginWithTenant,
                 true
             )
         );
@@ -853,7 +861,7 @@ const useSignIn = (): UseSignInInterface => {
             const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
 
             if (!isSwitchedFromRootOrg) {
-                logoutRedirectUrl = window["AppUtils"]?.getConfig()?.clientOriginWithTenant?.replace(
+                logoutRedirectUrl = AppConfigs.getAppUtils()?.getConfig()?.clientOriginWithTenant?.replace(
                     orgId, userOrg
                 );
             }

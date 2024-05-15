@@ -17,6 +17,7 @@
  */
 
 import { SessionStorageUtils } from "@wso2is/core/utils";
+import { AppConfigs } from "../../admin.core.v1/configs/app-configs";
 
 /**
  * Handle the tenant switch action and redirect the user to the selected
@@ -26,18 +27,18 @@ import { SessionStorageUtils } from "@wso2is/core/utils";
  */
 export const handleTenantSwitch = (tenantName: string): void => {
     const newTenantedPath: URL = new URL(
-        `${window["AppUtils"].getConfig().clientOrigin}/${window["AppUtils"].getConfig().tenantPrefix}/${tenantName}/${
-            window["AppUtils"].getConfig().appBase
+        `${AppConfigs.getAppUtils().getConfig().clientOrigin}/${AppConfigs.getAppUtils().getConfig().tenantPrefix}/${
+            tenantName}/${AppConfigs.getAppUtils().getConfig().appBase
         }`
     );
 
     newTenantedPath.searchParams.set("disable_silent_sign_in", "true");
     newTenantedPath.searchParams.set("switch_tenant", "true");
 
-    if (window["AppUtils"].getConfig()?.__experimental__platformIdP?.enabled) {
+    if (AppConfigs.getAppUtils().getConfig()?.__experimental__platformIdP?.enabled) {
         newTenantedPath.searchParams.set(
             "fidp",
-            window["AppUtils"].getConfig().__experimental__platformIdP.homeRealmId
+            AppConfigs.getAppUtils().getConfig().__experimental__platformIdP.homeRealmId
         );
     }
 

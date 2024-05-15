@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { AxiosError } from "axios";
 import { EventPublisher } from "./event-publisher";
+import { AppConfigs } from "../configs/app-configs";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
@@ -34,8 +35,6 @@ export class HttpUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -85,7 +84,7 @@ export class HttpUtils {
         let pathName: string | null = null;
 
         try {
-            //Whenever the resulting URL pathname and duration is undefined we explicityly assign null 
+            //Whenever the resulting URL pathname and duration is undefined we explicityly assign null
             pathName = new URL(error?.config?.url).pathname;
             duration = new Date().getTime() - errorConfig?.startTimeInMs;
         } catch(e) {
@@ -110,7 +109,7 @@ export class HttpUtils {
             error.response.request.responseURL === sessionStorage.getItem("token_endpoint")
         ) {
             if (error.response.status === 400) {
-                history.push(window["AppUtils"].getConfig().routes.logout);
+                history.push(AppConfigs.getAppUtils().getConfig().routes.logout);
 
                 return;
             }

@@ -56,6 +56,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs/app-configs";
 import { userstoresConfig } from "../../admin.extensions.v1";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
@@ -521,7 +522,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
             .then(() => {
                 // Redirect to login page if all the sessions are terminated.
                 if (authenticatedUser === user?.userName) {
-                    history.push(window["AppUtils"].getConfig().routes.logout);
+                    history.push(AppConfigs.getAppUtils().getConfig().routes.logout);
                 }
                 dispatch(addAlert<AlertInterface>({
                     description: t(

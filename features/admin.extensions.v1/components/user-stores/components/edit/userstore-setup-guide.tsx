@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon } from "semantic-ui-react";
+import { AppConfigs } from "../../../../../admin.core.v1/configs/app-configs";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
@@ -144,7 +145,7 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
                 color="orange"
                 onClick={ () => {
                     window.open(
-                        window["AppUtils"].getConfig().extensions.userStoreAgentUrl +
+                        AppConfigs.getAppUtils().getConfig().extensions.userStoreAgentUrl +
                         RemoteUserStoreMeta.userStoreAgent.artifact, "_blank",
                         "noopener, noreferrer"
                     );
@@ -340,7 +341,7 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
                             <Heading as="h3">
                                 Connect the remote user store
                                 <Heading subHeading as="h6">
-                                    Follow the steps given below to configure the user store agent, 
+                                    Follow the steps given below to configure the user store agent,
                                     which connects the remote user store to Asgardeo
                                 </Heading>
                             </Heading>

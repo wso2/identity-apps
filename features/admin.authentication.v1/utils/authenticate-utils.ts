@@ -23,6 +23,7 @@ import { StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
 import { Config } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs/app-configs";
 
 /**
  * Response mode fallback.
@@ -43,7 +44,7 @@ export class AuthenticateUtils {
     private constructor() {}
 
     public static getInitializeConfig = (): AuthReactConfig => {
-        let baseUrl: string = window["AppUtils"]?.getConfig()?.serverOriginWithTenant;
+        let baseUrl: string = AppConfigs.getAppUtils()?.getConfig()?.serverOriginWithTenant;
 
         if (isLegacyAuthzRuntime()) {
             baseUrl = window[ "AppUtils" ]?.getConfig()?.idpConfigs?.serverOrigin;
@@ -52,33 +53,33 @@ export class AuthenticateUtils {
         return {
             baseUrl,
             checkSessionInterval: window[ "AppUtils" ]?.getConfig()?.session?.checkSessionInterval,
-            clientHost: window["AppUtils"]?.getConfig()?.clientOriginWithTenant,
-            clientID: window["AppUtils"]?.getConfig()?.clientID,
+            clientHost: AppConfigs.getAppUtils()?.getConfig()?.clientOriginWithTenant,
+            clientID: AppConfigs.getAppUtils()?.getConfig()?.clientID,
             clockTolerance: window[ "AppUtils" ]?.getConfig().idpConfigs?.clockTolerance,
             disableTrySignInSilently: new URL(location.href).searchParams.get("disable_silent_sign_in") === "true",
-            enableOIDCSessionManagement: window["AppUtils"]?.getConfig().idpConfigs?.enableOIDCSessionManagement
+            enableOIDCSessionManagement: AppConfigs.getAppUtils()?.getConfig().idpConfigs?.enableOIDCSessionManagement
                 ?? true,
-            enablePKCE: window["AppUtils"]?.getConfig()?.idpConfigs?.enablePKCE ?? true,
+            enablePKCE: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.enablePKCE ?? true,
             endpoints: {
-                authorizationEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.authorizeEndpointURL,
-                checkSessionIframe: window["AppUtils"]?.getConfig()?.idpConfigs?.oidcSessionIFrameEndpointURL,
-                endSessionEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.logoutEndpointURL,
-                issuer: window["AppUtils"]?.getConfig()?.idpConfigs?.issuer,
-                jwksUri: window["AppUtils"]?.getConfig()?.idpConfigs?.jwksEndpointURL,
-                revocationEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.tokenRevocationEndpointURL,
-                tokenEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.tokenEndpointURL
+                authorizationEndpoint: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.authorizeEndpointURL,
+                checkSessionIframe: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.oidcSessionIFrameEndpointURL,
+                endSessionEndpoint: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.logoutEndpointURL,
+                issuer: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.issuer,
+                jwksUri: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.jwksEndpointURL,
+                revocationEndpoint: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.tokenRevocationEndpointURL,
+                tokenEndpoint: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.tokenEndpointURL
             },
-            periodicTokenRefresh: window["AppUtils"]?.getConfig()?.idpConfigs?.periodicTokenRefresh,
+            periodicTokenRefresh: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.periodicTokenRefresh,
             resourceServerURLs: AuthenticateUtils.resolveBaseUrls(),
-            responseMode: window["AppUtils"]?.getConfig()?.idpConfigs?.responseMode ?? responseModeFallback,
-            scope: window["AppUtils"]?.getConfig()?.idpConfigs?.scope ?? [ TokenConstants.SYSTEM_SCOPE ],
+            responseMode: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.responseMode ?? responseModeFallback,
+            scope: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.scope ?? [ TokenConstants.SYSTEM_SCOPE ],
             sendCookiesInRequests: true,
             sessionRefreshInterval: -1,
-            signInRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
-            signOutRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
+            signInRedirectURL: AppConfigs.getAppUtils()?.getConfig()?.loginCallbackURL,
+            signOutRedirectURL: AppConfigs.getAppUtils()?.getConfig()?.loginCallbackURL,
             storage: AuthenticateUtils.resolveStorage() as Storage.WebWorker,
-            validateIDTokenIssuer: window["AppUtils"]?.getConfig()?.idpConfigs?.validateIDTokenIssuer,
-            ...window["AppUtils"]?.getConfig().idpConfigs
+            validateIDTokenIssuer: AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.validateIDTokenIssuer,
+            ...AppConfigs.getAppUtils()?.getConfig().idpConfigs
         };
     };
 
@@ -92,15 +93,15 @@ export class AuthenticateUtils {
         const storageFallback: Storage =
             new UserAgentParser().browser.name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
 
-        if (window["AppUtils"]?.getConfig()?.idpConfigs?.storage) {
+        if (AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.storage) {
             if (
-                window["AppUtils"].getConfig().idpConfigs.storage === Storage.WebWorker &&
+                AppConfigs.getAppUtils().getConfig().idpConfigs.storage === Storage.WebWorker &&
                 new UserAgentParser().browser.name === "IE"
             ) {
                 return Storage.SessionStorage;
             }
 
-            return window["AppUtils"].getConfig().idpConfigs?.storage;
+            return AppConfigs.getAppUtils().getConfig().idpConfigs?.storage;
         }
 
         return storageFallback;
@@ -114,8 +115,8 @@ export class AuthenticateUtils {
      * @returns string[]
      */
     public static resolveBaseUrls(): string[] {
-        let baseUrls: string[] = window["AppUtils"]?.getConfig()?.idpConfigs?.baseUrls;
-        const serverOrigin: string = window["AppUtils"]?.getConfig()?.serverOrigin;
+        let baseUrls: string[] = AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.baseUrls;
+        const serverOrigin: string = AppConfigs.getAppUtils()?.getConfig()?.serverOrigin;
 
         if (baseUrls) {
             // If the server origin is not specified in the overridden config, append it.
