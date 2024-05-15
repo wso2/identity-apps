@@ -1326,8 +1326,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("../../admin.api-resources.v2/pages/api-resources")
             ),
             exact: true,
-            featureStatus: showStatusLabel ? "NEW" : "",
-            featureStatusLabel: showStatusLabel? "common:new": "",
             icon: {
                 icon: getSidePanelIcons().apiResources
             },
