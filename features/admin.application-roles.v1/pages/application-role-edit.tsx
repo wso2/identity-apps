@@ -21,9 +21,9 @@ import { addAlert } from "@wso2is/core/store";
 import { AnimatedAvatar, TabPageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, {
-    ReactElement, 
-    useEffect, 
-    useState 
+    ReactElement,
+    useEffect,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -55,7 +55,7 @@ const ApplicationRoleEditPage = (props: ApplicationRoleEditPageProps): ReactElem
     const [ isRoleExisting, setIsRoleExisting ] = useState<boolean>(false);
 
     const checkRoleExists = (roleId: string): void => {
-        setIsRoleDetailsRequestLoading(true);        
+        setIsRoleDetailsRequestLoading(true);
 
         getApplicationRolesList(appId, null, null, null, null)
             .then((response: ApplicationRolesResponseInterface) => {
@@ -68,23 +68,23 @@ const ApplicationRoleEditPage = (props: ApplicationRoleEditPageProps): ReactElem
             }).catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
-                        description: error?.response?.data?.description ?? 
-                            error?.response?.data?.detail ?? 
-                            t("extensions:develop.applications.edit.sections.roles.notifications." + 
+                        description: error?.response?.data?.description ??
+                            error?.response?.data?.detail ??
+                            t("extensions:develop.applications.edit.sections.roles.notifications." +
                                 "fetchApplicationRoles.error.description"),
                         level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message ?? 
-                            t("extensions:develop.applications.edit.sections.roles.notifications." + 
+                        message: error?.response?.data?.message ??
+                            t("extensions:develop.applications.edit.sections.roles.notifications." +
                                 "fetchApplicationRoles.error.message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("extensions:develop.applications.edit.sections.roles.notifications." + 
+                    description: t("extensions:develop.applications.edit.sections.roles.notifications." +
                         "fetchApplicationRoles.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:develop.applications.edit.sections.roles.notifications." + 
+                    message: t("extensions:develop.applications.edit.sections.roles.notifications." +
                         "fetchApplicationRoles.genericError.message")
                 }));
             })
@@ -100,14 +100,14 @@ const ApplicationRoleEditPage = (props: ApplicationRoleEditPageProps): ReactElem
         const path: string[] = history.location.pathname.split("/");
         const roleId: string = path[ path.length - 1 ];
         const appId: string = path[ path.length - 2 ];
-        
+
         setRoleId(roleId);
         setAppId(appId);
     }, []);
 
     useEffect(() => {
         if (!roleId || !appId) {
-    
+
             return;
         }
 
@@ -160,7 +160,7 @@ const ApplicationRoleEditPage = (props: ApplicationRoleEditPageProps): ReactElem
                             appId={ appId }
                             roleId={ roleId }
                         />
-                    ) 
+                    )
                     : null
             }
         </TabPageLayout>

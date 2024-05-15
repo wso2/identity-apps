@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,9 +22,9 @@ import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { ExtendedFeatureConfigInterface } from "../admin.extensions.v1/configs/models";
 import { AppConstants, AppState, history } from "../admin.core.v1";
 import { AppConfigs } from "../admin.core.v1/configs";
+import { ExtendedFeatureConfigInterface } from "../admin.extensions.v1/configs/models";
 
 /**
  * Parent role page props interface
@@ -73,7 +73,7 @@ const ParentRolePage = (props: ParentRolePagePropsInterface): ReactElement => {
                                         primaryAction={ t("common:configure") }
                                     >
                                         <Divider hidden/>
-                                    </Section>      
+                                    </Section>
                                 </Grid.Column>
                             </Grid.Row>
                             <Divider hidden/>
@@ -93,7 +93,7 @@ const ParentRolePage = (props: ParentRolePagePropsInterface): ReactElement => {
                                     primaryAction={ t("common:configure") }
                                 >
                                     <Divider hidden/>
-                                </Section>      
+                                </Section>
                             </Grid.Column>
                         </Grid.Row>
                     )

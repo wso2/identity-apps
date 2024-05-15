@@ -31,12 +31,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Input } from "semantic-ui-react";
-import { getAllApplicationRolesList } from "../../admin.extensions.v1/components/groups/api";
-import { ApplicationRoleInterface } from "../../admin.extensions.v1/components/groups/models";
 import { getApplicationList } from "../../admin.applications.v1/api";
 import { ApplicationListInterface, ApplicationListItemInterface } from "../../admin.applications.v1/models";
 import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
 import { AppConfigs } from "../../admin.core.v1/configs";
+import { getAllApplicationRolesList } from "../../admin.extensions.v1/components/groups/api";
+import { ApplicationRoleInterface } from "../../admin.extensions.v1/components/groups/models";
 import { ApplicationRolesList } from "../components";
 
 type ApplicationRolesPageInterface = IdentifiableComponentInterface;
@@ -59,11 +59,11 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
     const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
     const [ isError, setError ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ isApplicationRolesFetchRequestLoading, setIsApplicationRolesFetchRequestLoading ] = 
+    const [ isApplicationRolesFetchRequestLoading, setIsApplicationRolesFetchRequestLoading ] =
         useState<boolean>(true);
     const [ initialApplicationRolesList, setInitialApplicationRolesList ] = useState<ApplicationRoleInterface[]>([]);
     const [ paginatedApplicationRoles, setPaginatedApplicationRoles ] = useState<ApplicationRoleInterface[]>([]);
-    
+
     const listItemLimit: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
 
     useEffect(() => {
@@ -87,8 +87,8 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
                 setError(true);
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail ?? 
-                            t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." + 
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail ??
+                            t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." +
                                 "error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message ??
@@ -100,10 +100,10 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
                 }
 
                 dispatch(addAlert({
-                    description: t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." + 
+                    description: t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." + 
+                    message: t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." +
                         "genericError.message")
                 }));
                 setIsApplicationRolesFetchRequestLoading(false);
@@ -112,7 +112,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
 
     /**
      * Fetch the list of applications if there are roles.
-     */ 
+     */
     const filterApplicationsList = (roles: ApplicationRoleInterface[]) => {
         if (isEmpty(roles)) {
             setIsApplicationRolesFetchRequestLoading(false);
@@ -153,9 +153,9 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
      */
     const mapApplicationListWithApplicationRoles = (applications: ApplicationListItemInterface[],
         roles: ApplicationRoleInterface[]) => {
-        
+
         const filteredRoles: ApplicationRoleInterface[] = roles.filter((role: ApplicationRoleInterface) => {
-            const application: ApplicationListItemInterface = 
+            const application: ApplicationListItemInterface =
                 find(applications, (application: ApplicationListItemInterface) => {
                     return application.id === role?.app;
                 });
@@ -215,20 +215,20 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
             title={ t("extensions:console.applicationRoles.heading") }
             description={ t("extensions:console.applicationRoles.subHeading") }
             pageTitle={ t("extensions:console.applicationRoles.heading") }
-            backButton={ isSubOrg 
+            backButton={ isSubOrg
                 ? {
                     onClick: handleBackButtonClick,
                     text: t("extensions:console.applicationRoles.roles.goBackToRoles")
-                }: null 
+                }: null
             }
         >
             {
                 isError
                     ? (
                         <EmptyPlaceholder
-                            subtitle={ [ t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." + 
+                            subtitle={ [ t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." +
                                 "genericError.description") ] }
-                            title={ t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." + 
+                            title={ t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." +
                                 "genericError.message") }
                             image={ getEmptyPlaceholderIllustrations().genericError }
                             imageSize="tiny"
@@ -240,7 +240,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
                             onPageChange={ null }
                             showPagination={ false }
                             showTopActionPanel={
-                                !isApplicationRolesFetchRequestLoading && 
+                                !isApplicationRolesFetchRequestLoading &&
                                 !(!searchQuery && paginatedApplicationRoles?.length <= 0)
                             }
                             totalPages={ Math.ceil(initialApplicationRolesList?.length / listItemLimit) }

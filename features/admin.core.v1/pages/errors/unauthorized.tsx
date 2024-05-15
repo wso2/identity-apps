@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,15 +20,15 @@ import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { getEmptyPlaceholderIllustrations } from "../../configs";
+import { AppConfigs, getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
-import { AppConfigs } from "../../configs";
+
 
 /**
  * Unauthorized error page.
  *
- * @param {RouteComponentProps} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param RouteComponentProps - Props injected to the component.
+ *
  */
 const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
     props: RouteComponentProps
@@ -36,15 +36,15 @@ const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
 
     const { location } = props;
 
-    const error = new URLSearchParams(location.search).get("error");
+    const error: string = new URLSearchParams(location.search).get("error");
 
     const { t } = useTranslation();
 
     /**
      * Resolve error action.
      *
-     * @param {string} error - Error decoded from URL.
-     * @return {ReactNode} Resolved action.
+     * @param error - Error decoded from URL.
+     *
      */
     const resolveAction = (error: string): ReactNode => {
         if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {
@@ -77,8 +77,8 @@ const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
     /**
      * Resolve error title.
      *
-     * @param {string} error - Error decoded from URL.
-     * @return {string} Resolved title.
+     * @param error - Error decoded from URL.
+     *
      */
     const resolveTitle = (error: string): string => {
         if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {
@@ -95,8 +95,8 @@ const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
     /**
      * Resolve error subtitles.
      *
-     * @param {string} error - Error decoded from URL.
-     * @return {string | string[]} Resolved subtitles.
+     * @param error - Error decoded from URL.
+     *
      */
     const resolveSubTitles = (error: string): string | string[] => {
         if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {

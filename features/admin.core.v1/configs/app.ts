@@ -349,7 +349,8 @@ export class Config {
             isClientSecretHashEnabled: AppConfigs.getAppUtils()?.getConfig()?.ui?.isClientSecretHashEnabled,
             isCookieConsentBannerEnabled: AppConfigs.getAppUtils()?.getConfig()?.ui?.isCookieConsentBannerEnabled,
             isCustomClaimMappingEnabled: AppConfigs.getAppUtils()?.getConfig()?.ui?.isCustomClaimMappingEnabled,
-            isCustomClaimMappingMergeEnabled: AppConfigs.getAppUtils()?.getConfig()?.ui?.isCustomClaimMappingMergeEnabled,
+            isCustomClaimMappingMergeEnabled:
+                AppConfigs.getAppUtils()?.getConfig()?.ui?.isCustomClaimMappingMergeEnabled,
             isDefaultDialectEditingEnabled: AppConfigs.getAppUtils()?.getConfig()?.ui?.isDefaultDialectEditingEnabled,
             isDialectAddingEnabled: AppConfigs.getAppUtils()?.getConfig()?.ui?.isDialectAddingEnabled,
             isEditingSystemRolesAllowed:  AppConfigs.getAppUtils()?.getConfig()?.ui?.isEditingSystemRolesAllowed,
