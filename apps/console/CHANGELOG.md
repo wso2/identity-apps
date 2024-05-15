@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.18.7
+
+### Patch Changes
+
+- [#6229](https://github.com/wso2/identity-apps/pull/6229) [`6f04b0edc079c6c784000455cfc12689d2d8644f`](https://github.com/wso2/identity-apps/commit/6f04b0edc079c6c784000455cfc12689d2d8644f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Unify AI feature codebase and UX improvments
+
+- Updated dependencies [[`b9fb80fbc4bb1f3ab2deba0fd7e8b993e367a183`](https://github.com/wso2/identity-apps/commit/b9fb80fbc4bb1f3ab2deba0fd7e8b993e367a183), [`6f04b0edc079c6c784000455cfc12689d2d8644f`](https://github.com/wso2/identity-apps/commit/6f04b0edc079c6c784000455cfc12689d2d8644f)]:
+  - @wso2is/features@2.19.2
+  - @wso2is/theme@2.0.83
+  - @wso2is/react-components@2.2.2
+  - @wso2is/dynamic-forms@2.0.60
+  - @wso2is/form@2.0.61
+
 ## 2.18.6
 
 ### Patch Changes
