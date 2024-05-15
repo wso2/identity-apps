@@ -18,14 +18,14 @@
 
 import React from "react";
 import { render, screen } from "../../../test-configs";
+import * as useGetApplicationTemplates from "../../api/use-get-application-templates";
+import { CategorizedApplicationTemplatesInterface } from "../../models/application-templates";
+import ApplicationTemplatesProvider from "../../provider/application-templates-provider";
 import {
     applicationTemplatesListMockResponse, categorizedApplicationTemplatesListMockResponse
 } from "../__mocks__/application-template";
 import "@testing-library/jest-dom";
-import * as useGetApplicationTemplates from "../../api/use-get-application-templates";
-import ApplicationTemplatesProvider from "../../provider/application-templates-provider";
 import MockApplicationTemplatesComponent from "../__mocks__/mock-application-templates-component";
-import { CategorizedApplicationTemplatesInterface } from "../../models/application-templates";
 
 describe("[Applications Management Feature] - Application Templates Provider", () => {
     const useGetApplicationTemplatesMock: jest.SpyInstance = jest.spyOn(useGetApplicationTemplates, "default");
@@ -46,9 +46,11 @@ describe("[Applications Management Feature] - Application Templates Provider", (
         );
 
         expect(screen.getByTestId("mock-application-templates-component-loading-status")).toBeInTheDocument();
-        expect(screen.getByTestId("mock-application-templates-component-templates").innerHTML).toContain(`Number of templates-${applicationTemplatesListMockResponse.length}`);
+        expect(screen.getByTestId("mock-application-templates-component-templates").innerHTML)
+            .toContain(`Number of templates-${applicationTemplatesListMockResponse.length}`);
         categorizedApplicationTemplatesListMockResponse.forEach((item: CategorizedApplicationTemplatesInterface) => {
-            expect(screen.getByTestId(`mock-application-templates-component-${item.id}`).innerHTML).toContain(`Number of templates-${item.templates.length}`);
+            expect(screen.getByTestId(`mock-application-templates-component-${item.id}`).innerHTML)
+                .toContain(`Number of templates-${item.templates.length}`);
         });
     });
 });

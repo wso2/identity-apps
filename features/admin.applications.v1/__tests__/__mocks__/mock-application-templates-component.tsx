@@ -24,7 +24,7 @@ import { CategorizedApplicationTemplatesInterface } from "../../models/applicati
 /**
  * Props interface for the `MockApplicationTemplatesComponent`.
  */
-export interface MockApplicationTemplatesComponentProps extends IdentifiableComponentInterface {};
+export type MockApplicationTemplatesComponentProps = IdentifiableComponentInterface;
 
 /**
  * Mock application templates using components.
@@ -32,7 +32,9 @@ export interface MockApplicationTemplatesComponentProps extends IdentifiableComp
  * @param props - Props for the `MockApplicationTemplatesComponent`.
  * @returns MockApplicationTemplatesComponent
  */
-const MockApplicationTemplatesComponent: FunctionComponent<PropsWithChildren<MockApplicationTemplatesComponentProps>> = (
+const MockApplicationTemplatesComponent: FunctionComponent<
+    PropsWithChildren<MockApplicationTemplatesComponentProps>
+> = (
     props: PropsWithChildren<MockApplicationTemplatesComponentProps>
 ) => {
     const {
@@ -54,20 +56,22 @@ const MockApplicationTemplatesComponent: FunctionComponent<PropsWithChildren<Moc
             }
             {
                 categorizedTemplates.map((template: CategorizedApplicationTemplatesInterface) => (
-                    <div data-componentid={ `${componentId}-${template?.id}` }>
+                    <div key={ template?.id } data-componentid={ `${componentId}-${template?.id}` }>
                         { `Number of templates-${template?.templates?.length}` }
                     </div>
                 ))
             }
             {
-                <div data-componentid={ `${componentId}-templates` }>{ `Number of templates-${templates?.length}` }</div>
+                <div data-componentid={ `${componentId}-templates` }>
+                    { `Number of templates-${templates?.length}` }
+                </div>
             }
         </>
-    )
-}
+    );
+};
 
 MockApplicationTemplatesComponent.defaultProps = {
     "data-componentid": "mock-application-templates-component"
-}
+};
 
 export default MockApplicationTemplatesComponent;
