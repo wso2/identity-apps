@@ -5,4 +5,3 @@ src/main/
 themes/
 src/public/auth-spa-*.min.js
 src/public/startup-config.js
-package.json
