@@ -45,7 +45,7 @@ const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement =>
             transition: {
                 delay: 0.3,
                 duration: 6,
-                repeat: 3,
+                repeat: Infinity,
                 repeatDelay: 0.2,
                 repeatType: "reverse"
             },
