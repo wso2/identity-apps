@@ -132,9 +132,9 @@
         "productVersionConfig": {
             "versionOverride": ""
         },
+        "showAppSwitchButton": "true",
         "theme": {
             "name": "wso2is"
-        },
-        "showAppSwitchButton": "true"
+        }
     }
 }
