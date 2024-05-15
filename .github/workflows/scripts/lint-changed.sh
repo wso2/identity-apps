@@ -33,7 +33,7 @@ GITHUB_PR_NUMBER=$1
 ESLINT_SUPPORTED_EXT=(js jsx ts tsx json)
 
 # Excluding files that adhere to the specified patterns from the list of supported files.
-PATHS_TO_EXCLUDE=("identity-apps-core/apps/**/*.js" ".eslintrc.js" "package.json")
+PATHS_TO_EXCLUDE=("identity-apps-core/apps/**/*.js" ".eslintrc.js" "package.json" "**/package.json")
 
 MAX_FILE_THRESHOLD_FOR_LINTER=30
 
