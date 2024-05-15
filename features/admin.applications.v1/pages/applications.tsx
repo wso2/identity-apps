@@ -54,6 +54,7 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
+import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,
@@ -167,6 +168,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     } = useMyAccountApplicationData("advancedConfigurations,templateId,clientId,issuer");
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
+    const { legacyAuthzRuntime }  = useAuthorization();
 
     const {
         data: myAccountStatus,
@@ -308,6 +311,16 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
                     !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
                     && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
+                );
+                appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
+                appList.totalResults = appList.totalResults -
+                    (applicationList.applications.length - appList.applications.length);
+            }
+
+            // Remove the M2M application from the application list if the legacy authz runtime is enabled.
+            if (legacyAuthzRuntime) {
+                appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
+                    item.templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                 );
                 appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
                 appList.totalResults = appList.totalResults -
