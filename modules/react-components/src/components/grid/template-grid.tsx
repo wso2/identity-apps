@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -148,9 +148,9 @@ export interface TemplateGridPropsInterface<T> extends IdentifiableComponentInte
      */
     useNameInitialAsImage?: boolean;
     /**
-     * Coming soon ribbon label.
+     * Feature status label
      */
-    comingSoonRibbonLabel?: ReactNode;
+    featureStatusLabel?: ReactNode;
 }
 
 /**
@@ -192,9 +192,9 @@ interface WithPropertiesInterface {
      */
     disabled?: TemplateCardPropsInterface["disabled"];
     /**
-     * Should resource be listed as coming soon.
+     * Feature status label
      */
-    comingSoon?: boolean;
+    status?: any;
 }
 
 
@@ -241,7 +241,6 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         templateIconOptions,
         templateIconSize,
         useNameInitialAsImage,
-        comingSoonRibbonLabel,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -384,6 +383,18 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         return exceeded;
     });
 
+    const getRibbonByFeatureStatus = (status: string): React.ReactNode => {
+        if (status === "NEW") {
+            return (
+                <div className="ribbon new">
+                    { status }
+                </div>
+            );
+        } else {
+            return null;
+        }
+    };
+
     return (
         <Grid className={ classes } data-testid={ testId } data-componentid={ componentId }>
             {
@@ -502,7 +513,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                         name={ template.name }
                                                         id={ template.id }
                                                         onClick={
-                                                            (template.disabled || template.comingSoon)
+                                                            (template.disabled || template?.status === "Coming soon")
                                                                 ? null
                                                                 : onTemplateSelect
                                                         }
@@ -514,8 +525,11 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                         tagSize={ tagSize }
                                                         data-componentid={ template.id }
                                                         data-testid={ template.id }
-                                                        disabled={ template.disabled || template.comingSoon }
-                                                        ribbon={ template.comingSoon ? comingSoonRibbonLabel : null }
+                                                        disabled={
+                                                            template.disabled
+                                                            || template?.status === "Coming soon"
+                                                        }
+                                                        ribbon={ getRibbonByFeatureStatus(template?.status) }
                                                     />
                                                 ))
                                             }

@@ -23,6 +23,7 @@ import {
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
+import FeatureStatusLabel from "../../admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models/identity-provider";
 import { AssociatedRolesInterface } from "../../admin.roles.v2/models";
 import { TemplateContentInterface } from "../data/application-templates";
@@ -330,6 +331,7 @@ export interface ApplicationTemplateListItemInterface {
     category?: string;
     displayOrder?: number;
     self?: string;
+    status?: FeatureStatusLabel;
     /**
      * List of Sub templates.
      * ex: `OIDC Web Application` under `Web Application` template.

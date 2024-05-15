@@ -339,7 +339,6 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     showLessButtonLabel: t("common:showLess"),
                     showMoreButtonLabel: t("common:showMore")
                 } }
-                comingSoonRibbonLabel={ t("common:comingSoon") }
                 renderDisabledItemsAsGrayscale={ true }
                 emptyPlaceholder={ placeholder }
                 { ...additionalProps }
