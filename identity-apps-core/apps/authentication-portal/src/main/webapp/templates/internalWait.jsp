@@ -14,6 +14,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <jsp:directive.include file="../includes/init-url.jsp"/>
@@ -26,7 +27,7 @@
 
 <%
     // Read promptId from request.
-    String promptId = (String) request.getAttribute("promptId");
+    String promptId = Encode.forJavaScriptAttribute((String) request.getAttribute("promptId"));
 
     List<String> WaitingMethods = Arrays.asList("FIXED_DELAY", "POLLING");
 
@@ -59,7 +60,7 @@
 
         if (StringUtils.isNotBlank((String) requestData.get("type"))) {
             if (WaitingMethods.contains((String) requestData.get("type"))) {
-                type = (String) requestData.get("type");
+                type = Encode.forJavaScriptAttribute((String) requestData.get("type"));
             }
         }
 
@@ -69,15 +70,15 @@
         if (functionData != null) {
             // Set the greeting and message.
             if (StringUtils.isNotBlank((String) functionData.get("greeting"))) {
-                greeting = (String) functionData.get("greeting");
+                greeting = Encode.forHtml((String) functionData.get("greeting"));
             }
             if (StringUtils.isNotBlank((String) functionData.get("message"))) {
-                message = (String) functionData.get("message");
+                message = Encode.forHtml((String) functionData.get("message"));
             }
 
             // Set the timeout.
             if (StringUtils.isNotBlank((String) functionData.get("timeout"))) {
-                timeout = Integer.parseInt((String) functionData.get("timeout"));
+                timeout = Integer.parseInt(Encode.forJavaScriptAttribute((String) functionData.get("timeout")));
 
                 if (timeout > maxTimeout) {
                     timeout = maxTimeout;
@@ -87,16 +88,16 @@
             if ("POLLING".equals(type)) {
                 // Set the polling related parameters.
                 if (StringUtils.isNotBlank((String) functionData.get("pollingEndpoint"))) {
-                    pollingEndpoint = (String) functionData.get("pollingEndpoint");
+                    pollingEndpoint = Encode.forJavaScriptAttribute((String) functionData.get("pollingEndpoint"));
                 }
                 if (StringUtils.isNotBlank((String) functionData.get("requestMethod"))) {
-                    pollingRequestMethod = (String) functionData.get("requestMethod");
+                    pollingRequestMethod = Encode.forJavaScriptAttribute((String) functionData.get("requestMethod"));
                 }
                 if (StringUtils.isNotBlank((String) functionData.get("contentType"))) {
-                    pollingRequestContentType = (String) functionData.get("contentType");
+                    pollingRequestContentType = Encode.forJavaScriptAttribute((String) functionData.get("contentType"));
                 }
                 if (StringUtils.isNotBlank((String) functionData.get("pollingInterval"))) {
-                    pollingInterval = Integer.parseInt((String) functionData.get("pollingInterval"));
+                    pollingInterval = Integer.parseInt(Encode.forJavaScriptAttribute((String) functionData.get("pollingInterval")));
                 }
                 if (functionData.get("requestData") != null) {
                     pollingEndpointData = (Object) functionData.get("requestData");
@@ -248,12 +249,12 @@
 </head>
 <body>
     <div class="ui">
-        <h2 id="greeting" class="ui header text-align:center"></h2>
+        <h2 id="greeting" data-componentid="internal-wait-greeting" class="ui header text-align:center"></h2>
         <div id="spinner-container" class="ui active inverted dimmer">
             <div class="ui massive loader"></div>
         </div>
-        <p id="message" class="message text-align:center"></p>
-        <h4 id="countdown" class="message text-align:center"></h4>
+        <p id="message" data-componentid="internal-wait-message" class="message text-align:center"></p>
+        <h4 id="countdown" data-componentid="internal-wait-countdown" class="message text-align:center"></h4>
     </div>
 
     <form id="myForm" action="<%= commonauthURL %>" method="post">
