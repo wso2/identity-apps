@@ -19,7 +19,6 @@
 import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
-import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
 import {
     ArrowLoopRightUserIcon,
@@ -236,6 +235,11 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     onClick={ () => handleConnectorSelection(connector) }
                                                     data-componentid={ connector.testId }
                                                 >
+                                                    {
+                                                        showStatusLabel && connector.status && (
+                                                            <div className="ribbon">{ t(connector.status) }</div>
+                                                        )
+                                                    }
                                                     <CardContent className="governance-connector-header">
                                                         <Avatar
                                                             variant="square"
@@ -248,17 +252,6 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                         <div>
                                                             <Typography variant="h6">
                                                                 { connector.header }
-                                                                { showStatusLabel && connector.status &&
-                                                                (
-                                                                    <Chip
-                                                                        size="small"
-                                                                        sx= { { marginLeft: 1 } }
-                                                                        label= { t(`common:${connector.status}`)
-                                                                            .toUpperCase() }
-                                                                        className = { `oxygen-chip-${ connector.status
-                                                                            .toLowerCase() }` }
-                                                                    />)
-                                                                }
                                                             </Typography>
                                                         </div>
                                                     </CardContent>

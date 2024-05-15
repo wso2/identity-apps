@@ -30,6 +30,26 @@
                     border-radius: var(--oxygen-shape-borderRadius);
                 }
             }
+
+            .ribbon {
+                font-size: 0.8em;
+                font-weight: 500;
+                color: white;
+                right: 0;
+                height: 24px;
+                min-width: 100px;
+                background: linear-gradient(270deg, lighten(#3fb81f, 15) 0%, #3fb81f 100%);
+                display: flex;
+                margin-left: auto;
+                margin-right: -25px;
+                margin-top: -5px;
+                flex-direction: row;
+                align-content: center;
+                align-items: center;
+                justify-content: space-around;
+                clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+                -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+            }
         }
     }
 }
