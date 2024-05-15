@@ -39,7 +39,6 @@ import React, { FunctionComponent, LazyExoticComponent, ReactElement, lazy, useE
 import { I18nextProvider } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useGetBrandingPreference } from "./api/branding-preferences";
-
 import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { AppConstants } from "./constants";
@@ -186,16 +185,17 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             .catch((error: string) => {
                 throw new I18nInstanceInitException(error);
             });
-
-
     }, [ isAuthenticated ]);
 
-    // Extracting theme preference data using custom hook
+    /**
+     * Extracts theme preference data using a custom hook.
+     */
     const { data: themePreference } = useGetBrandingPreference(tenantDomain);
 
-    // Retrieving the application title from the Redux store
+    /**
+     * Retrieves the application title from the Redux store.
+     */
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
-
 
     return (
         <ThemeProvider
@@ -251,6 +251,5 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 </I18nextProvider>
             </SecureApp>
         </ThemeProvider>
-
     );
 };
