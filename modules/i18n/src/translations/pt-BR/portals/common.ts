@@ -85,6 +85,8 @@ export const common: CommonNS = {
     endsWith: "Termina com",
     equals: "Igual a",
     exitFullScreen: "Sair do modo tela cheia",
+    experimental: "",
+    premium: "",
     explore: "Explorar",
     export: "Exportar",
     featureAvailable: "Este recurso estará disponível em breve!",

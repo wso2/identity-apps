@@ -85,6 +85,8 @@ export const common: CommonNS = {
     endsWith: "සමඟ අවසන් වේ",
     equals: "සමාන",
     exitFullScreen: "සම්පූර්ණ තිරයෙන් පිටවන්න",
+    experimental: "",
+    premium: "",
     explore: "ගවේෂණය කරන්න",
     export: "අපනයනය කරන්න",
     featureAvailable: "මෙම අංගය ඉක්මනින් ලබා ගත හැක!",

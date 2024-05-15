@@ -85,6 +85,8 @@ export const common: CommonNS = {
     "endsWith": "以。。结束",
     "equals": "等于",
     "exitFullScreen": "出口全屏",
+    experimental: "",
+    premium: "",
     "explore": "探索",
     "export": "出口",
     "featureAvailable": "此功能即将提供！",
