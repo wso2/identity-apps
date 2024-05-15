@@ -31,7 +31,7 @@
 
 .ai-loading-screen-illustration-container {
     display: flex;
-    flex: 4;
+    flex: 1;
     justify-content: right;
 
     /**
@@ -47,7 +47,7 @@
 
 .ai-loading-screen-text-container {
     display: flex;
-    flex: 6;
+    flex: 1;
     justify-content: space-between;
     flex-direction: column;
     align-items: flex-start;
@@ -82,12 +82,11 @@
 
 .ai-loading-screen-animation-container {
     position: absolute;
-    margin-top: 50px;
     width: 100%;
 }
 
 .ai-loading-screen-animation {
     margin-left: 5rem;
     width: 70%;
-    height: auto;
+    height: 70vh;
 }
