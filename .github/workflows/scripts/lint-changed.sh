@@ -30,7 +30,7 @@ GITHUB_PR_NUMBER=$1
 # When unsupported file formats are passed in, ESLint throws a warning which conflicts with -max-warnings=0.
 # Hence, we need to manually filter out the supported formats.
 # Tracker: https://github.com/eslint/eslint/issues/15010
-ESLINT_SUPPORTED_EXT=(js jsx ts tsx)
+ESLINT_SUPPORTED_EXT=(js jsx ts tsx json)
 
 # Excluding files that adhere to the specified patterns from the list of supported files.
 PATHS_TO_EXCLUDE=("identity-apps-core/apps/**/*.js" ".eslintrc.js")

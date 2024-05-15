@@ -3,20 +3,11 @@
         "enabled": false,
         "homeRealmId": ""
     },
-    "consoleApp": {
-        "path": "/getting-started",
-        "origin": "https://localhost:9000"
-    },
-    "isSaas": false,
     "appBaseName": "myaccount",
     "clientID": "MY_ACCOUNT",
-    "loginCallbackPath": "",
-    "logoutCallbackPath": "",
-    "serverOrigin": "https://localhost:9443",
-    "routePaths": {
-        "home": "/overview",
-        "login": "",
-        "logout": "/logout"
+    "consoleApp": {
+        "origin": "https://localhost:9000",
+        "path": "/getting-started"
     },
     "extensions": {
         "applicationInsightsCookieDomain": "",
@@ -25,51 +16,59 @@
         "applicationInsightsInstrumentationKey": "",
         "applicationInsightsProxyEndpoint": ""
     },
-    "superTenantProxy": "",
     "idpConfigs": {
-        "logoutEndpointURL": "${serverOrigin}/oidc/logout",
-        "clockTolerance": 300,
         "authorizeEndpointURL": "${serverOrigin}/oauth2/authorize",
+        "clockTolerance": 300,
+        "enableOIDCSessionManagement": false,
+        "logoutEndpointURL": "${serverOrigin}/oidc/logout",
         "oidcSessionIFrameEndpointURL": "${serverOrigin}/oidc/checksession",
-        "serverOrigin": "https://localhost:9443",
         "responseMode": "query",
-        "enableOIDCSessionManagement": false
+        "serverOrigin": "https://localhost:9443"
     },
+    "isSaas": false,
+    "legacyAuthzRuntime": false,
+    "loginCallbackPath": "",
+    "logoutCallbackPath": "",
+    "routePaths": {
+        "home": "/overview",
+        "login": "",
+        "logout": "/logout"
+    },
+    "serverOrigin": "https://localhost:9443",
     "session": {
-        "userIdleWarningTimeOut": 580.0,
+        "checkSessionInterval": 3.0,
         "sessionRefreshTimeOut": 300.0,
         "userIdleTimeOut": 600.0,
-        "checkSessionInterval": 3.0
+        "userIdleWarningTimeOut": 580.0
     },
-    "legacyAuthzRuntime": false,
+    "superTenantProxy": "",
     "tenantContext": {
         "enableTenantQualifiedUrls": true,
-        "requireSuperTenantInUrls": false,
-        "requireSuperTenantInAppUrls": true
+        "requireSuperTenantInAppUrls": true,
+        "requireSuperTenantInUrls": false
     },
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
-        "appTitle": "My Account | WSO2 Identity Server",
-        "appName": "My Account",
         "appLogoPath": "/assets/images/branding/logo.svg",
+        "appName": "My Account",
+        "appTitle": "My Account | WSO2 Identity Server",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
-        "enableMFAUserWise": true,
-        "disableMFAForFederatedUsers": true,
-        "forceBackupCode": true,
-        "showAppSwitchButton": "true",
         "authenticatorApp": {
             "enabled": true
         },
+        "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
+        "disableMFAForFederatedUsers": true,
+        "enableMFAUserWise": true,
         "features": {
             "applications": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "create": [],
+                    "delete": [],
                     "read": [],
-                    "update": [],
-                    "delete": []
+                    "update": []
                 }
             },
             "operations": {
@@ -77,9 +76,11 @@
                 "enabled": true,
                 "scopes": {
                     "create": [],
-                    "read": ["internal_humantask_view"],
-                    "update": [],
-                    "delete": []
+                    "delete": [],
+                    "read": [
+                        "internal_humantask_view"
+                    ],
+                    "update": []
                 }
             },
             "overview": {
@@ -87,9 +88,9 @@
                 "enabled": true,
                 "scopes": {
                     "create": [],
+                    "delete": [],
                     "read": [],
-                    "update": [],
-                    "delete": []
+                    "update": []
                 }
             },
             "personalInfo": {
@@ -99,36 +100,39 @@
                 "enabled": true,
                 "scopes": {
                     "create": [],
+                    "delete": [],
                     "read": [],
-                    "update": [],
-                    "delete": []
+                    "update": []
                 }
             },
             "security": {
-                "disabledFeatures": ["security.loginVerifyData.typingDNA"],
+                "disabledFeatures": [
+                    "security.loginVerifyData.typingDNA"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [],
+                    "delete": [],
                     "read": [],
-                    "update": [],
-                    "delete": []
+                    "update": []
                 }
             }
         },
-        "isCookieConsentBannerEnabled": true,
-        "isPasswordInputValidationEnabled": true,
-        "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
-        "isHeaderAvatarLabelAllowed": true,
+        "forceBackupCode": true,
         "i18nConfigs": {
-            "showLanguageSwitcher": true,
-            "langAutoDetectEnabled": true
+            "langAutoDetectEnabled": true,
+            "showLanguageSwitcher": true
         },
-        "privacyPolicyConfigs": {},
+        "isCookieConsentBannerEnabled": true,
+        "isHeaderAvatarLabelAllowed": true,
+        "isPasswordInputValidationEnabled": true,
         "isProfileUsernameReadonly": true,
+        "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
             "versionOverride": ""
         },
+        "showAppSwitchButton": "true",
         "theme": {
             "name": "wso2is"
         }
