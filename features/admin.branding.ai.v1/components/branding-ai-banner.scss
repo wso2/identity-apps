@@ -16,7 +16,7 @@
  * under the License.
  */
 
-.branding-ai-banner-input {
+ .branding-ai-banner-input {
     background: #F5F2F0;
     background-size: cover;
     background-repeat: no-repeat;
@@ -27,6 +27,13 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 30px 25px;
+}
+
+.branding-ai-input-loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 10px;
 }
 
 .branding-ai-banner-input-heading-container {
@@ -44,11 +51,6 @@
     background-color: #FEFEFE;
     width: 100%;
     padding: 5px;
-}
-
-.branding-ai-input-button {
-    padding: 10px;
-    margin-left: 10px;
 }
 
 .branding-ai-input-button-icon {

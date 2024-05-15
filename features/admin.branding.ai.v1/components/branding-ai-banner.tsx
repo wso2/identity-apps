@@ -145,7 +145,6 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                             endAdornment: (
                                 !isSubmitting ? (
                                     <IconButton
-                                        className="branding-ai-input-button"
                                         onClick={ () => handleGenerateClick() }
                                         disabled={ !websiteUrl.trim() }
                                     >
@@ -155,8 +154,8 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                                         />
                                     </IconButton>
                                 ) : (
-                                    <Box>
-                                        <CircularProgress color="primary" size={ 25 } className="mr-2 mt-1" />
+                                    <Box className="branding-ai-input-loader">
+                                        <CircularProgress color="primary" size={ 25 } />
                                     </Box>
                                 )
                             )
