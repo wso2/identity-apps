@@ -25,8 +25,9 @@ module.exports = {
         "plugin:testing-library/react",
         "plugin:jest-dom/recommended"
     ],
-    plugins: [
-        "jest-dom",
-        "testing-library"
-    ]
+    plugins: [ "jsonc", "jest-dom", "testing-library" ],
+    rules: {
+        "jsonc/sort-array-values": [ "error", { order: { type: "asc" }, pathPattern: ".*" } ],
+        "jsonc/sort-keys": "error"
+    }
 };
