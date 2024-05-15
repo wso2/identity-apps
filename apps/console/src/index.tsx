@@ -37,8 +37,13 @@ import Theme from "./theme";
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
-// Function to check the status of the Monaco CDN.
-// If the CDN is not available, the default CDN will be used.
+/**
+ * TODO: Use Monaco with the webpack plugin.
+ * {@link https://github.com/wso2-enterprise/asgardeo-product/issues/23937}
+ *
+ * Function to check the status of the Monaco CDN.
+ * If the CDN is not available, the default CDN will be used.
+ */
 const checkCDNStatus = async () => {
     try {
         const response: Response = await fetch("https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs/loader.js");
