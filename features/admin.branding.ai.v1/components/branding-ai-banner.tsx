@@ -41,7 +41,7 @@ import "./branding-ai-banner.scss";
 /**
  * Branding AI banner component.
  */
-export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
+const BrandingAIBanner: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -176,3 +176,5 @@ export const BrandingAIBanner: FunctionComponent = (): ReactElement => {
         </>
     );
 };
+
+export default BrandingAIBanner;

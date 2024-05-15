@@ -33,7 +33,7 @@ import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
  *
  * @returns ReactElement containing the AI branding loading screen.
  */
-export const BrandingAILoadingScreen: FunctionComponent = (): ReactElement => {
+const BrandingAILoadingScreen: FunctionComponent = (): ReactElement => {
     const { t } = useTranslation();
 
     const [ factIndex, setFactIndex ] = useState<number>(0);
@@ -124,3 +124,5 @@ export const BrandingAILoadingScreen: FunctionComponent = (): ReactElement => {
         />
     );
 };
+
+export default BrandingAILoadingScreen;
