@@ -52,6 +52,7 @@ import {
     getCORSOrigins,
     history
 } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "../../admin.extensions.v1";
 import { MyAccountOverview } from "../../admin.extensions.v1/configs/components/my-account-overview";
@@ -372,7 +373,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     && !isFragmentApp
                     && !isM2MApplication
                     && applicationConfig.editApplication.showApplicationShare
-                    && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
+                    && (isFirstLevelOrg || AppConfigs.getAppUtils().getConfig().organizationName)
                     && hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.update, allowedScopes)
                     && orgType !== OrganizationType.SUBORGANIZATION

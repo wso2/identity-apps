@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AppState, PreLoader, history } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import useOrganizations from "../../admin.organizations.v1/hooks/use-organizations";
 
 /**
@@ -57,7 +58,7 @@ const SignOut: FunctionComponent<Record<string, unknown>> = (): ReactElement => 
 
             signOut()
                 .catch(() => {
-                    history.push(window[ "AppUtils" ].getConfig().routes.home);
+                    history.push(AppConfigs.getAppUtils().getConfig().routes.home);
                 });
         }
     }, [ logoutInit ]);

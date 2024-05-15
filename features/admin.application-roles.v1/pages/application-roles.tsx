@@ -36,6 +36,7 @@ import { ApplicationRoleInterface } from "../../admin.extensions.v1/components/g
 import { getApplicationList } from "../../admin.applications.v1/api";
 import { ApplicationListInterface, ApplicationListItemInterface } from "../../admin.applications.v1/models";
 import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { ApplicationRolesList } from "../components";
 
 type ApplicationRolesPageInterface = IdentifiableComponentInterface;
@@ -53,7 +54,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
     const [ isError, setError ] = useState<boolean>(false);

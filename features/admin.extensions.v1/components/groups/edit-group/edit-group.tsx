@@ -30,6 +30,7 @@ import { BasicGroupDetails } from "./edit-group-basic";
 import { GroupRolesList } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
 import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
+import { AppConfigs } from "../../../../admin.core.v1/configs";
 import { GroupsInterface } from "../../../../admin.groups.v1";
 import { GroupConstants } from "../../../../admin.groups.v1/constants";
 import useGroupManagement from "../../../../admin.groups.v1/hooks/use-group-management";
@@ -82,7 +83,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const extendedFeatureConfig: ExtendedFeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features);
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isUserstoreRemote, setUserstoreRemote ] = useState<boolean>(false);

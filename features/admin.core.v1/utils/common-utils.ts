@@ -22,6 +22,7 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import { AppUtils } from "./app-utils";
+import { AppConfigs } from "../configs";
 import { CommonConstants } from "../constants";
 
 /**
@@ -99,9 +100,9 @@ export class CommonUtils {
         }
 
         return {
-            billingPortalURL: window[ "AppUtils" ].getConfig()
+            billingPortalURL: AppConfigs.getAppUtils().getConfig()
                 .extensions?.billingPortalUrl?.replace("${tenantId}", user.id),
-            upgradeButtonURL: window[ "AppUtils" ].getConfig()
+            upgradeButtonURL: AppConfigs.getAppUtils().getConfig()
                 .extensions?.upgradeButtonUrl?.replace("${tenantId}", user.id)
         };
     }

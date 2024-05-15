@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { ExtendedFeatureConfigInterface } from "../admin.extensions.v1/configs/models";
 import { AppConstants, AppState, history } from "../admin.core.v1";
+import { AppConfigs } from "../admin.core.v1/configs";
 
 /**
  * Parent role page props interface
@@ -42,7 +43,7 @@ const ParentRolePage = (props: ParentRolePagePropsInterface): ReactElement => {
 
     const extendedFeatureConfig: ExtendedFeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features);
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     const navigateToApplicationRoles = () => history.push(AppConstants.getPaths().get("APPLICATION_ROLES_SUB"));
 

@@ -31,6 +31,7 @@ import { ApplicationManagementConstants } from "../../admin.applications.v1/cons
 import useSignIn from "../../admin.authentication.v1/hooks/use-sign-in";
 import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { AppConstants, FeatureConfigInterface, history } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { getOrganization, useAuthorizedOrganizationsList, useGetOrganizationBreadCrumb } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";
@@ -67,7 +68,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
 
     const shouldSendRequest: boolean = useMemo(() => {
         return (
-            isFirstLevelOrganization() || isSuperOrganization() || window[ "AppUtils" ].getConfig().organizationName
+            isFirstLevelOrganization() || isSuperOrganization() || AppConfigs.getAppUtils().getConfig().organizationName
         );
     }, [ isFirstLevelOrganization, isSuperOrganization ]);
 

@@ -85,7 +85,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         if (legacyAuthzRuntime) {
             return (
                 isFirstLevelOrg ||
-                window[ "AppUtils" ].getConfig().organizationName ||
+                AppConfigs.getAppUtils().getConfig().organizationName ||
                 tenantDomain === AppConstants.getSuperTenant()
             );
         }
@@ -108,7 +108,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         shouldSendRequest
     );
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     const isShowSwitcher: boolean = organizationConfigs?.showOrganizationDropdown || isSubOrg;
 
@@ -177,15 +177,15 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                     "/t/" +
                     organization.name +
                     "/" +
-                    window[ "AppUtils" ].getConfig().appBase;
+                    AppConfigs.getAppUtils().getConfig().appBase;
             } else if (OrganizationUtils.isSuperOrganization(organization)) {
-                newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
+                newOrgPath = `/${ AppConfigs.getAppUtils().getConfig().appBase }`;
             } else {
                 newOrgPath =
                     "/o/" +
                     organization.id +
                     "/" +
-                    window[ "AppUtils" ].getConfig().appBase;
+                    AppConfigs.getAppUtils().getConfig().appBase;
             }
 
             // Clear the callback url of the previous organization.

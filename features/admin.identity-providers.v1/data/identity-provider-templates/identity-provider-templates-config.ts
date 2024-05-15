@@ -194,14 +194,14 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                 "organization-enterprise-identity-provider/create-wizard-help"))
                             },
                             enabled:
-                                (window[ "AppUtils" ].getConfig().ui
+                                (AppConfigs.getAppUtils().getConfig().ui
                                     ?.identityProviderTemplates
                                     ?.organizationEnterprise?.enabled ||
                                     identityProviderConfig?.templates
                                         ?.organizationEnterprise) &&
                                 (store.getState()?.organization
                                     ?.isFirstLevelOrganization ||
-                                    window[ "AppUtils" ].getConfig()
+                                    AppConfigs.getAppUtils().getConfig()
                                         ?.organizationName ||
                                     store.getState()?.auth?.tenantDomain ===
                                     AppConstants.getSuperTenant()),

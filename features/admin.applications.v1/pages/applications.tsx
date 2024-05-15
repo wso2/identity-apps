@@ -66,6 +66,7 @@ import {
     getGeneralIcons,
     history
 } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "../../admin.extensions.v1";
 import { OrganizationType } from "../../admin.organizations.v1/constants";
@@ -166,7 +167,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         error: myAccountApplicationDataFetchRequestError
     } = useMyAccountApplicationData("advancedConfigurations,templateId,clientId,issuer");
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     const {
         data: myAccountStatus,

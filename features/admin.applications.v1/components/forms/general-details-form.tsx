@@ -32,6 +32,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { AppConstants, AppState, UIConfigInterface } from "../../../admin.core.v1";
+import { AppConfigs } from "../../../admin.core.v1/configs";
 import { applicationConfig } from "../../../admin.extensions.v1";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
 import { useMyAccountStatus } from "../../api";
@@ -172,7 +173,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const {

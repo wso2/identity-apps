@@ -50,10 +50,10 @@ export const getProfileInformation = (
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     const getProfileInfoFromToken: boolean = store.getState().auth.isPrivilegedUser ||
-                                    (window[ "AppUtils" ].getConfig().getProfileInfoFromIDToken ?? false);
+                                    (AppConfigs.getAppUtils().getConfig().getProfileInfoFromIDToken ?? false);
 
     const getProfileSchema = (): void => {
         if (!fetchProfileSchema && !isEmpty(store.getState().profile.profileSchemas)) {

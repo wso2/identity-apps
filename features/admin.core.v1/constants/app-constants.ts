@@ -148,7 +148,7 @@ export class AppConstants {
      * @returns The app login path.
      */
     public static getAppLoginPath(): string {
-        return window[ "AppUtils" ]?.getConfig()?.routes.login;
+        return AppConfigs.getAppUtils()?.getConfig()?.routes.login;
     }
 
     /**
@@ -157,7 +157,7 @@ export class AppConstants {
      * @returns The app login path.
      */
     public static getAppLogoutPath(): string {
-        return window[ "AppUtils" ]?.getConfig()?.routes.logout;
+        return AppConfigs.getAppUtils()?.getConfig()?.routes.logout;
     }
 
     /**
@@ -194,7 +194,7 @@ export class AppConstants {
      */
     public static getMyAccountPath(): string {
 
-        return window[ "AppUtils" ]?.getConfig()?.accountApp.path;
+        return AppConfigs.getAppUtils()?.getConfig()?.accountApp.path;
     }
 
     /**

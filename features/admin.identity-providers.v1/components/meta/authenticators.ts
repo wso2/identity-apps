@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppConfigs } from "../../../admin.core.v1/configs";
 import { getIdPIcons } from "../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../constants";
 import { AuthenticatorMeta } from "../../meta";
@@ -145,7 +146,7 @@ const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInte
  * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 const getExternalConnectorMetadataExtensions = (): FederatedAuthenticatorMetaDataInterface[] => {
-    return window[ "AppUtils" ]?.getConfig()?.extensions?.connectors ?? [];
+    return AppConfigs.getAppUtils()?.getConfig()?.extensions?.connectors ?? [];
 };
 
 /**

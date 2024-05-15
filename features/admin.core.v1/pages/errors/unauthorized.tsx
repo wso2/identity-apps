@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
+import { AppConfigs } from "../../configs";
 
 /**
  * Unauthorized error page.
@@ -48,26 +49,26 @@ const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
     const resolveAction = (error: string): ReactNode => {
         if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {
             return (
-                <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
+                <LinkButton as={ Link } to={ AppConfigs.getAppUtils().getConfig().routes.logout }>
                     { t("console:common.placeholders.loginError.action") }
                 </LinkButton>
             );
         } else if (error === AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")) {
             return (
-                <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
+                <LinkButton as={ Link } to={ AppConfigs.getAppUtils().getConfig().routes.logout }>
                     { t("console:common.placeholders.accessDenied.action") }
                 </LinkButton>
             );
         } else if (error === AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")) {
             return (
-                <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
+                <LinkButton as={ Link } to={ AppConfigs.getAppUtils().getConfig().routes.logout }>
                     { t("console:common.placeholders.consentDenied.action") }
                 </LinkButton>
             );
         }
 
         return (
-            <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
+            <LinkButton as={ Link } to={ AppConfigs.getAppUtils().getConfig().routes.logout }>
                 { t("console:common.placeholders.unauthorized.action") }
             </LinkButton>
         );

@@ -20,6 +20,7 @@ import { BasicUserInfo, useAuthContext } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import useOrganizations from "./use-organizations";
+import { AppConfigs } from "../../admin.core.v1";
 import { organizationConfigs } from "../../admin.extensions.v1";
 import { BreadcrumbList, GenericOrganization } from "../models";
 import { OrganizationUtils } from "../utils";
@@ -71,7 +72,8 @@ const useOrganizationSwitch = (): UseOrganizationSwitchInterface => {
                 data: {
                     client_id: "{{clientID}}",
                     grant_type: "organization_switch",
-                    scope: window[ "AppUtils" ].getConfig().idpConfigs?.scope.join(" ") ?? TokenConstants.SYSTEM_SCOPE,
+                    scope:
+                        AppConfigs.getAppUtils().getConfig().idpConfigs?.scope.join(" ") ?? TokenConstants.SYSTEM_SCOPE,
                     switching_organization: orgId,
                     token: "{{token}}"
                 },
@@ -104,11 +106,11 @@ const useOrganizationSwitch = (): UseOrganizationSwitchInterface => {
             && breadcrumbList[ 1 ]?.id === org.id
             && organizationConfigs.showSwitcherInTenants
         ) {
-            newOrgPath = "/t/" + org.name + "/" + window[ "AppUtils" ].getConfig().appBase;
+            newOrgPath = "/t/" + org.name + "/" + AppConfigs.getAppUtils().getConfig().appBase;
         } else if (OrganizationUtils.isSuperOrganization(org)) {
-            newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
+            newOrgPath = `/${ AppConfigs.getAppUtils().getConfig().appBase }`;
         } else {
-            newOrgPath = "/o/" + org.id + "/" + window[ "AppUtils" ].getConfig().appBase;
+            newOrgPath = "/o/" + org.id + "/" + AppConfigs.getAppUtils().getConfig().appBase;
         }
 
         // Clear the callback url of the previous organization.

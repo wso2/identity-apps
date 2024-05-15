@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { BrandingPreferenceResourceEndpointsInterface } from "../models/endpoints";
 
 /**
@@ -24,10 +25,10 @@ import { BrandingPreferenceResourceEndpointsInterface } from "../models/endpoint
  * @param serverHost - Server Host.
  * @returns The resource endpoints for the Branding Preference feature.
  */
-export const getBrandingResourceEndpoints = 
+export const getBrandingResourceEndpoints =
     (serverHostWithOrgPath: string): BrandingPreferenceResourceEndpointsInterface => {
-        const subOrgPath: string = window[ "AppUtils" ]?.getConfig()?.serverOrigin +
-            window[ "AppUtils" ]?.getOrganizationPath();
+        const subOrgPath: string = AppConfigs.getAppUtils()?.getConfig()?.serverOrigin +
+            AppConfigs.getAppUtils()?.getOrganizationPath();
 
         return {
             brandingPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference`,

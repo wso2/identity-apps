@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConfigs } from "../../../admin.core.v1/configs";
 import { getConnectionIcons } from "../../configs/ui";
 import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
@@ -148,7 +149,7 @@ const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInte
  * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 const getExternalConnectorMetadataExtensions = (): FederatedAuthenticatorMetaDataInterface[] => {
-    return window[ "AppUtils" ]?.getConfig()?.extensions?.connectors ?? [];
+    return AppConfigs.getAppUtils()?.getConfig()?.extensions?.connectors ?? [];
 };
 
 /**

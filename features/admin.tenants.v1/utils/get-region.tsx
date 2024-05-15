@@ -15,8 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { Region } from "../models/region";
 
 export const getDeploymentRegion: () => Region = () => {
-    return window[ "AppUtils" ].getConfig().extensions.deploymentRegion;
+    return AppConfigs.getAppUtils().getConfig().extensions.deploymentRegion;
 };

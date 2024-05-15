@@ -47,7 +47,7 @@ import {
     Placeholder,
     SemanticICONS
 } from "semantic-ui-react";
-import { getMiscellaneousIcons } from "../../../admin.core.v1/configs";
+import { AppConfigs, getMiscellaneousIcons } from "../../../admin.core.v1/configs";
 import { AppConstants } from "../../../admin.core.v1/constants";
 import { history } from "../../../admin.core.v1/helpers/history";
 import { AppState } from "../../../admin.core.v1/store";
@@ -122,7 +122,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     useEffect(() => {
         if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {

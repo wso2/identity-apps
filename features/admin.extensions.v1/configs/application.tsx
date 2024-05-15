@@ -80,7 +80,7 @@ const API_AUTHORIZATION_INDEX: number = 4;
 const APPLICATION_ROLES_INDEX: number = 4;
 const M2M_API_AUTHORIZATION_INDEX: number = 2;
 
-const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().ui.features;
+const featureConfig: FeatureConfigInterface = AppConfigs.getAppUtils().getConfig().ui.features;
 
 /**
  * Check whether claims is  identity claims or not.
@@ -89,7 +89,7 @@ const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().u
  * @returns boolean
  */
 const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean => {
-    const enableIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims;
+    const enableIdentityClaims: boolean = AppConfigs.getAppUtils()?.getConfig()?.ui?.enableIdentityClaims;
 
     if (enableIdentityClaims) {
         return false;
@@ -209,7 +209,8 @@ export const applicationConfig: ApplicationConfig = {
         extendTabs: false,
         getActions: (clientId: string, tenant: string, testId: string) => {
 
-            const asgardeoLoginPlaygroundURL: string = window[ "AppUtils" ]?.getConfig()?.extensions?.asgardeoTryItURL;
+            const asgardeoLoginPlaygroundURL: string =
+                AppConfigs.getAppUtils()?.getConfig()?.extensions?.asgardeoTryItURL;
 
             return (
                 clientId === getTryItClientId(tenant)
@@ -636,7 +637,7 @@ export const applicationConfig: ApplicationConfig = {
     },
     marketingConsent: {
         getBannerComponent: (): ReactElement =>
-            !window[ "AppUtils" ].getConfig().organizationName && <MarketingConsentModalWrapper />
+            !AppConfigs.getAppUtils().getConfig().organizationName && <MarketingConsentModalWrapper />
     },
     quickstart: {
         oidcWeb: {

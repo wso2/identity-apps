@@ -47,15 +47,15 @@ export class AuthenticateUtils {
         let baseUrl: string = AppConfigs.getAppUtils()?.getConfig()?.serverOriginWithTenant;
 
         if (isLegacyAuthzRuntime()) {
-            baseUrl = window[ "AppUtils" ]?.getConfig()?.idpConfigs?.serverOrigin;
+            baseUrl = AppConfigs.getAppUtils()?.getConfig()?.idpConfigs?.serverOrigin;
         }
 
         return {
             baseUrl,
-            checkSessionInterval: window[ "AppUtils" ]?.getConfig()?.session?.checkSessionInterval,
+            checkSessionInterval: AppConfigs.getAppUtils()?.getConfig()?.session?.checkSessionInterval,
             clientHost: AppConfigs.getAppUtils()?.getConfig()?.clientOriginWithTenant,
             clientID: AppConfigs.getAppUtils()?.getConfig()?.clientID,
-            clockTolerance: window[ "AppUtils" ]?.getConfig().idpConfigs?.clockTolerance,
+            clockTolerance: AppConfigs.getAppUtils()?.getConfig().idpConfigs?.clockTolerance,
             disableTrySignInSilently: new URL(location.href).searchParams.get("disable_silent_sign_in") === "true",
             enableOIDCSessionManagement: AppConfigs.getAppUtils()?.getConfig().idpConfigs?.enableOIDCSessionManagement
                 ?? true,
@@ -159,8 +159,8 @@ export class AuthenticateUtils {
         if (!SPAUtils.hasAuthSearchParamsInURL()
             && Config.getDeploymentConfig()?.idpConfigs?.responseMode === ResponseMode.formPost) {
 
-            const contextPath: string = window[ "AppUtils" ].getConfig().appBase
-                ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
+            const contextPath: string = AppConfigs.getAppUtils().getConfig().appBase
+                ? `/${ StringUtils.removeSlashesFromPath(AppConfigs.getAppUtils().getConfig().appBase) }`
                 : "";
 
             return axios.get(contextPath + "/auth").then((response: AxiosResponse ) => {

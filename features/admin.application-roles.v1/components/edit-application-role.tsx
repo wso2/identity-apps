@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,9 +23,10 @@ import { TabProps } from "semantic-ui-react";
 import ApplicationRoleGroups from "./application-role-groups";
 import ApplicationRoleInvitedUserGroups from "./application-role-invited-user-groups";
 import ApplicationRoleAuthenticatorGroups from "./authenticator-groups/application-role-authenticator-groups";
-import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1";
 import { URLFragmentTypes } from "../../admin.applications.v1/models";
 import { AppState, history } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs";
+import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1";
 
 interface EditApplicationRolesProps extends IdentifiableComponentInterface {
     appId: string;
@@ -41,10 +42,10 @@ const EditApplicationRoles = (props: EditApplicationRolesProps): ReactElement =>
 
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const defaultActiveIndex: number = 0;
-    
+
     const extendedFeatureConfig: ExtendedFeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features);
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     /**
      * Handles the tab change.
@@ -102,7 +103,7 @@ const EditApplicationRoles = (props: EditApplicationRolesProps): ReactElement =>
                 }
             );
         }
-    
+
         return panes;
     };
 

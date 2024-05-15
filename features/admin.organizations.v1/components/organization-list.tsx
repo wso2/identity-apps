@@ -53,6 +53,7 @@ import {
     UIConstants,
     history
 } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
 import { organizationConfigs } from "../../admin.extensions.v1";
 import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
@@ -182,7 +183,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const shouldSendRequest: boolean = useMemo(() => {
         return (
             isFirstLevelOrg ||
-            window[ "AppUtils" ].getConfig().organizationName ||
+            AppConfigs.getAppUtils().getConfig().organizationName ||
             tenantDomain === AppConstants.getSuperTenant()
         );
     }, [ isFirstLevelOrg, tenantDomain ]);

@@ -22,6 +22,7 @@ import { SemanticICONS } from "semantic-ui-react";
 import { AttributeConfig } from "./models";
 import { deleteADialect } from "../../admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "../../admin.claims.v1/constants/claim-management-constants";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { getUserStoreList } from "../../admin.userstores.v1/api";
 import { UserStoreListItem } from "../../admin.userstores.v1/models";
 import { getClaimsForDialect, getDialects } from "../components/claims/api";
@@ -32,7 +33,7 @@ import { getClaimsForDialect, getDialects } from "../components/claims/api";
  * @param claim - claim
  */
 const isIdentityClaims = (claim: ExternalClaim): boolean => {
-    const enableIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims;
+    const enableIdentityClaims: boolean = AppConfigs.getAppUtils()?.getConfig()?.ui?.enableIdentityClaims;
 
     if (enableIdentityClaims) {
         return false;

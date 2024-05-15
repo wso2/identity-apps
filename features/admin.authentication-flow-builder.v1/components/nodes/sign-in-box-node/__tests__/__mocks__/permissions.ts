@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import { AppConfigs } from "../../../../../../admin.core.v1/configs";
+
 export const fullPermissions: string = [
     "internal_login",
-    ...window[ "AppUtils" ].getConfig().ui.features.applications.scopes.create,
-    ...window[ "AppUtils" ].getConfig().ui.features.applications.scopes.delete,
-    ...window[ "AppUtils" ].getConfig().ui.features.applications.scopes.read,
-    ...window[ "AppUtils" ].getConfig().ui.features.applications.scopes.update
+    ...AppConfigs.getAppUtils().getConfig().ui.features.applications.scopes.create,
+    ...AppConfigs.getAppUtils().getConfig().ui.features.applications.scopes.delete,
+    ...AppConfigs.getAppUtils().getConfig().ui.features.applications.scopes.read,
+    ...AppConfigs.getAppUtils().getConfig().ui.features.applications.scopes.update
 ].join(" ");

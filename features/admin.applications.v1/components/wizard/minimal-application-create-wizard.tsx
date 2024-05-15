@@ -73,6 +73,7 @@ import {
     store
 } from "../../../admin.core.v1";
 import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { AppConfigs } from "../../../admin.core.v1/configs";
 import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "../../../admin.extensions.v1";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
@@ -1175,7 +1176,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         isOrganizationManagementEnabled
                         && UIConfig?.legacyMode?.organizations
                         && applicationConfig.editApplication.showApplicationShare
-                        && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
+                        && (isFirstLevelOrg || AppConfigs.getAppUtils().getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION
                         && template?.id !== ApplicationTemplateIdTypes.M2M_APPLICATION
                         && !isClientSecretHashEnabled

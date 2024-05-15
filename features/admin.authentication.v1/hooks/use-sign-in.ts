@@ -339,7 +339,7 @@ const useSignIn = (): UseSignInInterface => {
             AppConfigs.getAppUtils().updateOrganizationName(orgIdIdToken);
         } else {
             // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
+            AppConfigs.getAppUtils().updateTenantQualifiedBaseName(tenantDomain);
         }
 
         if (isFirstLevelOrg && tenantDomain === AppConstants.getSuperTenant()) {
@@ -426,7 +426,7 @@ const useSignIn = (): UseSignInInterface => {
         // Update runtime configurations.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
-        const logoutUrl: string = window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL;
+        const logoutUrl: string = AppConfigs.getAppUtils().getConfig().idpConfigs?.logoutEndpointURL;
 
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
@@ -623,7 +623,7 @@ const useSignIn = (): UseSignInInterface => {
             AppConfigs.getAppUtils().updateOrganizationName(orgIdIdToken);
         } else {
             // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
+            AppConfigs.getAppUtils().updateTenantQualifiedBaseName(tenantDomain);
         }
 
         if (isFirstLevelOrg && tenantDomain === AppConstants.getSuperTenant()) {
@@ -711,47 +711,47 @@ const useSignIn = (): UseSignInInterface => {
         // Update runtime configurations.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
-        logoutUrl = window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL;
+        logoutUrl = AppConfigs.getAppUtils().getConfig().idpConfigs?.logoutEndpointURL;
 
         // Update post_logout_redirect_uri of logout_url with tenant qualified url
         if (sessionStorage.getItem(LOGOUT_URL)) {
             logoutUrl = sessionStorage.getItem(LOGOUT_URL);
 
             if (
-                !window[ "AppUtils" ].getConfig().accountApp
+                !AppConfigs.getAppUtils().getConfig().accountApp
                     .commonPostLogoutUrl
             ) {
                 // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
-                if (window[ "AppUtils" ].getConfig().appBase) {
+                if (AppConfigs.getAppUtils().getConfig().appBase) {
                     logoutUrl = logoutUrl.replace(
-                        window[ "AppUtils" ].getAppBase(),
-                        window[ "AppUtils" ].getAppBaseWithTenant()
+                        AppConfigs.getAppUtils().getAppBase(),
+                        AppConfigs.getAppUtils().getAppBaseWithTenant()
                     );
-                    logoutRedirectUrl = window[ "AppUtils" ]
+                    logoutRedirectUrl = AppConfigs.getAppUtils()
                         .getConfig()
                         .logoutCallbackURL.replace(
-                            window[ "AppUtils" ].getAppBase(),
-                            window[ "AppUtils" ].getAppBaseWithTenant()
+                            AppConfigs.getAppUtils().getAppBase(),
+                            AppConfigs.getAppUtils().getAppBaseWithTenant()
                         );
                 } else {
                     logoutUrl = logoutUrl.replace(
-                        window[ "AppUtils" ].getConfig().logoutCallbackURL,
-                        window[ "AppUtils" ].getConfig().clientOrigin +
-                        window[ "AppUtils" ].getConfig().routes.login
+                        AppConfigs.getAppUtils().getConfig().logoutCallbackURL,
+                        AppConfigs.getAppUtils().getConfig().clientOrigin +
+                        AppConfigs.getAppUtils().getConfig().routes.login
                     );
                     logoutRedirectUrl =
-                        window[ "AppUtils" ].getConfig().clientOrigin +
-                        window[ "AppUtils" ].getConfig().routes.login;
+                        AppConfigs.getAppUtils().getConfig().clientOrigin +
+                        AppConfigs.getAppUtils().getConfig().routes.login;
                 }
             }
 
             // If an override URL is defined in config, use that instead.
             if (
-                window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL
+                AppConfigs.getAppUtils().getConfig().idpConfigs?.logoutEndpointURL
             ) {
                 logoutUrl = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                     logoutUrl,
-                    window[ "AppUtils" ].getConfig().idpConfigs
+                    AppConfigs.getAppUtils().getConfig().idpConfigs
                         .logoutEndpointURL
                 );
             }

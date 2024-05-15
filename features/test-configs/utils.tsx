@@ -23,6 +23,7 @@ import React, { PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { mockStore } from "./__mocks__/redux/redux-store";
 import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
+import { AppConfigs } from "../admin.core.v1/configs";
 // import { AuthenticateUtils } from "../src/features/authentication/utils/authenticate-utils";
 // import { PreLoader } from "../src/features/core/components/pre-loader/pre-loader";
 
@@ -43,7 +44,7 @@ const render = (
     ui: ReactElement,
     {
         allowedScopes = "internal_login",
-        featureConfig = window[ "AppUtils" ].getConfig().ui.features,
+        featureConfig = AppConfigs.getAppUtils().getConfig().ui.features,
         initialState = ReduxStoreStateMock,
         store = mockStore(initialState),
         ...renderOptions

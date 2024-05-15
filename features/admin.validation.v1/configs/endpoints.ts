@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { ValidationServiceEndpointsInterface } from "../models";
 
 /**
@@ -25,8 +26,8 @@ import { ValidationServiceEndpointsInterface } from "../models";
  * @returns The resource endpoints for the Validation Management feature.
  */
 export const getValidationServiceEndpoints = (serverHostWithOrgPath: string): ValidationServiceEndpointsInterface => {
-    const subOrgPath: string = window[ "AppUtils" ]?.getConfig()?.serverOrigin +
-        window[ "AppUtils" ]?.getOrganizationPath();
+    const subOrgPath: string = AppConfigs.getAppUtils()?.getConfig()?.serverOrigin +
+        AppConfigs.getAppUtils()?.getOrganizationPath();
 
     return {
         validationServiceMgt: `${ serverHostWithOrgPath }/api/server/v1/validation-rules`,

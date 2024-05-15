@@ -21,6 +21,7 @@ import { StringUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
 import { LAYOUTS } from "./layouts";
 import { THEMES, THEME_SWATCH_UI_CONFIGS } from "./themes";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { ThemeSwatchUIConfigsInterface } from "../components";
 import { BrandingPreferencesConstants } from "../constants";
 import {
@@ -70,12 +71,12 @@ export class BrandingPreferenceMeta {
         } {
 
         const getAbsoluteLogoPath = (logo: string) => {
-            return resolveAppLogoFilePath(logo, `${ window[ "AppUtils" ].getConfig().clientOrigin }/${
+            return resolveAppLogoFilePath(logo, `${ AppConfigs.getAppUtils().getConfig().clientOrigin }/${
                 StringUtils.removeSlashesFromPath(
-                    window[ "AppUtils" ].getConfig().appBase
+                    AppConfigs.getAppUtils().getConfig().appBase
                 ) !== ""
                     ? StringUtils.removeSlashesFromPath(
-                        window[ "AppUtils" ].getConfig().appBase
+                        AppConfigs.getAppUtils().getConfig().appBase
                     ) + "/"
                     : ""
             }libs/themes/${systemTheme}`);
@@ -87,13 +88,13 @@ export class BrandingPreferenceMeta {
                 [ PredefinedThemes.LIGHT ]: {
                     images: {
                         favicon: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appFaviconPath ?? "")
+                            imgURL: getAbsoluteLogoPath(AppConfigs.getAppUtils()?.getConfig()?.ui?.appFaviconPath ?? "")
                         },
                         logo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath ?? "")
+                            imgURL: getAbsoluteLogoPath(AppConfigs.getAppUtils()?.getConfig()?.ui?.appLogoPath ?? "")
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.
+                            imgURL: getAbsoluteLogoPath(AppConfigs.getAppUtils()?.getConfig()?.
                                 ui?.appLogo?.defaultLogoPath ?? "")
                         }
                     }
@@ -101,13 +102,14 @@ export class BrandingPreferenceMeta {
                 [ PredefinedThemes.DARK ]: {
                     images: {
                         favicon: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appFaviconPath ?? "")
+                            imgURL: getAbsoluteLogoPath(AppConfigs.getAppUtils()?.getConfig()?.ui?.appFaviconPath ?? "")
                         },
                         logo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appWhiteLogoPath ?? "")
+                            imgURL:
+                                getAbsoluteLogoPath(AppConfigs.getAppUtils()?.getConfig()?.ui?.appWhiteLogoPath ?? "")
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.
+                            imgURL: getAbsoluteLogoPath(AppConfigs.getAppUtils()?.getConfig()?.
                                 ui?.appLogo?.defaultWhiteLogoPath ?? "")
                         }
                     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,9 +27,10 @@ import {
 import React, { ChangeEvent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
-import { RoleBasicInterface } from "../../admin.extensions.v1/components/groups/models";
 import { history } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { AppConstants, UIConstants } from "../../admin.core.v1/constants";
+import { RoleBasicInterface } from "../../admin.extensions.v1/components/groups/models";
 
 interface RolesListProps extends IdentifiableComponentInterface {
     rolesList: RoleBasicInterface[];
@@ -45,7 +46,7 @@ const RolesList = (props: RolesListProps): ReactElement => {
 
     const { t } = useTranslation();
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ processedRolesList, setProcessedRolesList ] = useState<RoleBasicInterface[]>(rolesList);
@@ -59,7 +60,7 @@ const RolesList = (props: RolesListProps): ReactElement => {
 
         if (query === "") {
             setProcessedRolesList(rolesList);
-            
+
             return;
         }
 
@@ -125,7 +126,7 @@ const RolesList = (props: RolesListProps): ReactElement => {
 
         return null;
     };
-        
+
 
     /**
      * Resolves data table columns.

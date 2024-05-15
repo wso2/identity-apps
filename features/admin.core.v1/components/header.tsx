@@ -64,6 +64,7 @@ import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/
 import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
 import { OrganizationSwitchBreadcrumb } from "../../admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import { AppConfigs } from "../configs/app-configs";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
@@ -191,7 +192,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 // if the user is logged in to a non-super-tenant account reliably.
                 // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
                 (tenantDomain === AppConstants.getSuperTenant() ||
-                    window[ "AppUtils" ].getConfig().organizationName ||
+                    AppConfigs.getAppUtils().getConfig().organizationName ||
                     organizationConfigs.showSwitcherInTenants) &&
                 hasRequiredScopes(
                     feature?.organizations,
@@ -239,12 +240,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const generateHeaderButtons = (): ReactElement[] => {
         return [
-            window[ "AppUtils" ].getConfig().docSiteUrl && (
+            AppConfigs.getAppUtils().getConfig().docSiteUrl && (
                 <Button
                     color="inherit"
                     onClick={ () => {
                         window.open(
-                            window[ "AppUtils" ].getConfig().docSiteUrl,
+                            AppConfigs.getAppUtils().getConfig().docSiteUrl,
                             "_blank",
                             "noopener"
                         );
@@ -259,8 +260,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     }
                 </Button>
             ),
-            (window[ "AppUtils" ].getConfig().extensions.community ||
-                window[ "AppUtils" ].getConfig().extensions.helpCenterUrl) && (
+            (AppConfigs.getAppUtils().getConfig().extensions.community ||
+                AppConfigs.getAppUtils().getConfig().extensions.helpCenterUrl) && (
                 <>
                     <Button
                         color="inherit"
@@ -280,12 +281,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         transformOrigin={ { horizontal: "right", vertical: "top" } }
                         onClose={ onCloseHelpMenu }
                     >
-                        { window[ "AppUtils" ].getConfig().extensions.community && (
+                        { AppConfigs.getAppUtils().getConfig().extensions.community && (
                             <MenuItem
                                 className="get-help-dropdown-item"
                                 onClick={ () => {
                                     window.open(
-                                        window[ "AppUtils" ].getConfig()
+                                        AppConfigs.getAppUtils().getConfig()
                                             .extensions.community,
                                         "_blank",
                                         "noopener"
@@ -306,12 +307,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 </>
                             </MenuItem>
                         ) }
-                        { window[ "AppUtils" ].getConfig().extensions.helpCenterUrl && (
+                        { AppConfigs.getAppUtils().getConfig().extensions.helpCenterUrl && (
                             <MenuItem
                                 className="get-help-dropdown-item"
                                 onClick={ () => {
                                     window.open(
-                                        window[ "AppUtils" ].getConfig()
+                                        AppConfigs.getAppUtils().getConfig()
                                             .extensions.helpCenterUrl,
                                         "_blank",
                                         "noopener"
@@ -339,7 +340,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 </>
             ),
             tierName === TenantTier.FREE && billingPortalURL && !isPrivilegedUser &&
-            window[ "AppUtils" ].getConfig().extensions
+            AppConfigs.getAppUtils().getConfig().extensions
                 .upgradeButtonEnabled && (
                 <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                     <a
@@ -373,7 +374,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         // user resident organization.
         if (!legacyAuthzRuntime) {
             return (!userOrganizationID
-                || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName);
+                || userOrganizationID === AppConfigs.getAppUtils().getConfig().organizationName);
         }
 
         return true;
@@ -383,16 +384,16 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         return (
             <Image
                 src={ resolveAppLogoFilePath(
-                    window[ "AppUtils" ].getConfig().ui.appLogo?.defaultLogoPath
-                        ?? window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                    `${ window[ "AppUtils" ].getConfig().clientOrigin
+                    AppConfigs.getAppUtils().getConfig().ui.appLogo?.defaultLogoPath
+                        ?? AppConfigs.getAppUtils().getConfig().ui.appLogoPath,
+                    `${ AppConfigs.getAppUtils().getConfig().clientOrigin
                     }/` +
                     `${ StringUtils.removeSlashesFromPath(
-                        window[ "AppUtils" ].getConfig()
+                        AppConfigs.getAppUtils().getConfig()
                             .appBase
                     ) !== ""
                         ? StringUtils.removeSlashesFromPath(
-                            window[ "AppUtils" ].getConfig()
+                            AppConfigs.getAppUtils().getConfig()
                                 .appBase
                         ) + "/"
                         : ""
@@ -465,7 +466,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     </Box>
                 ],
                 menuItems: [
-                    billingPortalURL && window[ "AppUtils" ].getConfig().extensions.billingPortalUrl &&
+                    billingPortalURL && AppConfigs.getAppUtils().getConfig().extensions.billingPortalUrl &&
                     !isPrivilegedUser && (
                         <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <MenuItem

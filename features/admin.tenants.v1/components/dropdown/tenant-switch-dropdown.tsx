@@ -31,6 +31,7 @@ import {
     ReactComponent as CrossIcon
 } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { AppState, FeatureConfigInterface, getMiscellaneousIcons } from "../../../admin.core.v1";
+import { AppConfigs } from "../../../admin.core.v1/configs";
 import OrganizationSwitcherList from
     "../../../admin.organizations.v1/components/organization-switch/organization-switch-list";
 import { OrganizationManagementConstants } from "../../../admin.organizations.v1/constants";
@@ -81,7 +82,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                 const tenants: OrganizationInterface[] = [];
 
                 response.associatedTenants.forEach((tenant: TenantInfo) => {
-                    if (window[ "AppUtils" ].getConfig().tenant === tenant.domain) {
+                    if (AppConfigs.getAppUtils().getConfig().tenant === tenant.domain) {
                         return;
                     }
 
@@ -196,11 +197,11 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
      */
     const handleTenantSwitch = (tenant: OrganizationInterface): void => {
         const newOrgPath: string =
-            window[ "AppUtils" ].getConfig().clientOrigin +
+            AppConfigs.getAppUtils().getConfig().clientOrigin +
             "/t/" +
             tenant.name +
             "/" +
-            window[ "AppUtils" ].getConfig().appBase +
+            AppConfigs.getAppUtils().getConfig().appBase +
             "?disable_silent_sign_in=true&switch_tenant=true";
 
         // Clear the callback url of the previous organization.

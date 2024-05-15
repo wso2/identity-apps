@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,12 +28,13 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { AppConstants, history } from "../../admin.core.v1";
+import { AppConfigs } from "../../admin.core.v1/configs";
 import { getApplicationRolesList } from "../../admin.extensions.v1/components/application/api";
 import {
     ApplicationRolesResponseInterface,
     RoleListItemInterface
 } from "../../admin.extensions.v1/components/application/models";
-import { AppConstants, history } from "../../admin.core.v1";
 import EditApplicationRoles from "../components/edit-application-role";
 
 type ApplicationRoleEditPageProps = IdentifiableComponentInterface
@@ -46,7 +47,7 @@ const ApplicationRoleEditPage = (props: ApplicationRoleEditPageProps): ReactElem
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isSubOrg: boolean = AppConfigs.getAppUtils().getConfig().organizationName;
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ appId, setAppId ] = useState<string>(undefined);

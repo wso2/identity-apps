@@ -47,6 +47,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Card, Divider, Flag, FlagNameValues, Grid, Icon } from "semantic-ui-react";
+import { AppConfigs } from "../../../../admin.core.v1/configs";
 import { history } from "../../../../admin.core.v1/helpers";
 import { AppState } from "../../../../admin.core.v1/store";
 import { EventPublisher } from "../../../../admin.core.v1/utils";
@@ -619,7 +620,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                                             floated="left"
                                             onClick={ () => {
                                                 eventPublisher.publish("console-click-logout");
-                                                history.push(window[ "AppUtils" ].getConfig().routes.logout);
+                                                history.push(AppConfigs.getAppUtils().getConfig().routes.logout);
                                             } }
                                             disabled={ isNewTenantLoading }
                                             data-testid={ `${ testId }-cancel-button` }
