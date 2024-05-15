@@ -213,6 +213,8 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
      * @param emailDomainList - Email domains.
      */
     const validateEmailDomainCreation = async (emailDomainList: string[]) => {
+        setEmailDomains(emailDomainList);
+
         // Convert email domain list to a lower case array.
         emailDomainList = emailDomainList.map((emailDomain: string) => emailDomain.toLowerCase());
 
@@ -221,6 +223,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
         if (!isEmailDomainValid) {
             setIsEmailDomainDataError(true);
             emailDomainList.pop();
+            setEmailDomains(emailDomainList);
 
             return;
         }
@@ -231,11 +234,10 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
         if (!isEmailDomainAvailable) {
             setIsEmailDomainAvailableError(true);
             emailDomainList.pop();
+            setEmailDomains(emailDomainList);
 
             return;
         }
-
-        setEmailDomains(emailDomainList);
     };
 
     return (
@@ -289,6 +291,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                 multiple
                                 freeSolo
                                 disableCloseOnSelect
+                                data-componentid={ `${componentId}-form-organization-email-domain-field` }
                                 size="small"
                                 id="tags-filled"
                                 options={ optionsArray.map((option: string) => option) }

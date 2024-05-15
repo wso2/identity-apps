@@ -182,6 +182,7 @@
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
+        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "features": {
             "administrators": {
                 "disabledFeatures": [],
@@ -233,7 +234,7 @@
             },
             "applicationRoles": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [],
                     "read": [],

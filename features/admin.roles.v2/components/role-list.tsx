@@ -101,6 +101,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isEditingSystemRolesAllowed: boolean =
+        useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(userRolesFeatureConfig,
@@ -325,7 +327,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 columns={ resolveTableColumns() }
                 data={ roleList?.Resources }
                 onRowClick={
-                    (e: SyntheticEvent, role: RolesInterface): void => {
+                    (_e: SyntheticEvent, role: RolesInterface): void => {
+                        if (!isEditingSystemRolesAllowed && role?.meta?.systemRole) {
+                            return;
+                        }
                         handleRoleEdit(role?.id);
                     }
                 }

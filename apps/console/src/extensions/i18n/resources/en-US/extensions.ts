@@ -3575,6 +3575,10 @@ export const extensions: Extensions = {
                                 hint: "Enabling this will let the users reset their password using an email.",
                                 label: "Enable"
                             },
+                            enableSMSBasedRecovery: {
+                                hint: "This specifies whether to send an SMS OTP to the mobile.",
+                                label: "Enable SMS based recovery"
+                            },
                             expiryTime: {
                                 hint: "Password recovery link expiry time in minutes.",
                                 label: "Recovery link expiry time",
@@ -3594,9 +3598,80 @@ export const extensions: Extensions = {
                                     "This specifies whether to notify the user via an email when password " +
                                     "recovery is successful.",
                                 label: "Notify on successful recovery"
+                            },
+                            maxResendCount: {
+                                hint: "Password recovery maximum resend count.",
+                                label: "Maximum resend attempts count",
+                                placeholder: "Enter max resend count",
+                                validations: {
+                                    invalid: "Password recovery OTP resend count should be an integer.",
+                                    empty: "Password recovery OTP resend count cannot be empty.",
+                                    range:
+                                        "Password recovery OTP resend count should be between 1 & 5.",
+                                    maxLengthReached:
+                                        "Password recovery OTP resend count should be a number with 1 digits."
+                                }
+                            },
+                            maxFailedAttemptCount: {
+                                hint: "Password recovery maximum failed attempt count.",
+                                label: "Max failed attempts count",
+                                placeholder: "Enter max failed attempts",
+                                validations: {
+                                    invalid: "Password recovery max failed attempts count should be an integer.",
+                                    empty: "Password recovery max failed attempts count cannot be empty.",
+                                    range:
+                                        "Password recovery max failed attempts count should be between 1 & 10.",
+                                    maxLengthReached:
+                                        "Password recovery max failed attempts count should be a number with less than 3 digits."
+                                }
+                            },
+                            smsOtpExpiryTime: {
+                                hint: "Password recovery OTP expiry time in minutes.",
+                                label: "Password recovery OTP expiry time",
+                                placeholder: "Enter expiry time",
+                                validations: {
+                                    invalid: "Password recovery OTP expiry time should be an integer.",
+                                    empty: "Password recovery OTP expiry time cannot be empty.",
+                                    range:
+                                        "Password recovery OTP expiry time should be between 1 minute & 1440 minutes " +
+                                        "(1 day).",
+                                    maxLengthReached:
+                                        "Password recovery OTP expiry time should be a number with 4 or less digits."
+                                }
+                            },
+                            passwordRecoveryOtpUseUppercase: {
+                                hint: "This specifies whether to use upper case characters in the password recovery otp code.",
+                                label: "Include upper case letters"
+                            },
+                            passwordRecoveryOtpUseLowercase: {
+                                hint: "This specifies whether to use lower case characters in the password recovery otp code.",
+                                label: "Include lower case letters"
+                            },
+                            passwordRecoveryOtpUseNumeric: {
+                                hint: "This specifies whether to use numeric characters in the password recovery otp code.",
+                                label: "Include numeric characters"
+                            },
+                            passwordRecoveryOtpLength: {
+                                hint: "Password recovery OTP length in characters",
+                                label: "Password recovery OTP code length",
+                                placeholder: "Enter OTP code length",
+                                validations: {
+                                    empty: "Password recovery OTP length cannot be empty.",
+                                    maxLengthReached:
+                                        "Password recovery OTP length should be between 6 and 10 characters."
+                                }
+                            },
+                            enableEmailBasedRecovery: {
+                                hint: "This specifies whether to send an recovery link to the email address.",
+                                label: "Enable email link based recovery"
                             }
                         }
                     },
+                    recoveryOptionSubHeadingEmailLink: "Email Link",
+                    recoveryOptionSubHeadingSMS: "SMS OTP",
+                    recoveryOptionHeading: "Recovery Option Selection",
+                    otpConfigHeading: "OTP Code Configuration",
+                    failedAttemptConfigHeading: "Recovery Attempts Limitation",
                     connectorDescription: "Enable self-service password recovery for users " + "on the login page.",
                     heading: "Password Recovery",
                     notification: {
@@ -3610,8 +3685,7 @@ export const extensions: Extensions = {
                         }
                     },
                     subHeading:
-                        "Enable self-service password recovery for users " +
-                        "on the login page.\nThe user will receive a password reset link via email upon request."
+                    "Enable self-service password recovery for users on the login page."
                 },
                 subHeading: "Account Recovery related settings."
             },

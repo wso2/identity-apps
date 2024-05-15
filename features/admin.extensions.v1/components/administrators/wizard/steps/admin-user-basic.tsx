@@ -159,7 +159,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 .then((response: AxiosResponse) => {
                     setRolesList(response.data.Resources);
                     response.data.Resources.map((role: RolesInterface, index: number) => {
-                        if (role.displayName !== "system" &&
+                        if ((!legacyAuthzRuntime || role.meta?.systemRole) &&
+                            role.displayName !== "system" &&
                             role.displayName !== "everyone" &&
                             role.displayName !== "selfsignup" &&
                             (role.displayName?.split("/")?.length < 2 &&

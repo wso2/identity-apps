@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,24 +15,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, LinkButton, ListLayout } from "@wso2is/react-components";
-import { AxiosError } from "axios";
-import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useState } from "react";
+import cloneDeep from "lodash-es/cloneDeep";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Grid, Modal, ModalProps, PaginationProps } from "semantic-ui-react";
-import { getApplicationList } from "../../../admin.applications.v1/api";
+import { useApplicationList } from "../../../admin.applications.v1/api";
 import { ApplicationList } from "../../../admin.applications.v1/components/application-list";
-import { ApplicationListInterface } from "../../../admin.applications.v1/models";
+import { ApplicationManagementConstants } from "../../../admin.applications.v1/constants/application-management";
+import {
+    ApplicationListInterface,
+    ApplicationListItemInterface
+} from "../../../admin.applications.v1/models/application";
 import { AppConstants, UIConstants, history } from "../../../admin.core.v1";
+import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 
 /**
  * Proptypes for the application selection modal component.
  */
-interface ApplicationSelectionModalInterface extends ModalProps, 
+interface ApplicationSelectionModalInterface extends ModalProps,
     TestableComponentInterface, IdentifiableComponentInterface {
     /**
      * Heading for the modal.
@@ -48,7 +54,6 @@ interface ApplicationSelectionModalInterface extends ModalProps,
  * Application selection modal component.
  *
  * @param props - Props injected to the component.
- *
  * @returns Application selection modal component.
  */
 const ApplicationSelectionModal: FunctionComponent<ApplicationSelectionModalInterface> = (
@@ -68,57 +73,45 @@ const ApplicationSelectionModal: FunctionComponent<ApplicationSelectionModalInte
 
     const dispatch: Dispatch = useDispatch();
 
+    const { UIConfig } = useUIConfig();
+
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ appList, setAppList ] = useState<ApplicationListInterface>({});
-    const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
+
+    const {
+        data: applicationList,
+        isLoading: isApplicationListFetchRequestLoading,
+        error: applicationListFetchRequestError
+    } = useApplicationList("clientId", listItemLimit, listOffset, null);
 
     /**
-     * Called on every `listOffset` & `listItemLimit` change.
+     * Handles the application list fetch request error.
      */
     useEffect(() => {
-        getAppLists(listItemLimit, listOffset, null);
-    }, [ listOffset, listItemLimit ]);
 
-    /**
-     * Retrieves the list of applications.
-     *
-     * @param limit - List limit.
-     * @param offset - List offset.
-     * @param filter - Search query.
-     */
-    const getAppLists = (limit: number, offset: number, filter: string): void => {
+        if (!applicationListFetchRequestError) {
+            return;
+        }
 
-        setApplicationListRequestLoading(true);
+        if (applicationListFetchRequestError?.response
+                && applicationListFetchRequestError?.response?.data
+                && applicationListFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: applicationListFetchRequestError.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications.fetchApplications.error.message")
+            }));
 
-        getApplicationList(limit, offset, filter)
-            .then((response: ApplicationListInterface) => {
-                setAppList(response);
-            })
-            .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("applications:notifications.fetchApplications" +
-                            ".error.message")
-                    }));
+            return;
+        }
 
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("applications:notifications.fetchApplications" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:notifications.fetchApplications." +
-                        "genericError.message")
-                }));
-            })
-            .finally(() => {
-                setApplicationListRequestLoading(false);
-            });
-    };
+        dispatch(addAlert({
+            description: t("applications:notifications.fetchApplications" +
+                    ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications.fetchApplications.genericError.message")
+        }));
+    }, [ applicationListFetchRequestError ]);
 
     /**
      * Handles per page dropdown page.
@@ -142,6 +135,37 @@ const ApplicationSelectionModal: FunctionComponent<ApplicationSelectionModalInte
         setListOffset((data.activePage as number - 1) * listItemLimit);
     };
 
+    /**
+     * Filter out the system apps from the application list.
+     *
+     * @returns Filtered application list.
+     */
+    const filteredApplicationList: ApplicationListInterface = useMemo(() => {
+        if (applicationList?.applications) {
+            const appList: ApplicationListInterface = cloneDeep(applicationList);
+
+            // Remove the system apps from the application list.
+            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
+                appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
+                    !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
+                    && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
+                );
+                appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
+                appList.totalResults = appList.totalResults -
+                    (applicationList.applications.length - appList.applications.length);
+            }
+
+            return appList;
+        }
+
+        return {
+            applications: [],
+            count: 0,
+            startIndex: 1,
+            totalResults: 0
+        };
+    }, [ applicationList ]);
+
     return (
         <Modal
             data-testid={ testId }
@@ -161,20 +185,21 @@ const ApplicationSelectionModal: FunctionComponent<ApplicationSelectionModalInte
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 <ListLayout
-                    currentListSize={ appList.count }
+                    isLoading={ isApplicationListFetchRequestLoading }
+                    currentListSize={ filteredApplicationList?.count }
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
-                    showPagination={ appList?.totalResults !== 0 }
-                    totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
-                    totalListSize={ appList.totalResults }
+                    showPagination={ filteredApplicationList?.totalResults !== 0 }
+                    totalPages={ Math.ceil(filteredApplicationList?.totalResults / listItemLimit) }
+                    totalListSize={ filteredApplicationList?.totalResults }
                     data-testid={ `${ testId }-list-layout` }
                     showTopActionPanel={ false }
                 >
                     <ApplicationList
                         isSetStrongerAuth
-                        isLoading={ isApplicationListRequestLoading }
-                        list={ appList }
+                        isLoading={ isApplicationListFetchRequestLoading }
+                        list={ filteredApplicationList }
                         onEmptyListPlaceholderActionClick={ () => {
                             history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
                         } }
@@ -215,9 +240,4 @@ ApplicationSelectionModal.defaultProps = {
     subHeading: "Select an application you want to add stronger authentication"
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
 export default ApplicationSelectionModal;
