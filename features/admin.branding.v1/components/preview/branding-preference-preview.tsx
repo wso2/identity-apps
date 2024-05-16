@@ -264,6 +264,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         PreviewScreenType.LOGIN,
         PreviewScreenType.SIGN_UP,
         PreviewScreenType.COMMON,
+        PreviewScreenType.EMAIL_LINK_EXPIRY,
         PreviewScreenType.EMAIL_OTP,
         PreviewScreenType.SMS_OTP,
         PreviewScreenType.TOTP,
