@@ -1,0 +1,51 @@
+{
+    "private": true,
+    "name": "@wso2is/admin.extensions.v1",
+    "version": "2.19.2",
+    "description": "WSO2 Identity Server Console",
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "@emotion/react": "^11.11.0",
+        "@emotion/styled": "^11.11.0",
+        "@microsoft/applicationinsights-core-js": "^3.0.0",
+        "@microsoft/applicationinsights-react-js": "^3.4.2",
+        "@microsoft/applicationinsights-web": "^3.0.0",
+        "@mui/icons-material": "^5.11.16",
+        "@mui/lab": "5.0.0-alpha.129",
+        "@mui/material": "^5.13.0",
+        "@mui/system": "^5.12.3",
+        "@mui/utils": "^5.12.3",
+        "@oxygen-ui/react": "^1.11.0",
+        "@oxygen-ui/react-icons": "^1.11.0",
+        "@wso2is/core": "^2.0.45",
+        "@wso2is/dynamic-forms": "^2.0.60",
+        "@wso2is/form": "^2.0.61",
+        "@wso2is/forms": "^2.0.35",
+        "@wso2is/i18n": "^2.3.0",
+        "@wso2is/react-components": "^2.2.2",
+        "@wso2is/theme": "^2.0.83",
+        "@wso2is/validation": "^2.0.5"
+        
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^5.11.9",
+        "@types/file-saver": "^2.0.1",
+        "@types/jest": "^26.0.14",
+        "@types/react": "^18.0.18",
+        "@types/react-redux": "^7.1.25",
+        "@types/react-router": "^5.1.18",
+        
+        "@types/reactour": "^1.18.1",
+        "@types/redux-mock-store": "^1.0.2",
+        "@types/testing-library__jest-dom": "^5.14.3",
+        "@types/uuid": "^9.0.1",
+        "jest": "^26.4.2",        
+        "rimraf": "^3.0.2",
+        "typescript": "^4.6.4"
+
+    },
+    "browserslist": [
+        "> 0.2%"
+    ]
+}

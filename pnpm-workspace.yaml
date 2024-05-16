@@ -3,3 +3,4 @@ packages:
   - "modules/*"
   - "identity-apps-core"
   - "features"
+  - "features/*"
