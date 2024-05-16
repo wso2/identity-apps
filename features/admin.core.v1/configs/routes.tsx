@@ -205,8 +205,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 )
             ),
             exact: false,
-            featureStatus: "NEW",
-            featureStatusLabel: "NEW",
+            featureStatus: showStatusLabelForNewAuthzRuntimeFeatures ? "NEW" : "",
+            featureStatusLabel: showStatusLabelForNewAuthzRuntimeFeatures ? "common:new" : "",
             icon: {
                 icon: <ArrowRightToBracketPencilIcon />
             },
