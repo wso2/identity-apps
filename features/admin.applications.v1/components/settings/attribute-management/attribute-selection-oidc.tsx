@@ -61,7 +61,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../../admin.core.v1";
-import { applicationConfig } from "../../../../admin.extensions.v1";
+import { applicationConfig } from "../../../../admin.extensions.v1/configs/application";
 import { OIDCScopesClaimsListInterface } from "../../../../admin.oidc-scopes.v1";
 import {
     ClaimConfigurationInterface,

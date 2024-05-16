@@ -43,7 +43,7 @@ import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../admin.claims.v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../admin.core.v1";
-import { applicationConfig } from "../../../../admin.extensions.v1";
+import { applicationConfig } from "../../../../admin.extensions.v1/configs/application";
 import { SubjectAttributeListItem } from "../../../../admin.identity-providers.v1/components/settings";
 import { useOIDCScopesList } from "../../../../admin.oidc-scopes.v1/api/oidc-scopes";
 import {

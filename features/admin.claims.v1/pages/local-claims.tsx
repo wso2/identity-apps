@@ -39,7 +39,7 @@ import {
     history,
     sortList
 } from "../../admin.core.v1";
-import { attributeConfig } from "../../admin.extensions.v1";
+import { attributeConfig } from "../../admin.extensions.v1/configs/attribute";
 import { getADialect } from "../api";
 import { AddLocalClaims, ClaimsList, ListType } from "../components";
 

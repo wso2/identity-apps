@@ -34,7 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../admin.core.v1";
-import { applicationConfig } from "../../../admin.extensions.v1";
+import { applicationConfig } from "../../../admin.extensions.v1/configs/application";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import {
     ApplicationInterface,

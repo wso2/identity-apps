@@ -53,7 +53,7 @@ import {
     history
 } from "../../admin.core.v1";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../admin.extensions.v1";
+import { applicationConfig } from "../../admin.extensions.v1/configs/application";
 import { MyAccountOverview } from "../../admin.extensions.v1/configs/components/my-account-overview";
 import AILoginFlowProvider from "../../admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "../../admin.organizations.v1/constants";

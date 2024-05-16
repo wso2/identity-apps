@@ -75,7 +75,7 @@ import {
 import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import useGlobalVariables from "../../../admin.core.v1/hooks/use-global-variables";
 import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../../admin.extensions.v1";
+import { applicationConfig } from "../../../admin.extensions.v1/configs/application";
 import { OrganizationType } from "../../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "../../../admin.roles.v2/constants/role-constants";

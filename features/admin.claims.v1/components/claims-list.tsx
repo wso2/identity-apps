@@ -70,7 +70,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
-import { attributeConfig } from "../../admin.extensions.v1";
+import { attributeConfig } from "../../admin.extensions.v1/configs/attribute";
 import { getProfileSchemas } from "../../admin.users.v1/api";
 import { getUserStores } from "../../admin.userstores.v1/api/user-stores";
 import { UserStoreListItem } from "../../admin.userstores.v1/models/user-stores";

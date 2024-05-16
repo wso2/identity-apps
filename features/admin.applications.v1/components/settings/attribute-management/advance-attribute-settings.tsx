@@ -29,7 +29,7 @@ import { Checkbox, CheckboxProps, Divider, Icon } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { AppState } from "../../../../admin.core.v1";
 import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../../../admin.extensions.v1";
+import { applicationConfig } from "../../../../admin.extensions.v1/configs/application";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,

@@ -29,9 +29,11 @@ import { Dispatch } from "redux";
 import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
 import {
-    AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
-} from "../../admin.extensions.v1";
+} from "../../admin.extensions.v1/configs/identity-provider";
+import {
+    AuthenticatorExtensionsConfigInterface,
+} from "../../admin.extensions.v1/configs/models/identity-providers";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorInterface, AuthenticatorSettingsFormModes, MultiFactorAuthenticatorInterface } from "../models";

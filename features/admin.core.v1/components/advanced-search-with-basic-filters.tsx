@@ -29,7 +29,7 @@ import {
 import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { commonConfig } from "../../admin.extensions.v1";
+import { commonConfig } from "../../admin.extensions.v1/configs/common";
 import { getAdvancedSearchIcons } from "../configs";
 
 /**

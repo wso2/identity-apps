@@ -29,7 +29,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { attributeConfig } from "../../../admin.extensions.v1";
+import { attributeConfig } from "../../../admin.extensions.v1/configs/attribute";
 import { AppState, EventPublisher } from "../../../admin.core.v1";
 import { AppConstants } from "../../../admin.core.v1/constants";
 import { history } from "../../../admin.core.v1/helpers";

@@ -41,7 +41,7 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { identityProviderConfig } from "../../admin.extensions.v1";
+import { identityProviderConfig } from "../../admin.extensions.v1/configs/identity-provider";
 import { ConnectionTabTypes } from "../../admin.connections.v1";
 import { AppState, FeatureConfigInterface } from "../../admin.core.v1";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";

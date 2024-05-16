@@ -69,7 +69,7 @@ import { ModalWithSidePanel } from "../../../admin.core.v1/components";
 import { getCertificateIllustrations } from "../../../admin.core.v1/configs/ui";
 import { ConfigReducerStateInterface } from "../../../admin.core.v1/models/reducer-state";
 import { AppState } from "../../../admin.core.v1/store";
-import { commonConfig } from "../../../admin.extensions.v1";
+import { commonConfig } from "../../../admin.extensions.v1/configs/common";
 import { createConnection, useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";

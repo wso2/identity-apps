@@ -30,7 +30,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AppConstants, AppState, history } from "../../../admin.core.v1";
-import { applicationConfig } from "../../../admin.extensions.v1";
+import { applicationConfig } from "../../../admin.extensions.v1/configs/application";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";

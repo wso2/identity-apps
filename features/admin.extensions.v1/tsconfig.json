@@ -1,0 +1,32 @@
+{
+    "extends": "../../tsconfig.base.react.json",
+    "compilerOptions": {
+        "declaration": true,
+        "declarationDir": "dist/types",
+        "lib": [ "ESNext", "DOM", "DOM.Iterable", "ScriptHost" ],
+        "outDir": "dist/src",
+        "resolveJsonModule": true,
+        "skipDefaultLibCheck": true,
+        "types": [ "node", "webpack-env", "jest", "@testing-library/jest-dom" ]
+    },
+    "exclude": [
+        "build",
+        "cache",
+        "coverage",
+        "dist",
+        "node_modules",
+        "scripts",
+        "**/test-configs/*",
+        "jest.config.ts",
+        "**/__tests__/*",
+        "**/__mocks__/*",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
+    ]
+}

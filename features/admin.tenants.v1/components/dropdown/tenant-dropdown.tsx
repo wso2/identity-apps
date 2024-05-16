@@ -51,7 +51,7 @@ import { getMiscellaneousIcons } from "../../../admin.core.v1/configs";
 import { AppConstants } from "../../../admin.core.v1/constants";
 import { history } from "../../../admin.core.v1/helpers/history";
 import { AppState } from "../../../admin.core.v1/store";
-import { organizationConfigs } from "../../../admin.extensions.v1";
+import { organizationConfigs } from "../../../admin.extensions.v1/configs/organization";
 import {
     FeatureGateConstants
 } from "../../../admin.extensions.v1/components/feature-gate/constants/feature-gate";

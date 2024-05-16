@@ -44,7 +44,7 @@ import {
 } from "../../../../admin.core.v1";
 import { AuthenticatorAccordion } from "../../../../admin.core.v1/components";
 import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
-import { identityProviderConfig } from "../../../../admin.extensions.v1";
+import { identityProviderConfig } from "../../../../admin.extensions.v1/configs/identity-provider";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,

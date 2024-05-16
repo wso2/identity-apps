@@ -50,7 +50,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
-import { applicationConfig } from "../../../admin.extensions.v1";
+import { applicationConfig } from "../../../admin.extensions.v1/configs/application";
 import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
 import {
     AppState,

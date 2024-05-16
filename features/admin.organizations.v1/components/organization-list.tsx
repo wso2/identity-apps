@@ -54,7 +54,7 @@ import {
     history
 } from "../../admin.core.v1";
 import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
-import { organizationConfigs } from "../../admin.extensions.v1";
+import { organizationConfigs } from "../../admin.extensions.v1/configs/organization";
 import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";

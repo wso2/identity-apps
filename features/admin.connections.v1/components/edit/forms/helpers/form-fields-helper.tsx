@@ -29,7 +29,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { Pkcs12FileField } from "./pkcs12-file-field";
-import { commonConfig } from "../../../../../admin.extensions.v1";
+import { commonConfig } from "../../../../../admin.extensions.v1/configs/common";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import {
     AuthenticatorSettingsFormModes

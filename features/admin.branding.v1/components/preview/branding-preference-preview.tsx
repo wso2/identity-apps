@@ -43,7 +43,7 @@ import { EmailTemplateScreenSkeleton } from "./email-template-screen-skeleton";
 import { LoginScreenSkeleton } from "./login-screen-skeleton";
 import { MyAccountScreenSkeleton } from "./my-account-screen-skeleton";
 import { AppState } from "../../../admin.core.v1/store";
-import { commonConfig } from "../../../admin.extensions.v1/configs";
+import { commonConfig } from "../../../admin.extensions.v1/configs/common";
 import { BrandingPreferenceInterface, PreviewScreenType } from "../../../common.branding.v1/models";
 import { ReactComponent as CustomLayoutSuccessImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";

@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Placeholder } from "semantic-ui-react";
 import { AppConstants, AppState, FeatureConfigInterface, getMiscellaneousIcons, history } from "../../../admin.core.v1";
-import { organizationConfigs } from "../../../admin.extensions.v1";
+import { organizationConfigs } from "../../../admin.extensions.v1/configs/organization";
 import { GenericOrganization } from "../../models";
 import { OrganizationUtils } from "../../utils";
 

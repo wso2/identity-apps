@@ -26,7 +26,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, u
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1";
+import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs/identity-provider";
 import { AppState, ConfigReducerStateInterface } from "../../../../../admin.core.v1";
 import {
     AuthenticatorSettingsFormModes,

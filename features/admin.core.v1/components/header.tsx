@@ -47,7 +47,7 @@ import useAuthorization from "../../admin.authorization.v1/hooks/use-authorizati
 import { OrganizationType } from "../../admin.core.v1";
 import useGlobalVariables from "../../admin.core.v1/hooks/use-global-variables";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { organizationConfigs } from "../../admin.extensions.v1";
+import { organizationConfigs } from "../../admin.extensions.v1/configs/organization";
 import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { SubscriptionContext } from "../../admin.extensions.v1/components/subscription/contexts/subscription-context";
 import {

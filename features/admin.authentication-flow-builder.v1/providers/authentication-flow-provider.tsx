@@ -43,7 +43,7 @@ import { ConnectionsManagementUtils } from "../../admin.connections.v1/utils/con
 import useGlobalVariables from "../../admin.core.v1/hooks/use-global-variables";
 import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "../../admin.core.v1/store";
-import { applicationConfig } from "../../admin.extensions.v1";
+import { applicationConfig } from "../../admin.extensions.v1/configs/application";
 import { identityProviderConfig } from "../../admin.extensions.v1/configs/identity-provider";
 import {
     IdentityProviderManagementConstants

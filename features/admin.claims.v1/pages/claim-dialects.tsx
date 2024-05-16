@@ -44,7 +44,7 @@ import {
     getTechnologyLogos,
     history
 } from "../../admin.core.v1";
-import { attributeConfig } from "../../admin.extensions.v1";
+import { attributeConfig } from "../../admin.extensions.v1/configs/attribute";
 import { AddDialect } from "../components";
 import { ClaimManagementConstants } from "../constants";
 

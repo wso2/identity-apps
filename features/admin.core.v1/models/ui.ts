@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppViewExtensionTypes } from "../../admin.extensions.v1";
+import { AppViewExtensionTypes } from "../../admin.extensions.v1/configs/models/common";
 
 /**
  * Types of views supported by default in the application.

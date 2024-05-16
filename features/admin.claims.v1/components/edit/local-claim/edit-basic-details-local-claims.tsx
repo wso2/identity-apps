@@ -56,7 +56,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin.core.v1";
-import { attributeConfig } from "../../../../admin.extensions.v1";
+import { attributeConfig } from "../../../../admin.extensions.v1/configs/attribute";
 import { SCIMConfigs } from "../../../../admin.extensions.v1/configs/scim";
 import {
     ConnectorPropertyInterface,

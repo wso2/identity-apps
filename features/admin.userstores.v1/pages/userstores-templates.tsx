@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { userstoresConfig } from "../../admin.extensions.v1";
+import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
 import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
 import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";

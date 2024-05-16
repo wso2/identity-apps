@@ -30,7 +30,7 @@ import React, {
 import AdministratorsList from "./administrators-list/administrators-list";
 import InvitedAdministratorsList from "./invited-administrators/invited-administrators-list";
 import { UserStoreProperty, getAUserStore } from "../../../admin.core.v1";
-import { userstoresConfig } from "../../../admin.extensions.v1";
+import { userstoresConfig } from "../../../admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useUserStores } from "../../../admin.userstores.v1/api";
 import { UserStoreDropdownItem, UserStoreListItem, UserStorePostData } from "../../../admin.userstores.v1/models";

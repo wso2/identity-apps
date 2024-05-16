@@ -63,7 +63,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin.core.v1";
-import { userstoresConfig } from "../../admin.extensions.v1";
+import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
 import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";

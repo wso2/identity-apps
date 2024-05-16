@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { SimpleUserStoreListItemInterface } from "../../../admin.applications.v1/models";
 import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
-import { identityProviderConfig } from "../../../admin.extensions.v1";
+import { identityProviderConfig } from "../../../admin.extensions.v1/configs/identity-provider";
 import {
     IdentityProviderInterface,
     JITProvisioningResponseInterface,
