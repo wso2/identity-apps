@@ -94,9 +94,7 @@
                 }
             },
             "personalInfo": {
-                "disabledFeatures": [
-                    "profileInfo.mobileVerification"
-                ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "create": [],
@@ -106,9 +104,7 @@
                 }
             },
             "security": {
-                "disabledFeatures": [
-                    "security.loginVerifyData.typingDNA"
-                ],
+                "disabledFeatures": ["security.mfa.sms", "security.loginVerifyData.typingDNA"],
                 "enabled": true,
                 "scopes": {
                     "create": [],
