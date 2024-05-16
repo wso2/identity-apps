@@ -314,6 +314,16 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     (applicationList.applications.length - appList.applications.length);
             }
 
+            // Remove the M2M application from the application list if the legacy authz runtime is enabled.
+            if (isLegacyAuthzRuntime()) {
+                appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
+                    item.templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                );
+                appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
+                appList.totalResults = appList.totalResults -
+                    (applicationList.applications.length - appList.applications.length);
+            }
+
             setFilteredApplicationList(appList);
         }
     }, [ applicationList ]);
