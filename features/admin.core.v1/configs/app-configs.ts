@@ -16,10 +16,13 @@
  * under the License.
  */
 
+//import DeploymentConfigJSON from "./deployment.config.json"
+import { getAppUtils } from "./init/init";
+
 class AppConfigs {
 
     private static instance: AppConfigs | null = null;
-    public AppUtils: any = window["AppUtils"];
+    public AppUtils: any = getAppUtils();
 
     private constructor() {
     }
