@@ -185,6 +185,7 @@
         "enableCustomEmailTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "features": {
             "accountLogin": {
                 "disabledFeatures": [],

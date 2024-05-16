@@ -131,7 +131,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const dispatch: Dispatch<any> = useDispatch();
     const { legacyAuthzRuntime }  = useAuthorization();
-    const showStatusLabel: boolean = window["AppUtils"]?.getConfig()?.ui?.showStatusLabel;
+    const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
@@ -765,7 +766,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 key: 3,
                 text: <>
                     { t("parentOrgInvitations:addUserWizard.heading") }
-                    { showStatusLabel && !legacyAuthzRuntime && (
+                    { showStatusLabelForNewAuthzRuntimeFeatures && !legacyAuthzRuntime && (
                         <Chip
                             size="small"
                             label={ t(FeatureStatusLabel.NEW).toUpperCase() }

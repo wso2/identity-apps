@@ -82,8 +82,8 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
     } = props;
 
     const { t } = useTranslation();
-    const showStatusLabel: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.showStatusLabel);
+    const showStatusLabelForNewAuthzRuntimeFeatures: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.showStatusLabelForNewAuthzRuntimeFeatures);
 
     /**
      * Combine the connectors and dynamic connectors and group them by category.
@@ -236,7 +236,9 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     data-componentid={ connector.testId }
                                                 >
                                                     {
-                                                        showStatusLabel && connector.status && (
+                                                        showStatusLabelForNewAuthzRuntimeFeatures
+                                                        && connector.status
+                                                        && (
                                                             <div className="ribbon">{ t(connector.status) }</div>
                                                         )
                                                     }
