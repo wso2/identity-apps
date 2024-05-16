@@ -212,7 +212,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     useEffect(() => {
         if (
-            profileDetails?.profileInfo?.pendingEmails 
+            profileDetails?.profileInfo?.pendingEmails
             && !isEmpty(profileDetails?.profileInfo?.pendingEmails)
             && isEmailVerificationEnabled
         ) {
