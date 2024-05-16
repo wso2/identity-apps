@@ -404,6 +404,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     ): void => {
         setIsLoading(true);
 
+        debugger;
+
         updateApplicationDetails({ id: appId, ...values.general }, true)
             .then(async () => {
                 await handleInboundConfigFormSubmit(values.inbound, protocol);
