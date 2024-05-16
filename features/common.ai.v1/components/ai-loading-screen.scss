@@ -16,35 +16,46 @@
  * under the License.
  */
 
-.branding-ai-loading-screen-parent {
+.ai-loading-screen-parent {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.branding-ai-loading-screen-container {
+.ai-loading-screen-container {
     display: flex;
     align-items: stretch;
     justify-content: center;
 }
 
-.branding-ai-loading-screen-illustration-container {
+.ai-loading-screen-illustration-container {
     display: flex;
     flex: 1;
     justify-content: right;
+
+    /**
+    * The following styles are used to hide the illustration container
+    * when the screen is in a loading state.
+    * This is done to prevent the illustration from overlapping with the
+    * loading animation.
+    */
+    &.hidden {
+        visibility: hidden;
+    }
 }
 
-.branding-ai-loading-screen-text-container {
+.ai-loading-screen-text-container {
     display: flex;
     flex: 1;
     justify-content: space-between;
     flex-direction: column;
     align-items: flex-start;
     padding: 7rem 10rem 7rem 0;
+    z-index: 2;
 }
 
-.branding-ai-loading-screen-loading-container {
+.ai-loading-screen-loading-container {
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
@@ -52,19 +63,31 @@
     justify-content: space-between;
 }
 
-.branding-ai-loading-screen-heading {
+.ai-loading-screen-heading {
     font-size: 19px;
     font-weight: 500;
     margin-bottom: 5px;
 }
 
-.branding-ai-loading-screen-sub-heading {
+.ai-loading-screen-sub-heading {
     font-size: 15px;
     font-weight: 400;
     color: #6a6d7b;
 }
 
-.branding-ai-loading-screen-loading-state {
+.ai-loading-screen-loading-state {
     font-size: 15px;
     font-weight: 400;
+}
+
+.ai-loading-screen-animation-container {
+    position: absolute;
+    width: 100%;
+}
+
+.ai-loading-screen-animation {
+    margin-left: 5rem;
+    width: 70%;
+    height: 100%;
+    max-width: 50vw;
 }

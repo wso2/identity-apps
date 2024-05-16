@@ -34,10 +34,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsersUpdated } from "./group-assign-users-updated";
-import { commonConfig } from "../../../admin.extensions.v1/configs";
 import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../admin.core.v1";
 import { EventPublisher } from "../../../admin.core.v1/utils";
+import { commonConfig } from "../../../admin.extensions.v1/configs";
 import { getOrganizationRoles } from "../../../admin.organizations.v1/api";
 import { OrganizationRoleManagementConstants } from "../../../admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
@@ -48,7 +48,12 @@ import {
 } from "../../../admin.organizations.v1/models";
 import { getRolesList, updateRole } from "../../../admin.roles.v2/api";
 import { RoleConstants } from "../../../admin.roles.v2/constants";
-import { BasicRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../admin.roles.v2/models";
+import {
+    BasicRoleInterface,
+    PatchRoleDataInterface,
+    RolesV2Interface,
+    RolesV2ResponseInterface
+} from "../../../admin.roles.v2/models";
 import { UserBasicInterface } from "../../../admin.users.v1/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../admin.userstores.v1/constants";
 import { createGroup } from "../../api";
@@ -133,6 +138,8 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isEditingSystemRolesAllowed: boolean =
+        useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
 
     const isRoleReadOnly: boolean = useMemo(() => {
         return (
@@ -169,7 +176,12 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
             if (isFirstLevelOrganization() || !legacyAuthzRuntime) {
                 getRolesList(null)
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
-                        setRoleList(response?.data?.Resources);
+                        const systemRolesFilteredRolesList: RolesV2Interface[] =
+                            isEditingSystemRolesAllowed
+                                ? response?.data?.Resources
+                                : response?.data?.Resources?.filter((role: RolesV2Interface) => !role.meta.systemRole);
+
+                        setRoleList(systemRolesFilteredRolesList);
                     });
             } else {
                 getOrganizationRoles(currentOrganization.id, null, 100, null)

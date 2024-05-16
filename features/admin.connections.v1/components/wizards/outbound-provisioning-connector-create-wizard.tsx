@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,7 @@ import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -36,20 +36,23 @@ import { OutboundProvisioningSettings } from "./steps/shared-steps/outbound-prov
 import { WizardSummary } from "./steps/shared-steps/wizard-summary";
 import {
     getOutboundProvisioningConnectorMetadata,
-    getOutboundProvisioningConnectorsList,
     updateOutboundProvisioningConnector
 } from "../../api/connections";
+import useGetOutboundProvisioningConnectors from "../../api/use-get-outbound-provisioning-connectors";
 import { getOutboundProvisioningConnectorWizardIcons } from "../../configs/ui";
+import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import {
-    ConnectionInterface, 
+    ConnectionInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
+    OutboundProvisioningConnectorMetaDataInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../models/connection";
 import {
     handleGetOutboundProvisioningConnectorMetadataError,
     handleUpdateOutboundProvisioningConnectorError
 } from "../../utils/connection-utils";
+import { getOutboundProvisioningConnectorsMetaData } from "../meta/connectors";
 
 /**
  * Interface for the outbound provisioning create wizard props.
@@ -103,10 +106,9 @@ export const OutboundProvisioningConnectorCreateWizard:
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
         const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
 
-        const [ connectorList, setConnectorList ] = useState<OutboundProvisioningConnectorListItemInterface[]>([]);
-        const [ 
-            connectorMetaData, 
-            setConnectorMetaData 
+        const [
+            connectorMetaData,
+            setConnectorMetaData
         ] = useState<OutboundProvisioningConnectorMetaInterface>(undefined);
         const [ newConnector, setNewConnector ] = useState(undefined);
         const [ isConnectorMetadataRequestLoading, setIsConnectorMetadataRequestLoading ] = useState<boolean>(false);
@@ -117,20 +119,96 @@ export const OutboundProvisioningConnectorCreateWizard:
         const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
         /**
+         * Get the list of outbound provisioning connectors.
+         */
+        const {
+            data: outboundProvisioningConnectorsList,
+            isLoading: isLoadingOutboundProvisioningConnectorsList,
+            error: outboundProvisioningConnectorsListError
+        } = useGetOutboundProvisioningConnectors();
+
+        /**
+         * Transforms the outbound provisioning connectors list into
+         * a list of outbound provisioning connectors metadata.
+         */
+        const outboundProvisioningConnectorsMetadataList: OutboundProvisioningConnectorMetaDataInterface[] = useMemo(
+            () => {
+                if (isLoadingOutboundProvisioningConnectorsList || !outboundProvisioningConnectorsList) {
+                    return [];
+                }
+
+                const filteredConnectorList: OutboundProvisioningConnectorListItemInterface[]
+                    = outboundProvisioningConnectorsList.filter(
+                        (connector: OutboundProvisioningConnectorListItemInterface) =>
+                            connector.connectorId !== AuthenticatorManagementConstants
+                                .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID
+                    );
+
+                return filteredConnectorList.map((connector: OutboundProvisioningConnectorListItemInterface) => {
+                    const metadata: OutboundProvisioningConnectorMetaDataInterface
+                        = getOutboundProvisioningConnectorsMetaData()
+                            .find((meta: OutboundProvisioningConnectorMetaDataInterface) =>
+                                meta.connectorId === connector.connectorId
+                            );
+
+                    return {
+                        ...connector,
+                        ...metadata
+                    };
+                });
+            }, [ outboundProvisioningConnectorsList, isLoadingOutboundProvisioningConnectorsList ]
+        );
+
+        /**
+         * Handles outbound provisioning connectors list fetch error.
+         */
+        useEffect(() => {
+            if (!outboundProvisioningConnectorsListError) {
+                return;
+            }
+
+            if (outboundProvisioningConnectorsListError.response?.data?.description) {
+                setAlert({
+                    description: t("authenticationProvider:notifications." +
+                        "getOutboundProvisioningConnectorsList.error.description",
+                    { description: outboundProvisioningConnectorsListError.response.data.description }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications." +
+                        "getOutboundProvisioningConnectorsList.error.message")
+                });
+
+                return;
+            }
+
+            setAlert({
+                description: t("authenticationProvider:notifications." +
+                    "getOutboundProvisioningConnectorsList." +
+                    "genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("authenticationProvider:notifications." +
+                    "getOutboundProvisioningConnectorsList." +
+                    "genericError.message")
+            });
+        }, [ outboundProvisioningConnectorsListError ]);
+
+        /**
      * At the initial load, select the first item from the connector list so that the
      * metadata could be loaded.
      */
         useEffect(() => {
-            if (!(connectorList && Array.isArray(connectorList) && connectorList.length > 0)) {
+            if (!(outboundProvisioningConnectorsList
+                && Array.isArray(outboundProvisioningConnectorsList)
+                && outboundProvisioningConnectorsList.length > 0)) {
                 return;
             }
 
             setWizardState( {
                 [ WizardStepsFormTypes.CONNECTOR_SELECTION ]: {
-                    connectorId: connectorList[0].connectorId
+                    connectorId: outboundProvisioningConnectorsList[0].connectorId
                 }
             });
-        }, [ connectorList ]);
+        }, [ outboundProvisioningConnectorsList ]);
 
         /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -179,41 +257,6 @@ export const OutboundProvisioningConnectorCreateWizard:
                 });
         }, [ newConnector ]);
 
-        /**
-     * Get the list of outbound provisioning connectors available.
-     */
-        useEffect(() => {
-            getOutboundProvisioningConnectorsList()
-                .then((response: OutboundProvisioningConnectorListItemInterface[]) => {
-                    setConnectorList(response);
-                })
-                .catch((error: AxiosError) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        setAlert({
-                            description: t("authenticationProvider:notifications." +
-                            "getOutboundProvisioningConnectorsList.error.description",
-                            { description: error.response.data.description }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:notifications." +
-                            "getOutboundProvisioningConnectorsList.error.message")
-                        });
-
-                        return;
-                    }
-
-                    setAlert({
-                        description: t("authenticationProvider:notifications." +
-                        "getOutboundProvisioningConnectorsList." +
-                        "genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
-                        "getOutboundProvisioningConnectorsList." +
-                        "genericError.message")
-                    });
-                });
-        }, []);
-
         useEffect(() => {
             if (!wizardState && !connectorMetaData) {
                 return;
@@ -224,7 +267,7 @@ export const OutboundProvisioningConnectorCreateWizard:
 
             const selectedId: string = wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId;
             let initialConnector: OutboundProvisioningConnectorListItemInterface =
-            connectorList.find((connector: OutboundProvisioningConnectorListItemInterface) => 
+            outboundProvisioningConnectorsList.find((connector: OutboundProvisioningConnectorListItemInterface) =>
                 connector.connectorId === selectedId);
 
             initialConnector = {
@@ -253,7 +296,7 @@ export const OutboundProvisioningConnectorCreateWizard:
 
             const selectedId: string = wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId;
             let initialConnector: OutboundProvisioningConnectorListItemInterface =
-            connectorList.find((connector: OutboundProvisioningConnectorListItemInterface) => 
+            outboundProvisioningConnectorsList.find((connector: OutboundProvisioningConnectorListItemInterface) =>
                 connector.connectorId === selectedId);
 
             initialConnector = {
@@ -320,7 +363,7 @@ export const OutboundProvisioningConnectorCreateWizard:
      * Handles the final wizard submission.
      */
         const handleWizardFormFinish = (): void => {
-            getOutboundProvisioningConnectorMetadata(wizardState[ 
+            getOutboundProvisioningConnectorMetadata(wizardState[
                 WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId)
                 .then((response: OutboundProvisioningConnectorMetaInterface) => {
                     setNewConnector(response);
@@ -342,7 +385,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                         onSubmit={ (values: Map<string, FormValue>): void => {
                             handleWizardFormSubmit(values, WizardStepsFormTypes.CONNECTOR_SELECTION);
                         } }
-                        connectorList={ connectorList }
+                        connectorList={ outboundProvisioningConnectorsMetadataList }
                         data-testid={ `${ testId }-connector-selection` }
                     />
                 ),
@@ -398,9 +441,9 @@ export const OutboundProvisioningConnectorCreateWizard:
                 <Modal.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
                     { t("authenticationProvider:modals.addProvisioningConnector.title") }
                     <Heading as="h6">
-                        { 
+                        {
                             t("authenticationProvider:" +
-                            "modals.addProvisioningConnector.subTitle") 
+                            "modals.addProvisioningConnector.subTitle")
                         }
                     </Heading>
                 </Modal.Header>
@@ -410,13 +453,13 @@ export const OutboundProvisioningConnectorCreateWizard:
                         "addProvisioningConnector.header") }
                         current={ currentWizardStep }
                     >
-                        { 
+                        {
                             STEPS.map(
-                                (step: { 
+                                (step: {
                                     content: ReactElement;
                                     icon: any;
                                     title: string;
-                                }, 
+                                },
                                 index: number) => (
                                     <Steps.Step
                                         key={ index }
@@ -424,7 +467,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         title={ step.title }
                                     />
                                 )
-                            ) 
+                            )
                         }
                     </Steps.Group>
                 </Modal.Content>
@@ -473,9 +516,8 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         onClick={ navigateToPrevious }
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
-                                        { 
-                                            t("authenticationProvider:"
-                                                + "wizards.buttons.previous") 
+                                        {
+                                            t("authenticationProvider:wizards.buttons.previous")
                                         }
                                     </LinkButton>
                                 ) }

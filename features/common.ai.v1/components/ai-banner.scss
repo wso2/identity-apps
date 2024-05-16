@@ -16,55 +16,44 @@
  * under the License.
  */
 
-.login-flow-ai-loading-screen-parent {
+.ai-banner {
+    &.hidden {
+        display: none;
+    }
+}
+
+.ai-banner {
+    background: #ffffff;
+    align-items: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right center;
+    border: 1px solid #DCDAD8;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 25px;
+
+    &.collapsed, &.input {
+        flex-direction: column;
+    }
+}
+
+.ai-banner-text-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.login-flow-ai-loading-screen-container {
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-}
-
-.login-flow-ai-loading-screen-illustration-container {
-    display: flex;
-    flex: 1;
-    justify-content: right;
-}
-
-.login-flow-ai-loading-screen-text-container {
-    display: flex;
-    flex: 1;
     justify-content: space-between;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 7rem 10rem 7rem 0;
+    width: 70%;
 }
 
-.login-flow-ai-loading-screen-loading-container {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.login-flow-ai-loading-screen-heading {
+.ai-banner-heading {
     font-size: 19px;
     font-weight: 500;
     margin-bottom: 5px;
 }
 
-.login-flow-ai-loading-screen-sub-heading {
+.ai-banner-sub-heading {
     font-size: 15px;
     font-weight: 400;
-    color: #6a6d7b;
-}
-
-.login-flow-ai-loading-screen-loading-state {
-    font-size: 15px;
-    font-weight: 500;
+    color: #8D91A3;
 }

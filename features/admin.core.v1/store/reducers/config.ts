@@ -252,6 +252,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isCustomClaimMappingMergeEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,
             isDialectAddingEnabled: undefined,
+            isEditingSystemRolesAllowed: undefined,
             isGroupAndRoleSeparationEnabled: undefined,
             isHeaderAvatarLabelAllowed: undefined,
             isLeftNavigationCategorized: undefined,
@@ -266,6 +267,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             productVersionConfig: null,
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
+            showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             systemAppsIdentifiers: [],
             theme: {
                 name: "",

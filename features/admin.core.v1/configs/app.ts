@@ -350,6 +350,7 @@ export class Config {
             isCustomClaimMappingMergeEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isCustomClaimMappingMergeEnabled,
             isDefaultDialectEditingEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isDefaultDialectEditingEnabled,
             isDialectAddingEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isDialectAddingEnabled,
+            isEditingSystemRolesAllowed:  window[ "AppUtils" ]?.getConfig()?.ui?.isEditingSystemRolesAllowed,
             isFeatureGateEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isFeatureGateEnabled,
             isGroupAndRoleSeparationEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isGroupAndRoleSeparationEnabled,
             isHeaderAvatarLabelAllowed: window[ "AppUtils" ]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
@@ -369,6 +370,8 @@ export class Config {
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
+            showSmsOtpPwdRecoveryFeatureStatusChip:
+                window[ "AppUtils" ]?.getConfig()?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
             useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim

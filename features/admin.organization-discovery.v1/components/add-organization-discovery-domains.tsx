@@ -315,6 +315,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                 multiple
                                 freeSolo
                                 disableCloseOnSelect
+                                data-componentid={ `${componentId}-form-organization-email-domain-field` }
                                 size="small"
                                 id="tags-filled"
                                 options={ optionsArray.map((option: string) => option) }
@@ -343,6 +344,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                             } }
                                             { ...params }
                                             margin="dense"
+                                            data-componentid={ `${componentId}-email-domain-message-field` }
                                             error={ isEmailDomainDataError || isEmailDomainAvailableError }
                                             helperText= {
                                                 isEmailDomainDataError

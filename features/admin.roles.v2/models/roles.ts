@@ -170,6 +170,7 @@ export interface RolesV2Interface {
     id: string;
     meta: {
         location: string;
+        systemRole?: boolean;
     };
     permissions?: string[];
     schemas?: string[];

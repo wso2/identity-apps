@@ -1818,6 +1818,9 @@
                 {% endfor %}
             {% endif %}
         ],
+        {% if console.ui.is_editing_system_roles_allowed is defined %}
+        "isEditingSystemRolesAllowed": {{ console.ui.is_editing_system_roles_allowed }},
+        {% endif %}
         {% if console.ui.isXacmlConnectorEnabled is defined %}
         "isXacmlConnectorEnabled": {{ console.ui.isXacmlConnectorEnabled }},
         {% endif %}

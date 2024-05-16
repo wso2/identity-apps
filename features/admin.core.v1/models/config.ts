@@ -412,6 +412,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     systemAppsIdentifiers: string[];
     /**
+     * Is editing system roles allowed
+     */
+    isEditingSystemRolesAllowed: boolean;
+    /**
      * Show App Switch button in the Header.
      */
     showAppSwitchButton?: boolean;
@@ -454,6 +458,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Configurations for IDP templates.
      */
     connectionTemplates?: any;
+    /**
+     * Config if beta tag should be displayed for sms otp for password recovery feature.
+     */
+    showSmsOtpPwdRecoveryFeatureStatusChip?: boolean;
 }
 
 /**

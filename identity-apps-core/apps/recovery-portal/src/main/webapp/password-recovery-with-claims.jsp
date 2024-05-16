@@ -169,9 +169,9 @@
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
             %>
-            <jsp:include page="extensions/product-title.jsp"/>
+                <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
@@ -193,7 +193,8 @@
                         <div class="field">
                             <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Username")%></label>
-                            <input id="username" type="text" name="username" class="form-control claims">
+                            <input id="username" type="text" name="username" class="form-control claims"
+                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Username")%>">
                         </div>
                         <% if (isFirstNameInClaims || isLastNameInClaims) { %>
                         <div class="field">
@@ -202,14 +203,14 @@
                                 <% if (isFirstNameInClaims) { %>
                                 <div class="field">
                                     <input id="first-name" type="text" name="http://wso2.org/claims/givenname"
-                                           placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                 "First.name")%>" class="form-control claims"/>
                                 </div>
                                 <% } %>
                                 <% if (isLastNameInClaims) { %>
                                 <div class="field">
                                     <input id="last-name" type="text" name="http://wso2.org/claims/lastname"
-                                           placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                 "Last.name")%>" class="form-control claims"/>
                                 </div>
                                 <% } %>
@@ -221,7 +222,7 @@
                         %>
                         <div>
                             <input type="hidden" name="sessionDataKey"
-                                   value="<%=Encode.forHtmlAttribute(sessionDataKey) %>"/>
+                                value="<%=Encode.forHtmlAttribute(sessionDataKey) %>"/>
                         </div>
                         <%
                             }
@@ -242,8 +243,9 @@
                         <div class="field">
                             <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Email")%></label>
-                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress"
-                                   class="form-control claims" data-validate="email">
+                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress" 
+                                class="form-control claims" data-validate="email"
+                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Email")%>">
                         </div>
                         <% } %>
 
@@ -274,7 +276,7 @@
                                     claim.getDisplayName())%>
                             </label>
                             <input type="text" name="<%= Encode.forHtmlAttribute(claim.getUri()) %>"
-                                   class="form-control claims"/>
+                                class="form-control claims"/>
                         </div>
                         <%
                                 }
@@ -300,14 +302,16 @@
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
-                            <a href="javascript:goBack()" class="ui button secondary">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                            </a>
                             <button id="recoverySubmit"
-                                    class="ui primary large button"
-                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Submit")%>
+                                    class="ui primary button large fluid"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
                             </button>
+                            <div class="mt-1 align-center">
+                                <a href="javascript:goBack()" class="ui button secondary large fluid">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                                </a>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -319,9 +323,9 @@
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
             %>
-            <jsp:include page="extensions/product-footer.jsp"/>
+                <jsp:include page="extensions/product-footer.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
+                <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
         <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">

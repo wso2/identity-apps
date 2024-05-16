@@ -1,5 +1,79 @@
 # @wso2is/myaccount
 
+## 2.5.97
+
+### Patch Changes
+
+- Updated dependencies [[`919823a13b4368e878e3060d08b669df9b1c96c1`](https://github.com/wso2/identity-apps/commit/919823a13b4368e878e3060d08b669df9b1c96c1), [`d0e98c9b386b156dd46602341853d7fe6e9d7ba2`](https://github.com/wso2/identity-apps/commit/d0e98c9b386b156dd46602341853d7fe6e9d7ba2), [`4ccdf26b49e1dc2df2c68c033e50e493e32d72de`](https://github.com/wso2/identity-apps/commit/4ccdf26b49e1dc2df2c68c033e50e493e32d72de), [`f650a116e5cfd7867ce26adad34f368a668627dc`](https://github.com/wso2/identity-apps/commit/f650a116e5cfd7867ce26adad34f368a668627dc)]:
+  - @wso2is/features@2.19.3
+
+## 2.5.96
+
+### Patch Changes
+
+- [#6262](https://github.com/wso2/identity-apps/pull/6262) [`48d53dfd8634469741855721b049d248bb5e66c2`](https://github.com/wso2/identity-apps/commit/48d53dfd8634469741855721b049d248bb5e66c2) Thanks [@brionmario](https://github.com/brionmario)! - Make `deployment.config.json` easy to work with
+
+## 2.5.95
+
+### Patch Changes
+
+- Updated dependencies [[`b9fb80fbc4bb1f3ab2deba0fd7e8b993e367a183`](https://github.com/wso2/identity-apps/commit/b9fb80fbc4bb1f3ab2deba0fd7e8b993e367a183), [`6f04b0edc079c6c784000455cfc12689d2d8644f`](https://github.com/wso2/identity-apps/commit/6f04b0edc079c6c784000455cfc12689d2d8644f)]:
+  - @wso2is/features@2.19.2
+  - @wso2is/theme@2.0.83
+  - @wso2is/react-components@2.2.2
+
+## 2.5.94
+
+### Patch Changes
+
+- Updated dependencies [[`11177fe926a093a06fa66fc4f46d19a5d8ebfb26`](https://github.com/wso2/identity-apps/commit/11177fe926a093a06fa66fc4f46d19a5d8ebfb26), [`e3ef7e1620f39f4c6c058ae69ba28efdc416948a`](https://github.com/wso2/identity-apps/commit/e3ef7e1620f39f4c6c058ae69ba28efdc416948a)]:
+  - @wso2is/features@2.19.1
+
+## 2.5.93
+
+### Patch Changes
+
+- Updated dependencies [[`9d38973b32d026ad58d4f8432bea5397222b378a`](https://github.com/wso2/identity-apps/commit/9d38973b32d026ad58d4f8432bea5397222b378a), [`0f1a69040f72fa58aba735b15264ced368f2d4ab`](https://github.com/wso2/identity-apps/commit/0f1a69040f72fa58aba735b15264ced368f2d4ab), [`186c8e7bf9640ef6cbb0a56d4f12dd881355e639`](https://github.com/wso2/identity-apps/commit/186c8e7bf9640ef6cbb0a56d4f12dd881355e639), [`7f8fbab77ba415348883096f7590a7888f8dcb73`](https://github.com/wso2/identity-apps/commit/7f8fbab77ba415348883096f7590a7888f8dcb73)]:
+  - @wso2is/features@2.19.0
+  - @wso2is/i18n@2.3.0
+
+## 2.5.92
+
+### Patch Changes
+
+- Updated dependencies [[`45230ac3693311e287bd85c66c77ea96a90fa71f`](https://github.com/wso2/identity-apps/commit/45230ac3693311e287bd85c66c77ea96a90fa71f), [`e66c06769768ae564a68fb9b40c6b8add8ade58c`](https://github.com/wso2/identity-apps/commit/e66c06769768ae564a68fb9b40c6b8add8ade58c)]:
+  - @wso2is/features@2.18.4
+
+## 2.5.91
+
+### Patch Changes
+
+- Updated dependencies [[`931c4df0ca2166d5d57eac06624d173b0adc8889`](https://github.com/wso2/identity-apps/commit/931c4df0ca2166d5d57eac06624d173b0adc8889)]:
+  - @wso2is/features@2.18.3
+
+## 2.5.90
+
+### Patch Changes
+
+- Updated dependencies [[`77c1b97834932cfc3cec372d4005d3d5e1de1e46`](https://github.com/wso2/identity-apps/commit/77c1b97834932cfc3cec372d4005d3d5e1de1e46), [`9beedd16003ce305af2a7497652fd35dcd787814`](https://github.com/wso2/identity-apps/commit/9beedd16003ce305af2a7497652fd35dcd787814)]:
+  - @wso2is/features@2.18.2
+  - @wso2is/theme@2.0.82
+  - @wso2is/react-components@2.2.1
+
+## 2.5.89
+
+### Patch Changes
+
+- Updated dependencies [[`c2866febec26052bb1c27c11d6534d80a0bf163a`](https://github.com/wso2/identity-apps/commit/c2866febec26052bb1c27c11d6534d80a0bf163a)]:
+  - @wso2is/features@2.18.1
+
+## 2.5.88
+
+### Patch Changes
+
+- Updated dependencies [[`2f26bd622b68d20836b718db7735794470882b22`](https://github.com/wso2/identity-apps/commit/2f26bd622b68d20836b718db7735794470882b22), [`ecd8c4c52baa9286cce6441bf3428c2f371b9576`](https://github.com/wso2/identity-apps/commit/ecd8c4c52baa9286cce6441bf3428c2f371b9576), [`5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13`](https://github.com/wso2/identity-apps/commit/5670d713f4bc6ee962a858b8f9c91f9c2e4b6f13)]:
+  - @wso2is/features@2.18.0
+
 ## 2.5.87
 
 ### Patch Changes

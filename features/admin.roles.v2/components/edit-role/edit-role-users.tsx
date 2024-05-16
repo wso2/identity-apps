@@ -80,7 +80,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         role,
         onRoleUpdate,
         isReadOnly,
-        tabIndex
+        tabIndex,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -400,6 +401,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                             setSelectedUserStoreDomainName(e.target.value as string);
                                                         }
                                                     }
+                                                    data-componentid={ `${ componentId }-user-store-domain-dropdown` }
                                                 >
                                                     { isUserStoresLoading
                                                         ? <p>{ t("common:loading") }</p>
@@ -424,6 +426,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                 loading={ isUserListFetchRequestLoading || isUserSearchLoading }
                                                 options={ users }
                                                 value={ selectedUsersFromUserStore }
+                                                data-componentid={ `${ componentId }-user-search-text-input` }
                                                 getOptionLabel={
                                                     (user: UserBasicInterface) =>
                                                         RoleManagementUtils.getUserUsername(user)
@@ -499,6 +502,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                             variant="contained"
                                             loading={ isSubmitting }
                                             onClick={ handleUsersUpdate }
+                                            data-componentid={ `${ componentId }-update-role-users-button` }
                                         >
                                             { t("common:update") }
                                         </Button>

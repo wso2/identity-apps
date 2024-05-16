@@ -7,7 +7,7 @@
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,15 +17,15 @@
   -->
 
 <!--
-    This file defines class loading policy of the whole container. But this behaviour can be overridden by individual webapps by putting this file into the META-INF/ directory.   
+    This file defines class loading policy of the whole container. But this behaviour can be overridden by individual webapps by putting this file into the META-INF/ directory.
 -->
 <Classloading xmlns="http://wso2.org/projects/as/classloading">
 
     <!-- Parent-first or child-first. Default behaviour is child-first.-->
     <ParentFirst>false</ParentFirst>
 
-    <!-- 
-	Default environments that contains provides to all the webapps. This can be overridden by individual webapps by specifing required environments 
+    <!--
+	Default environments that contains provides to all the webapps. This can be overridden by individual webapps by specifing required environments
 	Tomcat environment is the default and every webapps gets it even if they didn't specify it.
 	e.g. If a webapps requires CXF, they will get both Tomcat and CXF.
      -->
