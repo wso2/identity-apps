@@ -172,10 +172,7 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
             header={ resolveConnectorTitle(connector) }
             onPrimaryActionClick={ handleSelection }
             primaryAction={ "Configure" }
-            connectorEnabled={ connector?.id === ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
-                ? undefined
-                : enableOption
-            }
+            connectorEnabled={ enableOption }
         >
         </SettingsSection>
     );

@@ -18,5 +18,5 @@
 
 export * from "./connector-form-factory";
 export * from "./login-attempt-security-form";
-export * from "./password-recovery-form/password-recovery-form";
+export * from "./password-recovery-form";
 export * from "./self-registration-form";

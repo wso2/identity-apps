@@ -1182,7 +1182,6 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
-        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "systemAppsIdentifiers": [
             "Console",
             "My Account"
