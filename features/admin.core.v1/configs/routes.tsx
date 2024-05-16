@@ -204,6 +204,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 )
             ),
             exact: false,
+            featureStatus: "NEW",
+            featureStatusLabel: "NEW",
             icon: {
                 icon: <ArrowRightToBracketPencilIcon />
             },
