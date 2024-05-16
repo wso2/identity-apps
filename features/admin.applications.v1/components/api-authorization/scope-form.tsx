@@ -106,7 +106,6 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     const [ isSelectAllDisabled, setIsSelectAllDisabled ] = useState<boolean>(false);
     const [ isSelectNoneDisabled, setIsSelectNoneDisabled ] = useState<boolean>(false);
 
-
     /**
      * Check if the place holders should be shown.
      */

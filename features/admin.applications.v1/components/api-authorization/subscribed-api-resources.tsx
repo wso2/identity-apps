@@ -149,6 +149,12 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
     const dispatch: Dispatch = useDispatch();
 
+    const {
+        data: currentAPIResourceScopeListData,
+        isLoading: isCurrentAPIResourceScopeListDataLoading,
+        error: currentAPIResourceScopeListFetchError
+    } = useScopesOfAPIResources(activeSubscribedAPIResource);
+
     /**
      * Initialize the subscribed API Resources list to the searched list.
      */
@@ -168,12 +174,6 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
             );
         }
     }, [ allAuthorizedScopes ]);
-
-    const {
-        data: currentAPIResourceScopeListData,
-        isLoading: isCurrentAPIResourceScopeListDataLoading,
-        error: currentAPIResourceScopeListFetchError
-    } = useScopesOfAPIResources(activeSubscribedAPIResource, !!activeSubscribedAPIResource);
 
     /**
      * Check whether the application is an M2M application.
