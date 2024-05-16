@@ -125,7 +125,8 @@ interface CustomWindow extends Window {
                     },
                     security: {
                         disabledFeatures: [
-                            "security.loginVerifyData.typingDNA"
+                            "security.loginVerifyData.typingDNA",
+                            "security.mfa.sms"
                         ],
                         enabled: true,
                         scopes: {

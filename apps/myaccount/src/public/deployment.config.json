@@ -104,7 +104,7 @@
                 }
             },
             "security": {
-                "disabledFeatures": ["security.mfa.sms", "security.loginVerifyData.typingDNA"],
+                "disabledFeatures": ["security.loginVerifyData.typingDNA", "security.mfa.sms"],
                 "enabled": true,
                 "scopes": {
                     "create": [],

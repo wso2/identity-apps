@@ -180,7 +180,8 @@ const ReduxStoreStateMock: any = {
                 },
                 security: {
                     disabledFeatures: [
-                        "security.loginVerifyData.typingDNA"
+                        "security.loginVerifyData.typingDNA",
+                        "security.mfa.sms"
                     ],
                     enabled: true,
                     scopes: {
