@@ -1,5 +1,17 @@
 # @wso2is/features
 
+## 2.19.3
+
+### Patch Changes
+
+- [#6269](https://github.com/wso2/identity-apps/pull/6269) [`919823a13b4368e878e3060d08b669df9b1c96c1`](https://github.com/wso2/identity-apps/commit/919823a13b4368e878e3060d08b669df9b1c96c1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add component ids
+
+* [#6267](https://github.com/wso2/identity-apps/pull/6267) [`d0e98c9b386b156dd46602341853d7fe6e9d7ba2`](https://github.com/wso2/identity-apps/commit/d0e98c9b386b156dd46602341853d7fe6e9d7ba2) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change tenant id to tenant domain in branding section content
+
+- [#6265](https://github.com/wso2/identity-apps/pull/6265) [`4ccdf26b49e1dc2df2c68c033e50e493e32d72de`](https://github.com/wso2/identity-apps/commit/4ccdf26b49e1dc2df2c68c033e50e493e32d72de) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Hide m2m apps in old runtime.
+
+* [#6263](https://github.com/wso2/identity-apps/pull/6263) [`f650a116e5cfd7867ce26adad34f368a668627dc`](https://github.com/wso2/identity-apps/commit/f650a116e5cfd7867ce26adad34f368a668627dc) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Remove redundant application roles check when displaying the roles tab
+
 ## 2.19.2
 
 ### Patch Changes
