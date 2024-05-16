@@ -21,6 +21,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     getUserNameWithoutDomain,
     hasRequiredScopes,
+    isFeatureEnabled,
     resolveUserDisplayName,
     resolveUserEmails
 } from "@wso2is/core/helpers";
@@ -55,7 +56,7 @@ import {
     updateProfileImageURL,
     updateProfileInfo
 } from "../../api";
-import { CommonConstants, UIConstants } from "../../constants";
+import { AppConstants, CommonConstants, UIConstants } from "../../constants";
 import { commonConfig, profileConfig } from "../../extensions";
 import {
     AlertInterface,
@@ -210,8 +211,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * Set the if the email verification is pending.
      */
     useEffect(() => {
-        if (profileDetails?.profileInfo?.pendingEmails && !isEmpty(profileDetails?.profileInfo?.pendingEmails)
-        && isEmailVerificationEnabled) {
+        if (
+            profileDetails?.profileInfo?.pendingEmails 
+            && !isEmpty(profileDetails?.profileInfo?.pendingEmails)
+            && isEmailVerificationEnabled
+        ) {
             setEmailPending(true);
         }
     }, [ profileDetails?.profileInfo?.pendingEmails ]);
@@ -769,7 +773,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             }
 
             return (
-                isMobileVerificationEnabled && checkSchemaType(schema.name, "mobile")
+                isFeatureEnabled(
+                    featureConfig?.personalInfo,
+                    AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
+                ) && checkSchemaType(schema.name, "mobile")
+                && isMobileVerificationEnabled
                     ? (
                         <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
                             <p>
