@@ -151,10 +151,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                     responseProperties.forEach((prop: PreferenceProperty) => {
                         if (prop.name === ProfileConstants.ENABLE_EMAIL_VERIFICATION) {
-                            setIsEmailVerificationEnabled(prop.value.toLowerCase() == "true"? true : false);
+                            setIsEmailVerificationEnabled(prop.value.toLowerCase() == "true");
                         }
                         if (prop.name === ProfileConstants.ENABLE_MOBILE_VERIFICATION) {
-                            setIsMobileVerificationEnabled(prop.value.toLowerCase() == "true"? true : false);
+                            setIsMobileVerificationEnabled(prop.value.toLowerCase() == "true");
                         }
                     });
                 } else {
@@ -170,7 +170,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 }
             })
             .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.detail) {
+                if (error?.response?.data?.detail) {
                     onAlertFired({
                         description: t(
                             "myAccount:sections.verificationOnUpdate.preference.notifications.error.description",
@@ -212,9 +212,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     useEffect(() => {
         if (
-            profileDetails?.profileInfo?.pendingEmails
+            isEmailVerificationEnabled
+            && profileDetails?.profileInfo?.pendingEmails
             && !isEmpty(profileDetails?.profileInfo?.pendingEmails)
-            && isEmailVerificationEnabled
         ) {
             setEmailPending(true);
         }
@@ -295,7 +295,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 if (schemaNames.length === 1) {
                     if (schemaNames[0] === "emails") {
-                        if (profileDetails?.profileInfo?.pendingEmails?.length > 0 && isEmailVerificationEnabled) {
+                        if (isEmailVerificationEnabled &&
+                            profileDetails?.profileInfo?.pendingEmails?.length > 0) {
                             tempProfileInfo.set(schema.name,
                                 profileDetails.profileInfo.pendingEmails[0].value as string);
                         } else {
