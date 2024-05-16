@@ -95,4 +95,12 @@ export class ProfileConstants {
      * Default max length for a claim without a max length defined in schemas.
      */
     public static readonly CLAIM_VALUE_MAX_LENGTH: number = 255;
+
+    // Mobile and email verification
+
+    public static readonly USER_CLAIM_UPDATE_CONNECTOR: string = "user-claim-update";
+
+    public static readonly ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
+
+    public static readonly ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
 }

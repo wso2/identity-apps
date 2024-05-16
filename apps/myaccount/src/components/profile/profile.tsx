@@ -124,9 +124,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
-    const USER_CLAIM_UPDATE_CONNECTOR: string = "user-claim-update";
-    const ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
-    const ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
 
@@ -137,10 +134,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const userClaimUpdateConnector: PreferenceRequest[] = [
             {
-                "connector-name": USER_CLAIM_UPDATE_CONNECTOR,
+                "connector-name": ProfileConstants.USER_CLAIM_UPDATE_CONNECTOR,
                 properties: [
-                    ENABLE_EMAIL_VERIFICATION,
-                    ENABLE_MOBILE_VERIFICATION
+                    ProfileConstants.ENABLE_EMAIL_VERIFICATION,
+                    ProfileConstants.ENABLE_MOBILE_VERIFICATION
                 ]
             }
         ];
@@ -152,10 +149,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     const responseProperties: PreferenceProperty[] = userClaimUpdateOptions[0].properties;
 
                     responseProperties.forEach((prop: PreferenceProperty) => {
-                        if (prop.name === ENABLE_EMAIL_VERIFICATION) {
+                        if (prop.name === ProfileConstants.ENABLE_EMAIL_VERIFICATION) {
                             setIsEmailVerificationEnabled(prop.value.toLowerCase() == "true"? true : false);
                         }
-                        if (prop.name === ENABLE_MOBILE_VERIFICATION) {
+                        if (prop.name === ProfileConstants.ENABLE_MOBILE_VERIFICATION) {
                             setIsMobileVerificationEnabled(prop.value.toLowerCase() == "true"? true : false);
                         }
                     });
