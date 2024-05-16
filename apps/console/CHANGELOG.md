@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.18.10
+
+### Patch Changes
+
+- Updated dependencies [[`538ffee532d3106bc798552791b0d86b3fcc61f1`](https://github.com/wso2/identity-apps/commit/538ffee532d3106bc798552791b0d86b3fcc61f1)]:
+  - @wso2is/core@2.0.46
+  - @wso2is/i18n@2.3.1
+  - @wso2is/features@2.19.4
+  - @wso2is/access-control@3.0.6
+  - @wso2is/dynamic-forms@2.0.61
+  - @wso2is/form@2.0.62
+  - @wso2is/forms@2.0.36
+  - @wso2is/react-components@2.2.3
+
 ## 2.18.9
 
 ### Patch Changes

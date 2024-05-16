@@ -1,5 +1,19 @@
 # @wso2is/myaccount
 
+## 2.5.98
+
+### Patch Changes
+
+- [#6220](https://github.com/wso2/identity-apps/pull/6220) [`538ffee532d3106bc798552791b0d86b3fcc61f1`](https://github.com/wso2/identity-apps/commit/538ffee532d3106bc798552791b0d86b3fcc61f1) Thanks [@lashinijay](https://github.com/lashinijay)! - Changes to rely on mobile number verification in my account on governance config `verification on update`
+
+- Updated dependencies [[`538ffee532d3106bc798552791b0d86b3fcc61f1`](https://github.com/wso2/identity-apps/commit/538ffee532d3106bc798552791b0d86b3fcc61f1)]:
+  - @wso2is/core@2.0.46
+  - @wso2is/i18n@2.3.1
+  - @wso2is/features@2.19.4
+  - @wso2is/access-control@3.0.6
+  - @wso2is/forms@2.0.36
+  - @wso2is/react-components@2.2.3
+
 ## 2.5.97
 
 ### Patch Changes
