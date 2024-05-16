@@ -367,13 +367,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const hybridFlowConfigValuesChangeListener = (tempForm: Map<string, FormValue>): void => {
 
-        const withPredicate = (val: string): boolean => val ===
-            ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG ;
-
         if (tempForm.has(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG)) {
-            const value: string[] = tempForm.get(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG) as string[];
+            const values: string[] = tempForm.get(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG) as string[];
 
-            if (value.find(withPredicate)) {
+            if (values.find((val: string): boolean =>
+                val === ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG )) {
                 setEnableHybridFlowResponseTypeField(true);
             } else {
                 setEnableHybridFlowResponseTypeField(false);
@@ -383,7 +381,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const PRIVATE_KEY_JWT: string = "private_key_jwt";
     const TLS_CLIENT_AUTH: string = "tls_client_auth";
-
 
     useEffect(() => {
         if (sharedOrganizationsList) {
@@ -945,6 +942,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         return allowedList;
     };
 
+    /**
+     * Modifies the response type label. For `code token` and `code id_token token` fields,
+     * a warning icon is concatenated with the label.
+     *
+     * @param value - checkbox key
+     * @param label - mapping label for value
+     */
     const modifyResponseTypeLabel = (value: string, label: string) => {
         if (value === ApplicationManagementConstants.CODE_TOKEN ||
             value === ApplicationManagementConstants.CODE_IDTOKEN_TOKEN
@@ -2030,7 +2034,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ]
                                     }
                                     type="checkbox"
-                                    value = { initialValues?.hybridFlow?.enable? [ 
+                                    value = { initialValues?.hybridFlow?.enable? [
                                         ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG ] : [] }
                                     listen={ hybridFlowConfigValuesChangeListener }
                                     readOnly={ readOnly }
@@ -2041,11 +2045,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </>
                 )
             }
-
             {
                 showHybridFlowEnableConfig
-                &&
-                ( enableHybridFlowResponseTypeField || initialValues?.hybridFlow?.enable )
+                && ( enableHybridFlowResponseTypeField || initialValues?.hybridFlow?.enable )
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
