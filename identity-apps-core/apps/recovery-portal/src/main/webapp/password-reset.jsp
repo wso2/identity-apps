@@ -47,13 +47,7 @@
     String type = request.getParameter("type");
     String orgId = request.getParameter("orgid");
     String spId = request.getParameter("spId");
-    if (StringUtils.isBlank(spId)) {
-        spId = (String)request.getAttribute("spId");
-    }
     String sp = Encode.forJava(request.getParameter("sp"));
-    if (StringUtils.isBlank(sp)) {
-        sp = (String)request.getAttribute("sp");
-    }
     boolean passwordExpired = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("passwordExpired"));
     String tenantDomainFromQuery = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     String ASGARDEO_USERSTORE = "ASGARDEO-USER";
@@ -88,9 +82,6 @@
         passwordConfig = null;
     }
 
-    String resetCode = (String) request.getAttribute("resetCode");
-    String flowConfirmationCode = Encode.forHtmlAttribute(request.getParameter("flowConfirmationCode")); 
-    boolean isForgotPasswordFlow = StringUtils.isNotBlank(resetCode);
 %>
 
 <!doctype html>
@@ -143,7 +134,7 @@
                     <div id="ui visible negative message" hidden="hidden"></div>
 
                     <div class="segment-form">
-                        <form class="ui large form" method="post" action="<%= isForgotPasswordFlow?"passwordrecoveryotp.do":"completepasswordreset.do" %>" id="passwordResetForm">
+                        <form class="ui large form" method="post" action="completepasswordreset.do" id="passwordResetForm">
                             <%
                             if (StringUtils.isNotBlank(spId)) {
                             %>
@@ -245,25 +236,6 @@
                             </div>
                             <%
                                 }
-                                if (isForgotPasswordFlow) {
-                            %>
-
-                            <div>
-                                <input type="hidden" name="channel"
-                                value='<%=IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP%>'/>
-                            </div>
-                            <div>
-                                <input type="hidden" id="recoveryStage" name="recoveryStage"
-                                value='RESET'/>
-                            </div>
-                            <div>
-                                <input type="hidden" name="resetCode" value="<%=Encode.forHtmlAttribute(resetCode) %>"/>
-                            </div>
-                            <div>
-                                <input type="hidden" name="flowConfirmationCode" value="<%=Encode.forHtmlAttribute(flowConfirmationCode) %>"/>
-                            </div>
-                            <%
-                                }
                                 if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled() &&
                                             StringUtils.isNotBlank(tenantDomainFromQuery)) {
                             %>
@@ -324,7 +296,7 @@
 
                             <div class="align-right buttons">
                                 <button id="submit"
-                                    class="ui primary fluid large button"
+                                    class="ui primary button"
                                     type="submit"
                                 >
                                     <% if ("invite".equalsIgnoreCase(type)) { %>
