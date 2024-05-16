@@ -88,7 +88,6 @@ import {
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
     OAuth2PKCEConfigurationInterface,
-    HybridFlowConfigurationInterface,
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
@@ -217,8 +216,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showOriginError, setShowOriginError ] = useState(false);
     const [ showPKCEField, setPKCEField ] = useState<boolean>(undefined);
     const [ showHybridFlowEnableConfig, setHybridFlowEnableConfig ] = useState<boolean>(false);
-    const [ isHybridFlowEnabled, setHybridFlowEnabled ] = useState<boolean>(false);
-    const [ showHybridFlowResponseType, setHybridFlowResponseTypeField] = useState<boolean>(false);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
@@ -294,6 +291,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const [ isAppShared, setIsAppShared ] = useState<boolean>(false);
     const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
+    const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
@@ -334,13 +332,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const ENABLE_PKCE_CHECKBOX_VALUE: string = "mandatory";
     const SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE: string = "supportPlainTransformAlgorithm";
 
-    const HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
-    const HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
-    const CODE_TOKEN: string = "code token";
-    const CODE_IDTOKEN: string = "code id_token";
-    const CODE_IDTOKEN_TOKEN: string = "code id_token token";
-    const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
-
     /**
      * The listener handler for the enable PKCE toggle form field. This function
      * check if the "mandatory" value is present in the values array under "PKCE"
@@ -376,10 +367,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const hybridFlowConfigValuesChangeListener = (tempForm: Map<string, FormValue>): void => {
 
-        const withPredicate = (val: string): boolean => val === HYBRID_FLOW_ENABLE_CONFIG ;
+        const withPredicate = (val: string): boolean => val ===
+            ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG ;
 
-        if (tempForm.has(HYBRID_FLOW_ENABLE_CONFIG)) {
-            const value: string[] = tempForm.get(HYBRID_FLOW_ENABLE_CONFIG) as string[];
+        if (tempForm.has(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG)) {
+            const value: string[] = tempForm.get(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG) as string[];
 
             if (value.find(withPredicate)) {
                 setEnableHybridFlowResponseTypeField(true);
@@ -900,17 +892,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         [
             t("applications:forms.inboundOIDC.sections.hybridFlow.hybridFlowResponseType." +
             "fields.children.code_token.label"),
-            CODE_TOKEN
+            ApplicationManagementConstants.CODE_TOKEN
         ],
         [
             t("applications:forms.inboundOIDC.sections.hybridFlow.hybridFlowResponseType.fields." +
             "children.code_idtoken.label"),
-            CODE_IDTOKEN
+            ApplicationManagementConstants.CODE_IDTOKEN
         ],
         [
             t("applications:forms.inboundOIDC.sections.hybridFlow.hybridFlowResponseType.fields." +
             "children.code_idtoken_token.label"),
-            CODE_IDTOKEN_TOKEN
+            ApplicationManagementConstants.CODE_IDTOKEN_TOKEN
         ]
     ]);
 
@@ -954,8 +946,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     const modifyResponseTypeLabel = (value: string, label: string) => {
-        if (value === CODE_TOKEN ||
-            value === CODE_IDTOKEN_TOKEN
+        if (value === ApplicationManagementConstants.CODE_TOKEN ||
+            value === ApplicationManagementConstants.CODE_IDTOKEN_TOKEN
         ) {
             return (
                 <>
@@ -1240,7 +1232,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     ...inboundConfigFormValues,
                     hybridFlow: {
                         enable: values.get("enable-hybrid-flow")?.length > 0,
-                        responseType: values.get(HYBRID_FLOW_RESPONSE_TYPE)
+                        responseType: values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE)
                     }
                 };
             } else {
@@ -1419,7 +1411,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ...inboundConfigFormValues,
                 hybridFlow: {
                     enable: values.get("enable-hybrid-flow")?.length > 0,
-                    responseType: values.get(HYBRID_FLOW_RESPONSE_TYPE)
+                    responseType: values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE)
                 }
             };
         } else {
@@ -2026,19 +2018,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Box>
                                 <Field
                                     ref={ hybridFlowEnableConfig }
-                                    name={ HYBRID_FLOW_ENABLE_CONFIG }
+                                    name={ ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG }
                                     required={ false }
                                     children={
                                         [
                                             {
                                                 label: t("applications:forms.inboundOIDC.sections.hybridFlow.enable." +
                                                 "label"),
-                                                value: HYBRID_FLOW_ENABLE_CONFIG
+                                                value: ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG
                                             }
                                         ]
                                     }
                                     type="checkbox"
-                                    value = { initialValues?.hybridFlow?.enable? [ HYBRID_FLOW_ENABLE_CONFIG ] : [] }
+                                    value = { initialValues?.hybridFlow?.enable? [ 
+                                        ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG ] : [] }
                                     listen={ hybridFlowConfigValuesChangeListener }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }--hybridFlow-enable-checkbox` }
@@ -2064,13 +2057,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     t("applications:forms.inboundOIDC.sections" +
                                         ".hybridFlow.hybridFlowResponseType.label")
                                 }
-                                name = { HYBRID_FLOW_RESPONSE_TYPE }
+                                name = { ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE }
                                 type="radio"
                                 required={ true }
                                 children={ getHybridFlowResponseTypes() }
                                 readOnly={ readOnly }
                                 default= { initialValues?.hybridFlow?.responseType?
-                                    initialValues.hybridFlow.responseType : CODE_IDTOKEN }
+                                    initialValues.hybridFlow.responseType :ApplicationManagementConstants.CODE_IDTOKEN }
                                 enableReinitialize={ true }
                                 data-testid={ `${ testId }--hybridflow-responsetype-checkbox` }
                             />
