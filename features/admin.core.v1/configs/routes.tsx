@@ -67,7 +67,6 @@ import { store } from "../store";
  */
 
 export const getAppViewRoutes = (): RouteInterface[] => {
-    console.log( AppConfigs.getAppUtils()?.getConfig() )
 
     const legacyMode: LegacyModeInterface = AppConfigs.getAppUtils()?.getConfig()?.ui?.legacyMode;
     const applicationRolesFeatureConfig: FeatureAccessConfigInterface
