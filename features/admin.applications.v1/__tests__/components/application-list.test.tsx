@@ -16,18 +16,20 @@
  * under the License.
  */
 
-import React from "react";
-import { render, screen } from "../../../test-configs";
+import * as Grid from "@oxygen-ui/react/Grid";
+import React, { PropsWithChildren } from "react";
+import { render, screen, waitFor } from "../../../test-configs";
 import * as useGetApplicationTemplates from "../../api/use-get-application-templates";
-import { CategorizedApplicationTemplatesInterface } from "../../models/application-templates";
+import { ApplicationList, ApplicationListPropsInterface } from "../../components/application-list";
 import ApplicationTemplatesProvider from "../../provider/application-templates-provider";
 import {
-    applicationTemplatesListMockResponse, categorizedApplicationTemplatesListMockResponse
+    TEMPLATE_NAMES,
+    applicationListMockResponse,
+    applicationTemplatesListMockResponse
 } from "../__mocks__/application-template";
 import "@testing-library/jest-dom";
-import MockApplicationTemplatesComponent from "../__mocks__/mock-application-templates-component";
 
-describe("[Applications Management Feature] - ApplicationTemplatesProvider", () => {
+describe("[Applications Management Feature] - ApplicationList", () => {
     const useGetApplicationTemplatesMock: jest.SpyInstance = jest.spyOn(useGetApplicationTemplates, "default");
 
     useGetApplicationTemplatesMock.mockImplementation(() => ({
@@ -38,19 +40,24 @@ describe("[Applications Management Feature] - ApplicationTemplatesProvider", () 
         mutate: jest.fn()
     }));
 
-    test("Test whether the application templates provider provides the application templates list correctly", () => {
+    const gridComponent: jest.SpyInstance = jest.spyOn(Grid, "default");
+
+    gridComponent.mockImplementation((props: PropsWithChildren) => <div>{ props?.children }</div>);
+
+    const props: ApplicationListPropsInterface = {
+        list: applicationListMockResponse
+    };
+
+    test("Test whether the application list correctly identifies the created app template", async () => {
         render(
             <ApplicationTemplatesProvider>
-                <MockApplicationTemplatesComponent />
+                <ApplicationList { ...props } />
             </ApplicationTemplatesProvider>
         );
 
-        expect(screen.getByTestId("mock-application-templates-component-loading-status")).toBeInTheDocument();
-        expect(screen.getByTestId("mock-application-templates-component-templates").innerHTML)
-            .toContain(`Number of templates-${applicationTemplatesListMockResponse.length}`);
-        categorizedApplicationTemplatesListMockResponse.forEach((item: CategorizedApplicationTemplatesInterface) => {
-            expect(screen.getByTestId(`mock-application-templates-component-${item.id}`).innerHTML)
-                .toContain(`Number of templates-${item.templates.length}`);
+        await waitFor(() => {
+            expect(screen.getByText(TEMPLATE_NAMES.salesforce)).toBeInTheDocument();
+            expect(screen.getByText(TEMPLATE_NAMES.spa)).toBeInTheDocument();
         });
     });
 });

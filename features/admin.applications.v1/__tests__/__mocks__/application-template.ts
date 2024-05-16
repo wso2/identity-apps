@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ApplicationAccessTypes, ApplicationListInterface } from "../../models";
 import {
     ApplicationTemplateCategories,
     ApplicationTemplateListInterface,
@@ -143,13 +144,13 @@ export const applicationTemplatesListMockResponse: ApplicationTemplateListInterf
                 value: "false"
             }
         ],
-        description: "A suite of cloud-based tools like Gmail, Google Drive, and Docs, offering"
-            + " one platform for email, storage, document editing, and communication.",
-        displayOrder: 6,
-        id: "google-workspace",
-        image: "{{CONSOLE_BASE_URL}}/resources/applications/assets/images/illustrations/google-workspace.png",
-        name: "Google Workspace",
-        self: "/api/server/v1/extensions/applications/google-workspace",
+        description: "Customer relationship management (CRM) platform that enables businesses to manage their sales"
+            + ", marketing, and customer service operations efficiently.",
+        displayOrder: 7,
+        id: "salesforce",
+        image: "{{CONSOLE_BASE_URL}}/resources/applications/assets/images/illustrations/salesforce.png",
+        name: "Salesforce",
+        self: "/api/server/v1/extensions/applications/salesforce",
         tags: [
             "SAML",
             "SSO"
@@ -303,13 +304,13 @@ export const categorizedApplicationTemplatesListMockResponse: CategorizedApplica
                         value: "false"
                     }
                 ],
-                description: "A suite of cloud-based tools like Gmail, Google Drive, and Docs, offering"
-                    + " one platform for email, storage, document editing, and communication.",
-                displayOrder: 6,
-                id: "google-workspace",
-                image: "{{CONSOLE_BASE_URL}}/resources/applications/assets/images/illustrations/google-workspace.png",
-                name: "Google Workspace",
-                self: "/api/server/v1/extensions/applications/google-workspace",
+                description: "Customer relationship management (CRM) platform that enables businesses "
+                    + "to manage their sales, marketing, and customer service operations efficiently.",
+                displayOrder: 7,
+                id: "salesforce",
+                image: "{{CONSOLE_BASE_URL}}/resources/applications/assets/images/illustrations/salesforce.png",
+                name: "Salesforce",
+                self: "/api/server/v1/extensions/applications/salesforce",
                 tags: [
                     "SAML",
                     "SSO"
@@ -326,3 +327,77 @@ export const categorizedApplicationTemplatesListMockResponse: CategorizedApplica
         templates: []
     }
 ];
+
+export const applicationListMockResponse: ApplicationListInterface = {
+    applications: [
+        {
+            access: ApplicationAccessTypes.WRITE,
+            advancedConfigurations: {
+                additionalSpProperties: [
+                    {
+                        displayName: "Is B2B Self Service Application",
+                        name: "isB2BSelfServiceApp",
+                        value: "false"
+                    }
+                ],
+                attestationMetaData: {
+                    enableClientAttestation: false
+                },
+                discoverableByEndUsers: false,
+                enableAPIBasedAuthentication: false,
+                enableAuthorization: false,
+                fragment: false,
+                returnAuthenticatedIdpList: false,
+                saas: false,
+                skipLoginConsent: false,
+                skipLogoutConsent: true
+            },
+            clientId: "kcn1kuV1yiZbaDofF2Xfg4jUpsUa",
+            id: "142fbbc0-69b8-4f3d-a647-adecc9f29804",
+            issuer: "",
+            name: "Sample salesforce SSO app",
+            realm: "",
+            self: "/api/server/v1/applications/142fbbc0-69b8-4f3d-a647-adecc9f29804",
+            templateId: "salesforce"
+        },
+        {
+            access: ApplicationAccessTypes.WRITE,
+            advancedConfigurations: {
+                additionalSpProperties: [
+                    {
+                        displayName: "Is B2B Self Service Application",
+                        name: "isB2BSelfServiceApp",
+                        value: "false"
+                    }
+                ],
+                attestationMetaData: {
+                    enableClientAttestation: false
+                },
+                discoverableByEndUsers: false,
+                enableAPIBasedAuthentication: false,
+                enableAuthorization: false,
+                fragment: false,
+                returnAuthenticatedIdpList: false,
+                saas: false,
+                skipLoginConsent: true,
+                skipLogoutConsent: true
+            },
+            clientId: "Y4LmFp5bwqvylijALgOCYPGvlTMa",
+            id: "c3a3d3ce-4166-416a-963a-94e1c1c8de5f",
+            issuer: "",
+            name: "SPA",
+            realm: "",
+            self: "/api/server/v1/applications/c3a3d3ce-4166-416a-963a-94e1c1c8de5f",
+            templateId: "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7"
+        }
+    ],
+    count: 2,
+    links: [],
+    startIndex: 1,
+    totalResults: 2
+};
+
+export const TEMPLATE_NAMES: { [key: string]: string } = {
+    salesforce: "Salesforce",
+    spa: "Single-Page Application"
+};
