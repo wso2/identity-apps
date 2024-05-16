@@ -33,7 +33,8 @@ import { AuthorizedPermissionListItemInterface } from "../models/api-authorizati
  * @throws `IdentityAppsApiException`
  */
 const useScopesOfAPIResources = <Data = AuthorizedPermissionListItemInterface[], Error = RequestErrorInterface>(
-    apiResourceId: string
+    apiResourceId: string,
+    shouldFetch: boolean = false
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -45,7 +46,11 @@ const useScopesOfAPIResources = <Data = AuthorizedPermissionListItemInterface[],
         url: `${ store.getState().config.endpoints.apiResources }/${ apiResourceId }/scopes`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(apiResourceId ? requestConfig: null);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+        (apiResourceId && shouldFetch)
+            ? requestConfig
+            : null
+    );
 
     return {
         data,

@@ -35,7 +35,6 @@ import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Header } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../admin.core.v1";
 import { patchScopesOfAuthorizedAPI } from "../../api/api-authorization";
-import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
@@ -59,6 +58,14 @@ interface ScopeFormInterface extends
      */
     isScopesAvailableForUpdate: boolean;
     /**
+     * Current API resource scopes list.
+     */
+    currentAPIResourceScopeListData: AuthorizedPermissionListItemInterface[];
+    /**
+     * Current API resource scopes list loading.
+     */
+    isCurrentAPIResourceScopeListDataLoading: boolean
+    /**
      * Bulk change all authorized scopes.
      */
     bulkChangeAllAuthorizedScopes: (scopes: AuthorizedPermissionListItemInterface[], removed: boolean) => void;
@@ -79,6 +86,8 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
         subscribedAPIResource,
         isScopesAvailableForUpdate,
         bulkChangeAllAuthorizedScopes,
+        currentAPIResourceScopeListData,
+        isCurrentAPIResourceScopeListDataLoading,
         ["data-componentid"]: componentId
     } = props;
 
@@ -97,26 +106,6 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     const [ isSelectAllDisabled, setIsSelectAllDisabled ] = useState<boolean>(false);
     const [ isSelectNoneDisabled, setIsSelectNoneDisabled ] = useState<boolean>(false);
 
-    const {
-        data: currentAPIResourceScopeListData,
-        isLoading: isCurrentAPIResourceScopeListDataLoading,
-        error: currentAPIResourceScopeListFetchError
-    } = useScopesOfAPIResources(subscribedAPIResource?.id);
-
-    /**
-     * The following useEffect is used to handle if any error occurs while fetching API resource scopes.
-     */
-    useEffect(() => {
-        if (currentAPIResourceScopeListFetchError) {
-            dispatch(addAlert<AlertInterface>({
-                description: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.message")
-            }));
-        }
-    }, [ currentAPIResourceScopeListFetchError ]);
 
     /**
      * Check if the place holders should be shown.
