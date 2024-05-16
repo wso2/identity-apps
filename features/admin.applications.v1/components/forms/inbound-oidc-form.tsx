@@ -324,8 +324,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const [ enablePKCE, setEnablePKCE ] = useState<boolean>(false);
 
-    const [ enablehybridFlowResponseTypes, setEnableHybridFlowResponseType] = useState<boolean>(false);
-
     /**
      * The {@link PKCE_KEY}, {@link ENABLE_PKCE_CHECKBOX_VALUE} and
      * {@link SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE} values are sensitive.
@@ -336,18 +334,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const ENABLE_PKCE_CHECKBOX_VALUE: string = "mandatory";
     const SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE: string = "supportPlainTransformAlgorithm";
 
-    /**
-     * Hybrid flow respone types
-     */
-    // const HYBRID_FLOW_ENABLE_CHECKBOX_VALUE:
-
-    const HYBRID_FLOW_ENABLE_CONFIG = "enable-hybrid-flow";
+    const HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
     const HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
     const CODE_TOKEN: string = "code token";
     const CODE_IDTOKEN: string = "code id_token";
     const CODE_IDTOKEN_TOKEN: string = "code id_token token";
-
-    const [ hybridFlowResponseType, setHybridFlowResponseType ] = useState<string>(undefined);
     const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
 
     /**
@@ -544,13 +535,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
     }, [ selectedGrantTypes, isGrantChanged ]);
-
-    // useEffect(() => {
-    //     setHybridFlowResponseTypeField(false);
-    //     if (selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)) {
-    //         setHybridFlowResponseTypeField(true);
-    //     }
-    // }, [ selectedGrantTypes, isGrantChanged ]);
 
     useEffect(() => {
         setHybridFlowEnableConfig(false);
@@ -964,7 +948,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             allowedList.push(responseTypeList);
-            // responseTypes.push({ label: responseTypeLabel, value });
         });
 
         return allowedList;
@@ -1164,7 +1147,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const updateConfiguration = (values: any, url?: string, origin?: string): any => {
         let finalConfiguration: any;
-        debugger
+
         if (!isSystemApplication && !isDefaultApplication) {
             let inboundConfigFormValues: any = {
                 accessToken: {
@@ -2014,7 +1997,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* hybrid flow */ }
-
             {
                 showHybridFlowEnableConfig
                 && !isSystemApplication
