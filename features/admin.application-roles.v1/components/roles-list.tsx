@@ -27,9 +27,9 @@ import {
 import React, { ChangeEvent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
-import { RoleBasicInterface } from "../../admin.extensions.v1/components/groups/models";
-import { history } from "../../admin.core.v1";
-import { AppConstants, UIConstants } from "../../admin.core.v1/constants";
+import { RoleBasicInterface } from "@wso2is/admin.extensions.v1/components/groups/models";
+import { history } from "@wso2is/admin.core.v1";
+import { AppConstants, UIConstants } from "@wso2is/admin.core.v1/constants";
 
 interface RolesListProps extends IdentifiableComponentInterface {
     rolesList: RoleBasicInterface[];

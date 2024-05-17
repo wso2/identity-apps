@@ -28,12 +28,12 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { getApplicationRolesList } from "../../admin.extensions.v1/components/application/api";
+import { getApplicationRolesList } from "@wso2is/admin.extensions.v1/components/application/api";
 import {
     ApplicationRolesResponseInterface,
     RoleListItemInterface
-} from "../../admin.extensions.v1/components/application/models";
-import { AppConstants, history } from "../../admin.core.v1";
+} from "@wso2is/admin.extensions.v1/components/application/models";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import EditApplicationRoles from "../components/edit-application-role";
 
 type ApplicationRoleEditPageProps = IdentifiableComponentInterface

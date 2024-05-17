@@ -36,12 +36,12 @@ import { Dispatch } from "redux";
 import { Grid, Header, Icon, Input } from "semantic-ui-react";
 import {
     useApplicationRoleInvitedUserGroups, useDescendantsOfSubOrg
-} from "../../admin.extensions.v1/components/application/api";
+} from "@wso2is/admin.extensions.v1/components/application/api";
 import {
     ApplicationRoleGroupInterface, DescendantDataInterface
-} from "../../admin.extensions.v1/components/application/models";
-import { UIConstants } from "../../admin.core.v1";
-import { CONSUMER_USERSTORE } from "../../admin.userstores.v1/constants";
+} from "@wso2is/admin.extensions.v1/components/application/models";
+import { UIConstants } from "@wso2is/admin.core.v1";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 
 interface ApplicationRoleGroupsProps extends IdentifiableComponentInterface {
     appId: string;

@@ -35,8 +35,8 @@ import { Grid, Modal } from "semantic-ui-react";
 import {
     ApplicationRoleGroupInterface,
     ApplicationRoleGroupsAPIResponseInterface
-} from "../../admin.extensions.v1/components/application/models";
-import { getGroupList } from "../../admin.groups.v1/api";
+} from "@wso2is/admin.extensions.v1/components/application/models";
+import { getGroupList } from "@wso2is/admin.groups.v1/api";
 
 /**
  * Interface which captures create group props.
