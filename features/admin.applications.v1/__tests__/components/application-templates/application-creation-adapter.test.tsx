@@ -48,7 +48,7 @@ describe("[Applications Management Feature] - ApplicationCreationAdapter", () =>
     const script: HTMLScriptElement = document.createElement("script");
 
     script.textContent = "var isOrganizationManagementEnabled = false";
-    document.body.appendChild(script);
+    document.head.appendChild(script);
 
     test("Test the existing technology/protocol based application creation wizard", async () => {
         render(
