@@ -20,7 +20,7 @@ import Image from "@oxygen-ui/react/Image";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
-import { PredefinedThemes } from "@wso2is/features/common.branding.v1/models";
+import { PredefinedThemes } from "@wso2is/common.branding.v1/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";

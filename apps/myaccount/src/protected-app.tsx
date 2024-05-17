@@ -26,7 +26,7 @@ import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { setSupportedI18nLanguages } from "@wso2is/core/store";
 import { AuthenticateUtils, StringUtils } from "@wso2is/core/utils";
-import { ThemeProvider } from "@wso2is/features/common.branding.v1/providers/theme-provider";
+import { ThemeProvider } from "@wso2is/common.branding.v1/providers/theme-provider";
 import {
     I18n,
     I18nInstanceInitException,

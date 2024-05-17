@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CookieStorageUtils } from "@wso2is/core/utils";
-import { useThemeProvider } from "@wso2is/features/common.branding.v1/hooks/use-theme-provider";
+import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     FooterLinkInterface,

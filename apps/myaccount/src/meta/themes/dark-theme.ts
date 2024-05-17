@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ThemeConfigInterface } from "@wso2is/features/common.branding.v1/models";
+import { ThemeConfigInterface } from "@wso2is/common.branding.v1/models";
 
 export const DARK_THEME: ThemeConfigInterface = {
     buttons: {
