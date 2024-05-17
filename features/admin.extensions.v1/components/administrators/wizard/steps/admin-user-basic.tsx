@@ -37,20 +37,20 @@ import kebabCase from "lodash-es/kebabCase";
 import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
-import { useApplicationList } from "../../../../../admin.applications.v1/api/application";
-import { ApplicationManagementConstants } from "../../../../../admin.applications.v1/constants";
-import useAuthorization from "../../../../../admin.authorization.v1/hooks/use-authorization";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     SharedUserStoreUtils,
     UIConstants,
     UserBasicInterface,
     UserRoleInterface,
     getUsersList
-} from "../../../../../admin.core.v1";
-import { EventPublisher } from "../../../../../admin.core.v1/utils";
-import { getRolesList } from "../../../../../admin.roles.v2/api";
-import { UserInviteInterface, UserListInterface } from "../../../../../admin.users.v1/models/user";
-import { UserManagementUtils } from "../../../../../admin.users.v1/utils";
+} from "@wso2is/admin.core.v1";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { getRolesList } from "@wso2is/admin.roles.v2/api";
+import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { administratorConfig } from "../../../../configs/administrator";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { AdminAccountTypes } from "../../constants";

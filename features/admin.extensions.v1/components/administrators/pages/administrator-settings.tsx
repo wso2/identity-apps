@@ -25,14 +25,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Icon, Message } from "semantic-ui-react";
-import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
-import { history, store } from "../../../../admin.core.v1";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { history, store } from "@wso2is/admin.core.v1";
 import {
     updateOrganizationConfigV2
-} from "../../../../admin.extensions.v2/components/administrators/api/updateOrganizationConfigV2";
+} from "@wso2is/admin.extensions.v2/components/administrators/api/updateOrganizationConfigV2";
 import {
     useOrganizationConfigV2
-} from "../../../../admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
+} from "@wso2is/admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
 import { updateOrganizationConfig, useOrganizationConfig } from "../api/organization";
 import { AdministratorConstants } from "../constants";
 import { OrganizationInterface, UseOrganizationConfigType } from "../models/organization";

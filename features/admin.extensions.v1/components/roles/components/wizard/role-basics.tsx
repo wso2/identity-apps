@@ -24,14 +24,14 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { PermissionList } from "./role-permission";
-import { SharedUserStoreConstants } from "../../../../../admin.core.v1/constants";
-import { ConfigReducerStateInterface } from "../../../../../admin.core.v1/models";
-import { AppState } from "../../../../../admin.core.v1/store";
-import { SharedUserStoreUtils } from "../../../../../admin.core.v1/utils";
-import { searchRoleList } from "../../../../../admin.roles.v2/api";
-import { CreateRoleFormData, SearchRoleInterface, TreeNode } from "../../../../../admin.roles.v2/models";
-import { getUserStoreList } from "../../../../../admin.userstores.v1/api";
-import { CONSUMER_USERSTORE } from "../../../../../admin.userstores.v1/constants";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
+import { searchRoleList } from "@wso2is/admin.roles.v2/api";
+import { CreateRoleFormData, SearchRoleInterface, TreeNode } from "@wso2is/admin.roles.v2/models";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 
 /**
  * Interface to capture role basics props.

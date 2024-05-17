@@ -54,10 +54,10 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Checkbox, Divider, Grid, Header, Icon, Input, Label, Modal, Table } from "semantic-ui-react";
-import { getApplicationList } from "../../../../admin.applications.v1/api";
-import { ApplicationListInterface, ApplicationListItemInterface } from "../../../../admin.applications.v1/models";
-import { getEmptyPlaceholderIllustrations, history } from "../../../../admin.core.v1";
-import { GroupsInterface } from "../../../../admin.groups.v1";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationListInterface, ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { GroupsInterface } from "@wso2is/admin.groups.v1";
 import {
     getAllApplicationRolesList,
     getAssignedApplicationRolesList,

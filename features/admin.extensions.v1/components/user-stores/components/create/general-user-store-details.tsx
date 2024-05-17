@@ -19,7 +19,7 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation } from "@wso2is/forms";
-import { FeatureConfigInterface } from "../../../../../admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";

@@ -23,8 +23,8 @@ import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import { FunctionComponent } from "react";
 import { useSelector } from "react-redux";
-import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
-import { AppState, AppUtils } from "../../../../admin.core.v1";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { AppState, AppUtils } from "@wso2is/admin.core.v1";
 import LoginApplicationTemplate from 
     "../../../application-templates/templates/single-page-application/login-playground-application.json";
 import { TryItApplicationConstants } from "../constants/try-it-constants";

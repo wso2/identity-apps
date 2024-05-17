@@ -19,8 +19,8 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { store } from "../../../../admin.core.v1";
-import { RequestConfigInterface } from "../../../../admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { RegenerateTokenInterface } from "../models";
 
 /**

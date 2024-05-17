@@ -37,8 +37,8 @@ import React, { FC, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card, Divider, Form, Grid, Icon } from "semantic-ui-react";
-import { OIDCApplicationConfigurationInterface } from "../../../../admin.applications.v1/models";
-import { AppState, EventPublisher } from "../../../../admin.core.v1";
+import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models";
+import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
 
 const DEFAULT_REQUESTED_SCOPES: string = "openid profile";
 

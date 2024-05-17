@@ -37,8 +37,8 @@ import {
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../../../admin.core.v1";
-import { APPLICATION_DOMAIN } from "../../../../admin.roles.v2/constants";
+import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { APPLICATION_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**

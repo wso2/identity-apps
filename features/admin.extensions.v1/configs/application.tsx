@@ -36,23 +36,23 @@ import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
-import { APIAuthorization } from "../../admin.applications.v1/components/api-authorization/api-authorization";
+import { APIAuthorization } from "@wso2is/admin.applications.v1/components/api-authorization/api-authorization";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
-} from "../../admin.applications.v1/components/settings";
-import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
+} from "@wso2is/admin.applications.v1/components/settings";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
     ApplicationInterface,
     ApplicationTabTypes,
     SupportedAuthProtocolTypes,
     additionalSpProperty
-} from "../../admin.applications.v1/models";
-import { ClaimManagementConstants } from "../../admin.claims.v1/constants/claim-management-constants";
-import { EventPublisher, FeatureConfigInterface } from "../../admin.core.v1";
-import { AppConstants } from "../../admin.core.v1/constants";
-import { ApplicationRoles } from "../../admin.roles.v2/components/application-roles";
+} from "@wso2is/admin.applications.v1/models";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SamlWebAppTemplate

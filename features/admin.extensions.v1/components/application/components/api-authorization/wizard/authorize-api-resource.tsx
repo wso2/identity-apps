@@ -38,10 +38,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Grid, Header, Modal } from "semantic-ui-react";
-import { AppState } from "../../../../../../admin.core.v1/store";
-import { useAPIResources } from "../../../../../../admin.api-resources.v1/api";
-import { APIResourcesConstants } from "../../../../../../admin.api-resources.v1/constants";
-import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../../../admin.api-resources.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { useAPIResources } from "@wso2is/admin.api-resources.v1/api";
+import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
+import { APIResourceInterface, APIResourcePermissionInterface } from "@wso2is/admin.api-resources.v1/models";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants";
 import { AuthorizedAPIListItemInterface } from "../../../models";
 

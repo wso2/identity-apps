@@ -27,7 +27,7 @@ import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { ApplicationRoleBasics } from "./application-role-basics";
 import { PermissionList } from "./application-role-permission";
-import { getRolesWizardStepIcons } from "../../../../../admin.roles.v2/configs";
+import { getRolesWizardStepIcons } from "@wso2is/admin.roles.v2/configs";
 import { createRole } from "../../api/application-roles";
 import { CreateRolePayloadInterface, RoleBasicDetailsInterface, SharedApplicationDataInterface } from "../../models";
 

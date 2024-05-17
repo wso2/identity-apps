@@ -34,11 +34,11 @@ import {
     UpdateGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigPropertyInterface,
     UpdateMultipleGovernanceConnectorsInterface
-} from "../../admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1";
 import {
     ServerConfigurationsConstants
-} from "../../admin.server-configurations.v1/constants/server-configurations-constants";
-import { ValidationFormInterface } from "../../admin.validation.v1/models";
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import {
     updatePasswordExpiryProperties,
     useGetPasswordExpiryProperties

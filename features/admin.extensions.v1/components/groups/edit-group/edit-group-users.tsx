@@ -55,17 +55,17 @@ import { useDispatch } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
 import { Divider, Grid, Header, Icon, Modal, PaginationProps, Table } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, UIConstants,
-    getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
+    getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import {
     CreateGroupMemberInterface,
     GroupsInterface,
     GroupsMemberInterface,
     PatchGroupDataInterface,
     updateGroupDetails
-} from "../../../../admin.groups.v1";
-import { getUsersList } from "../../../../admin.users.v1/api/users";
-import { UserBasicInterface, UserListInterface } from "../../../../admin.users.v1/models/user";
-import { UserManagementUtils } from "../../../../admin.users.v1/utils";
+} from "@wso2is/admin.groups.v1";
+import { getUsersList } from "@wso2is/admin.users.v1/api/users";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { SCIMConfigs } from "../../../configs/scim";
 
 /**

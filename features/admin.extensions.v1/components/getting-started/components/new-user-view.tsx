@@ -28,14 +28,14 @@ import { ApplicationTemplateCard } from "./application-template-card";
 import { PlaygroundApplicationCard } from "./playground-app-card";
 import {
     MinimalAppCreateWizard
-} from "../../../../admin.applications.v1/components/wizard/minimal-application-create-wizard";
-import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
+} from "@wso2is/admin.applications.v1/components/wizard/minimal-application-create-wizard";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "../../../../admin.applications.v1/models";
-import { AppState, ConfigReducerStateInterface } from "../../../../admin.core.v1";
-import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
+} from "@wso2is/admin.applications.v1/models";
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 
 export type NewUserViewContextCardPropsInterface = {
     applications: ApplicationListItemInterface[];

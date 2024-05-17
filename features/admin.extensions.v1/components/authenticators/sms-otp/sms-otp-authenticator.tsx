@@ -20,16 +20,16 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
-import { AppState } from "../../../../admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     SMSOTPAuthenticatorForm
-} from "../../../../admin.identity-providers.v1/components/forms/authenticators/sms-otp-authenticator-form";
+} from "@wso2is/admin.identity-providers.v1/components/forms/authenticators/sms-otp-authenticator-form";
 import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface
-} from "../../../../admin.identity-providers.v1/models/identity-provider";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 
 interface SmsOTPAuthenticatorInterface extends IdentifiableComponentInterface {
     /**

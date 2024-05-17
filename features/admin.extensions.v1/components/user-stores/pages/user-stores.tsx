@@ -30,11 +30,11 @@ import {
     UIConstants,
     history,
     sortList
-} from "../../../../admin.core.v1";
-import { useUserStores } from "../../../../admin.userstores.v1/api";
-import { UserStoresList } from "../../../../admin.userstores.v1/components";
-import { UserStoreManagementConstants } from "../../../../admin.userstores.v1/constants";
-import { UserStoreListItem } from "../../../../admin.userstores.v1/models/user-stores";
+} from "@wso2is/admin.core.v1";
+import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import { UserStoresList } from "@wso2is/admin.userstores.v1/components";
+import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { RemoteUserStoreConstants } from "../constants";
 
 /**

@@ -27,7 +27,7 @@ import {
 import React, { FC, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Card } from "semantic-ui-react";
-import { EventPublisher } from "../../../../admin.core.v1";
+import { EventPublisher } from "@wso2is/admin.core.v1";
 
 type TechnologyArrayPropsInterface = {
     techIcon: GenericIconProps;

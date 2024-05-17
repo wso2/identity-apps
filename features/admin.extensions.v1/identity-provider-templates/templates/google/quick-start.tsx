@@ -27,16 +27,16 @@ import { Dispatch } from "redux";
 import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
-import { getApplicationList } from "../../../../admin.applications.v1/api";
-import { ApplicationList } from "../../../../admin.applications.v1/components/application-list";
-import { ApplicationListInterface } from "../../../../admin.applications.v1/models";
-import { AdvancedSearchWithBasicFilters } from "../../../../admin.core.v1/components";
-import { AppConstants } from "../../../../admin.core.v1/constants";
-import { history } from "../../../../admin.core.v1/helpers";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationList } from "@wso2is/admin.applications.v1/components/application-list";
+import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { history } from "@wso2is/admin.core.v1/helpers";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateInterface
-} from "../../../../admin.identity-providers.v1/models/identity-provider";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../../components/component-extensions";
 
 /**

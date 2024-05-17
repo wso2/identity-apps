@@ -32,13 +32,13 @@ import React, { FC, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card, Form, Grid } from "semantic-ui-react";
-import useSubscribedAPIResources  from "../../../../admin.applications.v1/api/use-subscribed-api-resources";
-import { OIDCApplicationConfigurationInterface } from "../../../../admin.applications.v1/models";
+import useSubscribedAPIResources  from "@wso2is/admin.applications.v1/api/use-subscribed-api-resources";
+import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
-} from "../../../../admin.applications.v1/models/api-authorization";
-import { AppState, history } from "../../../../admin.core.v1";
+} from "@wso2is/admin.applications.v1/models/api-authorization";
+import { AppState, history } from "@wso2is/admin.core.v1";
 
 type TechnologyArrayPropsInterface = {
     techIcon: GenericIconProps;

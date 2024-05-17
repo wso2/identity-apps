@@ -50,18 +50,18 @@ import {
     UserRoleInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../../admin.core.v1";
-import { updateRoleDetails } from "../../../../../admin.roles.v2/api/roles";
-import { PatchRoleDataInterface } from "../../../../../admin.roles.v2/models/roles";
-import { RealmConfigInterface } from "../../../../../admin.server-configurations.v1";
-import { deleteGuestUser } from "../../../../../admin.users.v1/api";
-import { UserManagementConstants } from "../../../../../admin.users.v1/constants";
+} from "@wso2is/admin.core.v1";
+import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
+import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import {
     InternalAdminUserListInterface,
     UserBasicInterface,
     UserListInterface
-} from "../../../../../admin.users.v1/models";
-import { UserManagementUtils } from "../../../../../admin.users.v1/utils";
+} from "@wso2is/admin.users.v1/models";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
 import {

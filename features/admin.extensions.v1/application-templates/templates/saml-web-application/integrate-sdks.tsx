@@ -48,9 +48,9 @@ import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     SAMLApplicationConfigurationInterface
-} from "../../../../admin.applications.v1/models";
-import { AppState } from "../../../../admin.core.v1";
-import { Config } from "../../../../admin.core.v1/configs";
+} from "@wso2is/admin.applications.v1/models";
+import { AppState } from "@wso2is/admin.core.v1";
+import { Config } from "@wso2is/admin.core.v1/configs";
 import MavenLogo from "../../../assets/images/icons/maven-logo.svg";
 import TomcatLogo from "../../../assets/images/icons/tomcat-icon.svg";
 import {

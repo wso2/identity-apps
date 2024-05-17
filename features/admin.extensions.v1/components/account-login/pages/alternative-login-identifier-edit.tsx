@@ -55,32 +55,32 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import {
     ExtendedClaimInterface
-} from "../../../../admin.applications.v1/components/settings/attribute-management";
-import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
+} from "@wso2is/admin.applications.v1/components/settings/attribute-management";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
     getAllLocalClaims,
     updateAClaim
-} from "../../../../admin.claims.v1/api/claims";
-import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
+} from "@wso2is/admin.claims.v1/api/claims";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import {
     AppConstants,
     AppState,
     history
-} from "../../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import {
     getConnectorDetails,
     updateGovernanceConnector
-} from "../../../../admin.server-configurations.v1/api";
+} from "@wso2is/admin.server-configurations.v1/api";
 import {
     ServerConfigurationsConstants
-} from "../../../../admin.server-configurations.v1/constants";
+} from "@wso2is/admin.server-configurations.v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../../../admin.server-configurations.v1/models";
-import { getUsernameConfiguration } from "../../../../admin.users.v1/utils/user-management-utils";
-import { useValidationConfigData } from "../../../../admin.validation.v1/api";
+} from "@wso2is/admin.server-configurations.v1/models";
+import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import {
     AlternativeLoginIdentifierFormInterface
 } from "../models";

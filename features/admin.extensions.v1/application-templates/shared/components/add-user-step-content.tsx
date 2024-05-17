@@ -23,11 +23,11 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, List } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
-import { AppConstants } from "../../../../admin.core.v1/constants";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
-import { getUserDetails } from "../../../../admin.users.v1/api";
-import { AddConsumerUserWizard } from "../../../../admin.users.v1/components/wizard/add-consumer-user-wizard";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { getUserDetails } from "@wso2is/admin.users.v1/api";
+import { AddConsumerUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-consumer-user-wizard";
 
 /**
  * Proptypes for add user step component in application sample flow.

@@ -17,10 +17,10 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { OrganizationType } from "../../../../admin.core.v1";
+import { OrganizationType } from "@wso2is/admin.core.v1";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../../../admin.core.v1/store";
+import { store } from "@wso2is/admin.core.v1/store";
 import { getTenantResourceEndpoints } from "../configs";
 import { TenantRequestResponse } from "../models";
 

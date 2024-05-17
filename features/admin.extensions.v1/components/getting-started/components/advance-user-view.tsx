@@ -32,16 +32,16 @@ import {
     getApplicationDetails,
     getInboundProtocolConfig,
     useApplicationList
-} from "../../../../admin.applications.v1/api";
+} from "@wso2is/admin.applications.v1/api";
 import {
     MinimalAppCreateWizard
-} from "../../../../admin.applications.v1/components/wizard/minimal-application-create-wizard";
-import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
+} from "@wso2is/admin.applications.v1/components/wizard/minimal-application-create-wizard";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "../../../../admin.applications.v1/models";
-import { ApplicationManagementUtils } from "../../../../admin.applications.v1/utils/application-management-utils";
+} from "@wso2is/admin.applications.v1/models";
+import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import {
     AppConstants,
     AppState,
@@ -50,9 +50,9 @@ import {
     FeatureConfigInterface,
     history,
     setActiveView
-} from "../../../../admin.core.v1";
-import { OrganizationType } from "../../../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
+} from "@wso2is/admin.core.v1";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AppViewExtensionTypes } from "../../../configs";
 import { TryItApplicationConstants } from "../../application/constants";
 import { getTryItClientId } from "../../application/utils/try-it-utils";

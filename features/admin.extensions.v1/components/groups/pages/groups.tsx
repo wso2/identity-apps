@@ -42,19 +42,19 @@ import {
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations
-} from "../../../../admin.core.v1";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
+} from "@wso2is/admin.core.v1";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import {
     GroupsInterface,
     SearchGroupInterface,
     deleteGroupById,
     searchGroupList,
     useGroupList
-} from "../../../../admin.groups.v1";
-import { GroupConstants } from "../../../../admin.groups.v1/constants";
-import { useUserStores } from "../../../../admin.userstores.v1/api/user-stores";
-import { CONSUMER_USERSTORE } from "../../../../admin.userstores.v1/constants/user-store-constants";
-import { UserStoreListItem } from "../../../../admin.userstores.v1/models/user-stores";
+} from "@wso2is/admin.groups.v1";
+import { GroupConstants } from "@wso2is/admin.groups.v1/constants";
+import { useUserStores } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { GroupList } from "../groups-list";
 import { CreateGroupWizard } from "../wizard";

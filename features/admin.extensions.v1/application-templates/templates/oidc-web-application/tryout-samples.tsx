@@ -28,16 +28,16 @@ import { Button, Divider, Form, Icon, InputOnChangeData } from "semantic-ui-reac
 import { dotNetSDKInstallerConfigCode, tomcatOIDCSamplePropertiesFileCode } from "./code-blocks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalOIDCAppTechnologyTypes } from "./models";
-import { updateAuthProtocolConfig } from "../../../../admin.applications.v1/api";
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     OIDCDataInterface,
     SupportedAuthProtocolTypes
-} from "../../../../admin.applications.v1/models";
-import { ApplicationManagementUtils } from "../../../../admin.applications.v1/utils/application-management-utils";
-import { Config, getTechnologyLogos } from "../../../../admin.core.v1/configs";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
+} from "@wso2is/admin.applications.v1/models";
+import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
+import { Config, getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import {
     VerticalStepper,
     VerticalStepperStepInterface

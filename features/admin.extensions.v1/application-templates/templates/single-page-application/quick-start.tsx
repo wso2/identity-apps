@@ -34,15 +34,15 @@ import VueIcon from "./assets/vue-logo-icon.svg";
 import { IntegrateSDKs } from "./integrate-sdks/integrate-sdks";
 import { SupportedSPATechnologyTypes } from "./models";
 import { TryoutSamples } from "./tryout-samples";
-import { getApplicationList } from "../../../../admin.applications.v1/api";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
 import {
     ApplicationInterface,
     ApplicationListInterface,
     ApplicationTemplateInterface,
     URLFragmentTypes
-} from "../../../../admin.applications.v1/models";
-import { history } from "../../../../admin.core.v1";
-import { AppState } from "../../../../admin.core.v1/store";
+} from "@wso2is/admin.applications.v1/models";
+import { history } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { QuickStartModes } from "../../shared";
 import { QuickStartPanelOverview, SPACustomConfiguration, SPATechnologySelection } from "../../shared/components";
 import { SDKMeta } from "../../templates/single-page-application/meta";

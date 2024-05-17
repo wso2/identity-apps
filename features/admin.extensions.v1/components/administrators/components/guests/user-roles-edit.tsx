@@ -46,12 +46,12 @@ import {
     AppState,
     FeatureConfigInterface,
     updateResources
-} from "../../../../../admin.core.v1";
-import { getRolesList } from "../../../../../admin.roles.v2/api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../../admin.roles.v2/constants";
-import { RealmConfigInterface } from "../../../../../admin.server-configurations.v1/models";
-import { UserRolePermissions } from "../../../../../admin.users.v1/components/user-role-permissions";
-import { RolePermissions } from "../../../../../admin.users.v1/components/wizard/user-role-permissions";
+} from "@wso2is/admin.core.v1";
+import { getRolesList } from "@wso2is/admin.roles.v2/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
+import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1/models";
+import { UserRolePermissions } from "@wso2is/admin.users.v1/components/user-role-permissions";
+import { RolePermissions } from "@wso2is/admin.users.v1/components/wizard/user-role-permissions";
 
 interface UserRolesPropsInterface {
     /**

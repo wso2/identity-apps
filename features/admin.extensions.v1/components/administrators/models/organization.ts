@@ -20,7 +20,7 @@ import {
     RequestErrorInterface,
     RequestResultInterface,
     SWRConfig
-} from "../../../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
 
 /**
   * Interface to store data for create group api.

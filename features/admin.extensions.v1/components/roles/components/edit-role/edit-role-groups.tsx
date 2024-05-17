@@ -54,9 +54,9 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations, updateResources } from "../../../../../admin.core.v1";
-import { getGroupList } from "../../../../../admin.groups.v1/api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../../../../admin.roles.v2/constants";
+import { getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
+import { getGroupList } from "@wso2is/admin.groups.v1/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**

@@ -21,8 +21,8 @@ import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, { FC, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { Icon } from "semantic-ui-react";
 import { DynamicTile, DynamicTilePropsInterface } from "./dynamic-tile";
-import { ApplicationListItemInterface } from "../../../../admin.applications.v1/models";
-import { AppConstants, EventPublisher, getSidePanelIcons, history } from "../../../../admin.core.v1";
+import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { AppConstants, EventPublisher, getSidePanelIcons, history } from "@wso2is/admin.core.v1";
 
 export type ApplicationTilePropsInterface = {
     application?: ApplicationListItemInterface;

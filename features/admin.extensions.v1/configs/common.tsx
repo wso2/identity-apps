@@ -19,8 +19,8 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
 import { CommonConfig } from "./models";
-import { getSidePanelIcons } from "../../admin.core.v1/configs/ui";
-import { AppConstants } from "../../admin.core.v1/constants";
+import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
@@ -81,7 +81,7 @@ export const commonConfig: CommonConfig = {
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
                     {
-                        component: lazy(() => import("../../admin.userstores.v1/pages/user-stores-edit")),
+                        component: lazy(() => import("@wso2is/admin.userstores.v1/pages/user-stores-edit")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().childIcon
@@ -94,7 +94,7 @@ export const commonConfig: CommonConfig = {
                     },
                     {
                         component: lazy(() =>
-                            import("../../admin.userstores.v1/pages/userstores-templates")
+                            import("@wso2is/admin.userstores.v1/pages/userstores-templates")
                         ),
                         exact: true,
                         icon: {
@@ -107,7 +107,7 @@ export const commonConfig: CommonConfig = {
                         showOnSidePanel: false
                     }
                 ],
-                component: lazy(() => import("../../admin.userstores.v1/pages/user-stores")),
+                component: lazy(() => import("@wso2is/admin.userstores.v1/pages/user-stores")),
                 exact: true,
                 icon: {
                     icon: getSidePanelIcons().userStore
@@ -121,7 +121,7 @@ export const commonConfig: CommonConfig = {
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
-                component: lazy(() => import("../../admin.provisioning.v1/pages/outbound-provisioning-settings")),
+                component: lazy(() => import("@wso2is/admin.provisioning.v1/pages/outbound-provisioning-settings")),
                 exact: true,
                 icon: {
                     icon: getSidePanelIcons().childIcon

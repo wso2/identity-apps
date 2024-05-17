@@ -19,8 +19,8 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { ProfileInfoInterface } from "@wso2is/core/models";
 import { User } from "./models";
-import { deleteUser } from "../../admin.users.v1/api/users";
-import { AskPasswordOptionTypes, PasswordOptionTypes } from "../../admin.users.v1/constants";
+import { deleteUser } from "@wso2is/admin.users.v1/api/users";
+import { AskPasswordOptionTypes, PasswordOptionTypes } from "@wso2is/admin.users.v1/constants";
 
 export const userConfig: User = {
     bulkUserImportLimit: {

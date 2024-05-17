@@ -36,10 +36,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreUtils, history } from "../../../../../admin.core.v1";
-import { deleteRoleById, updateRoleDetails } from "../../../../../admin.roles.v2/api";
-import { PatchRoleDataInterface } from "../../../../../admin.roles.v2/models";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../../../admin.userstores.v1/constants/user-store-constants";
+import { AppConstants, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { deleteRoleById, updateRoleDetails } from "@wso2is/admin.roles.v2/api";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 
 /**
  * Interface to contain props needed for component

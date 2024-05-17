@@ -29,7 +29,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import { RequestErrorInterface } from "../../../../../admin.core.v1/hooks/use-request";
+import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AxiosError } from "axios";
 import React, {
     Fragment,
@@ -44,11 +44,11 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SubscribedAPIResources } from ".";
 import { AuthorizeAPIResource } from "./wizard";
-import { AppState, history } from "../../../../../admin.core.v1";
+import { AppState, history } from "@wso2is/admin.core.v1";
 import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
-import { useAPIResources } from "../../../../../admin.api-resources.v1/api";
-import { APIResourcesConstants } from "../../../../../admin.api-resources.v1/constants";
-import { APIResourceUtils } from "../../../../../admin.api-resources.v1/utils/api-resource-utils";
+import { useAPIResources } from "@wso2is/admin.api-resources.v1/api";
+import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
+import { APIResourceUtils } from "@wso2is/admin.api-resources.v1/utils/api-resource-utils";
 import {
     createAuthorizedAPIResource,
     searchAPIResources,

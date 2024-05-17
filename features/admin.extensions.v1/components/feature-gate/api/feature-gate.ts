@@ -21,14 +21,14 @@ import { AllFeatureInterface } from "@wso2is/access-control";
 import { HttpMethods } from "@wso2is/core/models";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
-import { Config } from "../../../../admin.core.v1/configs/app";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../admin.core.v1/hooks/use-request";
-import { AppState } from "../../../../admin.core.v1/store";
-import { OrganizationType } from "../../../../admin.organizations.v1/constants";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { getFeatureGateResourceEndpoints } from "../configs";
 
 /**

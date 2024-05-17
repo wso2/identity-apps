@@ -21,13 +21,13 @@ import { I18n } from "@wso2is/i18n";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { ElementType, FunctionComponent, ReactElement, SVGProps, lazy } from "react";
 import { IdentityProviderConfig } from "./models";
-import { ConnectionTabTypes } from "../../admin.connections.v1";
-import { IdentityProviderManagementConstants } from "../../admin.identity-providers.v1/constants";
+import { ConnectionTabTypes } from "@wso2is/admin.connections.v1";
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import {
     AuthenticatorLabels,
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTabTypes
-} from "../../admin.identity-providers.v1/models";
+} from "@wso2is/admin.identity-providers.v1/models";
 import {
     SmsOTPAuthenticator
 } from "../components/authenticators/sms-otp/sms-otp-authenticator";

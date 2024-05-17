@@ -17,10 +17,10 @@
  */
 
 import { AxiosResponse } from "axios";
-import { getAUserStore } from "../../admin.core.v1/api";
-import { SharedUserStoreConstants } from "../../admin.core.v1/constants";
-import { getUserStoreList } from "../../admin.userstores.v1/api";
-import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../admin.userstores.v1/models";
+import { getAUserStore } from "@wso2is/admin.core.v1/api";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 
 /**
  * Utility class for common user store operations.

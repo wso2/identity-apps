@@ -20,8 +20,8 @@ import { ITelemetryItem } from "@microsoft/applicationinsights-core-js";
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 import { v4 as uuidv4 } from "uuid";
-import { history } from "../../admin.core.v1/helpers/history";
-import { store } from "../../admin.core.v1/store";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { store } from "@wso2is/admin.core.v1/store";
 
 /**
  * App Insights class to perform application insights related functions.

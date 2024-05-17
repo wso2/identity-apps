@@ -34,23 +34,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Icon } from "semantic-ui-react";
-import { getProfileInformation } from "../../../../admin.authentication.v1/store";
-import { AppState, FeatureConfigInterface, history, store } from "../../../../admin.core.v1";
-import { PatchRoleDataInterface } from "../../../../admin.roles.v2/models/roles";
+import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
+import { AppState, FeatureConfigInterface, history, store } from "@wso2is/admin.core.v1";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ServerConfigurationsInterface,
     getGovernanceConnectors,
     getServerConfigs
-} from "../../../../admin.server-configurations.v1/api";
-import { ServerConfigurationsConstants } from "../../../../admin.server-configurations.v1/constants";
+} from "@wso2is/admin.server-configurations.v1/api";
+import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     RealmConfigInterface
-} from "../../../../admin.server-configurations.v1/models";
-import { getUserDetails, updateUserInfo } from "../../../../admin.users.v1/api/users";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants/user-management-constants";
-import { UserManagementUtils } from "../../../../admin.users.v1/utils/user-management-utils";
+} from "@wso2is/admin.server-configurations.v1/models";
+import { getUserDetails, updateUserInfo } from "@wso2is/admin.users.v1/api/users";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { administratorConfig } from "../../../configs/administrator";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { EditGuestUser } from "../components";

@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Card, Grid, Icon } from "semantic-ui-react";
-import { AppState } from "../../../../../admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1";
 import { updateUserConsent } from "../api";
 import { getMarketingConsentIllustrations } from "../configs";
 import { setMarketingConsentStatusToLocalStorage } from "../utils";

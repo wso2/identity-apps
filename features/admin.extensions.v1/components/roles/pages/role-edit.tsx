@@ -21,8 +21,8 @@ import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin.core.v1";
-import { getRoleById } from "../../../../admin.roles.v2/api";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { getRoleById } from "@wso2is/admin.roles.v2/api";
 import { EditRole } from "../components";
 
 const RoleEditPage: FunctionComponent<any> = (): ReactElement => {

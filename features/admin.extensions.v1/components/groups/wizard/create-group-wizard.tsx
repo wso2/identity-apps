@@ -28,18 +28,18 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
-import { AppConstants, history } from "../../../../admin.core.v1";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
-import { createGroup } from "../../../../admin.groups.v1/api";
-import { CreateGroupSummary } from "../../../../admin.groups.v1/components/wizard";
-import { getGroupsWizardStepIcons } from "../../../../admin.groups.v1/configs";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { createGroup } from "@wso2is/admin.groups.v1/api";
+import { CreateGroupSummary } from "@wso2is/admin.groups.v1/components/wizard";
+import { getGroupsWizardStepIcons } from "@wso2is/admin.groups.v1/configs";
 import {
     CreateGroupInterface,
     CreateGroupMemberInterface
-} from "../../../../admin.groups.v1/models";
-import { updateRole } from "../../../../admin.roles.v2/api";
-import { PatchRoleDataInterface } from "../../../../admin.roles.v2/models";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../../admin.userstores.v1/constants";
+} from "@wso2is/admin.groups.v1/models";
+import { updateRole } from "@wso2is/admin.roles.v2/api";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { commonConfig } from "../../../configs";
 
 /**

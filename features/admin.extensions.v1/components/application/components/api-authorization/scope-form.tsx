@@ -35,7 +35,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Header } from "semantic-ui-react";
 import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
-import { APIResourcesConstants } from "../../../../../admin.api-resources.v1/constants";
+import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
 import { patchScopesOfAPIResource } from "../../api";
 import { AuthorizedAPIListItemInterface, AuthorizedPermissionListItemInterface } from "../../models";
 

@@ -39,16 +39,16 @@ import { Button, Divider, Icon } from "semantic-ui-react";
 import { ReactComponent as JavaScriptLogo } from "./assets/javascript-logo.svg";
 import { SDKMeta } from "./meta";
 import { SupportedSPATechnologyTypes } from "./models";
-import { updateAuthProtocolConfig } from "../../../../admin.applications.v1/api";
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     OIDCDataInterface,
     SupportedAuthProtocolTypes
-} from "../../../../admin.applications.v1/models";
-import { ApplicationManagementUtils } from "../../../../admin.applications.v1/utils/application-management-utils";
-import { Config } from "../../../../admin.core.v1/configs";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
+} from "@wso2is/admin.applications.v1/models";
+import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
+import { Config } from "@wso2is/admin.core.v1/configs";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import ReactLogoDataURL from "../../../assets/images/icons/react-icon.svg";
 import {
     VerticalStepper,

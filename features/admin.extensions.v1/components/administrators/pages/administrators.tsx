@@ -52,7 +52,7 @@ import {
     PaginationProps,
     TabProps
 } from "semantic-ui-react";
-import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -64,30 +64,30 @@ import {
     UserStoreDetails,
     history,
     store
-} from "../../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import {
     useOrganizationConfigV2
-} from "../../../../admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
-import { getRoleById, searchRoleList } from "../../../../admin.roles.v2/api/roles";
-import { RoleAudienceTypes } from "../../../../admin.roles.v2/constants";
-import { RolesV2Interface, SearchRoleInterface } from "../../../../admin.roles.v2/models/roles";
-import { useServerConfigs } from "../../../../admin.server-configurations.v1";
-import { useInvitedUsersList, useUsersList } from "../../../../admin.users.v1/api";
-import { AddUserWizard } from "../../../../admin.users.v1/components/wizard/add-user-wizard";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
+} from "@wso2is/admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
+import { getRoleById, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
+import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { useInvitedUsersList, useUsersList } from "@wso2is/admin.users.v1/api";
+import { AddUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-user-wizard";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import {
     InternalAdminUserListInterface,
     InvitationStatus,
     UserInviteInterface,
     UserListInterface
-} from "../../../../admin.users.v1/models";
-import { UserManagementUtils } from "../../../../admin.users.v1/utils";
-import { getUserStores } from "../../../../admin.userstores.v1/api";
+} from "@wso2is/admin.users.v1/models";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
+import { getUserStores } from "@wso2is/admin.userstores.v1/api";
 import {
     CONSUMER_USERSTORE,
     PRIMARY_USERSTORE,
     UserStoreManagementConstants
-} from "../../../../admin.userstores.v1/constants";
+} from "@wso2is/admin.userstores.v1/constants";
 import { administratorConfig } from "../../../configs/administrator";
 import { SCIMConfigs } from "../../../configs/scim";
 import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";

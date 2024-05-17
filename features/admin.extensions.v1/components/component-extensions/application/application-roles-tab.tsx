@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
-import { ApplicationInterface } from "../../../../admin.applications.v1/models";
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { ApplicationRoles } from "../../application/components/application-roles";
 
 interface ApplicationRolesTabInterface extends IdentifiableComponentInterface {
