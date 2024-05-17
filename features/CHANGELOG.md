@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.20.0
+
+### Minor Changes
+
+- [#6173](https://github.com/wso2/identity-apps/pull/6173) [`e2b5ed49a2bb54d7711277f4c885b7464c8baede`](https://github.com/wso2/identity-apps/commit/e2b5ed49a2bb54d7711277f4c885b7464c8baede) Thanks [@jathushan-r](https://github.com/jathushan-r)! - identified issue regarding inconsistent branding and styling when utilizing both Oxygen-UI and Semantic UI React. The implementation introduces a ThemeProvider within common.branding.v1. injecting CSS
+
 ## 2.19.5
 
 ### Patch Changes
