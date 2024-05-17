@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { OutboundProvisioningConfigurationInterface } from "../../admin.applications.v1/models/application";
+import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
 
 /**
  * Interface for the outbound provisioning IDP delete confirmation modal props.
