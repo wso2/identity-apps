@@ -20,12 +20,12 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { Config } from "../../admin.core.v1/configs";
+import { Config } from "@wso2is/admin.core.v1/configs";
 import useRequest, { 
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { SessionManagementConstants } from "../constants/session-management";
 import { PatchData, SessionManagementConfigAPIResponseInterface } from "../models/session-management";
 
