@@ -36,8 +36,8 @@ import {
     UserStoreDetails,
     UserStoreProperty,
     history
-} from "../../../admin.core.v1";
-import { userstoresConfig } from "../../../admin.extensions.v1/configs/userstores";
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
 import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
 

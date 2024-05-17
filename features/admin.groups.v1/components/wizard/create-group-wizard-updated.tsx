@@ -34,28 +34,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsersUpdated } from "./group-assign-users-updated";
-import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
-import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../admin.core.v1";
-import { EventPublisher } from "../../../admin.core.v1/utils";
-import { commonConfig } from "../../../admin.extensions.v1/configs";
-import { getOrganizationRoles } from "../../../admin.organizations.v1/api";
-import { OrganizationRoleManagementConstants } from "../../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
+import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
+import { OrganizationRoleManagementConstants } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     GenericOrganization,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
-} from "../../../admin.organizations.v1/models";
-import { getRolesList, updateRole } from "../../../admin.roles.v2/api";
-import { RoleConstants } from "../../../admin.roles.v2/constants";
+} from "@wso2is/admin.organizations.v1/models";
+import { getRolesList, updateRole } from "@wso2is/admin.roles.v2/api";
+import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
 import {
     BasicRoleInterface,
     PatchRoleDataInterface,
     RolesV2Interface,
     RolesV2ResponseInterface
-} from "../../../admin.roles.v2/models";
-import { UserBasicInterface } from "../../../admin.users.v1/models";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../admin.userstores.v1/constants";
+} from "@wso2is/admin.roles.v2/models";
+import { UserBasicInterface } from "@wso2is/admin.users.v1/models";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { createGroup } from "../../api";
 import { getGroupsWizardStepIcons } from "../../configs";
 import {

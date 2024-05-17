@@ -44,9 +44,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
 import { Header, Segment } from "semantic-ui-react";
 import { GroupBasicsUpdated } from "./group-basics-updated";
-import { UIConstants, UserBasicInterface, UserListInterface, getUsersList } from "../../../admin.core.v1";
-import { SCIMConfigs } from "../../../admin.extensions.v1/configs/scim";
-import { UserManagementUtils } from "../../../admin.users.v1/utils";
+import { UIConstants, UserBasicInterface, UserListInterface, getUsersList } from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { GroupsMemberInterface } from "../../models";
 
 /**

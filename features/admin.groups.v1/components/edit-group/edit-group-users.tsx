@@ -48,8 +48,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
 import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
-import { UserBasicInterface } from "../../../admin.users.v1/models/user";
+import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { updateGroupDetails } from "../../api";
 import { CreateGroupMemberInterface, GroupsInterface, PatchGroupDataInterface } from "../../models";
 

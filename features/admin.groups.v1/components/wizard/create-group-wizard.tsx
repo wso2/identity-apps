@@ -28,19 +28,19 @@ import { Dispatch } from "redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
-import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
-import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../admin.core.v1";
-import { getOrganizationRoles } from "../../../admin.organizations.v1/api";
-import { OrganizationRoleManagementConstants } from "../../../admin.organizations.v1/constants/organization-constants";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
+import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
+import { OrganizationRoleManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     GenericOrganization,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
-} from "../../../admin.organizations.v1/models";
-import { getRolesList, updateRolesBulk } from "../../../admin.roles.v2/api";
-import { PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../admin.roles.v2/models";
-import { WizardStepInterface } from "../../../admin.users.v1/models";
+} from "@wso2is/admin.organizations.v1/models";
+import { getRolesList, updateRolesBulk } from "@wso2is/admin.roles.v2/api";
+import { PatchRoleDataInterface, RolesV2ResponseInterface } from "@wso2is/admin.roles.v2/models";
+import { WizardStepInterface } from "@wso2is/admin.users.v1/models";
 import { createGroup } from "../../api";
 import { getGroupsWizardStepIcons } from "../../configs";
 import {

@@ -41,7 +41,7 @@ import {
     UserListInterface,
     getEmptyPlaceholderIllustrations,
     getUsersList
-} from "../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { GroupsMemberInterface } from "../../models";
 
 /**

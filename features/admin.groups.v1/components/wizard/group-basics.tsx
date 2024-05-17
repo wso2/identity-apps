@@ -26,14 +26,14 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
-import { UserStoreDetails } from "../../../admin.core.v1";
-import { SharedUserStoreConstants } from "../../../admin.core.v1/constants";
-import { SharedUserStoreUtils } from "../../../admin.core.v1/utils";
+import { UserStoreDetails } from "@wso2is/admin.core.v1";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
 // TODO: Remove this once the api is updated.
-import { RootOnlyComponent } from "../../../admin.organizations.v1/components";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { getUserStoreList } from "../../../admin.userstores.v1/api";
-import { UserStoreProperty } from "../../../admin.userstores.v1/models";
+import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { searchGroupList } from "../../api";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models";
 
