@@ -149,8 +149,10 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
 
             const name: string = template?.name?.toLocaleLowerCase();
 
-            if (name.includes(query)
-                || template?.tags?.some((tag: string) => tag?.toLocaleLowerCase()?.includes(query))) {
+            if (name.includes(query.toLocaleLowerCase())
+                || template?.tags?.some(
+                    (tag: string) => tag?.toLocaleLowerCase()?.includes(query.toLocaleLowerCase()))
+            ) {
 
                 return isFiltersMatched(template);
             }
@@ -266,7 +268,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         }
 
         // Edge case, templates will never be empty.
-        if (list.length === 0) {
+        if (list?.length === 0) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().newList }
@@ -346,62 +348,70 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                                     }
                                 </ResourceGrid>
                             )
-                            : categorizedTemplates
-                                .map((category: CategorizedApplicationTemplatesInterface) => {
-                                    const refinedTemplates: ApplicationTemplateListInterface[] =
-                                        removeIrrelevantTemplates(category?.templates);
+                            : (
+                                (Array.isArray(categorizedTemplates) && categorizedTemplates?.length === 0)
+                                    ? showPlaceholders(categorizedTemplates)
+                                    : categorizedTemplates
+                                        .map((category: CategorizedApplicationTemplatesInterface) => {
+                                            const refinedTemplates: ApplicationTemplateListInterface[] =
+                                                removeIrrelevantTemplates(category?.templates);
 
-                                    if (refinedTemplates?.length <= 0) {
-                                        return null;
-                                    }
-
-                                    return (
-                                        <div key={ category?.id } className="application-template-card-group">
-                                            <Typography variant="h5">
-                                                { t(category?.displayName) }
-                                            </Typography>
-                                            {
-                                                category?.description
-                                                    ? (
-                                                        <Typography
-                                                            className="application-template-card-group-description"
-                                                            variant="subtitle1"
-                                                        >
-                                                            { t(category?.description) }
-                                                            <DocumentationLink
-                                                                link={ resolveDocumentationLinks(category?.id) }
-                                                            >
-                                                                { t("common:learnMore") }
-                                                            </DocumentationLink>
-                                                        </Typography>
-                                                    )
-                                                    : null
+                                            if (refinedTemplates?.length <= 0) {
+                                                return null;
                                             }
-                                            <ResourceGrid
-                                                isEmpty={
-                                                    !Array.isArray(categorizedTemplates)
-                                                        || categorizedTemplates.length <= 0
-                                                }
-                                                emptyPlaceholder={ showPlaceholders(categorizedTemplates) }
-                                            >
-                                                {
-                                                    refinedTemplates.map(
-                                                        (template: ApplicationTemplateListInterface) => {
-                                                            return (
-                                                                <ApplicationTemplateCard
-                                                                    key={ template?.id }
-                                                                    onClick={ (e: MouseEvent<HTMLDivElement>) => {
-                                                                        handleTemplateSelection(e, template);
-                                                                    } }
-                                                                    template={ template }
-                                                                />
-                                                            );
-                                                        })
-                                                }
-                                            </ResourceGrid>
-                                        </div>
-                                    );
-                                })
+
+                                            return (
+                                                <div key={ category?.id } className="application-template-card-group">
+                                                    <Typography variant="h5">
+                                                        { t(category?.displayName) }
+                                                    </Typography>
+                                                    {
+                                                        category?.description
+                                                            ? (
+                                                                <Typography
+                                                                    className=
+                                                                        "application-template-card-group-description"
+                                                                    variant="subtitle1"
+                                                                >
+                                                                    { t(category?.description) }
+                                                                    <DocumentationLink
+                                                                        link={ resolveDocumentationLinks(category?.id) }
+                                                                    >
+                                                                        { t("common:learnMore") }
+                                                                    </DocumentationLink>
+                                                                </Typography>
+                                                            )
+                                                            : null
+                                                    }
+                                                    <ResourceGrid
+                                                        isEmpty={
+                                                            !Array.isArray(refinedTemplates)
+                                                                || refinedTemplates.length <= 0
+                                                        }
+                                                        emptyPlaceholder={ showPlaceholders(refinedTemplates) }
+                                                    >
+                                                        {
+                                                            refinedTemplates.map(
+                                                                (template: ApplicationTemplateListInterface) => {
+                                                                    return (
+                                                                        <ApplicationTemplateCard
+                                                                            key={ template?.id }
+                                                                            onClick={
+                                                                                (e: MouseEvent<HTMLDivElement>) => {
+                                                                                    handleTemplateSelection(
+                                                                                        e, template);
+                                                                                }
+                                                                            }
+                                                                            template={ template }
+                                                                        />
+                                                                    );
+                                                                })
+                                                        }
+                                                    </ResourceGrid>
+                                                </div>
+                                            );
+                                        })
+                            )
                     )
                     : <ContentLoader dimmer/>
             }

@@ -85,7 +85,11 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                 property?.key === ApplicationTemplateConstants.SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY
         );
 
-        return property?.value ? JSON.parse(property?.value) : [];
+        return property?.value ?
+            typeof property?.value === "string" ?
+                JSON.parse(property?.value) :
+                property?.value :
+            [];
     }, [ template ]);
 
     /**

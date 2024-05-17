@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState } from "../../../admin.core.v1";
+
 /**
  * Mocks the Redux store state.
  *
@@ -23,7 +25,7 @@
  */
 
 /* eslint-disable sort-keys, max-len */
-const ReduxStoreStateMock: any = {
+const ReduxStoreStateMock: AppState = {
     accessControl: {
         isDevelopAllowed: true,
         isManageAllowed: true

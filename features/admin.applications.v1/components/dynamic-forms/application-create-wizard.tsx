@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import LinearProgress from "@mui/material/LinearProgress/LinearProgress";
-import Pagination from "@mui/material/Pagination/Pagination";
+import LinearProgress from "@mui/material/LinearProgress";
+import Pagination from "@mui/material/Pagination";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
@@ -34,7 +34,6 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import useDynamicFieldValidations from "features/admin.applications.v1/hooks/use-dynamic-field-validation";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import has from "lodash-es/has";
@@ -55,6 +54,7 @@ import useGetApplicationTemplate from "../../api/use-get-application-template";
 import useGetApplicationTemplateMetadata from "../../api/use-get-application-template-metadata";
 import { ApplicationManagementConstants } from "../../constants";
 import useApplicationSharingEligibility from "../../hooks/use-application-sharing-eligibility";
+import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
 import { ApplicationListItemInterface, MainApplicationInterface, URLFragmentTypes } from "../../models";
 import { ApplicationTemplateListInterface } from "../../models/application-templates";
 import { DynamicFieldAutoSubmitPropertyInterface, DynamicFieldInterface } from "../../models/dynamic-fields";
