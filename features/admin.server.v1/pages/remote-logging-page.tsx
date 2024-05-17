@@ -23,7 +23,7 @@ import React, { FC, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { AppConstants, history } from "../../admin.core.v1";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import {
     useRemoteLogPublishingConfigs
 } from "../api/server";

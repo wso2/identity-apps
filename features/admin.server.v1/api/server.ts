@@ -21,9 +21,9 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import useRequest,
-{ RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../admin.core.v1/hooks/use-request";
+{ RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { ServerConstants } from "../constants/server";
 import { 
     AdminAdvisoryBannerConfigurationInterface, LogType, RemoteLogPublishingConfigurationInterface 

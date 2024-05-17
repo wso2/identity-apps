@@ -26,13 +26,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
-import { AppConstants, history } from "../../admin.core.v1";
-import { getConnectorDetails, updateGovernanceConnector } from "../../admin.server-configurations.v1/api";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { getConnectorDetails, updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../admin.server-configurations.v1/models";
+} from "@wso2is/admin.server-configurations.v1/models";
 import { ServerConstants } from "../constants/server";
 
 /**
