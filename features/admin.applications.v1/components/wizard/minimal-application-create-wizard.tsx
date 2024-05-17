@@ -21,7 +21,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
@@ -105,8 +105,7 @@ import "./minimal-application-create-wizard.scss";
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
  */
-interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface,
-    IdentifiableComponentInterface {
+interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface {
     title: string;
     closeWizard: () => void;
     template?: ApplicationTemplateInterface;
@@ -158,8 +157,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         subTitle,
         templateLoadingStrategy,
         setIsApplicationSharingEnabled,
-        [ "data-testid" ]: testId,
-        [ "data-componentid" ]: componentId
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -1315,7 +1313,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 closeOnDimmerClick={ false }
                 closeOnEscape
                 data-testid={ `${ testId }-modal` }
-                data-componentid={ `${componentId}-modal` }
             >
                 <ModalWithSidePanel.MainPanel>
                     <ModalWithSidePanel.Header className="wizard-header">
@@ -1379,7 +1376,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
  * Default props for the application creation wizard.
  */
 MinimalAppCreateWizard.defaultProps = {
-    "data-componentid": "minimal-application-create-wizard",
     "data-testid": "minimal-application-create-wizard",
     showHelpPanel: true
 };

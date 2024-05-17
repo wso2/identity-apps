@@ -21,17 +21,24 @@ import { render, screen, waitFor } from "../../../../test-configs";
 import ApplicationCreationAdapter, {
     ApplicationCreationAdapterPropsInterface
 } from "../../../components/application-templates/application-creation-adapter";
-import * as OauthProtocolSettingsWizardForm from "../../../components/wizard/oauth-protocol-settings-wizard-form";
+import * as MinimalApplicationCreateWizard from "../../../components/wizard/minimal-application-create-wizard";
+import * as useApplicationSharingEligibility from "../../../hooks/use-application-sharing-eligibility";
 import {
     applicationTemplatesListMockResponse
 } from "../../__mocks__/application-template";
 import "@testing-library/jest-dom";
 
 describe("[Applications Management Feature] - ApplicationCreationAdapter", () => {
-    const useGetApplicationTemplatesMock: jest.SpyInstance = jest.spyOn(
-        OauthProtocolSettingsWizardForm, "OauthProtocolSettingsWizardForm");
+    const minimalApplicationCreateWizardMock: jest.SpyInstance = jest.spyOn(
+        MinimalApplicationCreateWizard, "MinimalAppCreateWizard");
 
-    useGetApplicationTemplatesMock.mockImplementation(() => jest.fn());
+    minimalApplicationCreateWizardMock.mockImplementation(() =>
+        <div data-componentid="minimal-application-create-wizard-modal"></div>);
+
+    const useApplicationSharingEligibilityMock: jest.SpyInstance = jest.spyOn(
+        useApplicationSharingEligibility, "default");
+
+    useApplicationSharingEligibilityMock.mockImplementation(() => jest.fn().mockReturnValue(true));
 
     const propsWithSPATemplate: ApplicationCreationAdapterPropsInterface = {
         onClose: jest.fn(),
@@ -44,11 +51,6 @@ describe("[Applications Management Feature] - ApplicationCreationAdapter", () =>
         showWizard: true,
         template: applicationTemplatesListMockResponse[3]
     };
-
-    const script: HTMLScriptElement = document.createElement("script");
-
-    script.textContent = "var isOrganizationManagementEnabled = false";
-    document.head.appendChild(script);
 
     test("Test the existing technology/protocol based application creation wizard", async () => {
         render(
