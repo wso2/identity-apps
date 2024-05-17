@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
-import { AppConstants, history } from "../../admin.core.v1";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { addUserStore } from "../api";
 import { getAddUserstoreWizardStepIcons } from "../configs";
 import { USERSTORE_TYPE_DISPLAY_NAMES, UserStoreManagementConstants } from "../constants";

@@ -35,8 +35,8 @@ import {
     filterList,
     history,
     sortList
-} from "../../admin.core.v1";
-import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { getUserStores } from "../api";
 import { UserStoresList } from "../components";
 import { QueryParams, UserStoreListItem } from "../models";

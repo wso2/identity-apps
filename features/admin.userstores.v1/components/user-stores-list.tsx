@@ -42,7 +42,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import {
     AppConstants,
     AppState,
@@ -50,7 +50,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
 import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";
