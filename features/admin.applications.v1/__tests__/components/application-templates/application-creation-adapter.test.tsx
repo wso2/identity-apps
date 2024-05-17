@@ -47,14 +47,12 @@ describe("[Applications Management Feature] - ApplicationCreationAdapter", () =>
 
     const script: HTMLScriptElement = document.createElement("script");
 
-    script.innerHTML = "var isOrganizationManagementEnabled = true;";
+    script.textContent = "var isOrganizationManagementEnabled = false";
+    document.body.appendChild(script);
 
     test("Test the existing technology/protocol based application creation wizard", async () => {
         render(
-            <ApplicationCreationAdapter { ...propsWithSPATemplate } />,
-            {
-                container: document.body.appendChild(script)
-            }
+            <ApplicationCreationAdapter { ...propsWithSPATemplate } />
         );
 
         await waitFor(() => {
@@ -64,10 +62,7 @@ describe("[Applications Management Feature] - ApplicationCreationAdapter", () =>
 
     test("Test the dynamically rendered application creation wizard", async () => {
         render(
-            <ApplicationCreationAdapter { ...propsWithSalesforceTemplate } />,
-            {
-                container: document.body.appendChild(script)
-            }
+            <ApplicationCreationAdapter { ...propsWithSalesforceTemplate } />
         );
 
         await waitFor(() => {
