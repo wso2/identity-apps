@@ -45,7 +45,7 @@ import {
     ProtectedRoute,
     UIConstants,
     getDefaultLayoutRoutes
-} from "../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 
 /**
  * Default page layout component Prop types.
