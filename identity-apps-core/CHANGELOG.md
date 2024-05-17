@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 2.2.2
+
+### Patch Changes
+
+- [#6276](https://github.com/wso2/identity-apps/pull/6276) [`dc00bfc3597af3a24873dbd7e661e030fc5e7696`](https://github.com/wso2/identity-apps/commit/dc00bfc3597af3a24873dbd7e661e030fc5e7696) Thanks [@savindi7](https://github.com/savindi7)! - Add branding for the message in email link expiry page.
+
+* [#6278](https://github.com/wso2/identity-apps/pull/6278) [`6d99d83e90ad34e92acbddfe2d4b72e704848a87`](https://github.com/wso2/identity-apps/commit/6d99d83e90ad34e92acbddfe2d4b72e704848a87) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Reverting Update recovery portal to support SMS OTP based password recovery
+
+- [#6275](https://github.com/wso2/identity-apps/pull/6275) [`2f81f0c3eda89fa6da706b4589e0d45367572f77`](https://github.com/wso2/identity-apps/commit/2f81f0c3eda89fa6da706b4589e0d45367572f77) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Support displaying password recovery failures
+
 ## 2.2.1
 
 ### Patch Changes
