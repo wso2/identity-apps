@@ -39,17 +39,17 @@ import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
-import { AuthenticatorManagementConstants } from "../../admin.connections.v1/constants/autheticator-constants";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
 import {
     AppConstants,
     AppState,
     FeatureConfigInterface
-} from "../../admin.core.v1";
-import { history } from "../../admin.core.v1/helpers";
+} from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers";
 import {
     useSMSNotificationSenders
-}from "../../admin.extensions.v1/components/identity-providers/api/identity-provider";
-import smsProviderConfig from "../../admin.extensions.v1/configs/sms-provider";
+}from "@wso2is/admin.extensions.v1/components/identity-providers/api/identity-provider";
+import smsProviderConfig from "@wso2is/admin.extensions.v1/configs/sms-provider";
 import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
 import { providerCards } from "../configs/provider-cards";
 import { SMSProviderConstants } from "../constants";
