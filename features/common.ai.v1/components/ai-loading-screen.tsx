@@ -29,7 +29,7 @@ import { useTranslation } from "react-i18next";
 import "./ai-loading-screen.scss";
 import { useSelector } from "react-redux";
 import AIBotAnimatedWithBackGround from "./ai-bot-animated-with-bg";
-import { AppState } from "../../admin.core.v1/store";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ReactComponent as LoadingPlaceholder }
     from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 import { ANIMATED_BOT_FEATURE_TAG } from "../constants/ai-common-constants";
