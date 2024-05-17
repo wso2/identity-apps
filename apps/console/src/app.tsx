@@ -24,23 +24,23 @@ import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { setI18nConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
 import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
-import useAuthorization from "@wso2is/features/admin.authorization.v1/hooks/use-authorization";
-import { EventPublisher, PreLoader } from "@wso2is/features/admin.core.v1";
-import { ProtectedRoute } from "@wso2is/features/admin.core.v1/components";
-import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/features/admin.core.v1/configs";
-import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
-import { history } from "@wso2is/features/admin.core.v1/helpers";
-import useResourceEndpoints from "@wso2is/features/admin.core.v1/hooks/use-resource-endpoints";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
+import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/admin.core.v1/configs";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { history } from "@wso2is/admin.core.v1/helpers";
+import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import {
     ConfigReducerStateInterface,
     DocumentationLinksInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface
-} from "@wso2is/features/admin.core.v1/models";
-import { AppState } from "@wso2is/features/admin.core.v1/store";
-import { commonConfig } from "@wso2is/features/admin.extensions.v1/configs/common";
-import { useGetAllFeatures } from "@wso2is/features/admin.extensions.v1/components/feature-gate/api/feature-gate";
-import { featureGateConfig } from "@wso2is/features/admin.extensions.v1/configs/feature-gate";
+} from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
+import { useGetAllFeatures } from "@wso2is/admin.extensions.v1/components/feature-gate/api/feature-gate";
+import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ChunkErrorModal,

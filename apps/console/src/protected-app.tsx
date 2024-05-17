@@ -36,7 +36,7 @@ import {
     SessionStorageUtils,
     StringUtils
 } from "@wso2is/core/utils";
-import useSignIn from "@wso2is/features/admin.authentication.v1/hooks/use-sign-in";
+import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
 import {
     AppState,
     AppUtils,
@@ -49,19 +49,19 @@ import {
     setFilteredDevelopRoutes,
     setSanitizedDevelopRoutes,
     store
-} from "@wso2is/features/admin.core.v1";
-import { AppConstants } from "@wso2is/features/admin.core.v1/constants";
-import { MultitenantConstants } from "@wso2is/features/admin.core.v1/constants/multitenant-constants";
-import { history } from "@wso2is/features/admin.core.v1/helpers";
-import useRoutes from "@wso2is/features/admin.core.v1/hooks/use-routes";
-import useUIConfig from "@wso2is/features/admin.core.v1/hooks/use-ui-configs";
-import { commonConfig } from "@wso2is/features/admin.extensions.v1/configs/common";
-import { CONSUMER_USERSTORE } from "@wso2is/features/admin.extensions.v1/components/administrators/constants/users";
-import useTenantTier from "@wso2is/features/admin.extensions.v1/components/subscription/api/subscription";
-import { TenantTier } from "@wso2is/features/admin.extensions.v1/components/subscription/models/subscription";
+} from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenant-constants";
+import { history } from "@wso2is/admin.core.v1/helpers";
+import useRoutes from "@wso2is/admin.core.v1/hooks/use-routes";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.extensions.v1/components/administrators/constants/users";
+import useTenantTier from "@wso2is/admin.extensions.v1/components/subscription/api/subscription";
+import { TenantTier } from "@wso2is/admin.extensions.v1/components/subscription/models/subscription";
 import { SubscriptionProvider }
-    from "@wso2is/features/admin.extensions.v1/components/subscription/providers/subscription-provider";
-import useOrganizationSwitch from "@wso2is/features/admin.organizations.v1/hooks/use-organization-switch";
+    from "@wso2is/admin.extensions.v1/components/subscription/providers/subscription-provider";
+import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
 import {
     I18n,
     I18nInstanceInitException,
