@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { CreateGroupMemberInterface } from "../../admin.groups.v1/models";
-import { SchemaAttributeValueInterface } from "../../admin.users.v1/models";
+import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models";
+import { SchemaAttributeValueInterface } from "@wso2is/admin.users.v1/models";
 
 /**
  * Interface to store data for create role api.

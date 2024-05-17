@@ -38,10 +38,10 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
-import { OrganizationManagementConstants } from "../../../admin.organizations.v1/constants";
-import { getUsersList } from "../../../admin.users.v1/api/users";
-import { UserBasicInterface, UserListInterface } from "../../../admin.users.v1/models/user";
+import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants";
+import { getUsersList } from "@wso2is/admin.users.v1/api/users";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 
 /**
  * Proptypes for the role user list component.

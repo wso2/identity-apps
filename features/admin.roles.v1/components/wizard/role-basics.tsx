@@ -22,10 +22,10 @@ import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { SharedUserStoreConstants } from "../../../admin.core.v1/constants";
-import { SharedUserStoreUtils } from "../../../admin.core.v1/utils";
-import { getUserStoreList } from "../../../admin.userstores.v1/api";
-import { UserStoreListItem } from "../../../admin.userstores.v1/models/user-stores";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { searchRoleList } from "../../api/roles";
 import {
     PRIMARY_DOMAIN
