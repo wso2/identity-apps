@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
-import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { updateAPIResource } from "../api";
 import { APIResourcesConstants } from "../constants";
 import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";

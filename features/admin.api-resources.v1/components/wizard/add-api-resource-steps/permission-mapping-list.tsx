@@ -23,7 +23,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Header, Label, SemanticICONS } from "semantic-ui-react";
-import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { APIResourcePermissionInterface, PermissionMappingInterface } from "../../../models";
 
 /**
