@@ -17,7 +17,7 @@
  */
 
 import React, { ReactElement } from "react";
-import { BrandingPreferenceColorsInterface } from "../../../common.branding.v1/models/branding-preferences";
+import { BrandingPreferenceColorsInterface } from "@wso2is/common.branding.v1/models/branding-preferences";
 
 /* eslint-disable max-len */
 

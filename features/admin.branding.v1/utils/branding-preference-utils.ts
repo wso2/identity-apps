@@ -25,7 +25,7 @@ import {
     BrandingPreferenceThemeInterface,
     DynamicBrandingPreferenceLayoutInterface,
     PredefinedThemes
-} from "../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../constants";
 import { BrandingPreferenceMeta, LAYOUTS, PredefinedLayouts } from "../meta";
 

@@ -27,7 +27,7 @@ import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceInterface,
     BrandingPreferenceTypes
-} from "../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../constants";
 
 /**

@@ -25,7 +25,7 @@ import React, {
 } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { BrandingPreferenceInterface } from "../../../common.branding.v1/models";
+import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../../constants";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";

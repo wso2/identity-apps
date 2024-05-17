@@ -43,14 +43,14 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
-import useGetBrandingPreferenceResolve from "../../common.branding.v1/api/use-get-branding-preference-resolve";
+import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
     PredefinedLayouts
-} from "../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 import { deleteBrandingPreference, updateBrandingPreference } from "../api";
 import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";

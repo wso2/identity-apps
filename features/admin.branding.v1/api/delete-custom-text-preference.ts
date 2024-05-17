@@ -23,7 +23,7 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
-import { BrandingPreferenceTypes } from "../../common.branding.v1/models/branding-preferences";
+import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
 

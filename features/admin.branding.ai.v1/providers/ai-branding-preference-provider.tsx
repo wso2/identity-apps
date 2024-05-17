@@ -35,7 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AI_BRANDING_FEATURE_ID } from "@wso2is/admin.branding.v1/constants/ai-branding-constants";
 import useBrandingPreference from "@wso2is/admin.branding.v1/hooks/use-branding-preference";
-import { BrandingPreferenceInterface } from "../../common.branding.v1/models";
+import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";

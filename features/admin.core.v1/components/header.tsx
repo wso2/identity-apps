@@ -62,6 +62,7 @@ import {
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import useGlobalVariables from "../hooks/use-global-variables";
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AppConstants } from "../constants";

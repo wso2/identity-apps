@@ -21,7 +21,7 @@ import React, {
     FunctionComponent,
     ReactElement
 } from "react";
-import { BrandingPreferenceInterface } from "../../../common.branding.v1/models";
+import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 
 /**
  * Proptypes for the product header component of login screen skeleton.

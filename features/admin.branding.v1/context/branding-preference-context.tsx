@@ -23,7 +23,7 @@ import {
     BrandingPreferenceAPIResponseInterface,
     BrandingSubFeatures,
     PreviewScreenType
-} from "../../common.branding.v1/models/branding-preferences";
+} from "@wso2is/common.branding.v1/models/branding-preferences";
 import {
     CustomTextConfigurationModes,
     CustomTextInterface,

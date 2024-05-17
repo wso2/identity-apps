@@ -24,7 +24,7 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { BrandingPreferenceTypes } from "../../common.branding.v1/models/branding-preferences";
+import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
 
 /**

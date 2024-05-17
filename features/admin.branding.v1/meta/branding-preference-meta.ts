@@ -28,7 +28,7 @@ import {
     DynamicBrandingPreferenceLayoutInterface,
     DynamicBrandingPreferenceThemeInterface,
     PredefinedThemes
-} from "../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 import { ThemeSwatchUIConfigsInterface } from "../components";
 import { BrandingPreferencesConstants } from "../constants";
 

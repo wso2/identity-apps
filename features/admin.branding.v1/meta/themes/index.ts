@@ -18,7 +18,7 @@
 
 import { DARK_THEME } from "./dark-theme";
 import { LIGHT_THEME } from "./light-theme";
-import { DynamicBrandingPreferenceThemeInterface, PredefinedThemes } from "../../../common.branding.v1/models";
+import { DynamicBrandingPreferenceThemeInterface, PredefinedThemes } from "@wso2is/common.branding.v1/models";
 import { ThemeSwatchUIConfigsInterface } from "../../components";
 
 export const THEMES: DynamicBrandingPreferenceThemeInterface = {

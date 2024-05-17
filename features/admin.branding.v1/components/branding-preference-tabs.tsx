@@ -55,7 +55,7 @@ import {
     BrandingSubFeatures,
     PredefinedThemes,
     PreviewScreenType
-} from "../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";

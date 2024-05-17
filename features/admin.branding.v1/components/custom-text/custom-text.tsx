@@ -33,7 +33,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import CustomTextFields from "./custom-text-fields";
 import CustomTextUnsavedChangesConfirmationModal from "./custom-text-unsaved-changes-confirmation-modal";
-import { BrandingSubFeatures, PreviewScreenType } from "../../../common.branding.v1/models";
+import { BrandingSubFeatures, PreviewScreenType } from "@wso2is/common.branding.v1/models";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
 import { CustomTextConfigurationModes, CustomTextInterface } from "../../models/custom-text-preference";

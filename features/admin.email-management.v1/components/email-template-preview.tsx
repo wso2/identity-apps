@@ -29,7 +29,7 @@ import React, {
 import { useSelector } from "react-redux";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
 import useBrandingPreference from "@wso2is/admin.branding.v1/hooks/use-branding-preference";
-import { BrandingPreferenceThemeInterface } from "../../common.branding.v1/models";
+import { BrandingPreferenceThemeInterface } from "@wso2is/common.branding.v1/models";
 import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
 import { AppState } from "@wso2is/admin.core.v1";
 import { EmailTemplate } from "../models";

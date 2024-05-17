@@ -33,6 +33,7 @@
         "@wso2is/validation": "^2.0.5",
         "@wso2is/admin.branding.v1": "^2.19.2",
         "@wso2is/admin.core.v1": "^2.19.2",
+        "@wso2is/common.branding.v1": "^2.19.2",
         "axios": "^0.19.2",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",

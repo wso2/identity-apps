@@ -58,7 +58,7 @@ import {
     BrandingPreferenceThemeInterface,
     FontConfigurationStrategies,
     PredefinedThemes
-} from "../../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 import { useLayout } from "../../api";
 import { BrandingPreferencesConstants } from "../../constants";
 import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";

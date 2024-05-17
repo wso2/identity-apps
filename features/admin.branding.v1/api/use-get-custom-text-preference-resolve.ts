@@ -27,7 +27,7 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { BrandingPreferenceTypes } from "../../common.branding.v1/models/branding-preferences";
+import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import {
     CustomTextPreferenceAPIResponseInterface

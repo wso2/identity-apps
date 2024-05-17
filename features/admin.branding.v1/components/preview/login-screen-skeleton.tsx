@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { ProductFooter } from "./product-footer";
 import { ProductHeader } from "./product-header";
 import SignInBox from "./sign-in-box/sign-in-box";
-import { BrandingPreferenceInterface } from "../../../common.branding.v1/models";
+import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 
 
 /**

@@ -21,7 +21,7 @@ import {
     BrandingPreferenceThemeInterface,
     PredefinedThemes,
     ThemeConfigInterface
-} from "../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 import { CustomTextInterface } from "@wso2is/admin.branding.v1/models/custom-text-preference";
 import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
 import processCustomTextTemplateLiterals from "@wso2is/admin.branding.v1/utils/process-custom-text-template-literals";
