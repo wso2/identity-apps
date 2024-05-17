@@ -40,8 +40,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Header, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
-import { getApplicationDetails } from "../../admin.applications.v1/api";
-import { ApplicationBasicInterface } from "../../admin.applications.v1/models";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models";
 import {
     AppConstants,
     AppState,
@@ -49,7 +49,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { deleteIdentityProvider, getIDPConnectedApps } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import {

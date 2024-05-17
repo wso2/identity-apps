@@ -23,7 +23,7 @@ import {
 } from "./types";
 import {
     SetApplicationTemplatesActionInterface
-} from "../../../admin.applications.v1/store/actions/types";
+} from "@wso2is/admin.applications.v1/store/actions/types";
 import { FederatedAuthenticatorListItemInterface, IdentityProviderTemplateItemInterface } from "../../models";
 
 /**

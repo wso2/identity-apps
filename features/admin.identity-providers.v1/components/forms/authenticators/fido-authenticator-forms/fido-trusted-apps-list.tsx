@@ -31,7 +31,7 @@ import {
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Header, Icon, Input } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations, getTechnologyLogos } from "../../../../../admin.core.v1";
+import { getEmptyPlaceholderIllustrations, getTechnologyLogos } from "@wso2is/admin.core.v1";
 import {
     FIDOTrustedAppTypes,
     FIDOTrustedAppsListInterface,

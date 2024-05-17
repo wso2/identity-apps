@@ -18,10 +18,10 @@
 
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
-import { authenticatorConfig } from "../../admin.extensions.v1/configs/authenticator";
-import SweIdpTemplate from "../../admin.extensions.v1/identity-provider-templates/templates/swe/swe.json";
+import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authenticator";
+import SweIdpTemplate from "@wso2is/admin.extensions.v1/identity-provider-templates/templates/swe/swe.json";
 import TrustedTokenIssuerTemplate from
-    "../../admin.extensions.v1/identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json";
+    "@wso2is/admin.extensions.v1/identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json";
 import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
 import EnterpriseIdPTemplate from
     "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";

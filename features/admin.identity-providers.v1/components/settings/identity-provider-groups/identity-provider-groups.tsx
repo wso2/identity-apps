@@ -34,12 +34,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { IdentityProviderGroupsList } from "./identity-provider-groups-list";
-import { AppState, FeatureConfigInterface, store } from "../../../../admin.core.v1";
+import { AppState, FeatureConfigInterface, store } from "@wso2is/admin.core.v1";
 import {
     IdentityProviderClaimMappingInterface,
     IdentityProviderClaimsInterface,
     IdentityProviderInterface
-} from "../../../../admin.identity-providers.v1/models/identity-provider";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { updateClaimsConfigs, useClaimConfigs } from "../../../api/identity-provider";
 import { IdentityProviderConstants } from "../../../constants/identity-provider-constants";
 

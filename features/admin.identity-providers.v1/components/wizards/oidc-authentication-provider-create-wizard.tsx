@@ -37,7 +37,7 @@ import {
     EventPublisher,
     ModalWithSidePanel,
     store
-} from "../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata

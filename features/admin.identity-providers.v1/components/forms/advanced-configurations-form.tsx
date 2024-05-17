@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentityProviderAdvanceInterface } from "../../models";
 
 /**

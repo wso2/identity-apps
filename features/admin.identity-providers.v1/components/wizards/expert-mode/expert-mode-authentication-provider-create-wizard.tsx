@@ -39,9 +39,9 @@ import { Grid } from "semantic-ui-react";
 import {
     ExpertModeAuthenticationProviderCreateWizardContent
 } from "./expert-mode-authentication-provider-create-wizard-content";
-import { identityProviderConfig } from "../../../../admin.extensions.v1/configs/identity-provider";
-import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../admin.core.v1/components";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
+import { ModalWithSidePanel, TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../../constants";

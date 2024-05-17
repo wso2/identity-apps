@@ -43,10 +43,10 @@ import {
     FeatureConfigInterface,
     UIConstants,
     history
-} from "../../admin.core.v1";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin.extensions.v1/configs";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+} from "@wso2is/admin.core.v1";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
 import { IdentityProviderList } from "../components/identity-provider-list";

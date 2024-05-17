@@ -20,7 +20,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
-import { authenticatorConfig } from "../../admin.extensions.v1/configs/authenticator";
+import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authenticator";
 import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,10 +30,10 @@ import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
 import {
     identityProviderConfig
-} from "../../admin.extensions.v1/configs/identity-provider";
+} from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import {
     AuthenticatorExtensionsConfigInterface,
-} from "../../admin.extensions.v1/configs/models/identity-providers";
+} from "@wso2is/admin.extensions.v1/configs/models/identity-providers";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorInterface, AuthenticatorSettingsFormModes, MultiFactorAuthenticatorInterface } from "../models";

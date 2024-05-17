@@ -49,16 +49,16 @@ import {
     Label, 
     SemanticICONS
 } from "semantic-ui-react";
-import { applicationListConfig } from "../../../admin.extensions.v1/configs/application-list";
-import { getApplicationDetails } from "../../../admin.applications.v1/api";
-import { ApplicationManagementConstants } from "../../../admin.applications.v1/constants";
+import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import { 
     ApplicationAccessTypes, 
     ApplicationBasicInterface, 
     ApplicationListItemInterface, 
     ApplicationTemplateListItemInterface 
-} from "../../../admin.applications.v1/models";
-import { ApplicationTemplateManagementUtils } from "../../../admin.applications.v1/utils/application-template-management-utils";
+} from "@wso2is/admin.applications.v1/models";
+import { ApplicationTemplateManagementUtils } from "@wso2is/admin.applications.v1/utils/application-template-management-utils";
 import {  
     AppConstants,
     AppState, 
@@ -66,7 +66,7 @@ import {
     UIConstants, 
     getEmptyPlaceholderIllustrations, 
     history
-} from "../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { getIDPConnectedApps } from "../../api";
 import { 
     ConnectedAppInterface,

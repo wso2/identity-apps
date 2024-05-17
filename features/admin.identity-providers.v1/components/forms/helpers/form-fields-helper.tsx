@@ -28,7 +28,7 @@ import { CopyInputField, GenericIcon, Hint, XMLFileStrategy } from "@wso2is/reac
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
-import { commonConfig } from "../../../../admin.extensions.v1/configs/common";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
 import { IdentityProviderConstants } from "../../../constants/identity-provider-constants";
 import {
     AuthenticatorSettingsFormModes,

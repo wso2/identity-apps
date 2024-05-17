@@ -40,14 +40,14 @@ import { Grid } from "semantic-ui-react";
 import {
     FacebookAuthenticationProviderCreateWizardContent
 } from "./facebook-authentication-provider-create-wizard-content";
-import { identityProviderConfig } from "../../../../admin.extensions.v1/configs";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
     ModalWithSidePanel
-} from "../../../../admin.core.v1";
-import { TierLimitReachErrorModal } from "../../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
+} from "@wso2is/admin.core.v1";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../../constants";

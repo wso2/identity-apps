@@ -28,7 +28,7 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Grid, Modal } from "semantic-ui-react";
-import { getTechnologyLogos } from "../../../../../admin.core.v1";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1";
 import { FIDOTrustedAppTypes, FIDOTrustedAppsValuesInterface } from "../../../../models";
 import "./fido-trusted-app-wizard.scss";
 

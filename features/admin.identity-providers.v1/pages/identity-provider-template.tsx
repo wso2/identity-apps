@@ -44,9 +44,9 @@ import {
     EventPublisher,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
-import useGlobalVariables from "../../admin.core.v1/hooks/use-global-variables";
-import { identityProviderConfig } from "../../admin.extensions.v1/configs";
+} from "@wso2is/admin.core.v1";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards/authenticator-create-wizard-factory";
 import { getIdPIcons } from "../configs/ui";
 import { IdentityProviderManagementConstants, ORG_ENTERPRISE_IDP_ID } from "../constants";

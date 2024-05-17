@@ -32,12 +32,12 @@ import { Grid } from "semantic-ui-react";
 import {
     OrganizationEnterpriseAuthenticationProviderCreateWizardContent
 } from "./organization-enterprise-authentication-provider-create-wizard-content";
-import { identityProviderConfig } from "../../../../admin.extensions.v1/configs";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
     EventPublisher,
     ModalWithSidePanel,
     TierLimitReachErrorModal
-} from "../../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../../constants";

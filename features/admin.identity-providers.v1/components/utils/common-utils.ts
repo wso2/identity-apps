@@ -19,7 +19,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
-import { store } from "../../../admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 
 const CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string = "IDP-65004";
 

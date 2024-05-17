@@ -27,9 +27,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
-import { getApplicationDetails } from "../../../admin.applications.v1/api";
-import { ApplicationBasicInterface } from "../../../admin.applications.v1/models";
-import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import {
     deleteIdentityProvider,
     getIDPConnectedApps,

@@ -40,8 +40,8 @@ import {
     AuthenticatorAccordion,
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations
-} from "../../../admin.core.v1";
-import { RootOnlyComponent } from "../../../admin.organizations.v1/components";
+} from "@wso2is/admin.core.v1";
+import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,

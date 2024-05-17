@@ -57,15 +57,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Icon, Modal } from "semantic-ui-react";
-import { commonConfig } from "../../../../admin.extensions.v1/configs/common";
-import { identityProviderConfig } from "../../../../admin.extensions.v1/configs/identity-provider";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import {
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
     TierLimitReachErrorModal,
     getCertificateIllustrations
-} from "../../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { createIdentityProvider, useIdentityProviderList } from "../../../api";
 import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../../configs/ui";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../../../constants";

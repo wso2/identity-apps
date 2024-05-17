@@ -29,8 +29,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { FIDOTrustedApps } from "./fido-trusted-apps";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs/identity-provider";
-import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { updateFidoConfigs, useFIDOConnectorConfigs } from "../../../../api/fido-configs";
 import { IdentityProviderManagementConstants } from "../../../../constants";
 import {

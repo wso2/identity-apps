@@ -26,7 +26,7 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
 
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {

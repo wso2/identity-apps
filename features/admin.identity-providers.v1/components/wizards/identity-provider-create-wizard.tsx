@@ -30,8 +30,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { AuthenticatorSettings, GeneralSettings, OutboundProvisioningSettings, WizardSummary } from "./steps";
-import { identityProviderConfig } from "../../../admin.extensions.v1/configs";
-import { AppState, ModalWithSidePanel } from "../../../admin.core.v1";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
+import { AppState, ModalWithSidePanel } from "@wso2is/admin.core.v1";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata

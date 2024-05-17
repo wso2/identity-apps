@@ -43,9 +43,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Icon, List } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin.extensions.v1/configs";
-import { getApplicationDetails } from "../../admin.applications.v1/api";
-import { ApplicationBasicInterface } from "../../admin.applications.v1/models";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models";
 import {
     AppConstants,
     AppState,
@@ -53,7 +53,7 @@ import {
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { deleteIdentityProvider, getIDPConnectedApps } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";

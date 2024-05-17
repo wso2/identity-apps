@@ -37,7 +37,7 @@ import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AuthenticatorSettings } from "./steps";
 import { AuthenticatorTemplateSelection } from "./steps/authenticator-create-steps/authenticator-template-selection";
-import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1/configs/ui";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import {
     getFederatedAuthenticatorMetadata,
     updateFederatedAuthenticator

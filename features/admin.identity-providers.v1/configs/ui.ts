@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { identityProviderConfig } from "../../admin.extensions.v1/configs/identity-provider";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.png";
 import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import SMSOTPIcon from "../../themes/default/assets/images/authenticators/sms-otp.svg";

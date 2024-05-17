@@ -25,9 +25,9 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { SimpleUserStoreListItemInterface } from "../../../admin.applications.v1/models";
-import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
-import { identityProviderConfig } from "../../../admin.extensions.v1/configs/identity-provider";
+import { SimpleUserStoreListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import {
     IdentityProviderInterface,
     JITProvisioningResponseInterface,

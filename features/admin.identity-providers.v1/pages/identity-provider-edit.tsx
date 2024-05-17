@@ -42,14 +42,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin.extensions.v1/configs";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
     FeatureConfigInterface,
     history
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { getIdentityProviderDetail, getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api";
 import { EditMultiFactorAuthenticator } from "../components/edit-multi-factor-authenticator";
 import { EditIdentityProvider } from "../components/identity-provider-edit";

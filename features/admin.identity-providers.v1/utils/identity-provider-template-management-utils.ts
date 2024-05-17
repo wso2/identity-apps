@@ -18,7 +18,7 @@
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import groupBy from "lodash-es/groupBy";
-import { store } from "../../admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import { getIdentityProviderTemplateList } from "../api";
 import { handleGetIDPTemplateListError } from "../components/utils/common-utils";
 import { getIdPCapabilityIcons } from "../configs/ui";

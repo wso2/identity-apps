@@ -38,12 +38,12 @@ import OrganizationEnterpriseIDPTemplate from
     "./templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdentityProviderTemplate
     from "./templates/saml-identity-provider/enterprise-saml-identity-provider.json";
-import { identityProviderConfig } from "../../../admin.extensions.v1/configs/identity-provider";
-import { ExtensionsManager } from "../../../admin.extensions.v1/extensions-manager";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
+import { ExtensionsManager } from "@wso2is/admin.extensions.v1/extensions-manager";
 import {
     EnterpriseIdentityProviderTemplateExtension
-} from "../../../admin.extensions.v1/configs/identity-providers-templates";
-import { AppConstants, store } from "../../../admin.core.v1";
+} from "@wso2is/admin.extensions.v1/configs/identity-providers-templates";
+import { AppConstants, store } from "@wso2is/admin.core.v1";
 import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
 
 /**

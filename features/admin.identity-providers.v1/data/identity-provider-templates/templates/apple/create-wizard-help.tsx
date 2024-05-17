@@ -22,9 +22,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs";
-import { ConfigReducerStateInterface } from "../../../../../admin.core.v1/models";
-import { AppState } from "../../../../../admin.core.v1/store";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
 
 /**
  * Prop types of the component.
