@@ -47,8 +47,8 @@ import {
 import { BrandingPreferencePreview } from "./preview";
 import ScreenDropdown from "./screen-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import { AppState } from "../../admin.core.v1/store";
-import { commonConfig } from "../../admin.extensions.v1/configs/common";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,

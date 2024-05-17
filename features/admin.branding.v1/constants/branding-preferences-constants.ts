@@ -17,7 +17,7 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { commonConfig } from "../../admin.extensions.v1/configs/common";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
 import { BrandingPreferenceInterface, PredefinedThemes, ThemeConfigInterface } from "../../common.branding.v1/models";
 import { PredefinedLayouts } from "../meta/layouts";
 

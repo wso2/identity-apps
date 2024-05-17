@@ -30,13 +30,13 @@ import orderBy from "lodash-es/orderBy";
 import React, { FunctionComponent, ReactElement, SVGAttributes, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants } from "../../../admin.core.v1/constants";
-import { history } from "../../../admin.core.v1/helpers/history";
-import { AppState } from "../../../admin.core.v1/store";
-import { serverConfigurationConfig } from "../../../admin.extensions.v1/configs/server-configuration";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import {
     ServerConfigurationsConstants
-} from "../../../admin.server-configurations.v1/constants/server-configurations-constants";
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ReactComponent as WarningIcon } from "../../../themes/default/assets/images/icons/warning-icon.svg";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";

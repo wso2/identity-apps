@@ -17,15 +17,15 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { store } from "../../admin.core.v1";
-import { I18nConstants } from "../../admin.core.v1/constants/i18n-constants";
+import { store } from "@wso2is/admin.core.v1";
+import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceTypes

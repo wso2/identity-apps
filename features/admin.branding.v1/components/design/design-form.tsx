@@ -49,9 +49,9 @@ import { IllustrationsPreview } from "./illustrations-preview";
 import * as LayoutDesignExtensions from "./layout-design-extensions";
 import { LayoutSwatchAdapter } from "./layout-swatch";
 import { ThemeSwatchAdapter, ThemeSwatchUIConfigsInterface } from "./theme-swatch";
-import { commonConfig } from "../../../admin.extensions.v1/configs/common";
-import { AppConstants } from "../../../admin.core.v1/constants";
-import { AppState } from "../../../admin.core.v1/store";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,

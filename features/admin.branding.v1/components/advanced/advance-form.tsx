@@ -25,7 +25,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { BrandingPreferenceInterface } from "../../../common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../../constants";
 import { BrandingURLPreferenceConstants } from "../../constants/url-preference-constants";

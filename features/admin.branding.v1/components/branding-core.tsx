@@ -37,12 +37,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useAIBrandingPreference from "../../admin.branding.ai.v1/hooks/use-ai-branding-preference";
-import { EventPublisher, OrganizationType } from "../../admin.core.v1";
-import { AppState } from "../../admin.core.v1/store";
-import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { OrganizationResponseInterface } from "../../admin.organizations.v1/models/organizations";
+import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-branding-preference";
+import { EventPublisher, OrganizationType } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
 import useGetBrandingPreferenceResolve from "../../common.branding.v1/api/use-get-branding-preference-resolve";
 import {
     BrandingPreferenceAPIResponseInterface,
