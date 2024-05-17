@@ -185,7 +185,6 @@
         "enableCustomEmailTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
-        "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "features": {
             "accountLogin": {
                 "disabledFeatures": [],
@@ -1183,6 +1182,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
             "Console",
             "My Account"
