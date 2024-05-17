@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { VerticalStepper, VerticalStepperStepInterface } from "../../../admin.core.v1";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
+import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Encode } from "@wso2is/core/utils";
 import { GenericIcon, Heading, PageHeader } from "@wso2is/react-components";
@@ -25,7 +25,7 @@ import React, { FC, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import ApplicationSelectionModal
-    from "../../../admin.extensions.v1/components/shared/application-selection-modal";
+    from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
 import { ConnectionInterface, ConnectionTemplateInterface } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 

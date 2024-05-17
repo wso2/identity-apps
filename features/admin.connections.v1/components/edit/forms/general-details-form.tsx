@@ -24,9 +24,9 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../../admin.core.v1";
-import { identityProviderConfig } from "../../../../admin.extensions.v1/configs/identity-provider";
-import { IdentityProviderManagementConstants } from "../../../../admin.identity-providers.v1/constants";
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {

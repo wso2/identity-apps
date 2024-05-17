@@ -52,15 +52,15 @@ import {
     AppState,
     FeatureConfigInterface,
     history
-} from "../../admin.core.v1";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+} from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
-} from "../../admin.extensions.v1/configs";
+} from "@wso2is/admin.extensions.v1/configs";
 import {
     EditMultiFactorAuthenticator
-} from "../../admin.identity-providers.v1/components/edit-multi-factor-authenticator";
+} from "@wso2is/admin.identity-providers.v1/components/edit-multi-factor-authenticator";
 import {
     getLocalAuthenticator,
     getMultiFactorAuthenticatorDetails

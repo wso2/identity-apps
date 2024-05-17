@@ -41,10 +41,10 @@ import {
     ConfigReducerStateInterface,
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations
-} from "../../../../admin.core.v1";
-import { AuthenticatorAccordion } from "../../../../admin.core.v1/components";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
-import { identityProviderConfig } from "../../../../admin.extensions.v1/configs/identity-provider";
+} from "@wso2is/admin.core.v1";
+import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,

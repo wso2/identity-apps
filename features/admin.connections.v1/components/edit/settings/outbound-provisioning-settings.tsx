@@ -35,8 +35,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
-import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "../../../../admin.core.v1";
-import { RootOnlyComponent } from "../../../../admin.organizations.v1/components";
+import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,

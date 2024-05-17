@@ -34,7 +34,7 @@ import {
     ConnectionRolesInterface
 } from "../models/connection";
 import { updateClaimsConfigs, updateConnectionRoleMappings } from "../api/connections";
-import { store } from "../../admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import { handleUpdateIDPRoleMappingsError } from "./connection-utils";
 
 /**

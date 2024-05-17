@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -34,7 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { IdentityProviderGroupsList } from "./identity-provider-groups-list";
-import { AppState, FeatureConfigInterface } from "../../../../../admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { useClaimConfigs } from "../../../../api/connections";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import {

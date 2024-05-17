@@ -17,7 +17,7 @@
  */
 
 import { useCallback } from "react";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 
 /**
  * Hook to set the connection templates.

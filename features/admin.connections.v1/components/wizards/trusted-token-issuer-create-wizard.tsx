@@ -56,14 +56,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Icon, Modal } from "semantic-ui-react";
-import { commonConfig } from "../../../admin.extensions.v1/configs/common";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
 import {
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
     TierLimitReachErrorModal,
     getCertificateIllustrations
-} from "../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import {
     CertificateType,
     GenericIdentityProviderCreateWizardPropsInterface,
@@ -72,7 +72,7 @@ import {
     IdentityProviderInterface,
     TrsutedTokenIssuerWizardStep,
     TrustedTokenIssuerWizardStepInterface
-} from "../../../admin.identity-providers.v1/models";
+} from "@wso2is/admin.identity-providers.v1/models";
 import { createConnection } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";

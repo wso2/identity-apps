@@ -50,7 +50,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
 import { CreateIdPGroupWizard } from "./create-identity-provider-group-wizard";
-import { FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1";
+import { FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { updateConnectionGroup, useConnectionGroups } from "../../../../api/connections";
 import { ConnectionGroupInterface } from "../../../../models/connection";
 

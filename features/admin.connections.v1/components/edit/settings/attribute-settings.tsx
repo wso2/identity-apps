@@ -29,9 +29,9 @@ import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributeSelection, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
-import { getAllLocalClaims } from "../../../../admin.claims.v1/api";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
+import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import {
     ConnectionClaimInterface,
     ConnectionClaimMappingInterface,

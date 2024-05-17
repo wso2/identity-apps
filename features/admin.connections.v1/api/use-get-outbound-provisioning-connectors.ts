@@ -17,12 +17,12 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { store } from "../../admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { OutboundProvisioningConnectorListItemInterface } from "../models/connection";
 
 /**

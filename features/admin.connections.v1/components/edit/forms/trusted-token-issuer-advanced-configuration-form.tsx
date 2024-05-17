@@ -25,9 +25,9 @@ import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { DropdownOptionsInterface } from "../../../../admin.applications.v1/components/settings";
-import { getExternalClaims } from "../../../../admin.claims.v1/api";
-import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
+import { DropdownOptionsInterface } from "@wso2is/admin.applications.v1/components/settings";
+import { getExternalClaims } from "@wso2is/admin.claims.v1/api";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import { ImplicitAssociaionConfigInterface } from "../../../models/connection";
 import { SubjectAttributeListItem } from "../settings";
