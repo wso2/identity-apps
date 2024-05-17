@@ -20,7 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance, HttpResponse } from "@asgardeo/a
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig } from "axios";
-import { store } from "../../admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import { OrgInsightsConstants } from "../constants/org-insights";
 import { 
     DurationOption, 
