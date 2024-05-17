@@ -55,7 +55,7 @@ import { MultitenantConstants } from "@wso2is/features/admin.core.v1/constants/m
 import { history } from "@wso2is/features/admin.core.v1/helpers";
 import useRoutes from "@wso2is/features/admin.core.v1/hooks/use-routes";
 import useUIConfig from "@wso2is/features/admin.core.v1/hooks/use-ui-configs";
-import { commonConfig } from "@wso2is/features/admin.extensions.v1";
+import { commonConfig } from "@wso2is/features/admin.extensions.v1/configs/common";
 import { CONSUMER_USERSTORE } from "@wso2is/features/admin.extensions.v1/components/administrators/constants/users";
 import useTenantTier from "@wso2is/features/admin.extensions.v1/components/subscription/api/subscription";
 import { TenantTier } from "@wso2is/features/admin.extensions.v1/components/subscription/models/subscription";

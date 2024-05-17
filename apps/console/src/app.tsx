@@ -38,7 +38,7 @@ import {
     ServiceResourceEndpointsInterface
 } from "@wso2is/features/admin.core.v1/models";
 import { AppState } from "@wso2is/features/admin.core.v1/store";
-import { commonConfig } from "@wso2is/features/admin.extensions.v1";
+import { commonConfig } from "@wso2is/features/admin.extensions.v1/configs/common";
 import { useGetAllFeatures } from "@wso2is/features/admin.extensions.v1/components/feature-gate/api/feature-gate";
 import { featureGateConfig } from "@wso2is/features/admin.extensions.v1/configs/feature-gate";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
