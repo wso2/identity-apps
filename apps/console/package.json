@@ -84,7 +84,7 @@
         "react-notification-system": "^0.4.0",
         "react-redux": "^7.2.9",
         "react-router-dom": "^4.3.1",
-        "reactflow": "^11.7.2",
+        "reactflow": "11.7.2",
         "reactour": "^1.18.0",
         "recharts": "^2.6.2",
         "reduce-reducers": "^1.0.4",
