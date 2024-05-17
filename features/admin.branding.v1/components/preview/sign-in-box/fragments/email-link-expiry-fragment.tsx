@@ -42,11 +42,19 @@ const EmailLinkExpiryFragment: FunctionComponent<EmailLinkExpiryFragmentInterfac
 
     return (
         <div data-componentid={ componentId } >
-            <h2 style={ { color: "#d95858", height: "150px" } } className="mt-5">
+            <h2 style={ { color: "#d95858", minHeight: "150px" } } className="mt-5">
                 { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.EMAIL_LINK_EXPIRY.MESSAGE,
                     "This link has expired.") }
             </h2>
-            <Placeholder style={ { animation: "unset", height: "50px", marginBottom: "50px", width: "315px" } }>
+            <Placeholder style={ { animation: "unset", height: "40px" } }>
+                <Placeholder.Image />
+            </Placeholder>
+            <Placeholder style={ { animation: "unset", height: "20px", marginTop: "15px" } }>
+                <Placeholder.Image />
+            </Placeholder>
+            <Placeholder
+                style={ { animation: "unset", height: "20px", marginBottom: "50px", marginTop: "15px", width: "60%" } }
+            >
                 <Placeholder.Image />
             </Placeholder>
             <button className="ui primary button mb-2">Go Back</button>
