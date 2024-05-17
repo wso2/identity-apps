@@ -29,7 +29,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceTypes
-} from "../../common.branding.v1/models/branding-preferences";
+} from "../models/branding-preferences";
 
 /**
  * Hook to get the branding preference via Branding Preferences API.
