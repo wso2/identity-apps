@@ -26,10 +26,10 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
-import { applicationConfig } from "../../../admin.extensions.v1/configs/application";
-import { commonConfig } from "../../../admin.extensions.v1/configs/common";
-import { AppState, ConfigReducerStateInterface } from "../../../admin.core.v1";
-import { getAvailableNameIDFormats } from "../../../admin.identity-providers.v1/components/utils/saml-idp-utils";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { getAvailableNameIDFormats } from "@wso2is/admin.identity-providers.v1/components/utils/saml-idp-utils";
 import {
     ApplicationInterface,
     CertificateInterface,

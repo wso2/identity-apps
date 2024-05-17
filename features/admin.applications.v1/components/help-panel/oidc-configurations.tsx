@@ -25,8 +25,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../admin.core.v1";
-import { AppState } from "../../../admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { getHelpPanelIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import {

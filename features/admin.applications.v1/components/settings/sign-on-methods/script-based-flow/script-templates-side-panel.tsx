@@ -43,27 +43,27 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Accordion,  Grid, Icon, Menu, Modal, Segment, Sidebar } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../../../../admin.extensions.v1/configs/server-configuration";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 // eslint-disable-next-line max-len
-import AdaptiveAuthTemplateInfoModal from "../../../../../admin.authentication-flow-builder.v1/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
+import AdaptiveAuthTemplateInfoModal from "@wso2is/admin.authentication-flow-builder.v1/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
-} from "../../../../../admin.authentication-flow-builder.v1/constants/template-constants";
+} from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
 import {
     getConnectorDetails,
     updateGovernanceConnector
-} from "../../../../../admin.server-configurations.v1/api/governance-connectors";
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import {
     ServerConfigurationsConstants
-} from "../../../../../admin.server-configurations.v1/constants/server-configurations-constants";
-import { AnalyticsConfigurationForm } from "../../../../../admin.server-configurations.v1/forms/analytics-form";
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { AnalyticsConfigurationForm } from "@wso2is/admin.server-configurations.v1/forms/analytics-form";
 import {
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../../../../admin.server-configurations.v1/models/governance-connectors";
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import {
     GovernanceConnectorUtils
-} from "../../../../../admin.server-configurations.v1/utils/governance-connector-utils";
+} from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
 import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models";
 
 /**

@@ -31,9 +31,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { AppConstants, AppState, UIConfigInterface } from "../../../admin.core.v1";
-import { applicationConfig } from "../../../admin.extensions.v1/configs/application";
-import { OrganizationType } from "../../../admin.organizations.v1/constants";
+import { AppConstants, AppState, UIConfigInterface } from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useMyAccountStatus } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationInterface } from "../../models";

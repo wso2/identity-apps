@@ -29,30 +29,30 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import AuthenticationFlowBuilder
-    from "../../../../../admin.authentication-flow-builder.v1/components/authentication-flow-builder";
+    from "@wso2is/admin.authentication-flow-builder.v1/components/authentication-flow-builder";
 import AuthenticationFlowProvider
-    from "../../../../../admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
+    from "@wso2is/admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
 import { ConnectionsManagementUtils }
-    from "../../../../../admin.connections.v1/utils/connection-utils";
-import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../../admin.core.v1";
-import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
+    from "@wso2is/admin.connections.v1/utils/connection-utils";
+import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import {
     AuthenticatorCreateWizardFactory
-} from "../../../../../admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
+} from "@wso2is/admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
 import {
     IdentityProviderManagementConstants
-} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import MicrosoftIDPTemplate
     from
-    "../../../../../admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
+    "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import {
     GenericAuthenticatorInterface,
     IdentityProviderTemplateInterface
-} from "../../../../../admin.identity-providers.v1/models/identity-provider";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import {
     IdentityProviderManagementUtils
-} from "../../../../../admin.identity-providers.v1/utils/identity-provider-management-utils";
-import { OrganizationUtils } from "../../../../../admin.organizations.v1/utils";
+} from "@wso2is/admin.identity-providers.v1/utils/identity-provider-management-utils";
+import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
     ApplicationInterface,

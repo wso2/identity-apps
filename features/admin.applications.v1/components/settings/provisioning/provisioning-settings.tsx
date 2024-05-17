@@ -24,7 +24,7 @@ import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
 import { OutboundProvisioningConfiguration } from "./outbound-provisioning-configuration";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { ApplicationInterface, ProvisioningConfigurationInterface } from "../../../models";
 
 /**

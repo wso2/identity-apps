@@ -41,8 +41,8 @@ import { Divider, Grid, Icon  } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
-import useAuthenticationFlow from "../../../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AuthenticatorManagementConstants } from "../../../../admin.connections.v1";
+import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
 import {
     AppConstants,
     AppState,
@@ -50,18 +50,18 @@ import {
     EventPublisher,
     FeatureConfigInterface,
     history
-} from "../../../../admin.core.v1";
-import useGlobalVariables from "../../../../admin.core.v1/hooks/use-global-variables";
-import { getMultiFactorAuthenticatorDetails } from "../../../../admin.identity-providers.v1/api";
+} from "@wso2is/admin.core.v1";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.identity-providers.v1/api";
 import {
     IdentityProviderManagementConstants
-} from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
-import { OrganizationType } from "../../../../admin.organizations.v1/constants";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "../../../../admin.server-configurations.v1/models/governance-connectors";
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,

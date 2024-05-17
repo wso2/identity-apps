@@ -20,9 +20,9 @@ import { HttpMethods } from "@wso2is/core/models";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { AxiosRequestConfig } from "axios";
-import { store } from "../../admin.core.v1/store";
+import { store } from "@wso2is/admin.core.v1/store";
 import { AuthorizedPermissionListItemInterface } from "../models/api-authorization";
 
 /**

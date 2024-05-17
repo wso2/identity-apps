@@ -21,13 +21,13 @@ import { addAlert } from "@wso2is/core/store";
 import { DynamicField, KeyValue } from "@wso2is/forms";
 import { Heading } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { getRolesList } from "../../../../admin.roles.v2/api";
+import { getRolesList } from "@wso2is/admin.roles.v2/api";
 import { RoleMappingInterface } from "../../../models";
 
 interface RoleMappingPropsInterface extends TestableComponentInterface {

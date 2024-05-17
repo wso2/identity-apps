@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useDeploymentConfig from "../../../../../admin.core.v1/hooks/use-deployment-configs";
+import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     EmptyPlaceholder,
@@ -61,33 +61,33 @@ import {
     SemanticWIDTHS
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
-import { authenticatorConfig } from "../../../../../admin.extensions.v1/configs/authenticator";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs/identity-provider";
-import useAuthenticationFlow from "../../../../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { ConnectionManagementConstants } from "../../../../../admin.connections.v1";
-import { ConnectionsManagementUtils } from "../../../../../admin.connections.v1/utils/connection-utils";
-import { getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1/configs/ui";
-import { AppState } from "../../../../../admin.core.v1/store";
-import { EventPublisher } from "../../../../../admin.core.v1/utils/event-publisher";
-import { getIdPIcons } from "../../../../../admin.identity-providers.v1/configs/ui";
+import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authenticator";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
+import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
+import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
+import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import {
     IdentityProviderManagementConstants
-} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { AuthenticatorMeta } from "../../../../../admin.identity-providers.v1/meta/authenticator-meta";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { AuthenticatorMeta } from "@wso2is/admin.identity-providers.v1/meta/authenticator-meta";
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface
-} from "../../../../../admin.identity-providers.v1/models/identity-provider";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import {
     IdentityProviderManagementUtils
-} from "../../../../../admin.identity-providers.v1/utils/identity-provider-management-utils";
+} from "@wso2is/admin.identity-providers.v1/utils/identity-provider-management-utils";
 import {
     IdentityProviderTemplateManagementUtils
-} from "../../../../../admin.identity-providers.v1/utils/identity-provider-template-management-utils";
-import { OrganizationType } from "../../../../../admin.organizations.v1/constants";
+} from "@wso2is/admin.identity-providers.v1/utils/identity-provider-template-management-utils";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { getGeneralIcons } from "../../../../configs/ui";
 import { AuthenticationStepInterface } from "../../../../models";
 

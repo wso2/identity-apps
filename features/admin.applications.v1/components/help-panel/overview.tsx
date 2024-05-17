@@ -23,7 +23,7 @@ import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { OIDCConfigurations } from "./oidc-configurations";
 import { SAMLConfigurations } from "./saml-configurations";
-import { AppState } from "../../../admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1";
 import {
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,

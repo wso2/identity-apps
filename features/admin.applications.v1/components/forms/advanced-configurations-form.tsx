@@ -36,9 +36,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, getTechnologyLogos } from "../../../admin.core.v1";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../../admin.extensions.v1/configs/application";
+import { AppState, FeatureConfigInterface, getTechnologyLogos } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
 import { ApplicationManagementConstants } from "../../constants";
 import SAMLWebApplicationTemplate from
     "../../data/application-templates/templates/saml-web-application/saml-web-application.json";

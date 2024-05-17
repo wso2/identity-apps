@@ -54,7 +54,7 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
+import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -65,11 +65,11 @@ import {
     UIConstants,
     getGeneralIcons,
     history
-} from "../../admin.core.v1";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../admin.extensions.v1/configs/application";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+} from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
 import { ApplicationList } from "../components/application-list";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";

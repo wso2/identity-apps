@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { getIdentityProviderDetail } from "../../../admin.identity-providers.v1/api/identity-provider";
+import { getIdentityProviderDetail } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface
-} from "../../../admin.identity-providers.v1/models/identity-provider";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 
 /**
  * Proptypes for the outbound provisioning IDP form component.

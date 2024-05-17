@@ -23,8 +23,8 @@ import {
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
-import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models/identity-provider";
-import { AssociatedRolesInterface } from "../../admin.roles.v2/models";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { AssociatedRolesInterface } from "@wso2is/admin.roles.v2/models";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**

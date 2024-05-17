@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { useTranslation } from "react-i18next";
 import { Checkbox, Icon, Input, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
-import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants/claim-management-constants";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 
 const READONLY_CLAIM_CONFIGS: string[] = [
     ClaimManagementConstants.GROUPS_CLAIM_NAME,

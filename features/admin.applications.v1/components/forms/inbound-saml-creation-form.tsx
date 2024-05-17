@@ -25,8 +25,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon } from "semantic-ui-react";
-import { commonConfig } from "../../../admin.extensions.v1/configs/common";
-import { getCertificateIllustrations } from "../../../admin.core.v1";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
 import { SAMLConfigModes } from "../../models";
 
 /**

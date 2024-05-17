@@ -36,7 +36,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { AddApplicationCertificateWizard } from "./add-certificate-wizard";
-import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
+import { UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { updateApplicationDetails } from "../../../api";
 import { ApplicationInterface, CertificateTypeInterface } from "../../../models";
 import { CertificateFormFieldModal } from "../../modals";

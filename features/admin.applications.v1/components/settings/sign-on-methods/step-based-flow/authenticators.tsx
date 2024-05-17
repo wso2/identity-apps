@@ -17,26 +17,26 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
-import { AppState } from "../../../../../admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, Label } from "semantic-ui-react";
-import { applicationConfig } from "../../../../../admin.extensions.v1/configs/application";
-import { AuthenticatorManagementConstants } from "../../../../../admin.connections.v1";
-import { ConnectionsManagementUtils } from "../../../../../admin.connections.v1/utils/connection-utils";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import {
     IdentityProviderManagementConstants
-} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { AuthenticatorMeta } from "../../../../../admin.identity-providers.v1/meta/authenticator-meta";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { AuthenticatorMeta } from "@wso2is/admin.identity-providers.v1/meta/authenticator-meta";
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface
-} from "../../../../../admin.identity-providers.v1/models/identity-provider";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";

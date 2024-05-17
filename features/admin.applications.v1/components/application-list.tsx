@@ -45,7 +45,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { ConsoleSettingsModes } from "../../admin.console-settings.v1/models/ui";
+import { ConsoleSettingsModes } from "@wso2is/admin.console-settings.v1/models/ui";
 import {
     AppConstants,
     AppState,
@@ -54,11 +54,11 @@ import {
     UIConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
-import { applicationConfig } from "../../admin.extensions.v1/configs/application";
-import { applicationListConfig } from "../../admin.extensions.v1/configs/application-list";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+} from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {

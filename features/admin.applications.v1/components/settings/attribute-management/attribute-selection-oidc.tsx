@@ -53,16 +53,16 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../admin.core.v1";
-import { applicationConfig } from "../../../../admin.extensions.v1/configs/application";
-import { OIDCScopesClaimsListInterface } from "../../../../admin.oidc-scopes.v1";
+} from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { OIDCScopesClaimsListInterface } from "@wso2is/admin.oidc-scopes.v1";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,

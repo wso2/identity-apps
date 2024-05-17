@@ -50,15 +50,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
-import { applicationConfig } from "../../../admin.extensions.v1/configs/application";
-import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AppState,
     AuthenticatorAccordion,
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     store
-} from "../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,

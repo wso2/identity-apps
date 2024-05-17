@@ -26,11 +26,11 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { OutboundProvisioningWizardIdpForm } from "./outbound-provisioining-idp-wizard-form";
-import { getIdentityProviderList } from "../../../admin.identity-providers.v1/api/identity-provider";
+import { getIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface
-} from "../../../admin.identity-providers.v1/models/identity-provider";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { updateApplicationConfigurations } from "../../api";
 import { getApplicationWizardStepIcons } from "../../configs/ui";
 import { ApplicationInterface, OutboundProvisioningConfigurationInterface } from "../../models";

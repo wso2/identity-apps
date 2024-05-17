@@ -33,8 +33,8 @@ import SAMLWebApplicationTemplate from "./templates/saml-web-application/saml-we
 import SinglePageApplicationTemplate from "./templates/single-page-application/single-page-application.json";
 import WindowsDesktopApplicationTemplate
     from "./templates/windows-desktop-application/windows-desktop-application.json";
-import { ExtensionsManager } from "../../../admin.extensions.v1/extensions-manager";
-import { applicationConfig } from "../../../admin.extensions.v1/configs/application";
+import { ExtensionsManager } from "@wso2is/admin.extensions.v1/extensions-manager";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
 import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
