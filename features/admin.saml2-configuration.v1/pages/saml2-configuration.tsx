@@ -34,7 +34,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { updateSaml2Configurations, useSaml2Config } from "../api/saml2-configuration";
 import { Saml2ConfigurationConstants } from "../constants/saml2-configuration";
 import {
