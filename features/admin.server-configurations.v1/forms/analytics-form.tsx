@@ -26,12 +26,12 @@ import { Label } from "semantic-ui-react";
 import {
     AnalyticsAPIRequestInterface,
     AnalyticsFormValuesInterface
-} from "../../admin.extensions.v1/components/governance-connectors/models/analytics";
+} from "@wso2is/admin.extensions.v1/components/governance-connectors/models/analytics";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     ServerConfigurationsConstants
-} from "../../admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 
 /**

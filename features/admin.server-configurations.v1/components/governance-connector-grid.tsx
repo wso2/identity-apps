@@ -43,8 +43,8 @@ import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { serverConfigurationConfig } from "../../admin.extensions.v1/configs/server-configuration";
-import { AppConstants, history } from "../../admin.core.v1";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import "./governance-connector-grid.scss";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models/governance-connectors";

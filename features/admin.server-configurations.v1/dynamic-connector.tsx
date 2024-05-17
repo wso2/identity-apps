@@ -33,11 +33,11 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
 import { updateGovernanceConnector } from "./api";
 import { GovernanceConnectorUtils } from "./utils";
-import { serverConfigurationConfig } from "../admin.extensions.v1/configs/server-configuration";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "../admin.server-configurations.v1/models/governance-connectors";
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 
 /**
  * Interface of the prop types of the `ExtendedDynamicConnector`.

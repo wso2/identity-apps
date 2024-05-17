@@ -37,11 +37,11 @@ import {
     Form,
     Grid
 } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../../admin.extensions.v1/configs/server-configuration";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import {
     AppState,
     FeatureConfigInterface
-} from "../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { ServerConfigurationsConstants } from "../../constants";
 import {
     ConnectorPropertyInterface,
