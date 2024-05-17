@@ -55,8 +55,8 @@ import {
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
-import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 

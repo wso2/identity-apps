@@ -24,10 +24,10 @@ import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
-import { PatchGroupDataInterface } from "../../admin.groups.v1";
-import { PatchRoleDataInterface } from "../../admin.roles.v2/models";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { PatchGroupDataInterface } from "@wso2is/admin.groups.v1";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
 import { UserManagementConstants } from "../constants";
 import { SCIMBulkEndpointInterface, UserDetailsInterface, UserListInterface, UserSessionsInterface } from "../models";
 

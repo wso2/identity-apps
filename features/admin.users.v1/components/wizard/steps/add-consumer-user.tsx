@@ -27,15 +27,15 @@ import {
     Grid,
     Message
 } from "semantic-ui-react";
-import { AppState } from "../../../../admin.core.v1";
-import { SharedUserStoreUtils } from "../../../../admin.core.v1/utils";
-import { userstoresConfig } from "../../../../admin.extensions.v1/configs/userstores";
-import { getUsersList } from "../../../../admin.users.v1/api/users";
-import { UserListInterface } from "../../../../admin.users.v1/models/user";
-import { getConfiguration, getUsernameConfiguration } from "../../../../admin.users.v1/utils";
-import { USERSTORE_REGEX_PROPERTIES } from "../../../../admin.userstores.v1/constants/user-store-constants";
-import { useValidationConfigData } from "../../../../admin.validation.v1/api";
-import { ValidationFormInterface } from "../../../../admin.validation.v1/models";
+import { AppState } from "@wso2is/admin.core.v1";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { getUsersList } from "@wso2is/admin.users.v1/api/users";
+import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
+import { getConfiguration, getUsernameConfiguration } from "@wso2is/admin.users.v1/utils";
+import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { UserManagementConstants } from "../../../constants";
 
 /**

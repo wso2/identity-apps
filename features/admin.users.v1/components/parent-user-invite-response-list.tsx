@@ -31,7 +31,7 @@ import {
     Header,
     Label
 } from "semantic-ui-react";
-import { UIConstants, getEmptyPlaceholderIllustrations } from "../../admin.core.v1";
+import { UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import {
     ParentOrgUserInvitationResult,
     ParentOrgUserInviteErrorCode,

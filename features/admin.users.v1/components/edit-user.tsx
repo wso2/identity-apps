@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -32,13 +32,13 @@ import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-list";
 import { UserRolesV1List } from "./user-roles-v1-list";
 import { UserSessions } from "./user-sessions";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
-import { FeatureConfigInterface } from "../../admin.core.v1/models";
-import { AppState, store } from "../../admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { ServerConfigurationsInterface, getServerConfigs } from "../../admin.server-configurations.v1";
-import { ConnectorPropertyInterface } from "../../admin.server-configurations.v1/models";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
 

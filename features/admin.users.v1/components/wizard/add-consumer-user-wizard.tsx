@@ -33,25 +33,25 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddConsumerUser, AddConsumerUserProps } from "./steps/add-consumer-user";
 import { AddConsumerUserWizardSummary } from "./steps/add-consumer-user-wizard-summary";
 import { AddConsumerUserGroups } from "./steps/consumer-user-groups";
-import { SCIMConfigs } from "../../../admin.extensions.v1/configs/scim";
-import { userstoresConfig } from "../../../admin.extensions.v1/configs/userstores";
-import { UserBasicInterface } from "../../../admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { UserBasicInterface } from "@wso2is/admin.core.v1";
 import {
     GroupsInterface,
     PatchGroupDataInterface,
     getGroupList,
     updateGroupDetails
-} from "../../../admin.groups.v1";
-import { addUser } from "../../../admin.users.v1/api/users";
-import { getUserWizardStepIcons } from "../../../admin.users.v1/configs/ui";
+} from "@wso2is/admin.groups.v1";
+import { addUser } from "@wso2is/admin.users.v1/api/users";
+import { getUserWizardStepIcons } from "@wso2is/admin.users.v1/configs/ui";
 import {
     AddUserWizardStateInterface,
     UserDetailsInterface,
     createEmptyUserDetails
-} from "../../../admin.users.v1/models/user";
-import { getUsernameConfiguration } from "../../../admin.users.v1/utils";
-import { useValidationConfigData } from "../../../admin.validation.v1/api";
-import { ValidationFormInterface } from "../../../admin.validation.v1/models";
+} from "@wso2is/admin.users.v1/models/user";
+import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 
 interface AddUserWizardPropsInterface extends TestableComponentInterface {
     closeWizard: () => void;

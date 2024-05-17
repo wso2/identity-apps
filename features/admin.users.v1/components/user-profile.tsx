@@ -49,21 +49,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { commonConfig} from "../../admin.extensions.v1/configs";
-import { userConfig } from "../../admin.extensions.v1/configs/user";
-import { TenantInfo } from "../../admin.extensions.v1/components/tenants/models";
-import { getAssociationType } from "../../admin.extensions.v1/components/tenants/utils/tenants";
-import { administratorConfig } from "../../admin.extensions.v1/configs/administrator";
-import { searchRoleList, updateRoleDetails } from "../../admin.roles.v2/api/roles";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { commonConfig} from "@wso2is/admin.extensions.v1/configs";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
+import { TenantInfo } from "@wso2is/admin.extensions.v1/components/tenants/models";
+import { getAssociationType } from "@wso2is/admin.extensions.v1/components/tenants/utils/tenants";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { searchRoleList, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import {
     OperationValueInterface,
     PatchRoleDataInterface,
     ScimOperationsInterface,
     SearchRoleInterface
-} from "../../admin.roles.v2/models/roles";
-import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../admin.server-configurations.v1";
+} from "@wso2is/admin.roles.v2/models/roles";
+import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "@wso2is/admin.server-configurations.v1";
 import { updateUserInfo } from "../api";
 import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";

@@ -32,18 +32,18 @@ import React,
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../admin.core.v1";
-import { PatchRoleDataInterface } from "../../admin.roles.v2/models/roles";
+import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
-} from "../../admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1";
 import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES
-} from "../../admin.userstores.v1/constants/user-store-constants";
-import { useValidationConfigData } from "../../admin.validation.v1/api";
-import { ValidationFormInterface } from "../../admin.validation.v1/models";
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { updateUserInfo } from "../api";
 import { getConfiguration } from "../utils";
 

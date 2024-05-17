@@ -38,7 +38,7 @@ import {
     FeatureConfigInterface,
     UserListInterface,
     getEmptyPlaceholderIllustrations
-} from "../../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { deleteInvite, resendInvite } from "../../../api/invite";
 import { UserAccountTypesMain } from "../../../constants";
 import { InvitationStatus } from "../../../models";

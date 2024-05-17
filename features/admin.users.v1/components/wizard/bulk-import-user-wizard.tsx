@@ -67,8 +67,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../admin.claims.v1/api";
-import { ClaimManagementConstants } from "../../../admin.claims.v1/constants";
+import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "@wso2is/admin.claims.v1/api";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import {
     AppConstants,
     AppState,
@@ -77,16 +77,16 @@ import {
     UserStoreProperty,
     getCertificateIllustrations,
     history
-} from "../../../admin.core.v1";
-import { userConfig, userstoresConfig } from "../../../admin.extensions.v1/configs";
-import { getGroupList, useGroupList } from "../../../admin.groups.v1/api";
-import { GroupsInterface } from "../../../admin.groups.v1/models";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { PatchRoleDataInterface } from "../../../admin.roles.v2/models";
-import { getAUserStore, getUserStores } from "../../../admin.userstores.v1/api";
-import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
-import { useValidationConfigData } from "../../../admin.validation.v1/api";
-import { ValidationFormInterface } from "../../../admin.validation.v1/models";
+} from "@wso2is/admin.core.v1";
+import { userConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
+import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
+import { getAUserStore, getUserStores } from "@wso2is/admin.userstores.v1/api";
+import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,

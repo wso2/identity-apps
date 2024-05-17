@@ -48,11 +48,11 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { userConfig } from "../../admin.extensions.v1/configs/user";
-import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
-import { RealmConfigInterface } from "../../admin.server-configurations.v1";
+} from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { deleteUser } from "../api";
 import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";

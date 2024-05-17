@@ -40,7 +40,7 @@ import {
     Label
 } from "semantic-ui-react";
 import {
-    AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "../../admin.core.v1";
+    AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { BulkImportResponseOperationTypes, BulkUserImportStatus } from "../constants";
 import { BulkResponseSummary, BulkUserImportOperationResponse } from "../models";
 

@@ -46,16 +46,16 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, Input, InputOnChangeData, Label, Modal, Table } from "semantic-ui-react";
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard/user-role-permissions";
-import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../admin.core.v1";
-import { getOrganizationRoles } from "../../admin.organizations.v1/api";
+import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
+import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
 import {
     OrganizationResponseInterface,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
-} from "../../admin.organizations.v1/models/organizations";
-import { OrganizationUtils } from "../../admin.organizations.v1/utils";
-import { getRolesList } from "../../admin.roles.v2/api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../admin.roles.v2/constants";
+} from "@wso2is/admin.organizations.v1/models/organizations";
+import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import { getRolesList } from "@wso2is/admin.roles.v2/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 
 interface UserRolesV1PropsInterface {
     /**

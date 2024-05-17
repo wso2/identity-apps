@@ -53,11 +53,11 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
-import { getEmptyPlaceholderIllustrations, updateResources } from "../../admin.core.v1";
-import { useGroupList } from "../../admin.groups.v1/api";
-import { GroupsInterface, GroupsMemberInterface } from "../../admin.groups.v1/models";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../admin.roles.v2/constants";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
+import { useGroupList } from "@wso2is/admin.groups.v1/api";
+import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 
 interface UserGroupsPropsInterface {
     /**

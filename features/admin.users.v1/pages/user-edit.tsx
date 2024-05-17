@@ -43,8 +43,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Label } from "semantic-ui-react";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { getProfileInformation } from "../../admin.authentication.v1/store";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import {
     AppConstants,
     AppState,
@@ -53,11 +53,11 @@ import {
     getEmptyPlaceholderIllustrations,
     getSidePanelIcons,
     history
-} from "../../admin.core.v1";
-import { getIdPIcons } from "../../admin.identity-providers.v1/configs/ui";
-import { useGovernanceConnectors } from "../../admin.server-configurations.v1/api";
-import { ServerConfigurationsConstants } from "../../admin.server-configurations.v1/constants";
-import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../admin.server-configurations.v1/models";
+} from "@wso2is/admin.core.v1";
+import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
+import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
+import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
+import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { updateUserInfo, useUserDetails } from "../api";
 import { EditUser } from "../components/edit-user";
 import UserManagementProvider from "../providers/user-management-provider";

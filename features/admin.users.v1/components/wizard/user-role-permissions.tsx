@@ -21,8 +21,8 @@ import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Icon, Segment } from "semantic-ui-react";
-import { getRoleById } from "../../../admin.roles.v2/api/roles";
-import { PermissionList } from "../../../admin.roles.v2/components/wizard/role-permission";
+import { getRoleById } from "@wso2is/admin.roles.v2/api/roles";
+import { PermissionList } from "@wso2is/admin.roles.v2/components/wizard/role-permission";
 
 /**
  * Proptypes for the role permission component.
