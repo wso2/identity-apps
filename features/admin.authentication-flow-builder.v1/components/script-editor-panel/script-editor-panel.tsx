@@ -46,10 +46,10 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import SecretSelectionDropdown from "./secret-selection-dropdown";
-import { AdaptiveScriptUtils } from "../../../admin.applications.v1/utils/adaptive-script-utils";
-import { FeatureConfigInterface } from "../../../admin.core.v1/models";
-import { AppState } from "../../../admin.core.v1/store";
-import { SecretModel } from "../../../admin.secrets.v1/models/secret";
+import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { ScriptEditorPanelSizeModes, SupportedEditorThemes } from "../../models/script-editor";
 import "./script-editor-panel.scss";

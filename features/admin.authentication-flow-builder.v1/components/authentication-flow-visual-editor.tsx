@@ -19,7 +19,7 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
-import { AppConstants } from "../../admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, Link, useDocumentation } from "@wso2is/react-components";
@@ -60,12 +60,12 @@ import {
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../admin.applications.v1/models/application";
-import { AuthenticatorManagementConstants } from "../../admin.connections.v1";
-import useMultiFactorAuthenticatorDetails from "../../admin.connections.v1/api/use-multi-factor-authentication-details";
-import { history } from "../../admin.core.v1";
-import { IdentityProviderManagementConstants } from "../../admin.identity-providers.v1/constants";
-import { ConnectorPropertyInterface } from "../../admin.server-configurations.v1";
+} from "@wso2is/admin.applications.v1/models/application";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import useMultiFactorAuthenticatorDetails from "@wso2is/admin.connections.v1/api/use-multi-factor-authentication-details";
+import { history } from "@wso2is/admin.core.v1";
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
+import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1";
 import { FIDO_AUTHENTICATOR_ID } from "../constants/template-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import "reactflow/dist/style.css";

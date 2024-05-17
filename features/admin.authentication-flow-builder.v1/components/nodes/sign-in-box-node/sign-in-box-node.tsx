@@ -54,15 +54,15 @@ import TOTPFragment from "./fragments/totp-fragment";
 import {
     AuthenticationSequenceInterface,
     AuthenticatorInterface
-} from "../../../../admin.applications.v1/models/application";
-import { AuthenticatorManagementConstants } from "../../../../admin.connections.v1";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
+} from "@wso2is/admin.applications.v1/models/application";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import {
     IdentityProviderManagementConstants
-} from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { OrganizationUtils } from "../../../../admin.organizations.v1/utils/organization";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
 

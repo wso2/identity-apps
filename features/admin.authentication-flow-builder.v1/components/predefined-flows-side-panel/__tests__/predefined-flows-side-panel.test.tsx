@@ -19,7 +19,7 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import ResourceEndpointsProvider from "../../../../admin.core.v1/providers/resource-enpoints-provider";
+import ResourceEndpointsProvider from "@wso2is/admin.core.v1/providers/resource-enpoints-provider";
 import { render, screen } from "../../../../test-configs/utils";
 import PredefinedFlowsSidePanel, {
     PredefinedFlowsSidePanelPropsInterface

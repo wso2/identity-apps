@@ -25,35 +25,35 @@ import React, { PropsWithChildren, ReactElement, useCallback, useEffect, useMemo
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { useGetAdaptiveAuthTemplates } from "../../admin.applications.v1/api";
-import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
+import { useGetAdaptiveAuthTemplates } from "@wso2is/admin.applications.v1/api";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../admin.applications.v1/models/application";
-import { AdaptiveScriptUtils } from "../../admin.applications.v1/utils/adaptive-script-utils";
-import { SignInMethodUtils } from "../../admin.applications.v1/utils/sign-in-method-utils";
-import { AuthenticatorManagementConstants } from "../../admin.connections.v1/constants/autheticator-constants";
-import { AuthenticatorMeta } from "../../admin.connections.v1/meta/authenticator-meta";
-import { ConnectionInterface } from "../../admin.connections.v1/models/connection";
-import { ConnectionsManagementUtils } from "../../admin.connections.v1/utils/connection-utils";
-import useGlobalVariables from "../../admin.core.v1/hooks/use-global-variables";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { AppState } from "../../admin.core.v1/store";
-import { applicationConfig } from "../../admin.extensions.v1/configs/application";
-import { identityProviderConfig } from "../../admin.extensions.v1/configs/identity-provider";
+} from "@wso2is/admin.applications.v1/models/application";
+import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
+import { SignInMethodUtils } from "@wso2is/admin.applications.v1/utils/sign-in-method-utils";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
+import { ConnectionInterface } from "@wso2is/admin.connections.v1/models/connection";
+import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import {
     IdentityProviderManagementConstants
-} from "../../admin.identity-providers.v1/constants/identity-provider-management-constants";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     SupportedAuthenticators
-} from "../../admin.identity-providers.v1/models/identity-provider";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { LEGACY_EDITOR_FEATURE_ID, VISUAL_EDITOR_FEATURE_ID } from "../constants/editor-constants";
 import AuthenticationFlowContext from "../context/authentication-flow-context";
 import DefaultFlowConfigurationSequenceTemplate from "../data/flow-sequences/basic/default-sequence.json";

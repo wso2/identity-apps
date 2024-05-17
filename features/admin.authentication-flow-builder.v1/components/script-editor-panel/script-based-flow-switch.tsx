@@ -34,11 +34,11 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import AdaptiveScriptResetConfirmationModal from "./adaptive-script-reset-confirmation-modal";
 import ScriptEditorPanel from "./script-editor-panel";
-import { AdaptiveScriptUtils } from "../../../admin.applications.v1/utils/adaptive-script-utils";
-import { AppState } from "../../../admin.core.v1/store";
-import { LOGIN_FLOW_AI_FEATURE_TAG } from "../../../admin.login-flow.ai.v1/constants/login-flow-ai-constants";
-import useAILoginFlow from "../../../admin.login-flow.ai.v1/hooks/use-ai-login-flow";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
+import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { LOGIN_FLOW_AI_FEATURE_TAG } from "@wso2is/admin.login-flow.ai.v1/constants/login-flow-ai-constants";
+import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import "./script-based-flow-switch.scss";
 

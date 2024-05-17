@@ -21,11 +21,11 @@ import { Code, ConfirmationModal, ConfirmationModalPropsInterface } from "@wso2i
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ModalProps } from "semantic-ui-react";
-import { AppConstants } from "../../../admin.core.v1/constants/app-constants";
-import { history } from "../../../admin.core.v1/helpers/history";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import {
     AuthenticatorCreateWizardFactory
-} from "../../../admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
+} from "@wso2is/admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 
 /**

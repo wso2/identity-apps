@@ -26,11 +26,11 @@ import MissingSocialAuthenticatorSelectionModal from "./missing-social-authentic
 import {
     AuthenticationSequenceInterface,
     AuthenticatorInterface
-} from "../../../admin.applications.v1/models/application";
+} from "@wso2is/admin.applications.v1/models/application";
 import {
     IdentityProviderManagementConstants
-} from "../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../admin.identity-providers.v1/models";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 
 /**

@@ -40,20 +40,20 @@ import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switc
 import SidePanelDrawer from "./side-panel-drawer";
 import {
     updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
-} from "../../admin.applications.v1/api/application";
+} from "@wso2is/admin.applications.v1/api/application";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../admin.applications.v1/models/application";
-import { AdaptiveScriptUtils } from "../../admin.applications.v1/utils/adaptive-script-utils";
-import { AppState } from "../../admin.core.v1/store";
+} from "@wso2is/admin.applications.v1/models/application";
+import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     IdentityProviderManagementConstants
-} from "../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";

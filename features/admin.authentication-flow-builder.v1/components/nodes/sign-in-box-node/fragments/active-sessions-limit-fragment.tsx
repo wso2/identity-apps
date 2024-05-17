@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import BasicSignInOptionControls from "./basic-sign-in-option-controls";
 import {
     IdentityProviderManagementConstants
-} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import {
     CHROME_BROWSER_CONSTANT,
     FIREFOX_BROWSER_CONSTANT

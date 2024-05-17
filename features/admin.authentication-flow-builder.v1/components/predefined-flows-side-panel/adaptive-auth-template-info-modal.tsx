@@ -22,7 +22,7 @@ import isObject from "lodash-es/isObject";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { List, Modal, ModalProps, Table } from "semantic-ui-react";
-import { AdaptiveAuthTemplateInterface, AdaptiveAuthTemplateTypes } from "../../../admin.applications.v1/models";
+import { AdaptiveAuthTemplateInterface, AdaptiveAuthTemplateTypes } from "@wso2is/admin.applications.v1/models";
 
 /**
  * Proptypes for the adaptive auth template info modal component.

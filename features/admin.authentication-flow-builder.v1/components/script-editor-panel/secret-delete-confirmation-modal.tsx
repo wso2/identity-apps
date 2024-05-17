@@ -24,8 +24,8 @@ import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { deleteSecret } from "../../../admin.secrets.v1/api/secret";
-import { SecretModel } from "../../../admin.secrets.v1/models/secret";
+import { deleteSecret } from "@wso2is/admin.secrets.v1/api/secret";
+import { SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
 
 /**
  * Proptypes for the secret delete confirmation modal component.
