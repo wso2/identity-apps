@@ -21,12 +21,12 @@ import cloneDeep from "lodash-es/cloneDeep";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useConsoleRoles from "./use-console-roles";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../admin.core.v1/models/users";
-import { AppState } from "../../admin.core.v1/store";
-import { useUsersList } from "../../admin.users.v1/api/users";
-import { UserAccountTypes } from "../../admin.users.v1/constants/user-management-constants";
-import { UserManagementUtils } from "../../admin.users.v1/utils/user-management-utils";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { UserBasicInterface, UserListInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { useUsersList } from "@wso2is/admin.users.v1/api/users";
+import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
 
 /**
  * Props interface of {@link UseAdministrators}

@@ -31,13 +31,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
-import { sendParentOrgUserInvite } from "../../../../admin.users.v1/components/guests/api/invite";
+import { sendParentOrgUserInvite } from "@wso2is/admin.users.v1/components/guests/api/invite";
 import {
     AdministratorInviteInterface,
     ParentOrgUserInvitationResult,
     ParentOrgUserInviteResultStatus
-} from "../../../../admin.users.v1/components/guests/models/invite";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
+} from "@wso2is/admin.users.v1/components/guests/models/invite";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./invite-new-administrator-wizard.scss";

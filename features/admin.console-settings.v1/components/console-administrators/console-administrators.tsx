@@ -29,11 +29,11 @@ import React, {
 } from "react";
 import AdministratorsList from "./administrators-list/administrators-list";
 import InvitedAdministratorsList from "./invited-administrators/invited-administrators-list";
-import { UserStoreProperty, getAUserStore } from "../../../admin.core.v1";
-import { userstoresConfig } from "../../../admin.extensions.v1/configs/userstores";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { useUserStores } from "../../../admin.userstores.v1/api";
-import { UserStoreDropdownItem, UserStoreListItem, UserStorePostData } from "../../../admin.userstores.v1/models";
+import { UserStoreProperty, getAUserStore } from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreDropdownItem, UserStoreListItem, UserStorePostData } from "@wso2is/admin.userstores.v1/models";
 
 /**
  * Props interface of {@link ConsoleAdministrators}

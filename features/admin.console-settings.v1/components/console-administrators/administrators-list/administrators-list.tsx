@@ -40,12 +40,12 @@ import {
     UserRoleInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../admin.core.v1";
-import { userstoresConfig } from "../../../../admin.extensions.v1/configs/userstores";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
-import { PRIMARY_USERSTORE } from "../../../../admin.userstores.v1/constants";
-import { UserStoreDropdownItem } from "../../../../admin.userstores.v1/models";
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import useAdministrators from "../../../hooks/use-administrators";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import AddExistingUserWizard from "../add-existing-user-wizard/add-existing-user-wizard";

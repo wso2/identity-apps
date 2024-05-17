@@ -48,12 +48,12 @@ import {
     UserBasicInterface,
     UserRoleInterface,
     getEmptyPlaceholderIllustrations
-} from "../../../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { useServerConfigs } from "../../../../admin.server-configurations.v1";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
-import { UserListInterface } from "../../../../admin.users.v1/models";
-import { UserManagementUtils } from "../../../../admin.users.v1/utils";
+} from "@wso2is/admin.core.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { UserListInterface } from "@wso2is/admin.users.v1/models";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./administrators-table.scss";
 

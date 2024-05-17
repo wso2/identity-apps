@@ -21,7 +21,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, TextFieldAdapter } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { RoleConstants } from "../../../../admin.roles.v2/constants";
+import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
 
 /**
  * Prop types for the text customization fields component.

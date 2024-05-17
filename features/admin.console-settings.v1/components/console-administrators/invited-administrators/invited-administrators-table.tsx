@@ -44,10 +44,10 @@ import {
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations
-} from "../../../../admin.core.v1";
-import { useServerConfigs } from "../../../../admin.server-configurations.v1";
-import { UserInviteInterface } from "../../../../admin.users.v1/components/guests/models/invite";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
+} from "@wso2is/admin.core.v1";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 
 /**
  * Props interface of {@link InvitedAdministratorsTable}
