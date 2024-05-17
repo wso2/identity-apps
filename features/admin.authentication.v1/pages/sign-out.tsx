@@ -23,8 +23,8 @@ import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, PreLoader, history } from "../../admin.core.v1";
-import useOrganizations from "../../admin.organizations.v1/hooks/use-organizations";
+import { AppState, PreLoader, history } from "@wso2is/admin.core.v1";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 
 /**
  * Virtual component used to handle Sign in action.

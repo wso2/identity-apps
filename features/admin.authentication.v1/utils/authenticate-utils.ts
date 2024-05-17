@@ -21,8 +21,8 @@ import { TokenConstants } from "@wso2is/core/constants";
 import { UserAgentParser } from "@wso2is/core/helpers";
 import { StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
-import { Config } from "../../admin.core.v1";
+import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
+import { Config } from "@wso2is/admin.core.v1";
 
 /**
  * Response mode fallback.
