@@ -1,5 +1,47 @@
 # @wso2is/console
 
+## 2.18.10
+
+### Patch Changes
+
+- Updated dependencies [[`538ffee532d3106bc798552791b0d86b3fcc61f1`](https://github.com/wso2/identity-apps/commit/538ffee532d3106bc798552791b0d86b3fcc61f1)]:
+  - @wso2is/core@2.0.46
+  - @wso2is/i18n@2.3.1
+  - @wso2is/features@2.19.4
+  - @wso2is/access-control@3.0.6
+  - @wso2is/dynamic-forms@2.0.61
+  - @wso2is/form@2.0.62
+  - @wso2is/forms@2.0.36
+  - @wso2is/react-components@2.2.3
+
+## 2.18.9
+
+### Patch Changes
+
+- [#6269](https://github.com/wso2/identity-apps/pull/6269) [`919823a13b4368e878e3060d08b669df9b1c96c1`](https://github.com/wso2/identity-apps/commit/919823a13b4368e878e3060d08b669df9b1c96c1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add component ids
+
+- Updated dependencies [[`919823a13b4368e878e3060d08b669df9b1c96c1`](https://github.com/wso2/identity-apps/commit/919823a13b4368e878e3060d08b669df9b1c96c1), [`d0e98c9b386b156dd46602341853d7fe6e9d7ba2`](https://github.com/wso2/identity-apps/commit/d0e98c9b386b156dd46602341853d7fe6e9d7ba2), [`4ccdf26b49e1dc2df2c68c033e50e493e32d72de`](https://github.com/wso2/identity-apps/commit/4ccdf26b49e1dc2df2c68c033e50e493e32d72de), [`f650a116e5cfd7867ce26adad34f368a668627dc`](https://github.com/wso2/identity-apps/commit/f650a116e5cfd7867ce26adad34f368a668627dc)]:
+  - @wso2is/features@2.19.3
+
+## 2.18.8
+
+### Patch Changes
+
+- [#6262](https://github.com/wso2/identity-apps/pull/6262) [`48d53dfd8634469741855721b049d248bb5e66c2`](https://github.com/wso2/identity-apps/commit/48d53dfd8634469741855721b049d248bb5e66c2) Thanks [@brionmario](https://github.com/brionmario)! - Make `deployment.config.json` easy to work with
+
+## 2.18.7
+
+### Patch Changes
+
+- [#6229](https://github.com/wso2/identity-apps/pull/6229) [`6f04b0edc079c6c784000455cfc12689d2d8644f`](https://github.com/wso2/identity-apps/commit/6f04b0edc079c6c784000455cfc12689d2d8644f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Unify AI feature codebase and UX improvments
+
+- Updated dependencies [[`b9fb80fbc4bb1f3ab2deba0fd7e8b993e367a183`](https://github.com/wso2/identity-apps/commit/b9fb80fbc4bb1f3ab2deba0fd7e8b993e367a183), [`6f04b0edc079c6c784000455cfc12689d2d8644f`](https://github.com/wso2/identity-apps/commit/6f04b0edc079c6c784000455cfc12689d2d8644f)]:
+  - @wso2is/features@2.19.2
+  - @wso2is/theme@2.0.83
+  - @wso2is/react-components@2.2.2
+  - @wso2is/dynamic-forms@2.0.60
+  - @wso2is/form@2.0.61
+
 ## 2.18.6
 
 ### Patch Changes

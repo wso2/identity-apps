@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
+import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
@@ -31,7 +32,6 @@ import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { ChevronUpIcon }from "@oxygen-ui/react-icons";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
@@ -40,10 +40,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
-import { ReactComponent as AIIcon } from "../../themes/wso2is/assets/images/icons/solid-icons/ai-icon.svg";
-import AIBannerBackgroundWhite from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
-import AIBannerInputBackgroundTall from
-    "../../themes/wso2is/assets/images/illustrations/ai-banner-input-background-tall.svg";
+import AIBanner from "../../common.ai.v1/components/ai-banner";
+import AIBannerTall from "../../common.ai.v1/components/ai-banner-tall";
 import useAvailableAuthenticators from "../api/use-available-authenticators";
 import useUserClaims from "../api/use-user-claims";
 import useAILoginFlow from "../hooks/use-ai-login-flow";
@@ -91,13 +89,6 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
      */
     const handleExpandClick = () => {
         setBannerState(BannerState.INPUT);
-    };
-
-    /**
-     * Handles the click event of the collapse button.
-     */
-    const handleCollapseClick = () => {
-        setBannerState(BannerState.COLLAPSED);
     };
 
     /**
@@ -172,78 +163,29 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
         return null;
     }
 
-    if (bannerState === BannerState.FULL) {
-        return (
-            <Box
-                className="login-flow-ai-banner full"
-                style={ {
-                    backgroundImage: `url(${ AIBannerBackgroundWhite })`
-                } }
-            >
-                <div className="login-flow-ai-banner-text-container">
-                    <Typography
-                        as="h3"
-                        className="login-flow-ai-banner-heading"
-                    >
-                        { t("ai:aiLoginFlow.banner.full.heading") }
-                        <span className="login-flow-ai-text">
-                            { t("ai:aiLoginFlow.title") }
-                        </span>
-                        <AIIcon className="ai-icon"/>
+    return (
+        <>
+            <Collapse in={ bannerState === BannerState.FULL }>
+                <AIBanner
+                    title={ t("ai:aiLoginFlow.banner.full.heading") }
+                    description={ t("ai:aiLoginFlow.banner.full.subheading") }
+                    aiText={ t("ai:aiLoginFlow.title") }
+                    actionButtonText={ t("ai:aiLoginFlow.banner.full.button") }
+                    onActionButtonClick={ handleExpandClick }
+                    titleLabel={ (
                         <Chip
                             size="small"
                             label={ t("common:beta").toUpperCase() }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
-                    </Typography>
-                    <Typography className="login-flow-ai-banner-sub-heading">
-                        { t("ai:aiLoginFlow.banner.full.subheading") }
-                    </Typography>
-                </div>
-                <Button
-                    onClick={ handleExpandClick }
-                    color="primary"
-                    variant="contained"
-                >
-                    { t("ai:aiLoginFlow.banner.full.button") }
-                </Button>
-            </Box>
-        );
-    }
-
-    if (bannerState === BannerState.INPUT) {
-        return (
-            <Box
-                className="login-flow-ai-banner-container"
-                style={ {
-                    backgroundImage: `url(${ AIBannerInputBackgroundTall })`
-                } }
-            >
-                <Box className="login-flow-ai-banner-input">
-                    <Box className="login-flow-ai-banner-input-heading-container">
-                        <Typography
-                            as="h3"
-                            className="login-flow-ai-banner-heading"
-                        >
-                            { t("ai:aiLoginFlow.banner.input.heading") }
-                            <span className="login-flow-ai-text">
-                                { t("ai:aiLoginFlow.title") }
-                            </span>
-                            <AIIcon className="ai-icon"/>
-                            <Chip
-                                size="small"
-                                label={ t("common:beta").toUpperCase() }
-                                className="oxygen-chip-beta mb-1 ml-2"
-                            />
-                        </Typography>
-                        <IconButton
-                            onClick={ handleCollapseClick }
-                        >
-                            <ChevronUpIcon />
-                        </IconButton>
-                    </Box>
-                    <div className="login-flow-ai-banner-text-container mb-5">
-                        <Typography className="login-flow-ai-banner-sub-heading">
+                    ) }
+                />
+            </Collapse>
+            <Collapse in={ bannerState === BannerState.INPUT || bannerState === BannerState.COLLAPSED }>
+                <AIBannerTall
+                    title={ t("ai:aiLoginFlow.banner.input.heading") }
+                    description={ (
+                        <>
                             { t("ai:aiLoginFlow.banner.input.subheading") }
                             <DocumentationLink
                                 link={ getLink("develop.applications.editApplication.common.signInMethod." +
@@ -253,8 +195,17 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                                     Learn more
                                 </Trans>
                             </DocumentationLink>
-                        </Typography>
-                    </div>
+                        </>
+                    ) }
+                    aiText={ t("ai:aiLoginFlow.title") }
+                    titleLabel={ (
+                        <Chip
+                            size="small"
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta mb-1 ml-2"
+                        />
+                    ) }
+                >
                     <TextField
                         name="loginFlowInput"
                         className="login-flow-ai-input-field"
@@ -262,6 +213,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         fullWidth
                         multiline
                         maxRows={ 4 }
+                        size="small"
                         value={ userPrompt }
                         onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                             setUserPrompt(e?.target?.value) }
@@ -283,26 +235,25 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         InputProps={ {
                             className: "login-flow-ai-input-field-inner",
                             endAdornment: (
-                                (!isSubmitting && !isAuthenticatorsLoading )? (
+                                (!isSubmitting && !isAuthenticatorsLoading ) ? (
                                     <IconButton
-                                        className="login-flow-ai-input-button"
                                         onClick={ () => handleGenerateClick() }
-                                        disabled={ !userPrompt }
+                                        disabled={ !userPrompt?.trim() }
                                     >
                                         <SendOutlinedIcon
-                                            className={
-                                                `login-flow-ai-input-button-icon ${ !userPrompt ? "disabled" : "" }` }
+                                            className={ `login-flow-ai-input-button-icon
+                                                ${ !userPrompt?.trim() ? "disabled" : "" }` }
                                         />
                                     </IconButton>
                                 ) : (
-                                    <Box>
-                                        <CircularProgress color="primary" size={ 25 } className="mr-2 mt-1" />
+                                    <Box className="m-3">
+                                        <CircularProgress color="primary" size={ 20 } />
                                     </Box>
                                 )
                             )
                         } }
                     />
-                    <Box className={ `login-flow-ai-disclaimer ${ promptHistory.length > 0 ? "" : "mb-6" }` }>
+                    <Box className="login-flow-ai-disclaimer">
                         <Typography variant="caption">
                             { t("ai:aiLoginFlow.disclaimer") }
                             <DocumentationLink
@@ -312,161 +263,106 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                             </DocumentationLink>
                         </Typography>
                     </Box>
-                </Box>
-                {
-                    promptHistory.length > 0 && (
-                        <Accordion
-                            className="login-flow-ai-banner-history"
-                            disableGutters
-                            elevation={ 0 }
-                            sx={ {
-                                "&:before": {
-                                    display: "none"
-                                }
-                            } }
-                            onChange={ () => setShowHistory(!showHistory) }
-                        >
-                            <AccordionSummary>
-                                <Typography variant="subtitle2">
-                                    { t("ai:aiLoginFlow.promptsHistory") }
-                                </Typography>
-                                <ExpandMoreIcon
-                                    className={ showHistory
-                                        ? "login-flow-ai-banner-caret-icon close-icon"
-                                        : "login-flow-ai-banner-caret-icon open-icon"
+                    {
+                        promptHistory?.length > 0 && !isSubmitting && (
+                            <Accordion
+                                className="login-flow-ai-banner-history-container"
+                                disableGutters
+                                elevation={ 0 }
+                                sx={ {
+                                    "&:before": {
+                                        display: "none"
                                     }
-                                />
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Box>
-                                    <Grid
-                                        container
-                                        spacing={ 2 }
-                                    >
-                                        {
-                                            promptHistory.map((prompt: string, index: number) => (
-                                                <Grid
-                                                    xs={ 4 }
-                                                    key={ index }
-                                                >
-                                                    <Card
-                                                        className="login-flow-ai-banner-history-card"
-                                                        onClick={ () => replacePrompt(prompt) }
-                                                    >
-                                                        <CardContent>
-                                                            <Typography
-                                                                color="text.secondary"
-                                                                variant="body2"
-                                                                className="login-flow-ai-banner-history-card-text"
-                                                            >
-                                                                {
-                                                                    prompt.length > 200
-                                                                        ? `${prompt.substring(0, 200)}...` : prompt
-                                                                }
-                                                            </Typography>
-                                                        </CardContent>
-                                                    </Card>
-                                                </Grid>
-                                            ))
-                                        }
-                                    </Grid>
-                                </Box>
-                            </AccordionDetails>
-                        </Accordion>
-                    )
-                }
-                <ConfirmationModal
-                    onClose={ (): void => setShowReplaceConfirmationModal(false) }
-                    type="negative"
-                    open={ showReplaceConfirmationModal }
-                    assertionHint={
-                        t("extensions:develop.branding.confirmations.revertBranding.assertionHint")
-                    }
-                    assertionType="checkbox"
-                    primaryAction={ t("common:confirm") }
-                    secondaryAction={ t("common:cancel") }
-                    onSecondaryActionClick={ (): void => setShowReplaceConfirmationModal(false) }
-                    onPrimaryActionClick={ () => {
-                        setUserPrompt(replacingPrompt);
-                        setShowReplaceConfirmationModal(false);
-                    } }
-                    data-componentid={ `${ componentId }-propmt-replace-confirmation-modal` }
-                    closeOnDimmerClick={ false }
-                >
-                    <ConfirmationModal.Header
-                        data-componentid={ `${ componentId }-propmt-replace-confirmation-modal-header` }
-                    >
-                        { t("ai:aiLoginFlow.confirmations.replacePrompt.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message
-                        attached
-                        negative
-                        data-componentid={ `${ componentId }-propmt-replace-confirmation-modal-message` }
-                    >
-                        {
-                            t("ai:aiLoginFlow.confirmations.replacePrompt.message")
-                        }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content
-                        data-componentid={ `${ componentId }-propmt-replace-confirmation-modal-content` }
-                    >
-                        { t("ai:aiLoginFlow.confirmations.replacePrompt.content") }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
-            </Box>
-        );
-    }
-
-    if (bannerState === BannerState.COLLAPSED) {
-        return (
-            <Box
-                className="login-flow-ai-banner collapsed"
-                style={ {
-                    backgroundImage: `url(${ AIBannerBackgroundWhite })`
-                } }
-            >
-                <Box className="login-flow-ai-banner-button-container">
-                    <div className="login-flow-ai-banner-text-container">
-                        <Typography
-                            as="h3"
-                            className="login-flow-ai-banner-heading"
-                        >
-                            { t("ai:aiLoginFlow.banner.collapsed.heading") }
-                            <span className="login-flow-ai-text">
-                                { t("ai:aiLoginFlow.title") }
-                            </span>
-                            <AIIcon className="ai-icon"/>
-                            <Chip
-                                size="small"
-                                label={ t("common:beta").toUpperCase() }
-                                className="oxygen-chip-beta mb-1 ml-2"
-                            />
-                        </Typography>
-                        <Typography className="login-flow-ai-banner-sub-heading">
-                            { t("ai:aiLoginFlow.banner.input.subheading") }
-                            <DocumentationLink
-                                link={ getLink("develop.applications.editApplication.common.signInMethod." +
-                                    "conditionalAuthenticaion.ai.learnMore") }
+                                } }
+                                onChange={ () => setShowHistory(!showHistory) }
                             >
-                                <Trans i18nKey={ "extensions:common.learnMore" }>
-                                    Learn more
-                                </Trans>
-                            </DocumentationLink>
-                        </Typography>
-                    </div>
-                    <Button
-                        onClick={ handleExpandClick }
-                        color="primary"
-                        variant="contained"
+                                <AccordionSummary className="login-flow-ai-banner-history-title">
+                                    <Button
+                                        startIcon={ <HistoryOutlinedIcon /> }
+                                        variant="contained"
+                                        color="secondary"
+                                        size="small"
+                                        className="login-flow-ai-banner-history-button"
+                                    >
+                                        { t("ai:aiLoginFlow.promptsHistory") }
+                                    </Button>
+                                </AccordionSummary>
+                                <AccordionDetails className="login-flow-ai-banner-history-card-container">
+                                    <Box>
+                                        <Grid
+                                            container
+                                            spacing={ 2 }
+                                        >
+                                            {
+                                                promptHistory.map((prompt: string, index: number) => (
+                                                    <Grid
+                                                        xs={ 4 }
+                                                        key={ index }
+                                                    >
+                                                        <Card
+                                                            className="login-flow-ai-banner-history-card"
+                                                            onClick={ () => replacePrompt(prompt) }
+                                                        >
+                                                            <CardContent>
+                                                                <Typography
+                                                                    color="text.secondary"
+                                                                    variant="body2"
+                                                                    className="login-flow-ai-banner-history-card-text"
+                                                                >
+                                                                    {
+                                                                        prompt.length > 200
+                                                                            ? `${prompt.substring(0, 200)}...` : prompt
+                                                                    }
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </Card>
+                                                    </Grid>
+                                                ))
+                                            }
+                                        </Grid>
+                                    </Box>
+                                </AccordionDetails>
+                            </Accordion>
+                        )
+                    }
+                    <ConfirmationModal
+                        onClose={ (): void => setShowReplaceConfirmationModal(false) }
+                        type="warning"
+                        open={ showReplaceConfirmationModal }
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onSecondaryActionClick={ (): void => setShowReplaceConfirmationModal(false) }
+                        onPrimaryActionClick={ () => {
+                            setUserPrompt(replacingPrompt);
+                            setShowReplaceConfirmationModal(false);
+                        } }
+                        data-componentid={ `${ componentId }-propmt-replace-confirmation-modal` }
+                        closeOnDimmerClick={ false }
                     >
-                        { t("ai:aiLoginFlow.banner.collapsed.button") }
-                    </Button>
-                </Box>
-            </Box>
-        );
-    }
-
-    return null;
+                        <ConfirmationModal.Header
+                            data-componentid={ `${ componentId }-propmt-replace-confirmation-modal-header` }
+                        >
+                            { t("ai:aiLoginFlow.confirmations.replacePrompt.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-componentid={ `${ componentId }-propmt-replace-confirmation-modal-message` }
+                        >
+                            {
+                                t("ai:aiLoginFlow.confirmations.replacePrompt.message")
+                            }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content
+                            data-componentid={ `${ componentId }-propmt-replace-confirmation-modal-content` }
+                        >
+                            { t("ai:aiLoginFlow.confirmations.replacePrompt.content") }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                </AIBannerTall>
+            </Collapse>
+        </>
+    );
 };
 
 /**

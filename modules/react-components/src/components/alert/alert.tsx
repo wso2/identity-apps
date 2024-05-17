@@ -166,6 +166,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
                     className="alert-message"
                     data-componentid={ `${ componentId }-${ alert.level }-body` }
                     data-testid={ `${ testId }-${ alert.level }-body` }
+                    data-alertid={ alertId ?? alert?.message }
                 >
                     <div
                         className="header bold-text"
@@ -216,7 +217,6 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
              */
             onMouseLeave={ () => setIntermediateDissmissInterval(dismissInterval) }
             className={ `alert-wrapper ${ classes }` }
-            data-alertid={ alertId ?? alert?.message }
             data-componentid={ componentId }
             data-testid={ testId }
         >

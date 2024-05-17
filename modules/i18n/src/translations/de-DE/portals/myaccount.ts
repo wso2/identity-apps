@@ -1446,6 +1446,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        "verificationOnUpdate": {
+            "preference": {
+                "notifications": {
+                    "error": {
+                        description: "{{description}}",
+                        message: "Fehler beim Abrufen der Überprüfung der Update-Präferenz"
+                    },
+                    genericError: {
+                        description: "Beim Abrufen der Überprüfung der Update-Präferenz ist ein Fehler aufgetreten",
+                        message: "Etwas ist schief gelaufen"
+                    },
+                    success: {
+                        description: "Die Überprüfung der Aktualisierungspräferenz wurde erfolgreich abgerufen",
+                        message: "Überprüfung beim Abrufen der Update-Einstellungen erfolgreich"
+                    }
+                }
+            }
         }
     },
     "modals": {

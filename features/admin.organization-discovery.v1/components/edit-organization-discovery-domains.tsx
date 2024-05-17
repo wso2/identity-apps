@@ -322,6 +322,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                             } }
                                             { ...params }
                                             margin="dense"
+                                            data-componentid={ `${componentId}-email-domain-message-field` }
                                             error={ isEmailDomainDataError || isEmailDomainAvailableError }
                                             helperText= {
                                                 isEmailDomainDataError

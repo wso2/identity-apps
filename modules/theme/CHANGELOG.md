@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.83
+
+### Patch Changes
+
+- [#6229](https://github.com/wso2/identity-apps/pull/6229) [`6f04b0edc079c6c784000455cfc12689d2d8644f`](https://github.com/wso2/identity-apps/commit/6f04b0edc079c6c784000455cfc12689d2d8644f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Unify AI feature codebase and UX improvments
+
 ## 2.0.82
 
 ### Patch Changes

@@ -1446,6 +1446,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error al obtener la verificación en la preferencia de actualización"
+                    },
+                    genericError: {
+                        description: "Se produjo un error al obtener la verificación de la preferencia de actualización",
+                        message: "Algo salió mal"
+                    },
+                    success: {
+                        description: "Se recuperó exitosamente la verificación en la preferencia de actualización.",
+                        message: "verificación en la recuperación de preferencias de actualización exitosa"
+                    }
+                }
+            }
         }
     },
     "modals": {
