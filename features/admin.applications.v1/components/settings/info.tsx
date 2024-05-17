@@ -187,14 +187,14 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                                     <Link
                                                         external={ false }
                                                         onClick={ () => {
-                                                            history.push(
-                                                                AppConstants.getPaths()
-                                                                    .get("APPLICATION_SIGN_IN_METHOD_EDIT")
-                                                                    .replace(":id", appId)
-                                                                    .replace(
-                                                                        ":tabName",
-                                                                        `#tab=${ PROTOCOLS_TAB_INDEX }`
-                                                                    )
+                                                            history.push({
+                                                                pathname: AppConstants.getPaths()
+                                                                    .get("APPLICATION_EDIT")
+                                                                    .replace(":id", appId),
+                                                                search:
+                                                                    `?${ ApplicationManagementConstants.IS_PROTOCOL }=
+                                                                    true`
+                                                            }
                                                             );
                                                         } }
                                                     > protocol </Link>

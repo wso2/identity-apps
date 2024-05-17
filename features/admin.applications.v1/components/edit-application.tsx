@@ -491,21 +491,34 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if(isEmpty(window.location.hash)){
 
-            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) !==
+            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ===
                 ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
-                handleDefaultTabIndexChange(defaultTabIndex);
+                // When application selection is done through the strong authentication flow.
+                const signInMethodtabIndex: number = renderedTabPanes?.findIndex(
+                    (element: {"componentId": string}) =>
+                        element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                );
+
+                if (signInMethodtabIndex !== -1) {
+                    handleActiveTabIndexChange(signInMethodtabIndex);
+                }
+
+                return;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_PROTOCOL) ===
+                ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
+                const protocolTabIndex: number = renderedTabPanes?.findIndex(
+                    (element: {"componentId": string}) =>
+                        element.componentId === ApplicationManagementConstants.PROTOCOL_TAB_URL_FRAG
+                );
+
+                if(protocolTabIndex !== -1) {
+                    handleActiveTabIndexChange(protocolTabIndex);
+                }
 
                 return;
             }
-
-            // When application selection is done through the strong authentication flow.
-            const signInMethodtabIndex: number = renderedTabPanes?.findIndex(
-                (element: {"componentId": string}) =>
-                    element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
-            );
-
-            if (signInMethodtabIndex !== -1) {
-                handleActiveTabIndexChange(signInMethodtabIndex);
+            else {
+                handleDefaultTabIndexChange(defaultTabIndex);
             }
         }
     },[ template, renderedTabPanes ]);
