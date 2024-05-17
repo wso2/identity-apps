@@ -17,8 +17,8 @@
  */
 
 import { rgbToHex } from "@wso2is/react-components";
+import { ThemeConfigInterface } from "../../../common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../../constants";
-import { ThemeConfigInterface } from "../../models";
 
 export const LIGHT_THEME: ThemeConfigInterface ={
     buttons: {

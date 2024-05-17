@@ -20,8 +20,8 @@ import Image from "@oxygen-ui/react/Image";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
+import { PredefinedThemes } from "@wso2is/features/common.branding.v1/models";
 import { ContentLoader } from "@wso2is/react-components";
-import { PredefinedThemes } from "apps/myaccount/src/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 import { useGetBrandingPreference } from "../../../api";
@@ -47,8 +47,8 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
     const {
         ["data-componentid"]: componentId
     } = props;
-    
-    const { 
+
+    const {
         data: brandingPreference,
         isLoading: isBrandingLoading,
         error: brandingError
@@ -95,7 +95,7 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
                                 <path
                                     id="_2"
                                     data-name="2"
-                                    d={ "M705.95,422.391l6.227-10.751h13.736l-6.867-11.907,6.193-10.752,19" 
+                                    d={ "M705.95,422.391l6.227-10.751h13.736l-6.867-11.907,6.193-10.752,19"
                                         + ".321,33.411Z" }
                                     transform="translate(-280.983 -82.98)"
                                     fill="#ff7300"/>
@@ -114,7 +114,7 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
                             !isBrandingLoading && (!brandingError || brandingError?.response?.status === 404) ? (
                                 <Image
                                     className="pre-loader-logo"
-                                    src={ 
+                                    src={
                                         brandingPreference?.preference?.theme[
                                             brandingPreference?.preference?.theme?.activeTheme
                                         ]?.images?.myAccountLogo?.imgURL ?? getDefaultLogo()

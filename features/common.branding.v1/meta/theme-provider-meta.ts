@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,12 +17,12 @@
  */
 
 import isEmpty from "lodash-es/isEmpty";
-import { BrandingPreferenceThemeInterface } from "../models";
+import { BrandingPreferenceThemeInterface } from "../models/branding-preferences";
 
 /**
- * Class for the Branding Preference Metadata.
+ * Class for the Theme Preference Metadata.
  */
-export class BrandingPreferenceMeta {
+export class ThemePreferenceMeta {
     /* eslint-disable max-len */
     /**
      * Get the theme skeleton.
@@ -584,6 +584,34 @@ export class BrandingPreferenceMeta {
     }
 
     /*-----------------------------
+                Tabs
+    ------------------------------*/
+
+    .tabs.resource-tabs>.ui.menu .item.active {
+        border-bottom-color: var(--asg-colors-primary-main);
+        color: var(--asg-colors-primary-main);
+    }    
+
+    .tabs.resource-tabs>.ui.menu:not(.secondary) .item.active {
+        border-bottom-color: var(--asg-colors-primary-main);
+    }
+
+    /*-----------------------------
+                Breadcrumb
+    ------------------------------*/
+
+    .ui.breadcrumb a:hover {
+        color: var(--asg-colors-primary-main);
+    }
+    /*-----------------------------
+                Step Indicator 
+    ------------------------------*/
+
+    .steps .step.active {
+        color: var(--asg-colors-primary-main);
+    }
+
+    /*-----------------------------
                 Buttons
     ------------------------------*/
 
@@ -634,12 +662,36 @@ export class BrandingPreferenceMeta {
 
     .ui.basic.primary.button, .ui.basic.primary.buttons .button {
         color: var(--asg-colors-primary-main) !important;
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
         border-radius: var(--asg-primary-button-base-border-radius);
     }
 
-    .ui.basic.primary.button:hover, .ui.basic.primary.buttons .button:hover {
+    .ui.basic.primary.button:hover,.ui.basic.primary.buttons .button:hover {
         color: var(--asg-colors-primary-main) !important;
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
         filter: brightness(0.85);
+    }
+    
+    .ui.basic.primary.button:focus,.ui.basic.primary.buttons .button:focus {
+        background: 0 0!important;
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
+        color: var(--asg-colors-primary-main) !important
+    }
+    
+    .ui.basic.primary.active.button,.ui.basic.primary.buttons .active.button {
+        background: 0 0!important;
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
+        color: var(--asg-colors-primary-main) !important
+    }
+    
+    .ui.basic.primary.button:active,.ui.basic.primary.buttons .button:active {
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
+        color: var(--asg-colors-primary-main) !important
+    }
+    
+    /* Link Button:Hover */
+    .ui.button.basic.link-button,.ui.button.basic.link-button.primary {
+        box-shadow: none!important
     }
 
     /* External Connections */
@@ -778,6 +830,19 @@ export class BrandingPreferenceMeta {
 
     .ui.checkbox input:focus~label {
         color: var(--asg-input-field-base-label-text-color);
+    }
+
+    .ui.checkbox:not(.toggle,.radio) input[type=checkbox]:checked~label:after {
+        background: var(--asg-colors-primary-main);
+        color: var(--asg-primary-button-base-text-color);
+    }
+
+    .ui.toggle.checkbox input:checked~.box:before,.ui.toggle.checkbox input:checked~label:before {
+        background-color: var(--asg-colors-primary-main) !important;
+    }
+
+    .ui.toggle.checkbox input:focus:checked~.box:before,.ui.toggle.checkbox input:focus:checked~label:before {
+        background-color: var(--asg-colors-primary-main) !important
     }
 
     /* Input Addons */
@@ -1033,5 +1098,4 @@ export class BrandingPreferenceMeta {
         border-color: var(--asg-colors-outlined-default);
     }`;
     }
-    /* eslint-enable max-len */
 }

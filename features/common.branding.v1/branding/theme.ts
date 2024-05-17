@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,18 +15,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 // eslint-disable-next-line no-restricted-imports
 import { Theme } from "@oxygen-ui/react";
 import { extendTheme } from "@oxygen-ui/react/theme";
-import { BrandingPreferenceContextProps } from "./contexts";
-import { ThemeConfigInterface } from "./models";
+import { ThemeProviderContextProps } from "../contexts/theme-provider-context";
+import { ThemeConfigInterface } from "../models/branding-preferences";
 
-const generateTheme: (branding: BrandingPreferenceContextProps) => Theme = (
-    branding: BrandingPreferenceContextProps
+export const generateTheme: (branding: ThemeProviderContextProps) => Theme = (
+    branding: ThemeProviderContextProps
 ) => {
-    const mode: string = branding?.brandingPreference?.preference?.theme?.activeTheme.toLowerCase() ?? "light";
-    const brandingTheme: ThemeConfigInterface = branding?.brandingPreference?.preference?.theme[mode.toUpperCase()];
+    const mode: string = branding?.themePreference?.preference?.theme?.activeTheme.toLowerCase() ?? "light";
+    const brandingTheme: ThemeConfigInterface = branding?.themePreference?.preference?.theme[mode.toUpperCase()];
 
     return extendTheme({
         colorSchemes: {
@@ -53,8 +52,8 @@ const generateTheme: (branding: BrandingPreferenceContextProps) => Theme = (
                     },
                     gradients: {
                         primary: {
-                            stop1: "#EB4F63",
-                            stop2: "#FA7B3F"
+                            stop1: brandingTheme?.colors?.primary?.main ?? "#EB4F63",
+                            stop2: brandingTheme?.colors?.primary?.main  ?? "#FA7B3F"
                         }
                     },
                     primary: {
@@ -79,8 +78,8 @@ const generateTheme: (branding: BrandingPreferenceContextProps) => Theme = (
                     },
                     gradients: {
                         primary: {
-                            stop1: "#EB4F63",
-                            stop2: "#FA7B3F"
+                            stop1: brandingTheme?.colors?.primary?.main ?? "#EB4F63",
+                            stop2: brandingTheme?.colors?.primary?.main ?? "#FA7B3F"
                         }
                     },
                     primary: {
@@ -135,12 +134,10 @@ const generateTheme: (branding: BrandingPreferenceContextProps) => Theme = (
             borderRadius: 4
         },
         typography: {
-            fontFamily: brandingTheme?.typography ?? "Gilmer, sans-serif",
+            fontFamily: brandingTheme?.typography.font.fontFamily ?? "Gilmer, sans-serif",
             h1: {
                 fontWeight: 700
             }
         }
     });
 };
-
-export default generateTheme;

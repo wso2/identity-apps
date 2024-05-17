@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { BrandingPreferenceTypes, PreviewScreenType } from "./branding-preferences";
+import { BrandingPreferenceTypes, PreviewScreenType } from "../../common.branding.v1/models";
 
 /**
  * Interface for the custom text preference API response.

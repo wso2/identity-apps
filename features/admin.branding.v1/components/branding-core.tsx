@@ -43,21 +43,21 @@ import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "../../admin.organizations.v1/models/organizations";
-import { deleteBrandingPreference, updateBrandingPreference } from "../api";
-import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
-import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
-import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
-import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
-import { BrandingPreferencesConstants } from "../constants";
-import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
+import useGetBrandingPreferenceResolve from "../../common.branding.v1/api/use-get-branding-preference-resolve";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
     PredefinedLayouts
-} from "../models";
+} from "../../common.branding.v1/models";
+import { deleteBrandingPreference, updateBrandingPreference } from "../api";
+import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
+import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
+import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
+import { BrandingPreferencesConstants } from "../constants";
+import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
+import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
 import { BrandingPreferenceUtils } from "../utils";
 
 /**

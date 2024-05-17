@@ -44,6 +44,7 @@ import { LoginScreenSkeleton } from "./login-screen-skeleton";
 import { MyAccountScreenSkeleton } from "./my-account-screen-skeleton";
 import { AppState } from "../../../admin.core.v1/store";
 import { commonConfig } from "../../../admin.extensions.v1/configs";
+import { BrandingPreferenceInterface, PreviewScreenType } from "../../../common.branding.v1/models";
 import { ReactComponent as CustomLayoutSuccessImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from
@@ -51,7 +52,6 @@ import { ReactComponent as CustomLayoutWarningImg } from
 import { useLayout, useLayoutStyle } from "../../api";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
 import { BrandingPreferenceMeta, LAYOUT_DATA, PredefinedLayouts } from "../../meta";
-import { BrandingPreferenceInterface, PreviewScreenType } from "../../models";
 
 /**
  * Proptypes for the Branding preference preview component.

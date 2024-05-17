@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { ThemeConfigInterface } from "../../../common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../../constants";
-import { ThemeConfigInterface } from "../../models";
 
 export const DARK_THEME: ThemeConfigInterface = {
     buttons: {

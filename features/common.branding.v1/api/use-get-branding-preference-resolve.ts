@@ -29,7 +29,7 @@ import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hook
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceTypes
-} from "../models/branding-preferences";
+} from "../../common.branding.v1/models/branding-preferences";
 
 /**
  * Hook to get the branding preference via Branding Preferences API.

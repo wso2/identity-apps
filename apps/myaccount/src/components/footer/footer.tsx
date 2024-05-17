@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CookieStorageUtils } from "@wso2is/core/utils";
+import { useThemeProvider } from "@wso2is/features/common.branding.v1/hooks/use-theme-provider";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     FooterLinkInterface,
@@ -29,7 +30,6 @@ import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants } from "../../constants";
-import { useBrandingPreference } from "../../hooks";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 
@@ -59,7 +59,7 @@ export const Footer: FunctionComponent<FooterProps> = (props: FooterProps): Reac
 
     const { t } = useTranslation();
 
-    const { organizationDetails } = useBrandingPreference();
+    const { organizationDetails } = useThemeProvider();
 
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);

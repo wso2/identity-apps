@@ -49,19 +49,19 @@ import { IllustrationsPreview } from "./illustrations-preview";
 import * as LayoutDesignExtensions from "./layout-design-extensions";
 import { LayoutSwatchAdapter } from "./layout-swatch";
 import { ThemeSwatchAdapter, ThemeSwatchUIConfigsInterface } from "./theme-swatch";
-import { commonConfig } from "../../../admin.extensions.v1/configs";
 import { AppConstants } from "../../../admin.core.v1/constants";
 import { AppState } from "../../../admin.core.v1/store";
-import { useLayout } from "../../api";
-import { BrandingPreferencesConstants } from "../../constants";
-import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";
+import { commonConfig } from "../../../admin.extensions.v1/configs";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
     FontConfigurationStrategies,
     PredefinedThemes
-} from "../../models";
+} from "../../../common.branding.v1/models";
+import { useLayout } from "../../api";
+import { BrandingPreferencesConstants } from "../../constants";
+import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";
 
 /**
  * Interface for Branding Preference Design Form props.

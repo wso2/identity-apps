@@ -1122,6 +1122,34 @@
     }
 
     /*-----------------------------
+                Tabs
+    ------------------------------*/
+
+    .tabs.resource-tabs>.ui.menu .item.active {
+        border-bottom-color: var(--asg-colors-primary-main);
+        color: var(--asg-colors-primary-main);
+    }    
+
+    .tabs.resource-tabs>.ui.menu:not(.secondary) .item.active {
+        border-bottom-color: var(--asg-colors-primary-main);
+    }
+
+    /*-----------------------------
+                Breadcrumb
+    ------------------------------*/
+
+    .ui.breadcrumb a:hover {
+        color: var(--asg-colors-primary-main);
+    }
+    /*-----------------------------
+                Step Indicator 
+    ------------------------------*/
+
+    .steps .step.active {
+        color: var(--asg-colors-primary-main);
+    }
+
+    /*-----------------------------
                 Buttons
     ------------------------------*/
 
@@ -1172,12 +1200,36 @@
 
     .ui.basic.primary.button, .ui.basic.primary.buttons .button {
         color: var(--asg-colors-primary-main) !important;
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
         border-radius: var(--asg-primary-button-base-border-radius);
     }
 
-    .ui.basic.primary.button:hover, .ui.basic.primary.buttons .button:hover {
+    .ui.basic.primary.button:hover,.ui.basic.primary.buttons .button:hover {
         color: var(--asg-colors-primary-main) !important;
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
         filter: brightness(0.85);
+    } 
+
+    .ui.basic.primary.button:focus,.ui.basic.primary.buttons .button:focus {
+        background: 0 0!important;
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
+        color: var(--asg-colors-primary-main) !important
+    }
+    
+    .ui.basic.primary.active.button,.ui.basic.primary.buttons .active.button {
+        background: 0 0!important;
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
+        color: var(--asg-colors-primary-main) !important
+    }
+    
+    .ui.basic.primary.button:active,.ui.basic.primary.buttons .button:active {
+        box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
+        color: var(--asg-colors-primary-main) !important
+    }
+    
+    /* Link Button:Hover */
+    .ui.button.basic.link-button,.ui.button.basic.link-button.primary {
+        box-shadow: none!important
     }
 
     /* External Connections */
@@ -1321,6 +1373,14 @@
     .ui.checkbox:not(.toggle, .radio) input[type="checkbox"]:checked~label:after {
         background: var(--asg-colors-primary-main);
         color: var(--asg-primary-button-base-text-color);
+    }
+
+    .ui.toggle.checkbox input:checked~.box:before,.ui.toggle.checkbox input:checked~label:before {
+        background-color: var(--asg-colors-primary-main) !important;
+    }
+
+    .ui.toggle.checkbox input:focus:checked~.box:before,.ui.toggle.checkbox input:focus:checked~label:before {
+        background-color: var(--asg-colors-primary-main) !important
     }
 
     /* Input Addons */

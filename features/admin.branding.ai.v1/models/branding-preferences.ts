@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { BrandingPreferenceInterface } from "../../admin.branding.v1/models/branding-preferences";
+import { BrandingPreferenceInterface } from "../../common.branding.v1/models/branding-preferences";
 
 export interface GenerateBrandingAPIInterface {
     /**
