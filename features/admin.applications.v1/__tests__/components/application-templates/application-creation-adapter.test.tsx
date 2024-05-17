@@ -21,8 +21,8 @@ import { render, screen, waitFor } from "../../../../test-configs";
 import ApplicationCreationAdapter, {
     ApplicationCreationAdapterPropsInterface
 } from "../../../components/application-templates/application-creation-adapter";
+import * as ApplicationCreateWizard from "../../../components/dynamic-forms/application-create-wizard";
 import * as MinimalApplicationCreateWizard from "../../../components/wizard/minimal-application-create-wizard";
-import * as useApplicationSharingEligibility from "../../../hooks/use-application-sharing-eligibility";
 import {
     applicationTemplatesListMockResponse
 } from "../../__mocks__/application-template";
@@ -35,10 +35,11 @@ describe("[Applications Management Feature] - ApplicationCreationAdapter", () =>
     minimalApplicationCreateWizardMock.mockImplementation(() =>
         <div data-componentid="minimal-application-create-wizard-modal"></div>);
 
-    const useApplicationSharingEligibilityMock: jest.SpyInstance = jest.spyOn(
-        useApplicationSharingEligibility, "default");
+    const applicationCreateWizardMock: jest.SpyInstance = jest.spyOn(
+        ApplicationCreateWizard, "ApplicationCreateWizard");
 
-    useApplicationSharingEligibilityMock.mockImplementation(() => jest.fn().mockReturnValue(true));
+    applicationCreateWizardMock.mockImplementation(() =>
+        <div data-componentid="application-create-wizard"></div>);
 
     const propsWithSPATemplate: ApplicationCreationAdapterPropsInterface = {
         onClose: jest.fn(),
