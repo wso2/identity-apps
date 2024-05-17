@@ -22,6 +22,6 @@ export * from "./configs";
 export { useGetAllFeatures } from "./components/feature-gate/api/feature-gate";
 export { featureGateConfig } from "./configs/feature-gate";
 export { CONSUMER_USERSTORE } from "./components/administrators/constants/users";
-export {  TenantTier } from "./components/subscription/models/subscription";
+export { TenantTier } from "./components/subscription/models/subscription";
 export { default as useTenantTier } from "./components/subscription/api/subscription";
 export { SubscriptionProvider } from "./components/subscription/providers/subscription-provider";
