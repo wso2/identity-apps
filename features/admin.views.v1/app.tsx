@@ -61,9 +61,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
-import { applicationConfig } from "../admin.extensions.v1/configs/application";
-import { FeatureGateConstants } from "../admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { getProfileInformation } from "../admin.authentication.v1/store";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import {
     AppConstants,
     AppState,
@@ -78,9 +78,9 @@ import {
     getAppViewRoutes,
     getEmptyPlaceholderIllustrations,
     history
-} from "../admin.core.v1";
-import { setActiveView } from "../admin.core.v1/store/actions";
-import { CommonUtils as ConsoleCommonUtils } from "../admin.core.v1/utils";
+} from "@wso2is/admin.core.v1";
+import { setActiveView } from "@wso2is/admin.core.v1/store/actions";
+import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils";
 
 /**
  * Parent component for Admin features inherited from Dashboard layout skeleton.
