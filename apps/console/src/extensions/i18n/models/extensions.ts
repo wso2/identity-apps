@@ -3055,24 +3055,10 @@ export interface Extensions {
                     form: {
                         fields: {
                             enable: FormAttributes;
-                            enableSMSBasedRecovery: FormAttributes;
-                            enableEmailBasedRecovery: FormAttributes;
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
-                            maxResendCount: FormAttributes;
-                            maxFailedAttemptCount: FormAttributes;
-                            smsOtpExpiryTime: FormAttributes;
-                            passwordRecoveryOtpUseUppercase: FormAttributes;
-                            passwordRecoveryOtpUseLowercase: FormAttributes;
-                            passwordRecoveryOtpUseNumeric: FormAttributes;
-                            passwordRecoveryOtpLength: FormAttributes;
                         };
                     };
-                    recoveryOptionSubHeadingEmailLink: string;
-                    recoveryOptionSubHeadingSMS: string;
-                    recoveryOptionHeading: string;
-                    otpConfigHeading: string;
-                    failedAttemptConfigHeading: string;
                     connectorDescription: string;
                     heading: string;
                     notification: {

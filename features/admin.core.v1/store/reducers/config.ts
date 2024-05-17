@@ -267,7 +267,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             productVersionConfig: null,
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
-            showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             systemAppsIdentifiers: [],
             theme: {
                 name: "",
