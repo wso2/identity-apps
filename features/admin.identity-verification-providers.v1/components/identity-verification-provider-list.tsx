@@ -41,7 +41,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { deleteIDVP } from "../api";
 import { IDVPListResponseInterface, IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
 import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";

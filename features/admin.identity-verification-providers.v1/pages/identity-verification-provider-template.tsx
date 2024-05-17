@@ -32,7 +32,7 @@ import {
     AppConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { useIDVPTemplateTypeMetadataList } from "../api";
 import { IdvpCreateWizard } from "../components/wizards/idvp-create-wizard";
 import { IdentityVerificationProviderConstants } from "../constants";

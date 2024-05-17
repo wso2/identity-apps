@@ -23,7 +23,7 @@ import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useSta
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../admin.core.v1";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "@wso2is/admin.core.v1";
 import { useIDVPTemplateTypeMetadataList, useIdentityVerificationProviderList } from "../api";
 import { IdentityVerificationProviderList } from "../components";
 import { IdentityVerificationProviderConstants } from "../constants";

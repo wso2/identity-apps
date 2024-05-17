@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributesSelection } from "./attribute-management/attribute-selection";
-import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import {
     IDVPClaimMappingInterface,
     IDVPClaimsInterface,
