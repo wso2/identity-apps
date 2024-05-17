@@ -22,9 +22,9 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface,
     SWRConfig
-} from "../../../../admin.core.v1/hooks/use-request";
-import { store } from "../../../../admin.core.v1/store";
-import { OrganizationInterface } from "../../../../admin.extensions.v1/components/administrators/models";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { OrganizationInterface } from "@wso2is/admin.extensions.v1/components/administrators/models";
 
 /**
  * Hook to get enterprise login enable config.
