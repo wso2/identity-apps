@@ -5,8 +5,7 @@
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
-    "main": "index.js",
-    
+    "main": "index.js",    
     "dependencies": {
         "@asgardeo/auth-react": "^4.0.1",
         "@emotion/react": "^11.11.0",
@@ -31,8 +30,8 @@
         "@wso2is/react-components": "^2.2.2",
         "@wso2is/theme": "^2.0.83",
         "@wso2is/validation": "^2.0.5",
-        "@wso2is/admin.core.v1": "*",
-        "@wso2is/admin.organizations.v1": "*",
+        "@wso2is/admin.core.v1": "^2.19.2",
+        "@wso2is/admin.organizations.v1": "^2.19.2",
         "axios": "^0.19.2",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
