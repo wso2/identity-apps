@@ -27,7 +27,7 @@ import React, {
     HTMLAttributes,
     ReactElement
 } from "react";
-import { getSidePanelIcons } from "../../../../admin.core.v1/configs/ui";
+import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 
 interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
     /**

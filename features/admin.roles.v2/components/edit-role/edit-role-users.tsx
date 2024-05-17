@@ -48,21 +48,21 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
 import { RenderChip } from "./edit-role-common/render-chip";
-import { updateResources } from "../../../admin.core.v1/api/bulk-operations";
-import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1/configs/ui";
-import { AppState } from "../../../admin.core.v1/store";
-import { RemoteUserStoreConstants } from "../../../admin.extensions.v1/components/user-stores/constants";
-import { GroupsInterface } from "../../../admin.groups.v1/models/groups";
-import { useUsersList } from "../../../admin.users.v1/api";
+import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { RemoteUserStoreConstants } from "@wso2is/admin.extensions.v1/components/user-stores/constants";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
+import { useUsersList } from "@wso2is/admin.users.v1/api";
 import {
     PatchBulkUserDataInterface,
     PatchUserAddOpInterface,
     PatchUserOpInterface,
     PatchUserRemoveOpInterface,
     UserBasicInterface
-} from "../../../admin.users.v1/models";
-import { useUserStores } from "../../../admin.userstores.v1/api";
-import { UserStoreListItem } from "../../../admin.userstores.v1/models/user-stores";
+} from "@wso2is/admin.users.v1/models";
+import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { RoleConstants, Schemas } from "../../constants";
 import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils/role-management-utils";

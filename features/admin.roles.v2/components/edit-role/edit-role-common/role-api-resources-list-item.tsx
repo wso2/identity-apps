@@ -31,7 +31,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
 import { PermissionsList } from "./permissions-list";
-import { APIResourceUtils } from "../../../../admin.api-resources.v2/utils/api-resource-utils";
+import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
 
 interface RoleAPIResourcesListItemProp extends IdentifiableComponentInterface {

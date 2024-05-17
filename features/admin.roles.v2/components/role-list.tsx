@@ -42,11 +42,11 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { RoleDeleteErrorConfirmation } from "./wizard/role-delete-error-confirmation";
-import { FeatureConfigInterface } from "../../admin.core.v1";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
-import { AppConstants } from "../../admin.core.v1/constants/app-constants";
-import { history } from "../../admin.core.v1/helpers/history";
-import { AppState } from "../../admin.core.v1/store/index";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store/index";
 import { RoleAudienceTypes, RoleConstants } from "../constants/role-constants";
 
 interface RoleListProps extends LoadableComponentInterface, IdentifiableComponentInterface {

@@ -46,8 +46,8 @@ import {
     Input, 
     SemanticICONS
 } from "semantic-ui-react";
-import { applicationListConfig } from "../../../admin.extensions.v1/configs/application-list";
-import { ApplicationManagementConstants } from "../../../admin.applications.v1/constants";
+import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {  
     AppConstants,
     AppState, 
@@ -55,7 +55,7 @@ import {
     UIConstants, 
     getEmptyPlaceholderIllustrations, 
     history
-} from "../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 
 /**
  * Proptypes for the advance settings component.

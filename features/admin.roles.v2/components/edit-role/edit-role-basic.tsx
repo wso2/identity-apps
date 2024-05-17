@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { AppConstants, history } from "../../../admin.core.v1";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { deleteRoleById, updateRoleDetails, useRolesList } from "../../api";
 import { RoleAudienceTypes, RoleConstants, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleBasicInterface, RoleEditSectionsInterface } from "../../models/roles";

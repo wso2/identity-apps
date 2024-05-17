@@ -23,7 +23,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { AnimatedAvatar, AppAvatar, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { getSidePanelIcons } from "../../../../admin.core.v1/configs/ui";
+import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 
 interface ChipMoreDetailsInterface extends IdentifiableComponentInterface {
     /**

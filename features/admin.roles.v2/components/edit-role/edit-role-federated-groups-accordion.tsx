@@ -27,7 +27,7 @@ import Autocomplete, {
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AlertLevels, RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, GenericIcon } from "@wso2is/react-components";
@@ -40,10 +40,10 @@ import { Dispatch } from "redux";
 import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { EditRoleLocalGroupsAccordionPropsInterface } from "./edit-role-local-groups-accordion";
-import { getConnectionIcons } from "../../../admin.connections.v1/configs/ui";
-import { ConnectionsManagementUtils } from "../../../admin.connections.v1/utils/connection-utils";
-import { useGetIdentityProviderGroupList } from "../../../admin.identity-providers.v1/api/use-get-identity-provider-groups-list";
-import { IdentityProviderGroupInterface, StrictIdentityProviderInterface } from "../../../admin.identity-providers.v1/models";
+import { getConnectionIcons } from "@wso2is/admin.connections.v1/configs/ui";
+import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
+import { useGetIdentityProviderGroupList } from "@wso2is/admin.identity-providers.v1/api/use-get-identity-provider-groups-list";
+import { IdentityProviderGroupInterface, StrictIdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { RoleConstants } from "../../constants/role-constants";
 
 interface EditRoleFederatedGroupsAccordionPropsInterface extends EditRoleLocalGroupsAccordionPropsInterface {

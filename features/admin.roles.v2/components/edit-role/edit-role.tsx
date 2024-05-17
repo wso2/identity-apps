@@ -27,9 +27,9 @@ import { BasicRoleDetails } from "./edit-role-basic";
 import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
-import { AppState, FeatureConfigInterface, OrganizationType } from "../../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { UserManagementConstants } from "../../../admin.users.v1/constants";
+import { AppState, FeatureConfigInterface, OrganizationType } from "@wso2is/admin.core.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { RoleConstants as LocalRoleConstants } from "../../constants";
 
 /**

@@ -33,9 +33,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
 import { RenderChip } from "./edit-role-common/render-chip";
-import { useGroupList } from "../../../admin.groups.v1/api/groups";
-import { GroupsInterface } from "../../../admin.groups.v1/models/groups";
-import { IdentityProviderGroupInterface } from "../../../admin.identity-providers.v1/models";
+import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
+import { IdentityProviderGroupInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { RoleConstants } from "../../constants/role-constants";
 import { RoleManagementUtils } from "../../utils/role-management-utils";
 
