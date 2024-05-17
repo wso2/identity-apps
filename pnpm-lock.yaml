@@ -519,7 +519,7 @@ importers:
         specifier: ^2.0.61
         version: link:../../modules/dynamic-forms
       '@wso2is/features':
-        specifier: ^2.19.5
+        specifier: ^2.20.0
         version: link:../../features
       '@wso2is/form':
         specifier: ^2.0.62
@@ -853,7 +853,7 @@ importers:
         specifier: ^2.0.46
         version: link:../../modules/core
       '@wso2is/features':
-        specifier: ^2.19.5
+        specifier: ^2.20.0
         version: link:../../features
       '@wso2is/forms':
         specifier: ^2.0.36
@@ -22009,6 +22009,8 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
+        optional: true
+      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.5.7)(webpack-cli@4.10.0)
