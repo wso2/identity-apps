@@ -16,15 +16,10 @@
  * under the License.
  */
 
-import isObject from "lodash-es/isObject";
-import { lazy } from "react";
-import { ExtensionsConfig } from "./config";
 import {
-    ApplicationTemplateExtensionsConfigInterface,
-    ExtensionsConfigInterface,
-    IdentityProviderTemplateExtensionsConfigInterface
-} from "./models";
-import { TemplateConfigInterface, TemplateContentInterface } from "@wso2is/admin.applications.v1/data/application-templates";
+    TemplateConfigInterface,
+    TemplateContentInterface
+} from "@wso2is/admin.applications.v1/data/application-templates";
 import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
@@ -35,6 +30,14 @@ import {
     IdentityProviderTemplateGroupInterface,
     IdentityProviderTemplateListItemInterface
 } from "@wso2is/admin.identity-providers.v1/models";
+import isObject from "lodash-es/isObject";
+import { lazy } from "react";
+import { ExtensionsConfig } from "./config";
+import {
+    ApplicationTemplateExtensionsConfigInterface,
+    ExtensionsConfigInterface,
+    IdentityProviderTemplateExtensionsConfigInterface
+} from "./models";
 
 /**
  * Class to manage extensions.
@@ -182,22 +185,37 @@ export class ExtensionsManager {
                 return null;
             }
 
-            for (const [key, value] of Object.entries(content)) {
+            for (const [ key, value ] of Object.entries(content)) {
                 switch (value) {
-                    case './application-templates/templates/single-page-application/quick-start.tsx':
-                        content[key] = lazy(() => import('./application-templates/templates/single-page-application/quick-start'));
+                    case "./application-templates/templates/single-page-application/quick-start.tsx":
+                        content[key] = lazy(() => import(
+                            "./application-templates/templates/single-page-application/quick-start"
+                        ));
+
                         break;
-                    case './application-templates/templates/oidc-web-application/quick-start.tsx':
-                        content[key] = lazy(() => import('./application-templates/templates/oidc-web-application/quick-start'));
+                    case "./application-templates/templates/oidc-web-application/quick-start.tsx":
+                        content[key] = lazy(() => import(
+                            "./application-templates/templates/oidc-web-application/quick-start"
+                        ));
+
                         break;
-                    case './application-templates/templates/saml-web-application/quick-start.tsx':
-                        content[key] = lazy(() => import('./application-templates/templates/saml-web-application/quick-start'));
+                    case "./application-templates/templates/saml-web-application/quick-start.tsx":
+                        content[key] = lazy(() => import(
+                            "./application-templates/templates/saml-web-application/quick-start"
+                        ));
+
                         break;
-                    case './application-templates/templates/mobile-application/quick-start.tsx':
-                        content[key] = lazy(() => import('./application-templates/templates/mobile-application/quick-start'));
+                    case "./application-templates/templates/mobile-application/quick-start.tsx":
+                        content[key] = lazy(() => import(
+                            "./application-templates/templates/mobile-application/quick-start"
+                        ));
+
                         break;
-                    case './application-templates/templates/m2m-application/quick-start.tsx':
-                        content[key] = lazy(() => import('./application-templates/templates/m2m-application/quick-start'));
+                    case "./application-templates/templates/m2m-application/quick-start.tsx":
+                        content[key] = lazy(() => import(
+                            "./application-templates/templates/m2m-application/quick-start"
+                        ));
+
                         break;
                     default:
                         // Handle default case if necessary
