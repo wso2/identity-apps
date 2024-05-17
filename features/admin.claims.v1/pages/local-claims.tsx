@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getAllLocalClaims } from "../../admin.claims.v1/api";
+import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -38,8 +38,8 @@ import {
     filterList,
     history,
     sortList
-} from "../../admin.core.v1";
-import { attributeConfig } from "../../admin.extensions.v1/configs/attribute";
+} from "@wso2is/admin.core.v1";
+import { attributeConfig } from "@wso2is/admin.extensions.v1/configs/attribute";
 import { getADialect } from "../api";
 import { AddLocalClaims, ClaimsList, ListType } from "../components";
 

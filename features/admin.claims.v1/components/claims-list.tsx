@@ -69,11 +69,11 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
-import { attributeConfig } from "../../admin.extensions.v1/configs/attribute";
-import { getProfileSchemas } from "../../admin.users.v1/api";
-import { getUserStores } from "../../admin.userstores.v1/api/user-stores";
-import { UserStoreListItem } from "../../admin.userstores.v1/models/user-stores";
+} from "@wso2is/admin.core.v1";
+import { attributeConfig } from "@wso2is/admin.extensions.v1/configs/attribute";
+import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
+import { getUserStores } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim } from "../models";
