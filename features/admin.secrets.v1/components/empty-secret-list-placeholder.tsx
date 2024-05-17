@@ -29,7 +29,7 @@ import {
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { FEATURE_BASE_PATH } from "../constants/secrets.common";
 
 /**

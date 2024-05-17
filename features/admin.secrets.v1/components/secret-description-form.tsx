@@ -26,7 +26,7 @@ import React, { FC, Fragment, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, FeatureConfigInterface } from "../../admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { patchSecret } from "../api/secret";
 import { SecretModel } from "../models/secret";
 import { SECRET_DESCRIPTION_LENGTH } from "../utils/secrets.validation.utils";

@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { getSecretList } from "../api/secret";
 import AddSecretWizard from "../components/add-secret-wizard";
 import SecretsList from "../components/secrets-list";

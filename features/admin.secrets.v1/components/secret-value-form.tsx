@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, Icon, TextArea, TextAreaProps, Transition } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { patchSecret } from "../api/secret";
 import { EMPTY_STRING } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
