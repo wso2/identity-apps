@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OrganizationType } from "@wso2is/features/admin.organizations.v1/constants";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import {
     OrganizationActionTypes,
     SetOrganizationTypeInterface,

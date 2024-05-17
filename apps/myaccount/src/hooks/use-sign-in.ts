@@ -33,7 +33,7 @@ import {
     setUIConfigs
 } from "@wso2is/core/store";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
-import { OrganizationType } from "@wso2is/features/admin.organizations.v1/constants";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { useDispatch } from "react-redux";
 import { AnyAction, Dispatch } from "redux";
