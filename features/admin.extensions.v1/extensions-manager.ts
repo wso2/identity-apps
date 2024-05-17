@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -180,7 +180,13 @@ export class ExtensionsManager {
             }
 
             for (const [ key, value ] of Object.entries(content)) {
-                content[ key ] = lazy(() => import(`${ value }`));
+
+                // Strip the prefix './application-templates/' and the '.tsx' extension to overcome rollup limitation
+                //https://www.npmjs.com/package/@rollup/plugin-dynamic-import-vars
+
+                const valueStripped: string= value.replace(/^\.\/application-templates\//, "").replace(/\.tsx$/, "");
+
+                content[ key ] = lazy(() => import(`./application-templates/${ valueStripped }.tsx`));
             }
 
             return content;
@@ -193,7 +199,12 @@ export class ExtensionsManager {
                 return resource;
             }
 
-            return import(`${ resource }`).then((module: any) => module.default);
+            // Strip the prefix './application-templates/' and the '.json' extension to overcome rollup limitation
+            //https://www.npmjs.com/package/@rollup/plugin-dynamic-import-vars
+
+            const resourceStripped: string = resource.replace(/^\.\/application-templates\//,"").replace(/\.json$/, "");
+
+            return import(`./application-templates/${ resourceStripped }.json`).then((module: any) => module.default);
         };
 
         return {

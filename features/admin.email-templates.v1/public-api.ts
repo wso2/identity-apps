@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export * from "./extensions-manager";
-export * from "./models";
-export * from "./configs";
+export { default as EmailTemplateEditPage } from "./pages/email-template-edit-page";
+export { default as EmailTemplateTypesPage } from "./pages/email-template-types-page";
+export { default as EmailTemplatesPage } from "./pages/email-templates-page";

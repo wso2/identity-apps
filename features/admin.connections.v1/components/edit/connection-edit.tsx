@@ -385,7 +385,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     content: lazy(
                         () => import(`../../resources/guides/${
                             connectionSettingsMetaData?.edit?.tabs?.quickStart
-                        }/quick-start`)
+                        }/quick-start.tsx`)
                     ),
                     identityProvider: identityProvider,
                     template: template

@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./endpoints";
 export * from "./ui";
+export * from "./endpoints";

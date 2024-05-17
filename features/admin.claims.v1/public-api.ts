@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,9 @@
  * under the License.
  */
 
-export * from "./extensions-manager";
-export * from "./models";
-export * from "./configs";
+export { default as ClaimDialectsPage }  from "./pages/claim-dialects";
+export { default as ExternalDialectEditPage } from "./pages/external-dialect-edit";
+export { default as LocalClaimsPage } from "./pages/local-claims";
+export { default as LocalClaimsEditPage } from "./pages/local-claims-edit";
+export { default as AttributeMappings } from "./pages/attribute-mappings";
+export { default as AttributeVerificationSettingsFormPage } from "./pages/attribute-verification-settings";
