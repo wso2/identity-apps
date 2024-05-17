@@ -45,16 +45,16 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Ref } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../admin.extensions.v1/configs/server-configuration";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     GovernanceConnectorUtils,
     ServerConfigurationsConstants,
     getConnectorDetails
-} from "../../admin.server-configurations.v1";
-import { getConfiguration } from "../../admin.users.v1/utils/generate-password.utils";
+} from "@wso2is/admin.server-configurations.v1";
+import { getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
 import { ValidationConfigConstants } from "../constants/validation-config-constants";
 import { ValidationDataInterface, ValidationFormInterface } from "../models";
