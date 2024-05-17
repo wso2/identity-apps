@@ -198,7 +198,8 @@ module.exports = {
             "parser": "jsonc-eslint-parser",
             "rules": {
                 "header/header": "off",
-                "max-len": "off"
+                "max-len": "off",
+                "semi": "off"
             }
         },
         {
