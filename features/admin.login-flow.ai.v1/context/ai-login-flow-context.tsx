@@ -17,7 +17,7 @@
  */
 
 import { Context, createContext } from "react";
-import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
+import { AuthenticationSequenceInterface } from "@wso2is/admin.applications.v1/models/application";
 import { BannerState } from "../models/banner-state";
 
 export interface AILoginFlowContextProps {

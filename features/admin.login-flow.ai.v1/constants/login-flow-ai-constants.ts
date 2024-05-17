@@ -18,7 +18,7 @@
 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState } from "../../admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1";
 
 export const useGetFacts = (): string[] => {
     const { t } = useTranslation();

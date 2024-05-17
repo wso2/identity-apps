@@ -20,7 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1/store";
+import { store } from "@wso2is/admin.core.v1/store";
 import { GenerateLoginFlowAPIResponseInterface } from "../models/ai-login-flow";
 import AuthenticatorsRecord from "../models/authenticators-record";
 import { ClaimURI } from "../models/claim-uri";

@@ -17,13 +17,13 @@
  */
 
 import { useEffect, useState } from "react";
-import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { IdentityProviderManagementConstants } from "../../admin.identity-providers.v1/constants";
-import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import {
     IdentityProviderManagementUtils
-} from "../../admin.identity-providers.v1/utils/identity-provider-management-utils";
+} from "@wso2is/admin.identity-providers.v1/utils/identity-provider-management-utils";
 import AuthenticatorsRecord from "../models/authenticators-record";
 
 const useAvailableAuthenticators = (): {
