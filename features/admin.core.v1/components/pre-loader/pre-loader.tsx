@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { commonConfig } from "../../../admin.extensions.v1/configs/common";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
 
 /**
  * Pre loader component props interface.

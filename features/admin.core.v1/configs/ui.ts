@@ -17,7 +17,7 @@
  */
 
 import { FunctionComponent, ReactNode } from "react";
-import { ServerConfigurationsConstants } from "../../admin.server-configurations.v1/constants";
+import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
 import { ReactComponent as AlertIcon } from "../../themes/default/assets/images/icons/alert-icon.svg";
 import {
     ReactComponent as ApplicationRolesIcon

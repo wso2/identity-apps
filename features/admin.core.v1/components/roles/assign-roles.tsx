@@ -23,7 +23,7 @@ import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 
 /**
  * Proptypes for assign role component.

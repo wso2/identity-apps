@@ -21,8 +21,8 @@ import { Heading, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Icon, Segment } from "semantic-ui-react";
-import { getRoleById } from "../../../admin.roles.v2/api";
-import { PermissionList } from "../../../admin.roles.v2/components/wizard";
+import { getRoleById } from "@wso2is/admin.roles.v2/api";
+import { PermissionList } from "@wso2is/admin.roles.v2/components/wizard";
 
 /**
  * Proptypes for the role permission component.

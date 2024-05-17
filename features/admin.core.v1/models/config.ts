@@ -27,24 +27,24 @@ import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
-} from "../../admin.applications.v1/models";
-import { BrandingPreferenceResourceEndpointsInterface } from "../../admin.branding.v1/models/endpoints";
-import { CertificatesResourceEndpointsInterface } from "../../admin.certificates.v1";
-import { ClaimResourceEndpointsInterface } from "../../admin.claims.v1/models/endpoints";
-import { ConsoleSettingsResourceEndpointsInterface } from "../../admin.console-settings.v1/models/endpoints";
-import { GroupsResourceEndpointsInterface } from "../../admin.groups.v1";
-import { IDPResourceEndpointsInterface } from "../../admin.identity-providers.v1/models/endpoints";
-import { IdentityProviderTemplateLoadingStrategies } from "../../admin.identity-providers.v1/models/identity-provider";
-import { ScopesResourceEndpointsInterface } from "../../admin.oidc-scopes.v1";
-import { OrganizationResourceEndpointsInterface } from "../../admin.organizations.v1/models";
-import { JWTAuthenticationServiceEndpointsInterface } from "../../admin.private-key-jwt.v1/models";
-import { RolesResourceEndpointsInterface } from "../../admin.roles.v2/models/endpoints";
-import { SecretsManagementEndpoints } from "../../admin.secrets.v1/models/endpoints";
-import { ServerConfigurationsResourceEndpointsInterface } from "../../admin.server-configurations.v1";
-import { TenantResourceEndpointsInterface } from "../../admin.tenants.v1/models/endpoints";
-import { UsersResourceEndpointsInterface } from "../../admin.users.v1/models/endpoints";
-import { UserstoreResourceEndpointsInterface } from "../../admin.userstores.v1/models/endpoints";
-import { ValidationServiceEndpointsInterface } from "../../admin.validation.v1/models";
+} from "@wso2is/admin.applications.v1/models";
+import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
+import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
+import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
+import { ConsoleSettingsResourceEndpointsInterface } from "@wso2is/admin.console-settings.v1/models/endpoints";
+import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1";
+import { IDPResourceEndpointsInterface } from "@wso2is/admin.identity-providers.v1/models/endpoints";
+import { IdentityProviderTemplateLoadingStrategies } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
+import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
+import { JWTAuthenticationServiceEndpointsInterface } from "@wso2is/admin.private-key-jwt.v1/models";
+import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
+import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
+import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
+import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/models/endpoints";
+import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
+import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
+import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1/models";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
