@@ -18,6 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
+import { Placeholder } from "semantic-ui-react";
 import { CustomTextPreferenceConstants } from "../../../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../../../hooks/use-branding-preference";
 
@@ -41,13 +42,14 @@ const EmailLinkExpiryFragment: FunctionComponent<EmailLinkExpiryFragmentInterfac
 
     return (
         <div data-componentid={ componentId } >
-            <h2 style={ { color: "#d95858", height: "200px" } } className="mt-5">
+            <h2 style={ { color: "#d95858", height: "150px" } } className="mt-5">
                 { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.EMAIL_LINK_EXPIRY.MESSAGE,
                     "This link has expired.") }
             </h2>
-            <div>
-                <button className="ui primary button mb-2">Go Back</button>
-            </div>
+            <Placeholder style={ { animation: "unset", height: "50px", marginBottom: "50px", width: "315px" } }>
+                <Placeholder.Image />
+            </Placeholder>
+            <button className="ui primary button mb-2">Go Back</button>
         </div>
     );
 };
