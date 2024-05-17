@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppConstants, history } from "../../admin.core.v1";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { getEmailTemplate } from "../api";
 import { AddEmailTemplateForm } from "../components";
 import { EmailTemplateDetails, EmailTemplateFormModes } from "../models";

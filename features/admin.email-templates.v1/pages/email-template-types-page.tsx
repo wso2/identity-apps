@@ -25,13 +25,13 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../admin.core.v1";
-import { OrganizationUtils } from "../../admin.organizations.v1/utils";
+import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "@wso2is/admin.core.v1";
+import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
 import { AddEmailTemplateTypeWizard, EmailTemplateTypeList } from "../components";
 import { EmailTemplateType } from "../models";
 import { EmailTemplateUtils } from "../utils/email-template-utils";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 
 /**
  * Props for the Email Templates Types page.
