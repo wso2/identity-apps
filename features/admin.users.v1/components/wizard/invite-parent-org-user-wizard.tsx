@@ -139,7 +139,6 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
                 handleParentOrgUserInviteError(error);
             })
             .finally(() => {
-                debugger;
                 setIsInvitingCompleted(true);
                 setIsSubmitting(false);
             });
