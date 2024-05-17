@@ -47,16 +47,16 @@ import {
     Placeholder,
     SemanticICONS
 } from "semantic-ui-react";
-import { getMiscellaneousIcons } from "../../../admin.core.v1/configs";
-import { AppConstants } from "../../../admin.core.v1/constants";
-import { history } from "../../../admin.core.v1/helpers/history";
-import { AppState } from "../../../admin.core.v1/store";
-import { organizationConfigs } from "../../../admin.extensions.v1/configs/organization";
+import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { organizationConfigs } from "@wso2is/admin.extensions.v1/configs/organization";
 import {
     FeatureGateConstants
-} from "../../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { OrganizationType } from "../../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
+} from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
 import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
 import { handleTenantSwitch } from "../../utils";
