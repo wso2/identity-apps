@@ -39,8 +39,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
-import BrandingPreferenceProvider from "../../admin.branding.v1/providers/branding-preference-provider";
-import { AppState, FeatureConfigInterface, I18nConstants } from "../../admin.core.v1";
+import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
+import { AppState, FeatureConfigInterface, I18nConstants } from "@wso2is/admin.core.v1";
 import {
     createNewEmailTemplate,
     deleteEmailTemplate,
