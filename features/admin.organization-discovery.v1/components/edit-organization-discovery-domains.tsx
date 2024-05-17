@@ -39,7 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import updateOrganizationDiscoveryAttributes from "../api/update-organization-email-domains";
 import {

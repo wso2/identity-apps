@@ -44,8 +44,8 @@ import {
     FeatureConfigInterface,
     UIConstants,
     history
-} from "../../admin.core.v1";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
+} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { OrganizationIcon } from "../configs/ui";
 import { OrganizationDiscoveryConstants } from "../constants/organization-discovery-constants";
 import {

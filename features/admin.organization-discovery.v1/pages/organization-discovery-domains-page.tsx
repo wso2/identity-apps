@@ -56,7 +56,7 @@ import {
     FeatureConfigInterface,
     UIConstants,
     history
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import addOrganizationDiscoveryConfig from "../api/add-organization-discovery-config";
 import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discovery-config";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";

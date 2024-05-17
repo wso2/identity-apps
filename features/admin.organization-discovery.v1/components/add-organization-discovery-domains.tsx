@@ -44,11 +44,11 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useSta
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { AppConstants } from "../../admin.core.v1/constants/app-constants";
-import { history } from "../../admin.core.v1/helpers/history";
-import { FeatureConfigInterface } from "../../admin.core.v1/models/config";
-import useGetOrganizations from "../../admin.organizations.v1/api/use-get-organizations";
-import { OrganizationInterface } from "../../admin.organizations.v1/models/organizations";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
+import { OrganizationInterface } from "@wso2is/admin.organizations.v1/models/organizations";
 import addOrganizationEmailDomain from "../api/add-organization-email-domains";
 import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";

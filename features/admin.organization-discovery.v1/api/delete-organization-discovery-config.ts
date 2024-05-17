@@ -18,7 +18,7 @@
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1/store";
+import { store } from "@wso2is/admin.core.v1/store";
 
 /**
  * Get an axios instance.
