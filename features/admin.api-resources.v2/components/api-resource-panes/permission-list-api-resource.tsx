@@ -24,7 +24,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
+import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 
 /**

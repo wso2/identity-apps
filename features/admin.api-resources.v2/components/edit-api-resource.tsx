@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
-import { FeatureConfigInterface } from "../../admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { deleteScopeFromAPIResource, updateAPIResource } from "../api";
 import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
 
