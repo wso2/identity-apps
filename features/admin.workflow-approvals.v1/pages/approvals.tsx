@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Input, PaginationProps, SemanticCOLORS } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, UIConstants } from "../../admin.core.v1";
+import { AppState, FeatureConfigInterface, UIConstants } from "@wso2is/admin.core.v1";
 import { fetchPendingApprovals, updatePendingApprovalStatus } from "../api";
 import { ApprovalsList } from "../components";
 import { ApprovalStatus, ApprovalTaskListItemInterface } from "../models";
