@@ -197,7 +197,8 @@ module.exports = {
             "files": "*.json",
             "parser": "jsonc-eslint-parser",
             "rules": {
-                "header/header": "off"
+                "header/header": "off",
+                "max-len": "off"
             }
         },
         {
