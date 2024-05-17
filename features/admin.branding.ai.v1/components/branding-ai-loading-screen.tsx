@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import AILoadingScreen from "../../common.ai.v1/components/ai-loading-screen";
+import AILoadingScreen from "@wso2is/common.ai.v1/components/ai-loading-screen";
 import useGetAIBrandingGenerationStatus from "../api/use-get-branding-generation-status";
 import {
     FACTS_ROTATION_DELAY,

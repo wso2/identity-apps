@@ -30,8 +30,8 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import AIBanner from "../../common.ai.v1/components/ai-banner";
-import AIBannerTall from "../../common.ai.v1/components/ai-banner-tall";
+import AIBanner from "@wso2is/common.ai.v1/components/ai-banner";
+import AIBannerTall from "@wso2is/common.ai.v1/components/ai-banner-tall";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
 import useGenerateAIBrandingPreference,
 { GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
