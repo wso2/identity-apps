@@ -49,14 +49,14 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
     EventPublisher,
     FeatureConfigInterface,
     UIConstants
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
 import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import {

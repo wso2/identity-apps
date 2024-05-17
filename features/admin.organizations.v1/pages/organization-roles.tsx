@@ -47,9 +47,9 @@ import {
     FeatureConfigInterface,
     UIConstants,
     history
-} from "../../admin.core.v1";
-import { CreateGroupMemberInterface } from "../../admin.groups.v1/models";
-import { CreateRoleInterface, CreateRoleMemberInterface } from "../../admin.roles.v2/models/roles";
+} from "@wso2is/admin.core.v1";
+import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models";
+import { CreateRoleInterface, CreateRoleMemberInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";
 import { OrganizationRoleList } from "../components";
 import { AddOrganizationRoleWizard } from "../components/add-organization-role-wizard";

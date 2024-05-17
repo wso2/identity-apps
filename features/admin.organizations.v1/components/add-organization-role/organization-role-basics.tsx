@@ -22,8 +22,8 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { AppState, SharedUserStoreConstants, SharedUserStoreUtils } from "../../../admin.core.v1";
-import { CreateRoleFormData } from "../../../admin.roles.v2/models/roles";
+import { AppState, SharedUserStoreConstants, SharedUserStoreUtils } from "@wso2is/admin.core.v1";
+import { CreateRoleFormData } from "@wso2is/admin.roles.v2/models/roles";
 import { getOrganizationRoles } from "../../api";
 import {
     PRIMARY_DOMAIN

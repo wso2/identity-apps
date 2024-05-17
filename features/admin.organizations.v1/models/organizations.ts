@@ -16,7 +16,7 @@
  * under the License.
  */
 import { RolesInterface } from "@wso2is/core/models";
-import { ScimOperationsInterface } from "../../admin.roles.v2/models/roles";
+import { ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 
 export interface OrganizationInterface {
     id: string;

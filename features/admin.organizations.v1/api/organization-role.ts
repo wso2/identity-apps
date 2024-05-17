@@ -25,8 +25,8 @@ import {
 } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1";
-import { CreateRoleInterface } from "../../admin.roles.v2/models/roles";
+import { store } from "@wso2is/admin.core.v1";
+import { CreateRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { OrganizationRoleListResponseInterface, PatchOrganizationRoleDataInterface } from "../models";
 
 /**

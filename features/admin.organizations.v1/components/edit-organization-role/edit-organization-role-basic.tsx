@@ -24,8 +24,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, InputOnChangeData } from "semantic-ui-react";
-import { AppConstants, AppState, SharedUserStoreUtils, history } from "../../../admin.core.v1";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../admin.userstores.v1/constants/user-store-constants";
+import { AppConstants, AppState, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { deleteOrganizationRole, getOrganizationRoles, patchOrganizationRoleDetails } from "../../api";
 import { OrganizationRoleManagementConstants } from "../../constants";
 import {

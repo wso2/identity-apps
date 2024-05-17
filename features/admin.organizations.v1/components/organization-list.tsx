@@ -43,8 +43,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import useSignIn from "../../admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
+import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AppConstants,
     AppState,
@@ -52,9 +52,9 @@ import {
     FeatureConfigInterface,
     UIConstants,
     history
-} from "../../admin.core.v1";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
-import { organizationConfigs } from "../../admin.extensions.v1/configs/organization";
+} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { organizationConfigs } from "@wso2is/admin.extensions.v1/configs/organization";
 import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";

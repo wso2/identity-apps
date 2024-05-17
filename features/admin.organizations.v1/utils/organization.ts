@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { AuthenticatorManagementConstants } from "../../admin.connections.v1/constants/autheticator-constants";
-import { store } from "../../admin.core.v1/store";
-import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import { store } from "@wso2is/admin.core.v1/store";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { OrganizationManagementConstants, OrganizationType } from "../constants/organization-constants";
 import { GenericOrganization } from "../models";
 

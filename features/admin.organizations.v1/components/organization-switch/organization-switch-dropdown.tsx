@@ -46,7 +46,7 @@ import {
 import OrganizationListItem from "./organization-list-item";
 import OrganizationSwitcherList from "./organization-switch-list";
 import { ReactComponent as CrossIcon } from "../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppState } from "../../../admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1";
 import { getOrganizations } from "../../api";
 import {
     GenericOrganization,

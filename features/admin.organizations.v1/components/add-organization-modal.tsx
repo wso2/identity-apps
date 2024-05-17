@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { AppState, EventPublisher, TierLimitReachErrorModal } from "../../admin.core.v1";
+import { AppState, EventPublisher, TierLimitReachErrorModal } from "@wso2is/admin.core.v1";
 import { addOrganization } from "../api";
 import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,

@@ -26,12 +26,12 @@ import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { OrganizationRoleBasics } from "./add-organization-role/organization-role-basics";
 import { CreateOrganizationRoleSummary } from "./add-organization-role/organization-role-sumary";
 import { OrganizationPermissionList } from "./edit-organization-role/organization-role-permission";
-import { CreateGroupMemberInterface, GroupsInterface, getGroupList } from "../../admin.groups.v1";
-import { AssignGroupsUsers } from "../../admin.roles.v2/components/wizard/assign-groups-users";
-import { getRolesWizardStepIcons } from "../../admin.roles.v2/configs/ui";
-import { TreeNode } from "../../admin.roles.v2/models/permission";
-import { CreateRoleInterface, CreateRoleMemberInterface } from "../../admin.roles.v2/models/roles";
-import { UserBasicInterface } from "../../admin.users.v1/models/user";
+import { CreateGroupMemberInterface, GroupsInterface, getGroupList } from "@wso2is/admin.groups.v1";
+import { AssignGroupsUsers } from "@wso2is/admin.roles.v2/components/wizard/assign-groups-users";
+import { getRolesWizardStepIcons } from "@wso2is/admin.roles.v2/configs/ui";
+import { TreeNode } from "@wso2is/admin.roles.v2/models/permission";
+import { CreateRoleInterface, CreateRoleMemberInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 
 /**
  * Interface which captures create role props.

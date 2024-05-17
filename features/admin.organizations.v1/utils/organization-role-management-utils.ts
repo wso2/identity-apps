@@ -17,7 +17,7 @@
  */
 
 import isEmpty from "lodash-es/isEmpty";
-import { generatePermissionTree } from "../../admin.roles.v2/components/role-utils";
+import { generatePermissionTree } from "@wso2is/admin.roles.v2/components/role-utils";
 import { getOrganizationPermissions } from "../api";
 import { PermissionObject, TreeNode } from "../models";
 

@@ -55,9 +55,9 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { AppState, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
-import { getGroupList } from "../../../admin.groups.v1/api";
-import { GroupListInterface, GroupsInterface } from "../../../admin.groups.v1/models";
+import { AppState, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getGroupList } from "@wso2is/admin.groups.v1/api";
+import { GroupListInterface, GroupsInterface } from "@wso2is/admin.groups.v1/models";
 import { patchOrganizationRoleDetails } from "../../api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
 import {
