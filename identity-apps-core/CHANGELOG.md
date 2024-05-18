@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.2.3
+
+### Patch Changes
+
+- [#6286](https://github.com/wso2/identity-apps/pull/6286) [`be831f4b8e2f4d6d7727de7984c74d3466695224`](https://github.com/wso2/identity-apps/commit/be831f4b8e2f4d6d7727de7984c74d3466695224) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix issue when errorKey null in password recovery
+
 ## 2.2.2
 
 ### Patch Changes
