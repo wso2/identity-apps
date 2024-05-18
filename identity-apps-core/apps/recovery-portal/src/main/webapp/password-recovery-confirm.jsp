@@ -54,7 +54,11 @@
         return;
     }
 
-    String errorKey = Encode.forJava(request.getParameter("errorKey"));
+    String errorKey = request.getParameterMap().containsKey("errorKey") 
+    	? request.getParameter("errorKey") 
+    	: StringUtils.EMPTY;
+    errorKey = Encode.forJava(errorKey);
+    
     if (StringUtils.isNotBlank(errorKey)) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorKey));
