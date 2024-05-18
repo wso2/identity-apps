@@ -56,7 +56,7 @@
 
     String errorKey = request.getParameterMap().containsKey("errorKey") 
     	? request.getParameter("errorKey") 
-    	: "";
+    	: StringUtils.EMPTY;
     errorKey = Encode.forJava(errorKey);
     
     if (StringUtils.isNotBlank(errorKey)) {
