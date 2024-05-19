@@ -46,7 +46,7 @@
         "@wso2is/admin.tenants.v1": "^2.19.2",
         "@wso2is/admin.users.v1": "^2.19.2",
         "@wso2is/admin.userstores.v1": "^2.19.2",
-        "@wso2is/admin.validation.v1": "^2.19.2",
+        "@wso2is/admin.validation.v1": "^2.19.2",        
         "axios": "^0.19.2",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
