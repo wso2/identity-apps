@@ -1,0 +1,44 @@
+{
+    "private": true,
+    "name": "@wso2is/admin.api-resources.v1",
+    "version": "2.19.2",
+    "description": "WSO2 Identity Server Console",
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "@asgardeo/auth-react": "^4.0.1",
+        "@emotion/react": "^11.11.0",
+        "@emotion/styled": "^11.11.0",
+        "@mui/icons-material": "^5.11.16",
+        "@mui/lab": "5.0.0-alpha.129",
+        "@mui/material": "^5.13.0",
+        "@mui/system": "^5.12.3",
+        "@mui/utils": "^5.12.3",
+        "@oxygen-ui/react": "^1.11.0",
+        "@wso2is/access-control": "^3.0.5",
+        "@wso2is/core": "^2.0.45",
+        "@wso2is/form": "^2.0.61",
+        "@wso2is/forms": "^2.0.35",
+        "@wso2is/react-components": "^2.2.2",
+        "@wso2is/admin.core.v1": "^2.19.2",
+        "@wso2is/admin.extensions.v1": "^2.19.2",
+        "axios": "^0.19.2",
+        "i18next": "^21.9.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-helmet": "^5.2.1",
+        "react-i18next": "^11.18.5",
+        "react-redux": "^7.2.9",
+        "react-router-dom": "^4.3.1",
+        "redux": "^4.0.4",
+        "semantic-ui-react": "^2.1.3"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.18",
+        "@types/react-redux": "^7.1.25",
+        "typescript": "^4.6.4"
+    },
+    "browserslist": [
+        "> 0.2%"
+    ]
+}
