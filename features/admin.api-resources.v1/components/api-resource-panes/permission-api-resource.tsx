@@ -28,12 +28,12 @@ import {
     ListLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
-import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 import { AddAPIResourcePermission } from "../wizard";
 

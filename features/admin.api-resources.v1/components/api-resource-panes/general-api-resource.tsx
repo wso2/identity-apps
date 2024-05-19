@@ -34,8 +34,8 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, FeatureConfigInterface, history } from "../../../admin.core.v1";
-import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
+import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
 import {

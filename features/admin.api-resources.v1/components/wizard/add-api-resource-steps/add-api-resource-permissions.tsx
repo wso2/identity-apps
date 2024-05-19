@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Header } from "semantic-ui-react";
 import { PermissionMappingList } from "./permission-mapping-list";
 import { PermissionMappingListItem } from "./permission-mapping-list-item";
-import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { APIResourcePermissionInterface } from "../../../models";
 
 /**

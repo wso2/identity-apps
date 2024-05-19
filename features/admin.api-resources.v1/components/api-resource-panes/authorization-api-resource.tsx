@@ -26,7 +26,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import {
     APIResourcePanesCommonPropsInterface
 } from "../../models";
