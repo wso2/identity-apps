@@ -38,7 +38,7 @@
         "@wso2is/admin.organizations.v1": "^2.19.2",
         "@wso2is/admin.secrets.v1": "^2.19.2",
         "@wso2is/admin.server-configurations.v1": "^2.19.2",
-        "classnames": "^2.2.6",
+        "classnames": "^2.2.6",    
         "axios": "^0.19.2",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
