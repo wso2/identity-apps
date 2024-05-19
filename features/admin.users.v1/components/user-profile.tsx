@@ -720,14 +720,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
                                         : userConfig.userProfileSchema;
-
-                                    opValue = {
-                                        [schemaId]: {
-                                            [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                !!values.get(schema.name)?.includes(schema.name) :
-                                                values.get(schemaNames[0])
-                                        }
-                                    };
+                                    if (schema.name == "externalId") {
+                                        opValue = {
+                                            [schemaNames[0]]: values.get(schemaNames[0])
+                                        };
+                                    } else {
+                                        opValue = {
+                                            [schemaId]: {
+                                                [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                    !!values.get(schema.name)?.includes(schema.name) :
+                                                    values.get(schemaNames[0])
+                                            }
+                                        };
+                                    }
                                 } else {
                                     opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS")
