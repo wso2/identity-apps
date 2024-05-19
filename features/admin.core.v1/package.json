@@ -60,7 +60,7 @@
         "@wso2is/admin.wsfed-configuration.v1": "^2.19.2",
         "@wso2is/admin.organization-discovery.v1": "^2.19.2",
         "@wso2is/admin.server.v1": "^2.19.2",
-        "@wso2is/admin.roles.v1": "^2.19.2",
+        "@wso2is/admin.roles.v1": "^2.19.2",        
         "axios": "^0.19.2",
         "jsrsasign": "^10.5.26",
         "classnames": "^2.2.6",
