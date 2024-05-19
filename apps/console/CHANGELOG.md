@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.18.13
+
+### Patch Changes
+
+- [#6289](https://github.com/wso2/identity-apps/pull/6289) [`5cd7ee3083ed43109ac663c66ff0ddae351fd20f`](https://github.com/wso2/identity-apps/commit/5cd7ee3083ed43109ac663c66ff0ddae351fd20f) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix externalID not updating issue
+
 ## 2.18.12
 
 ### Patch Changes
