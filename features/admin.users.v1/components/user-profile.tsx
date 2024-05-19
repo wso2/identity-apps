@@ -721,7 +721,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         ? schema.schemaId
                                         : userConfig.userProfileSchema;
 
-                                    if (schema.name == "externalId") {
+                                    if (schema.name === "externalId") {
                                         opValue = {
                                             [schemaNames[0]]: values.get(schemaNames[0])
                                         };
