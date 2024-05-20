@@ -17,6 +17,14 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
@@ -34,14 +42,6 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
 import { deleteIDVP } from "../api";
 import { IDVPListResponseInterface, IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
 import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";

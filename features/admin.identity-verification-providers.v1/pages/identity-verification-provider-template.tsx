@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader, EmptyPlaceholder,
@@ -28,11 +33,6 @@ import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
-import {
-    AppConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
 import { useIDVPTemplateTypeMetadataList } from "../api";
 import { IdvpCreateWizard } from "../components/wizards/idvp-create-wizard";
 import { IdentityVerificationProviderConstants } from "../constants";

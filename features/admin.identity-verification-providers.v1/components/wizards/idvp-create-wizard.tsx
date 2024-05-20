@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ModalWithSidePanel } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -35,7 +36,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
-import { ModalWithSidePanel } from "../../../admin.core.v1";
 import {
     createIdentityVerificationProvider,
     useIDVPTemplate,
