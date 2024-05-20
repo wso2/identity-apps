@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface,getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
@@ -23,7 +24,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, FeatureConfigInterface,getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
 import { useAPIResourceDetails } from "../api";
 import { EditAPIResource } from "../components";
 import { APIResourceType, APIResourcesConstants } from "../constants";
