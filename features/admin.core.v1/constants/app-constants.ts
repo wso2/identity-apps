@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
-import { StringUtils } from "@wso2is/core/utils";
-import { MultitenantConstants } from "./multitenant-constants";
-import { identityProviderConfig } from "../../admin.extensions.v1/configs";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
     GovernanceCategoryForOrgsInterface,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorUtils
-} from "../../admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1";
+import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
+import { MultitenantConstants } from "./multitenant-constants";
 
 /**
  * Class containing app constants.

@@ -17,6 +17,8 @@
  */
 
 import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import {
     AlertInterface,
     CommonAuthReducerStateInterface,
@@ -34,8 +36,6 @@ import {
 } from "./config";
 import { PortalDocumentationStructureInterface } from "./help-panel";
 import { AppViewTypes } from "./ui";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { OrganizationResponseInterface } from "../../admin.organizations.v1/models";
 
 /**
  * Portal config reducer state interface.
@@ -76,7 +76,7 @@ export interface AccessControlReducerStateInterface {
 /**
  * Organization Reducer State Interface.
  */
-export interface OrganizationReducerStateInterface { 
+export interface OrganizationReducerStateInterface {
     superAdmin: string;
     currentOrganization: string;
     organization?: OrganizationResponseInterface;

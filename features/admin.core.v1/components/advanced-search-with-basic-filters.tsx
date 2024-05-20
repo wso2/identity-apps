@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
@@ -29,7 +30,6 @@ import {
 import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { commonConfig } from "../../admin.extensions.v1";
 import { getAdvancedSearchIcons } from "../configs";
 
 /**

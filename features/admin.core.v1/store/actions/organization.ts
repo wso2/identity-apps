@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
+import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { Dispatch } from "redux";
 import {
     OrganizationActionTypes,
@@ -27,9 +30,6 @@ import {
     SetSuperAdminTypeInterface,
     SetUserOrganizationIdInterface
 } from "./types";
-import { OrganizationType } from "../../../admin.organizations.v1/constants";
-import { OrganizationResponseInterface } from "../../../admin.organizations.v1/models";
-import { ServerConfigurationsInterface, getServerConfigs } from "../../../admin.server-configurations.v1";
 
 /**
  * This action sets an organization in the redux store.
