@@ -17,6 +17,9 @@
  */
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
+import { Config } from "@wso2is/admin.core.v1/configs";
+import { store } from "@wso2is/admin.core.v1/store";
+import { getProfileInfo, getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertInterface,
@@ -34,9 +37,6 @@ import {
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch } from "redux";
-import { Config } from "../../../admin.core.v1/configs";
-import { store } from "../../../admin.core.v1/store";
-import { getProfileInfo, getProfileSchemas } from "../../../admin.users.v1/api";
 
 /**
  *  Gets profile information by making an API call

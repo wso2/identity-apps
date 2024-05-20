@@ -23,6 +23,26 @@ import {
     OIDCEndpoints,
     useAuthContext
 } from "@asgardeo/auth-react";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { AppConstants, CommonConstants } from "@wso2is/admin.core.v1/constants";
+import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
+import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import { DeploymentConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    getServerConfigurations,
+    setCurrentOrganization,
+    setGetOrganizationLoading,
+    setIsFirstLevelOrganization,
+    setOrganization,
+    setOrganizationType,
+    setUserOrganizationId
+} from "@wso2is/admin.core.v1/store/actions/organization";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.extensions.v1/components/administrators/constants/users";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
@@ -37,26 +57,6 @@ import axios, { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
-import { Config } from "../../admin.core.v1/configs/app";
-import { AppConstants, CommonConstants } from "../../admin.core.v1/constants";
-import useDeploymentConfig from "../../admin.core.v1/hooks/use-deployment-configs";
-import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
-import { DeploymentConfigInterface } from "../../admin.core.v1/models/config";
-import { AppState } from "../../admin.core.v1/store";
-import {
-    getServerConfigurations,
-    setCurrentOrganization,
-    setGetOrganizationLoading,
-    setIsFirstLevelOrganization,
-    setOrganization,
-    setOrganizationType,
-    setUserOrganizationId
-} from "../../admin.core.v1/store/actions/organization";
-import { CONSUMER_USERSTORE } from "../../admin.extensions.v1/components/administrators/constants/users";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import useOrganizationSwitch from "../../admin.organizations.v1/hooks/use-organization-switch";
-import useOrganizations from "../../admin.organizations.v1/hooks/use-organizations";
 import { getProfileInformation } from "../store/actions";
 import { AuthenticateUtils } from "../utils/authenticate-utils";
 
