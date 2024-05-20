@@ -34,9 +34,6 @@ export interface BrandingNS {
                 copyright: {
                     hint: string;
                 };
-                "email.link.expiry.message": {
-                    hint: string;
-                };
                 "privacy.policy": {
                     hint: string;
                 };
@@ -160,7 +157,6 @@ export interface BrandingNS {
     };
     screens: {
         common: string;
-        "email-link-expiry": string;
         login: string;
         "sms-otp": string;
         "email-otp": string;
