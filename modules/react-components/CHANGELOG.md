@@ -1,5 +1,12 @@
 # @wso2is/react-components
 
+## 2.2.5
+
+### Patch Changes
+
+- Updated dependencies [[`ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c`](https://github.com/wso2/identity-apps/commit/ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c)]:
+  - @wso2is/core@2.0.47
+
 ## 2.2.4
 
 ### Patch Changes
