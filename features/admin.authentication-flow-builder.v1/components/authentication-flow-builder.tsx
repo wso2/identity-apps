@@ -22,6 +22,22 @@ import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
+import {
+    updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
+} from "@wso2is/admin.applications.v1/api/application";
+import {
+    ApplicationInterface,
+    AuthenticationSequenceInterface,
+    AuthenticationSequenceType,
+    AuthenticationStepInterface,
+    AuthenticatorInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    IdentityProviderManagementConstants
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
@@ -38,22 +54,6 @@ import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor"
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
 import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switch";
 import SidePanelDrawer from "./side-panel-drawer";
-import {
-    updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
-} from "../../admin.applications.v1/api/application";
-import {
-    ApplicationInterface,
-    AuthenticationSequenceInterface,
-    AuthenticationSequenceType,
-    AuthenticationStepInterface,
-    AuthenticatorInterface
-} from "../../admin.applications.v1/models/application";
-import { AdaptiveScriptUtils } from "../../admin.applications.v1/utils/adaptive-script-utils";
-import { AppState } from "../../admin.core.v1/store";
-import {
-    IdentityProviderManagementConstants
-} from "../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";

@@ -19,13 +19,13 @@
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import {
+    IdentityProviderManagementConstants
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import BasicSignInOptionControls from "./basic-sign-in-option-controls";
-import {
-    IdentityProviderManagementConstants
-} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 
 /**
  * Proptypes for the TOTP fragment component.
