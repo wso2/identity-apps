@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components/root-only-component";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getAUserStore, getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -27,13 +34,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../..";
-import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "../../../admin.core.v1";
-import { userstoresConfig } from "../../../admin.extensions.v1";
-import { RootOnlyComponent } from "../../../admin.organizations.v1/components/root-only-component";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { getAUserStore, getUserStoreList } from "../../../admin.userstores.v1/api/user-stores";
-import { UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
-import { UserStoreProperty } from "../../../admin.userstores.v1/models";
 
 /**
  * Interface to capture group basics props.
