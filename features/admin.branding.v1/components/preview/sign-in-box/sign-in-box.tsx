@@ -23,7 +23,6 @@ import React, {
 } from "react";
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import CommonFragment from "./fragments/common-fragment";
-import EmailLinkExpiryFragment from "./fragments/email-link-expiry-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
 import PasswordRecoveryFragment from "./fragments/password-recovery-fragment";
 import PasswordResetFragment from "./fragments/password-reset-fragment";
@@ -79,8 +78,6 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
             return <PasswordResetFragment />;
         } else if (selectedScreen === PreviewScreenType.PASSWORD_RESET_SUCCESS) {
             return <PasswordResetSuccessFragment />;
-        } else if (selectedScreen === PreviewScreenType.EMAIL_LINK_EXPIRY) {
-            return <EmailLinkExpiryFragment />;
         }
     };
 

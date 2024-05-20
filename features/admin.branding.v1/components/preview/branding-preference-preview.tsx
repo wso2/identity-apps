@@ -42,12 +42,12 @@ import { Placeholder } from "semantic-ui-react";
 import { EmailTemplateScreenSkeleton } from "./email-template-screen-skeleton";
 import { LoginScreenSkeleton } from "./login-screen-skeleton";
 import { MyAccountScreenSkeleton } from "./my-account-screen-skeleton";
-import { AppState } from "../../../admin.core.v1/store";
 import { commonConfig } from "../../../admin.extensions.v1/configs";
 import { ReactComponent as CustomLayoutSuccessImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
+import { AppState } from "../../../admin.core.v1/store";
 import { useLayout, useLayoutStyle } from "../../api";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
 import { BrandingPreferenceMeta, LAYOUT_DATA, PredefinedLayouts } from "../../meta";
@@ -264,7 +264,6 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         PreviewScreenType.LOGIN,
         PreviewScreenType.SIGN_UP,
         PreviewScreenType.COMMON,
-        PreviewScreenType.EMAIL_LINK_EXPIRY,
         PreviewScreenType.EMAIL_OTP,
         PreviewScreenType.SMS_OTP,
         PreviewScreenType.TOTP,

@@ -565,7 +565,6 @@ export enum PreviewScreenType {
     COMMON = "common",
     LOGIN = "login",
     MY_ACCOUNT = "myaccount",
-    EMAIL_LINK_EXPIRY = "email-link-expiry",
     EMAIL_TEMPLATE = "email-template",
     SIGN_UP = "sign-up",
     EMAIL_OTP = "email-otp",

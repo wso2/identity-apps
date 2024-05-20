@@ -42,9 +42,6 @@ export const branding: BrandingNS = {
                 copyright: {
                     hint: "Text that appears at the footer of the login screens. You can use `{{currentYear}}` placeholder to automatically display the current year."
                 },
-                "email.link.expiry.message": {
-                    hint: "The message that appears when the email link expires. If not set, {{productName}} defaults are used."
-                },
                 "privacy.policy": {
                     hint: "The privacy policy text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
                 },
@@ -160,7 +157,6 @@ export const branding: BrandingNS = {
     },
     screens: {
         common: "Common",
-        "email-link-expiry": "Email Link Expiry",
         "email-otp": "Email OTP",
         "email-template": "Email Templates",
         login: "Login",
