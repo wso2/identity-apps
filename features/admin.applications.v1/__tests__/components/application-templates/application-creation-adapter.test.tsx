@@ -21,8 +21,7 @@ import { render, screen, waitFor } from "../../../../test-configs";
 import ApplicationCreationAdapter, {
     ApplicationCreationAdapterPropsInterface
 } from "../../../components/application-templates/application-creation-adapter";
-import * as ApplicationCreateWizard from "../../../components/dynamic-forms/application-create-wizard";
-import * as MinimalApplicationCreateWizard from "../../../components/wizard/minimal-application-create-wizard";
+import * as OauthProtocolSettingsWizardForm from "../../../components/wizard/oauth-protocol-settings-wizard-form";
 import {
     applicationTemplatesListMockResponse
 } from "../../__mocks__/application-template";
@@ -33,17 +32,10 @@ declare global {
 }
 
 describe("[Applications Management Feature] - ApplicationCreationAdapter", () => {
-    const minimalApplicationCreateWizardMock: jest.SpyInstance = jest.spyOn(
-        MinimalApplicationCreateWizard, "MinimalAppCreateWizard");
+    const useGetApplicationTemplatesMock: jest.SpyInstance = jest.spyOn(
+        OauthProtocolSettingsWizardForm, "OauthProtocolSettingsWizardForm");
 
-    minimalApplicationCreateWizardMock.mockImplementation(() =>
-        <div data-componentid="minimal-application-create-wizard-modal"></div>);
-
-    const applicationCreateWizardMock: jest.SpyInstance = jest.spyOn(
-        ApplicationCreateWizard, "ApplicationCreateWizard");
-
-    applicationCreateWizardMock.mockImplementation(() =>
-        <div data-componentid="application-create-wizard"></div>);
+    useGetApplicationTemplatesMock.mockImplementation(() => jest.fn());
 
     const propsWithSPATemplate: ApplicationCreationAdapterPropsInterface = {
         onClose: jest.fn(),

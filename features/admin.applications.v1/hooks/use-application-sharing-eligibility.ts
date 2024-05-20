@@ -19,6 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { useSelector } from "react-redux";
+import useGlobalVariables from "../../admin.core.v1/hooks/use-global-variables";
 import { AppState } from "../../admin.core.v1/store";
 import { applicationConfig } from "../../admin.extensions.v1/configs/application";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
@@ -37,6 +38,8 @@ const useApplicationSharingEligibility = (): boolean => {
     const organizationEnabled: string = useSelector((state: AppState) => state.config?.ui?.legacyMode?.organizations);
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isClientSecretHashEnabled);
+
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
 
     return (isOrganizationManagementEnabled
         && organizationEnabled
