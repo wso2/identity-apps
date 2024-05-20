@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { PreLoader } from "@wso2is/admin.core.v1";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
+import { getAuthLayoutRoutes } from "@wso2is/admin.core.v1/configs";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { RouteInterface } from "@wso2is/core/models";
 import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { PreLoader } from "../admin.core.v1";
-import { ProtectedRoute } from "../admin.core.v1/components";
-import { getAuthLayoutRoutes } from "../admin.core.v1/configs";
-import { AppConstants } from "../admin.core.v1/constants";
 
 /**
  * Auth layout props interface.

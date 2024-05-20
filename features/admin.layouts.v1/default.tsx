@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    AppState,
+    Footer,
+    Header,
+    ProtectedRoute,
+    UIConstants,
+    getDefaultLayoutRoutes
+} from "@wso2is/admin.core.v1";
 import { AlertInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import {
@@ -37,15 +46,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import {
-    AppConstants,
-    AppState,
-    Footer,
-    Header,
-    ProtectedRoute,
-    UIConstants,
-    getDefaultLayoutRoutes
-} from "../admin.core.v1";
 
 /**
  * Default page layout component Prop types.

@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import { AppState, AppUtils, PreLoader } from "@wso2is/admin.core.v1";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
+import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { store } from "@wso2is/admin.core.v1/store";
 import { RouteInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
@@ -28,11 +33,6 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { AppState, AppUtils, PreLoader } from "../admin.core.v1";
-import { ProtectedRoute } from "../admin.core.v1/components";
-import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "../admin.core.v1/configs";
-import { AppConstants } from "../admin.core.v1/constants";
-import { store } from "../admin.core.v1/store";
 
 /**
  * Implementation of the Main app layout skeleton.
