@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface, I18nConstants } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -37,7 +38,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, I18nConstants } from "../../admin.core.v1";
 import { EmailTemplate } from "../models";
 
 interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInterface {
