@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { AuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import {
     IdentifiableComponentInterface,
     LoadableComponentInterface
@@ -31,8 +33,6 @@ import React, { Fragment, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Grid } from "semantic-ui-react";
 import GroupsList from "./groups-list";
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../../admin.core.v1";
-import { AuthenticatorInterface } from "../../../admin.identity-providers.v1/models";
 
 interface AuthenticatorGroupsListProps extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**
@@ -68,7 +68,7 @@ export const AuthenticatorGroupsList = (props: AuthenticatorGroupsListProps): Re
      *
      * @returns placeholder component.
      */
-    const showPlaceholders = (): ReactElement => {        
+    const showPlaceholders = (): ReactElement => {
         if (groupsList?.length === 0) {
             return (
                 <EmptyPlaceholder
@@ -96,7 +96,7 @@ export const AuthenticatorGroupsList = (props: AuthenticatorGroupsListProps): Re
 
     /**
      * Handle expand accordion title.
-     * 
+     *
      * @param group - Authenticator group.
      */
     const handleAccordionTitleClick = (
@@ -118,9 +118,9 @@ export const AuthenticatorGroupsList = (props: AuthenticatorGroupsListProps): Re
 
     /**
      * Renders the authenticator groups list.
-     * 
+     *
      * @param groupList - Role list.
-     * 
+     *
      * @returns authenticator groups list component.
      */
     const resolveAuthenticatorGroupsList = (groupsList: AuthenticatorInterface[]): ReactElement => {
@@ -142,8 +142,8 @@ export const AuthenticatorGroupsList = (props: AuthenticatorGroupsListProps): Re
                                             active={ expandedAssignedApplications?.includes(group.name) }
                                             accordionIndex={ group.name }
                                             className="nested-list-accordion-title"
-                                            onClick={ 
-                                                () => 
+                                            onClick={
+                                                () =>
                                                     handleAccordionTitleClick(
                                                         group,
                                                         expandedAssignedApplications,
@@ -193,7 +193,7 @@ export const AuthenticatorGroupsList = (props: AuthenticatorGroupsListProps): Re
                     <Accordion
                         data-componentid={ `${ componentId }-authenticator-groups` }
                     >
-                        { 
+                        {
                             resolveAuthenticatorGroupsList(
                                 groupsList
                             )
