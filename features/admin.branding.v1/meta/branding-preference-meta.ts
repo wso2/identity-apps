@@ -16,11 +16,6 @@
  * under the License.
  */
 
-import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { StringUtils } from "@wso2is/core/utils";
-import isEmpty from "lodash-es/isEmpty";
-import { LAYOUTS } from "./layouts";
-import { THEMES, THEME_SWATCH_UI_CONFIGS } from "./themes";
 import {
     BrandingPreferenceImagesInterface,
     BrandingPreferenceOrganizationDetailsInterface,
@@ -28,7 +23,12 @@ import {
     DynamicBrandingPreferenceLayoutInterface,
     DynamicBrandingPreferenceThemeInterface,
     PredefinedThemes
-} from "../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { StringUtils } from "@wso2is/core/utils";
+import isEmpty from "lodash-es/isEmpty";
+import { LAYOUTS } from "./layouts";
+import { THEMES, THEME_SWATCH_UI_CONFIGS } from "./themes";
 import { ThemeSwatchUIConfigsInterface } from "../components";
 import { BrandingPreferencesConstants } from "../constants";
 

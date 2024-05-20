@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
+import { BrandingPreferenceInterface, PreviewScreenType } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -42,9 +45,6 @@ import { Placeholder } from "semantic-ui-react";
 import { EmailTemplateScreenSkeleton } from "./email-template-screen-skeleton";
 import { LoginScreenSkeleton } from "./login-screen-skeleton";
 import { MyAccountScreenSkeleton } from "./my-account-screen-skeleton";
-import { AppState } from "../../../admin.core.v1/store";
-import { commonConfig } from "../../../admin.extensions.v1/configs";
-import { BrandingPreferenceInterface, PreviewScreenType } from "../../../common.branding.v1/models";
 import { ReactComponent as CustomLayoutSuccessImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from

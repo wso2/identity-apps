@@ -16,16 +16,16 @@
  * under the License.
  */
 
+import {
+    BrandingPreferenceLayoutInterface,
+    DynamicBrandingPreferenceLayoutInterface
+} from "@wso2is/common.branding.v1/models";
 import { addCommonDataForTheLayout } from "./common";
 import { SIDE_ALIGNED_LAYOUT_INITIALES, generateDataSetForTheSideAlignedLayout } from "./side-aligned";
 import {
     SIDE_IMAGE_LAYOUT_INITIALES,
     generateDataSetForTheSideImageLayout
 } from "./side-image";
-import {
-    BrandingPreferenceLayoutInterface,
-    DynamicBrandingPreferenceLayoutInterface
-} from "../../../common.branding.v1/models";
 
 /**
  * Enum for set of predefined layouts.

@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, ConfirmationModal, ConfirmationModalPropsInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../admin.core.v1/store";
 import useBrandingPreference from "../../hooks/use-branding-preference";
 
 /**

@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { AxiosError } from "axios";
-import cloneDeep from "lodash-es/cloneDeep";
-import merge from "lodash-es/merge";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
     DynamicBrandingPreferenceLayoutInterface,
     PredefinedThemes
-} from "../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
+import { AxiosError } from "axios";
+import cloneDeep from "lodash-es/cloneDeep";
+import merge from "lodash-es/merge";
 import { BrandingPreferencesConstants } from "../constants";
 import { BrandingPreferenceMeta, LAYOUTS, PredefinedLayouts } from "../meta";
 
