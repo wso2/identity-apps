@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants, AppState } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
@@ -24,7 +25,6 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, AppState } from "../../../../../admin.core.v1";
 import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 import {
     AuthenticatorSettingsFormModes,

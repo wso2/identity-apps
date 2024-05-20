@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { IdentityProviderManagementConstants } from "../../../../admin.identity-providers.v1/constants";
 import { AxiosError } from "axios";
 import React, { Dispatch, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";

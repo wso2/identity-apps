@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants, store } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,7 +25,6 @@ import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import { AppConstants, store } from "../../admin.core.v1";
 import { getConnections } from "../api/connections";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";

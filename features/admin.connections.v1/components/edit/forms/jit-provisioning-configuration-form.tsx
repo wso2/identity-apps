@@ -17,6 +17,10 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { SimpleUserStoreListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Code, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
@@ -25,10 +29,6 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, DropdownItemProps, Grid } from "semantic-ui-react";
-import { SimpleUserStoreListItemInterface } from "../../../../admin.applications.v1/models";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
-import { identityProviderConfig } from "../../../../admin.extensions.v1";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectionInterface,
     JITProvisioningResponseInterface,

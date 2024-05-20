@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { URLUtils } from "@wso2is/core/utils";
 import {
     Field,
@@ -29,7 +30,6 @@ import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { Pkcs12FileField } from "./pkcs12-file-field";
-import { commonConfig } from "../../../../../admin.extensions.v1";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import {
     AuthenticatorSettingsFormModes

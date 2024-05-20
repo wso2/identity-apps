@@ -17,13 +17,13 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import React, { FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, Segment } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1";
 
 // Component constants.
 

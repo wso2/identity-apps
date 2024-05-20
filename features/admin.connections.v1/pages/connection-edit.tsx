@@ -16,6 +16,20 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    history
+} from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import {
+    AuthenticatorExtensionsConfigInterface,
+    identityProviderConfig
+} from "@wso2is/admin.extensions.v1/configs";
+import {
+    EditMultiFactorAuthenticator
+} from "@wso2is/admin.identity-providers.v1/components/edit-multi-factor-authenticator";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -47,20 +61,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    history
-} from "../../admin.core.v1";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import {
-    AuthenticatorExtensionsConfigInterface,
-    identityProviderConfig
-} from "../../admin.extensions.v1/configs";
-import {
-    EditMultiFactorAuthenticator
-} from "../../admin.identity-providers.v1/components/edit-multi-factor-authenticator";
 import {
     getLocalAuthenticator,
     getMultiFactorAuthenticatorDetails

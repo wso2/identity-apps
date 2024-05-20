@@ -16,26 +16,26 @@
  * under the License.
  */
 
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { store } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch, SetStateAction } from "react";
-import { 
+import { handleUpdateIDPRoleMappingsError } from "./connection-utils";
+import { updateClaimsConfigs, updateConnectionRoleMappings } from "../api/connections";
+import {
     ConnectionClaimInterface,
     ConnectionClaimMappingInterface,
     ConnectionClaimsInterface,
-    ConnectionCommonClaimMappingInterface, 
-    ConnectionProvisioningClaimInterface, 
+    ConnectionCommonClaimMappingInterface,
+    ConnectionProvisioningClaimInterface,
     ConnectionRoleMappingInterface,
     ConnectionRolesInterface
 } from "../models/connection";
-import { updateClaimsConfigs, updateConnectionRoleMappings } from "../api/connections";
-import { store } from "../../admin.core.v1";
-import { handleUpdateIDPRoleMappingsError } from "./connection-utils";
 
 /**
  * Interface for the dropdown options.
@@ -196,7 +196,7 @@ export const initSelectedClaimMappings = (
  */
 export const initSelectedProvisioningClaimsWithDefaultValues = (
     initialClaims: ConnectionClaimsInterface,
-    setSelectedProvisioningClaimsWithDefaultValue: 
+    setSelectedProvisioningClaimsWithDefaultValue:
         Dispatch<SetStateAction<ConnectionCommonClaimMappingInterface[]>>
 ): void => {
     setSelectedProvisioningClaimsWithDefaultValue(

@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import { DropdownOptionsInterface } from "@wso2is/admin.applications.v1/components/settings";
+import { getExternalClaims } from "@wso2is/admin.claims.v1/api";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Claim } from "@wso2is/core/src/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,10 +28,6 @@ import { Hint, Message } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { DropdownOptionsInterface } from "../../../../admin.applications.v1/components/settings";
-import { getExternalClaims } from "../../../../admin.claims.v1/api";
-import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import { ImplicitAssociaionConfigInterface } from "../../../models/connection";
 import { SubjectAttributeListItem } from "../settings";

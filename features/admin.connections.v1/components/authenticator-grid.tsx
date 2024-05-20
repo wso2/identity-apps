@@ -19,11 +19,13 @@
 import Divider from "@oxygen-ui/react/Divider";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { AppState, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import {
     getEmptyPlaceholderIllustrations
-} from "../../admin.core.v1/configs/ui";
-import { AppConstants } from "../../admin.core.v1/constants/app-constants";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+} from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -50,8 +52,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { getAuthenticatorList } from "./common";
-import { getApplicationDetails } from "../../admin.applications.v1/api";
-import { AppState, EventPublisher, FeatureConfigInterface, history } from "../../admin.core.v1";
 import {
     deleteConnection,
     getConnectedApps

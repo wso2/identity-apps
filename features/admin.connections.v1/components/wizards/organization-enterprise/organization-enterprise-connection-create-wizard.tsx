@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import {
+    EventPublisher,
+    ModalWithSidePanel,
+    TierLimitReachErrorModal
+} from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -32,11 +37,6 @@ import { Grid } from "semantic-ui-react";
 import {
     OrganizationEnterpriseConnectionCreateWizardContent
 } from "./organization-enterprise-connection-create-wizard-content";
-import {
-    EventPublisher,
-    ModalWithSidePanel,
-    TierLimitReachErrorModal
-} from "../../../../admin.core.v1";
 import { createConnection } from "../../../api/connections";
 import { getConnectionIcons } from "../../../configs/ui";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";

@@ -16,10 +16,22 @@
  * under the License.
  */
 
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationList } from "@wso2is/admin.applications.v1/components/application-list";
+import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models";
+import {
+    ConnectionInterface,
+    ConnectionTemplateInterface
+} from "@wso2is/admin.connections.v1/models/connection";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
-} from "../../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { history } from "@wso2is/admin.core.v1/helpers";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -33,18 +45,6 @@ import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
 import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
-import { getApplicationList } from "../../../../admin.applications.v1/api";
-import { ApplicationList } from "../../../../admin.applications.v1/components/application-list";
-import { ApplicationListInterface } from "../../../../admin.applications.v1/models";
-import {
-    ConnectionInterface,
-    ConnectionTemplateInterface
-} from "../../../../admin.connections.v1/models/connection";
-import { AdvancedSearchWithBasicFilters } from "../../../../admin.core.v1/components";
-import { AppConstants } from "../../../../admin.core.v1/constants";
-import { history } from "../../../../admin.core.v1/helpers";
-import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
-import { AppState } from "../../../../admin.core.v1/store";
 
 /**
  * Prop types of the component.

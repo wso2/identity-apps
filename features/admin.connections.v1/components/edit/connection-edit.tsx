@@ -16,6 +16,12 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import {
+    IdentityProviderManagementConstants
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -44,12 +50,6 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { FeatureConfigInterface } from "../../../admin.core.v1/models/config";
-import { AppState } from "../../../admin.core.v1/store";
-import { identityProviderConfig } from "../../../admin.extensions.v1";
-import {
-    IdentityProviderManagementConstants
-} from "../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import {

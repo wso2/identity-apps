@@ -17,9 +17,17 @@
  */
 
 import {
+    ConnectionInterface,
+    ConnectionTemplateInterface
+} from "@wso2is/admin.connections.v1/models/connection";
+import {
     VerticalStepper,
     VerticalStepperStepInterface
-} from "../../../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import ApplicationSelectionModal
+    from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
@@ -30,14 +38,6 @@ import { Grid } from "semantic-ui-react";
 import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
-import ApplicationSelectionModal
-    from "../../../../admin.extensions.v1/components/shared/application-selection-modal";
-import {
-    ConnectionInterface,
-    ConnectionTemplateInterface
-} from "../../../../admin.connections.v1/models/connection";
-import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
-import { AppState } from "../../../../admin.core.v1/store";
 
 /**
  * Prop types of the component.

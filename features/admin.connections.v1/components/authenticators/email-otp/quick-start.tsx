@@ -17,13 +17,13 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { VerticalStepper, VerticalStepperStepInterface } from "../../../../admin.core.v1";
+import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1";
+import ApplicationSelectionModal from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import ApplicationSelectionModal from "../../../../admin.extensions.v1/components/shared/application-selection-modal";
 
 /**
  * Prop types of the component.

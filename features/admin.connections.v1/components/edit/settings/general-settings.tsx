@@ -17,6 +17,9 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,9 +30,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
-import { getApplicationDetails } from "../../../../admin.applications.v1/api";
-import { ApplicationBasicInterface } from "../../../../admin.applications.v1/models";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import {
     deleteConnection,
     getConnectedApps,
