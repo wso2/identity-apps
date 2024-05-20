@@ -19,6 +19,8 @@
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps } from "@wso2is/form";
@@ -28,8 +30,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
-import { UserBasicInterface } from "../../../../admin.core.v1/models/users";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import useConsoleRoles from "../../../hooks/use-console-roles";

@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import { UserBasicInterface, UserListInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { useUsersList } from "@wso2is/admin.users.v1/api/users";
+import { useGetParentOrgUserInvites }
+    from "@wso2is/admin.users.v1/components/guests/api/use-get-parent-org-user-invites";
+import { InvitationsInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
+import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { MultiValueAttributeInterface, RolesInterface } from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -23,15 +33,6 @@ import isEmpty from "lodash-es/isEmpty";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useConsoleRoles from "./use-console-roles";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../admin.core.v1/models/users";
-import { AppState } from "../../admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { useUsersList } from "../../admin.users.v1/api/users";
-import { useGetParentOrgUserInvites } from "../../admin.users.v1/components/guests/api/use-get-parent-org-user-invites";
-import { InvitationsInterface } from "../../admin.users.v1/components/guests/models/invite";
-import { UserAccountTypes } from "../../admin.users.v1/constants/user-management-constants";
-import { UserManagementUtils } from "../../admin.users.v1/utils/user-management-utils";
 
 /**
  * Props interface of {@link UseAdministrators}

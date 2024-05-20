@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations
+} from "@wso2is/admin.core.v1";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -38,16 +48,6 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations
-} from "../../../../admin.core.v1";
-import { useServerConfigs } from "../../../../admin.server-configurations.v1";
-import { UserInviteInterface } from "../../../../admin.users.v1/components/guests/models/invite";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 
 /**
  * Props interface of {@link InvitedAdministratorsTable}

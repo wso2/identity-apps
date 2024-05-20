@@ -18,6 +18,11 @@
 
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { useGetRoleById } from "@wso2is/admin.roles.v2/api/roles";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
@@ -26,11 +31,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
-import { AppConstants } from "../../admin.core.v1/constants/app-constants";
-import { history } from "../../admin.core.v1/helpers/history";
-import { useGetRoleById } from "../../admin.roles.v2/api/roles";
-import { RoleAudienceTypes } from "../../admin.roles.v2/constants/role-constants";
 import ConsoleRolesEdit from "../components/console-roles/console-roles-edit/console-roles-edit";
 import { ConsoleSettingsModes } from "../models/ui";
 

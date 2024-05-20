@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { useRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import useConsoleSettings from "./use-console-settings";
-import { useRolesList } from "../../admin.roles.v2/api/roles";
 
 /**
  * Props interface of {@link useConsoleRoles}
