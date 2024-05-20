@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -25,7 +26,6 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
 import { updateApplicationConfigurations } from "../../api";
 import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
 import { AdvancedConfigurationsForm } from "../forms";
@@ -93,7 +93,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert<AlertInterface>(alert));
     };
-    
+
     /**
      * Handles the advanced config form submit action.
      *

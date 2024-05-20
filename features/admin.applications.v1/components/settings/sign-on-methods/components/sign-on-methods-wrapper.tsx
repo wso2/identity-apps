@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { LOGIN_FLOW_AI_FEATURE_TAG } from "@wso2is/admin.login-flow.ai.v1/constants/login-flow-ai-constants";
+import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { SignOnMethodsCore } from "./sign-on-methods-core";
-import { AppState, FeatureConfigInterface } from "../../../../../admin.core.v1";
-import { LOGIN_FLOW_AI_FEATURE_TAG } from "../../../../../admin.login-flow.ai.v1/constants/login-flow-ai-constants";
-import useAILoginFlow from "../../../../../admin.login-flow.ai.v1/hooks/use-ai-login-flow";
-import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
+import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -25,8 +27,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon } from "semantic-ui-react";
-import { commonConfig } from "../../../admin.extensions.v1";
-import { getCertificateIllustrations } from "../../../admin.core.v1";
 import { SAMLConfigModes } from "../../models";
 
 /**
@@ -45,9 +45,9 @@ interface SAMLProtocolCreationWizardFormPropsInterface extends TestableComponent
 /**
  * SAML protocol settings wizard form component.
  *
- * @param {SAMLProtocolCreationWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns \{React.ReactElement\} - The rendered React element.
  */
 export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWizardFormPropsInterface> = (
     props: SAMLProtocolCreationWizardFormPropsInterface
@@ -105,8 +105,8 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
     /**
      * Sanitizes and prepares the form values for submission.
      *
-     * @param values - Form values.
-     * @return {object} Prepared values.
+     * @param values - A map of form values.
+     * @returns An object with the prepared values.
      */
     const getFormValues = (values: Map<string, FormValue>): any => {
 

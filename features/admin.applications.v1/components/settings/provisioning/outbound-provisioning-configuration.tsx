@@ -15,6 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
+import {
+    IdentityProviderInterface,
+    IdentityProviderListResponseInterface
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -30,12 +36,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
-import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
-import { getIdentityProviderList } from "../../../../admin.identity-providers.v1/api/identity-provider";
-import {
-    IdentityProviderInterface,
-    IdentityProviderListResponseInterface
-} from "../../../../admin.identity-providers.v1/models/identity-provider";
 import { updateApplicationConfigurations } from "../../../api";
 import {
     ApplicationInterface,

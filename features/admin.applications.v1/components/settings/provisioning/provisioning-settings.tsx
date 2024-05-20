@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
@@ -24,7 +25,6 @@ import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
 import { OutboundProvisioningConfiguration } from "./outbound-provisioning-configuration";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { ApplicationInterface, ProvisioningConfigurationInterface } from "../../../models";
 
 /**

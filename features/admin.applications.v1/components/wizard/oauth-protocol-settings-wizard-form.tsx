@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -26,7 +27,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../admin.core.v1";
 import { getAuthProtocolMetadata } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate

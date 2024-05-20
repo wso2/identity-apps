@@ -16,6 +16,7 @@
  * under the License.
  */
 import { ArrowRightToBracketIcon, CirclesOverlapIcon, DocumentIcon } from "@oxygen-ui/react-icons";
+import { AppState, FeatureConfigInterface, store } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
@@ -24,7 +25,6 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Form, Grid, Icon } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, store } from "../../../admin.core.v1";
 import { getHelpPanelIcons } from "../../configs/ui";
 import { SAMLApplicationConfigurationInterface } from "../../models";
 

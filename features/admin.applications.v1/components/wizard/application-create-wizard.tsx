@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -27,7 +29,6 @@ import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -43,7 +44,6 @@ import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { WizardSummary } from "./wizard-summary";
 import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
-import { AppConstants, history } from "../../../admin.core.v1";
 import {
     createApplication,
     getApplicationTemplateData,

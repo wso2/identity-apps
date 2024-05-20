@@ -15,6 +15,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import {
+    AppState,
+    CORSOriginsListInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    getCORSOrigins,
+    history
+} from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/components/my-account-overview";
+import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -43,21 +58,6 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
-import {
-    AppState,
-    CORSOriginsListInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    getCORSOrigins,
-    history
-} from "../../admin.core.v1";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../admin.extensions.v1";
-import { MyAccountOverview } from "../../admin.extensions.v1/configs/components/my-account-overview";
-import AILoginFlowProvider from "../../admin.login-flow.ai.v1/providers/ai-login-flow-provider";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate

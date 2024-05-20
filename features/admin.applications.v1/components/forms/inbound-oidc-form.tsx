@@ -16,6 +16,12 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -56,12 +62,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../admin.core.v1";
-import useGlobalVariables from "../../../admin.core.v1/hooks/use-global-variables";
-import { applicationConfig } from "../../../admin.extensions.v1";
-import { getSharedOrganizations } from "../../../admin.organizations.v1/api";
-import { OrganizationType } from "../../../admin.organizations.v1/constants";
-import { OrganizationInterface, OrganizationResponseInterface } from "../../../admin.organizations.v1/models";
 import { getGeneralIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate

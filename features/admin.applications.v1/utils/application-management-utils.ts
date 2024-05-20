@@ -17,6 +17,7 @@
  */
 
 /* eslint-disable @typescript-eslint/typedef */
+import { DocPanelUICardInterface, store } from "@wso2is/admin.core.v1";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -24,7 +25,6 @@ import camelCase from "lodash-es/camelCase";
 import intersectionBy from "lodash-es/intersectionBy";
 import unionBy from "lodash-es/unionBy";
 import { FunctionComponent, SVGProps } from "react";
-import { DocPanelUICardInterface, store } from "../../admin.core.v1";
 import {
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,

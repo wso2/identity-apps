@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { AnimatedAvatar, AppAvatar, EmptyPlaceholder, GenericIcon } from "@wso2is/react-components";
+import { AppState, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
+import { AnimatedAvatar, AppAvatar, EmptyPlaceholder, GenericIcon } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -29,7 +30,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card } from "semantic-ui-react";
-import { AppState, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import {
     ApplicationTemplateListItemInterface,

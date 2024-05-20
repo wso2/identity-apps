@@ -16,8 +16,11 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
+import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
+import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
@@ -39,11 +42,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
-import { APIResourcesConstants } from "../../../admin.api-resources.v2/constants";
-import { APIResourceInterface } from "../../../admin.api-resources.v2/models";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "../../../admin.core.v1";
-import { RequestErrorInterface } from "../../../admin.core.v1/hooks/use-request";
-import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
 import { Policy } from "../../constants/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../models";
 import {

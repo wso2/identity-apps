@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    getEmptyPlaceholderIllustrations,
+    getTechnologyLogos,
+    history
+} from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -34,15 +43,6 @@ import {
     Icon,
     Input
 } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    getEmptyPlaceholderIllustrations,
-    getTechnologyLogos,
-    history
-} from "../../admin.core.v1";
 import { InboundProtocolsMeta } from "../components/meta";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { getApplicationTemplateIllustrations } from "../configs/ui";

@@ -15,21 +15,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import useDeploymentConfig from "../../../../admin.core.v1/hooks/use-deployment-configs";
+import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
+import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
+import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
+import {
+    IdentityProviderManagementConstants
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Segment } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../admin.extensions.v1/configs/identity-provider";
-import useAuthenticationFlow from "../../../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { ConnectionManagementConstants } from "../../../../admin.connections.v1/constants/connection-constants";
-import { EventPublisher, FeatureConfigInterface } from "../../../../admin.core.v1";
-import {
-    IdentityProviderManagementConstants
-} from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { OrganizationType } from "../../../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getAuthenticatorIcons } from "../../../configs/ui";
 import { LoginFlowTypes } from "../../../models";
 

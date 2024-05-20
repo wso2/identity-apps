@@ -16,6 +16,21 @@
  * under the License.
  */
 
+import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import {
+    getOrganizations,
+    getSharedOrganizations,
+    shareApplication,
+    stopSharingApplication,
+    unshareApplication
+} from "@wso2is/admin.organizations.v1/api";
+import {
+    OrganizationInterface,
+    OrganizationListInterface,
+    OrganizationResponseInterface,
+    ShareApplicationRequestInterface
+} from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -54,21 +69,6 @@ import {
     Segment,
     Transition
 } from "semantic-ui-react";
-import { AppState, EventPublisher } from "../../../admin.core.v1";
-import useGlobalVariables from "../../../admin.core.v1/hooks/use-global-variables";
-import {
-    getOrganizations,
-    getSharedOrganizations,
-    shareApplication,
-    stopSharingApplication,
-    unshareApplication
-} from "../../../admin.organizations.v1/api";
-import {
-    OrganizationInterface,
-    OrganizationListInterface,
-    OrganizationResponseInterface,
-    ShareApplicationRequestInterface
-} from "../../../admin.organizations.v1/models";
 
 enum ShareType {
     SHARE_ALL,

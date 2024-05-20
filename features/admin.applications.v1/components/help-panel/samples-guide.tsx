@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { store } from "@wso2is/admin.core.v1";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Markdown, PrimaryButton } from "@wso2is/react-components";
@@ -23,7 +24,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Segment } from "semantic-ui-react";
-import { store } from "../../../admin.core.v1";
 import { getInboundProtocolConfig } from "../../api";
 import { DocumentationConstants } from "../../constants";
 import { ApplicationInterface, SupportedAuthProtocolTypes } from "../../models";

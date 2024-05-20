@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
@@ -27,9 +30,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Divider, Icon } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
-import { AppState } from "../../../../admin.core.v1";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../../../admin.extensions.v1";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
