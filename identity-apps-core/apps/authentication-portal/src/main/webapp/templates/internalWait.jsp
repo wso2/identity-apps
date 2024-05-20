@@ -43,7 +43,7 @@
     String pollingRequestMethod = "GET";
     Object pollingEndpointData = null;
     String pollingRequestContentType = "application/x-www-form-urlencoded";
-    int pollingInterval = 5;
+    int pollingInterval = 2;
 
     // Read the data from request.
     Object requestDataObject = request.getAttribute("data");
