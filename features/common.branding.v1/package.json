@@ -1,0 +1,34 @@
+{
+    "private": true,
+    "name": "@wso2is/common.branding.v1",
+    "version": "2.19.2",
+    "description": "WSO2 Identity Server Console",
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "@emotion/react": "^11.11.0",
+        "@emotion/styled": "^11.11.0",
+        "@mui/icons-material": "^5.11.16",
+        "@mui/lab": "5.0.0-alpha.129",
+        "@mui/material": "^5.13.0",
+        "@mui/system": "^5.12.3",
+        "@mui/utils": "^5.12.3",
+        "@oxygen-ui/react": "^1.11.0",
+        "@wso2is/core": "^2.0.45",
+        "@wso2is/admin.core.v1": "^2.19.2",
+        "@wso2is/admin.organizations.v1": "^2.19.2",
+        "lodash-es": "^4.17.21",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-helmet": "^5.2.1"
+    },
+    "devDependencies": {
+        "@types/lodash-es": "^4.17.4",
+        "@types/react": "^18.0.18",
+        "@types/react-redux": "^7.1.25",
+        "typescript": "^4.6.4"
+    },
+    "browserslist": [
+        "> 0.2%"
+    ]
+}

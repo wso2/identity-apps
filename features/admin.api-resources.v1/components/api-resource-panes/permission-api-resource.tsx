@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,8 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import {
@@ -28,12 +30,10 @@ import {
     ListLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
-import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 import { AddAPIResourcePermission } from "../wizard";
 

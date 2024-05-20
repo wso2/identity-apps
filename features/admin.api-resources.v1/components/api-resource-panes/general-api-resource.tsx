@@ -18,6 +18,8 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -34,8 +36,6 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, FeatureConfigInterface, history } from "../../../admin.core.v1";
-import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
 import {
