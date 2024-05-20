@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppState } from "@wso2is/admin.core.v1";
+import { attributeConfig } from "@wso2is/admin.extensions.v1";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { AxiosResponse } from "axios";
@@ -22,10 +26,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { attributeConfig } from "../../../../admin.extensions.v1";
-import { AppState } from "../../../../admin.core.v1";
-import { getUserStoreList } from "../../../../admin.userstores.v1/api";
-import { UserStoreListItem } from "../../../../admin.userstores.v1/models/user-stores";
 
 /**
  * Prop types of `MappedAttributes` component

@@ -16,6 +16,9 @@
  * under the License.
  */
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, AttributeMapping, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,9 +30,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
-import { getUserStoreList } from "../../../../admin.userstores.v1/api";
-import { UserStoreListItem } from "../../../../admin.userstores.v1/models/user-stores";
 import { updateAClaim } from "../../../api";
 
 /**

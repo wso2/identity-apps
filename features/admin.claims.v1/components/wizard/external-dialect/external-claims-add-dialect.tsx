@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import { EmptyPlaceholder } from "@wso2is/react-components";
@@ -25,7 +26,6 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { ClaimEventClickItem, ClaimsList, ListType } from "../..";
-import { getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
 import { resolveType } from "../../../utils";
@@ -163,7 +163,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      * @param attributeType - Claim dialect type.
      * @param claimDialectURI - Dialect URI.
      * @param claimURIValue - Claim URI value.
-     * 
+     *
      * @returns Complete claim URI.
      */
     const createClaimURI = (attributeType: string, claimDialectURI: string, claimURIValue: string): string => {
@@ -194,7 +194,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         };
         const newState: AddExternalClaim[] = [ ...claims, newClaim ];
 
-        setTempMappedLocalClaims((prevLocalClaims: string[]) => 
+        setTempMappedLocalClaims((prevLocalClaims: string[]) =>
             [ ...prevLocalClaims, newClaim.mappedLocalClaimURI
             ]);
         setClaims(newState);

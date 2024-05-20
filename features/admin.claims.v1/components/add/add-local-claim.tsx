@@ -16,27 +16,27 @@
  * under the License.
  */
 
+import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { history } from "@wso2is/admin.core.v1/helpers";
+import { attributeConfig } from "@wso2is/admin.extensions.v1";
+import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
+import { WizardStepInterface } from "@wso2is/admin.users.v1/models";
+import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { ClaimDialect } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { ClaimDialect } from "@wso2is/core/src/models";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { attributeConfig } from "../../../admin.extensions.v1";
-import { AppState, EventPublisher } from "../../../admin.core.v1";
-import { AppConstants } from "../../../admin.core.v1/constants";
-import { history } from "../../../admin.core.v1/helpers";
-import { getProfileSchemas } from "../../../admin.users.v1/api";
-import { WizardStepInterface } from "../../../admin.users.v1/models";
-import { useUserStores } from "../../../admin.userstores.v1/api";
-import { UserStoreListItem } from "../../../admin.userstores.v1/models";
 import { addDialect, addExternalClaim, addLocalClaim } from "../../api";
 import { getAddLocalClaimWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
