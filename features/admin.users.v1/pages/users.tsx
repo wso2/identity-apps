@@ -100,6 +100,7 @@ import {
     UserManagementConstants
 } from "../constants";
 import { InvitationStatus, UserListInterface } from "../models";
+import "./users.scss";
 
 /**
  * Props for the Users page.
@@ -762,17 +763,20 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             featureConfig?.parentUserInvitation?.enabled &&
             hasRequiredScopes(featureConfig?.guestUser, featureConfig?.guestUser?.scopes?.create, allowedScopes)) {
             dropDownOptions.push({
+                className: "users-invite-parent-user",
                 "data-componentid": `${componentId}-invite-parent-user`,
                 key: 3,
                 text: <>
                     { t("parentOrgInvitations:addUserWizard.heading") }
-                    { showStatusLabelForNewAuthzRuntimeFeatures && !legacyAuthzRuntime && (
-                        <Chip
-                            size="small"
-                            label={ t(FeatureStatusLabel.NEW).toUpperCase() }
-                            className="oxygen-chip-new mb-1 ml-2"
-                        />
-                    ) }
+                    { showStatusLabelForNewAuthzRuntimeFeatures
+                      && !legacyAuthzRuntime
+                      && (
+                          <Chip
+                              size="small"
+                              label={ t(FeatureStatusLabel.NEW).toUpperCase() }
+                              className="oxygen-chip-new"
+                          />
+                      ) }
                 </>,
                 value: UserAccountTypesMain.INTERNAL
             });
