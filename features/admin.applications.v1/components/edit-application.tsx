@@ -504,8 +504,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 }
 
                 return;
-            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_PROTOCOL) ===
-                ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_PROTOCOL) === "true") {
                 const protocolTabIndex: number = renderedTabPanes?.findIndex(
                     (element: {"componentId": string}) =>
                         element.componentId === ApplicationManagementConstants.PROTOCOL_TAB_URL_FRAG
