@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
@@ -31,16 +32,18 @@ import {
     SegmentedAccordion,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations, history } from "../../../admin.core.v1";
-import { RequestErrorInterface } from "../../../admin.core.v1/hooks/use-request";
 import { AxiosError } from "axios";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
 import { APIResourcesConstants } from "../../../admin.api-resources.v2/constants";
 import { APIResourceInterface } from "../../../admin.api-resources.v2/models";
-import { FeatureConfigInterface } from "../../../admin.core.v1";
+import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "../../../admin.core.v1";
+import { RequestErrorInterface } from "../../../admin.core.v1/hooks/use-request";
+import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
 import { Policy } from "../../constants/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../models";
 import {
@@ -144,6 +147,13 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
         useState<AuthorizedAPIListItemInterface[]>(null);
     const [ copyScopesValue, setCopyScopesValue ] = useState<string>(null);
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
+    const dispatch: Dispatch = useDispatch();
+
+    const {
+        data: currentAPIResourceScopeListData,
+        isLoading: isCurrentAPIResourceScopeListDataLoading,
+        error: currentAPIResourceScopeListFetchError
+    } = useScopesOfAPIResources(activeSubscribedAPIResource);
 
     /**
      * Initialize the subscribed API Resources list to the searched list.
@@ -173,6 +183,21 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
             setM2MApplication(true);
         }
     }, [ templateId ]);
+
+    /**
+     * Handle if any error occurs while fetching API resource scopes.
+     */
+    useEffect(() => {
+        if (currentAPIResourceScopeListFetchError) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                    ".genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                    ".genericError.message")
+            }));
+        }
+    }, [ currentAPIResourceScopeListFetchError ]);
 
     /**
      * Navigate to the API Resources page.
@@ -357,6 +382,8 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
             subscribedAPIResource={ subscribedAPIResource }
             isScopesAvailableForUpdate={ isScopesAvailableForUpdate }
             bulkChangeAllAuthorizedScopes={ bulkChangeAllAuthorizedScopes }
+            currentAPIResourceScopeListData={ currentAPIResourceScopeListData }
+            isCurrentAPIResourceScopeListDataLoading={ isCurrentAPIResourceScopeListDataLoading }
         />
     );
 

@@ -17,11 +17,11 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosRequestConfig } from "axios";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../admin.core.v1/hooks/use-request";
-import { AxiosRequestConfig } from "axios";
 import { store } from "../../admin.core.v1/store";
 import { AuthorizedPermissionListItemInterface } from "../models/api-authorization";
 
@@ -45,7 +45,11 @@ const useScopesOfAPIResources = <Data = AuthorizedPermissionListItemInterface[],
         url: `${ store.getState().config.endpoints.apiResources }/${ apiResourceId }/scopes`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(apiResourceId ? requestConfig: null);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+        (apiResourceId)
+            ? requestConfig
+            : null
+    );
 
     return {
         data,
