@@ -1557,18 +1557,6 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.0
         version: 11.11.5(@emotion/react@11.11.4(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
-      '@microsoft/applicationinsights-core-js':
-        specifier: ^3.0.0
-        version: 3.2.1(tslib@2.6.2)
-      '@microsoft/applicationinsights-react-js':
-        specifier: ^3.4.2
-        version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.2)
-      '@microsoft/applicationinsights-web':
-        specifier: ^3.0.0
-        version: 3.2.1(tslib@2.6.2)
-      '@monaco-editor/react':
-        specifier: ^4.5.1
-        version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
         version: 5.15.17(@mui/material@5.13.0(@emotion/react@11.11.4(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
@@ -1599,298 +1587,55 @@ importers:
       '@wso2is/core':
         specifier: ^2.0.45
         version: link:../../modules/core
-      '@wso2is/dynamic-forms':
-        specifier: ^2.0.60
-        version: link:../../modules/dynamic-forms
       '@wso2is/form':
         specifier: ^2.0.61
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.0.35
         version: link:../../modules/forms
-      '@wso2is/i18n':
-        specifier: ^2.3.0
-        version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.2.2
         version: link:../../modules/react-components
-      '@wso2is/theme':
-        specifier: ^2.0.83
-        version: link:../../modules/theme
-      '@wso2is/validation':
-        specifier: ^2.0.5
-        version: link:../../modules/validation
       axios:
         specifier: ^0.19.2
         version: 0.19.2
-      codemirror:
-        specifier: ^5.52.0
-        version: 5.65.16
-      country-language:
-        specifier: ^0.1.7
-        version: 0.1.7
-      deep-equal:
-        specifier: ^2.2.2
-        version: 2.2.3
-      file-saver:
-        specifier: ^2.0.5
-        version: 2.0.5
-      framer-motion:
-        specifier: ^11.1.9
-        version: 11.2.0(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      history:
-        specifier: ^4.9.0
-        version: 4.10.1
-      html-react-parser:
-        specifier: ^2.0.0
-        version: 2.0.0(react@18.3.1)
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
-      i18next-browser-languagedetector:
-        specifier: ^6.1.5
-        version: 6.1.8
-      i18next-xhr-backend:
-        specifier: ^3.2.2
-        version: 3.2.2
-      js-beautify:
-        specifier: ^1.13.0
-        version: 1.15.1
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
-      mustache:
-        specifier: ^4.2.0
-        version: 4.2.0
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
-      rc-tree:
-        specifier: ^4.0.0-beta.2
-        version: 4.2.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
-      react-beautiful-dnd:
-        specifier: ^12.2.0
-        version: 12.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
-      react-draggable:
-        specifier: ^4.2.0
-        version: 4.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-helmet:
         specifier: ^5.2.1
         version: 5.2.1(react@18.3.1)
       react-i18next:
         specifier: ^11.18.5
         version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-joyride:
-        specifier: ^2.3.0
-        version: 2.8.1(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-notification-system:
-        specifier: ^0.4.0
-        version: 0.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-redux:
         specifier: ^7.2.9
         version: 7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      reactour:
-        specifier: ^1.18.0
-        version: 1.19.3(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@4.4.1(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      recharts:
-        specifier: ^2.6.2
-        version: 2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      reduce-reducers:
-        specifier: ^1.0.4
-        version: 1.0.4
       redux:
         specifier: ^4.0.4
         version: 4.2.1
-      redux-form:
-        specifier: ^8.3.7
-        version: 8.3.10(immutable@4.3.6)(react-redux@7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(redux@4.2.1)
-      redux-mock-store:
-        specifier: ^1.5.4
-        version: 1.5.4
-      redux-thunk:
-        specifier: ^2.3.0
-        version: 2.4.2(redux@4.2.1)
-      regenerator-runtime:
-        specifier: ^0.13.9
-        version: 0.13.11
       semantic-ui-react:
         specifier: ^2.1.3
         version: 2.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      slashes:
-        specifier: ^2.0.2
-        version: 2.0.2
-      styled-components:
-        specifier: ^4.4.1
-        version: 4.4.1(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      swr:
-        specifier: ^2.0.0
-        version: 2.2.5(react@18.3.1)
-      uuid:
-        specifier: ^8.3.0
-        version: 8.3.2
     devDependencies:
-      '@pmmmwh/react-refresh-webpack-plugin':
-        specifier: ^0.4.3
-        version: 0.4.3(@types/webpack@4.41.38)(react-refresh@0.9.0)(sockjs-client@1.6.1)(type-fest@4.18.2)(webpack-dev-server@3.11.3(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1))(webpack@5.84.1(@swc/core@1.5.7(@swc/helpers@0.3.17))(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1))))(webpack-hot-middleware@2.26.1)(webpack@5.84.1(@swc/core@1.5.7(@swc/helpers@0.3.17))(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)))
-      '@svgr/webpack':
-        specifier: 4.3.2
-        version: 4.3.2
-      '@testing-library/dom':
-        specifier: ^7.24.3
-        version: 7.31.2
-      '@testing-library/jest-dom':
-        specifier: ^5.11.9
-        version: 5.17.0
-      '@testing-library/user-event':
-        specifier: ^12.7.3
-        version: 12.8.3(@testing-library/dom@7.31.2)
-      '@types/file-saver':
-        specifier: ^2.0.1
-        version: 2.0.7
-      '@types/history':
-        specifier: ^4.7.3
-        version: 4.7.11
-      '@types/jest':
-        specifier: ^26.0.14
-        version: 26.0.24
-      '@types/lodash-es':
-        specifier: ^4.17.4
-        version: 4.17.12
-      '@types/node':
-        specifier: ^13.9.2
-        version: 13.13.52
-      '@types/node-forge':
-        specifier: ^0.9.3
-        version: 0.9.10
       '@types/react':
         specifier: 18.0.18
         version: 18.0.18
-      '@types/react-beautiful-dnd':
-        specifier: ^12.1.1
-        version: 12.2.5
-      '@types/react-dom':
-        specifier: ^18.0.6
-        version: 18.3.0
-      '@types/react-notification-system':
-        specifier: 0.2.39
-        version: 0.2.39
       '@types/react-redux':
         specifier: ^7.1.25
         version: 7.1.33
-      '@types/react-router':
-        specifier: ^5.1.18
-        version: 5.1.20
-      '@types/react-router-dom':
-        specifier: ^5.1.3
-        version: 5.3.3
-      '@types/reactour':
-        specifier: ^1.18.1
-        version: 1.18.5
-      '@types/redux-mock-store':
-        specifier: ^1.0.2
-        version: 1.0.6
-      '@types/testing-library__jest-dom':
-        specifier: ^5.14.3
-        version: 5.14.9
-      '@types/uuid':
-        specifier: ^9.0.1
-        version: 9.0.8
-      '@types/webpack-env':
-        specifier: ^1.16.0
-        version: 1.18.5
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^4.32.0
-        version: 4.33.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5)
-      '@typescript-eslint/parser':
-        specifier: ^4.32.0
-        version: 4.33.0(eslint@7.32.0)(typescript@4.9.5)
-      connect-history-api-fallback:
-        specifier: ^2.0.0
-        version: 2.0.0
-      copy-webpack-plugin:
-        specifier: ^12.0.2
-        version: 12.0.2(webpack@5.84.1(@swc/core@1.5.7(@swc/helpers@0.3.17))(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)))
-      css-loader:
-        specifier: ^1.0.0
-        version: 1.0.1(webpack@5.84.1(@swc/core@1.5.7(@swc/helpers@0.3.17))(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)))
-      eslint:
-        specifier: ^7.20.0
-        version: 7.32.0
-      eslint-plugin-import:
-        specifier: ^2.20.2
-        version: 2.29.1(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)
-      eslint-plugin-jest-dom:
-        specifier: ^4.0.1
-        version: 4.0.3(eslint@7.32.0)
-      eslint-plugin-react:
-        specifier: ^7.18.3
-        version: 7.34.1(eslint@7.32.0)
-      eslint-plugin-react-hooks:
-        specifier: ^4.0.0
-        version: 4.6.2(eslint@7.32.0)
-      eslint-plugin-testing-library:
-        specifier: ^5.0.5
-        version: 5.11.1(eslint@7.32.0)(typescript@4.9.5)
-      eslint-webpack-plugin:
-        specifier: ^2.5.3
-        version: 2.7.0(eslint@7.32.0)(webpack@5.84.1(@swc/core@1.5.7(@swc/helpers@0.3.17))(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)))
-      fork-ts-checker-webpack-plugin:
-        specifier: ^6.1.0
-        version: 6.5.3(eslint@7.32.0)(typescript@4.9.5)(webpack@5.84.1(@swc/core@1.5.7(@swc/helpers@0.3.17))(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)))
-      jest:
-        specifier: ^26.4.2
-        version: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.3.17))(@types/node@13.13.52)(typescript@4.9.5))
-      jest-environment-jsdom:
-        specifier: ^26.3.0
-        version: 26.6.2
-      jest-environment-jsdom-global:
-        specifier: ^2.0.4
-        version: 2.0.4(jest-environment-jsdom@26.6.2)
-      json-minimizer-webpack-plugin:
-        specifier: ^4.0.0
-        version: 4.0.0(webpack@5.84.1(@swc/core@1.5.7(@swc/helpers@0.3.17))(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)))
-      msw:
-        specifier: ^0.36.8
-        version: 0.36.8(encoding@0.1.13)
-      process:
-        specifier: ^0.11.10
-        version: 0.11.10
-      react-refresh:
-        specifier: ^0.9.0
-        version: 0.9.0
-      redux-devtools-extension:
-        specifier: ^2.13.8
-        version: 2.13.9(redux@4.2.1)
-      rimraf:
-        specifier: ^3.0.2
-        version: 3.0.2
-      style-loader:
-        specifier: ^0.23.1
-        version: 0.23.1
-      thread-loader:
-        specifier: ^2.1.3
-        version: 2.1.3(webpack@5.84.1(@swc/core@1.5.7(@swc/helpers@0.3.17))(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)))
-      ts-jest:
-        specifier: ^26.4.0
-        version: 26.5.6(jest@26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.3.17))(@types/node@13.13.52)(typescript@4.9.5)))(typescript@4.9.5)
-      ts-node:
-        specifier: ^10.8.1
-        version: 10.9.2(@swc/core@1.5.7(@swc/helpers@0.3.17))(@types/node@13.13.52)(typescript@4.9.5)
       typescript:
         specifier: ^4.6.4
         version: 4.9.5
@@ -40884,7 +40629,7 @@ snapshots:
       '@types/babel__core': 7.20.5
       babel-plugin-istanbul: 6.1.1
       babel-preset-jest: 28.1.3(@babel/core@7.24.5)
-      chalk: 4.1.0
+      chalk: 4.1.2
       graceful-fs: 4.2.11
       slash: 3.0.0
     transitivePeerDependencies:
@@ -45367,7 +45112,7 @@ snapshots:
       '@jest/test-result': 28.1.3
       '@jest/types': 28.1.3
       '@types/node': 13.13.52
-      chalk: 4.1.0
+      chalk: 4.1.2
       co: 4.6.0
       dedent: 0.7.0
       is-generator-fn: 2.1.0
@@ -46044,7 +45789,7 @@ snapshots:
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
       '@types/node': 13.13.52
-      chalk: 4.1.0
+      chalk: 4.1.2
       emittery: 0.10.2
       graceful-fs: 4.2.11
       jest-docblock: 28.1.1
@@ -46306,7 +46051,7 @@ snapshots:
     dependencies:
       '@jest/types': 28.1.3
       camelcase: 6.3.0
-      chalk: 4.1.0
+      chalk: 4.1.2
       jest-get-type: 28.0.2
       leven: 3.1.0
       pretty-format: 28.1.3
@@ -47892,7 +47637,7 @@ snapshots:
   ora@5.4.1:
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.1
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.9.2
       is-interactive: 1.0.0
@@ -49791,7 +49536,7 @@ snapshots:
 
   rollup-plugin-postcss@4.0.2(postcss@8.4.38)(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.3.17))(@types/node@13.13.52)(typescript@4.9.5)):
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       concat-with-sourcemaps: 1.1.0
       cssnano: 5.1.15(postcss@8.4.38)
       import-cwd: 3.0.0
