@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { DocPanelUICardInterface, store } from "@wso2is/admin.core.v1";
+import { Config } from "@wso2is/admin.core.v1/configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,8 +26,6 @@ import { I18n } from "@wso2is/i18n";
 import axios, { AxiosError } from "axios";
 import camelCase from "lodash-es/camelCase";
 import isEmpty from "lodash-es/isEmpty";
-import { DocPanelUICardInterface, store } from "../../admin.core.v1";
-import { Config } from "../../admin.core.v1/configs";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";

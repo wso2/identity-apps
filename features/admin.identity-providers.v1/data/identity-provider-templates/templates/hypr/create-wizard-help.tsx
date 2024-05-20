@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs";
 
 /**
  * Prop types of the component.
@@ -140,10 +140,10 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
                         ".wizardHelp.baseUrl.description"
                     }
                 >
-                    Provide the <Code>base URL</Code> of your HYPR server deployment. 
+                    Provide the <Code>base URL</Code> of your HYPR server deployment.
                 </Trans>
             </p>
-            
+
             <Divider/>
 
             <Heading as="h5">
@@ -159,7 +159,7 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
                         ".wizardHelp.apiToken.description"
                     }
                 >
-                    Provide the <Code>API Token</Code> obtained from HYPR. 
+                    Provide the <Code>API Token</Code> obtained from HYPR.
                     This will be used to access HYPR&apos;s APIs.
                 </Trans>
             </p>

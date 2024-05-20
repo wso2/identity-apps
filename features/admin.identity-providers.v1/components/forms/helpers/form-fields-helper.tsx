@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { URLUtils } from "@wso2is/core/utils";
 import {
     Field,
@@ -28,7 +29,6 @@ import { CopyInputField, GenericIcon, Hint, XMLFileStrategy } from "@wso2is/reac
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
-import { commonConfig } from "../../../../admin.extensions.v1";
 import { IdentityProviderConstants } from "../../../constants/identity-provider-constants";
 import {
     AuthenticatorSettingsFormModes,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { store } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { SelectionCard } from "@wso2is/react-components";
@@ -23,7 +24,6 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { store } from "../../../../../admin.core.v1";
 import { getIdentityProviderList } from "../../../../api";
 import { getIdPIcons, getIdPTemplateDocsIcons } from "../../../../configs/ui";
 import {
@@ -272,7 +272,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                             type="text"
                             validation={ async (value: string, validation: Validation) => {
                                 try {
-                                    const idpList: IdentityProviderListResponseInterface = 
+                                    const idpList: IdentityProviderListResponseInterface =
                                         await getIdentityProviderList(null, null, "name eq " + value.toString());
 
                                     if (idpList?.totalResults === 0) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, CopyInputField, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs";
-import { ConfigReducerStateInterface } from "../../../../../admin.core.v1/models";
-import { AppState } from "../../../../../admin.core.v1/store";
 
 /**
  * Prop types of the component.
@@ -64,7 +64,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
 
         setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
     }, [ identityProviderConfig ]);
-    
+
     return (
         <div data-componentid={ componentId }>
             <Message
@@ -82,7 +82,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                                     "wizardHelp.preRequisites.getCredentials"
                                 }
                             >
-                                Before you begin, create a <strong>Sign in With Apple</strong> enabled 
+                                Before you begin, create a <strong>Sign in With Apple</strong> enabled
                                 application on <DocumentationLink
                                     link={ getLink("develop.connections.newConnection.apple.help.developerConsole") }
                                     showEmptyLinkText

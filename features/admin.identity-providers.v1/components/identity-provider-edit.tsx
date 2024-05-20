@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { ConnectionTabTypes } from "@wso2is/admin.connections.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -41,14 +44,10 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { identityProviderConfig } from "../../admin.extensions.v1";
-import { ConnectionTabTypes } from "../../admin.connections.v1";
-import { AppState, FeatureConfigInterface } from "../../admin.core.v1";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface,
-    IdentityProviderTabTypes,
     IdentityProviderTemplateInterface
 } from "../models";
 
@@ -135,13 +134,13 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
-    
+
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
     /**
-     * This is placed as a temporary fix until the dynamic tab loading is implemented. 
+     * This is placed as a temporary fix until the dynamic tab loading is implemented.
      * (https://github.com/wso2-enterprise/iam-engineering/issues/575)
      */
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
@@ -289,8 +288,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
     const IdentityProviderGroupsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <IdentityProviderGroupsTab 
-                editingIDP={ identityProvider } 
+            <IdentityProviderGroupsTab
+                editingIDP={ identityProvider }
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
@@ -298,7 +297,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             />
         </ResourceTab.Pane>
     );
-    
+
     useEffect(() => {
         setIsTrustedTokenIssuer(type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
     }, [ type ]);

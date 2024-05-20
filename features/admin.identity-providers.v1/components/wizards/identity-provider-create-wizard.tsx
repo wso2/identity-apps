@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppState, ModalWithSidePanel } from "@wso2is/admin.core.v1";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,8 +32,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { AuthenticatorSettings, GeneralSettings, OutboundProvisioningSettings, WizardSummary } from "./steps";
-import { identityProviderConfig } from "../../../admin.extensions.v1/configs";
-import { AppState, ModalWithSidePanel } from "../../../admin.core.v1";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata
@@ -474,7 +474,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         return initial?.map(
             (eachInitialElement: AuthenticatorPropertyInterface | CommonPluggableComponentPropertyInterface) => {
                 const match: CommonPluggableComponentPropertyInterface = source.find(
-                    (eachSourceElement: CommonPluggableComponentPropertyInterface) => eachSourceElement[key] === 
+                    (eachSourceElement: CommonPluggableComponentPropertyInterface) => eachSourceElement[key] ===
                         eachInitialElement[key]);
 
                 return match ? match : eachInitialElement;
@@ -485,7 +485,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Validate and get federate authenticators.
      */
     const getValidatedAuthenticators = () => {
-        const defaultAuthenticatorPropertiesFromMetadata: AuthenticatorPropertyInterface[] = 
+        const defaultAuthenticatorPropertiesFromMetadata: AuthenticatorPropertyInterface[] =
             defaultAuthenticatorMetadata?.properties.map(
                 (eachProp: CommonPluggableComponentMetaPropertyInterface): AuthenticatorPropertyInterface => {
                     return {
@@ -518,7 +518,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Validate and get outbound provisioning connectors.
      */
     const getValidatedOutboundProvisioningConnectors = () => {
-        const defaultConnectorPropertiesFromMetadata: CommonPluggableComponentPropertyInterface[] = 
+        const defaultConnectorPropertiesFromMetadata: CommonPluggableComponentPropertyInterface[] =
             defaultOutboundProvisioningConnectorMetadata?.properties.map(
                 // eslint-disable-next-line max-len
                 (eachProp: CommonPluggableComponentMetaPropertyInterface): CommonPluggableComponentPropertyInterface => {

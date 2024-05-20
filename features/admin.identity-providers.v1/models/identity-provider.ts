@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models";
+import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
-import { ApplicationBasicInterface } from "../../admin.applications.v1/models";
-import { GovernanceConnectorInterface } from "../../admin.server-configurations.v1/models";
 import { TemplateContentInterface } from "../data/identity-provider-templates";
 
 export interface IdentityProviderTemplateGroupInterface {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -42,7 +43,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ShowCertificateModal } from "./show-certificate-modal";
-import { AppState, ConfigReducerStateInterface } from "../../../../admin.core.v1";
 import { updateIDPCertificate } from "../../../api";
 import { CertificatePatchRequestInterface, IdentityProviderInterface } from "../../../models";
 
@@ -139,7 +139,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
 
     /**
      * Handles the deletion of a certificate.
-     * 
+     *
      * @param certificateIndex - Index of the certificate to be deleted.
      */
     const handleDeletePEMCertificate = async (certificateIndex: number): Promise<void> => {
@@ -167,12 +167,12 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
 
         const index: number = certificateIndex ?? deletingCertificateIndex;
 
-        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [ 
+        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [
             {
                 "operation": "REMOVE",
                 "path": "/certificate/certificates/" + index,
                 "value": null
-            } 
+            }
         ];
 
         const doOnSuccess = () => {
@@ -414,7 +414,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 show={ showCertificateModal }
                 certificateToDisplay={ certificateDisplay }
                 onCloseClicked={ (): void => setShowCertificateModal(false) }
-            /> 
+            />
             <ConfirmationModal
                 primaryActionLoading={ isLoading }
                 onClose={ (): void => setShowPEMCertificateDeleteConfirmationModal(false) }
@@ -441,14 +441,14 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                     { t("authenticationProvider:confirmations.deleteCertificate.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-componentid={ `${ testId }-delete-certificate-confirmation-content` }>
-                    <Trans 
-                        i18nKey= { 
-                            "authenticationProvider:confirmations.deleteCertificate." + 
+                    <Trans
+                        i18nKey= {
+                            "authenticationProvider:confirmations.deleteCertificate." +
                             "content"
                         }
                         values={ { productName: config.ui.productName } }
                     >
-                        If this certificate is deleted, productName will no longer be able to validate  
+                        If this certificate is deleted, productName will no longer be able to validate
                         tokens issued from this issuer.<b> Proceed with caution.</b>
                     </Trans>
                 </ConfirmationModal.Content>
