@@ -295,11 +295,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                         className="card-image-container"
                     >
                         {
-                            ribbon && (
-                                <div className="ribbon">
-                                    { ribbon }
-                                </div>
-                            )
+                            ribbon
                         }
                         <GenericIcon
                             square

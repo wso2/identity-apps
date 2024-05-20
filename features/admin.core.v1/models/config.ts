@@ -420,6 +420,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     showAppSwitchButton?: boolean;
     /**
+     * Show Label for the features introduced with new authz runtime.
+     */
+    showStatusLabelForNewAuthzRuntimeFeatures?: boolean;
+    /**
      * Hidden userstores
      */
     hiddenUserStores: string[];

@@ -22,6 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
 import { AppConstants, store } from "../../admin.core.v1";
+import FeatureStatusLabel from "../../admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { getConnectorCategories } from "../api";
 import { ServerConfigurationsConstants } from "../constants";
 import {
@@ -375,6 +376,7 @@ export class GovernanceConnectorUtils {
                         header: I18n.instance.t("pages:emailDomainDiscovery.title"),
                         id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
+                        status: FeatureStatusLabel.NEW,
                         testId: "email-domain-discovery-card"
                     }
                 ],

@@ -718,6 +718,11 @@
                 justify-content: space-around;
                 clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
                 -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+
+                &.new {
+                    background: #3fb81f;
+                    min-width: 75px;
+                }
             }
         }
     }

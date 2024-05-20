@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import Avatar from "@oxygen-ui/react/Avatar";
+import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
+import Typography from "@oxygen-ui/react/Typography";
 import {
     ArrowLoopRightUserIcon,
     BuildingGearIcon,
@@ -34,24 +38,20 @@ import {
     UserGearIcon,
     UserPlusIcon
 } from "@oxygen-ui/react-icons";
-import Avatar from "@oxygen-ui/react/Avatar";
-import Card from "@oxygen-ui/react/Card";
-import CardContent from "@oxygen-ui/react/CardContent";
-import Chip from "@oxygen-ui/react/Chip";
-import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { AppConstants, AppState, history } from "../../admin.core.v1";
 import { serverConfigurationConfig } from "../../admin.extensions.v1";
-import { AppConstants, history } from "../../admin.core.v1";
 import "./governance-connector-grid.scss";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
-
 /**
  * Props for the Governance connector configuration categories page.
  */
+
 export interface GovernanceConnectorCategoriesGridInterface extends
     IdentifiableComponentInterface, LoadableComponentInterface {
         /**
@@ -82,6 +82,8 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
     } = props;
 
     const { t } = useTranslation();
+    const showStatusLabelForNewAuthzRuntimeFeatures: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.showStatusLabelForNewAuthzRuntimeFeatures);
 
     /**
      * Combine the connectors and dynamic connectors and group them by category.
@@ -233,6 +235,13 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     onClick={ () => handleConnectorSelection(connector) }
                                                     data-componentid={ connector.testId }
                                                 >
+                                                    {
+                                                        showStatusLabelForNewAuthzRuntimeFeatures
+                                                        && connector.status
+                                                        && (
+                                                            <div className="ribbon">{ t(connector.status) }</div>
+                                                        )
+                                                    }
                                                     <CardContent className="governance-connector-header">
                                                         <Avatar
                                                             variant="square"
@@ -245,17 +254,6 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                         <div>
                                                             <Typography variant="h6">
                                                                 { connector.header }
-                                                                { connector.status &&
-                                                                (
-                                                                    <Chip
-                                                                        size="small"
-                                                                        sx= { { marginLeft: 1 } }
-                                                                        label= { t(`common:${connector.status}`)
-                                                                            .toUpperCase() }
-                                                                        className = { `oxygen-chip-${ connector.status
-                                                                            .toLowerCase() }` }
-                                                                    />)
-                                                                }
                                                             </Typography>
                                                         </div>
                                                     </CardContent>
