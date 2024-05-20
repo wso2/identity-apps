@@ -51,7 +51,7 @@ process_console_package() {
     if [ "$IS_HOTFIX" = "true" ]; then
         echo "Hotfix detected. Publishing the package as a hotfix."
 
-        search_tag=$tag-hotfix
+        search_tag=$releaseVersion-hotfix
         echo "Search Tag: $search_tag"
 
         hotfix_count=$(git tag | grep $search_tag | wc -l)
@@ -93,7 +93,7 @@ process_myaccount_package() {
     if [ "$IS_HOTFIX" = "true" ]; then
         echo "Hotfix detected. Publishing the package as a hotfix."
 
-        search_tag=$tag-hotfix
+        search_tag=$releaseVersion-hotfix
         echo "Search Tag: $search_tag"
 
         hotfix_count=$(git tag | grep $search_tag | wc -l)
@@ -135,7 +135,7 @@ process_java_apps_package() {
     if [ "$IS_HOTFIX" = "true" ]; then
         echo "Hotfix detected. Publishing the package as a hotfix."
 
-        search_tag=$tag-hotfix
+        search_tag=$releaseVersion-hotfix
         echo "Search Tag: $search_tag"
 
         hotfix_count=$(git tag | grep $search_tag | wc -l)
