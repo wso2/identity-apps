@@ -510,28 +510,28 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
-        specifier: ^3.0.6
+        specifier: ^3.0.7
         version: link:../../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
-        specifier: ^2.0.62
+        specifier: ^2.0.63
         version: link:../../modules/dynamic-forms
       '@wso2is/features':
-        specifier: ^2.20.1
+        specifier: ^2.20.2
         version: link:../../features
       '@wso2is/form':
-        specifier: ^2.0.63
+        specifier: ^2.0.64
         version: link:../../modules/form
       '@wso2is/forms':
-        specifier: ^2.0.36
+        specifier: ^2.0.37
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.3.2
+        specifier: ^2.3.3
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.2.4
+        specifier: ^2.2.5
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.0.84
@@ -847,22 +847,22 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
-        specifier: ^3.0.6
+        specifier: ^3.0.7
         version: link:../../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../../modules/core
       '@wso2is/features':
-        specifier: ^2.20.1
+        specifier: ^2.20.2
         version: link:../../features
       '@wso2is/forms':
-        specifier: ^2.0.36
+        specifier: ^2.0.37
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.3.2
+        specifier: ^2.3.3
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.2.4
+        specifier: ^2.2.5
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.0.84
@@ -1112,25 +1112,25 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
-        specifier: ^3.0.6
+        specifier: ^3.0.7
         version: link:../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../modules/core
       '@wso2is/dynamic-forms':
-        specifier: ^2.0.62
+        specifier: ^2.0.63
         version: link:../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.0.63
+        specifier: ^2.0.64
         version: link:../modules/form
       '@wso2is/forms':
-        specifier: ^2.0.36
+        specifier: ^2.0.37
         version: link:../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.3.2
+        specifier: ^2.3.3
         version: link:../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.2.4
+        specifier: ^2.2.5
         version: link:../modules/react-components
       '@wso2is/theme':
         specifier: ^2.0.84
@@ -1467,7 +1467,7 @@ importers:
   modules/access-control:
     dependencies:
       '@wso2is/core':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../core
       jest:
         specifier: ^29.7.0
@@ -1622,10 +1622,10 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/core':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../core
       '@wso2is/react-components':
-        specifier: ^2.2.4
+        specifier: ^2.2.5
         version: link:../react-components
       '@wso2is/validation':
         specifier: ^2.0.5
@@ -1710,10 +1710,10 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/core':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../core
       '@wso2is/react-components':
-        specifier: ^2.2.4
+        specifier: ^2.2.5
         version: link:../react-components
       '@wso2is/validation':
         specifier: ^2.0.5
@@ -1786,7 +1786,7 @@ importers:
   modules/forms:
     dependencies:
       '@wso2is/core':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../core
       classnames:
         specifier: ^2.2.6
@@ -1859,7 +1859,7 @@ importers:
         specifier: ^29.5.12
         version: 29.5.12
       '@wso2is/core':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../core
       babel-jest:
         specifier: ^26.3.0
@@ -1956,7 +1956,7 @@ importers:
         specifier: ^6.5.9
         version: 6.5.16(react-dom@18.3.1)(react@18.3.1)
       '@wso2is/core':
-        specifier: ^2.0.46
+        specifier: ^2.0.47
         version: link:../core
       '@wso2is/theme':
         specifier: ^2.0.84

@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.6.2
+
+### Patch Changes
+
+- Updated dependencies [[`ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c`](https://github.com/wso2/identity-apps/commit/ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c)]:
+  - @wso2is/core@2.0.47
+  - @wso2is/features@2.20.2
+  - @wso2is/access-control@3.0.7
+  - @wso2is/forms@2.0.37
+  - @wso2is/i18n@2.3.3
+  - @wso2is/react-components@2.2.5
+
 ## 2.6.1
 
 ### Patch Changes

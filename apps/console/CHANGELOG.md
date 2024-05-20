@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 2.18.15
+
+### Patch Changes
+
+- [#6256](https://github.com/wso2/identity-apps/pull/6256) [`ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c`](https://github.com/wso2/identity-apps/commit/ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add new label to the features
+
+- Updated dependencies [[`ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c`](https://github.com/wso2/identity-apps/commit/ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c)]:
+  - @wso2is/core@2.0.47
+  - @wso2is/features@2.20.2
+  - @wso2is/access-control@3.0.7
+  - @wso2is/dynamic-forms@2.0.63
+  - @wso2is/form@2.0.64
+  - @wso2is/forms@2.0.37
+  - @wso2is/i18n@2.3.3
+  - @wso2is/react-components@2.2.5
+
 ## 2.18.14
 
 ### Patch Changes
