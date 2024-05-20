@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
@@ -24,7 +25,6 @@ import { useTranslation } from "react-i18next";
 import { Grid, Header } from "semantic-ui-react";
 import { PermissionMappingList } from "./permission-mapping-list";
 import { PermissionMappingListItem } from "./permission-mapping-list-item";
-import { FeatureConfigInterface } from "../../../../admin.core.v1";
 import { APIResourcePermissionInterface } from "../../../models";
 
 /**

@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { AuthorizationAPIResourceInterface } from "../../../models";
 
 /**
@@ -93,30 +93,30 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
         >
             <Message
                 type="info"
-                content={ 
+                content={
                     (<>
-                        { t("extensions:develop.apiResource.wizard.addApiResource.steps.authorization.form." + 
+                        { t("extensions:develop.apiResource.wizard.addApiResource.steps.authorization.form." +
                             "rbacMessage", { productName }) }
                         <DocumentationLink
                             link={ getLink("develop.apiResources.addAPIResource.rbacInfoBox.learnMore") }
                         >
                             { t("extensions:common.learnMore") }
                         </DocumentationLink>
-                    </>)                   
+                    </>)
                 }
             />
             <Field.Checkbox
                 ariaLabel="authorization"
                 name="authorization"
-                label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.authorization.form.fields." + 
+                label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.authorization.form.fields." +
                     "authorize.label") }
                 tabIndex={ 3 }
                 hint={
                     (<>
-                        <Trans 
-                            i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps.authorization." + 
+                        <Trans
+                            i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps.authorization." +
                                 "form.fields.authorize.hint" }>
-                            If checked, it will be mandatory to add authorization when configuring the application to 
+                            If checked, it will be mandatory to add authorization when configuring the application to
                             consume the API resource. <b>This field cannot be edited once created.</b>
                         </Trans>
                         <DocumentationLink
@@ -127,7 +127,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
                     </>)
                 }
                 width={ 16 }
-                defaultValue={ initalRequiredAuthorizationValue }           
+                defaultValue={ initalRequiredAuthorizationValue }
                 data-componentid={ `${componentId}-authorize` }
             />
         </Form>

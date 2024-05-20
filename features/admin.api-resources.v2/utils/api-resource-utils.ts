@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { FeatureConfigInterface } from "../../admin.core.v1";
 import { APIResourceCategories, APIResourcesConstants } from "../constants/api-resources-constants";
 import { Property } from "../models/api-resources";
 

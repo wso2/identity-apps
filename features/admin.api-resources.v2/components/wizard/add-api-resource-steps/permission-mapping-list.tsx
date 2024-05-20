@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import {
     DataTable, EmptyPlaceholder, TableActionsInterface, TableColumnInterface
@@ -23,7 +24,6 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Header, Label, SemanticICONS } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../../admin.core.v1";
 import { APIResourcePermissionInterface, PermissionMappingInterface } from "../../../models";
 
 /**
