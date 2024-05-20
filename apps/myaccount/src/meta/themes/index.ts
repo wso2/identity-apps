@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { DynamicBrandingPreferenceThemeInterface, PredefinedThemes } from "@wso2is/features/common.branding.v1/models";
 import { DARK_THEME } from "./dark-theme";
 import { LIGHT_THEME } from "./light-theme";
-import { DynamicBrandingPreferenceThemeInterface, PredefinedThemes } from "../../models";
 
 export const THEMES: DynamicBrandingPreferenceThemeInterface = {
     [ PredefinedThemes.LIGHT ]: LIGHT_THEME,

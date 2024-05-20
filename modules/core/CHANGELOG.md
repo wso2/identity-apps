@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.46
+
+### Patch Changes
+
+- [#6220](https://github.com/wso2/identity-apps/pull/6220) [`538ffee532d3106bc798552791b0d86b3fcc61f1`](https://github.com/wso2/identity-apps/commit/538ffee532d3106bc798552791b0d86b3fcc61f1) Thanks [@lashinijay](https://github.com/lashinijay)! - Changes to rely on mobile number verification in my account on governance config `verification on update`
+
 ## 2.0.45
 
 ### Patch Changes

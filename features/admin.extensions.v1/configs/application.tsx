@@ -409,7 +409,6 @@ export const applicationConfig: ApplicationConfig = {
         ): ResourceTabPaneInterface[] => {
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
             const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
-            const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
 
             const application: ApplicationInterface = props?.application as ApplicationInterface;
 
@@ -456,7 +455,6 @@ export const applicationConfig: ApplicationConfig = {
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
-                && applicationRolesFeatureEnabled
                 && !legacyMode?.rolesV1
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
                     applicationRoles?.enabled)

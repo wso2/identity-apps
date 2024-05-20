@@ -318,7 +318,7 @@ export class Config {
                 defaultLogoPath: window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultLogoPath
                     ?? window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath,
                 defaultWhiteLogoPath: window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultWhiteLogoPath
-                    ?? window[ "AppUtils" ]?.getConfig()?.ui?.defaultWhiteLogoPath
+                    ?? window[ "AppUtils" ]?.getConfig()?.ui?.appWhiteLogoPath
             },
             appName: window[ "AppUtils" ]?.getConfig()?.ui?.appName,
             appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,

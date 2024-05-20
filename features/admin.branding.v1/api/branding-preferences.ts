@@ -23,12 +23,12 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { I18nConstants } from "../../admin.core.v1/constants";
 import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
-import { BrandingPreferencesConstants } from "../constants";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceInterface,
     BrandingPreferenceTypes
-} from "../models";
+} from "../../common.branding.v1/models";
+import { BrandingPreferencesConstants } from "../constants";
 
 /**
  * Get an axios instance.

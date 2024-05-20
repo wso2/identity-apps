@@ -22,7 +22,10 @@ import {
     SIDE_IMAGE_LAYOUT_INITIALES,
     generateDataSetForTheSideImageLayout
 } from "./side-image";
-import { BrandingPreferenceLayoutInterface, DynamicBrandingPreferenceLayoutInterface } from "../../models";
+import {
+    BrandingPreferenceLayoutInterface,
+    DynamicBrandingPreferenceLayoutInterface
+} from "../../../common.branding.v1/models";
 
 /**
  * Enum for set of predefined layouts.

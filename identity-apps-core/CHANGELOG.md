@@ -1,5 +1,43 @@
 # @wso2is/identity-apps-core
 
+## 2.2.3
+
+### Patch Changes
+
+- [#6286](https://github.com/wso2/identity-apps/pull/6286) [`be831f4b8e2f4d6d7727de7984c74d3466695224`](https://github.com/wso2/identity-apps/commit/be831f4b8e2f4d6d7727de7984c74d3466695224) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix issue when errorKey null in password recovery
+
+## 2.2.2
+
+### Patch Changes
+
+- [#6276](https://github.com/wso2/identity-apps/pull/6276) [`dc00bfc3597af3a24873dbd7e661e030fc5e7696`](https://github.com/wso2/identity-apps/commit/dc00bfc3597af3a24873dbd7e661e030fc5e7696) Thanks [@savindi7](https://github.com/savindi7)! - Add branding for the message in email link expiry page.
+
+* [#6278](https://github.com/wso2/identity-apps/pull/6278) [`6d99d83e90ad34e92acbddfe2d4b72e704848a87`](https://github.com/wso2/identity-apps/commit/6d99d83e90ad34e92acbddfe2d4b72e704848a87) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Reverting Update recovery portal to support SMS OTP based password recovery
+
+- [#6275](https://github.com/wso2/identity-apps/pull/6275) [`2f81f0c3eda89fa6da706b4589e0d45367572f77`](https://github.com/wso2/identity-apps/commit/2f81f0c3eda89fa6da706b4589e0d45367572f77) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Support displaying password recovery failures
+
+## 2.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`6f04b0edc079c6c784000455cfc12689d2d8644f`](https://github.com/wso2/identity-apps/commit/6f04b0edc079c6c784000455cfc12689d2d8644f)]:
+  - @wso2is/theme@2.0.83
+
+## 2.2.0
+
+### Minor Changes
+
+- [#5817](https://github.com/wso2/identity-apps/pull/5817) [`186c8e7bf9640ef6cbb0a56d4f12dd881355e639`](https://github.com/wso2/identity-apps/commit/186c8e7bf9640ef6cbb0a56d4f12dd881355e639) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Adds sms otp support to password recovery flows.
+
+## 2.1.77
+
+### Patch Changes
+
+- [#6245](https://github.com/wso2/identity-apps/pull/6245) [`4e736d3c0617d32d7a975b7aa8981d160c02486c`](https://github.com/wso2/identity-apps/commit/4e736d3c0617d32d7a975b7aa8981d160c02486c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add missing class imports
+
+- Updated dependencies [[`9beedd16003ce305af2a7497652fd35dcd787814`](https://github.com/wso2/identity-apps/commit/9beedd16003ce305af2a7497652fd35dcd787814)]:
+  - @wso2is/theme@2.0.82
+
 ## 2.1.76
 
 ### Patch Changes

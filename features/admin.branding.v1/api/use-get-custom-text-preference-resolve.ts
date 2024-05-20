@@ -27,8 +27,8 @@ import useRequest, {
 import { store } from "../../admin.core.v1/store";
 import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import { BrandingPreferenceTypes } from "../../common.branding.v1/models/branding-preferences";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import { BrandingPreferenceTypes } from "../models/branding-preferences";
 import {
     CustomTextPreferenceAPIResponseInterface
 } from "../models/custom-text-preference";

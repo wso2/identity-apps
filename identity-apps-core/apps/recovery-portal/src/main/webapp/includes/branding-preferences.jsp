@@ -117,10 +117,12 @@
                 }
 
                 Locale tempLocale = new Locale(langStr, langLocale);
-                // Trying to find out whether we have a resource bundle for the given locale
+
+                // Trying to find out whether we have a resource bundle for the given locale.
                 try {
                     ResourceBundle foundBundle = ResourceBundle.getBundle(BUNDLE, tempLocale);
-                    // If so, setting the userLocale to that locale. If not, set the browser locale as user locale
+                    // If the i18n bundle for the locale is found, set the userLocale to that locale. If not, set the
+                    // browser locale as user locale.
                     // Currently, we only care about the language - we do not compare about country locales since our
                     // supported locale set is limited.
                     if (tempLocale.getLanguage().equals(foundBundle.getLocale().getLanguage())) {
@@ -231,7 +233,7 @@
     String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-full-inverted.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
     String poweredByLogoURL = "";
-    String[] screenNames = {"common", "sign-up", "password-recovery", "password-reset", "password-reset-success"};
+    String[] screenNames = {"common", "sign-up", "password-recovery", "password-reset", "password-reset-success", "email-link-expiry"};
 
     // Constants used to create full custom layout name
     String PREFIX_FOR_CUSTOM_LAYOUT_NAME = "custom";

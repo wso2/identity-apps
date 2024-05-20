@@ -15,20 +15,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import Box from "@oxygen-ui/react/Box";
-import IconButton from "@oxygen-ui/react/IconButton";
-import LinearProgress from "@oxygen-ui/react/LinearProgress";
-import Tooltip from "@oxygen-ui/react/Tooltip";
-import Typography from "@oxygen-ui/react/Typography";
-import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { ReactComponent as LoadingPlaceholder }
-    from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
+import AILoadingScreen from "../../common.ai.v1/components/ai-loading-screen";
 import { useAILoginFlowGenerationStatus } from "../api/use-ai-login-flow-generation-status";
 import {
     FACTS_ROTATION_DELAY,
@@ -37,10 +30,9 @@ import {
     useGetFacts,
     useGetStatusLabels
 } from "../constants/login-flow-ai-constants";
-import "./login-flow-ai-loading-screen.scss";
 import useAILoginFlow from "../hooks/use-ai-login-flow";
 
-const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
+const LoginFlowAILoadingScreen = (): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -55,7 +47,7 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
 
     const facts: string[] = useGetFacts();
 
-    const { data, error } = useAILoginFlowGenerationStatus(traceId);
+    const { data, error } = useAILoginFlowGenerationStatus();
 
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
     const [ factIndex, setFactIndex ] = useState<number>(0);
@@ -144,42 +136,12 @@ const LoginFlowAILoadingScreen = ( { traceId }: { traceId: string } ): JSX.Eleme
     };
 
     return (
-        <Box className="login-flow-ai-loading-screen-container">
-            <Box className="login-flow-ai-loading-screen-illustration-container">
-                <LoadingPlaceholder />
-            </Box>
-            <Box className="login-flow-ai-loading-screen-text-container">
-                <Box className="mb-5">
-                    <Typography
-                        variant="h5"
-                        className="login-flow-ai-loading-screen-heading"
-                    >
-                        { t("ai:aiLoginFlow.didYouKnow") }
-                    </Typography>
-                    <Typography className="login-flow-ai-loading-screen-sub-heading">
-                        { facts[factIndex] }
-                    </Typography>
-                </Box>
-                <Box sx={ { width: 1 } }>
-                    <Box className="login-flow-ai-loading-screen-loading-container">
-                        <Typography className="login-flow-ai-loading-screen-loading-state">
-                            { getCurrentStatus() }
-                        </Typography>
-                        <Tooltip
-                            title="Cancel"
-                            placement="top"
-                        >
-                            <IconButton
-                                onClick={ handleGenerateCancel }
-                            >
-                                <XMarkIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                    <LinearProgress variant="buffer" value={ currentProgress } valueBuffer={ currentProgress + 1 }  />
-                </Box>
-            </Box>
-        </Box>
+        <AILoadingScreen
+            currentLoadingState={ getCurrentStatus() }
+            currentProgress={ currentProgress }
+            fact={ facts[factIndex] }
+            handleGenerateCancel={ handleGenerateCancel }
+        />
     );
 };
 

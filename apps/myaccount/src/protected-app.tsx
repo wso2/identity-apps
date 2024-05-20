@@ -26,6 +26,7 @@ import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { setSupportedI18nLanguages } from "@wso2is/core/store";
 import { AuthenticateUtils, StringUtils } from "@wso2is/core/utils";
+import { ThemeProvider } from "@wso2is/features/common.branding.v1/providers/theme-provider";
 import {
     I18n,
     I18nInstanceInitException,
@@ -37,12 +38,12 @@ import axios, { AxiosResponse } from "axios";
 import React, { FunctionComponent, LazyExoticComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useGetBrandingPreference } from "./api/branding-preferences";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import useSignIn from "./hooks/use-sign-in";
-import { BrandingPreferenceProvider } from "./providers";
 import { AppState, store } from "./store";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 
@@ -186,9 +187,22 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             });
     }, [ isAuthenticated ]);
 
+    /**
+     * Extracts theme preference data using a custom hook.
+     */
+    const { data: themePreference } = useGetBrandingPreference(tenantDomain);
+
+    /**
+     * Retrieves the application title from the Redux store.
+     */
+    const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
+
     return (
-        <BrandingPreferenceProvider
-            tenantDomain={ getOrganizationName() !== "" ? getOrganizationName() : tenantDomain }
+        <ThemeProvider
+            themePreference={ themePreference }
+            defaultMode={ "light" }
+            modeStorageKey={ "myaccount-oxygen-mode" }
+            appTitle={ appTitle }
         >
             <SecureApp
                 fallback={ <PreLoader /> }
@@ -236,7 +250,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     <App />
                 </I18nextProvider>
             </SecureApp>
-        </BrandingPreferenceProvider>
-
+        </ThemeProvider>
     );
 };

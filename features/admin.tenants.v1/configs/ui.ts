@@ -19,7 +19,7 @@
 import { FunctionComponent, SVGProps } from "react";
 import {
     ReactComponent as AsgardeoLogo
-} from "../../../assets/asgardeo-logo.svg";
+} from "../../admin.extensions.v1/assets/asgardeo-logo.svg";
 
 export const TenantCreationIcons = (): {
     asgardeoLogo: FunctionComponent<SVGProps<SVGSVGElement>>;

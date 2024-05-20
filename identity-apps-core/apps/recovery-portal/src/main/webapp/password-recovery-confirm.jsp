@@ -54,6 +54,18 @@
         return;
     }
 
+    String errorKey = request.getParameterMap().containsKey("errorKey") 
+    	? request.getParameter("errorKey") 
+    	: StringUtils.EMPTY;
+    errorKey = Encode.forJava(errorKey);
+    
+    if (StringUtils.isNotBlank(errorKey)) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorKey));
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     String sp = Encode.forJava(request.getParameter("sp"));

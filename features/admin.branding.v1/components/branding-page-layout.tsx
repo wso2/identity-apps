@@ -18,17 +18,10 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import BrandingCore from "./branding-core";
-import { BrandingAIBanner } from "../../admin.ai.v1/components/branding-ai-banner";
-import { LoadingScreen } from "../../admin.ai.v1/components/branding-ai-loading-screen";
-import useAIBrandingPreference from "../../admin.ai.v1/hooks/use-ai-branding-preference";
-import { AppState } from "../../admin.core.v1/store";
-import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";
+import AIBrandingPreferenceProvider from "../../admin.branding.ai.v1/providers/ai-branding-preference-provider";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
@@ -36,21 +29,13 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     props: BrandingPageLayoutInterface
 ): ReactElement => {
 
-    const { getLink } = useDocumentation();
-    const { t } = useTranslation();
     const {
         ["data-componentid"]: componentId
     } = props;
 
-    const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const disabledFeatures: string[] = useMemo(() =>
-        featureConfig?.branding?.disabledFeatures, [ featureConfig ]);
-    const {
-        isGeneratingBranding,
-        mergedBrandingPreference
-    } = useAIBrandingPreference();
+    const { getLink } = useDocumentation();
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { t } = useTranslation();
 
     return (
         <PageLayout
@@ -76,17 +61,9 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             data-componentid={ `${ componentId }-layout` }
             className="branding-page"
         >
-            {
-                !disabledFeatures.includes(AI_BRANDING_FEATURE_ID) && !isSubOrganization() && (
-                    <BrandingAIBanner/>
-                )
-            }
-            {
-                isGeneratingBranding ? (
-                    <LoadingScreen/>
-                )
-                    : <BrandingCore brandingPreference={ mergedBrandingPreference }/>
-            }
+            <AIBrandingPreferenceProvider>
+                <BrandingCore/>
+            </AIBrandingPreferenceProvider>
         </PageLayout>
     );
 };

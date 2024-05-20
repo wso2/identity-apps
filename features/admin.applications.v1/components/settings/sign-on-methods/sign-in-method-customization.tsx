@@ -51,6 +51,7 @@ import {
     FeatureConfigInterface,
     history
 } from "../../../../admin.core.v1";
+import useGlobalVariables from "../../../../admin.core.v1/hooks/use-global-variables";
 import { getMultiFactorAuthenticatorDetails } from "../../../../admin.identity-providers.v1/api";
 import {
     IdentityProviderManagementConstants
@@ -166,6 +167,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         state?.organization?.organizationType);
 
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(undefined);
+    const { isAdaptiveAuthenticationAvailable } = useGlobalVariables();
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
     const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);

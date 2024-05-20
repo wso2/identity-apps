@@ -150,7 +150,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
         >
             {
                 isGeneratingLoginFlow ? (
-                    <LoginFlowAILoadingScreen traceId={ operationId }/>
+                    <LoginFlowAILoadingScreen />
                 ) : (
                     <>
                         {

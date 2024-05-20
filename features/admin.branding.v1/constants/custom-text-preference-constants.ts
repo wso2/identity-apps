@@ -101,6 +101,9 @@ export class CustomTextPreferenceConstants {
 
     public static readonly TEXT_BUNDLE_KEYS: {
         COPYRIGHT: string;
+        EMAIL_LINK_EXPIRY: {
+            MESSAGE: string;
+        };
         EMAIL_OTP: {
             HEADING: string;
         }
@@ -150,6 +153,9 @@ export class CustomTextPreferenceConstants {
         }
     } = {
         COPYRIGHT: "copyright",
+        EMAIL_LINK_EXPIRY: {
+            MESSAGE: "email.link.expiry.message"
+        },
         EMAIL_OTP: {
             HEADING: "email.otp.heading"
         },

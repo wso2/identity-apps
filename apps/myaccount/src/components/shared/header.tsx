@@ -17,12 +17,6 @@
  */
 
 import { useColorScheme } from "@mui/material";
-import {
-    ArrowRightFromBracketIcon,
-    ChevronDownIcon,
-    LanguageIcon,
-    RectangleLineIcon
-} from "@oxygen-ui/react-icons";
 import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import Flag from "@oxygen-ui/react/CountryFlag";
@@ -34,6 +28,12 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
+import {
+    ArrowRightFromBracketIcon,
+    ChevronDownIcon,
+    LanguageIcon,
+    RectangleLineIcon
+} from "@oxygen-ui/react-icons";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -44,6 +44,7 @@ import {
     CookieStorageUtils,
     StringUtils
 } from "@wso2is/core/utils";
+import { useThemeProvider } from "@wso2is/features/common.branding.v1/hooks/use-theme-provider";
 import { I18n, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
@@ -62,7 +63,6 @@ import { Gravatar } from "./gravatar";
 import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
 import { history, resolveUserstore } from "../../helpers";
-import { useBrandingPreference } from "../../hooks/use-branding-preference";
 import { AuthStateInterface, ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import {
@@ -134,7 +134,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const { mode } = useColorScheme();
 
-    const { theme } = useBrandingPreference();
+    const { theme } = useThemeProvider();
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");

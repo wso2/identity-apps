@@ -37,36 +37,33 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useAIBrandingPreference from "../../admin.ai.v1/hooks/use-ai-branding-preference";
+import useAIBrandingPreference from "../../admin.branding.ai.v1/hooks/use-ai-branding-preference";
 import { EventPublisher, OrganizationType } from "../../admin.core.v1";
 import { AppState } from "../../admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "../../admin.organizations.v1/models/organizations";
-import { deleteBrandingPreference, updateBrandingPreference } from "../api";
-import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
-import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
-import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
-import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
-import { BrandingPreferencesConstants } from "../constants";
-import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
+import useGetBrandingPreferenceResolve from "../../common.branding.v1/api/use-get-branding-preference-resolve";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
     PredefinedLayouts
-} from "../models";
+} from "../../common.branding.v1/models";
+import { deleteBrandingPreference, updateBrandingPreference } from "../api";
+import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
+import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
+import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
+import { BrandingPreferencesConstants } from "../constants";
+import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
+import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
 import { BrandingPreferenceUtils } from "../utils";
 
 /**
  * Prop-types for the branding core component.
  */
-interface BrandingCoreInterface extends IdentifiableComponentInterface {
-
-    brandingPreference?: BrandingPreferenceInterface;
-}
+type BrandingCoreInterface = IdentifiableComponentInterface;
 
 /**
  * Branding core.
@@ -79,23 +76,50 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 ): ReactElement => {
 
     const {
-        brandingPreference: overridenBrandingPreference,
         ["data-componentid"]: componentId
     } = props;
-
-    const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
-    const { isGreaterThanComputerViewport } = useMediaContext();
-    const { organizationType } = useGetCurrentOrganizationType();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
     const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const theme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state?.organization?.organization
     );
+
+    const tenantName: string = useMemo(() => {
+        if (orgType === OrganizationType.SUBORGANIZATION) {
+            return currentOrganization?.name;
+        }
+
+        return tenantDomain;
+    }, [ tenantDomain, currentOrganization ]);
+
+    const { t } = useTranslation();
+
+    const dispatch: Dispatch = useDispatch();
+
+    const { isGreaterThanComputerViewport } = useMediaContext();
+
+    const { organizationType } = useGetCurrentOrganizationType();
+
+    const {
+        mergedBrandingPreference: overridenBrandingPreference,
+        setMergedBrandingPreference
+    } = useAIBrandingPreference();
+
+    const {
+        data: originalBrandingPreference,
+        isLoading: isBrandingPreferenceFetchRequestLoading,
+        error: brandingPreferenceFetchRequestError,
+        mutate: mutateBrandingPreferenceFetchRequest
+    } = useGetBrandingPreferenceResolve(tenantDomain);
+
+    const {
+        mutateMultiple: mutateCustomTextPreferenceFetchRequests
+    } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
 
     const [ isBrandingConfigured, setIsBrandingConfigured ] = useState<boolean>(true);
     const [
@@ -153,21 +177,6 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
 
-    const {
-        data: originalBrandingPreference,
-        isLoading: isBrandingPreferenceFetchRequestLoading,
-        error: brandingPreferenceFetchRequestError,
-        mutate: mutateBrandingPreferenceFetchRequest
-    } = useGetBrandingPreferenceResolve(tenantDomain);
-
-    const {
-        mutateMultiple: mutateCustomTextPreferenceFetchRequests
-    } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
-
-    const {
-        setMergedBrandingPreference
-    } = useAIBrandingPreference();
-
     const isBrandingPageLoading: boolean = useMemo(
         () =>
             !tenantDomain ||
@@ -210,7 +219,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         if (originalBrandingPreference instanceof IdentityAppsApiException) {
             dispatch(addAlert<AlertInterface>({
                 description: t("extensions:develop.branding.notifications.fetch.invalidStatus.description",
-                    { tenant: tenantDomain }),
+                    { tenant: tenantName }),
                 level: AlertLevels.ERROR,
                 message: t("extensions:develop.branding.notifications.fetch.invalidStatus.message")
             }));
@@ -263,7 +272,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 
         dispatch(addAlert<AlertInterface>({
             description: t("extensions:develop.branding.notifications.fetch.genericError.description",
-                { tenant: tenantDomain }),
+                { tenant: tenantName }),
             level: AlertLevels.ERROR,
             message: t("extensions:develop.branding.notifications.fetch.genericError.message")
         }));
@@ -411,7 +420,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     if (shouldShowNotifications) {
                         dispatch(addAlert<AlertInterface>({
                             description: t("extensions:develop.branding.notifications.update.invalidStatus.description",
-                                { tenant: tenantDomain }),
+                                { tenant: tenantName }),
                             level: AlertLevels.ERROR,
                             message: t("extensions:develop.branding.notifications.update.invalidStatus.message")
                         }));
@@ -436,14 +445,14 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     if(organizationType !== OrganizationType.SUBORGANIZATION) {
                         dispatch(addAlert<AlertInterface>({
                             description: t("extensions:develop.branding.notifications.update.success.description",
-                                { tenant: tenantDomain }),
+                                { tenant: tenantName }),
                             level: AlertLevels.SUCCESS,
                             message: t("extensions:develop.branding.notifications.update.success.message")
                         }));
                     } else {
                         dispatch(addAlert<AlertInterface>({
                             description: t("extensions:develop.branding.notifications.update.successWaiting."
-                                + "description", { tenant: tenantDomain }),
+                                + "description", { tenant: tenantName }),
                             level: AlertLevels.WARNING,
                             message: t("extensions:develop.branding.notifications.update.successWaiting.message")
                         }));
@@ -467,7 +476,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 if (shouldShowNotifications) {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:develop.branding.notifications.update.genericError.description",
-                            { tenant: tenantDomain }),
+                            { tenant: tenantName }),
                         level: AlertLevels.ERROR,
                         message: t("extensions:develop.branding.notifications.update.genericError.message")
                     }));
@@ -533,19 +542,19 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 
             dispatch(addAlert<AlertInterface>({
                 description: t("extensions:develop.branding.notifications.delete.success.description",
-                    { tenant: tenantDomain }),
+                    { tenant: tenantName }),
                 level: AlertLevels.SUCCESS,
                 message: t("extensions:develop.branding.notifications.delete.success.message")
             }));
         } catch (error: any) {
             let description: string = t("extensions:develop.branding.notifications.delete.genericError" +
-            ".description", { tenant: tenantDomain });
+            ".description", { tenant: tenantName });
             let message: string = t("extensions:develop.branding.notifications.delete.genericError.message");
 
             // If branding is not configured, but user tried deleting anyway.
             if (error.code === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
                 description = t("extensions:develop.branding.notifications.delete.notConfigured" +
-                ".description", { tenant: tenantDomain });
+                ".description", { tenant: tenantName });
                 message = t("extensions:develop.branding.notifications.delete.notConfigured.message");
             }
 
@@ -562,7 +571,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             dispatch(addAlert<AlertInterface>({
                 description: t(
                     "extensions:develop.branding.notifications.customTextPreferenceDelete.success.description",
-                    { tenant: tenantDomain }
+                    { tenant: tenantName }
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t("extensions:develop.branding.notifications.delete.success.message")
@@ -571,7 +580,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             const description: string = t(
                 "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError" +
                     ".description",
-                { tenant: tenantDomain }
+                { tenant: tenantName }
             );
             const message: string = t(
                 "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError.message"
@@ -617,7 +626,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     && (
                         <Alert onClose={ () => setShowSubOrgBrandingUpdateAlert(false) } severity="warning">
                             { t("extensions:develop.branding.notifications.update.successWaitingAlert.description",
-                                { tenant: tenantDomain }) }
+                                { tenant: tenantName }) }
                         </Alert>
                     )
             }
@@ -626,7 +635,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     && (
                         <Alert onClose={ () => setShowSubOrgBrandingDeleteAlert(false) } severity="warning">
                             { t("extensions:develop.branding.notifications.delete.successWaitingAlert.description",
-                                { tenant: tenantDomain }) }
+                                { tenant: tenantName }) }
                         </Alert>
                     )
             }

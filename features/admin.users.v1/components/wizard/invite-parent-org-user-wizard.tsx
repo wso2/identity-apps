@@ -57,6 +57,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
 
     const { t } = useTranslation();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isInvitingCompleted, setIsInvitingCompleted ] = useState<boolean>(false);
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const [ parentOrgUserInvitationResults, setParentOrgUserInvitationResults ] =
         useState<ParentOrgUserInvitationResult[]>([]);
@@ -138,6 +139,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
                 handleParentOrgUserInviteError(error);
             })
             .finally(() => {
+                setIsInvitingCompleted(true);
                 setIsSubmitting(false);
             });
     };
@@ -185,7 +187,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
                                     closeWizard();
                                 } }
                             >
-                                { t("common:cancel") }
+                                { isInvitingCompleted ? t("common:close") : t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
                         {

@@ -34,9 +34,10 @@ import { OrganizationType } from "../../admin.core.v1";
 import { AppState } from "../../admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "../../admin.organizations.v1/models/organizations";
+import useGetBrandingPreferenceResolve from "../../common.branding.v1/api/use-get-branding-preference-resolve";
+import { BrandingSubFeatures, PreviewScreenType } from "../../common.branding.v1/models/branding-preferences";
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";
 import updateCustomTextPreference from "../api/update-custom-text-preference";
-import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
@@ -44,7 +45,6 @@ import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-pre
 import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
-import { BrandingSubFeatures, PreviewScreenType } from "../models/branding-preferences";
 import {
     CustomTextConfigurationModes,
     CustomTextInterface,
