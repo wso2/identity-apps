@@ -102,17 +102,6 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const mtlsEndpointsPresent: boolean = oidcConfigurations.mtlsTokenEndpoint !== undefined;
 
-    /**
-     * Index of the protocols tab.
-     */
-    let PROTOCOLS_TAB_INDEX: number;
-
-    if (templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
-        PROTOCOLS_TAB_INDEX = 1;
-    } else {
-        PROTOCOLS_TAB_INDEX = 2;
-    }
-
     useEffect(() => {
         if (inboundProtocols == undefined) {
             return;
@@ -191,9 +180,9 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                                                 pathname: AppConstants.getPaths()
                                                                     .get("APPLICATION_EDIT")
                                                                     .replace(":id", appId),
-                                                                search:
-                                                                    `?${ ApplicationManagementConstants.IS_PROTOCOL }=
-                                                                    true`
+                                                                search: "?" +
+                                                                    ApplicationManagementConstants.IS_PROTOCOL +
+                                                                    "=true"
                                                             }
                                                             );
                                                         } }

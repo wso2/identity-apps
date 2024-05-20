@@ -521,7 +521,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 handleDefaultTabIndexChange(defaultTabIndex);
             }
         }
-    },[ template, renderedTabPanes ]);
+    },[ template, renderedTabPanes, urlSearchParams ]);
 
     /**
      * Check whether the application is an M2M Application.
