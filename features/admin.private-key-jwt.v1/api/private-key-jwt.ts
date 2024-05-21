@@ -17,15 +17,15 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1";
-import { Config } from "../../admin.core.v1/configs";
+import { store } from "@wso2is/admin.core.v1";
+import { Config } from "@wso2is/admin.core.v1/configs";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { UpdateJWTAuthenticatorConfigInterface } from "../models/private-key-jwt-config";
 
 /**
@@ -69,11 +69,11 @@ export const useTokenReuseConfigData = <Data = any, Error = RequestErrorInterfac
 /**
  * Hook to update JWT Private-key Authentication config.
  *
- * @param data - UpdateJWTAuthenticatorConfigInterface /enableTokenReuse - TokenReuse is enabled/disabled. 
+ * @param data - UpdateJWTAuthenticatorConfigInterface /enableTokenReuse - TokenReuse is enabled/disabled.
  * @returns The response of the JWT Private-key Authentication configuration state.
  */
 export const updateJWTConfig = (data: UpdateJWTAuthenticatorConfigInterface): Promise<any> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data:[ data ],
         headers: {
