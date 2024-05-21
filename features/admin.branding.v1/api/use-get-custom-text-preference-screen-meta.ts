@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
-import { AppConstants } from "../../admin.core.v1/constants/app-constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { HttpMethods } from "@wso2is/core/models";
 import { CustomTextPreferenceScreenMetaInterface } from "../models/custom-text-preference";
 
 /**

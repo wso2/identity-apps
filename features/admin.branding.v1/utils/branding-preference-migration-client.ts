@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { BrandingPreferenceAPIResponseInterface } from "@wso2is/common.branding.v1/models";
 import cloneDeep from "lodash-es/cloneDeep";
-import { BrandingPreferenceAPIResponseInterface } from "../../common.branding.v1/models";
 import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
 
 /**

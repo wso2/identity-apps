@@ -18,6 +18,15 @@
 
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
+import {
+    BrandingPreferenceInterface,
+    BrandingPreferenceThemeInterface,
+    BrandingSubFeatures,
+    PredefinedThemes,
+    PreviewScreenType
+} from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FormPropsInterface } from "@wso2is/form";
 import { Heading, Link, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
@@ -47,15 +56,6 @@ import {
 import { BrandingPreferencePreview } from "./preview";
 import ScreenDropdown from "./screen-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import { AppState } from "../../admin.core.v1/store";
-import { commonConfig } from "../../admin.extensions.v1/configs";
-import {
-    BrandingPreferenceInterface,
-    BrandingPreferenceThemeInterface,
-    BrandingSubFeatures,
-    PredefinedThemes,
-    PreviewScreenType
-} from "../../common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";

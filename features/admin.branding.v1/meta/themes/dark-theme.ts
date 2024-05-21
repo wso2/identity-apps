@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ThemeConfigInterface } from "../../../common.branding.v1/models";
+import { ThemeConfigInterface } from "@wso2is/common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../../constants";
 
 export const DARK_THEME: ThemeConfigInterface = {

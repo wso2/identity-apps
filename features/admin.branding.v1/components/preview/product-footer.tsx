@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -24,8 +26,6 @@ import React, {
     ReactElement
 } from "react";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../admin.core.v1/store";
-import { BrandingPreferenceInterface } from "../../../common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../../constants";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";

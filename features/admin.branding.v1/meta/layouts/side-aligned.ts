@@ -19,7 +19,7 @@
 import {
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceSideAlignedLayoutInterface
-} from "../../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 
 /**
  * Initial values of the left aligned and right aligned layouts properties.
