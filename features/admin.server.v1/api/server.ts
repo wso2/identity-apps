@@ -29,7 +29,9 @@ import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosResponse } from "axios";
 import { ServerConstants } from "../constants/server";
 import {
-    AdminAdvisoryBannerConfigurationInterface, LogType, RemoteLogPublishingConfigurationInterface
+    AdminAdvisoryBannerConfigurationInterface,
+    LogType,
+    RemoteLogPublishingConfigurationInterface
 } from "../models/server";
 
 /**
