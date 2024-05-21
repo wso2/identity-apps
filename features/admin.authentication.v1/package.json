@@ -20,9 +20,23 @@
         "redux-thunk": "^2.3.0"
     },
     "devDependencies": {
+        "@rollup/plugin-commonjs": "*",
+        "@rollup/plugin-dynamic-import-vars": "*",
+        "@rollup/plugin-image": "^3.0.3",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "*",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@svgr/rollup": "^6.2.1",
         "@types/lodash-es": "^4.17.4",
         "@types/react": "^18.0.18",
-        "@types/react-redux": "^7.1.25"
+        "@types/react-redux": "^7.1.25",
+        "rollup": "^4.17.2",
+        "rollup-plugin-dts": "*",
+        "rollup-plugin-generate-package-json": "^3.2.0",
+        "rollup-plugin-polyfill-node": "^0.13.0",
+        "rollup-plugin-scss": "^4.0.0",
+        "rollup-plugin-styles": "^4.0.0",
+        "rollup-plugin-svg": "^2.0.0"
     },
     "peerDependencies": {
         "@asgardeo/auth-react": "^4.0.1",
