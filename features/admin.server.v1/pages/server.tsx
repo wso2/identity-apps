@@ -17,21 +17,21 @@
  */
 
 import CardContent from "@mui/material/CardContent";
+import Avatar from "@oxygen-ui/react/Avatar";
+import Card from "@oxygen-ui/react/Card";
+import Grid from "@oxygen-ui/react/Grid";
+import Typography from "@oxygen-ui/react/Typography";
 import {
     ArrowLoopRightUserIcon,
     UserBannerIcon,
     UserIcon
 } from "@oxygen-ui/react-icons";
-import Avatar from "@oxygen-ui/react/Avatar";
-import Card from "@oxygen-ui/react/Card";
-import Grid from "@oxygen-ui/react/Grid";
-import Typography from "@oxygen-ui/react/Typography";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Ref } from "semantic-ui-react";
-import { AppConstants, history } from "../../admin.core.v1";
 import "./server.scss";
 
 /**

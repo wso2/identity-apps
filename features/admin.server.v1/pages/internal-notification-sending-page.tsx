@@ -17,6 +17,13 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { getConnectorDetails, updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    UpdateGovernanceConnectorConfigInterface
+} from "@wso2is/admin.server-configurations.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Hint, PageLayout } from "@wso2is/react-components";
@@ -26,13 +33,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
-import { AppConstants, history } from "../../admin.core.v1";
-import { getConnectorDetails, updateGovernanceConnector } from "../../admin.server-configurations.v1/api";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    UpdateGovernanceConnectorConfigInterface
-} from "../../admin.server-configurations.v1/models";
 import { ServerConstants } from "../constants/server";
 
 /**
@@ -105,7 +105,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                         summationOfResponse = false;
                     }
                 });
-                
+
                 setIsNotificationInternallyManaged(summationOfResponse);
             })
             .catch((error: AxiosError) => {
@@ -386,7 +386,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                             "accountManagement.connectors.accountRecovery.properties." +
                             "recoveryNotificationInternallyManage.label") }
                         width={ 16 }
-                        data-componentid={ 
+                        data-componentid={
                             `${componentId}-toggle` }
                         toggle
                         onChange={ (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
