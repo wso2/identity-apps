@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { useCallback } from "react";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
 
 /**
  * Hook to set the connection templates.
- * 
+ *
  * @returns {((templates: Record<string, any>[]) => void)}
  */
 export const useSetConnectionTemplates = (): ((templates: Record<string, any>[]) => void) => {

@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { HelpPanelModal } from "../../../admin.core.v1/components/modals/help-panel-modal";
-import { ModalWithSidePanel } from "../../../admin.core.v1/components";
-import { TierLimitReachErrorModal } from "../../../admin.core.v1/components";
-import useDeploymentConfig from "../../../admin.core.v1/hooks/use-app-configs";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
+import { EventPublisher } from "@wso2is/admin.core.v1";
+import { ModalWithSidePanel, TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components";
+import { HelpPanelModal } from "@wso2is/admin.core.v1/components/modals/help-panel-modal";
+import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -45,7 +45,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import CreateConnectionWizardHelp from "./create-wizard-help";
-import { EventPublisher } from "../../../admin.core.v1";
 import { createConnection, useGetConnectionMetaData } from "../../api/connections";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import {

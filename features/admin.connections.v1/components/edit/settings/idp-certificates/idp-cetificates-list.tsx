@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -35,7 +37,6 @@ import {
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
-import { IdentityProviderManagementConstants } from "../../../../../admin.identity-providers.v1/constants";
 import moment from "moment";
 import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -43,7 +44,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ShowCertificateModal } from "./show-certificate-modal";
-import { AppState, ConfigReducerStateInterface } from "../../../../../admin.core.v1";
 import { updateIDPCertificate } from "../../../../api/connections";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";
 

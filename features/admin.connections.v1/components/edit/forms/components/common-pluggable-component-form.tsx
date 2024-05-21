@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import isUndefined from "lodash-es/isUndefined";
@@ -24,7 +25,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../../../admin.core.v1";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { AuthenticatorSettingsFormModes } from "../../../../models/authenticators";
 import {
