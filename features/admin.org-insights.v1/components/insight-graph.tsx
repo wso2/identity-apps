@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import Card from "@oxygen-ui/react/Card";
+import { AppState, getThemeVariables } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import moment from "moment";
@@ -27,15 +28,14 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import { Dispatch } from "redux";
 import { Placeholder } from "semantic-ui-react";
 import { CustomGraphTooltip } from "./custom-graph-tooltip";
-import { AppState, getThemeVariables } from "../../admin.core.v1";
 import { OrgInsightsConstants } from "../constants/org-insights";
 import { OrgInsightsContext } from "../contexts/org-insights";
 import { ChartDataPoint, DurationOption, GraphLineType, InsightsData, ResourceType } from "../models/insights";
-import { 
-    formatXAxisValue, 
-    formatYAxisValue, 
+import {
+    formatXAxisValue,
+    formatYAxisValue,
     getInsightsForSelectedPeriod,
-    shouldDateBeShownInXAxis 
+    shouldDateBeShownInXAxis
 } from "../utils/insights";
 
 /**
@@ -62,10 +62,10 @@ interface InsightsGraphProps extends IdentifiableComponentInterface {
 
 /**
  * Insights graph component.
- * 
+ *
  * @param props - Props injected to the component.
- * 
- * @returns Insights graph component. 
+ *
+ * @returns Insights graph component.
  */
 export const InsightsGraph: FunctionComponent<InsightsGraphProps> = (props: InsightsGraphProps): ReactElement => {
     const {
@@ -76,9 +76,9 @@ export const InsightsGraph: FunctionComponent<InsightsGraphProps> = (props: Insi
         ["data-componentid"]: componentId
     } = props;
 
-    const { filterQuery, duration, setLastFetchTimestamp } = 
+    const { filterQuery, duration, setLastFetchTimestamp } =
         useContext(OrgInsightsContext);
-    
+
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -128,9 +128,9 @@ export const InsightsGraph: FunctionComponent<InsightsGraphProps> = (props: Insi
     },[ duration, filterQuery, resourceType ]);
 
     return (
-        <>  
-            { 
-                isInsightsLoading 
+        <>
+            {
+                isInsightsLoading
                     ? (
                         <Placeholder fluid className="org-insights-graph-placeholder">
                             <Placeholder.Image />
@@ -147,14 +147,14 @@ export const InsightsGraph: FunctionComponent<InsightsGraphProps> = (props: Insi
                                     : 0 }
                             </h1>
                             <ResponsiveContainer width="100%" height={ 200 }>
-                                <LineChart 
+                                <LineChart
                                     data={ insightsData?.usageData }
                                 >
-                                    <XAxis 
-                                        dataKey="date" 
-                                        tickLine={ false } 
-                                        padding={ { left: 10, right: 10 } } 
-                                        axisLine={ false } 
+                                    <XAxis
+                                        dataKey="date"
+                                        tickLine={ false }
+                                        padding={ { left: 10, right: 10 } }
+                                        axisLine={ false }
                                         dy={ 10 }
                                         tickFormatter={ formatXAxisValue }
                                         ticks={ insightsData?.usageData?.map(
@@ -166,22 +166,22 @@ export const InsightsGraph: FunctionComponent<InsightsGraphProps> = (props: Insi
                                         tick={ { fontSize: 12 } }
                                     />
                                     <Tooltip content={ CustomGraphTooltip } />
-                                    <YAxis 
-                                        allowDecimals={ false } 
-                                        tickLine={ false } 
+                                    <YAxis
+                                        allowDecimals={ false }
+                                        tickLine={ false }
                                         axisLine={ false }
                                         width={ 30 }
                                         tickFormatter={ formatYAxisValue }
                                     />
                                     <CartesianGrid vertical={ false } />
-                                    <Line 
-                                        type="linear" 
-                                        dataKey={ GraphLineType.CURRENT } 
-                                        stroke={ primaryGraphColor ?? OrgInsightsConstants.CURRENT_PERIOD_GRAPH_COLOR } 
+                                    <Line
+                                        type="linear"
+                                        dataKey={ GraphLineType.CURRENT }
+                                        stroke={ primaryGraphColor ?? OrgInsightsConstants.CURRENT_PERIOD_GRAPH_COLOR }
                                         strokeWidth={ 2 }
                                     />
                                 </LineChart>
-                            </ResponsiveContainer>                    
+                            </ResponsiveContainer>
                         </Card>
                     )
             }
