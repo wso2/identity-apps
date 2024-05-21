@@ -27,10 +27,6 @@ import {
 } from "../../__mocks__/application-template";
 import "@testing-library/jest-dom";
 
-declare global {
-    const isOrganizationManagementEnabled: boolean;
-}
-
 describe("[Applications Management Feature] - ApplicationCreationAdapter", () => {
     const useGetApplicationTemplatesMock: jest.SpyInstance = jest.spyOn(
         OauthProtocolSettingsWizardForm, "OauthProtocolSettingsWizardForm");

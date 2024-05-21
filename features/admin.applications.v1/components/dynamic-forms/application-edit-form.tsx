@@ -26,7 +26,6 @@ import {
     PrimaryButton
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import useDynamicFieldValidations from "features/admin.applications.v1/hooks/use-dynamic-field-validation";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import has from "lodash-es/has";
@@ -41,6 +40,7 @@ import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
 import { AppState } from "../../../admin.core.v1";
 import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { updateApplicationDetails } from "../../api";
+import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
 import {
     ApplicationInterface
 } from "../../models";

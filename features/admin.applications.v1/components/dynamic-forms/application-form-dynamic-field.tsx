@@ -47,7 +47,7 @@ export interface ApplicationFormDynamicFieldPropsInterface extends IdentifiableC
 export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
     ApplicationFormDynamicFieldPropsInterface
 >> = (props: PropsWithChildren<ApplicationFormDynamicFieldPropsInterface>): ReactElement => {
-    const { ["data-componentid"]: componentId, field, readOnly, ...rest } = props;
+    const { ["data-componentid"]: componentId, field, form: _form, readOnly, ...rest } = props;
 
     const getDynamicFieldAdapter = (type: DynamicInputFieldTypes): ReactElement => {
         switch (type) {
@@ -59,7 +59,7 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                             margin: "dense"
                         } }
                         aria-label={ field["aria-label"] }
-                        data-componentid={ field["data-componentid"] }
+                        data-componentid={ field.dataComponentId }
                         name={ field.name }
                         type={ field.type }
                         label={ field.label }
@@ -77,7 +77,7 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                             margin: "dense"
                         } }
                         aria-label={ field["aria-label"] }
-                        data-componentid={ field["data-componentid"] }
+                        data-componentid={ field.dataComponentId }
                         name={ field.name }
                         type={ field.type }
                         label={ field.label }
@@ -95,7 +95,7 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                             margin: "dense"
                         } }
                         aria-label={ field["aria-label"] }
-                        data-componentid={ field["data-componentid"] }
+                        data-componentid={ field.dataComponentId }
                         name={ field.name }
                         type={ field.type }
                         label={ field.label }
@@ -115,7 +115,7 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                             margin: "dense"
                         } }
                         aria-label={ field["aria-label"] }
-                        data-componentid={ field["data-componentid"] }
+                        data-componentid={ field.dataComponentId }
                         name={ field.name }
                         type={ field.type }
                         label={ field.label }

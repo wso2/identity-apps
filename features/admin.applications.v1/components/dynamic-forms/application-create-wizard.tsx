@@ -37,6 +37,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import has from "lodash-es/has";
+import pick from "lodash-es/pick";
 import set from "lodash-es/set";
 import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -153,22 +154,31 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @returns Moderated initial values.
      */
     const moderateInitialValues = (
-        initialValues: MainApplicationInterface,
+        initialValues: Partial<MainApplicationInterface>,
         templatePayload: MainApplicationInterface
-    ): MainApplicationInterface => {
-        if (initialValues) {
+    ): Partial<MainApplicationInterface> => {
+        if (initialValues?.name) {
             initialValues.name = generateUniqueApplicationName(templatePayload?.name);
         }
 
         return initialValues;
     };
 
-    const formInitialValues: MainApplicationInterface = useMemo(() => {
+    const formInitialValues: Partial<MainApplicationInterface> = useMemo(() => {
         if (!templateData?.payload) {
             return null;
         }
 
-        const initialValues: MainApplicationInterface = cloneDeep(templateData?.payload);
+        let initialValues: Partial<MainApplicationInterface>;
+
+        if (templateMetadata?.create?.form?.submitDefinedFieldsOnly) {
+            const paths: string[] = templateMetadata?.create?.form?.fields.map(
+                (field: DynamicFieldInterface) => field?.name);
+
+            initialValues = pick(templateData?.payload, paths);
+        } else {
+            initialValues = cloneDeep(templateData?.payload);
+        }
 
         return moderateInitialValues(initialValues, templateData?.payload);
     }, [ templateData?.payload, possibleListOfDuplicateApplications ]);
@@ -539,12 +549,17 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                     />
                                     { templateMetadata?.create?.isApplicationSharable && isApplicationSharable && (
                                         <Grid>
-                                            <Grid.Row columns={ 1 } className="application-share-field">
+                                            <Grid.Row
+                                                columns={ 1 }
+                                                className="application-share-field"
+                                                data-componentid={ `${componentId}-share-field` }
+                                            >
                                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                                     <FormControl component="fieldset" variant="standard" margin="dense">
                                                         <FormControlLabel
                                                             control={ (
                                                                 <Checkbox
+                                                                    data-componentid="test"
                                                                     color="primary"
                                                                     checked={ isApplicationSharingEnabled }
                                                                     onChange={ (e: ChangeEvent<HTMLInputElement>) => {

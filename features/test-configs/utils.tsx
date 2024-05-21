@@ -26,6 +26,7 @@ import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
 // import { AuthenticateUtils } from "../src/features/authentication/utils/authenticate-utils";
 // import { PreLoader } from "../src/features/core/components/pre-loader/pre-loader";
 import { AppConfigProvider } from "../admin.core.v1/providers/app-config-provider";
+import GlobalVariablesProvider from "../admin.core.v1/providers/global-variables-provider";
 
 /**
  * Custom render method to includes things like global context providers, data stores, etc.
@@ -61,19 +62,26 @@ const render = (
         //     fallback={ <PreLoader /> }
         //     getAuthParams={ AuthenticateUtils.getAuthParams }
         // >
-            <Provider store={ store }>
-                <AppConfigProvider>
-                    <AccessControlProvider
-                        allowedScopes={ allowedScopes }
-                        features={ featureConfig }
-                        isLegacyRuntimeEnabled={ false }
-                        organizationType="FIRST_LEVEL_ORGANIZATION"
-                    >
-                        { children }
-                    </AccessControlProvider>
-                </AppConfigProvider>
-            </Provider>
-            // </AuthProvider>
+            <GlobalVariablesProvider
+                value={ {
+                    isAdaptiveAuthenticationAvailable: true,
+                    isOrganizationManagementEnabled: true
+                } }
+            >
+                <Provider store={ store }>
+                    <AppConfigProvider>
+                        <AccessControlProvider
+                            allowedScopes={ allowedScopes }
+                            features={ featureConfig }
+                            isLegacyRuntimeEnabled={ false }
+                            organizationType="FIRST_LEVEL_ORGANIZATION"
+                        >
+                            { children }
+                        </AccessControlProvider>
+                    </AppConfigProvider>
+                </Provider>
+            </GlobalVariablesProvider>
+        // </AuthProvider>
         );
     };
 
