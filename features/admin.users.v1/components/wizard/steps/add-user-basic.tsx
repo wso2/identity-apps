@@ -16,26 +16,26 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { useUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
-import { AppConstants } from "../../../../admin.core.v1/constants";
-import { history } from "../../../../admin.core.v1/helpers/history";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
-import { EventPublisher } from "../../../../admin.core.v1/utils/event-publisher";
-import { SharedUserStoreUtils } from "../../../../admin.core.v1/utils/user-store-utils";
-import { userConfig } from "../../../../admin.extensions.v1/configs/user";
-import { userstoresConfig } from "../../../../admin.extensions.v1/configs/userstores";
-import {
-    ServerConfigurationsConstants
-} from "../../../../admin.server-configurations.v1/constants/server-configurations-constants";
-import { useUserStore } from "../../../../admin.userstores.v1/api/user-stores";
-import { USERSTORE_REGEX_PROPERTIES } from "../../../../admin.userstores.v1/constants";
-import { UserStoreProperty } from "../../../../admin.userstores.v1/models/user-stores";
-import { ValidationDataInterface, ValidationFormInterface } from "../../../../admin.validation.v1/models";
 import { getUsersList } from "../../../api/users";
 import {
     AskPasswordOptionTypes,

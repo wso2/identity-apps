@@ -15,10 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import useRequest, { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig } from "axios";
-import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../../../admin.core.v1/hooks/use-request";
-import { store } from "../../../../admin.core.v1/store";
 import { InvitationsInterface } from "../models/invite";
 
 /**
