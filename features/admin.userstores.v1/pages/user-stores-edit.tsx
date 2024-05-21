@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -27,7 +28,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,
