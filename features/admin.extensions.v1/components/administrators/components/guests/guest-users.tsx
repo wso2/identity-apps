@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    UserListInterface
+} from "@wso2is/admin.core.v1";
+import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, ListLayout, Message, Text, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -24,15 +33,6 @@ import { useSelector } from "react-redux";
 import { Dropdown, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { GuestUsersList } from "./guest-users-list";
 import { OnboardedGuestUsersList } from "./onboarded-guest-user-list";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    UserListInterface
-} from "../../../../../admin.core.v1";
-import { PRIMARY_USERSTORE } from "../../../../../admin.userstores.v1/constants/user-store-constants";
-import { InvitationStatus, UserInviteInterface } from "../../../../../admin.users.v1/models";
 import { AdministratorConstants } from "../../constants";
 
 /**

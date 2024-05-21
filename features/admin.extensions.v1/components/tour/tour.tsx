@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { history } from "@wso2is/admin.core.v1/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon, Heading, PrimaryButton, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import Tour, { ReactourStep } from "reactour";
-import { AppConstants } from "../../../admin.core.v1/constants";
-import { history } from "../../../admin.core.v1/helpers";
 import {
     ReactComponent as AsgardioTourWelcomeIllustration
 } from "../../assets/illustrations/asgardio-tour-welcome-illustration.svg";
@@ -61,8 +61,8 @@ const steps: ReactourStep[] = [ {
                         icon={ AsgardioTourWelcomeIllustration }
                     />
                     <Text className="console-welcome-tour-step-description" muted>
-                        Securing your applications and its users takes just a few minutes with Asgardeo. 
-                        We&apos;ll handle the hassle of authentication & access management, 
+                        Securing your applications and its users takes just a few minutes with Asgardeo.
+                        We&apos;ll handle the hassle of authentication & access management,
                         so you can focus on your business.
                     </Text>
                 </div>

@@ -17,6 +17,15 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
+import {
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -55,15 +64,6 @@ import { Dispatch } from "redux";
 import { Divider, DropdownProps, Grid, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { CreateApplicationRoleWizard } from "./create-app-role-wizard";
 import { EditApplicationRole } from "./edit-app-role";
-import { ApplicationInterface } from "../../../../../admin.applications.v1/models";
-import {
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../../../../admin.core.v1";
-import { OrganizationResponseInterface } from "../../../../../admin.organizations.v1/models";
 import { deleteRole, getApplicationRolesList, useSharedApplicationData } from "../../api/application-roles";
 import {
     ApplicationRolesResponseInterface,

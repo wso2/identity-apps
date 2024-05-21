@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import {
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations, history
+} from "@wso2is/admin.core.v1";
+import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
 import {
     LoadableComponentInterface,
@@ -37,20 +47,10 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } f
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import {
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations, history
-} from "../../../../admin.core.v1";
-import { RealmConfigInterface } from "../../../../admin.server-configurations.v1";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
-import { UserBasicInterface, UserListInterface } from "../../../../admin.users.v1/models";
+import { userstoresConfig } from "../../../configs";
 import { administratorConfig } from "../../../configs/administrator";
 import { SCIMConfigs } from "../../../configs/scim";
 import { AdministratorConstants, UserAccountTypes } from "../constants";
-import { UserManagementUtils } from "../../../../admin.users.v1/utils";
-import { userstoresConfig } from "../../../configs";
 
 /**
  * Prop types for the all users list component.

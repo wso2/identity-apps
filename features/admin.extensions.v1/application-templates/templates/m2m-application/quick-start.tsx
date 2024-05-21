@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import {
+    ApplicationInterface,
+    ApplicationTemplateInterface
+} from "@wso2is/admin.applications.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ResourceTab,
@@ -26,10 +30,6 @@ import React, {
     ReactElement
 } from "react";
 import { Grid } from "semantic-ui-react";
-import {
-    ApplicationInterface,
-    ApplicationTemplateInterface
-} from "../../../../admin.applications.v1/models";
 import { M2MCustomConfiguration } from "../../../application-templates/shared/components";
 
 /**

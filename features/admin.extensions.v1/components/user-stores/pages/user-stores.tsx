@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,17 @@
  * under the License.
  */
 
+import {
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    history,
+    sortList
+} from "@wso2is/admin.core.v1";
+import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import { UserStoresList } from "@wso2is/admin.userstores.v1/components";
+import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, ListLayout, PageLayout, useDocumentation } from "@wso2is/react-components";
@@ -24,17 +35,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { PaginationProps } from "semantic-ui-react";
-import {
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    history,
-    sortList
-} from "../../../../admin.core.v1";
-import { useUserStores } from "../../../../admin.userstores.v1/api";
-import { UserStoresList } from "../../../../admin.userstores.v1/components";
-import { UserStoreManagementConstants } from "../../../../admin.userstores.v1/constants";
-import { UserStoreListItem } from "../../../../admin.userstores.v1/models/user-stores";
 import { RemoteUserStoreConstants } from "../constants";
 
 /**

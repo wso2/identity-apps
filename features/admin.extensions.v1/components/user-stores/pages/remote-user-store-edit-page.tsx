@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,18 @@
  * under the License.
  */
 
+import { URLFragmentTypes } from "@wso2is/admin.applications.v1/models";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { getAType, getAUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { getDatabaseAvatarGraphic } from "@wso2is/admin.userstores.v1/configs/ui";
+import { DISABLED } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import {
+    CategorizedProperties,
+    UserStore,
+    UserStoreProperty,
+    UserstoreType
+} from "@wso2is/admin.userstores.v1/models/user-stores";
+import { reOrganizeProperties } from "@wso2is/admin.userstores.v1/utils/userstore-utils";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -29,18 +41,6 @@ import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Icon, TabProps } from "semantic-ui-react";
-import { URLFragmentTypes } from "../../../../admin.applications.v1/models";
-import { AppConstants, history } from "../../../../admin.core.v1";
-import { getAType, getAUserStore } from "../../../../admin.userstores.v1/api/user-stores";
-import { getDatabaseAvatarGraphic } from "../../../../admin.userstores.v1/configs/ui";
-import { DISABLED } from "../../../../admin.userstores.v1/constants/user-store-constants";
-import {
-    CategorizedProperties,
-    UserStore,
-    UserStoreProperty,
-    UserstoreType
-} from "../../../../admin.userstores.v1/models/user-stores";
-import { reOrganizeProperties } from "../../../../admin.userstores.v1/utils/userstore-utils";
 import { getAgentConnections } from "../api";
 import { AttributeMappings, SetupGuideTab, UserStoreGeneralSettings } from "../components";
 import { RemoteUserStoreConstants } from "../constants";

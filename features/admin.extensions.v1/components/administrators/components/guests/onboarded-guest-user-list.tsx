@@ -17,6 +17,25 @@
  */
 
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import {
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    UserRoleInterface,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
+import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import {
+    InternalAdminUserListInterface,
+    UserBasicInterface,
+    UserListInterface
+} from "@wso2is/admin.users.v1/models";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
@@ -43,25 +62,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import {
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    UserRoleInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../../../../admin.core.v1";
-import { updateRoleDetails } from "../../../../../admin.roles.v2/api/roles";
-import { PatchRoleDataInterface } from "../../../../../admin.roles.v2/models/roles";
-import { RealmConfigInterface } from "../../../../../admin.server-configurations.v1";
-import { deleteGuestUser } from "../../../../../admin.users.v1/api";
-import { UserManagementConstants } from "../../../../../admin.users.v1/constants";
-import {
-    InternalAdminUserListInterface,
-    UserBasicInterface,
-    UserListInterface
-} from "../../../../../admin.users.v1/models";
-import { UserManagementUtils } from "../../../../../admin.users.v1/utils";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
 import {

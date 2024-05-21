@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import {
+    ApplicationInterface,
+    ApplicationListInterface,
+    ApplicationTemplateInterface,
+    URLFragmentTypes
+} from "@wso2is/admin.applications.v1/models";
+import { history } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, useDocumentation } from "@wso2is/react-components";
@@ -34,15 +43,6 @@ import VueIcon from "./assets/vue-logo-icon.svg";
 import { IntegrateSDKs } from "./integrate-sdks/integrate-sdks";
 import { SupportedSPATechnologyTypes } from "./models";
 import { TryoutSamples } from "./tryout-samples";
-import { getApplicationList } from "../../../../admin.applications.v1/api";
-import {
-    ApplicationInterface,
-    ApplicationListInterface,
-    ApplicationTemplateInterface,
-    URLFragmentTypes
-} from "../../../../admin.applications.v1/models";
-import { history } from "../../../../admin.core.v1";
-import { AppState } from "../../../../admin.core.v1/store";
 import { QuickStartModes } from "../../shared";
 import { QuickStartPanelOverview, SPACustomConfiguration, SPATechnologySelection } from "../../shared/components";
 import { SDKMeta } from "../../templates/single-page-application/meta";
