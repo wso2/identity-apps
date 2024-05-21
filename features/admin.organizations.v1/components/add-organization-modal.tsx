@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, EventPublisher, TierLimitReachErrorModal } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -25,7 +26,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { AppState, EventPublisher, TierLimitReachErrorModal } from "../../admin.core.v1";
 import { addOrganization } from "../api";
 import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,

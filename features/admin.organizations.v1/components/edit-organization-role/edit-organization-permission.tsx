@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { OrganizationPermissionList } from "./organization-role-permission";
-import { AppState } from "../../../admin.core.v1";
 import { patchOrganizationRoleDetails } from "../../api";
 import { OrganizationResponseInterface, OrganizationRoleInterface, TreeNode } from "../../models";
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,10 +23,10 @@ import {
     HttpRequestConfig,
     HttpResponse
 } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1";
+import { CreateRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1";
-import { CreateRoleInterface } from "../../admin.roles.v2/models/roles";
 import { OrganizationRoleListResponseInterface, PatchOrganizationRoleDataInterface } from "../models";
 
 /**
@@ -222,7 +222,7 @@ export const getOrganizationRoleById = (organizationId: string, roleId: string):
  */
 export const getOrganizationPermissions = (): Promise<any> => {
     return new Promise((resolve: (
-        value: { 
+        value: {
             data: { displayName: string, resourcePath: string }[],
             status: number
         }

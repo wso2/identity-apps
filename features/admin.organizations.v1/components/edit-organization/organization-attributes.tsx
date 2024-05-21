@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AlertLevels,
@@ -39,7 +40,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../admin.core.v1";
 import { patchOrganization } from "../../api";
 import {
     OrganizationAttributesInterface,
