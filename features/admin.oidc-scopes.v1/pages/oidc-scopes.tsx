@@ -17,6 +17,8 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "@wso2is/admin.core.v1";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -26,8 +28,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
-import { ClaimManagementConstants } from "../../admin.claims.v1/constants";
-import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../admin.core.v1";
 import { useOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";

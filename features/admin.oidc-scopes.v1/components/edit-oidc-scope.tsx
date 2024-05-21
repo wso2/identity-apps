@@ -17,6 +17,9 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AttributeSelectionWizardOtherDialect } from
+    "@wso2is/admin.applications.v1/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
+import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -47,9 +50,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AttributeSelectionWizardOtherDialect } from
-    "../../admin.applications.v1/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
-import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../admin.core.v1";
 import { updateOIDCScopeDetails } from "../api";
 import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
