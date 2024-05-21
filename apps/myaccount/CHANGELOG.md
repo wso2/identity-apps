@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.6.3
+
+### Patch Changes
+
+- [#6268](https://github.com/wso2/identity-apps/pull/6268) [`e778be5d52269b152402be101ee29eb102b379a3`](https://github.com/wso2/identity-apps/commit/e778be5d52269b152402be101ee29eb102b379a3) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n keys in myaccount recovery section error notifications
+
+- Updated dependencies [[`2c748278a1c389549fece5d77f29d79e9d0c3447`](https://github.com/wso2/identity-apps/commit/2c748278a1c389549fece5d77f29d79e9d0c3447)]:
+  - @wso2is/features@2.20.3
+
 ## 2.6.2
 
 ### Patch Changes
