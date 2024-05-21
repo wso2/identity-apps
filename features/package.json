@@ -7,7 +7,7 @@
     "license": "Apache-2.0",
     "scripts": {
         "build": "pnpm build",
-        "compile": "pnpm rollup -c",
+        "bundle": "node scripts/compile-features.js",
         "postinstall": "node scripts/post-install.js",
         "copy:themes:features": "node scripts/copy-themes-to-features.js",
         "clean:themes:features": "pnpm rimraf ./themes",
