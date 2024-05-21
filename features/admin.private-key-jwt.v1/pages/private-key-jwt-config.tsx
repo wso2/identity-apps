@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { getSettingsSectionIcons } from "@wso2is/admin.server-configurations.v1";
+import { SettingsSection } from "@wso2is/admin.server-configurations.v1/settings/settings-section";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { AppConstants, history } from "../../admin.core.v1";
-import { getSettingsSectionIcons } from "../../admin.server-configurations.v1";
-import { SettingsSection } from "../../admin.server-configurations.v1/settings/settings-section";
 import { useTokenReuseConfigData } from "../api";
 
 /**
@@ -67,7 +67,7 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
                 description={ t("jwtPrivateKeyConfiguration:description") }
                 icon={ getSettingsSectionIcons().jwtPrivateKeyValidation }
                 header={ t(
-                    "jwtPrivateKeyConfiguration:pageTitle" 
+                    "jwtPrivateKeyConfiguration:pageTitle"
                 ) }
                 onPrimaryActionClick={ handleSelection }
                 primaryAction={ t("common:configure") }

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import {
     AlertLevels, IdentifiableComponentInterface
 } from "@wso2is/core/models";
@@ -38,7 +39,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message } from "semantic-ui-react";
-import { AppConstants, history } from "../../admin.core.v1";
 import { updateJWTConfig, useTokenReuseConfigData } from "../api";
 
 /**
@@ -76,7 +76,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
     };
 
     const resolveConnectorUpdateErrorMessage = (error: AxiosError): string => {
-        
+
         return (
             t("jwtPrivateKeyConfiguration:notifications.error.description",
                 { description: error.response.data.description })
@@ -150,8 +150,8 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         return (
             <>
                 <Checkbox
-                    label={ enableTokenReuse 
-                        ? t("jwtPrivateKeyConfiguration:tokenReuseEnabled") 
+                    label={ enableTokenReuse
+                        ? t("jwtPrivateKeyConfiguration:tokenReuseEnabled")
                         : t("jwtPrivateKeyConfiguration:tokenReuseDisabled") }
                     toggle
                     onChange={ handleToggle }
