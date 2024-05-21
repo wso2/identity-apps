@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
@@ -23,7 +24,6 @@ import { Certificate as CertificateDisplay, Code, GenericIcon } from "@wso2is/re
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, ModalProps, Segment } from "semantic-ui-react";
-import { getCertificateIllustrations } from "../../../admin.core.v1";
 
 /**
  * Proptypes for the certificate form field modal component.

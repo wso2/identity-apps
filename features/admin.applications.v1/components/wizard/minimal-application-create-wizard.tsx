@@ -19,6 +19,26 @@
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import {
+    AppConstants,
+    AppState,
+    CORSOriginsListInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    ModalWithSidePanel,
+    getCORSOrigins,
+    getTechnologyLogos,
+    history,
+    store
+} from "@wso2is/admin.core.v1";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { RoleAudienceTypes, RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -59,26 +79,6 @@ import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-u
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
-import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
-import {
-    AppConstants,
-    AppState,
-    CORSOriginsListInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    ModalWithSidePanel,
-    getCORSOrigins,
-    getTechnologyLogos,
-    history,
-    store
-} from "../../../admin.core.v1";
-import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
-import useGlobalVariables from "../../../admin.core.v1/hooks/use-global-variables";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../../admin.extensions.v1";
-import { OrganizationType } from "../../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { RoleAudienceTypes, RoleConstants } from "../../../admin.roles.v2/constants/role-constants";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";

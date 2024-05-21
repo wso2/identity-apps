@@ -17,6 +17,15 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
+import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { SubjectAttributeListItem } from "@wso2is/admin.identity-providers.v1/components/settings";
+import { useOIDCScopesList } from "@wso2is/admin.oidc-scopes.v1/api/oidc-scopes";
+import {
+    OIDCScopesClaimsListInterface,
+    OIDCScopesListInterface
+} from "@wso2is/admin.oidc-scopes.v1/models/oidc-scopes";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -41,15 +50,6 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
-import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../admin.claims.v1/api";
-import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../admin.core.v1";
-import { applicationConfig } from "../../../../admin.extensions.v1";
-import { SubjectAttributeListItem } from "../../../../admin.identity-providers.v1/components/settings";
-import { useOIDCScopesList } from "../../../../admin.oidc-scopes.v1/api/oidc-scopes";
-import {
-    OIDCScopesClaimsListInterface,
-    OIDCScopesListInterface
-} from "../../../../admin.oidc-scopes.v1/models/oidc-scopes";
 import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/";
 import {
     AppClaimInterface,

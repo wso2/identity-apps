@@ -17,6 +17,7 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -33,7 +34,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Header } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../admin.core.v1";
 import { patchScopesOfAuthorizedAPI } from "../../api/api-authorization";
 import {
     AuthorizedAPIListItemInterface,

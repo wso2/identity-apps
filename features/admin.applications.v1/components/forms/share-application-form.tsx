@@ -17,6 +17,21 @@
  */
 
 import Collapse from "@mui/material/Collapse";
+import { AppState } from "@wso2is/admin.core.v1";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import {
+    getOrganizations,
+    getSharedOrganizations,
+    shareApplication,
+    stopSharingApplication,
+    unshareApplication
+} from "@wso2is/admin.organizations.v1/api";
+import {
+    OrganizationInterface,
+    OrganizationListInterface,
+    OrganizationResponseInterface,
+    ShareApplicationRequestInterface
+} from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -52,21 +67,6 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
-import { AppState } from "../../../admin.core.v1";
-import useGlobalVariables from "../../../admin.core.v1/hooks/use-global-variables";
-import {
-    getOrganizations,
-    getSharedOrganizations,
-    shareApplication,
-    stopSharingApplication,
-    unshareApplication
-} from "../../../admin.organizations.v1/api";
-import {
-    OrganizationInterface,
-    OrganizationListInterface,
-    OrganizationResponseInterface,
-    ShareApplicationRequestInterface
-} from "../../../admin.organizations.v1/models";
 import { ApplicationInterface, additionalSpProperty } from "../../models";
 
 enum ShareType {
