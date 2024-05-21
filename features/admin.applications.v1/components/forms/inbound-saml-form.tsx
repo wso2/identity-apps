@@ -15,6 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { applicationConfig, commonConfig } from "@wso2is/admin.extensions.v1";
+import { getAvailableNameIDFormats } from "@wso2is/admin.identity-providers.v1/components/utils/saml-idp-utils";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { CheckboxChild, DropdownChild, Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -26,9 +29,6 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
-import { applicationConfig, commonConfig } from "../../../admin.extensions.v1";
-import { AppState, ConfigReducerStateInterface } from "../../../admin.core.v1";
-import { getAvailableNameIDFormats } from "../../../admin.identity-providers.v1/components/utils/saml-idp-utils";
 import {
     ApplicationInterface,
     CertificateInterface,

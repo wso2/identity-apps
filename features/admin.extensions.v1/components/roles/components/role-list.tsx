@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { APPLICATION_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 import { RoleConstants } from "@wso2is/core/constants";
 import {
     LoadableComponentInterface,
@@ -37,8 +39,6 @@ import {
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../../../admin.core.v1";
-import { APPLICATION_DOMAIN } from "../../../../admin.roles.v2/constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**

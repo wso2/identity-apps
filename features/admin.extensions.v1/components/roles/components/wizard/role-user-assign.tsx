@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getUsersList } from "@wso2is/admin.users.v1/api/users";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { LoadableComponentInterface, RolesMemberInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import {
@@ -45,9 +48,6 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../../../admin.core.v1";
-import { getUsersList } from "../../../../../admin.users.v1/api/users";
-import { UserBasicInterface, UserListInterface } from "../../../../../admin.users.v1/models/user";
 import { userstoresConfig } from "../../../../configs/userstores";
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { deleteUserStore, patchUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { DISABLED } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import {
+    CategorizedProperties,
+    PatchData,
+    TypeProperty,
+    UserStore,
+    UserStoreProperty
+} from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/form";
@@ -42,16 +52,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, Grid, Icon, List, Segment } from "semantic-ui-react";
-import { AppConstants, AppState, history } from "../../../../../admin.core.v1";
-import { deleteUserStore, patchUserStore } from "../../../../../admin.userstores.v1/api/user-stores";
-import { DISABLED } from "../../../../../admin.userstores.v1/constants/user-store-constants";
-import {
-    CategorizedProperties,
-    PatchData,
-    TypeProperty,
-    UserStore,
-    UserStoreProperty
-} from "../../../../../admin.userstores.v1/models/user-stores";
 import { disconnectAgentConnection, generateToken, getAgentConnections, regenerateToken } from "../../api";
 import { AgentConnectionInterface, RegenerateTokenInterface } from "../../models";
 

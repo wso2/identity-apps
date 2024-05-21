@@ -17,16 +17,16 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import isEmpty from "lodash-es/isEmpty";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import { ApplicationManagementConstants } from "../constants";
 import {
     AdaptiveAuthTemplateCategoryListItemInterface,

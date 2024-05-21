@@ -16,6 +16,17 @@
  * under the License.
  */
 
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { applicationConfig, identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import {
+    IdentityProviderManagementConstants
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import {
+    FederatedAuthenticatorInterface,
+    GenericAuthenticatorInterface,
+    SupportedAuthenticators
+} from "@wso2is/admin.identity-providers.v1/models";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,17 +38,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
-import { applicationConfig, identityProviderConfig } from "../../../../../admin.extensions.v1";
-import { AuthenticatorManagementConstants } from "../../../../../admin.connections.v1/constants/autheticator-constants";
-import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../../admin.core.v1";
-import {
-    IdentityProviderManagementConstants
-} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import {
-    FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface,
-    SupportedAuthenticators
-} from "../../../../../admin.identity-providers.v1/models";
 import { getSignInFlowIcons } from "../../../../configs/ui";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {

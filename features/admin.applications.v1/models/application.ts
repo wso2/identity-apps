@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { AssociatedRolesInterface } from "@wso2is/admin.roles.v2/models";
 import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,
@@ -23,9 +26,6 @@ import {
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
-import FeatureStatusLabel from "../../admin.extensions.v1/components/feature-gate/models/feature-gate";
-import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models/identity-provider";
-import { AssociatedRolesInterface } from "../../admin.roles.v2/models";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**

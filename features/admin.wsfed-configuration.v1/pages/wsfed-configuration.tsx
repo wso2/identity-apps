@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -27,7 +28,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import { updateWSFederationConfigurations, useWSFederationConfig } from "../api/wsfed-configuration";
 import {
     WSFederationConfigAPIResponseInterface,

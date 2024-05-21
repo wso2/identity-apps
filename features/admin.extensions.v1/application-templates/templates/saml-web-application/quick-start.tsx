@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import {
+    ApplicationInterface,
+    ApplicationTemplateInterface,
+    URLFragmentTypes
+} from "@wso2is/admin.applications.v1/models";
+import { history } from "@wso2is/admin.core.v1";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -24,13 +31,6 @@ import { IntegrateSDKs } from "./integrate-sdks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalSAMLAppTechnologyTypes } from "./models";
 import { TryoutSamples } from "./tryout-samples";
-import {
-    ApplicationInterface,
-    ApplicationTemplateInterface,
-    URLFragmentTypes
-} from "../../../../admin.applications.v1/models";
-import { history } from "../../../../admin.core.v1";
-import { getTechnologyLogos } from "../../../../admin.core.v1/configs";
 import JavaLogo from "../../../assets/images/icons/java-logo.svg";
 import DotNetLogo from "../../../assets/images/icons/net-logo.svg";
 import PerlLogo from "../../../assets/images/icons/perl-logo.svg";

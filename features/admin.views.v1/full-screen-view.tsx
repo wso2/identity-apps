@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    AppState,
+    AppUtils,
+    FeatureConfigInterface,
+    ProtectedRoute,
+    RouteUtils,
+    getEmptyPlaceholderIllustrations,
+    getFullScreenViewRoutes
+} from "@wso2is/admin.core.v1";
 import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
@@ -37,16 +47,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import {
-    AppConstants,
-    AppState,
-    AppUtils,
-    FeatureConfigInterface,
-    ProtectedRoute,
-    RouteUtils,
-    getEmptyPlaceholderIllustrations,
-    getFullScreenViewRoutes
-} from "../admin.core.v1";
 
 /**
  * Full Screen View Prop types.

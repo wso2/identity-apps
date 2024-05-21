@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useWSFederationConfig } from "@wso2is/admin.wsfed-configuration.v1/api/wsfed-configuration";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -25,7 +26,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid } from "semantic-ui-react";
-import { useWSFederationConfig } from "../../../admin.wsfed-configuration.v1/api/wsfed-configuration";
 import { getHelpPanelIcons } from "../../configs/ui";
 import { WSFederationApplicationConfigurationInterface } from "../../models";
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,19 +17,19 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../../../../admin.core.v1/store";
-import { 
-    AuthorizedAPIListItemInterface, 
-    AuthorizedPermissionListItemInterface, 
-    PolicyInterface, 
-    SearchedAPIListItemInterface 
+import {
+    AuthorizedAPIListItemInterface,
+    AuthorizedPermissionListItemInterface,
+    PolicyInterface,
+    SearchedAPIListItemInterface
 } from "../../models";
 
 /**
@@ -71,24 +71,24 @@ export const useSubscribedAPIResources = <Data = AuthorizedAPIListItemInterface[
 
 /**
  * Unsubscribe subscribed API resources.
- * 
+ *
  * @param appId - application ID.
  * @param apiId - API ID.
  * @returns `Promise<null | IdentityAppsApiException>`
  * @throws `IdentityAppsApiException`
  */
 export const unsubscribeAPIResources = (appId: string, apiId: string): Promise<null | IdentityAppsApiException> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }` + 
+        url: `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }` +
             `/authorized-apis/${ apiId }`
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 204) {
@@ -120,7 +120,7 @@ export const unsubscribeAPIResources = (appId: string, apiId: string): Promise<n
  * @returns `Promise<AuthorizedAPIListItemInterface[]>`
  * @throws `IdentityAppsApiException`
  */
-export const useScopesOfAPIResources = 
+export const useScopesOfAPIResources =
     <Data = AuthorizedPermissionListItemInterface[], Error = RequestErrorInterface>(
         apiResourceId: string
     ): RequestResultInterface<Data, Error> => {
@@ -147,7 +147,7 @@ export const useScopesOfAPIResources =
 
 /**
  * Create authorized API resource.
- * 
+ *
  * @param appId - application ID.
  * @param apiId - API ID.
  * @param addedScopes - added scopes.
@@ -156,7 +156,7 @@ export const useScopesOfAPIResources =
  */
 export const createAuthorizedAPIResource = (appId: string, apiId: string, scopes: string[], policyIdentifier: string)
     : Promise<null | IdentityAppsApiException> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: {
             apiId,
@@ -170,7 +170,7 @@ export const createAuthorizedAPIResource = (appId: string, apiId: string, scopes
         method: HttpMethods.POST,
         url: `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }/authorized-apis`
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 201) {
@@ -198,7 +198,7 @@ export const createAuthorizedAPIResource = (appId: string, apiId: string, scopes
 
 /**
  * Unsubscribe subscribed API resources.
- * 
+ *
  * @param appId - application ID.
  * @param apiId - API ID.
  * @returns `Promise<null | IdentityAppsApiException>`
@@ -206,7 +206,7 @@ export const createAuthorizedAPIResource = (appId: string, apiId: string, scopes
  */
 export const patchScopesOfAPIResource = (appId: string, apiId: string, addedScopes: string[], deletedScopes: string[])
     : Promise<null | IdentityAppsApiException> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: {
             addedPermissions: addedScopes,
@@ -217,10 +217,10 @@ export const patchScopesOfAPIResource = (appId: string, apiId: string, addedScop
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }` + 
+        url: `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }` +
             `/authorized-apis/${ apiId }`
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
@@ -278,7 +278,7 @@ export const usePolicies = <Data = PolicyInterface, Error = RequestErrorInterfac
 
 /**
  * Unsubscribe subscribed API resources.
- * 
+ *
  * @param appId - application ID.
  * @param apiId - API ID.
  * @returns `Promise<null | IdentityAppsApiException>`
@@ -286,7 +286,7 @@ export const usePolicies = <Data = PolicyInterface, Error = RequestErrorInterfac
  */
 export const patchPolicies = (appId: string, addedPolicies: string[], removedPolicies: string[])
     : Promise<null | IdentityAppsApiException> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: {
             added_policies: addedPolicies,
@@ -299,7 +299,7 @@ export const patchPolicies = (appId: string, addedPolicies: string[], removedPol
         method: HttpMethods.PATCH,
         url: `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }/policy`
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 204) {
@@ -326,7 +326,7 @@ export const patchPolicies = (appId: string, addedPolicies: string[], removedPol
 
 /**
  * Search API resources
- * 
+ *
  * @param apiResourceIds - API resource IDs.
  * @param attributes - Attributes to be returned.
  * @returns `Promise<SearchedAPIListItemInterface[] | IdentityAppsApiException>`
@@ -334,7 +334,7 @@ export const patchPolicies = (appId: string, addedPolicies: string[], removedPol
  */
 export const searchAPIResources = (apiResourceIds: string[], attributes: string[])
     : Promise<SearchedAPIListItemInterface[] | IdentityAppsApiException> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: {
             apiResourceIds,
@@ -347,7 +347,7 @@ export const searchAPIResources = (apiResourceIds: string[], attributes: string[
         method: HttpMethods.POST,
         url: `${ store.getState().config.endpoints.authzEndpoint }/api-resources/.search`
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {

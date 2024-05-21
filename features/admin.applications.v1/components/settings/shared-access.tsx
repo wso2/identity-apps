@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { FeatureConfigInterface } from "../../../admin.core.v1";
 import { ApplicationInterface } from "../../models";
 import { ApplicationShareForm } from "../forms";
 
@@ -56,8 +56,8 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
 
     return (
         <EmphasizedSegment className="advanced-configuration-section" padded="very">
-            <ApplicationShareForm 
-                application={ application } 
+            <ApplicationShareForm
+                application={ application }
                 onApplicationSharingCompleted={ () => onUpdate(application?.id) }
                 readOnly={ readOnly }
             />

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,9 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../../../admin.core.v1";
 import { ApplicationRoleInterface, GroupRoleAssignPayloadInterface } from "../models/application-roles";
 
 /**
@@ -33,7 +33,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * Get the application roles assigned to the group.
  *
  * @param group - Group name.
- * 
+ *
  * @returns A promise containing the response.
  */
 export const getAssignedApplicationRolesList = (group: string):Promise<ApplicationRoleInterface[]> => {
@@ -76,7 +76,7 @@ export const getAllApplicationRolesList = ():Promise<ApplicationRoleInterface[]>
  *
  * @param group - Group name.
  * @param payload - Group role assign payload.
- * 
+ *
  * @returns A promise containing the response.
  */
 export const updateGroupRoleMapping = (group: string, payload: GroupRoleAssignPayloadInterface):Promise<any> => {

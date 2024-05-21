@@ -18,6 +18,12 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Typography from "@oxygen-ui/react/Typography";
+import BuildLoginFlowIllustration from
+    "@wso2is/admin.connections.v1/components/authenticators/fido/assets/build-login-flow.png";
+import ConfigureParametersIllustration from
+    "@wso2is/admin.connections.v1/components/authenticators/fido/assets/configure-parameters.png";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -31,12 +37,6 @@ import React, { FunctionComponent, ReactElement, useMemo, useState } from "react
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import BuildLoginFlowIllustration from
-    "../../../../admin.connections.v1/components/authenticators/fido/assets/build-login-flow.png";
-import ConfigureParametersIllustration from
-    "../../../../admin.connections.v1/components/authenticators/fido/assets/configure-parameters.png";
-import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
-import { AppState } from "../../../../admin.core.v1/store";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
 

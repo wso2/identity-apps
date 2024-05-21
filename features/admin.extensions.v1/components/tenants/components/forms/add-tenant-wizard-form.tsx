@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
@@ -34,7 +35,6 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Segment } from "semantic-ui-react";
-import { AppState } from "../../../../../admin.core.v1/store";
 import { checkDuplicateTenants } from "../../api";
 import { TenantManagementConstants } from "../../constants";
 

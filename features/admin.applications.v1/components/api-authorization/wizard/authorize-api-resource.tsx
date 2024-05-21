@@ -21,6 +21,10 @@ import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Au
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
+import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
+import { APIResourceInterface, APIResourcePermissionInterface } from "@wso2is/admin.api-resources.v2/models";
+import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -40,10 +44,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
-import { useAPIResources } from "../../../../admin.api-resources.v2/api";
-import { APIResourceCategories, APIResourcesConstants } from "../../../../admin.api-resources.v2/constants";
-import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../admin.api-resources.v2/models";
-import { APIResourceUtils } from "../../../../admin.api-resources.v2/utils/api-resource-utils";
 import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../../models";

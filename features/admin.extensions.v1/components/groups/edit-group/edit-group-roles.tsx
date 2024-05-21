@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationListInterface, ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { GroupsInterface } from "@wso2is/admin.groups.v1";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -54,10 +58,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Checkbox, Divider, Grid, Header, Icon, Input, Label, Modal, Table } from "semantic-ui-react";
-import { getApplicationList } from "../../../../admin.applications.v1/api";
-import { ApplicationListInterface, ApplicationListItemInterface } from "../../../../admin.applications.v1/models";
-import { getEmptyPlaceholderIllustrations, history } from "../../../../admin.core.v1";
-import { GroupsInterface } from "../../../../admin.groups.v1";
 import {
     getAllApplicationRolesList,
     getAssignedApplicationRolesList,
@@ -83,7 +83,7 @@ interface GroupRolesListProps extends IdentifiableComponentInterface, LoadableCo
 
 /**
  * Group roles tab component.
- * 
+ *
  * @param props - Props related to group roles tab component.
  */
 export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: GroupRolesListProps): ReactElement => {
@@ -103,11 +103,11 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
     const [ appList, setAppList ] = useState<ApplicationListItemInterface[]>(null);
     const [ allApplicationRoleList, setAllApplicationRoleList ] = useState<ApplicationRoleInterface[]>([]);
     const [ selectedApplicationRoleList, setSelectedApplicationRoleList ] = useState<ApplicationRoleInterface[]>([]);
-    const [ 
+    const [
         allFilteredApplicationRoleList,
         setAllFilteredApplicationRoleList
     ] = useState<ApplicationRoleInterface[]>([]);
-    const [ 
+    const [
         selectedFilteredApplicationRoleList,
         setSelectedFilteredApplicationRoleList
     ] = useState<ApplicationRoleInterface[]>([]);
@@ -170,14 +170,14 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
-                    action={ ( 
+                    action={ (
                         <Link
                             data-componentid={ `${componentId}-link-api-resource-page` }
                             onClick={ navigateToApplications }
                             external={ false }
                         >
                             { t("extensions:manage.groups.edit.roles.placeHolders.emptyRoles.action") }
-                        </Link> 
+                        </Link>
                     ) }
                     imageSize="tiny"
                     title={ t("extensions:manage.groups.edit.roles.placeHolders.emptyRoles.title") }
@@ -211,7 +211,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * This function filters out the stale application roles.
-     * 
+     *
      * @param applicationRoles - Application roles.
      * @returns Filtered application roles.
      */
@@ -220,10 +220,10 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
             return [];
         }
 
-        const filteredApplicationRoles: ApplicationRoleInterface[] = 
+        const filteredApplicationRoles: ApplicationRoleInterface[] =
                 applicationRoles?.filter(
                     (role: ApplicationRoleInterface) => getApplicationName(role.app));
-            
+
         return filteredApplicationRoles;
     };
 
@@ -245,22 +245,22 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
             }).catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail ?? 
-                            t("extensions:manage.groups.edit.roles.notifications.fetchAssignedApplicationRoles." + 
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail ??
+                            t("extensions:manage.groups.edit.roles.notifications.fetchAssignedApplicationRoles." +
                                 "error.description"),
                         level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message ?? 
-                            t("extensions:manage.groups.edit.roles.notifications.fetchAssignedApplicationRoles." + 
+                        message: error?.response?.data?.message ??
+                            t("extensions:manage.groups.edit.roles.notifications.fetchAssignedApplicationRoles." +
                                 "error.message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("extensions:manage.groups.edit.roles.notifications.fetchAssignedApplicationRoles." + 
+                    description: t("extensions:manage.groups.edit.roles.notifications.fetchAssignedApplicationRoles." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:manage.groups.edit.roles.notifications.fetchAssignedApplicationRoles." + 
+                    message: t("extensions:manage.groups.edit.roles.notifications.fetchAssignedApplicationRoles." +
                         "genericError.message")
                 }));
 
@@ -288,8 +288,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
             }).catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail ?? 
-                            t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." + 
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail ??
+                            t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." +
                                 "error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message ??
@@ -301,10 +301,10 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                 }
 
                 dispatch(addAlert({
-                    description: t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." + 
+                    description: t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." + 
+                    message: t("extensions:manage.groups.edit.roles.notifications.fetchApplicationRoles." +
                         "genericError.message")
                 }));
 
@@ -318,9 +318,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Get the application name by application ID.
-     * 
+     *
      * @param app_id - Application ID.
-     * 
+     *
      * @returns Application name.
      */
     const getApplicationName = (app_id: string): string => {
@@ -334,9 +334,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Get the application name by application ID for the title of the segmented accordion.
-     * 
+     *
      * @param applicationId - Application ID.
-     * 
+     *
      * @returns Application segmented accordion title.
      */
     const getApplicationSegmentedAccordionTitle = (applicationId: string): ReactElement =>
@@ -365,9 +365,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                             size="mini"
                             className="ml-0"
                         >
-                            { 
-                                t("extensions:manage.groups.edit.roles.rolesList." + 
-                                    "applicationLabel") 
+                            {
+                                t("extensions:manage.groups.edit.roles.rolesList." +
+                                    "applicationLabel")
                             }
                         </Label>
                     </Header.Subheader>
@@ -377,9 +377,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Get default expanded application list.
-     * 
+     *
      * @param app - Application role list item.
-     * 
+     *
      * @returns Default expanded apps.
      */
     const getDefaultExpandedApps = (appRoleList: ApplicationRoleInterface[]): string[] => {
@@ -396,7 +396,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Add the selected application roles of the group to checked roles.
-     * 
+     *
      * @param list - Assigned application roles list.
      */
     const addCheckedRoles = (list: ApplicationRoleInterface[]): void => {
@@ -414,7 +414,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Handle the search field query change.
-     * 
+     *
      * @param e - Event.
      * @param query - Search query.
      * @param list - Unfiltered application roles list.
@@ -439,7 +439,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Search operation for application roles.
-     * 
+     *
      * @param changeValue - Search value.
      * @param list - Unfiltered application roles list.
      * @param stateActionList - Set filtered application roles action.
@@ -469,7 +469,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                     if (!tempExpandedApplication.includes(application.app)) {
                         tempExpandedApplication.push(application.app);
                     }
-                    const updatedApplication: ApplicationRoleInterface = { 
+                    const updatedApplication: ApplicationRoleInterface = {
                         app: application.app,
                         roles: matchedRoles
                     };
@@ -506,9 +506,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Get the application roles list nested by application.
-     * 
+     *
      * @param roleNameList - Application qualified role name list.
-     * 
+     *
      * @returns Application roles list nested by application.
      */
     const getOrderedRoleList = (roleNameList: string[]): ApplicationRoleInterface[] => {
@@ -519,7 +519,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
             const role: string = roleName.split(":")[1];
 
             if (applicationRoleList.some( (item: ApplicationRoleInterface) => item.app === appId)) {
-                const itemIndex: number = applicationRoleList.findIndex( 
+                const itemIndex: number = applicationRoleList.findIndex(
                     (item: ApplicationRoleInterface) => item.app === appId);
                 const appRoleItem: ApplicationRoleInterface = applicationRoleList[itemIndex];
 
@@ -552,19 +552,19 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
         updateGroupRoleMapping(encodeURIComponent(group?.displayName), payload)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("extensions:manage.groups.edit.roles.notifications.updateApplicationRoles." + 
+                    description: t("extensions:manage.groups.edit.roles.notifications.updateApplicationRoles." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:manage.groups.edit.roles.notifications.updateApplicationRoles." + 
+                    message: t("extensions:manage.groups.edit.roles.notifications.updateApplicationRoles." +
                         "success.message")
                 }));
                 onGroupUpdate(group.id);
             }).catch(() => {
                 setAlert({
-                    description: t("extensions:manage.groups.edit.roles.notifications.updateApplicationRoles." + 
+                    description: t("extensions:manage.groups.edit.roles.notifications.updateApplicationRoles." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:manage.groups.edit.roles.notifications.updateApplicationRoles." + 
+                    message: t("extensions:manage.groups.edit.roles.notifications.updateApplicationRoles." +
                         "genericError.message")
                 });
             }).finally(() => {
@@ -575,7 +575,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Handle expand accordion title.
-     * 
+     *
      * @param appRole - Application role.
      */
     const handleAccordionTitleClick = (
@@ -597,7 +597,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Handle checkbox change of application roles.
-     * 
+     *
      * @param appId - Application.
      * @param roleName - Application role name.
      */
@@ -605,7 +605,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
         const appQualifiedRoleName: string = appId + ":" + roleName;
 
         if (checkedRoles.includes(appQualifiedRoleName)) {
-            const newCheckedRoles: string[] = checkedRoles.filter( 
+            const newCheckedRoles: string[] = checkedRoles.filter(
                 (item: string) => item !== appQualifiedRoleName);
 
             setCheckedRoles(newCheckedRoles);
@@ -639,10 +639,10 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Renders the nested role list.
-     * 
+     *
      * @param roles - Role list.
      * @param appId - Application Id.
-     * 
+     *
      * @returns Selected role list component.
      */
     const resolveSelectedApplicationRolesList = (roles: RoleBasicInterface[], appId: string): ReactElement => {
@@ -668,13 +668,13 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                             </div>
                                         </Table.Cell>
                                         <Table.Cell  key={ role.name } singleLine width={ 5 } textAlign="right">
-                                            <Checkbox 
+                                            <Checkbox
                                                 data-componentid={ `${ componentId }-role-item-${ index }` }
-                                                checked={ 
-                                                    checkedRoles && 
-                                                    checkedRoles.some( 
-                                                        (checkedRole: string) => 
-                                                            checkedRole === appId + ":" + role.name) 
+                                                checked={
+                                                    checkedRoles &&
+                                                    checkedRoles.some(
+                                                        (checkedRole: string) =>
+                                                            checkedRole === appId + ":" + role.name)
                                                 }
                                                 onClick={ () => handleCheckboxChange(appId, role.name) }
                                             />
@@ -692,7 +692,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Render the assign application roles modal.
-     * 
+     *
      * @returns Modal component.
      */
     const assignApplicationRolesModal = () => (
@@ -724,7 +724,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                     handleSearchFieldChange(
                                         e,
                                         value,
-                                        allApplicationRoleList, 
+                                        allApplicationRoleList,
                                         setAllFilteredApplicationRoleList,
                                         setExpandedApplications
                                     );
@@ -753,8 +753,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                                     active={ expandedApplications?.includes(application.app) }
                                                     accordionIndex={ application.app }
                                                     className="nested-list-accordion-title"
-                                                    onClick={ 
-                                                        () => 
+                                                    onClick={
+                                                        () =>
                                                             handleAccordionTitleClick(
                                                                 application,
                                                                 expandedApplications,
@@ -762,7 +762,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                                             )
                                                     }
                                                     hideChevron={ false }
-                                                    content={ 
+                                                    content={
                                                         getApplicationSegmentedAccordionTitle(application.app)
                                                     }
                                                 />
@@ -817,7 +817,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Renders the nested role list.
-     * 
+     *
      * @param roles - Role list.
      * @returns Role list component.
      */
@@ -853,9 +853,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
 
     /**
      * Renders the application roles list.
-     * 
+     *
      * @param roles - Role list.
-     * 
+     *
      * @returns Role list component.
      */
     const resolveApplicationRolesList = (filteredApplicationRoles: ApplicationRoleInterface[]): ReactElement => (
@@ -870,8 +870,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                 active={ expandedAssignedApplications?.includes(application.app) }
                                 accordionIndex={ application.app }
                                 className="nested-list-accordion-title"
-                                onClick={ 
-                                    () => 
+                                onClick={
+                                    () =>
                                         handleAccordionTitleClick(
                                             application,
                                             expandedAssignedApplications,
@@ -910,15 +910,15 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                 <Grid.Row>
                     <Grid.Column computer={ 16 }>
                         { (
-                            !isGroupDetailsRequestLoading && 
+                            !isGroupDetailsRequestLoading &&
                             !isAssignedRolesFetchRequestLoading &&
                             !isApplicationsFetchRequestLoading &&
                             !isApplicationRolesFetchRequestLoading
-                        ) 
+                        )
                             ? (
-                                ( 
+                                (
                                     allApplicationRoleList?.length > 0 &&
-                                    selectedApplicationRoleList?.length > 0 
+                                    selectedApplicationRoleList?.length > 0
                                 )
                                     ? (
                                         <EmphasizedSegment
@@ -937,7 +937,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                                             handleSearchFieldChange(
                                                                 e,
                                                                 value,
-                                                                selectedApplicationRoleList, 
+                                                                selectedApplicationRoleList,
                                                                 setSelectedFilteredApplicationRoleList,
                                                                 setExpandedAssignedApplications
                                                             );
@@ -950,14 +950,14 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                                     />
                                                     { !isReadOnly && (
                                                         <Popup
-                                                            content= { 
-                                                                t("extensions:manage.groups.edit.roles.editHoverText") 
+                                                            content= {
+                                                                t("extensions:manage.groups.edit.roles.editHoverText")
                                                             }
                                                             inverted
                                                             trigger={
                                                                 (
                                                                     <Button
-                                                                        data-componentid={ 
+                                                                        data-componentid={
                                                                             `${ componentId }-roles-list-edit-button`
                                                                         }
                                                                         size="medium"
@@ -978,7 +978,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                                         data-componentid={ `${ componentId }-application-roles` }
                                                         viewType="table-view"
                                                     >
-                                                        { 
+                                                        {
                                                             resolveApplicationRolesList(
                                                                 selectedFilteredApplicationRoleList
                                                             )
@@ -987,7 +987,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                                 </Grid.Column>
                                             </Grid.Row>
                                         </EmphasizedSegment>
-                                    ) 
+                                    )
                                     : (
                                         <Grid.Row>
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
@@ -997,13 +997,13 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                             </Grid.Column>
                                         </Grid.Row>
                                     )
-                            ) 
+                            )
                             : (
                                 <ContentLoader />
                             ) }
-                        { 
-                            !isApplicationsFetchRequestLoading && 
-                            !isApplicationRolesFetchRequestLoading && 
+                        {
+                            !isApplicationsFetchRequestLoading &&
+                            !isApplicationRolesFetchRequestLoading &&
                             assignApplicationRolesModal()
                         }
                     </Grid.Column>

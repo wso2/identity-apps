@@ -16,6 +16,14 @@
  * under the License.
  */
 
+import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import {
+    AuthenticatorInterface as ApplicationAuthenticatorInterface,
+    ApplicationInterface,
+    IdpRoleMappingInterface
+} from "@wso2is/admin.applications.v1/models";
+import { getAuthenticators } from "@wso2is/admin.identity-providers.v1/api";
+import { AuthenticatorInterface, AuthenticatorTypes } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -31,14 +39,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { updateApplicationDetails } from "../../../../../admin.applications.v1/api";
-import {
-    AuthenticatorInterface as ApplicationAuthenticatorInterface,
-    ApplicationInterface,
-    IdpRoleMappingInterface
-} from "../../../../../admin.applications.v1/models";
-import { getAuthenticators } from "../../../../../admin.identity-providers.v1/api";
-import { AuthenticatorInterface, AuthenticatorTypes } from "../../../../../admin.identity-providers.v1/models";
 import { ApplicationRolesConstants } from "../../constants";
 
 const FORM_ID: string = "application-role-mapping-form";
