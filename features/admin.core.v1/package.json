@@ -70,16 +70,13 @@
         "moment": "^2.24.0",
         "node-forge": "^0.10.0",
         "rc-tree": "^4.0.0-beta.2",
-        "react": "^18.2.0",
         "react-beautiful-dnd": "^12.2.0",
-        "react-dom": "^18.2.0",
         "react-draggable": "^4.2.0",
         "react-helmet": "^5.2.1",
         "react-i18next": "^11.18.5",
         "react-joyride": "^2.3.0",
         "react-notification-system": "^0.4.0",
         "react-redux": "^7.2.9",
-        "react-router-dom": "^4.3.1",
         "reactflow": "^11.7.2",
         "reactour": "^1.18.0",
         "recharts": "^2.6.2",
@@ -95,7 +92,10 @@
         "swr": "^2.0.0"
     },
     "peerDependencies": {
-        "@asgardeo/auth-react": "*"
+        "@asgardeo/auth-react": "*",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^4.3.1"
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",

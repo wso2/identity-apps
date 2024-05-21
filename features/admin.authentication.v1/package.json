@@ -15,10 +15,7 @@
         "@wso2is/admin.users.v1": "^2.19.2",
         "axios": "^0.19.2",
         "lodash-es": "^4.17.21",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
         "react-redux": "^7.2.9",
-        "react-router-dom": "^4.3.1",
         "redux": "^4.0.4",
         "redux-thunk": "^2.3.0"
     },
@@ -28,7 +25,10 @@
         "@types/react-redux": "^7.1.25"
     },
     "peerDependencies": {
-        "@asgardeo/auth-react": "^4.0.1"
+        "@asgardeo/auth-react": "^4.0.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^4.3.1"
     },
     "browserslist": [
         "> 0.2%"
