@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.20.3
+
+### Patch Changes
+
+- [#6273](https://github.com/wso2/identity-apps/pull/6273) [`2c748278a1c389549fece5d77f29d79e9d0c3447`](https://github.com/wso2/identity-apps/commit/2c748278a1c389549fece5d77f29d79e9d0c3447) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Prevent multiple scopes API calls in the API Authorization
+
 ## 2.20.2
 
 ### Patch Changes

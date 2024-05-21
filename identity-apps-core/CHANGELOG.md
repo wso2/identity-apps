@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.2.5
+
+### Patch Changes
+
+- [#6279](https://github.com/wso2/identity-apps/pull/6279) [`e79fd1aa04af38da011015f5e4abdead6bc7af4f`](https://github.com/wso2/identity-apps/commit/e79fd1aa04af38da011015f5e4abdead6bc7af4f) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add accessDisbaled error message
+
 ## 2.2.4
 
 ### Patch Changes
