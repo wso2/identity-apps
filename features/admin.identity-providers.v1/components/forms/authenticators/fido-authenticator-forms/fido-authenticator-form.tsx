@@ -88,7 +88,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         isLoading: fidoConnectorConfigFetchRequestIsLoading,
         error: fidoConnectorConfigFetchError,
         mutate: mutateFIDOConnectorConfigs
-    } = useFIDOConnectorConfigs();
+    } = useFIDOConnectorConfigs(!isSubOrganization());
 
     /**
      * Retrieve the list of FIDO trusted origins from the FIDO connector configuration response.
@@ -371,39 +371,43 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-usernameless-authentication` }
             />
-            <URLInput
-                urlState={ FIDOTrustedOrigins }
-                setURLState={ (urls: string) => {
-                    if (urls !== undefined) {
-                        setFIDOTrustedOrigins(urls);
-                    }
-                } }
-                labelName={
-                    t("authenticationProvider:forms." +
+            {
+                !isSubOrganization() &&
+                (<URLInput
+                    urlState={ FIDOTrustedOrigins }
+                    setURLState={ (urls: string) => {
+                        if (urls !== undefined) {
+                            setFIDOTrustedOrigins(urls);
+                        }
+                    } }
+                    labelName={
+                        t("authenticationProvider:forms." +
                             "authenticatorSettings.fido2.trustedOrigins.label")
-                }
-                placeholder={
-                    t("authenticationProvider:forms." +
+                    }
+                    placeholder={
+                        t("authenticationProvider:forms." +
                             "authenticatorSettings.fido2.trustedOrigins.placeholder")
-                }
-                validationErrorMsg={
-                    t("authenticationProvider:forms." +
+                    }
+                    validationErrorMsg={
+                        t("authenticationProvider:forms." +
                             "authenticatorSettings.fido2.trustedOrigins.validations.invalid")
-                }
-                computerWidth={ 10 }
-                hint={
-                    t("authenticationProvider:forms." +
+                    }
+                    computerWidth={ 10 }
+                    hint={
+                        t("authenticationProvider:forms." +
                         "authenticatorSettings.fido2.trustedOrigins.hint")
-                }
-                addURLTooltip={ t("common:addURL") }
-                duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                data-testid={ `${ testId }-fido-trusted-origin-input` }
-                required = { false }
-                showPredictions={ false }
-                isAllowEnabled={ false }
-                skipValidation
-                readOnly={ isReadOnly }
-            />
+                    }
+                    addURLTooltip={ t("common:addURL") }
+                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                    data-testid={ `${ testId }-fido-trusted-origin-input` }
+                    required = { false }
+                    showPredictions={ false }
+                    isAllowEnabled={ false }
+                    skipValidation
+                    readOnly={ isReadOnly }
+                />)
+            }
+
             {
                 identityProviderConfig?.editIdentityProvider?.enableFIDOTrustedAppsConfiguration
                     ? (
