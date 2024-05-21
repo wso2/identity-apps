@@ -16,46 +16,46 @@
  * under the License.
  */
 
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, RoleConnectedApplicationInterface, RolesInterface } from "@wso2is/core/models";
-import { 
-    AnimatedAvatar, 
-    AppAvatar,  
-    DataTable, 
+import {
+    AnimatedAvatar,
+    AppAvatar,
+    DataTable,
     EmphasizedSegment,
-    EmptyPlaceholder, 
-    Heading, 
-    TableActionsInterface, 
-    TableColumnInterface 
+    EmptyPlaceholder,
+    Heading,
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, 
-{ 
+import React,
+{
     FunctionComponent,
-    ReactElement, 
-    ReactNode, 
-    SyntheticEvent, 
-    useEffect, 
-    useState 
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useEffect,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import {  
+import {
     Divider,
-    Header, 
-    Icon, 
-    Input, 
+    Header,
+    Icon,
+    Input,
     SemanticICONS
 } from "semantic-ui-react";
-import { applicationListConfig } from "../../../admin.extensions.v1/configs/application-list";
-import { ApplicationManagementConstants } from "../../../admin.applications.v1/constants";
-import {  
-    AppConstants,
-    AppState, 
-    FeatureConfigInterface,   
-    UIConstants, 
-    getEmptyPlaceholderIllustrations, 
-    history
-} from "../../../admin.core.v1";
 
 /**
  * Proptypes for the advance settings component.
@@ -115,7 +115,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
 
         setFilterSelectedApps(associatedApplications);
     }, [ associatedApplications ]);
- 
+
     /**
      * Resolves data table columns.
      *
@@ -128,7 +128,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (app: RoleConnectedApplicationInterface): ReactNode => {                    
+                render: (app: RoleConnectedApplicationInterface): ReactNode => {
                     return (
                         <Header
                             image
@@ -236,7 +236,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
-                icon: (): SemanticICONS => { 
+                icon: (): SemanticICONS => {
                     return "caret right";
                 },
                 onClick: (e: SyntheticEvent, app: RoleConnectedApplicationInterface): void =>
@@ -257,7 +257,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
      */
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const changeValue: string = event.target.value.trim();
-        
+
         setSearchQuery(changeValue);
 
         if (changeValue.length > 0) {
@@ -274,19 +274,19 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
      */
     const searchFilter = (changeValue: string) => {
         const appNameFilter: RoleConnectedApplicationInterface[] = associatedApplications?.filter(
-            (item: RoleConnectedApplicationInterface) => 
-                item?.display?.toLowerCase()?.indexOf(changeValue.toLowerCase()) !== -1); 
-        
-        setFilterSelectedApps(appNameFilter); 
+            (item: RoleConnectedApplicationInterface) =>
+                item?.display?.toLowerCase()?.indexOf(changeValue.toLowerCase()) !== -1);
+
+        setFilterSelectedApps(appNameFilter);
     };
 
     return (
         <EmphasizedSegment padded="very">
-            <Heading as="h4">{ t("idp:connectedApps.header", 
+            <Heading as="h4">{ t("idp:connectedApps.header",
                 { idpName: role?.displayName }) }</Heading>
             <Divider hidden />
             { associatedApplications && (
-                <Input 
+                <Input
                     icon={ <Icon name="search" /> }
                     iconPosition="left"
                     onChange={ handleChange }
