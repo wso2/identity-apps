@@ -27,7 +27,7 @@ import { AnalyticsConfigurationForm } from "./analytics-form";
 import { AskPasswordForm } from "./ask-password";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
 import { MultiAttributeLoginForm } from "./multi-attribute-login";
-import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
+import { PasswordRecoveryConfigurationForm } from "./password-recovery-form/password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
 import { UsernameRecoveryConfigurationForm } from "./username-recovery-form";
 import DynamicConnectorForm from "../components/governance-connectors/dynamic-connector-form";
