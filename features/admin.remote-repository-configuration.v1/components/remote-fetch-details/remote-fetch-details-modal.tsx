@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,7 +31,7 @@ import {
     InterfaceRemoteFetchStatus,
     getConfigDeploymentDetails,
     triggerConfigDeployment
-} from "../../../admin.remote-repository-configuration.v1";
+} from "../../";
 
 /**
  * Remote fetch details props interface.
@@ -88,6 +88,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
 
         if (newIndexes.includes(index)) {
             const removingIndex = newIndexes.indexOf(index);
+
             newIndexes.splice(removingIndex, 1);
         } else {
             newIndexes.push(index);
@@ -99,6 +100,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
     const getHumanizedDeployment = (date: any): string => {
         const now = moment(new Date());
         const receivedDate = moment(date);
+
         return "Last deployed " +   moment.duration(now.diff(receivedDate)).humanize() + " ago";
     };
 
@@ -123,17 +125,17 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                 <Grid className="wizard-summary" data-componentid={ componentId }>
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
-                        <SegmentedAccordion
-                            fluid
-                            data-componentid={ componentId }
-                        >
-                            {
-                                deploymentStatus && deploymentStatus?.remoteFetchRevisionStatuses.length > 0 &&
+                            <SegmentedAccordion
+                                fluid
+                                data-componentid={ componentId }
+                            >
+                                {
+                                    deploymentStatus && deploymentStatus?.remoteFetchRevisionStatuses.length > 0 &&
                                     deploymentStatus?.remoteFetchRevisionStatuses.map((
                                         value: InterfaceRemoteFetchStatus, index: number
                                     ) => (
                                         value.deployedStatus === "FAIL" &&
-                                        <>
+                                        (<>
                                             <SegmentedAccordion.Title
                                                 id={ value.itemName }
                                                 key={ index }
@@ -175,10 +177,10 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                                     theme={ "dark" }
                                                 />
                                             </SegmentedAccordion.Content>
-                                        </>
+                                        </>)
                                     ))
-                            }
-                        </SegmentedAccordion>
+                                }
+                            </SegmentedAccordion>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
