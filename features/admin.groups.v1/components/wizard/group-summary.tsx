@@ -15,12 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { CONSUMER_USERSTORE } from "../../../admin.userstores.v1/constants/user-store-constants";
 
 /**
  * Interface to capture current wizard state
@@ -169,7 +169,7 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
                                     {
-                                        //TODO: [Fix Type] Type of `GroupUserList` 
+                                        //TODO: [Fix Type] Type of `GroupUserList`
                                         //is not defined in `WizardStateInterface`.
                                         summary.GroupUserList
                                             .map((user: any, index: number) => (

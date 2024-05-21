@@ -16,6 +16,14 @@
  * under the License.
  */
 
+import {
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    ModalWithSidePanel,
+    getCertificateIllustrations
+} from "@wso2is/admin.core.v1";
+import { commonConfig, identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -63,14 +71,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Card, Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { commonConfig, identityProviderConfig } from "../../../admin.extensions.v1";
-import {
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    ModalWithSidePanel,
-    getCertificateIllustrations
-} from "../../../admin.core.v1";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
 import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../constants";

@@ -16,6 +16,14 @@
  * under the License.
  */
 
+import {
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    ModalWithSidePanel
+} from "@wso2is/admin.core.v1";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -38,14 +46,6 @@ import { Grid } from "semantic-ui-react";
 import {
     AppleAuthenticationProviderCreateWizardContent
 } from "./apple-authentication-provider-create-wizard-content";
-import { identityProviderConfig } from "../../../../admin.extensions.v1/configs";
-import {
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    ModalWithSidePanel
-} from "../../../../admin.core.v1";
-import { TierLimitReachErrorModal } from "../../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../../constants";
