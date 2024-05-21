@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";

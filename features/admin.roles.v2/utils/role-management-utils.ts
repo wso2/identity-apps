@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { RoleGroupsInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { AppConstants } from "../../admin.core.v1";
-import { UserBasicInterface } from "../../admin.users.v1/models/user";
 import { getPermissionList, searchRoleList } from "../api";
 import { generatePermissionTree } from "../components/role-utils";
 import { PermissionObject, SearchRoleInterface, TreeNode } from "../models";

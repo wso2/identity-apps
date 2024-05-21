@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants, getSecretManagementIllustrations, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, GenericIcon, PageLayout } from "@wso2is/react-components";
@@ -23,7 +24,6 @@ import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppConstants, getSecretManagementIllustrations, history } from "../../admin.core.v1";
 import { getSecret } from "../api/secret";
 import EditSecret from "../components/edit-secret";
 import { EmptySecretListPlaceholder } from "../components/empty-secret-list-placeholder";

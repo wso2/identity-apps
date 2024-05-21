@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import {
+    AppState,
+    FeatureConfigInterface
+} from "@wso2is/admin.core.v1";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { I18n } from "@wso2is/i18n";
 import {
@@ -37,11 +42,6 @@ import {
     Form,
     Grid
 } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../../admin.extensions.v1";
-import {
-    AppState,
-    FeatureConfigInterface
-} from "../../../admin.core.v1";
 import { ServerConfigurationsConstants } from "../../constants";
 import {
     ConnectorPropertyInterface,
