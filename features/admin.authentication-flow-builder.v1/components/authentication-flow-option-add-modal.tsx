@@ -16,19 +16,19 @@
  * under the License.
  */
 
+import {
+    AddAuthenticatorModal,
+    AddAuthenticatorModalPropsInterface
+} from "@wso2is/admin.applications.v1/components/settings/sign-on-methods/step-based-flow/add-authenticator-modal";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModalPropsInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import {
-    AddAuthenticatorModal,
-    AddAuthenticatorModalPropsInterface
-} from "../../admin.applications.v1/components/settings/sign-on-methods/step-based-flow/add-authenticator-modal";
-import { FeatureConfigInterface } from "../../admin.core.v1/models";
-import { AppState } from "../../admin.core.v1/store";
-import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models/identity-provider";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 
 /**
