@@ -194,10 +194,14 @@
         <jsp-file>/challenge-question-view.jsp</jsp-file>
     </servlet>
 
-
     <servlet>
         <servlet-name>confirmrecovery.do</servlet-name>
         <jsp-file>/password-recovery-confirm.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>passwordrecoveryotp.do</servlet-name>
+        <jsp-file>/password-recovery-otp.jsp</jsp-file>
     </servlet>
 
     <servlet>
@@ -280,10 +284,14 @@
         <url-pattern>/viewsecurityquestions.do</url-pattern>
     </servlet-mapping>
 
-
     <servlet-mapping>
         <servlet-name>confirmrecovery.do</servlet-name>
         <url-pattern>/confirmrecovery.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>passwordrecoveryotp.do</servlet-name>
+        <url-pattern>/passwordrecoveryotp.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

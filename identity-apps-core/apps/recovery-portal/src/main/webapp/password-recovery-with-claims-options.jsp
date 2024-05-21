@@ -59,8 +59,11 @@
     boolean isChallengeQuestionsEnabled = false;
 
     boolean isEmailEnabled = false;
+    boolean isSMSOTPEnabled = false;
     String recoveryCode = "";
     String emailId = "";
+    String smsOtpId = "";
+    String screenValue = "";
 
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
@@ -119,7 +122,12 @@
                     if (channel.getType().equals("EMAIL")) {
                         isEmailEnabled = true;
                         emailId = channel.getId();
-                    } else if (channel.getType().equals("EXTERNAL")) {
+                    } else if (channel.getType().equals("SMS")) {
+                        isSMSOTPEnabled = true;
+                        smsOtpId = channel.getId();
+                        screenValue = channel.getValue();
+                    }
+                    else if (channel.getType().equals("EXTERNAL")) {
                         isNotificationBasedRecoveryEnabled = false;
                     }
                 }
@@ -214,22 +222,38 @@
 
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
+                <div class="field mb-5">
+                    <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
+                </div>
                 <div class="ui divider hidden"></div>
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
-                        <div class="ui secondary segment" style="text-align: left;">
+                        <div class="segment" style="text-align: left;">
                         <% if (isNotificationBasedRecoveryEnabled) { %>
                         <% if (isEmailEnabled) { %>
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="recoveryOption" value="<%=emailId%>" checked/>
                                     <label><%=IdentityManagementEndpointUtil.i18n
-                                            (recoveryResourceBundle,"Recover.with.mail")%></label>
+                                            (recoveryResourceBundle,"send.email.link")%></label>
                                 </div>
                             </div>
                         <%
-                                }
                             }
+                            if (isSMSOTPEnabled) {
+                        %>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="recoveryOption"
+                                        value="<%=smsOtpId%>" />
+                                    <label><%=IdentityManagementEndpointUtil.i18n
+                                            (recoveryResourceBundle,"send.code.via.sms")%></label>
+                                </div>
+                            </div>
+                            <input type="hidden" name="screenValue" value="<%=Encode.forHtmlAttribute(screenValue)%>"/>
+                        <%
+                            }
+                        }
                             if (isChallengeQuestionsEnabled) {
                         %>
                         <div class="form-group">
