@@ -17,6 +17,9 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
+import { getApplicationWizardStepIcons } from "@wso2is/admin.applications.v1/configs/ui";
+import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -24,9 +27,6 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { OutboundProvisioningConnectorSetupForm } from "./outbound-provisioning-connector-setup-form";
-import { getApplicationWizardStepIcons } from "../../admin.applications.v1/configs/ui";
-import { OutboundProvisioningConfigurationInterface } from "../../admin.applications.v1/models/application";
-import { IdentityProviderInterface } from "../../admin.identity-providers.v1/models/identity-provider";
 
 /**
  * Interface for the outbound provisioning IDP setup wizard props.
