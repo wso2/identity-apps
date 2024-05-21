@@ -18,6 +18,18 @@
 
 /* eslint-disable sort-keys */
 
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    GovernanceConnectorUtils,
+    UpdateGovernanceConnectorConfigInterface,
+    UpdateGovernanceConnectorConfigPropertyInterface,
+    UpdateMultipleGovernanceConnectorsInterface
+} from "@wso2is/admin.server-configurations.v1";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
 import { Card, Divider, Grid, Header } from "semantic-ui-react";
@@ -27,18 +39,6 @@ import {
     PasswordPoliciesInterface,
     ServerConfigurationConfig
 } from "./models/server-configuration";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    GovernanceConnectorUtils,
-    UpdateGovernanceConnectorConfigInterface,
-    UpdateGovernanceConnectorConfigPropertyInterface,
-    UpdateMultipleGovernanceConnectorsInterface
-} from "../../admin.server-configurations.v1";
-import {
-    ServerConfigurationsConstants
-} from "../../admin.server-configurations.v1/constants/server-configurations-constants";
-import { ValidationFormInterface } from "../../admin.validation.v1/models";
 import {
     updatePasswordExpiryProperties,
     useGetPasswordExpiryProperties

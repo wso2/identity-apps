@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,7 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
-import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
-import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { Icon, SemanticICONS } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../../admin.identity-providers.v1/constants";
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -31,7 +24,14 @@ import {
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface,
     CommonPluggableComponentMetaPropertyInterface
-} from "../../../../admin.identity-providers.v1/models";
+} from "@wso2is/admin.identity-providers.v1/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Field, Form } from "@wso2is/form";
+import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { Icon, SemanticICONS } from "semantic-ui-react";
 import { SIWEConstants } from "../../../components/identity-providers/constants";
 
 /**

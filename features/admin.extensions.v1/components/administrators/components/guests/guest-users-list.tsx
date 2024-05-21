@@ -16,6 +16,14 @@
  * under the License.
  */
 
+import {
+    AppState,
+    FeatureConfigInterface,
+    UserListInterface,
+    getEmptyPlaceholderIllustrations
+} from "@wso2is/admin.core.v1";
+import { deleteInvite, resendInvite, updateInvite } from "@wso2is/admin.users.v1/api";
+import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -35,14 +43,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
 import { InviteeRoleSelection } from "./invitee-role-selection";
-import {
-    AppState,
-    FeatureConfigInterface,
-    UserListInterface,
-    getEmptyPlaceholderIllustrations
-} from "../../../../../admin.core.v1";
-import { InvitationStatus, UserInviteInterface } from "../../../../../admin.users.v1/models";
-import { deleteInvite, resendInvite, updateInvite } from "../../../../../admin.users.v1/api";
 
 
 /**

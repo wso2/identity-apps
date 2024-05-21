@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
-import { ApplicationInterface } from "../../../../admin.applications.v1/models";
 import { ApplicationRoles } from "../../application/components/application-roles";
 
 interface ApplicationRolesTabInterface extends IdentifiableComponentInterface {

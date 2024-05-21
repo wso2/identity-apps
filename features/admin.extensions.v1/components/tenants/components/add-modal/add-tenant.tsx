@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { handleTenantSwitch } from "@wso2is/admin.tenants.v1/utils/tenant-switch";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -27,8 +29,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { EventPublisher } from "../../../../../admin.core.v1/utils";
-import { handleTenantSwitch } from "../../../../../admin.tenants.v1/utils/tenant-switch";
 import { addNewTenant, checkDuplicateTenants } from "../../api";
 import { AddTenantWizardForm, AddTenantWizardFormValuesInterface } from "../forms";
 

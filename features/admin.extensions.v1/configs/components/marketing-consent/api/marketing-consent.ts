@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,13 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1";
+import useRequest, {
+    RequestConfigInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { store } from "../../../../../admin.core.v1";
-import useRequest, { 
-    RequestConfigInterface,
-    RequestResultInterface 
-} from "../../../../../admin.core.v1/hooks/use-request";
 import { getMarketingConsentEndpoints } from "../configs";
 import { ConsentResponseInterface, ConsentTypes } from "../models";
 
@@ -35,14 +35,14 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().
 
 /**
  * Hook to get the consent list of the logged in user.
- * 
+ *
  * @param shouldFetch - a boolean value to trigger the fetcher function conditionally.
  * @returns the list of consents with the status.
  */
 export const useUserConsentList = <Data = ConsentResponseInterface[], Error = AxiosError>(
     shouldFetch: boolean
 ): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = shouldFetch 
+    const requestConfig: RequestConfigInterface = shouldFetch
         ? {
             headers: {
                 "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -50,7 +50,7 @@ export const useUserConsentList = <Data = ConsentResponseInterface[], Error = Ax
             },
             method: HttpMethods.GET,
             url: getMarketingConsentEndpoints().getConsentEndpoint
-        } 
+        }
         : null;
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -66,7 +66,7 @@ export const useUserConsentList = <Data = ConsentResponseInterface[], Error = Ax
 
 /**
  * Update the marketing consent status of the user.
- * 
+ *
  * @param isSubscribed - status of the consent (true - subscribed, false - declined).
  * @returns a Promise of response.
  * @throws an AxiosError.

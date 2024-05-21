@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { RouteInterface } from "@wso2is/core/models";
-import { ApplicationTemplatesConfigInterface } from "../admin.applications.v1/data/application-templates";
+import { ApplicationTemplatesConfigInterface } from "@wso2is/admin.applications.v1/data/application-templates";
 import {
     IdentityProviderTemplatesConfigInterface
-} from "../admin.identity-providers.v1/data/identity-provider-templates";
+} from "@wso2is/admin.identity-providers.v1/data/identity-provider-templates";
+import { RouteInterface } from "@wso2is/core/models";
 
 /**
  * Interface for the core extensions config.

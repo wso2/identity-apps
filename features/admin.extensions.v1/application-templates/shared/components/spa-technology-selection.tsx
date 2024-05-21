@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIconProps, LargeTechnologyCard, Text } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -23,7 +24,6 @@ import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Divider } from "semantic-ui-react";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
 
 /**
  * Prop-types for the Technology Selection component.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityProviderManagementUtils } from "@wso2is/admin.identity-providers.v1/utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     Code,
@@ -29,7 +30,6 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import { IdentityProviderManagementUtils } from "../../../../admin.identity-providers.v1/utils";
 import { SIWEConstants } from "../../../components/identity-providers/constants";
 import { identityProviderConfig } from "../../../configs/identity-provider";
 
@@ -88,7 +88,7 @@ const SIWEAuthenticationProviderCreateWizardHelp: FunctionComponent<
                                         "preRequisites.getCredentials"
                                     }
                                 >
-                                    Before you begin, register an <strong>OIDC client</strong> using the OIDC 
+                                    Before you begin, register an <strong>OIDC client</strong> using the OIDC
                                     client registration of <Code withBackground={ false }>
                                         oidc.signinwithethereum.org
                                     </Code>, and obtain a <strong>client ID & secret</strong>.
@@ -125,7 +125,7 @@ const SIWEAuthenticationProviderCreateWizardHelp: FunctionComponent<
                                         ".preRequisites.configureClient"
                                     }
                                 >
-                                    If you want to quickly get things started, use the following 
+                                    If you want to quickly get things started, use the following
                                     <Code withBackground={ false }>curl</Code> command to register the client.
                                 </Trans>
                                 <Divider hidden />

@@ -16,6 +16,19 @@
  * under the License.
  */
 
+import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { addUserStore, getAType } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import {
+    AttributeMapping,
+    TypeProperty,
+    UserStore,
+    UserStorePostData,
+    UserStoreProperty,
+    UserstoreType
+} from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,19 +40,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { getAllLocalClaims } from "../../../../admin.claims.v1/api";
-import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin.core.v1";
-import { addUserStore, getAType } from "../../../../admin.userstores.v1/api/user-stores";
-import { UserStoreManagementConstants } from "../../../../admin.userstores.v1/constants/user-store-constants";
-import {
-    AttributeMapping,
-    TypeProperty,
-    UserStore,
-    UserStorePostData,
-    UserStoreProperty,
-    UserstoreType
-} from "../../../../admin.userstores.v1/models/user-stores";
 import { userstoresConfig } from "../../../configs";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import { AttributeMappingsComponent, GeneralUserStoreDetails } from "../components";

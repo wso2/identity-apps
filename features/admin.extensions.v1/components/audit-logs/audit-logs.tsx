@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder,
     Hint,
@@ -31,7 +32,6 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon, Label } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import InfiniteScrollContainer from "../logs/components/infinite-scroll-container";
 import TimeRangeSelector from "../logs/components/time-range-selector";
 import { LogsConstants } from "../logs/constants";

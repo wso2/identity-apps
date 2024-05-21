@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,21 +16,20 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { CodeEditor } from "@wso2is/react-components";
-import { Divider, Button, Icon, Card, Form } from "semantic-ui-react";
-import { getInboundProtocolConfig } from "../../../../admin.applications.v1/api";
+import { getInboundProtocolConfig } from "@wso2is/admin.applications.v1/api";
 import {
     ApplicationInterface,
     SupportedAuthProtocolTypes
-} from "../../../../admin.applications.v1/models";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { store, toggleHelpPanelVisibility, AppState } from "../../../../admin.core.v1";
-import { addAlert } from "@wso2is/core/store";
+} from "@wso2is/admin.applications.v1/models";
+import { AppState, store, toggleHelpPanelVisibility } from "@wso2is/admin.core.v1";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
+import { CodeEditor } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, Divider, Form, Icon } from "semantic-ui-react";
 import { VerticalStepper } from "./vertical-stepper";
 import { ReactComponent as AngularIcon } from "../../../assets/images/icons/angular-icon.svg";
 import { ReactComponent as ReactIcon } from "../../../assets/images/icons/react-icon.svg";
@@ -64,7 +63,7 @@ export const IntegrateAppComponent: FunctionComponent<IntegrateAppComponentProps
     const [ selectedWebAppTechnology, setSelectedWebAppTechnology ] = useState("");
     const [ callBackUrlSelection, setCallBackUrlSelection ] = useState<any[]>([]);
     const [ selectedLoginCallBack, setSelectedLoginCallBack ] = useState<any>("");
-    const [ selectedLogoutCallBack, setSelectedLogoutCallBack ] = useState<any>("")
+    const [ selectedLogoutCallBack, setSelectedLogoutCallBack ] = useState<any>("");
     const [ isSidePanelOpen, setIsSidePanelOpen ] = useState<boolean>(false);
     const helpPanelVisibilityGlobalState: boolean = useSelector((state: AppState) => state.helpPanel.visibility);
 
@@ -123,10 +122,10 @@ export const IntegrateAppComponent: FunctionComponent<IntegrateAppComponentProps
 
                     if (urlArray && urlArray.length > 1) {
                         urlArray.forEach((callbackUrl) => {
-                            setCallBackUrlSelection(prevItems => [...prevItems, {
+                            setCallBackUrlSelection(prevItems => [ ...prevItems, {
                                 key: callbackUrl, text: callbackUrl, value: callbackUrl
-                            }])
-                        })
+                            } ]);
+                        });
                     }
                 });
         });
@@ -186,6 +185,7 @@ authClient.signIn().then((response) => {
      */
     const mapProtocolTypeToName = ((type: string): string => {
         let protocolName = type;
+
         if (protocolName === "oauth2") {
             protocolName = SupportedAuthProtocolTypes.OIDC;
         } else if (protocolName === "passivests") {
@@ -210,7 +210,7 @@ authClient.signIn().then((response) => {
                         data-testid={ `${ testId }-technology-react` }
                         className={ `basic-card tech-selection ${selectedWebAppTechnology === "React" ? "selected" : "" } ` }
                         onClick={ ()=> {
-                            setSelectedWebAppTechnology("React")
+                            setSelectedWebAppTechnology("React");
                         } }
                     >
                         <Card.Content textAlign={ "center" }>
@@ -225,7 +225,7 @@ authClient.signIn().then((response) => {
                         data-testid={ `${ testId }-technology-angular` }
                         className={ `basic-card tech-selection ${selectedWebAppTechnology === "Angular" ? "selected" : "" } ` }
                         onClick={ ()=> {
-                            setSelectedWebAppTechnology("Angular")
+                            setSelectedWebAppTechnology("Angular");
                         } }
                     >
                         <Card.Content textAlign={ "center" }>
@@ -253,50 +253,54 @@ authClient.signIn().then((response) => {
                 <p>Copy and paste below code based on the technology that your app is built on.</p>
                 {
                     callBackUrlSelection.length > 1 &&
-                    <>
+                    (<>
                         <Form>
-                            <Form.Group widths='3'>
+                            <Form.Group widths="3">
                                 <Form.Select
                                     fluid
                                     onChange={ (value, data) => {
-                                        setSelectedLoginCallBack(data.value)
+                                        setSelectedLoginCallBack(data.value);
                                     } }
-                                    label='Select login callback URL:'
+                                    label="Select login callback URL:"
                                     options={ callBackUrlSelection }
-                                    placeholder='Login Callback URL'
-                            />
+                                    placeholder="Login Callback URL"
+                                />
                             </Form.Group>
-                            <Form.Group widths='3'>
+                            <Form.Group widths="3">
                                 <Form.Select
                                     fluid
                                     onChange={ (value, data) => {
                                         setSelectedLogoutCallBack(data.value);
                                     } }
-                                    label='Select logout callback URL:'
+                                    label="Select logout callback URL:"
                                     options={ callBackUrlSelection }
-                                    placeholder='Logout Callback URL'
-                            />
+                                    placeholder="Logout Callback URL"
+                                />
                             </Form.Group>
                         </Form>
                         <Divider hidden/>
-                    </>
+                    </>)
                 }
                 <div className="code-segment">
                     { selectedWebAppTechnology === "React" &&
-                        <>
-                            <div 
-                                data-testid={ `${ testId }-react-config` } 
+                        (<>
+                            <div
+                                data-testid={ `${ testId }-react-config` }
                                 className="action-buttons"
                             >
-                                <Button basic size='tiny' className="copy-config" icon>
-                                    <Icon name='copy' />
+                                <Button basic size="tiny" className="copy-config" icon>
+                                    <Icon name="copy" />
                                 </Button>
-                                <Button className="download-config" size='tiny' basic onClick={ () => {
-                                    dispatch(toggleHelpPanelVisibility(true));
-                                    setIsSidePanelOpen(true);
-                                    // TODO: IMPORTANT Remove this once scroll is fixed.
-                                    window.scrollTo(0,0);
-                                } }>
+                                <Button
+                                    className="download-config"
+                                    size="tiny"
+                                    basic
+                                    onClick={ () => {
+                                        dispatch(toggleHelpPanelVisibility(true));
+                                        setIsSidePanelOpen(true);
+                                        // TODO: IMPORTANT Remove this once scroll is fixed.
+                                        window.scrollTo(0,0);
+                                    } }>
                                     Configuration Help
                                 </Button>
                             </div>
@@ -310,24 +314,28 @@ authClient.signIn().then((response) => {
                                 theme={ "light" }
                                 readOnly={ true }
                             />
-                        </>
+                        </>)
                     }
                     {
                         selectedWebAppTechnology === "Angular" &&
-                        <>
-                            <div 
-                                data-testid={ `${ testId }-angular-config` } 
+                        (<>
+                            <div
+                                data-testid={ `${ testId }-angular-config` }
                                 className="action-buttons"
                             >
-                                <Button basic size='tiny' className="copy-config" icon>
-                                    <Icon name='copy' />
+                                <Button basic size="tiny" className="copy-config" icon>
+                                    <Icon name="copy" />
                                 </Button>
-                                <Button className="download-config" size='tiny' basic onClick={ () => {
-                                    dispatch(toggleHelpPanelVisibility(true));
-                                    setIsSidePanelOpen(true)
-                                    // TODO: IMPORTANT Remove this once scroll is fixed.
-                                    window.scrollTo(0,0);
-                                } }>
+                                <Button
+                                    className="download-config"
+                                    size="tiny"
+                                    basic
+                                    onClick={ () => {
+                                        dispatch(toggleHelpPanelVisibility(true));
+                                        setIsSidePanelOpen(true);
+                                        // TODO: IMPORTANT Remove this once scroll is fixed.
+                                        window.scrollTo(0,0);
+                                    } }>
                                     Configuration Help
                                 </Button>
                             </div>
@@ -341,12 +349,12 @@ authClient.signIn().then((response) => {
                                 theme={ "light" }
                                 readOnly={ true }
                             />
-                        </>
+                        </>)
                     }
                 </div>
             </>
         )
-    } ]
+    } ];
 
     const webPageContent = [ {
         stepTitle: "Add Asgardio to your app",
@@ -355,44 +363,48 @@ authClient.signIn().then((response) => {
                 <p>Copy and paste below code based on the technology that your app is built on.</p>
                 {
                     callBackUrlSelection.length > 1 &&
-                    <>
+                    (<>
                         <Form>
-                            <Form.Group widths='3'>
+                            <Form.Group widths="3">
                                 <Form.Select
                                     fluid
                                     onChange={ (value, data) => {
-                                        setSelectedLoginCallBack(data.value)
+                                        setSelectedLoginCallBack(data.value);
                                     } }
-                                    label='Select login callback URL:'
+                                    label="Select login callback URL:"
                                     options={ callBackUrlSelection }
-                                    placeholder='Login Callback URL'
-                            />
+                                    placeholder="Login Callback URL"
+                                />
                             </Form.Group>
-                            <Form.Group widths='3'>
+                            <Form.Group widths="3">
                                 <Form.Select
                                     fluid
                                     onChange={ (value, data) => {
-                                        setSelectedLogoutCallBack(data.value)
+                                        setSelectedLogoutCallBack(data.value);
                                     } }
-                                    label='Select logout callback URL:'
+                                    label="Select logout callback URL:"
                                     options={ callBackUrlSelection }
-                                    placeholder='Logout Callback URL'
-                            />
+                                    placeholder="Logout Callback URL"
+                                />
                             </Form.Group>
                         </Form>
                         <Divider hidden/>
-                    </>
+                    </>)
                 }
                 <div className="code-segment" >
                     <div className="action-buttons">
-                        <Button basic size='tiny' className="copy-config" icon>
-                            <Icon name='copy' />
+                        <Button basic size="tiny" className="copy-config" icon>
+                            <Icon name="copy" />
                         </Button>
-                        <Button className="download-config" size='tiny' basic onClick={ () => {
-                            dispatch(toggleHelpPanelVisibility(true));
-                            // TODO: IMPORTANT Remove this once scroll is fixed.
-                            window.scrollTo(0,0);
-                        } }>
+                        <Button
+                            className="download-config"
+                            size="tiny"
+                            basic
+                            onClick={ () => {
+                                dispatch(toggleHelpPanelVisibility(true));
+                                // TODO: IMPORTANT Remove this once scroll is fixed.
+                                window.scrollTo(0,0);
+                            } }>
                             Configuration Help
                         </Button>
                     </div>
@@ -442,16 +454,16 @@ authClient.signIn().then((response) => {
                 </div>
             </>
         )
-    } ]
+    } ];
 
     return (
         applicationType === "Web Application" ?
             <VerticalStepper stepContent={ webPageContent } isSidePanelOpen />
-        :
-            <VerticalStepper
+            :
+            (<VerticalStepper
                 stepContent={ webAppContent }
                 isNextEnabled={ selectedWebAppTechnology !== "" }
                 isSidePanelOpen
-            />
-    )
+            />)
+    );
 };
