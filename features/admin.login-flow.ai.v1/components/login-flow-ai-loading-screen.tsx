@@ -15,13 +15,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import AILoadingScreen from "@wso2is/common.ai.v1/components/ai-loading-screen";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import AILoadingScreen from "../../common.ai.v1/components/ai-loading-screen";
 import { useAILoginFlowGenerationStatus } from "../api/use-ai-login-flow-generation-status";
 import {
     FACTS_ROTATION_DELAY,
