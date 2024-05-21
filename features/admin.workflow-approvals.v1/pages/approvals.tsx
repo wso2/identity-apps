@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface, UIConstants } from "@wso2is/admin.core.v1";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
@@ -24,7 +25,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Input, PaginationProps, SemanticCOLORS } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, UIConstants } from "../../admin.core.v1";
 import { fetchPendingApprovals, updatePendingApprovalStatus } from "../api";
 import { ApprovalsList } from "../components";
 import { ApprovalStatus, ApprovalTaskListItemInterface } from "../models";
@@ -214,7 +214,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      * Resolves the filter tag colors based on the approval statuses.
      *
      * @param status - Filter status.
-     * 
+     *
      * @returns A semantic color instance.
      */
     const resolveApprovalTagColor = (

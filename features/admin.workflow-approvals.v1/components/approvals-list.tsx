@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs";
+import { UIConstants } from "@wso2is/admin.core.v1/constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import {
     AlertLevels,
     LoadableComponentInterface,
@@ -43,9 +46,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, Label, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ApprovalTaskComponent } from "./approval-task";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs";
-import { UIConstants } from "../../admin.core.v1/constants";
-import { FeatureConfigInterface } from "../../admin.core.v1/models";
 import { fetchPendingApprovalDetails } from "../api";
 import { getTableIcons } from "../configs";
 import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface } from "../models";
@@ -164,6 +164,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
         fetchPendingApprovalDetails(approval.id)
             .then((response) => {
                 let selectedApprovalTask = response;
+
                 selectedApprovalTask = {
                     ...selectedApprovalTask,
                     taskStatus: approval?.status,
