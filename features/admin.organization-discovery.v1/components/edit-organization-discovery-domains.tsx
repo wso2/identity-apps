@@ -25,6 +25,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import TextField from "@oxygen-ui/react/TextField";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -39,7 +40,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../admin.core.v1";
 import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import updateOrganizationDiscoveryAttributes from "../api/update-organization-email-domains";
 import {

@@ -17,6 +17,15 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
@@ -37,15 +46,6 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } fro
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "../../admin.core.v1";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
 import { OrganizationIcon } from "../configs/ui";
 import { OrganizationDiscoveryConstants } from "../constants/organization-discovery-constants";
 import {

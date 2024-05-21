@@ -18,6 +18,15 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { Show } from "@wso2is/access-control";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "@wso2is/admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -48,15 +57,6 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "../../admin.core.v1";
 import addOrganizationDiscoveryConfig from "../api/add-organization-discovery-config";
 import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discovery-config";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
