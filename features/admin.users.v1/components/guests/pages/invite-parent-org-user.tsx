@@ -19,6 +19,8 @@
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
+import { GroupsInterface, useGroupList } from "@wso2is/admin.groups.v1";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
@@ -27,8 +29,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { FormRenderProps } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
-import { GroupsInterface, useGroupList } from "../../../../admin.groups.v1";
-import { PRIMARY_USERSTORE } from "../../../../admin.userstores.v1/constants";
 import { UserManagementConstants } from "../../../constants";
 import { GroupsAutoCompleteOption, InviteParentOrgUserFormValuesInterface } from "../models/invite";
 
