@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import {
+    AnalyticsAPIRequestInterface,
+    AnalyticsFormValuesInterface
+} from "@wso2is/admin.extensions.v1/components/governance-connectors/models/analytics";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
@@ -23,15 +32,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
-import {
-    AnalyticsAPIRequestInterface,
-    AnalyticsFormValuesInterface
-} from "../../admin.extensions.v1/components/governance-connectors/models/analytics";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    ServerConfigurationsConstants
-} from "../../admin.server-configurations.v1";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 
 /**

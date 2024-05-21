@@ -16,43 +16,45 @@
  * under the License.
  */
 
-import { 
-    AlertLevels, 
-    IdentifiableComponentInterface, 
-    TestableComponentInterface 
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
+// eslint-disable-next-line no-restricted-imports
+import {
+    IdentityAppsApiException
+} from "@wso2is/core/dist/types/exceptions/identity-apps-api-exception";
+// eslint-disable-next-line no-restricted-imports
+import { AddAlertAction } from "@wso2is/core/dist/types/store/actions/types/global";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { 
-    Message, 
-    Text 
+import {
+    Message,
+    Text
 } from "@wso2is/react-components";
 import camelCase from "lodash-es/camelCase";
 import kebabCase from "lodash-es/kebabCase";
-import React, { 
-    Dispatch, 
-    FunctionComponent, 
-    ReactElement, 
-    ReactNode, 
-    useState 
+import React, {
+    Dispatch,
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    useState
 } from "react";
-import { 
-    Trans, 
-    useTranslation 
+import {
+    Trans,
+    useTranslation
 } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
-import { 
-    IdentityAppsApiException 
-} from "@wso2is/core/dist/types/exceptions/identity-apps-api-exception";
-import { AddAlertAction } from "@wso2is/core/dist/types/store/actions/types/global";
-import { serverConfigurationConfig } from "../../../admin.extensions.v1";
 import { updateGovernanceConnector } from "../../api";
 import { ServerConfigurationsConstants } from "../../constants";
-import { 
-    ConnectorPropertyInterface, 
-    GovernanceConnectorInterface, 
-    UpdateGovernanceConnectorConfigInterface 
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    UpdateGovernanceConnectorConfigInterface
 } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -130,7 +132,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             operation: "UPDATE",
             properties: []
         };
-        
+
         for (const key in values) {
             data.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(key),
@@ -198,7 +200,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             connector={ connector }
             props={ {
                 properties: connector?.properties.filter(
-                    ((property: ConnectorPropertyInterface) => 
+                    ((property: ConnectorPropertyInterface) =>
                         serverConfigurationConfig.connectorPropertiesToShow.includes(property.name)
                         || serverConfigurationConfig.connectorPropertiesToShow
                             .includes(ServerConfigurationsConstants.ALL)))
