@@ -409,7 +409,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             }
 
             {
-                identityProviderConfig?.editIdentityProvider?.enableFIDOTrustedAppsConfiguration
+                identityProviderConfig?.editIdentityProvider?.enableFIDOTrustedAppsConfiguration && !isSubOrganization()
                     ? (
                         <FIDOTrustedApps
                             readOnly={ isReadOnly }
