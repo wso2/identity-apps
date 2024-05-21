@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { history } from "@wso2is/admin.core.v1";
+import { AppConstants, UIConstants } from "@wso2is/admin.core.v1/constants";
+import { RoleBasicInterface } from "@wso2is/admin.extensions.v1/components/groups/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DataTable,
@@ -27,9 +30,6 @@ import {
 import React, { ChangeEvent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
-import { RoleBasicInterface } from "../../admin.extensions.v1/components/groups/models";
-import { history } from "../../admin.core.v1";
-import { AppConstants, UIConstants } from "../../admin.core.v1/constants";
 
 interface RolesListProps extends IdentifiableComponentInterface {
     rolesList: RoleBasicInterface[];
@@ -59,7 +59,7 @@ const RolesList = (props: RolesListProps): ReactElement => {
 
         if (query === "") {
             setProcessedRolesList(rolesList);
-            
+
             return;
         }
 
@@ -125,7 +125,7 @@ const RolesList = (props: RolesListProps): ReactElement => {
 
         return null;
     };
-        
+
 
     /**
      * Resolves data table columns.

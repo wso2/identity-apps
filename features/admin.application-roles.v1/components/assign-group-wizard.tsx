@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import {
+    ApplicationRoleGroupInterface,
+    ApplicationRoleGroupsAPIResponseInterface
+} from "@wso2is/admin.extensions.v1/components/application/models";
+import { getGroupList } from "@wso2is/admin.groups.v1/api";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -32,11 +37,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
-import {
-    ApplicationRoleGroupInterface,
-    ApplicationRoleGroupsAPIResponseInterface
-} from "../../admin.extensions.v1/components/application/models";
-import { getGroupList } from "../../admin.groups.v1/api";
 
 /**
  * Interface which captures create group props.
@@ -95,7 +95,7 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
     };
 
     const filterOutExistingGroupsFromAllGroups = (
-        allGroups: RolesInterface[], 
+        allGroups: RolesInterface[],
         existingGroups: ApplicationRoleGroupInterface[]
     ) => {
         const filteredGroups: RolesInterface[] = [];
@@ -104,13 +104,13 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
             allGroups.forEach((item: RolesInterface) => {
                 const itemIndex: number = existingGroups.findIndex(
                     (existingGroup: ApplicationRoleGroupInterface)  => existingGroup?.name === item?.displayName);
-                
+
                 // No matching index found.
                 if (itemIndex === -1) {
                     filteredGroups.push(item);
                 }
             });
-    
+
             setGroupsList(filteredGroups);
             setInitialGroupList(filteredGroups);
         }
@@ -118,13 +118,13 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
 
     const assignGroupsToRole = () => {
         const selectedGroups: ApplicationRoleGroupInterface[] = [];
-        
+
         tempGroupList.forEach((group: RolesInterface) => {
             selectedGroups.push({
                 name: group.displayName
             });
         });
-        
+
         handleGroupAdd(selectedGroups);
     };
 
@@ -172,7 +172,7 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (group: RolesInterface) => {        
+    const handleUnassignedItemCheckboxChange = (group: RolesInterface) => {
         const checkedGroups: RolesInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedGroups?.includes(group)) {
@@ -231,7 +231,7 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 {
-                    !isLoading 
+                    !isLoading
                         ? (
                             <TransferComponent
                                 selectionComponent
@@ -265,7 +265,7 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
                                                     style={ { height: "100%" } }
                                                     handleItemChange={ () => handleUnassignedItemCheckboxChange(group) }
                                                     key={ index }
-                                                    listItem={ groupName?.length > 1 
+                                                    listItem={ groupName?.length > 1
                                                         ? groupName[1] : group?.displayName }
                                                     listItemId={ group.id }
                                                     listItemIndex={ index }
@@ -282,7 +282,7 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
                         )
                         : (
                             <ContentLoader />
-                        ) 
+                        )
                 }
             </Modal.Content>
             <Modal.Actions>

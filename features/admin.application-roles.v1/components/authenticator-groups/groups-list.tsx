@@ -17,6 +17,18 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    updateIdentityProviderAssignedGroups,
+    useIdentityProviderAssignedGroups
+} from "@wso2is/admin.extensions.v1/components/application/api";
+import {
+    ApplicationRoleGroupInterface,
+    ApplicationRoleGroupsUpdatePayloadInterface
+} from "@wso2is/admin.extensions.v1/components/application/models";
+import { getIdentityProviderDetail } from "@wso2is/admin.identity-providers.v1/api";
+import { IdentityProviderGroupInterface, IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -35,18 +47,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../admin.core.v1/models/config";
-import { AppState } from "../../../admin.core.v1/store";
-import {
-    updateIdentityProviderAssignedGroups,
-    useIdentityProviderAssignedGroups
-} from "../../../admin.extensions.v1/components/application/api";
-import {
-    ApplicationRoleGroupInterface,
-    ApplicationRoleGroupsUpdatePayloadInterface
-} from "../../../admin.extensions.v1/components/application/models";
-import { getIdentityProviderDetail } from "../../../admin.identity-providers.v1/api";
-import { IdentityProviderGroupInterface, IdentityProviderInterface } from "../../../admin.identity-providers.v1/models";
 
 interface GroupsListProps extends IdentifiableComponentInterface {
     authenticatorId: string;
