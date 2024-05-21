@@ -51,6 +51,7 @@ export interface CommonConfig {
         };
     };
     primaryUserstoreOnly: boolean;
+    useExtensionTestConfig: boolean;
     userEditSection: {
         isGuestUser: boolean;
         showEmail: boolean;

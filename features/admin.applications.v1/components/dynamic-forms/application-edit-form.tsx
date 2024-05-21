@@ -185,7 +185,11 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
     };
 
     return (
-        <EmphasizedSegment className="application-dynamic-edit-form" padded="very">
+        <EmphasizedSegment
+            className="application-dynamic-edit-form"
+            data-componentid={ `${componentId}-tab-${tab?.id}` }
+            padded="very"
+        >
             {
                 isLoading
                     ? <ContentLoader inline="centered" active/>

@@ -16,9 +16,11 @@
  * under the License.
  */
 
-import { ApplicationAccessTypes, ApplicationListInterface } from "../../models";
+import { RoleAudienceTypes } from "../../../admin.roles.v2/constants";
+import { ApplicationAccessTypes, ApplicationInterface, ApplicationListInterface } from "../../models";
 import {
     ApplicationEditTabContentTypes,
+    ApplicationEditTabMetadataInterface,
     ApplicationTemplateCategories,
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
@@ -614,4 +616,236 @@ export const applicationTemplateMetadataMockResponse: ApplicationTemplateMetadat
             }
         ]
     }
+};
+
+export const dynamicApplicationEditTabMetadataMockObject: ApplicationEditTabMetadataInterface = {
+    contentType: ApplicationEditTabContentTypes.FORM,
+    displayName: "Salesforce Settings",
+    form: {
+        fields: [
+            {
+                "aria-label": "Application Name",
+                dataComponentId: "dynamic-application-edit-form-application-name",
+                id: "application-name",
+                label: "Name",
+                name: "name",
+                placeholder: "My App",
+                required: true,
+                type: DynamicInputFieldTypes.TEXT,
+                validations: [
+                    {
+                        type: ValidationRuleTypes.APPLICATION_NAME
+                    }
+                ]
+            },
+            {
+                "aria-label": "application-description",
+                dataComponentId: "dynamic-application-edit-form-application-description",
+                id: "application-description",
+                label: "Description",
+                name: "description",
+                placeholder: "My App Description",
+                required: false,
+                type: DynamicInputFieldTypes.TEXTAREA
+            }
+        ],
+        submitDefinedFieldsOnly: true
+    },
+    id: "salesforce-settings"
+};
+
+export const applicationMockResponse: ApplicationInterface = {
+    access: ApplicationAccessTypes.WRITE,
+    advancedConfigurations: {
+        additionalSpProperties: [
+            {
+                displayName: "Is B2B Self Service Application",
+                name: "isB2BSelfServiceApp",
+                value: "false"
+            }
+        ],
+        attestationMetaData: {
+            androidPackageName: "",
+            appleAppId: "",
+            enableClientAttestation: false
+        },
+        discoverableByEndUsers: false,
+        enableAPIBasedAuthentication: false,
+        enableAuthorization: false,
+        fragment: false,
+        returnAuthenticatedIdpList: false,
+        saas: false,
+        skipLoginConsent: false,
+        skipLogoutConsent: true
+    },
+    associatedRoles: {
+        allowedAudience: RoleAudienceTypes.ORGANIZATION,
+        roles: []
+    },
+    authenticationSequence: {
+        attributeStepId: 1,
+        requestPathAuthenticators: [],
+        steps: [
+            {
+                id: 1,
+                options: [
+                    {
+                        authenticator: "BasicAuthenticator",
+                        idp: "LOCAL"
+                    }
+                ]
+            }
+        ],
+        subjectStepId: 1,
+        type: "DEFAULT"
+    },
+    claimConfiguration: {
+        claimMappings: [
+            {
+                applicationClaim: "http://wso2.org/claims/username",
+                localClaim: {
+                    uri: "http://wso2.org/claims/username"
+                }
+            }
+        ],
+        dialect: "LOCAL",
+        requestedClaims: [
+            {
+                claim: {
+                    uri: "http://wso2.org/claims/username"
+                },
+                mandatory: false
+            }
+        ],
+        role: {
+            claim: {
+                uri: "http://wso2.org/claims/role"
+            },
+            includeUserDomain: true,
+            mappings: []
+        },
+        subject: {
+            claim: {
+                uri: "http://wso2.org/claims/userid"
+            },
+            includeTenantDomain: false,
+            includeUserDomain: false,
+            mappedLocalSubjectMandatory: false,
+            useMappedLocalSubject: false
+        }
+    },
+    clientId: "kcn1kuV1yfZbaDofF2Xfg4jUpsUa",
+    id: "142fbbc0-69b8-4f3d-a6a7-adecc9f29804",
+    inboundProtocols: [
+        {
+            self: "/api/server/v1/applications/142fbbc0-69b8-4f3d-a6a7-adecc9f29804/inbound-protocols/oidc",
+            type: "oauth2"
+        }
+    ],
+    isManagementApp: false,
+    issuer: "",
+    name: "Salesforce",
+    provisioningConfigurations: {
+        outboundProvisioningIdps: []
+    },
+    realm: "",
+    templateId: "salesforce"
+};
+
+export const spaApplicationMockResponse: ApplicationInterface = {
+    access: ApplicationAccessTypes.WRITE,
+    advancedConfigurations: {
+        additionalSpProperties: [
+            {
+                displayName: "Is B2B Self Service Application",
+                name: "isB2BSelfServiceApp",
+                value: "false"
+            }
+        ],
+        attestationMetaData: {
+            androidPackageName: "",
+            appleAppId: "",
+            enableClientAttestation: false
+        },
+        discoverableByEndUsers: false,
+        enableAPIBasedAuthentication: false,
+        enableAuthorization: false,
+        fragment: false,
+        returnAuthenticatedIdpList: false,
+        saas: false,
+        skipLoginConsent: true,
+        skipLogoutConsent: true
+    },
+    associatedRoles: {
+        allowedAudience: RoleAudienceTypes.ORGANIZATION,
+        roles: []
+    },
+    authenticationSequence: {
+        attributeStepId: 1,
+        requestPathAuthenticators: [],
+        steps: [
+            {
+                id: 1,
+                options: [
+                    {
+                        authenticator: "BasicAuthenticator",
+                        idp: "LOCAL"
+                    }
+                ]
+            }
+        ],
+        subjectStepId: 1,
+        type: "DEFAULT"
+    },
+    claimConfiguration: {
+        claimMappings: [
+            {
+                applicationClaim: "http://wso2.org/claims/username",
+                localClaim: {
+                    uri: "http://wso2.org/claims/username"
+                }
+            }
+        ],
+        dialect: "LOCAL",
+        requestedClaims: [
+            {
+                claim: {
+                    uri: "http://wso2.org/claims/username"
+                },
+                mandatory: false
+            }
+        ],
+        role: {
+            claim: {
+                uri: "http://wso2.org/claims/role"
+            },
+            includeUserDomain: true,
+            mappings: []
+        },
+        subject: {
+            claim: {
+                uri: "http://wso2.org/claims/userid"
+            },
+            includeTenantDomain: false,
+            includeUserDomain: false,
+            mappedLocalSubjectMandatory: false,
+            useMappedLocalSubject: false
+        }
+    },
+    clientId: "Y4LmFp5bwqvylgjALgOCYPGvlTMa",
+    id: "c3a3d3ce-4166-4e6a-963a-94e1c1c8de5f",
+    inboundProtocols: [
+        {
+            self: "/api/server/v1/applications/c3a3d3ce-4166-4e6a-963a-94e1c1c8de5f/inbound-protocols/oidc",
+            type: "oauth2"
+        }
+    ],
+    isManagementApp: false,
+    issuer: "",
+    name: "SPA",
+    provisioningConfigurations: {
+        outboundProvisioningIdps: []
+    },
+    realm: "",
+    templateId: "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7"
 };

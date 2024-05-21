@@ -370,6 +370,27 @@ const ReduxStoreStateMock: AppState = {
             identityProviderTemplateLoadingStrategy: "LOCAL",
             appTitle: "Console | WSO2 Identity Server",
             features: {
+                apiResources: {
+                    disabledFeatures: [],
+                    enabled: true,
+                    scopes: {
+                        create: [
+                            "internal_api_resource_create"
+                        ],
+                        delete: [
+                            "internal_api_resource_delete"
+                        ],
+                        feature: [
+                            "console:apiResources"
+                        ],
+                        read: [
+                            "internal_api_resource_view"
+                        ],
+                        update: [
+                            "internal_api_resource_update"
+                        ]
+                    }
+                },
                 applications: {
                     disabledFeatures: [],
                     enabled: true,
@@ -651,6 +672,23 @@ const ReduxStoreStateMock: AppState = {
             isLeftNavigationCategorized: true,
             isRequestPathAuthenticationEnabled: true,
             isSignatureValidationCertificateAliasEnabled: false,
+            legacyMode: {
+                apiResourcesV1: false,
+                apiResourcesV2: true,
+                applicationListSystemApps: false,
+                applicationOIDCSubjectIdentifier: true,
+                applicationRequestPathAuthentication: false,
+                applicationSystemAppsSettings: false,
+                backupCodesForSubOrganizations: true,
+                certificates: false,
+                consoleFeatureScopeCheck: true,
+                loginAndRegistrationEmailDomainDiscovery: true,
+                organizations: true,
+                roleMapping: false,
+                rolesV1: false,
+                saasApplications: false,
+                secretsManagement: false
+            },
             listAllAttributeDialects: false,
             privacyPolicyConfigs: {
                 visibleOnFooter: true
@@ -784,7 +822,9 @@ const ReduxStoreStateMock: AppState = {
             name: "Organization",
             id: "org-0001",
             ref: "/org-001"
-        }
+        },
+        isFirstLevelOrganization: true,
+        organizationType: "SUPER_ORGANIZATION"
     },
     profile: {
         isSCIMEnabled: true,

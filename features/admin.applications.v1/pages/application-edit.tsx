@@ -63,7 +63,7 @@ import { ApplicationTemplateManagementUtils } from "../utils/application-templat
 /**
  * Prop types for the applications edit page component.
  */
-interface ApplicationEditPageInterface extends IdentifiableComponentInterface, RouteComponentProps {
+export interface ApplicationEditPageInterface extends IdentifiableComponentInterface, RouteComponentProps {
 }
 
 /**
