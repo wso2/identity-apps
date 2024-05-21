@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertLevels, CertificateValidity, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -36,7 +37,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { AddApplicationCertificateWizard } from "./add-certificate-wizard";
-import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../../admin.core.v1";
 import { updateApplicationDetails } from "../../../api";
 import { ApplicationInterface, CertificateTypeInterface } from "../../../models";
 import { CertificateFormFieldModal } from "../../modals";
