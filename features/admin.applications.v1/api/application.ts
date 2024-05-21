@@ -122,6 +122,36 @@ export const deleteApplication = (id: string): Promise<any> => {
 };
 
 /**
+ * Deletes an application when the relevant id is passed in.
+ *
+ * @param id - ID of the application.
+ * @returns A promise containing the response.
+ */
+export const disableApplication = (id: string, status: boolean): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: { "applicationEnabled":status },
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.applications + "/" + id
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to disable the application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Updates the application with basic details.
  *
  * @param app - Basic info about the application.
