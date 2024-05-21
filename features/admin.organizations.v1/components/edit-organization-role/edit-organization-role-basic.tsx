@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppConstants, AppState, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -24,8 +26,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, InputOnChangeData } from "semantic-ui-react";
-import { AppConstants, AppState, SharedUserStoreUtils, history } from "../../../admin.core.v1";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../admin.userstores.v1/constants/user-store-constants";
 import { deleteOrganizationRole, getOrganizationRoles, patchOrganizationRoleDetails } from "../../api";
 import { OrganizationRoleManagementConstants } from "../../constants";
 import {

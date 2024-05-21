@@ -17,7 +17,12 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
-import { OrganizationType } from "../../../admin.core.v1";
+import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { AppConstants, AppState, OrganizationType } from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { organizationConfigs } from "@wso2is/admin.extensions.v1";
+import TenantDropdown from "@wso2is/admin.tenants.v1/components/dropdown/tenant-dropdown";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
@@ -35,12 +40,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Breadcrumb, Dropdown, Icon } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
-import { organizationConfigs } from "../../../admin.extensions.v1";
-import useSignIn from "../../../admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
-import { AppConstants, AppState } from "../../../admin.core.v1";
-import { history } from "../../../admin.core.v1/helpers/history";
-import TenantDropdown from "../../../admin.tenants.v1/components/dropdown/tenant-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
 import { useGetCurrentOrganizationType } from "../../hooks/use-get-organization-type";
 import useOrganizationSwitch from "../../hooks/use-organization-switch";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
 import {
     AlertLevels,
     IdentifiableComponentInterface
@@ -46,7 +47,6 @@ import {
 import OrganizationListItem from "./organization-list-item";
 import OrganizationSwitcherList from "./organization-switch-list";
 import { ReactComponent as CrossIcon } from "../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppState } from "../../../admin.core.v1";
 import { getOrganizations } from "../../api";
 import {
     GenericOrganization,
@@ -194,7 +194,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 .finally(() => {
                     setIsOrganizationsLoading(false);
                 });
-        }, 
+        },
         []
     );
 

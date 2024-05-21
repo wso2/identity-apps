@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
 import { useSelector } from "react-redux";
-import { AppState } from "../../admin.core.v1";
 import { OrganizationType } from "../constants";
 
 /**

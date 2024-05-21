@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,12 @@
  * under the License.
  */
 
+import { CreateGroupMemberInterface, GroupsInterface, getGroupList } from "@wso2is/admin.groups.v1";
+import { AssignGroupsUsers } from "@wso2is/admin.roles.v2/components/wizard/assign-groups-users";
+import { getRolesWizardStepIcons } from "@wso2is/admin.roles.v2/configs/ui";
+import { TreeNode } from "@wso2is/admin.roles.v2/models/permission";
+import { CreateRoleInterface, CreateRoleMemberInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -26,12 +32,6 @@ import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { OrganizationRoleBasics } from "./add-organization-role/organization-role-basics";
 import { CreateOrganizationRoleSummary } from "./add-organization-role/organization-role-sumary";
 import { OrganizationPermissionList } from "./edit-organization-role/organization-role-permission";
-import { CreateGroupMemberInterface, GroupsInterface, getGroupList } from "../../admin.groups.v1";
-import { AssignGroupsUsers } from "../../admin.roles.v2/components/wizard/assign-groups-users";
-import { getRolesWizardStepIcons } from "../../admin.roles.v2/configs/ui";
-import { TreeNode } from "../../admin.roles.v2/models/permission";
-import { CreateRoleInterface, CreateRoleMemberInterface } from "../../admin.roles.v2/models/roles";
-import { UserBasicInterface } from "../../admin.users.v1/models/user";
 
 /**
  * Interface which captures create role props.
@@ -281,7 +281,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                 triggerSubmit={ submitGeneralSettings }
                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.BASIC_DETAILS] }
                 onSubmit={
-                    (values: WizardBasicDetailsInterface) => 
+                    (values: WizardBasicDetailsInterface) =>
                         handleWizardBasicDetailsSubmit(values, WizardStepsFormTypes.BASIC_DETAILS)
                 }
             />
@@ -296,7 +296,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                 triggerSubmit={ submitPermissionList }
                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PERM_LIST] }
                 onSubmit={
-                    (values: WizardPermissionInterface[]) => 
+                    (values: WizardPermissionInterface[]) =>
                         handleWizardPermissionSubmit(values, WizardStepsFormTypes.PERM_LIST)
                 }
                 isSubmitting={ isSubmitting }

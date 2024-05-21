@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,16 +15,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppState } from "@wso2is/admin.core.v1";
+import { AddRoleUsers } from "@wso2is/admin.roles.v2/components/wizard/role-user-assign";
+import { ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState } from "../../../admin.core.v1";
-import { AddRoleUsers } from "../../../admin.roles.v2/components/wizard/role-user-assign";
-import { ScimOperationsInterface } from "../../../admin.roles.v2/models/roles";
-import { UserBasicInterface } from "../../../admin.users.v1/models/user";
 import { patchOrganizationRoleDetails } from "../../api";
 import { PRIMARY_DOMAIN } from "../../constants";
 import {
@@ -79,7 +79,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         if(addedUsers?.length === 0 && removedUsers?.length === 0) {
             return;
         }
-        
+
         const addedUserIds: string[] = [];
         const removedUserIds: string[] = [];
 

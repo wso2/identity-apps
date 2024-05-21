@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { SBACInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { OrganizationAttributes } from "./organization-attributes";
 import { OrganizationOverview } from "./organization-overview";
-import { FeatureConfigInterface } from "../../../admin.core.v1";
 import { OrganizationResponseInterface } from "../../models";
 
 interface EditOrganizationPropsInterface extends SBACInterface<FeatureConfigInterface> {

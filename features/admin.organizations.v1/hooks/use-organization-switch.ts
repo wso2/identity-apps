@@ -17,10 +17,10 @@
  */
 
 import { BasicUserInfo, useAuthContext } from "@asgardeo/auth-react";
+import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { TokenConstants } from "@wso2is/core/constants";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import useOrganizations from "./use-organizations";
-import { organizationConfigs } from "../../admin.extensions.v1";
 import { BreadcrumbList, GenericOrganization } from "../models";
 import { OrganizationUtils } from "../utils";
 
