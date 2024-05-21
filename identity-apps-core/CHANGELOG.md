@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.3.0
+
+### Minor Changes
+
+- [#6030](https://github.com/wso2/identity-apps/pull/6030) [`368db4133456ba6015b1bb812715350c8d26834e`](https://github.com/wso2/identity-apps/commit/368db4133456ba6015b1bb812715350c8d26834e) Thanks [@ThaminduDilshan](https://github.com/ThaminduDilshan)! - Add internalWait template for "prompt" conditional function
+
 ## 2.2.5
 
 ### Patch Changes
