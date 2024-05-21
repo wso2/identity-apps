@@ -17,6 +17,12 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { deleteRoleById } from "@wso2is/admin.roles.v2/api/roles";
 import { AlertLevels, IdentifiableComponentInterface, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PrimaryButton } from "@wso2is/react-components";
@@ -27,12 +33,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import ConsoleRolesTable from "./console-role-table";
-import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
-import { AdvancedSearchWithBasicFilters } from "../../../admin.core.v1/components";
-import { AppConstants } from "../../../admin.core.v1/constants/app-constants";
-import { history } from "../../../admin.core.v1/helpers/history";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { deleteRoleById } from "../../../admin.roles.v2/api/roles";
 
 /**
  * Props interface of {@link ConsoleRolesListLayout}

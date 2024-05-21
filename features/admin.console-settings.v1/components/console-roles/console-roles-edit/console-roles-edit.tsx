@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import { OrganizationType } from "../../../../admin.core.v1";
+import { AppState, OrganizationType } from "@wso2is/admin.core.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { BasicRoleDetails } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-basic";
+import { RoleConnectedApps } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-connected-apps";
+import { RoleGroupsList } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-groups";
+import { RoleUsersList } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-users";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
@@ -25,13 +31,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ConsoleRolePermissions from "./console-role-permissions";
-import { AppState } from "../../../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { BasicRoleDetails } from "../../../../admin.roles.v2/components/edit-role/edit-role-basic";
-import { RoleConnectedApps } from "../../../../admin.roles.v2/components/edit-role/edit-role-connected-apps";
-import { RoleGroupsList } from "../../../../admin.roles.v2/components/edit-role/edit-role-groups";
-import { RoleUsersList } from "../../../../admin.roles.v2/components/edit-role/edit-role-users";
-import { RoleAudienceTypes } from "../../../../admin.roles.v2/constants/role-constants";
 import "./console-roles-edit.scss";
 
 /**
