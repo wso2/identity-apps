@@ -20,7 +20,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
 import UserPreferenceProvider from "../../../admin.core.v1/providers/user-preferences-provider";
-import { render, screen } from "../../../test-configs/utils";
+import { fireEvent, render, screen } from "../../../test-configs/utils";
 import AuthenticationFlowVisualEditor, {
     AuthenticationFlowVisualEditorPropsInterface
 } from "../authentication-flow-visual-editor";
@@ -41,5 +41,33 @@ describe("AuthenticationFlowVisualEditor", () => {
         const authenticationFlowVisualEditor: Element = screen.getByTestId("authentication-flow-visual-editor");
 
         expect(authenticationFlowVisualEditor).toBeInTheDocument();
+    });
+
+    it("adds an authenticator in the second step without exploding the " +
+       "AuthenticationFlowVisualEditor component", () => {
+        render(
+            <UserPreferenceProvider>
+                <AuthenticationFlowVisualEditor { ...defaultProps } />
+            </UserPreferenceProvider>
+            , { allowedScopes: fullPermissions });
+
+        const addStepButton: HTMLElement = screen.getByTestId("add-step-button");
+
+        fireEvent.click(addStepButton);
+
+        const addSignInOptionButton: HTMLElement = screen.getByTestId("sign-in-box-node-add-sign-in-option");
+
+        fireEvent.click(addSignInOptionButton);
+
+        const totpAuthenticatorCard: HTMLElement =
+            screen.getByTestId("add-authenticator-modal-authenticators-authenticator-totp");
+
+        fireEvent.click(totpAuthenticatorCard);
+
+        const authenticatorAddButton: HTMLElement = screen.getByTestId("primary-button");
+
+        fireEvent.click(authenticatorAddButton);
+
+        expect(screen.getByTestId("sign-in-box-node-step-1")).toBeInTheDocument();
     });
 });

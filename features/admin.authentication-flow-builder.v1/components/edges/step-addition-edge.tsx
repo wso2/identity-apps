@@ -85,7 +85,7 @@ const StepAdditionEdge = (props: StepAdditionEdgePropsInterface): ReactElement =
                         className="add-step-button"
                         variant="circular"
                         onClick={ (event: SyntheticEvent<HTMLButtonElement>) => onNewStepAddition(event, id) }
-                        data-componentid={ `${ componentId }-add-step-button` }
+                        data-componentid={ "add-step-button" }
                     >
                         <PlusIcon />
                     </Fab>
@@ -94,10 +94,5 @@ const StepAdditionEdge = (props: StepAdditionEdgePropsInterface): ReactElement =
         </>
     );
 };
-
-/**
- * Default props for the component.
- */
-StepAdditionEdge.defaultProps = {};
 
 export default StepAdditionEdge;
