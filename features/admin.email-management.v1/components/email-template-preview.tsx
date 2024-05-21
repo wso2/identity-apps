@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
+import useBrandingPreference from "@wso2is/admin.branding.v1/hooks/use-branding-preference";
+import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
+import { AppState } from "@wso2is/admin.core.v1";
+import { BrandingPreferenceThemeInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Encode } from "@wso2is/core/utils";
 import { Iframe } from "@wso2is/react-components";
@@ -27,11 +32,6 @@ import React, {
     useState
 } from "react";
 import { useSelector } from "react-redux";
-import { BrandingPreferencesConstants } from "../../admin.branding.v1/constants";
-import useBrandingPreference from "../../admin.branding.v1/hooks/use-branding-preference";
-import { BrandingPreferenceUtils } from "../../admin.branding.v1/utils";
-import { AppState } from "../../admin.core.v1";
-import { BrandingPreferenceThemeInterface } from "../../common.branding.v1/models";
 import { EmailTemplate } from "../models";
 import { EmailCustomizationUtils } from "../utils";
 
