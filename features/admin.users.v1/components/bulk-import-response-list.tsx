@@ -22,7 +22,10 @@ import Tab from "@oxygen-ui/react/Tab";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
 import {
-    AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+    AdvancedSearchWithBasicFilters,
+    UIConstants,
+    getEmptyPlaceholderIllustrations
+} from "@wso2is/admin.core.v1";
 import { DropdownChild } from "@wso2is/forms";
 import {
     DataTable,
