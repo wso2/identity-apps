@@ -144,7 +144,7 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
-    needs: [ lint, typecheck ]
+    needs: [ typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
