@@ -27,7 +27,7 @@ import {
     ApplicationTemplateMetadataInterface,
     CategorizedApplicationTemplatesInterface
 } from "../../models/application-templates";
-import { DynamicInputFieldTypes, ValidationRuleTypes } from "../../models/dynamic-fields";
+import { DynamicFieldInterface, DynamicInputFieldTypes, ValidationRuleTypes } from "../../models/dynamic-fields";
 
 export const applicationTemplatesListMockResponse: ApplicationTemplateListInterface[] = [
     {
@@ -848,4 +848,36 @@ export const spaApplicationMockResponse: ApplicationInterface = {
     },
     realm: "",
     templateId: "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7"
+};
+
+export const applicationNameDynamicFormFieldMock: DynamicFieldInterface = {
+    "aria-label": "Application Name",
+    dataComponentId: "application-name",
+    id: "application-name",
+    label: "Name",
+    name: "name",
+    placeholder: "My App",
+    required: true,
+    type: DynamicInputFieldTypes.TEXT,
+    validations: [
+        {
+            type: ValidationRuleTypes.APPLICATION_NAME
+        }
+    ]
+};
+
+export const domainNameDynamicFormFieldMock: DynamicFieldInterface = {
+    "aria-label": "Domain Name",
+    dataComponentId: "domain-name",
+    id: "domain-name",
+    label: "Domain Name",
+    name: "advancedConfigurations.additionalSpProperties.[0].value",
+    placeholder: "https://example.com",
+    required: true,
+    type: DynamicInputFieldTypes.TEXT,
+    validations: [
+        {
+            type: ValidationRuleTypes.DOMAIN_NAME
+        }
+    ]
 };

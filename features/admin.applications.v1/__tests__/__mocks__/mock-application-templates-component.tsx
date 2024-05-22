@@ -27,7 +27,7 @@ import { CategorizedApplicationTemplatesInterface } from "../../models/applicati
 export type MockApplicationTemplatesComponentProps = IdentifiableComponentInterface;
 
 /**
- * Mock application templates using components.
+ * Mock component that uses the application templates hook.
  *
  * @param props - Props for the `MockApplicationTemplatesComponent`.
  * @returns MockApplicationTemplatesComponent
