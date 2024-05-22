@@ -103,7 +103,7 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
         }
 
         try {
-            if (isRoleModificationAllowedForTenant(tenantDomain)) {
+            if (OrganizationManagementUtil.isOrganization(tenantDomain)) {
                 return;
             }
         } catch (OrganizationManagementException e) {
@@ -155,10 +155,5 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
         return role != null && StringUtils.equalsIgnoreCase(ADMINISTRATOR, role.getName())
             && StringUtils.equalsIgnoreCase(APPLICATION, role.getAudience())
             && StringUtils.equalsIgnoreCase(CONSOLE_APP, role.getAudienceName());
-    }
-
-    private boolean isRoleModificationAllowedForTenant(String tenantDomain) throws OrganizationManagementException {
-
-        return OrganizationManagementUtil.isOrganization(tenantDomain);
     }
 }
