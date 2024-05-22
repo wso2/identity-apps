@@ -145,7 +145,7 @@ importers:
         version: 0.4.8
       '@changesets/cli':
         specifier: ^2.26.1
-        version: 2.27.3
+        version: 2.27.1
       '@nrwl/cli':
         specifier: 14.8.8
         version: 14.8.8(@swc-node/register@1.9.1)(@swc/core@1.5.7)
@@ -430,7 +430,7 @@ importers:
         version: 2.1.3(webpack@5.84.1)
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-loader:
         specifier: ^6.0.1
         version: 6.2.2(typescript@4.9.5)
@@ -468,7 +468,7 @@ importers:
   apps/console:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.1
+        specifier: ^4.0.4
         version: 4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@18.3.1)(react-router-dom@4.3.1)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
@@ -490,7 +490,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -505,7 +505,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -809,7 +809,7 @@ importers:
         version: 2.1.3(webpack@5.84.1)
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-node:
         specifier: ^10.8.1
         version: 10.9.2(@swc/core@1.5.7)(@types/node@13.13.52)(typescript@4.9.5)
@@ -820,7 +820,7 @@ importers:
   apps/myaccount:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.1
+        specifier: ^4.0.4
         version: 4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@18.3.1)(react-router-dom@4.3.1)(react@18.3.1)
       '@babel/polyfill':
         specifier: ^7.0.0
@@ -842,7 +842,7 @@ importers:
         version: 5.15.15(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -1059,7 +1059,7 @@ importers:
         version: 2.1.3(webpack@5.84.1)
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-node:
         specifier: ^10.8.1
         version: 10.9.2(@swc/core@1.5.7)(@types/node@13.13.52)(typescript@4.9.5)
@@ -1070,7 +1070,7 @@ importers:
   features:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.1
+        specifier: ^4.0.4
         version: 4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@18.3.1)(react-router-dom@4.3.1)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
@@ -1092,7 +1092,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -1107,7 +1107,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -1155,7 +1155,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -1468,7 +1468,7 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -1483,7 +1483,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
         specifier: ^3.0.5
         version: link:../../modules/access-control
@@ -1601,7 +1601,7 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -1616,7 +1616,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -1861,7 +1861,7 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -1876,7 +1876,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -2087,7 +2087,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -2102,7 +2102,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -2368,7 +2368,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -2383,7 +2383,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -2431,7 +2431,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -2814,7 +2814,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -2829,7 +2829,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -2892,7 +2892,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -3217,7 +3217,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -3232,7 +3232,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -3301,7 +3301,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -3626,7 +3626,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -3641,7 +3641,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -3692,7 +3692,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -4020,7 +4020,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -4035,7 +4035,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -4104,7 +4104,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -4429,7 +4429,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -4444,7 +4444,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -4522,7 +4522,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -4847,7 +4847,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -4862,7 +4862,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -4943,7 +4943,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -5256,7 +5256,7 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -5271,7 +5271,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -5728,7 +5728,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -5743,7 +5743,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -5797,7 +5797,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -6122,7 +6122,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -6137,7 +6137,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -6194,7 +6194,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -6519,7 +6519,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -6534,7 +6534,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -6585,7 +6585,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -6910,7 +6910,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -6925,7 +6925,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -6979,7 +6979,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -7304,7 +7304,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -7319,7 +7319,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -7421,7 +7421,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -7746,7 +7746,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -7761,7 +7761,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -7815,7 +7815,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -8140,7 +8140,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -8155,7 +8155,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -8224,7 +8224,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -8549,7 +8549,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -8564,7 +8564,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -8642,7 +8642,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -8967,7 +8967,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -8982,7 +8982,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -9036,7 +9036,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -9361,7 +9361,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -9376,7 +9376,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -9427,7 +9427,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -9752,7 +9752,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -9767,7 +9767,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -9833,7 +9833,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -10158,7 +10158,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -10173,7 +10173,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -10230,7 +10230,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -10555,7 +10555,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -10570,7 +10570,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -10621,7 +10621,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -10946,7 +10946,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -10961,7 +10961,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -11015,7 +11015,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -11340,7 +11340,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -11355,7 +11355,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -11439,7 +11439,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -11764,7 +11764,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -11779,7 +11779,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -11833,7 +11833,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -12158,7 +12158,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -12173,7 +12173,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -12227,7 +12227,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -12552,7 +12552,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -12567,7 +12567,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -12627,7 +12627,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -12952,7 +12952,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -12967,7 +12967,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -13018,7 +13018,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -13343,7 +13343,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -13358,7 +13358,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -13424,7 +13424,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -13749,7 +13749,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -13764,7 +13764,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -13848,7 +13848,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -14173,7 +14173,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -14188,7 +14188,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -14239,7 +14239,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -14564,7 +14564,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -14579,7 +14579,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -14630,7 +14630,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -14955,7 +14955,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -14970,7 +14970,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -15036,7 +15036,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -15361,7 +15361,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -15376,7 +15376,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -15430,7 +15430,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -15755,7 +15755,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -15770,7 +15770,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -15821,7 +15821,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -16146,7 +16146,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -16161,7 +16161,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -16218,7 +16218,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -16543,7 +16543,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -16558,7 +16558,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -16615,7 +16615,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -16940,7 +16940,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -16955,7 +16955,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -17042,7 +17042,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -17367,7 +17367,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -17382,7 +17382,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -17436,7 +17436,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -17761,7 +17761,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -17776,7 +17776,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -17839,7 +17839,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -18164,7 +18164,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -18179,7 +18179,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -18236,7 +18236,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -18561,7 +18561,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -18576,7 +18576,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -18627,7 +18627,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -18952,7 +18952,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -18967,7 +18967,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -19018,7 +19018,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -19343,7 +19343,7 @@ importers:
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -19358,7 +19358,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -19409,7 +19409,7 @@ importers:
         version: 2.0.5
       framer-motion:
         specifier: ^11.1.9
-        version: 11.2.4(react-dom@18.3.1)(react@18.3.1)
+        version: 11.2.0(react-dom@18.3.1)(react@18.3.1)
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -19719,7 +19719,7 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
         version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -19734,7 +19734,7 @@ importers:
         version: 5.15.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
         specifier: ^2.20.1
         version: link:../admin.core.v1
@@ -19837,7 +19837,7 @@ importers:
         version: 18.3.1(react@18.3.1)
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
     devDependencies:
       '@types/react':
         specifier: 18.0.18
@@ -19870,7 +19870,7 @@ importers:
   modules/core:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.1
+        specifier: ^4.0.4
         version: 4.0.4(@babel/runtime-corejs3@7.24.5)(react-dom@16.14.0)(react-router-dom@6.23.1)(react@16.14.0)
       '@braintree/sanitize-url':
         specifier: ^5.0.0
@@ -19889,7 +19889,7 @@ importers:
         version: 3.3.0
       dompurify:
         specifier: ^3.0.9
-        version: 3.1.4
+        version: 3.1.3
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -19913,7 +19913,7 @@ importers:
         version: 0.4.0(react-dom@16.14.0)(react@16.14.0)
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ua-parser-js:
         specifier: 0.7.28
         version: 0.7.28
@@ -19977,7 +19977,7 @@ importers:
         version: 5.13.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/core':
         specifier: ^2.0.47
         version: link:../core
@@ -20053,7 +20053,7 @@ importers:
         version: 3.0.2
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-node:
         specifier: ^10.8.1
         version: 10.9.2(@swc/core@1.5.7)(@types/node@13.13.52)(typescript@4.9.5)
@@ -20065,7 +20065,7 @@ importers:
     dependencies:
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/core':
         specifier: ^2.0.47
         version: link:../core
@@ -20132,7 +20132,7 @@ importers:
         version: 3.0.2
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-node:
         specifier: ^10.8.1
         version: 10.9.2(@swc/core@1.5.7)(@types/node@13.13.52)(typescript@4.9.5)
@@ -20202,7 +20202,7 @@ importers:
         version: 3.0.2
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-node:
         specifier: ^10.8.1
         version: 10.9.2(@swc/core@1.5.7)(@types/node@13.13.52)(typescript@4.9.5)
@@ -20275,7 +20275,7 @@ importers:
         version: 3.0.2
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-node:
         specifier: ^10.8.1
         version: 10.9.2(@swc/core@1.5.7)(@types/node@13.13.52)(typescript@4.9.5)
@@ -20290,7 +20290,7 @@ importers:
         version: 6.2.1(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^1.11.0
         version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -20498,7 +20498,7 @@ importers:
         version: 3.0.2
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-node:
         specifier: ^8.5.4
         version: 8.10.2(typescript@4.9.5)
@@ -20579,7 +20579,7 @@ importers:
         version: 2.5.0
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-node:
         specifier: ^10.8.1
         version: 10.9.2(@swc/core@1.5.7)(@types/node@13.13.52)(typescript@4.9.5)
@@ -20628,7 +20628,7 @@ importers:
         version: 3.0.2
       ts-jest:
         specifier: ^29.1.2
-        version: 29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
+        version: 29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5)
       ts-node:
         specifier: ^10.8.1
         version: 10.9.2(@swc/core@1.5.7)(@types/node@13.13.52)(typescript@4.9.5)
@@ -22235,8 +22235,8 @@ packages:
     deprecated: Potential XSS vulnerability patched in v6.0.0.
     dev: false
 
-  /@changesets/apply-release-plan@7.0.1:
-    resolution: {integrity: sha512-aPdSq/R++HOyfEeBGjEe6LNG8gs0KMSyRETD/J2092OkNq8mOioAxyKjMbvVUdzgr/HTawzMOz7lfw339KnsCA==}
+  /@changesets/apply-release-plan@7.0.0:
+    resolution: {integrity: sha512-vfi69JR416qC9hWmFGSxj7N6wA5J222XNBmezSVATPWDVPIF7gkd4d8CpbEbXmRWbVrkoli3oerGS6dcL/BGsQ==}
     dependencies:
       '@babel/runtime': 7.24.5
       '@changesets/config': 3.0.0
@@ -22280,12 +22280,12 @@ packages:
       - encoding
     dev: true
 
-  /@changesets/cli@2.27.3:
-    resolution: {integrity: sha512-ve/VpWApILlSs8cr0okNx5C2LKRawI9XZgvfmf58S8sar2nhx5DPJREFXYZBahs0FeTfvH0rdVl+nGe8QF45Ig==}
+  /@changesets/cli@2.27.1:
+    resolution: {integrity: sha512-iJ91xlvRnnrJnELTp4eJJEOPjgpF3NOh4qeQehM6Ugiz9gJPRZ2t+TsXun6E3AMN4hScZKjqVXl0TX+C7AB3ZQ==}
     hasBin: true
     dependencies:
       '@babel/runtime': 7.24.5
-      '@changesets/apply-release-plan': 7.0.1
+      '@changesets/apply-release-plan': 7.0.0
       '@changesets/assemble-release-plan': 6.0.0
       '@changesets/changelog-git': 0.2.0
       '@changesets/config': 3.0.0
@@ -22297,7 +22297,7 @@ packages:
       '@changesets/pre': 2.0.0
       '@changesets/read': 0.6.0
       '@changesets/types': 6.0.0
-      '@changesets/write': 0.3.1
+      '@changesets/write': 0.3.0
       '@manypkg/get-packages': 1.1.3
       '@types/semver': 7.5.8
       ansi-colors: 4.1.3
@@ -22431,8 +22431,8 @@ packages:
     resolution: {integrity: sha512-b1UkfNulgKoWfqyHtzKS5fOZYSJO+77adgL7DLRDr+/7jhChN+QcHnbjiQVOz/U+Ts3PGNySq7diAItzDgugfQ==}
     dev: true
 
-  /@changesets/write@0.3.1:
-    resolution: {integrity: sha512-SyGtMXzH3qFqlHKcvFY2eX+6b0NGiFcNav8AFsYwy5l8hejOeoeTDemu5Yjmke2V5jpzY+pBvM0vCCQ3gdZpfw==}
+  /@changesets/write@0.3.0:
+    resolution: {integrity: sha512-slGLb21fxZVUYbyea+94uFiD6ntQW0M2hIKNznFizDhZPDgn2c/fv1UzzlW43RVzh1BEDuIqW6hzlJ1OflNmcw==}
     dependencies:
       '@babel/runtime': 7.24.5
       '@changesets/types': 6.0.0
@@ -22872,7 +22872,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.3
       '@types/node': 13.13.52
-      chalk: 4.1.0
+      chalk: 4.1.2
       jest-message-util: 28.1.3
       jest-util: 28.1.3
       slash: 3.0.0
@@ -23191,7 +23191,7 @@ packages:
       '@jest/types': 28.1.3
       '@jridgewell/trace-mapping': 0.3.25
       '@types/node': 13.13.52
-      chalk: 4.1.2
+      chalk: 4.1.0
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
       glob: 7.2.3
@@ -23393,7 +23393,7 @@ packages:
       '@jest/types': 28.1.3
       '@jridgewell/trace-mapping': 0.3.25
       babel-plugin-istanbul: 6.1.1
-      chalk: 4.1.0
+      chalk: 4.1.2
       convert-source-map: 1.9.0
       fast-json-stable-stringify: 2.1.0
       graceful-fs: 4.2.11
@@ -23449,7 +23449,7 @@ packages:
       '@types/istanbul-reports': 3.0.4
       '@types/node': 13.13.52
       '@types/yargs': 17.0.32
-      chalk: 4.1.0
+      chalk: 4.1.2
     dev: true
 
   /@jest/types@29.6.3:
@@ -24654,12 +24654,12 @@ packages:
       react-is: 18.3.1
     dev: false
 
-  /@mui/core-downloads-tracker@5.15.18:
-    resolution: {integrity: sha512-/9pVk+Al8qxAjwFUADv4BRZgMpZM4m5E+2Q/20qhVPuIJWqKp4Ie4tGExac6zu93rgPTYVQGgu+1vjiT0E+cEw==}
+  /@mui/core-downloads-tracker@5.15.17:
+    resolution: {integrity: sha512-DVAejDQkjNnIac7MfP8sLzuo7fyrBPxNdXe+6bYqOqg1z2OPTlfFAejSNzWe7UenRMuFu9/AyFXj/X2vN2w6dA==}
     dev: false
 
-  /@mui/icons-material@5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1):
-    resolution: {integrity: sha512-jGhyw02TSLM0NgW+MDQRLLRUD/K4eN9rlK2pTBTL1OtzyZmQ8nB060zK1wA0b7cVrIiG+zyrRmNAvGWXwm2N9Q==}
+  /@mui/icons-material@5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1):
+    resolution: {integrity: sha512-xVzl2De7IY36s/keHX45YMiCpsIx3mNv2xwDgtBkRSnZQtVk+Gqufwj1ktUxEyjzEhBl0+PiNJqYC31C+n1n6A==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       '@mui/material': 5.13.0
@@ -24764,7 +24764,7 @@ packages:
       '@emotion/react': 11.11.4(@types/react@18.0.18)(react@18.3.1)
       '@emotion/styled': 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@mui/base': 5.0.0-beta.0(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/core-downloads-tracker': 5.15.18
+      '@mui/core-downloads-tracker': 5.15.17
       '@mui/system': 5.15.15(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react@18.3.1)
       '@mui/types': 7.2.14(@types/react@18.0.18)
       '@mui/utils': 5.15.14(@types/react@18.0.18)(react@18.3.1)
@@ -25591,7 +25591,7 @@ packages:
       autoprefixer: 10.4.19(postcss@8.4.38)
       babel-loader: 8.3.0(@babel/core@7.24.5)(webpack@5.84.1)
       browserslist: 4.23.0
-      caniuse-lite: 1.0.30001620
+      caniuse-lite: 1.0.30001618
       chalk: 4.1.0
       chokidar: 3.6.0
       copy-webpack-plugin: 10.2.4(webpack@5.84.1)
@@ -25613,8 +25613,8 @@ packages:
       postcss-loader: 6.2.1(postcss@8.4.38)(webpack@5.84.1)
       raw-loader: 4.0.2(webpack@5.84.1)
       rxjs: 6.6.7
-      sass: 1.77.2
-      sass-loader: 12.6.0(sass@1.77.2)(webpack@5.84.1)
+      sass: 1.77.1
+      sass-loader: 12.6.0(sass@1.77.1)(webpack@5.84.1)
       source-map-loader: 3.0.2(webpack@5.84.1)
       style-loader: 3.3.4(webpack@5.84.1)
       stylus: 0.55.0
@@ -25906,7 +25906,7 @@ packages:
       typescript: 4.9.5
     dev: false
 
-  /@oxygen-ui/react@1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
+  /@oxygen-ui/react@1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
     resolution: {integrity: sha512-Ij9E3CvX/fNGQkWbH6ic9LNsldFHeuy/2adksNsJLQgVsbvPct/coXyPYF8duH17dPEu6nksEHJwIfxoz9ekww==}
     peerDependencies:
       '@emotion/react': ^11.10.5
@@ -25925,7 +25925,7 @@ packages:
     dependencies:
       '@emotion/react': 11.11.4(@types/react@18.0.18)(react@18.3.1)
       '@emotion/styled': 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/icons-material': 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+      '@mui/icons-material': 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab': 5.0.0-alpha.110(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/material': 5.13.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/system': 5.15.15(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react@18.3.1)
@@ -25942,7 +25942,7 @@ packages:
       - '@types/react'
     dev: false
 
-  /@oxygen-ui/react@1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.18)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
+  /@oxygen-ui/react@1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.17)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.15)(@mui/utils@5.15.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
     resolution: {integrity: sha512-Ij9E3CvX/fNGQkWbH6ic9LNsldFHeuy/2adksNsJLQgVsbvPct/coXyPYF8duH17dPEu6nksEHJwIfxoz9ekww==}
     peerDependencies:
       '@emotion/react': ^11.10.5
@@ -25961,7 +25961,7 @@ packages:
     dependencies:
       '@emotion/react': 11.11.4(@types/react@18.0.18)(react@18.3.1)
       '@emotion/styled': 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/icons-material': 5.15.18(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+      '@mui/icons-material': 5.15.17(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab': 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/material': 5.13.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/system': 5.15.15(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react@18.3.1)
@@ -26191,6 +26191,28 @@ packages:
       - immer
     dev: false
 
+  /@reactflow/core@11.11.3(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-+adHdUa7fJSEM93fWfjQwyWXeI92a1eLKwWbIstoCakHpL8UjzwhEh6sn+mN2h/59MlVI7Ehr1iGTt3MsfcIFA==}
+    peerDependencies:
+      react: '>=17'
+      react-dom: '>=17'
+    dependencies:
+      '@types/d3': 7.4.3
+      '@types/d3-drag': 3.0.7
+      '@types/d3-selection': 3.0.10
+      '@types/d3-zoom': 3.0.8
+      classcat: 5.0.5
+      d3-drag: 3.0.0
+      d3-selection: 3.0.0
+      d3-zoom: 3.0.0
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      zustand: 4.5.2(@types/react@18.0.18)(react@18.3.1)
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+    dev: false
+
   /@reactflow/core@11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-AhszxILp1RNk3SwrnC/eYh1XsOil5yzthYG5k+oTpvLH5H3BtIWIVkeLEJwmL611lPKL3JuScfjliUxBm9128w==}
     peerDependencies:
@@ -26239,7 +26261,7 @@ packages:
       react: '>=17'
       react-dom: '>=17'
     dependencies:
-      '@reactflow/core': 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+      '@reactflow/core': 11.11.3(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       classcat: 5.0.5
       d3-drag: 3.0.0
       d3-selection: 3.0.0
@@ -28415,7 +28437,7 @@ packages:
       '@babel/preset-env': 7.24.5(@babel/core@7.24.5)
       '@babel/types': 7.24.5
       '@mdx-js/mdx': 1.6.22
-      '@types/lodash': 4.17.4
+      '@types/lodash': 4.17.1
       js-string-escape: 1.0.1
       loader-utils: 2.0.4
       lodash: 4.17.21
@@ -30111,11 +30133,11 @@ packages:
   /@types/lodash-es@4.17.12:
     resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
     dependencies:
-      '@types/lodash': 4.17.4
+      '@types/lodash': 4.17.1
     dev: true
 
-  /@types/lodash@4.17.4:
-    resolution: {integrity: sha512-wYCP26ZLxaT3R39kiN2+HcJ4kTd3U1waI/cY7ivWYqFP6pW3ZNpvi6Wd6PHZx7T/t8z0vlkXMg3QYLa7DZ/IJQ==}
+  /@types/lodash@4.17.1:
+    resolution: {integrity: sha512-X+2qazGS3jxLAIz5JDXDzglAF3KpijdhFxlf/V1+hEsOUc+HnWi81L/uv/EvGuV90WY+7mPGFCUDGfQC3Gj95Q==}
 
   /@types/mdast@3.0.15:
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -31110,7 +31132,6 @@ packages:
   /are-we-there-yet@2.0.0:
     resolution: {integrity: sha512-Ci/qENmwHnsYo9xKIcUJN5LeDKdJ6R1Z1j9V/J5wyq8nh/mYPEpIKJbBZXtZjG04HiK7zV/p6Vs9952MrMeUIw==}
     engines: {node: '>=10'}
-    deprecated: This package is no longer supported.
     dependencies:
       delegates: 1.0.0
       readable-stream: 3.6.2
@@ -31118,7 +31139,6 @@ packages:
   /are-we-there-yet@3.0.1:
     resolution: {integrity: sha512-QZW4EDmGwlYur0Yyf/b2uGucHQMa8aFUP7eu9ddR73vvhFyt4V0Vl3QHPcTNJ8l6qYOBdxgXdnBXQrHilfRQBg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
-    deprecated: This package is no longer supported.
     dependencies:
       delegates: 1.0.0
       readable-stream: 3.6.2
@@ -31414,7 +31434,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.23.0
-      caniuse-lite: 1.0.30001620
+      caniuse-lite: 1.0.30001618
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.1
@@ -31427,7 +31447,7 @@ packages:
     hasBin: true
     dependencies:
       browserslist: 4.23.0
-      caniuse-lite: 1.0.30001620
+      caniuse-lite: 1.0.30001618
       normalize-range: 0.1.2
       num2fraction: 1.2.2
       picocolors: 0.2.1
@@ -31482,8 +31502,8 @@ packages:
       - debug
     dev: false
 
-  /axios@1.7.1:
-    resolution: {integrity: sha512-+LV37nQcd1EpFalkXksWNBiA17NZ5m5/WspmHGmZmdx1qBOg/VNq/c4eRJiA9VQQHBOs+N0ZhhdU10h2TyNK7Q==}
+  /axios@1.6.8:
+    resolution: {integrity: sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==}
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.4)
       form-data: 4.0.0
@@ -32238,8 +32258,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001620
-      electron-to-chromium: 1.4.775
+      caniuse-lite: 1.0.30001618
+      electron-to-chromium: 1.4.769
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.0)
 
@@ -32519,13 +32539,13 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.23.0
-      caniuse-lite: 1.0.30001620
+      caniuse-lite: 1.0.30001618
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
-  /caniuse-lite@1.0.30001620:
-    resolution: {integrity: sha512-WJvYsOjd1/BYUY6SNGUosK9DUidBPDTnOARHp3fSmFO1ekdxaY6nKRttEVrfMmYi80ctS0kz1wiWmm14fVc3ew==}
+  /caniuse-lite@1.0.30001618:
+    resolution: {integrity: sha512-p407+D1tIkDvsEAPS22lJxLQQaG8OTBEqo0KhzfABGk0TU4juBNDSfH0hyAp/HRyx+M8L17z/ltyhxh27FTfQg==}
 
   /capture-exit@2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
@@ -34540,8 +34560,8 @@ packages:
       domelementtype: 2.3.0
     dev: false
 
-  /dompurify@3.1.4:
-    resolution: {integrity: sha512-2gnshi6OshmuKil8rMZuQCGiUF3cUxHY3NGDzUAdUx/NPEe5DVnO8BDoAQouvgwnx0R/+a6jUn36Z0FSdq8vww==}
+  /dompurify@3.1.3:
+    resolution: {integrity: sha512-5sOWYSNPaxz6o2MUPvtyxTTqR4D3L77pr5rUQoWgD5ROQtVIZQgJkXbo1DLlK3vj11YGw5+LnF4SYti4gZmwng==}
     dev: false
 
   /domutils@1.5.1:
@@ -34660,8 +34680,8 @@ packages:
       jake: 10.9.1
     dev: true
 
-  /electron-to-chromium@1.4.775:
-    resolution: {integrity: sha512-JpOfl1aNAiZ88wFzjPczTLwYIoPIsij8S9/XQH9lqMpiJOf23kxea68B8wje4f68t4rOIq4Bh+vP4I65njiJBw==}
+  /electron-to-chromium@1.4.769:
+    resolution: {integrity: sha512-bZu7p623NEA2rHTc9K1vykl57ektSPQYFFqQir8BOYf6EKOB+yIsbFB9Kpm7Cgt6tsLr9sRkqfqSZUw7LP1XxQ==}
 
   /element-resize-detector@1.2.4:
     resolution: {integrity: sha512-Fl5Ftk6WwXE0wqCgNoseKWndjzZlDCwuPTcoVZfCP9R3EHQF8qUtr3YUPNETegRBOKqQKPW3n4kiIWngGi8tKg==}
@@ -34910,8 +34930,8 @@ packages:
       safe-array-concat: 1.1.2
     dev: true
 
-  /es-module-lexer@1.5.3:
-    resolution: {integrity: sha512-i1gCgmR9dCl6Vil6UKPI/trA69s08g/syhiDK9TG0Nf1RJjjFI+AzoWW7sPufzkgYAn861skuCwJa0pIIHYxvg==}
+  /es-module-lexer@1.5.2:
+    resolution: {integrity: sha512-l60ETUTmLqbVbVHv1J4/qj+M8nq7AwMzEcg3kmJDt9dCNrTk+yHcYFf/Kw75pMDwd9mPcIGCG5LcS20SxYRzFA==}
 
   /es-object-atoms@1.0.0:
     resolution: {integrity: sha512-MZ4iQ6JwHOBQjahnjwaC1ZtIBH+2ohjamzAO3oaHcXYup7qxjF2fixyH+Q71voWHeOkI2q/TnJao/KfXYIZWbw==}
@@ -36251,8 +36271,8 @@ packages:
     dependencies:
       map-cache: 0.2.2
 
-  /framer-motion@11.2.4(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-D+EXd0lspaZijv3BJhAcSsyGz+gnvoEdnf+QWkPZdhoFzbeX/2skrH9XSVFb0osgUnCajW8x1frjhLuKwa/Reg==}
+  /framer-motion@11.2.0(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-LRfLVPEwtO9IXJCAsWvtj3XZxrdZDcTxNNkZEq30aQ8p7/wimfUkDy67TDWdtzPiyKDkqOHDhaQC6XVrQ4Fh7A==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0
@@ -36381,7 +36401,6 @@ packages:
   /gauge@3.0.2:
     resolution: {integrity: sha512-+5J6MS/5XksCuXq++uFRsnUd7Ovu1XenbeuIuNRJxYWjgQbPuFhT14lAvsWfqfAmnwluf1OwMjz39HjfLPci0Q==}
     engines: {node: '>=10'}
-    deprecated: This package is no longer supported.
     dependencies:
       aproba: 2.0.0
       color-support: 1.1.3
@@ -36396,7 +36415,6 @@ packages:
   /gauge@4.0.4:
     resolution: {integrity: sha512-f9m+BEN5jkg6a0fZjleidjN51VE1X+mPFQ2DJ0uv1V39oCLCbsGe6yjbBnp7eK7z/+GAon99a3nHuqbuuthyPg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
-    deprecated: This package is no longer supported.
     dependencies:
       aproba: 2.0.0
       color-support: 1.1.3
@@ -38530,7 +38548,7 @@ packages:
       '@jest/types': 28.1.3
       '@types/node': 13.13.52
       babel-jest: 28.1.3(@babel/core@7.24.5)
-      chalk: 4.1.2
+      chalk: 4.1.0
       ci-info: 3.9.0
       deepmerge: 4.3.1
       glob: 7.2.3
@@ -38570,7 +38588,7 @@ packages:
       '@jest/types': 28.1.3
       '@types/node': 13.13.52
       babel-jest: 28.1.3(@babel/core@7.24.5)
-      chalk: 4.1.2
+      chalk: 4.1.0
       ci-info: 3.9.0
       deepmerge: 4.3.1
       glob: 7.2.3
@@ -38688,7 +38706,7 @@ packages:
     resolution: {integrity: sha512-8RqP1B/OXzjjTWkqMX67iqgwBVJRgCyKD3L9nq+6ZqJMdvjE8RgHktqZ6jNrkdMT+dJuYNI3rhQpxaz7drJHfw==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       diff-sequences: 28.1.1
       jest-get-type: 28.0.2
       pretty-format: 28.1.3
@@ -38739,7 +38757,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.3
-      chalk: 4.1.0
+      chalk: 4.1.2
       jest-get-type: 28.0.2
       jest-util: 28.1.3
       pretty-format: 28.1.3
@@ -38997,7 +39015,7 @@ packages:
     resolution: {integrity: sha512-kQeJ7qHemKfbzKoGjHHrRKH6atgxMk8Enkk2iPQ3XwO6oE/KYD8lMYOziCkeSB9G4adPM4nR1DE8Tf5JeWH6Bw==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       jest-diff: 28.1.3
       jest-get-type: 28.0.2
       pretty-format: 28.1.3
@@ -39034,7 +39052,7 @@ packages:
       '@babel/code-frame': 7.24.2
       '@jest/types': 28.1.3
       '@types/stack-utils': 2.0.3
-      chalk: 4.1.0
+      chalk: 4.1.2
       graceful-fs: 4.2.11
       micromatch: 4.0.5
       pretty-format: 28.1.3
@@ -39178,7 +39196,7 @@ packages:
     resolution: {integrity: sha512-/d1UbyUkf9nvsgdBildLe6LAD4DalgkgZcKd0nZ8XUGPyA/7fsnaQIlKVnDiuUXv/IeZhPEDrRJubVSulxrShA==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.0
       graceful-fs: 4.2.11
       jest-haste-map: 28.1.3
       jest-pnp-resolver: 1.2.3(jest-resolve@28.1.1)
@@ -39193,7 +39211,7 @@ packages:
     resolution: {integrity: sha512-Z1W3tTjE6QaNI90qo/BJpfnvpxtaFTFw5CDgwpyE/Kz8U/06N1Hjf4ia9quUhCh39qIGWF1ZuxFiBiJQwSEYKQ==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       graceful-fs: 4.2.11
       jest-haste-map: 28.1.3
       jest-pnp-resolver: 1.2.3(jest-resolve@28.1.3)
@@ -39358,7 +39376,7 @@ packages:
       '@jest/test-result': 28.1.3
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
-      chalk: 4.1.0
+      chalk: 4.1.2
       cjs-module-lexer: 1.3.1
       collect-v8-coverage: 1.0.2
       execa: 5.1.1
@@ -39452,7 +39470,7 @@ packages:
       '@types/babel__traverse': 7.20.5
       '@types/prettier': 2.7.3
       babel-preset-current-node-syntax: 1.0.1(@babel/core@7.24.5)
-      chalk: 4.1.0
+      chalk: 4.1.2
       expect: 28.1.3
       graceful-fs: 4.2.11
       jest-diff: 28.1.3
@@ -39512,7 +39530,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.3
       '@types/node': 13.13.52
-      chalk: 4.1.2
+      chalk: 4.1.0
       ci-info: 3.9.0
       graceful-fs: 4.2.11
       picomatch: 2.3.1
@@ -39524,7 +39542,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.3
       '@types/node': 13.13.52
-      chalk: 4.1.0
+      chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
       picomatch: 2.3.1
@@ -39597,7 +39615,7 @@ packages:
       '@jest/types': 28.1.3
       '@types/node': 13.13.52
       ansi-escapes: 4.3.2
-      chalk: 4.1.0
+      chalk: 4.1.2
       emittery: 0.10.2
       jest-util: 28.1.3
       string-length: 4.0.2
@@ -40345,6 +40363,8 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
+        optional: true
+      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.5.7)(webpack-cli@4.10.0)
@@ -41628,7 +41648,6 @@ packages:
 
   /npmlog@5.0.1:
     resolution: {integrity: sha512-AqZtDUWOMKs1G/8lwylVjrdYgqA4d9nu8hc+0gzRxlDb1I10+FHBGMXs6aiQHFdCUUlqH99MUMuLfzWDNDtfxw==}
-    deprecated: This package is no longer supported.
     dependencies:
       are-we-there-yet: 2.0.0
       console-control-strings: 1.1.0
@@ -41638,7 +41657,6 @@ packages:
   /npmlog@6.0.2:
     resolution: {integrity: sha512-/vBvz5Jfr9dT/aFWd0FIRf+T/Q2WBsLENygUaFUqstqsycmZAP/t5BvFJTK0viFmSUxiUKTUplWy5vt+rvKIxg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
-    deprecated: This package is no longer supported.
     dependencies:
       are-we-there-yet: 3.0.1
       console-control-strings: 1.1.0
@@ -41684,7 +41702,7 @@ packages:
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.2
       '@zkochan/js-yaml': 0.0.6
-      axios: 1.7.1
+      axios: 1.6.8
       chalk: 4.1.0
       chokidar: 3.6.0
       cli-cursor: 3.1.0
@@ -43441,15 +43459,15 @@ packages:
       schema-utils: 3.3.0
       webpack: 5.84.1(@swc/core@1.5.7)(webpack-cli@4.10.0)
 
-  /rc-motion@2.9.1(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-QD4bUqByjVQs7PhUT1d4bNxvtTcK9ETwtg7psbDfo6TmYalH/1hhjj4r2hbhW7g5OOEqYHhfwfj4noIvuOVRtQ==}
+  /rc-motion@2.9.0(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-XIU2+xLkdIr1/h6ohPZXyPBMvOmuyFZQ/T0xnawz+Rh+gh4FINcnZmMT5UTIj6hgI0VLDjTaPeRd+smJeSPqiQ==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
     dependencies:
       '@babel/runtime': 7.24.5
       classnames: 2.5.1
-      rc-util: 5.41.0(react-dom@18.3.1)(react@18.3.1)
+      rc-util: 5.39.3(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -43461,7 +43479,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.5
       classnames: 2.5.1
-      rc-util: 5.41.0(react-dom@18.3.1)(react@18.3.1)
+      rc-util: 5.39.3(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       resize-observer-polyfill: 1.5.1
@@ -43475,14 +43493,14 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.5
       classnames: 2.5.1
-      rc-motion: 2.9.1(react-dom@18.3.1)(react@18.3.1)
-      rc-util: 5.41.0(react-dom@18.3.1)(react@18.3.1)
-      rc-virtual-list: 3.13.0(react-dom@18.3.1)(react@18.3.1)
+      rc-motion: 2.9.0(react-dom@18.3.1)(react@18.3.1)
+      rc-util: 5.39.3(react-dom@18.3.1)(react@18.3.1)
+      rc-virtual-list: 3.12.0(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  /rc-util@5.41.0(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-xtlCim9RpmVv0Ar2Nnc3WfJCxjQkTf3xHPWoFdjp1fSs2NirQwqiQrfqdU9HUe0kdfb168M/T8Dq0IaX50xeKg==}
+  /rc-util@5.39.3(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-j9wOELkLQ8gC/NkUg3qg9mHZcJf+5mYYv40JrDHqnaf8VSycji4pCf7kJ5fdTXQPDIF0vr5zpb/T2HdrMs9rWA==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -43492,8 +43510,8 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
       react-is: 18.3.1
 
-  /rc-virtual-list@3.13.0(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-pmgf12IzjqC8xcO8zc4MDh2hC6Y9svXoVG2WmHbx1OGUTcEKzbqwxNGrRSLDp1dRMp85Q/ovnLwKnfF3BTFXtQ==}
+  /rc-virtual-list@3.12.0(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-43+/lr7bImpvEwTFw1FTYwSg42VHzRgO5PiCEEUROj8D2+M2SCvANqGIa9QyhoFLVQtc+2QXvgTB7VPGG7oOoQ==}
     engines: {node: '>=8.x'}
     peerDependencies:
       react: '>=16.9.0'
@@ -43502,7 +43520,7 @@ packages:
       '@babel/runtime': 7.24.5
       classnames: 2.5.1
       rc-resize-observer: 1.4.0(react-dom@18.3.1)(react@18.3.1)
-      rc-util: 5.41.0(react-dom@18.3.1)(react@18.3.1)
+      rc-util: 5.39.3(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -44204,7 +44222,6 @@ packages:
   /read-package-json@5.0.2:
     resolution: {integrity: sha512-BSzugrt4kQ/Z0krro8zhTwV1Kd79ue25IhNN/VtHFy1mG/6Tluyi+msc0UpwaoQzxSHa28mntAjIZY6kEgfR9Q==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
-    deprecated: This package is no longer supported. Please use @npmcli/package-json instead.
     dependencies:
       glob: 8.1.0
       json-parse-even-better-errors: 2.3.1
@@ -45144,7 +45161,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /sass-loader@12.6.0(sass@1.77.2)(webpack@5.84.1):
+  /sass-loader@12.6.0(sass@1.77.1)(webpack@5.84.1):
     resolution: {integrity: sha512-oLTaH0YCtX4cfnJZxKSLAyglED0naiYfNG1iXfU5w1LNZ+ukoA5DtyDIN5zmKVZwYNJP4KRc5Y3hkWga+7tYfA==}
     engines: {node: '>= 12.13.0'}
     peerDependencies:
@@ -45165,12 +45182,12 @@ packages:
     dependencies:
       klona: 2.0.6
       neo-async: 2.6.2
-      sass: 1.77.2
+      sass: 1.77.1
       webpack: 5.84.1(@swc/core@1.5.7)(webpack-cli@4.10.0)
     dev: true
 
-  /sass@1.77.2:
-    resolution: {integrity: sha512-eb4GZt1C3avsX3heBNlrc7I09nyT00IUuo4eFhAbeXWU2fvA7oXI53SxODVAA+zgZCk9aunAZgO+losjR3fAwA==}
+  /sass@1.77.1:
+    resolution: {integrity: sha512-OMEyfirt9XEfyvocduUIOlUSkWOXS/LAt6oblR/ISXCTukyavjex+zQNm51pPCOiFKY1QpWvEH1EeCkgyV3I6w==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -46945,13 +46962,12 @@ packages:
       yargs-parser: 20.2.9
     dev: true
 
-  /ts-jest@29.1.3(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-6L9qz3ginTd1NKhOxmkP0qU3FyKjj5CPoY+anszfVn6Pmv/RIKzhiMCsH7Yb7UvJR9I2A64rm4zQl531s2F1iw==}
-    engines: {node: ^14.15.0 || ^16.10.0 || ^18.0.0 || >=20.0.0}
+  /ts-jest@29.1.2(@babel/core@7.24.5)(babel-jest@26.6.3)(jest@29.7.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-br6GJoH/WUX4pu7FbZXuWGKGNDuU7b8Uj77g/Sp7puZV6EXzuByl6JrECvm0MzVzSTkSHWTihsXt+5XYER5b+g==}
+    engines: {node: ^16.10.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
       '@babel/core': '>=7.0.0-beta.0 <8'
-      '@jest/transform': ^29.0.0
       '@jest/types': ^29.0.0
       babel-jest: ^29.0.0
       esbuild: '*'
@@ -46959,8 +46975,6 @@ packages:
       typescript: '>=4.3 <6'
     peerDependenciesMeta:
       '@babel/core':
-        optional: true
-      '@jest/transform':
         optional: true
       '@jest/types':
         optional: true
@@ -47003,7 +47017,7 @@ packages:
       typescript: '*'
       webpack: 5.84.1
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       enhanced-resolve: 5.16.1
       micromatch: 4.0.5
       semver: 7.6.2
@@ -48296,7 +48310,7 @@ packages:
       browserslist: 4.23.0
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.16.1
-      es-module-lexer: 1.5.3
+      es-module-lexer: 1.5.2
       eslint-scope: 5.1.1
       events: 3.3.0
       glob-to-regexp: 0.4.1
