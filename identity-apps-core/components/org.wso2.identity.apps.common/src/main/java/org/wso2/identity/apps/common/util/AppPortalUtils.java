@@ -128,6 +128,7 @@ public class AppPortalUtils {
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         try {
+            // Update the callback URL properly if origin is configured for the portal app.
             callbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(callbackUrl);
             callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
         } catch (URLBuilderException e) {
