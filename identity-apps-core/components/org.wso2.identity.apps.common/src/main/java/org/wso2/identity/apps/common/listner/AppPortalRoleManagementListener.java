@@ -20,6 +20,8 @@ package org.wso2.identity.apps.common.listner;
 
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
+import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementException;
+import org.wso2.carbon.identity.organization.management.service.util.OrganizationManagementUtil;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
 import org.wso2.carbon.identity.role.v2.mgt.core.listener.AbstractRoleManagementListener;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
@@ -100,6 +102,15 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
             return;
         }
 
+        try {
+            if (isRoleModificationAllowedForTenant(tenantDomain)) {
+                return;
+            }
+        } catch (OrganizationManagementException e) {
+            throw new IdentityRoleManagementException(INVALID_REQUEST.getCode(),
+                "Failed to determine if the tenant is a sub-organization for tenant domain: " + tenantDomain, e);
+        }
+
         String adminUserId;
         try {
             UserRealm userRealm =
@@ -144,5 +155,10 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
         return role != null && StringUtils.equalsIgnoreCase(ADMINISTRATOR, role.getName())
             && StringUtils.equalsIgnoreCase(APPLICATION, role.getAudience())
             && StringUtils.equalsIgnoreCase(CONSOLE_APP, role.getAudienceName());
+    }
+
+    private boolean isRoleModificationAllowedForTenant(String tenantDomain) throws OrganizationManagementException {
+
+        return OrganizationManagementUtil.isOrganization(tenantDomain);
     }
 }
