@@ -1,5 +1,19 @@
 # @wso2is/myaccount
 
+## 2.6.6
+
+### Patch Changes
+
+- [#6243](https://github.com/wso2/identity-apps/pull/6243) [`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update asgardeo react sdk version
+
+- Updated dependencies [[`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717)]:
+  - @wso2is/core@2.0.48
+  - @wso2is/features@2.21.2
+  - @wso2is/access-control@3.0.8
+  - @wso2is/forms@2.0.38
+  - @wso2is/i18n@2.3.4
+  - @wso2is/react-components@2.2.6
+
 ## 2.6.5
 
 ### Patch Changes

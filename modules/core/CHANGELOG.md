@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.48
+
+### Patch Changes
+
+- [#6243](https://github.com/wso2/identity-apps/pull/6243) [`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update asgardeo react sdk version
+
 ## 2.0.47
 
 ### Patch Changes
