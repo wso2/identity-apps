@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.3.1
+
+### Patch Changes
+
+- [#6338](https://github.com/wso2/identity-apps/pull/6338) [`36114ccf9ab86b52c5ad01d9fea434acead64a70`](https://github.com/wso2/identity-apps/commit/36114ccf9ab86b52c5ad01d9fea434acead64a70) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with Federated SMS OTP flow
+
 ## 2.3.0
 
 ### Minor Changes
