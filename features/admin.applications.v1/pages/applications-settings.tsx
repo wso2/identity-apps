@@ -394,7 +394,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                             maxLength={ 150 }
                             minLength={ 10 }
                             width={ 16 }
-                            data-componentid={ `${componentId}-ssaJwks-checkbox` }
+                            data-componentid={ `${componentId}-ssaJwks-url` }
                         />
                         <Field.Checkbox
                             ariaLabel="Enforce Fapi"
