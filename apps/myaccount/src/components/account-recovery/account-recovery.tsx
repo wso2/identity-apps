@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { List, Placeholder } from "semantic-ui-react";
-import { EmailRecovery, SecurityQuestionsComponent } from "./options";
+import { EmailRecovery, SMSOTPRecovery, SecurityQuestionsComponent } from "./options";
 import { getPreference } from "../../api";
 import { AppConstants } from "../../constants";
 import {
@@ -62,9 +62,13 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
     const RECOVERY_CONNECTOR: string = "account-recovery";
     const RECOVERY_PASSWORD_QUESTION: string = "Recovery.Question.Password.Enable";
     const RECOVERY_PASSWORD_NOTIFICATION: string = "Recovery.Notification.Password.Enable";
+    const RECOVERY_PASSWORD_NOTIFICATION_EMAIL_LINK: string = "Recovery.Notification.Password.emailLink.Enable";
+    const RECOVERY_PASSWORD_NOTIFICATION_SMS_OTP: string = "Recovery.Notification.Password.smsOtp.Enable";
     const RECOVERY_USERNAME_NOTIFICATION: string = "Recovery.Notification.Username.Enable";
     const [ isQsRecoveryEnabled, setIsQsRecoveryEnabled ] = useState<boolean>(false);
     const [ isNotificationRecoveryEnabled, setIsNotificationRecoveryEnabled ] = useState<boolean>(false);
+    const [ isNotificationRecoveryEmailLinkEnabled, setIsNotificationRecoveryEmailLinkEnabled ] = useState<boolean>(false);
+    const [ isNotificationRecoverySMSOTPEnabled, setIsNotificationRecoverySMSOTPEnabled ] = useState<boolean>(false);
     const [ isUsernameRecoveryEnabled, setIsUsernameRecoveryEnabled ] = useState<boolean>(false);
     const [ isAccountRecoveryDetailsLoading, setIsAccountRecoveryDetailsLoading ] = useState<boolean>(false);
 
@@ -80,7 +84,9 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                 properties: [
                     RECOVERY_PASSWORD_QUESTION,
                     RECOVERY_PASSWORD_NOTIFICATION,
-                    RECOVERY_USERNAME_NOTIFICATION
+                    RECOVERY_USERNAME_NOTIFICATION,
+                    RECOVERY_PASSWORD_NOTIFICATION_EMAIL_LINK,
+                    RECOVERY_PASSWORD_NOTIFICATION_SMS_OTP
                 ]
             }
         ];
@@ -97,6 +103,13 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                         }
                         if (prop.name === RECOVERY_PASSWORD_NOTIFICATION) {
                             setIsNotificationRecoveryEnabled(prop.value.toLowerCase() == "true" ? true : false);
+                        }
+                        if (prop.name === RECOVERY_PASSWORD_NOTIFICATION_EMAIL_LINK) {
+                            setIsNotificationRecoveryEmailLinkEnabled(
+                                prop.value.toLowerCase() == "true" ? true : false);
+                        }
+                        if (prop.name === RECOVERY_PASSWORD_NOTIFICATION_SMS_OTP) {
+                            setIsNotificationRecoverySMSOTPEnabled(prop.value.toLowerCase() == "true" ? true : false);
                         }
                         if (prop.name === RECOVERY_USERNAME_NOTIFICATION) {
                             setIsUsernameRecoveryEnabled(prop.value.toLowerCase() == "true" ? true : false);
@@ -187,10 +200,23 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             featureConfig?.security,
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
                         ) &&
-                        (isNotificationRecoveryEnabled || isUsernameRecoveryEnabled) ? (
+                        (isNotificationRecoveryEmailLinkEnabled || isUsernameRecoveryEnabled) ? (
                                 <EmailRecovery
                                     onAlertFired={ onAlertFired }
                                     data-testid={ `${testId}-settings-section-email-recovery` }
+                                />
+                            ) : null }
+                    </List.Item>
+                    <List.Item className="inner-list-item">
+                        { hasRequiredScopes(
+                            featureConfig?.security,
+                            featureConfig?.security?.scopes?.read,
+                            allowedScopes
+                        ) &&
+                        (isNotificationRecoverySMSOTPEnabled) ? (
+                                <SMSOTPRecovery
+                                    onAlertFired={ onAlertFired }
+                                    data-testid={ `${testId}-settings-section-sms-recovery` }
                                 />
                             ) : null }
                     </List.Item>

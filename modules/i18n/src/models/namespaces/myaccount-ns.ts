@@ -79,6 +79,32 @@ export interface MyAccountNS {
             }
         }
         accountRecovery: {
+            SMSOTPRecovery: {
+                descriptions: {
+                    add: string;
+                    update: string;
+                    view: string;
+                    emptyMobile: string;
+                };
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalidFormat: string;
+                                };
+                            };
+                        };
+                    };
+                };
+                heading: string;
+                notifications: {
+                    updateMobile: Notification;
+                };
+            };
             codeRecovery: {
                 descriptions: {
                     add: string;

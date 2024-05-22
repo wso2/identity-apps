@@ -169,11 +169,13 @@ export const getMFAIcons = (): {
 export const getAccountRecoveryIcons = (): {
     email: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     securityQuestions: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    sms: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
 
     return {
         email: EmailIcon,
-        securityQuestions: SecurityQuestionsIcon
+        securityQuestions: SecurityQuestionsIcon,
+        sms : SMSIcon
     };
 };
 

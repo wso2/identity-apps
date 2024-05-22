@@ -44,6 +44,9 @@ export interface CommonConfig {
             emailRecovery: {
                 enableEditEmail: boolean;
             };
+            smsRecovery: {
+                enableEditMobile: boolean;
+            };
         };
         mfa: {
             fido2: {

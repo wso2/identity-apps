@@ -25,6 +25,9 @@ export const commonConfig: CommonConfig = {
         accountRecovery: {
             emailRecovery: {
                 enableEditEmail: false
+            },
+            smsRecovery: {
+                enableEditMobile: false
             }
         },
         mfa: {

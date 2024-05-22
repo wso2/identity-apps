@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
+            SMSOTPRecovery: {
+                descriptions: {
+                    add: "மீட்பு மொபைல் எண்ணைச் சேர்க்கவோ புதுப்பிக்கவோ செய்யவும்.",
+                    emptyMobile: "SMS-OTP மீட்பு முனையில் மொபைல் எண்ணை உங்கள் உள்ளக அமைக்க வேண்டும்.",
+                    update: "மீட்பு மொபைல் எண்ணை புதுப்பிக்கவும் ({{mobile}})",
+                    view: "மீட்பு மொபைல் எண்ணைப் பார்க்க ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "மொபைல் எண்",
+                                placeholder: "மீட்பு மொபைல் எணை உள்ளிடவும்.",
+                                validations: {
+                                    empty: "மொபைல் எண் உள்ளிடவும்.",
+                                    invalidFormat: "மொபைல் எண் சரியான வடிவம் இல்லை."
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "SMS மீட்பு",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "மீட்பு மொபைல் எணை புதுப்பித்தல் விசேட பிழை ஏற்பட்டது."
+                        },
+                        genericError: {
+                            description: "மீட்பு மொபைல் எணை புதுப்பித்தல் செய்யும் போது பிழை ஏற்பட்டது",
+                            message: "ஏதேனும் பிழை ஏற்பட்டுள்ளது"
+                        },
+                        success: {
+                            description: "பயனர் சுயவிவரத்தில் உள்ள மொபைல் எண் வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது",
+                            message: "மொபைல் எண் வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது"
+                        }
+                    }
+                }
+            },
             codeRecovery: {
                 descriptions: {
                     add: "குறியீட்டு மீட்பு விருப்புகளை சேர்க்க மற்றும் புதுப்பிக்க"

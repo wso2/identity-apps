@@ -18,3 +18,4 @@
 
 export * from "./email-recovery";
 export * from "./security-questions-recovery";
+export * from "./sms-otp-recovery";

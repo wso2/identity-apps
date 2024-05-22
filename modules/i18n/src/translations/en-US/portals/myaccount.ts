@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
+            SMSOTPRecovery: {
+                descriptions: {
+                    add: "Add or update recovery mobile number.",
+                    emptyMobile: "You need to configure your mobile number to proceed with SMS-OTP recovery.",
+                    update: "Update recovery mobile number ({{mobile}})",
+                    view: "View recovery mobile number ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "Mobile number",
+                                placeholder: "Enter the recovery mobile number.",
+                                validations: {
+                                    empty: "Enter a mobile number.",
+                                    invalidFormat: "The mobile number is not of the correct format."
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "SMS recovery",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error updating the recovery mobile."
+                        },
+                        genericError: {
+                            description: "Error occurred while updating the recovery mobile",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The mobile number in the user profile has been updated successfully",
+                            message: "Mobile Number Updated Successfully"
+                        }
+                    }
+                }
+            },
             codeRecovery: {
                 descriptions: {
                     add: "Add or update code recovery options"

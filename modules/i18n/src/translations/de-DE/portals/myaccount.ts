@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     "components": {
         "accountRecovery": {
+            SMSOTPRecovery: {
+                descriptions: {
+                    add: "Fügen Sie die Handynummer zur Wiederherstellung hinzu oder aktualisieren Sie sie.",
+                    emptyMobile: "Sie müssen Ihre Handynummer konfigurieren, um mit der SMS-OTP-Wiederherstellung fortzufahren.",
+                    update: "Aktualisieren Sie die Handynummer zur Wiederherstellung ({{mobile}})",
+                    view: "Handynummer zur Wiederherstellung anzeigen ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "Handynummer",
+                                placeholder: "Geben Sie die Handynummer zur Wiederherstellung ein.",
+                                validations: {
+                                    empty: "Geben Sie eine Handynummer ein.",
+                                    invalidFormat: "Die Handynummer hat nicht das richtige Format."
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "SMS-Wiederherstellung",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Fehler beim Aktualisieren der Handynummer zur Wiederherstellung."
+                        },
+                        genericError: {
+                            description: "Beim Aktualisieren der Handynummer zur Wiederherstellung ist ein Fehler aufgetreten",
+                            message: "Etwas ist schief gelaufen"
+                        },
+                        success: {
+                            description: "Die Handynummer im Benutzerprofil wurde erfolgreich aktualisiert",
+                            message: "Handynummer erfolgreich aktualisiert"
+                        }
+                    }
+                }
+            },
             "codeRecovery": {
                 "descriptions": {
                     "add": "Codewiederherstellungsoptionen hinzufügen oder aktualisieren"

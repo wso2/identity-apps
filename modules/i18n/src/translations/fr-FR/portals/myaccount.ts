@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
+            SMSOTPRecovery: {
+                descriptions: {
+                    add: "Ajoutez ou mettez à jour le numéro de mobile de récupération.",
+                    emptyMobile: "Vous devez configurer votre numéro de mobile pour procéder à la récupération par SMS-OTP.",
+                    update: "Mettez à jour le numéro de mobile de récupération ({{mobile}})",
+                    view: "Voir le numéro de mobile de récupération ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "Numéro de mobile",
+                                placeholder: "Entrez le numéro de mobile de récupération.",
+                                validations: {
+                                    empty: "Entrez un numéro de mobile.",
+                                    invalidFormat: "Le format du numéro de mobile n'est pas correct."
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "Récupération par SMS",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la mise à jour du numéro de mobile de récupération."
+                        },
+                        genericError: {
+                            description: "Une erreur est survenue lors de la mise à jour du numéro de mobile de récupération",
+                            message: "Quelque chose a mal tourné"
+                        },
+                        success: {
+                            description: "Le numéro de mobile du profil utilisateur a été mis à jour avec succès",
+                            message: "Numéro de mobile mis à jour avec succès"
+                        }
+                    }
+                }
+            },
             codeRecovery: {
                 descriptions: {
                     add: "Ajouter ou mettre à jour les options pour les codes de récupération."

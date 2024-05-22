@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     "components": {
         "accountRecovery": {
+            SMSOTPRecovery: {
+                descriptions: {
+                    add: "Agregue o actualice el número de móvil de recuperación.",
+                    emptyMobile: "Necesita configurar su número de móvil para proceder con la recuperación por SMS-OTP.",
+                    update: "Actualice el número de móvil de recuperación ({{mobile}})",
+                    view: "Ver número de móvil de recuperación ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "Número de móvil",
+                                placeholder: "Ingrese el número de móvil de recuperación.",
+                                validations: {
+                                    empty: "Ingrese un número de móvil.",
+                                    invalidFormat: "El formato del número de móvil no es correcto."
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "Recuperación por SMS",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error al actualizar el número de móvil de recuperación."
+                        },
+                        genericError: {
+                            description: "Ocurrió un error al actualizar el número de móvil de recuperación",
+                            message: "Algo salió mal"
+                        },
+                        success: {
+                            description: "El número de móvil en el perfil del usuario ha sido actualizado con éxito",
+                            message: "Número de móvil actualizado con éxito"
+                        }
+                    }
+                }
+            },
             "codeRecovery": {
                 "descriptions": {
                     "add": "Agregar o actualizar opciones de recuperación de código"

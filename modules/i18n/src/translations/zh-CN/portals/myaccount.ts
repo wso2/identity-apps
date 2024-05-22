@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         "accountRecovery": {
+            SMSOTPRecovery: {
+                descriptions: {
+                    add: "添加或更新恢复手机号码。",
+                    emptyMobile: "您需要配置您的手机号码才能进行 SMS-OTP 恢复。",
+                    update: "更新恢复手机号码 ({{mobile}})",
+                    view: "查看恢复手机号码 ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "手机号码",
+                                placeholder: "输入恢复手机号码。",
+                                validations: {
+                                    empty: "请输入手机号码。",
+                                    invalidFormat: "手机号码格式不正确。"
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "SMS 恢复",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "更新恢复手机号码时出错。"
+                        },
+                        genericError: {
+                            description: "更新恢复手机号码时发生错误",
+                            message: "出现了一些问题"
+                        },
+                        success: {
+                            description: "用户资料中的手机号码已成功更新",
+                            message: "手机号码更新成功"
+                        }
+                    }
+                }
+            },
             "codeRecovery": {
                 "descriptions": {
                     "add": "添加或更新代码恢复选项"

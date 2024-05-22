@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
+            SMSOTPRecovery: {
+                descriptions: {
+                    add: "Adicione ou atualize o número de celular de recuperação.",
+                    emptyMobile: "Você precisa configurar seu número de celular para prosseguir com a recuperação via SMS-OTP.",
+                    update: "Atualize o número de celular de recuperação ({{mobile}})",
+                    view: "Visualize o número de celular de recuperação ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "Número de celular",
+                                placeholder: "Digite o número de celular de recuperação.",
+                                validations: {
+                                    empty: "Digite um número de celular.",
+                                    invalidFormat: "O número de celular não está no formato correto."
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "Recuperação via SMS",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erro ao atualizar o número de celular de recuperação."
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao atualizar o número de celular de recuperação",
+                            message: "Algo deu errado"
+                        },
+                        success: {
+                            description: "O número de celular no perfil do usuário foi atualizado com sucesso",
+                            message: "Número de celular atualizado com sucesso"
+                        }
+                    }
+                }
+            },
             codeRecovery: {
                 descriptions: {
                     add: "Adicionar ou atualizar opções de recuperação de código"
