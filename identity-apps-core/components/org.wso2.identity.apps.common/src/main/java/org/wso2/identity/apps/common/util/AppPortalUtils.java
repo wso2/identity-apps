@@ -35,6 +35,8 @@ import org.wso2.carbon.identity.application.common.model.ServiceProviderProperty
 import org.wso2.carbon.identity.application.common.util.IdentityApplicationManagementUtil;
 import org.wso2.carbon.identity.application.mgt.ApplicationConstants;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
+import org.wso2.carbon.identity.application.mgt.ApplicationMgtUtil;
+import org.wso2.carbon.identity.core.URLBuilderException;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
@@ -125,6 +127,13 @@ public class AppPortalUtils {
             portalPath = "/" + portalPath;
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        try {
+            callbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(callbackUrl);
+            callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
+        } catch (URLBuilderException e) {
+            throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +
+                "placeholders for the server URL", e);
+        }
         if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
             if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
                 if (StringUtils.equals(CONSOLE_APP, applicationName) &&
