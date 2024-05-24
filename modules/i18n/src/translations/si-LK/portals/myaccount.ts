@@ -26,7 +26,7 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
-            SMSOTPRecovery: {
+            SMSRecovery: {
                 descriptions: {
                     add: "ප්රතිසාධන ජංගම දුරකථන අංකය එක් කරන්න හෝ යාවත්කාලීන කරන්න.",
                     emptyMobile: "SMS-OTP ප්‍රතිසාධනය කිරීම සඳහා ඔබගේ ජංගම දුරකථන අංකය විස්තර කිරීමට අවශ්‍යි.",

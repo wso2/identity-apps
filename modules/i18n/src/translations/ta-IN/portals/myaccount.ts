@@ -26,7 +26,7 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
-            SMSOTPRecovery: {
+            SMSRecovery: {
                 descriptions: {
                     add: "மீட்பு மொபைல் எண்ணைச் சேர்க்கவோ புதுப்பிக்கவோ செய்யவும்.",
                     emptyMobile: "SMS-OTP மீட்பு முனையில் மொபைல் எண்ணை உங்கள் உள்ளக அமைக்க வேண்டும்.",

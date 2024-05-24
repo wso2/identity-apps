@@ -26,7 +26,7 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     "components": {
         "accountRecovery": {
-            SMSOTPRecovery: {
+            SMSRecovery: {
                 descriptions: {
                     add: "再設定用の携帯電話番号を追加または更新します。",
                     emptyMobile: "SMS-OTPの再設定を進めるには、携帯電話番号を設定する必要があります。",

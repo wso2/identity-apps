@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { List, Placeholder } from "semantic-ui-react";
-import { EmailRecovery, SMSOTPRecovery, SecurityQuestionsComponent } from "./options";
+import { EmailRecovery, SMSRecovery, SecurityQuestionsComponent } from "./options";
 import { getPreference } from "../../api";
 import { AppConstants } from "../../constants";
 import {
@@ -214,7 +214,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             allowedScopes
                         ) &&
                         (isNotificationRecoverySMSOTPEnabled) ? (
-                                <SMSOTPRecovery
+                                <SMSRecovery
                                     onAlertFired={ onAlertFired }
                                     data-testid={ `${testId}-settings-section-sms-recovery` }
                                 />

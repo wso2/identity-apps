@@ -26,7 +26,7 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
-            SMSOTPRecovery: {
+            SMSRecovery: {
                 descriptions: {
                     add: "Adicione ou atualize o número do celular de recuperação.",
                     emptyMobile: "Você precisa configurar seu número de celular para prosseguir com a recuperação via SMS-OTP.",

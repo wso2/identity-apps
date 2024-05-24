@@ -26,7 +26,7 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         "accountRecovery": {
-            SMSOTPRecovery: {
+            SMSRecovery: {
                 descriptions: {
                     add: "添加或更新恢复手机号码。",
                     emptyMobile: "您需要配置您的手机号码才能进行 SMS-OTP 恢复。",

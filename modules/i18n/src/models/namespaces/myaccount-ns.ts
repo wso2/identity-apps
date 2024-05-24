@@ -79,7 +79,7 @@ export interface MyAccountNS {
             }
         }
         accountRecovery: {
-            SMSOTPRecovery: {
+            SMSRecovery: {
                 descriptions: {
                     add: string;
                     update: string;

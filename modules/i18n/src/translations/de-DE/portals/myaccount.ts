@@ -26,7 +26,7 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     "components": {
         "accountRecovery": {
-            SMSOTPRecovery: {
+            SMSRecovery: {
                 descriptions: {
                     add: "Fügen Sie die Handynummer zur Wiederherstellung hinzu oder aktualisieren Sie sie.",
                     emptyMobile: "Sie müssen Ihre Handynummer konfigurieren, um mit der SMS-OTP-Wiederherstellung fortzufahren.",
