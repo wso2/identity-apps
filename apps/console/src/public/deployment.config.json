@@ -1115,6 +1115,7 @@
         "gravatarConfig": {
             "fallback": "404"
         },
+        "hiddenApplicationTemplates": [],
         "hiddenAuthenticators": [
             "BasicAuthRequestPathAuthenticator",
             "OAuthRequestPathAuthenticator"
@@ -1123,7 +1124,6 @@
             "hypr-idp",
             "swe-idp"
         ],
-        "hiddenApplicationTemplates": [],
         "hiddenUserStores": [],
         "i18nConfigs": {
             "langAutoDetectEnabled": false,
