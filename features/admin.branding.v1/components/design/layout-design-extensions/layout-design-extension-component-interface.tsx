@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { BrandingPreferenceLayoutInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { BrandingPreferenceLayoutInterface } from "../../../../common.branding.v1/models";
 import { DesignFormValuesInterface } from "../design-form";
 
 /**

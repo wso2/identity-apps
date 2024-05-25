@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -26,7 +27,6 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
-import { AppState, FeatureConfigInterface } from "../../../../../admin.core.v1";
 import {
     ConnectionClaimInterface,
     ConnectionCommonClaimMappingInterface

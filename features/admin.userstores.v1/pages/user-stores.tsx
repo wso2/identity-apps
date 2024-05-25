@@ -17,15 +17,6 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -35,8 +26,17 @@ import {
     filterList,
     history,
     sortList
-} from "../../admin.core.v1";
-import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
 import { UserStoresList } from "../components";
 import { QueryParams, UserStoreListItem } from "../models";

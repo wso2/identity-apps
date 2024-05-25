@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    history
+} from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    AppConstants,
-    history
-} from "../../admin.core.v1";
 import ApplicationCreationAdapter from "../components/application-templates/application-creation-adapter";
 import ApplicationTemplateGrid from "../components/application-templates/application-templates-grid";
 import { ApplicationTemplateListInterface } from "../models/application-templates";

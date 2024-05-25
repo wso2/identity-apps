@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "@wso2is/admin.core.v1";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,8 +29,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../admin.extensions.v1";
-import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../admin.core.v1";
 import { getConnectorCategory } from "../api/governance-connectors";
 import { DynamicGovernanceConnector } from "../components";
 import { ServerConfigurationsConstants } from "../constants";

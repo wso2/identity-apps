@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getRolesWizardStepIcons } from "@wso2is/admin.roles.v2/configs";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -27,7 +28,6 @@ import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { ApplicationRoleBasics } from "./application-role-basics";
 import { PermissionList } from "./application-role-permission";
-import { getRolesWizardStepIcons } from "../../../../../admin.roles.v2/configs";
 import { createRole } from "../../api/application-roles";
 import { CreateRolePayloadInterface, RoleBasicDetailsInterface, SharedApplicationDataInterface } from "../../models";
 
@@ -101,7 +101,7 @@ export const CreateApplicationRoleWizard: FunctionComponent<CreateApplicationRol
                 data-componentid="new-app-role-basics"
                 triggerSubmit={ submitGeneralSettings }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
-                onSubmit={ 
+                onSubmit={
                     (values: RoleBasicDetailsInterface) => {
                         handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS);
                     }
@@ -177,7 +177,7 @@ export const CreateApplicationRoleWizard: FunctionComponent<CreateApplicationRol
 
     /**
      * Create a new application role.
-     * 
+     *
      * @param basicDetails - Basic details.
      * @param permissions - Permission list.
      */
@@ -194,19 +194,19 @@ export const CreateApplicationRoleWizard: FunctionComponent<CreateApplicationRol
         createRole(appId, payload)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("extensions:develop.applications.edit.sections.roles.notifications." + 
+                    description: t("extensions:develop.applications.edit.sections.roles.notifications." +
                         "createApplicationRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.applications.edit.sections.roles.notifications." + 
+                    message: t("extensions:develop.applications.edit.sections.roles.notifications." +
                         "createApplicationRole.success.message")
                 }));
                 onRoleUpdate();
             }).catch(() => {
                 dispatch(addAlert({
-                    description: t("extensions:develop.applications.edit.sections.roles.notifications." + 
+                    description: t("extensions:develop.applications.edit.sections.roles.notifications." +
                         "createApplicationRole.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:develop.applications.edit.sections.roles.notifications." + 
+                    message: t("extensions:develop.applications.edit.sections.roles.notifications." +
                         "createApplicationRole.genericError.message")
                 }));
             }).finally(() => {
@@ -229,7 +229,7 @@ export const CreateApplicationRoleWizard: FunctionComponent<CreateApplicationRol
             <Modal.Header className="wizard-header">
                 { t("extensions:develop.applications.edit.sections.roles.addRoleWizard.heading") }
                 {
-                    wizardState && 
+                    wizardState &&
                     (wizardState[ WizardStepsFormTypes.BASIC_DETAILS ])?.basic?.roleName
                         ? " - " + (wizardState[ WizardStepsFormTypes.BASIC_DETAILS ])?.basic.roleName
                         : ""
@@ -275,7 +275,7 @@ export const CreateApplicationRoleWizard: FunctionComponent<CreateApplicationRol
                                     onClick={ changeStepToNext }
                                     data-componentid={ `${ componentId }-next-button` }
                                 >
-                                    { t("extensions:develop.applications.edit.sections.roles.addRoleWizard." + 
+                                    { t("extensions:develop.applications.edit.sections.roles.addRoleWizard." +
                                         "buttons.next") }
                                     <Icon name="arrow right" data-componentid={ `${ componentId }-next-button-icon` }/>
                                 </PrimaryButton>
@@ -288,7 +288,7 @@ export const CreateApplicationRoleWizard: FunctionComponent<CreateApplicationRol
                                     disabled={ isSubmitting }
                                     data-componentid={ `${ componentId }-finish-button` }
                                 >
-                                    { t("extensions:develop.applications.edit.sections.roles.addRoleWizard." + 
+                                    { t("extensions:develop.applications.edit.sections.roles.addRoleWizard." +
                                         "buttons.finish") }
                                 </PrimaryButton>
                             ) }

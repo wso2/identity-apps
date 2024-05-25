@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,15 +17,15 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import useRequest, { 
+import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../admin.core.v1/hooks/use-request";
-import { store } from "../../../../admin.core.v1/store";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { MyAccountManagementConstants } from "../constants";
 import {
     MyAccountConfigInterface,
@@ -57,9 +57,9 @@ export const updateMyAccountStatus = (status: boolean): Promise<MyAccountPortalS
     const config: MyAccountConfigInterface = {
         attributes: [
             {
-                key: "enable", 
+                key: "enable",
                 value: status
-            } 
+            }
         ],
         name: "status"
     };
@@ -112,19 +112,19 @@ export const updateMyAccountMFAOptions = (options: MyAccountFormInterface): Prom
     const config: MyAccountConfigInterface = {
         attributes: [
             {
-                key: "email_otp_enabled", 
+                key: "email_otp_enabled",
                 value: options.emailOtpEnabled
             },
             {
-                key: "sms_otp_enabled", 
+                key: "sms_otp_enabled",
                 value: options.smsOtpEnabled
             },
             {
-                key: "totp_enabled", 
+                key: "totp_enabled",
                 value: options.totpEnabled
             },
             {
-                key: "backup_code_enabled", 
+                key: "backup_code_enabled",
                 value: options.backupCodeEnabled
             }
         ],
@@ -179,7 +179,7 @@ export const updateTotpConfigOptions = (options: MyAccountFormInterface): Promis
     const config: TotpConfigInterface = {
         attributes: [
             {
-                key: "enrolUserInAuthenticationFlow", 
+                key: "enrolUserInAuthenticationFlow",
                 value: options.totpEnrollmentEnabled
             }
         ],
@@ -290,7 +290,7 @@ export const useMyAccountData = <Data = MyAccountDataInterface, Error = RequestE
  */
 export const useTotpConfigData = <Data = MyAccountDataInterface, Error = RequestErrorInterface>(
 ): RequestResultInterface<Data, Error> => {
-    
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
@@ -300,11 +300,11 @@ export const useTotpConfigData = <Data = MyAccountDataInterface, Error = Request
         params: {},
         url: store.getState().config.endpoints.myAccountConfigMgt + "/myaccount-TOTP-config"
     };
-    
+
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
         shouldRetryOnError: false
     });
-    
+
     return {
         data,
         error: error,

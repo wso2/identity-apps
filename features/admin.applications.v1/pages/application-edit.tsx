@@ -16,6 +16,14 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    history
+} from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { IdentityProviderConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -33,14 +41,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    history
-} from "../../admin.core.v1";
-import { applicationConfig } from "../../admin.extensions.v1/configs/application";
-import { IdentityProviderConstants } from "../../admin.identity-providers.v1/constants";
 import { useGetApplication } from "../api/use-get-application";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";

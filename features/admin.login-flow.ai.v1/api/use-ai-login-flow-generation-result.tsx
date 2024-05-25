@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
-import { useEffect } from "react";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
+import { useEffect } from "react";
 import { AILoginFlowGenerationResultAPIResponseInterface } from "../models/ai-login-flow";
 
 export const useAILoginFlowGenerationResult = (

@@ -17,6 +17,12 @@
  */
 
 import {
+    AppState,
+    EventPublisher,
+    ModalWithSidePanel,
+    store
+} from "@wso2is/admin.core.v1";
+import {
     AlertLevels,
     IdentifiableComponentInterface,
     TestableComponentInterface
@@ -32,12 +38,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Header } from "semantic-ui-react";
 import { OidcAuthenticationWizardFrom } from "./oidc-authentication-wizard-page";
-import {
-    AppState,
-    EventPublisher,
-    ModalWithSidePanel,
-    store
-} from "../../../admin.core.v1";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata

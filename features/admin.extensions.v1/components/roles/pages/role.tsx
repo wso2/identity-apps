@@ -16,6 +16,20 @@
  * under the License.
  */
 import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    AppUtils,
+    ConfigReducerStateInterface,
+    HelpPanelUtils,
+    UIConstants,
+    getHelpPanelActionIcons,
+    toggleHelpPanelVisibility
+} from "@wso2is/admin.core.v1";
+import { deleteRoleById, getRolesList, searchRoleList } from "@wso2is/admin.roles.v2/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
+import { SearchRoleInterface } from "@wso2is/admin.roles.v2/models";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import {
     AlertInterface,
     AlertLevels,
     RoleListInterface,
@@ -41,20 +55,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    AppUtils,
-    ConfigReducerStateInterface,
-    HelpPanelUtils,
-    UIConstants,
-    getHelpPanelActionIcons,
-    toggleHelpPanelVisibility
-} from "../../../../admin.core.v1";
-import { deleteRoleById, getRolesList, searchRoleList } from "../../../../admin.roles.v2/api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../admin.roles.v2/constants";
-import { SearchRoleInterface } from "../../../../admin.roles.v2/models";
-import { getUserStoreList } from "../../../../admin.userstores.v1/api";
 import { CreateRoleWizard, RoleList } from "../components";
 import helpDoc from "../data/role.md";
 

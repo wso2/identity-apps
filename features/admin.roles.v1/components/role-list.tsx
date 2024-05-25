@@ -17,6 +17,14 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -43,14 +51,6 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } fro
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
 import { APPLICATION_DOMAIN, RoleConstants as LocalRoleConstants } from "../constants/role-constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {

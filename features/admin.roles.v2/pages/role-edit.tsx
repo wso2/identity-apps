@@ -16,8 +16,13 @@
  * under the License.
  */
 
-import { Grid } from "@oxygen-ui/react";
 import Button from "@oxygen-ui/react/Button";
+import Grid from "@oxygen-ui/react/Grid";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store/index";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
@@ -27,11 +32,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
-import { AppConstants } from "../../admin.core.v1/constants/app-constants";
-import { history } from "../../admin.core.v1/helpers/history";
-import { FeatureConfigInterface } from "../../admin.core.v1/models/config";
-import { AppState } from "../../admin.core.v1/store/index";
 import { useGetRoleById } from "../api";
 import { EditRole } from "../components/edit-role/edit-role";
 import { RoleAudienceTypes } from "../constants/role-constants";
@@ -96,8 +96,8 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                     title={ t("roles:edit.placeholders.errorPlaceHolder.title") }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     action={ (
-                        <Button onClick={ handleBackButtonClick }> 
-                            { t("roles:edit.placeholders.errorPlaceHolder.action") } 
+                        <Button onClick={ handleBackButtonClick }>
+                            { t("roles:edit.placeholders.errorPlaceHolder.action") }
                         </Button>
                     ) }
                     imageSize="tiny"
@@ -108,7 +108,7 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
 
     /**
      * Callback to when the role is updated.
-     * 
+     *
      * @param activeTabIndex - Active tab index.
      */
     const onRoleUpdate = (activeTabIndex: number): void => {
@@ -131,7 +131,7 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                     data-componentid={ componentId }
                     isLoading={ isRoleDetailsRequestLoading }
                     title={
-                        roleObject && roleObject?.displayName 
+                        roleObject && roleObject?.displayName
                             ? roleObject?.displayName
                             : t("pages:rolesEdit.title")
                     }

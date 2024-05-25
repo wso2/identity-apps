@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import AIBrandingPreferenceProvider from "@wso2is/admin.branding.ai.v1/providers/ai-branding-preference-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import BrandingCore from "./branding-core";
-import AIBrandingPreferenceProvider from "../../admin.branding.ai.v1/providers/ai-branding-preference-provider";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 

@@ -17,6 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CopyInputField,
@@ -30,7 +31,6 @@ import {
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants, AppState, history } from "../../../admin.core.v1";
 
 export const MyAccountOverview: FunctionComponent<IdentifiableComponentInterface> = (
     props: IdentifiableComponentInterface

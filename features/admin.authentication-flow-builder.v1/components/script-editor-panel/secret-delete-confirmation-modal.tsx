@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { deleteSecret } from "@wso2is/admin.secrets.v1/api/secret";
+import { SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ConfirmationModalPropsInterface } from "@wso2is/react-components";
@@ -24,8 +26,6 @@ import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { deleteSecret } from "../../../admin.secrets.v1/api/secret";
-import { SecretModel } from "../../../admin.secrets.v1/models/secret";
 
 /**
  * Proptypes for the secret delete confirmation modal component.

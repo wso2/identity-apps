@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UploadCertificate } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Certificate, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,7 +29,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { CertificateSummary } from "./wizard";
-import { UploadCertificate } from "../../admin.core.v1";
 import { createKeystoreCertificate } from "../api";
 import { getImportCertificateWizardStepIcons } from "../configs";
 

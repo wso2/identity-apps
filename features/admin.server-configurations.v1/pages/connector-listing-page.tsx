@@ -17,6 +17,9 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState, FeatureConfigInterface, store  } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -29,9 +32,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Placeholder, Ref } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, store  } from "../../admin.core.v1";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { serverConfigurationConfig } from "../../admin.extensions.v1/configs/server-configuration";
 import { getConnectorCategories, getConnectorCategory } from "../api";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
 import { ServerConfigurationsConstants } from "../constants";

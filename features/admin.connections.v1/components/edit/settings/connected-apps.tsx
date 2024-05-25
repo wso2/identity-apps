@@ -16,6 +16,33 @@
  * under the License.
  */
 
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import useApplicationTemplates from "@wso2is/admin.applications.v1/hooks/use-application-templates";
+import {
+    ApplicationAccessTypes,
+    ApplicationBasicInterface,
+    ApplicationListItemInterface,
+    ApplicationTemplateListItemInterface
+} from "@wso2is/admin.applications.v1/models";
+import { ApplicationTemplateListInterface } from "@wso2is/admin.applications.v1/models/application-templates";
+import {
+    ApplicationTemplateManagementUtils
+} from "@wso2is/admin.applications.v1/utils/application-template-management-utils";
+import { ConsoleSettingsModes } from "@wso2is/admin.console-settings.v1/models/ui";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
+import { ApplicationTabIDs } from "@wso2is/admin.extensions.v1";
+import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -50,33 +77,6 @@ import {
     Label,
     SemanticICONS
 } from "semantic-ui-react";
-import { getApplicationDetails } from "../../../../admin.applications.v1/api";
-import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
-import useApplicationTemplates from "../../../../admin.applications.v1/hooks/use-application-templates";
-import {
-    ApplicationAccessTypes,
-    ApplicationBasicInterface,
-    ApplicationListItemInterface,
-    ApplicationTemplateListItemInterface
-} from "../../../../admin.applications.v1/models";
-import { ApplicationTemplateListInterface } from "../../../../admin.applications.v1/models/application-templates";
-import {
-    ApplicationTemplateManagementUtils
-} from "../../../../admin.applications.v1/utils/application-template-management-utils";
-import { ConsoleSettingsModes } from "../../../../admin.console-settings.v1/models/ui";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../../../admin.core.v1";
-import { OrganizationType } from "../../../../admin.core.v1/constants/organization-constants";
-import { ApplicationTabIDs } from "../../../../admin.extensions.v1";
-import { applicationListConfig } from "../../../../admin.extensions.v1/configs/application-list";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getConnectedApps } from "../../../api/connections";
 import {
     ConnectedAppInterface,

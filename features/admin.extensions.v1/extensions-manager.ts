@@ -16,6 +16,18 @@
  * under the License.
  */
 
+import { TemplateConfigInterface, TemplateContentInterface }
+    from "@wso2is/admin.applications.v1/data/application-templates";
+import {
+    ApplicationTemplateCategoryInterface,
+    ApplicationTemplateGroupInterface,
+    ApplicationTemplateInterface
+} from "@wso2is/admin.applications.v1/models";
+import {
+    IdentityProviderTemplateCategoryInterface,
+    IdentityProviderTemplateGroupInterface,
+    IdentityProviderTemplateListItemInterface
+} from "@wso2is/admin.identity-providers.v1/models";
 import isObject from "lodash-es/isObject";
 import { lazy } from "react";
 import { ExtensionsConfig } from "./config";
@@ -24,17 +36,6 @@ import {
     ExtensionsConfigInterface,
     IdentityProviderTemplateExtensionsConfigInterface
 } from "./models";
-import { TemplateConfigInterface, TemplateContentInterface } from "../admin.applications.v1/data/application-templates";
-import {
-    ApplicationTemplateCategoryInterface,
-    ApplicationTemplateGroupInterface,
-    ApplicationTemplateInterface
-} from "../admin.applications.v1/models";
-import {
-    IdentityProviderTemplateCategoryInterface,
-    IdentityProviderTemplateGroupInterface,
-    IdentityProviderTemplateListItemInterface
-} from "../admin.identity-providers.v1/models";
 
 /**
  * Class to manage extensions.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, store } from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,7 +29,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid, Icon, Modal } from "semantic-ui-react";
 import { sendFeedback } from "./feedback-api";
-import { AppState, store } from "../../../admin.core.v1";
 import { ReactComponent as FeedBackIcon } from "../../assets/images/icons/feedback-outline.svg";
 
 export default (): ReactElement => {

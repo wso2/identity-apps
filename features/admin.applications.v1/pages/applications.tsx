@@ -17,6 +17,22 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    getGeneralIcons,
+    history
+} from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -54,22 +70,6 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    getGeneralIcons,
-    history
-} from "../../admin.core.v1";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../admin.extensions.v1";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
 import { ApplicationList } from "../components/application-list";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";

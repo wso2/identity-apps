@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppConstants, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { deleteRoleById, updateRoleDetails } from "@wso2is/admin.roles.v2/api";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -36,10 +40,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreUtils, history } from "../../../../../admin.core.v1";
-import { deleteRoleById, updateRoleDetails } from "../../../../../admin.roles.v2/api";
-import { PatchRoleDataInterface } from "../../../../../admin.roles.v2/models";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../../../admin.userstores.v1/constants/user-store-constants";
 
 /**
  * Interface to contain props needed for component

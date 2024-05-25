@@ -17,6 +17,10 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { AppConstants, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,10 +31,6 @@ import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
-import useSignIn from "../../admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
-import { AppConstants, FeatureConfigInterface, history } from "../../admin.core.v1";
 import { getOrganization, useAuthorizedOrganizationsList, useGetOrganizationBreadCrumb } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";

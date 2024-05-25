@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import { CopyIcon } from "@oxygen-ui/react-icons";
 import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
+import { CopyIcon } from "@oxygen-ui/react-icons";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { PageLayout } from "@wso2is/react-components";
@@ -27,9 +28,7 @@ import React, {
     FunctionComponent,
     ReactElement
 } from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState } from "../../admin.core.v1/store";
 import ConsoleSettingsTabs from "../components/console-settings-tabs";
 import ConsoleSettingsProvider from "../providers/console-settings-provider";
 import "./console-settings-page.scss";
@@ -49,8 +48,6 @@ const ConsoleSettingsPage: FunctionComponent<ConsoleSettingsPageInterface> = (
     props: ConsoleSettingsPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;
-
-    const { t } = useTranslation();
 
     const consoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
 

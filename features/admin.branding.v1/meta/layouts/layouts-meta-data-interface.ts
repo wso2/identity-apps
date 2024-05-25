@@ -19,7 +19,7 @@
 import {
     BrandingPreferenceInterface,
     DynamicBrandingPreferenceLayoutInterface
-} from "../../../common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 
 /**
  * Abstract class for control the fallbacks of the layouts.

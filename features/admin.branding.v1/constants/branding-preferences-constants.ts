@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { commonConfig } from "@wso2is/admin.extensions.v1";
+import { BrandingPreferenceInterface, PredefinedThemes, ThemeConfigInterface } from "@wso2is/common.branding.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { commonConfig } from "../../admin.extensions.v1";
-import { BrandingPreferenceInterface, PredefinedThemes, ThemeConfigInterface } from "../../common.branding.v1/models";
 import { PredefinedLayouts } from "../meta/layouts";
 
 /**

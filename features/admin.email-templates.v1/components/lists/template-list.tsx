@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
 import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
@@ -29,7 +30,6 @@ import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Flag, FlagNameValues, Icon, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../../admin.core.v1";
 import { EmailTemplate } from "../../models";
 import { ViewLocaleTemplate } from "../wizards";
 

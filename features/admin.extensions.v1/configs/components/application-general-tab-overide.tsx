@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import { ApplicationDangerZoneComponent } from "@wso2is/admin.applications.v1/components/application-danger-zone";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { 
+import {
     DocumentationLink,
     EmphasizedSegment,
     Heading,
@@ -28,8 +29,7 @@ import React, { FunctionComponent, ReactElement, useState  } from "react";
 import { Trans } from "react-i18next";
 import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { Divider } from "semantic-ui-react";
-import { ApplicationDangerZoneComponent } from "../../../admin.applications.v1/components/application-danger-zone";
-import { loginPlaygroundUserTourSteps } 
+import { loginPlaygroundUserTourSteps }
     from "../../components/application/components/login-playground/playground-user-tour-modal";
 import { TryItApplicationConstants } from "../../components/application/constants/try-it-constants";
 import { persistPlaygroundTourViewedStatus } from "../../components/application/utils/try-it-utils";
@@ -43,7 +43,7 @@ interface ApplicationGeneralTabOverridePropsInterface extends IdentifiableCompon
 export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneralTabOverridePropsInterface> = (
     props: ApplicationGeneralTabOverridePropsInterface
 ): ReactElement => {
-    
+
     const {
         appId,
         appName,
@@ -52,7 +52,7 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
     } = props ;
 
     const [ isTriggered, setIsTriggered ] = useState<boolean>(false);
-    
+
     return (
         <ResourceTab.Pane controlledSegmentation>
             <EmphasizedSegment padded="very">
@@ -61,7 +61,7 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
                     <Heading as="h6">Use the Try It application to experience different login flows on Asgardeo.
                     Update the Sign-in Methods and click{ " " }
                     <Heading as="h6" weight="bold" inline > Try Login</Heading>{ " " } to try out different login flows.
-                    <DocumentationLink 
+                    <DocumentationLink
                         link={ "develop.applications.editApplication.asgardeoTryitApplication.general.learnMore" }
                         isLinkRef = { true }
                     >
@@ -109,7 +109,7 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
                             next: "Next",
                             skip: "Skip"
                         } }
-                    /> 
+                    />
                     { /* <PlaygroundUserTour onTakeTour={ () => setIsTriggered(true) }  /> */ }
                 </div>
             </EmphasizedSegment>
@@ -119,7 +119,7 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
                 name={ appName }
                 clientId={ clientId }
                 data-componentid={ componentId }
-                content="Once you delete an application it cannot be restored. 
+                content="Once you delete an application it cannot be restored.
                     You can create the Try It application again from the Get Started page." />
         </ResourceTab.Pane>
     );

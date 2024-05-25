@@ -16,22 +16,22 @@
  * under the License.
  */
 
-import { GenericIcon, TabPageLayout } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Label } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
     getSidePanelIcons,
     history
-} from "../../../../admin.core.v1";
-import { getGroupById } from "../../../../admin.groups.v1/api";
-import { GroupsInterface } from "../../../../admin.groups.v1/models";
-import GroupManagementProvider from "../../../../admin.groups.v1/providers/group-management-provider";
+} from "@wso2is/admin.core.v1";
+import { getGroupById } from "@wso2is/admin.groups.v1/api";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models";
+import GroupManagementProvider from "@wso2is/admin.groups.v1/providers/group-management-provider";
+import { GenericIcon, TabPageLayout } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Label } from "semantic-ui-react";
 import { EditGroup } from "../edit-group";
 
 const GroupEditPage: FunctionComponent<any> = (): ReactElement => {

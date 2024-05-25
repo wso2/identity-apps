@@ -16,7 +16,43 @@
  * under the License.
  */
 
+import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    SharedUserStoreUtils,
+    UIConstants,
+    UserBasicInterface,
+    getAUserStore,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorInterface,
+    RealmConfigInterface,
+    ServerConfigurationsConstants,
+    getConnectorCategory,
+    useServerConfigs
+} from "@wso2is/admin.server-configurations.v1";
+import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import {
+    UserStoreItem,
+    UserStoreListItem,
+    UserStorePostData,
+    UserStoreProperty
+} from "@wso2is/admin.userstores.v1/models/user-stores";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -49,40 +85,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
-import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    SharedUserStoreUtils,
-    UIConstants,
-    UserBasicInterface,
-    getAUserStore,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
-import { userstoresConfig } from "../../admin.extensions.v1";
-import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorCategoryInterface,
-    GovernanceConnectorInterface,
-    RealmConfigInterface,
-    ServerConfigurationsConstants,
-    getConnectorCategory,
-    useServerConfigs
-} from "../../admin.server-configurations.v1";
-import { useUserStores } from "../../admin.userstores.v1/api";
-import {
-    UserStoreItem,
-    UserStoreListItem,
-    UserStorePostData,
-    UserStoreProperty
-} from "../../admin.userstores.v1/models/user-stores";
 import { useUsersList } from "../api";
 import { useGetParentOrgUserInvites } from "../components/guests/api/use-get-parent-org-user-invites";
 import { UserInviteInterface } from "../components/guests/models/invite";
@@ -98,6 +100,7 @@ import {
     UserManagementConstants
 } from "../constants";
 import { InvitationStatus, UserListInterface } from "../models";
+import "./users.scss";
 
 /**
  * Props for the Users page.
@@ -129,6 +132,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const dispatch: Dispatch<any> = useDispatch();
     const { legacyAuthzRuntime }  = useAuthorization();
+    const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
@@ -758,9 +763,21 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             featureConfig?.parentUserInvitation?.enabled &&
             hasRequiredScopes(featureConfig?.guestUser, featureConfig?.guestUser?.scopes?.create, allowedScopes)) {
             dropDownOptions.push({
+                className: "users-invite-parent-user",
                 "data-componentid": `${componentId}-invite-parent-user`,
                 key: 3,
-                text: t("parentOrgInvitations:addUserWizard.heading"),
+                text: <>
+                    { t("parentOrgInvitations:addUserWizard.heading") }
+                    { showStatusLabelForNewAuthzRuntimeFeatures
+                      && !legacyAuthzRuntime
+                      && (
+                          <Chip
+                              size="small"
+                              label={ t(FeatureStatusLabel.NEW).toUpperCase() }
+                              className="oxygen-chip-new"
+                          />
+                      ) }
+                </>,
                 value: UserAccountTypesMain.INTERNAL
             });
         }

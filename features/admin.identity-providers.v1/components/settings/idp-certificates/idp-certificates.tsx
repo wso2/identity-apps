@@ -19,6 +19,8 @@
 import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
 import { Show } from "@wso2is/access-control";
+import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -42,8 +44,6 @@ import { Icon, Segment } from "semantic-ui-react";
 import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
-import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../admin.core.v1";
-import { commonConfig } from "../../../../admin.extensions.v1/configs";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderConstants } from "../../../constants";
 import { CertificatePatchRequestInterface, IdentityProviderInterface } from "../../../models";

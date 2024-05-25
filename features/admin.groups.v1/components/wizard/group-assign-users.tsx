@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import {
+    UIConstants,
+    UserBasicInterface,
+    UserListInterface,
+    getEmptyPlaceholderIllustrations,
+    getUsersList
+} from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import {
@@ -35,13 +42,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, InputOnChangeData, Modal, Table } from "semantic-ui-react";
-import {
-    UIConstants,
-    UserBasicInterface,
-    UserListInterface,
-    getEmptyPlaceholderIllustrations,
-    getUsersList
-} from "../../../admin.core.v1";
 import { GroupsMemberInterface } from "../../models";
 
 /**

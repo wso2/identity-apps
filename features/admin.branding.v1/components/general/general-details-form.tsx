@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Placeholder } from "semantic-ui-react";
-import { AppState } from "../../../admin.core.v1/store";
-import { BrandingPreferenceInterface } from "../../../common.branding.v1/models";
 import { BrandingPreferencesConstants } from "../../constants";
 
 /**

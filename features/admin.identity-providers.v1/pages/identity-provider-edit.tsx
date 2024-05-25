@@ -15,6 +15,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    FeatureConfigInterface,
+    history
+} from "@wso2is/admin.core.v1";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -42,14 +50,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    FeatureConfigInterface,
-    history
-} from "../../admin.core.v1";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin.extensions.v1/configs";
 import { getIdentityProviderDetail, getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api";
 import { EditMultiFactorAuthenticator } from "../components/edit-multi-factor-authenticator";
 import { EditIdentityProvider } from "../components/identity-provider-edit";

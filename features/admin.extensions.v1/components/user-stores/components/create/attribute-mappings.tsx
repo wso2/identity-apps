@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,15 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid, Header, Segment } from "semantic-ui-react";
-import { ClaimManagementConstants } from "../../../../../admin.claims.v1/constants/claim-management-constants";
-import { getUsernameConfiguration } from "../../../../../admin.users.v1/utils";
-import { useValidationConfigData } from "../../../../../admin.validation.v1/api";
 
 /**
  * Prop types of the attribute mappings component
@@ -149,12 +149,12 @@ export const AttributeMappingsComponent: FunctionComponent<AttributeMappingsComp
                                                         tOptions={ { usernameType: usernameType } }
                                                     >
                                                         The mapped attribute for username should
-                                                        be <strong>unique </strong> and be of 
-                                                        <strong> type { usernameType }</strong>. 
+                                                        be <strong>unique </strong> and be of
+                                                        <strong> type { usernameType }</strong>.
                                                         This field cannot be empty as
                                                         username is the primary identifier of the user.
                                                     </Trans>
-                                                    
+
                                                 </Hint>
                                             </Grid.Column>
                                         </Grid.Row>

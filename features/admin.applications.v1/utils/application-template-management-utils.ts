@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+import { store } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
@@ -25,9 +28,6 @@ import { AxiosError } from "axios";
 import groupBy from "lodash-es/groupBy";
 import isObject from "lodash-es/isObject";
 import startCase  from "lodash-es/startCase";
-import { AppConstants } from "../../admin.core.v1";
-import { getTechnologyLogos } from "../../admin.core.v1/configs";
-import { store } from "../../admin.core.v1/store";
 import {
     getApplicationTemplateList
 } from "../api";

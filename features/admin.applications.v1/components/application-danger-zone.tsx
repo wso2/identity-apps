@@ -17,6 +17,14 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConfigInterface,
+    history
+} from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
@@ -26,14 +34,6 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import {
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConfigInterface,
-    history
-} from "../../admin.core.v1";
 import { deleteApplication } from "../api";
 
 /**

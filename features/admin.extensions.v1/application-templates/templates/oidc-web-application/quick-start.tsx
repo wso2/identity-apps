@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import {
+    ApplicationInterface,
+    ApplicationListInterface,
+    ApplicationTemplateInterface,
+    URLFragmentTypes
+} from "@wso2is/admin.applications.v1/models";
+import { history } from "@wso2is/admin.core.v1";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, useDocumentation } from "@wso2is/react-components";
@@ -35,16 +45,6 @@ import { IntegrateSDKs } from "./integrate-sdks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalOIDCAppTechnologyTypes } from "./models";
 import { TryoutSamples } from "./tryout-samples";
-import { getApplicationList } from "../../../../admin.applications.v1/api";
-import {
-    ApplicationInterface,
-    ApplicationListInterface,
-    ApplicationTemplateInterface,
-    URLFragmentTypes
-} from "../../../../admin.applications.v1/models";
-import { history } from "../../../../admin.core.v1";
-import { getTechnologyLogos } from "../../../../admin.core.v1/configs";
-import { AppState } from "../../../../admin.core.v1/store";
 import JavaLogo from "../../../assets/images/icons/java-logo.svg";
 import DotNetLogo from "../../../assets/images/icons/net-logo.svg";
 import NextJSLogo from "../../../assets/images/icons/next-js-logo.svg";
@@ -79,7 +79,7 @@ const QUICK_START_TAB_INDEX: number = 0;
  * @param props - Props injected into the component.
  * @returns traditional OIDC web application quick start.
  */
-const TraditionalOIDCWebApplicationQuickStart: 
+const TraditionalOIDCWebApplicationQuickStart:
 FunctionComponent<TraditionalOIDCWebApplicationQuickStartPropsInterface> = (
     props: TraditionalOIDCWebApplicationQuickStartPropsInterface
 ): ReactElement => {

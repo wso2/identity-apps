@@ -17,6 +17,18 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    filterList,
+    history,
+    sortList
+} from "@wso2is/admin.core.v1";
+import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from "@wso2is/core/models";
@@ -28,18 +40,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getAllLocalClaims } from "../../admin.claims.v1/api";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    filterList,
-    history,
-    sortList
-} from "../../admin.core.v1";
-import { attributeConfig } from "../../admin.extensions.v1";
 import { getADialect } from "../api";
 import { AddLocalClaims, ClaimsList, ListType } from "../components";
 

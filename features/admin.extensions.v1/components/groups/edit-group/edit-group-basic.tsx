@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import {
+    GroupsInterface,
+    PatchGroupDataInterface,
+    SearchGroupInterface,
+    deleteGroupById,
+    searchGroupList,
+    updateGroupDetails
+} from "@wso2is/admin.groups.v1";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -37,16 +47,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../../admin.core.v1";
-import {
-    GroupsInterface,
-    PatchGroupDataInterface,
-    SearchGroupInterface,
-    deleteGroupById,
-    searchGroupList,
-    updateGroupDetails
-} from "../../../../admin.groups.v1";
-import { CONSUMER_USERSTORE } from "../../../../admin.userstores.v1/constants";
 
 /**
  * Interface to contain props needed for component

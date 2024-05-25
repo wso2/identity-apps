@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { BrandingPreferenceImageInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEventHandler, PropsWithChildren, ReactElement, useState } from "react";
 import { Placeholder } from "semantic-ui-react";
-import { BrandingPreferenceImageInterface } from "../../../../common.branding.v1/models";
 
 /**
  * Proptypes for the Layout Swatch component.

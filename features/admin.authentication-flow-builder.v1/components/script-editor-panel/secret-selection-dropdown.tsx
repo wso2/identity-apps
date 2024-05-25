@@ -17,7 +17,6 @@
  */
 
 import Popover, { PopoverProps } from "@mui/material/Popover";
-import { ChevronDownIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Code from "@oxygen-ui/react/Code";
@@ -27,18 +26,19 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
+import { ChevronDownIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetSecrets } from "@wso2is/admin.secrets.v1/api/secret";
+import AddSecretWizard from "@wso2is/admin.secrets.v1/components/add-secret-wizard";
+import { ADAPTIVE_SCRIPT_SECRETS } from "@wso2is/admin.secrets.v1/constants/secrets.common";
+import { SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { MouseEvent, ReactElement, SVGProps, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import SecretDeleteConfirmationModal from "./secret-delete-confirmation-modal";
-import { FeatureConfigInterface } from "../../../admin.core.v1/models";
-import { AppState } from "../../../admin.core.v1/store";
-import { useGetSecrets } from "../../../admin.secrets.v1/api/secret";
-import AddSecretWizard from "../../../admin.secrets.v1/components/add-secret-wizard";
-import { ADAPTIVE_SCRIPT_SECRETS } from "../../../admin.secrets.v1/constants/secrets.common";
-import { SecretModel } from "../../../admin.secrets.v1/models/secret";
 import "./secret-selection-dropdown.scss";
 
 /**

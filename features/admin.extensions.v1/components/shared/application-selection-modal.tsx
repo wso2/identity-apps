@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import { useApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationList } from "@wso2is/admin.applications.v1/components/application-list";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import {
+    ApplicationListInterface,
+    ApplicationListItemInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import { AppConstants, UIConstants, history } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, LinkButton, ListLayout } from "@wso2is/react-components";
@@ -25,15 +34,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Grid, Modal, ModalProps, PaginationProps } from "semantic-ui-react";
-import { useApplicationList } from "../../../admin.applications.v1/api";
-import { ApplicationList } from "../../../admin.applications.v1/components/application-list";
-import { ApplicationManagementConstants } from "../../../admin.applications.v1/constants/application-management";
-import {
-    ApplicationListInterface,
-    ApplicationListItemInterface
-} from "../../../admin.applications.v1/models/application";
-import { AppConstants, UIConstants, history } from "../../../admin.core.v1";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 
 /**
  * Proptypes for the application selection modal component.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { TreeNode } from "@wso2is/admin.roles.v2/models";
+import { RoleManagementUtils } from "@wso2is/admin.roles.v2/utils";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { UserAvatar } from "@wso2is/react-components";
 import Tree from "rc-tree";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { TreeNode } from "../../../../../admin.roles.v2/models";
-import { RoleManagementUtils } from "../../../../../admin.roles.v2/utils";
 
 interface AddUserWizardSummaryProps extends TestableComponentInterface {
     summary: any;
@@ -34,13 +34,13 @@ interface AddUserWizardSummaryProps extends TestableComponentInterface {
 
 /**
  * Component to create a summary of the role which will be created.
- * 
+ *
  * @param props - props containing summary data for the view.
  */
 export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     props: AddUserWizardSummaryProps
 ): ReactElement => {
-    
+
     const {
         summary,
         triggerSubmit,
@@ -50,7 +50,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     } = props;
 
     const { t } = useTranslation();
-    
+
     const [ permissions, setPermissions ] = useState<TreeNode[]>([]);
     const [ defaultExpandedKeys, setDefaultExpandKeys ] = useState<string[]>([]);
     const [ selectedPermissions, setSelectedPermissions ] = useState<string[]>([]);
@@ -62,7 +62,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
 
             if (summary && summary.PermissionList) {
                 const permissions: any = summary.PermissionList;
-                
+
                 setSelectedPermissions([ ...selectedPermissions, ...permissions.map(
                     (permission: any) => permission.key ) ]);
             }
@@ -82,7 +82,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
 
 
     /**
-     * Util method to get a custom expander icon for 
+     * Util method to get a custom expander icon for
      * the tree nodes.
      * @param eventObject - event object
      */

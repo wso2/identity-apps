@@ -30,6 +30,18 @@ import Radio from "@oxygen-ui/react/Radio";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
+import {
+    AuthenticationSequenceInterface,
+    AuthenticatorInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import {
+    IdentityProviderManagementConstants
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     ChangeEvent,
@@ -51,18 +63,6 @@ import EmailOTPFragment from "./fragments/email-otp-fragment";
 import IdentifierFirstFragment from "./fragments/identifier-first-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
-import {
-    AuthenticationSequenceInterface,
-    AuthenticatorInterface
-} from "../../../../admin.applications.v1/models/application";
-import { AuthenticatorManagementConstants } from "../../../../admin.connections.v1";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
-import {
-    IdentityProviderManagementConstants
-} from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { OrganizationUtils } from "../../../../admin.organizations.v1/utils/organization";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
 

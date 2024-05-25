@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -41,8 +43,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
-import { serverConfigurationConfig } from "../../admin.extensions.v1/configs/server-configuration";
 import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorFormFactory } from "../forms";

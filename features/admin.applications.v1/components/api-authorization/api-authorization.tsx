@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
+import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -40,8 +42,6 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SubscribedAPIResources } from "./subscribed-api-resources";
 import { AuthorizeAPIResource } from "./wizard/authorize-api-resource";
-import { useAPIResources } from "../../../admin.api-resources.v2/api";
-import { AppState, FeatureConfigInterface, history } from "../../../admin.core.v1";
 import {
     authorizeAPI,
     removeAuthorizedAPI

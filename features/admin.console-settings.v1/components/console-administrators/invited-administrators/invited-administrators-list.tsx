@@ -18,6 +18,19 @@
 
 import { Show } from "@wso2is/access-control";
 import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations
+} from "@wso2is/admin.core.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { deleteParentOrgInvite } from "@wso2is/admin.users.v1/components/guests/api/invite";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
+import {
     AlertLevels,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
@@ -29,19 +42,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import InvitedAdministratorsTable from "./invited-administrators-table";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations
-} from "../../../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { deleteParentOrgInvite } from "../../../../admin.users.v1/components/guests/api/invite";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
-import { UserInviteInterface } from "../../../../admin.users.v1/models";
-import { PRIMARY_USERSTORE } from "../../../../admin.userstores.v1/constants";
-import { UserStoreDropdownItem } from "../../../../admin.userstores.v1/models";
 import useAdministrators from "../../../hooks/use-administrators";
 import InviteNewAdministratorWizard from "../invite-new-administrator-wizard/invite-new-administrator-wizard";
 

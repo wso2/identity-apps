@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { UserRoleInterface } from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1";
+import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
 import React, { ReactElement } from "react";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { UserRoleInterface } from "../../admin.core.v1";
-import { GroupsInterface, GroupsMemberInterface } from "../../admin.groups.v1";
 import { BulkImportResponseOperationTypes, BulkUserImportStatus } from "../constants";
 
 /**

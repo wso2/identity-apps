@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
-import { mutate as swrMutate } from "swr";
-import { I18nConstants } from "../../admin.core.v1/constants/i18n-constants";
+import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
-import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { BrandingPreferenceTypes } from "../../common.branding.v1/models/branding-preferences";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
+import { HttpMethods } from "@wso2is/core/models";
+import { mutate as swrMutate } from "swr";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import {
     CustomTextPreferenceAPIResponseInterface

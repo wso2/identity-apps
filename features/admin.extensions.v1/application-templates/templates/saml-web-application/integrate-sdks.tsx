@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import {
+    ApplicationInterface,
+    ApplicationTemplateInterface,
+    SAMLApplicationConfigurationInterface
+} from "@wso2is/admin.applications.v1/models";
+import { AppState } from "@wso2is/admin.core.v1";
+import { Config } from "@wso2is/admin.core.v1/configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     CodeEditor,
@@ -40,17 +47,10 @@ import {
     wso2InternalRepoPointingCode
 } from "./code-blocks";
 import { SDKMeta } from "./meta";
-import { 
-    SAMLIntegrateSDKConfigInterface, 
-    SupportedTraditionalSAMLAppTechnologyTypes 
-} from "./models";
 import {
-    ApplicationInterface,
-    ApplicationTemplateInterface,
-    SAMLApplicationConfigurationInterface
-} from "../../../../admin.applications.v1/models";
-import { AppState } from "../../../../admin.core.v1";
-import { Config } from "../../../../admin.core.v1/configs";
+    SAMLIntegrateSDKConfigInterface,
+    SupportedTraditionalSAMLAppTechnologyTypes
+} from "./models";
 import MavenLogo from "../../../assets/images/icons/maven-logo.svg";
 import TomcatLogo from "../../../assets/images/icons/tomcat-icon.svg";
 import {

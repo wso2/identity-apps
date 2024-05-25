@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
+import {
+    BrandingPreferenceInterface,
+    BrandingPreferenceLayoutInterface,
+    BrandingPreferenceThemeInterface,
+    FontConfigurationStrategies,
+    PredefinedThemes
+} from "@wso2is/common.branding.v1/models";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -49,16 +59,6 @@ import { IllustrationsPreview } from "./illustrations-preview";
 import * as LayoutDesignExtensions from "./layout-design-extensions";
 import { LayoutSwatchAdapter } from "./layout-swatch";
 import { ThemeSwatchAdapter, ThemeSwatchUIConfigsInterface } from "./theme-swatch";
-import { AppConstants } from "../../../admin.core.v1/constants";
-import { AppState } from "../../../admin.core.v1/store";
-import { commonConfig } from "../../../admin.extensions.v1/configs";
-import {
-    BrandingPreferenceInterface,
-    BrandingPreferenceLayoutInterface,
-    BrandingPreferenceThemeInterface,
-    FontConfigurationStrategies,
-    PredefinedThemes
-} from "../../../common.branding.v1/models";
 import { useLayout } from "../../api";
 import { BrandingPreferencesConstants } from "../../constants";
 import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";

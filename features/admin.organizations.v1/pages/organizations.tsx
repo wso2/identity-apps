@@ -17,6 +17,14 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants
+} from "@wso2is/admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -49,14 +57,6 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants
-} from "../../admin.core.v1";
 import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import {

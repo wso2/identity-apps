@@ -17,12 +17,12 @@
  */
 
 import { ArrowLoopRightUserIcon } from "@oxygen-ui/react-icons";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GridLayout, PageLayout, Section } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Ref } from "semantic-ui-react";
-import { AppConstants, history } from "../../../../admin.core.v1";
 import UsernameValidationIcon from "../../../assets/images/icons/username-validation-icon.svg";
 
 /**

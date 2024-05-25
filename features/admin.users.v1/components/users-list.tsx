@@ -16,6 +16,18 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -41,18 +53,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { userConfig } from "../../admin.extensions.v1/configs/user";
-import { userstoresConfig } from "../../admin.extensions.v1/configs/userstores";
-import { RealmConfigInterface } from "../../admin.server-configurations.v1";
 import { deleteUser } from "../api";
 import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";

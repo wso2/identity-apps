@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs/identity-provider";
 import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import {

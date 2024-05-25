@@ -17,6 +17,18 @@
  */
 
 import { UserCircleDotIcon } from "@oxygen-ui/react-icons";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    filterList,
+    history,
+    sortList
+} from "@wso2is/admin.core.v1";
+import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,18 +40,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../../";
-import { attributeConfig } from "../../../../admin.extensions.v1";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    filterList,
-    history,
-    sortList
-} from "../../../../admin.core.v1";
 import { addExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";

@@ -17,19 +17,19 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { FC, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Icon } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
+} from "@wso2is/admin.core.v1";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { FC, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Icon } from "semantic-ui-react";
 import { FEATURE_BASE_PATH } from "../constants/secrets.common";
 
 /**

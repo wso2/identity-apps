@@ -1,5 +1,36 @@
 # @wso2is/identity-apps-core
 
+## 2.3.2
+
+### Patch Changes
+
+- [#6343](https://github.com/wso2/identity-apps/pull/6343) [`6a9b7886b0b25f6e2e2bb4532fcd490248601249`](https://github.com/wso2/identity-apps/commit/6a9b7886b0b25f6e2e2bb4532fcd490248601249) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve callback URL building issue
+
+## 2.3.1
+
+### Patch Changes
+
+- [#6338](https://github.com/wso2/identity-apps/pull/6338) [`36114ccf9ab86b52c5ad01d9fea434acead64a70`](https://github.com/wso2/identity-apps/commit/36114ccf9ab86b52c5ad01d9fea434acead64a70) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with Federated SMS OTP flow
+
+## 2.3.0
+
+### Minor Changes
+
+- [#6030](https://github.com/wso2/identity-apps/pull/6030) [`368db4133456ba6015b1bb812715350c8d26834e`](https://github.com/wso2/identity-apps/commit/368db4133456ba6015b1bb812715350c8d26834e) Thanks [@ThaminduDilshan](https://github.com/ThaminduDilshan)! - Add internalWait template for "prompt" conditional function
+
+## 2.2.5
+
+### Patch Changes
+
+- [#6279](https://github.com/wso2/identity-apps/pull/6279) [`e79fd1aa04af38da011015f5e4abdead6bc7af4f`](https://github.com/wso2/identity-apps/commit/e79fd1aa04af38da011015f5e4abdead6bc7af4f) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add accessDisbaled error message
+
+## 2.2.4
+
+### Patch Changes
+
+- Updated dependencies [[`57974f4691aad11a9cdf13d03a2526c160936e8d`](https://github.com/wso2/identity-apps/commit/57974f4691aad11a9cdf13d03a2526c160936e8d)]:
+  - @wso2is/theme@2.0.84
+
 ## 2.2.3
 
 ### Patch Changes

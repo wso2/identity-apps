@@ -17,7 +17,7 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 
 /**
  * Class containing app constants which can be used across several applications.

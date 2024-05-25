@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { UserBasicInterface } from "@wso2is/admin.core.v1";
 import { RolesInterface } from "@wso2is/core/models";
-import { UserBasicInterface } from "../../../../admin.core.v1";
 
 
 export interface InviteValidationInterface {

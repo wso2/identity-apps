@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    AppState,
+    EventPublisher,
+    history
+} from "@wso2is/admin.core.v1";
+import { setActiveView } from "@wso2is/admin.core.v1/store";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import {
     Announcement,
@@ -30,15 +39,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import AdvanceUserView from "./components/advance-user-view";
-import {
-    AppConstants,
-    AppState,
-    EventPublisher,
-    history
-} from "../../../admin.core.v1";
-import { setActiveView } from "../../../admin.core.v1/store";
-import { OrganizationType } from "../../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { AppViewExtensionTypes } from "../../configs/models";
 
 /**
@@ -65,7 +65,7 @@ const GettingStartedPage: FunctionComponent<GettingStartedPageInterface> = (
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const activeView: string = useSelector((state: AppState) => state.global.activeView);
-    
+
     const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();

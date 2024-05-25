@@ -17,6 +17,15 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AppState,
+    ConfigReducerStateInterface,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations
+} from "@wso2is/admin.core.v1";
+import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -36,15 +45,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import {
-    AppState,
-    ConfigReducerStateInterface,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations
-} from "../../../../admin.core.v1";
-import { AuthenticatorAccordion } from "../../../../admin.core.v1/components";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
-import { identityProviderConfig } from "../../../../admin.extensions.v1";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,

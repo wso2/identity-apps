@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import { getApplicationTemplateIllustrations } from "@wso2is/admin.applications.v1/configs/ui";
+import CustomApplicationTemplate from
+    "@wso2is/admin.applications.v1/data/application-templates/templates/custom-application/custom-application.json";
+import {
+    ApplicationTemplateListItemInterface
+} from "@wso2is/admin.applications.v1/models";
+import {
+    ApplicationTemplateManagementUtils
+} from "@wso2is/admin.applications.v1/utils/application-template-management-utils";
+import { AppConstants, AppState, EventPublisher, history } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, Text } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -25,16 +35,6 @@ import { useSelector } from "react-redux";
 import { Card, Grid } from "semantic-ui-react";
 import { CategoryItem } from "./app-category-item";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
-import { getApplicationTemplateIllustrations } from "../../../../admin.applications.v1/configs/ui";
-import CustomApplicationTemplate from
-    "../../../../admin.applications.v1/data/application-templates/templates/custom-application/custom-application.json";
-import {
-    ApplicationTemplateListItemInterface
-} from "../../../../admin.applications.v1/models";
-import {
-    ApplicationTemplateManagementUtils
-} from "../../../../admin.applications.v1/utils/application-template-management-utils";
-import { AppConstants, AppState, EventPublisher, history } from "../../../../admin.core.v1";
 
 export type DynamicApplicationContextCardPropsInterface = {
     onTemplateSelected: (group: ApplicationTemplateListItemInterface) => void;

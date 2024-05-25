@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,10 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
+import { APIResourceInterface } from "@wso2is/admin.api-resources.v1/models";
+import { getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import {
@@ -32,16 +36,12 @@ import {
     SegmentedAccordion,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations, history } from "../../../../../admin.core.v1";
-import { RequestErrorInterface } from "../../../../../admin.core.v1/hooks/use-request";
 import { AxiosError } from "axios";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Form, Grid, Header, Icon, Input, Label } from "semantic-ui-react";
 import { ScopeForm } from ".";
 import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
-import { APIResourcesConstants } from "../../../../../admin.api-resources.v1/constants";
-import { APIResourceInterface } from "../../../../../admin.api-resources.v1/models";
 import { Policy } from "../../constants";
 import { AuthorizedAPIListItemInterface, AuthorizedPermissionListItemInterface } from "../../models";
 

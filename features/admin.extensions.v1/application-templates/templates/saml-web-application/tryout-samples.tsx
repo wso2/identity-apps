@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,17 @@
  * under the License.
  */
 
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
+import {
+    ApplicationInterface,
+    ApplicationTemplateInterface,
+    SAML2ConfigurationInterface,
+    SAMLApplicationConfigurationInterface,
+    SupportedAuthProtocolTypes
+} from "@wso2is/admin.applications.v1/models";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CodeEditor, DocumentationLink, GenericIcon, Message, Text, useDocumentation } from "@wso2is/react-components";
@@ -28,17 +39,6 @@ import { Button, Divider, Form, Icon, InputOnChangeData } from "semantic-ui-reac
 import { tomcatSAMLAgentDockerEnvCode } from "./code-blocks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalSAMLAppTechnologyTypes } from "./models";
-import { updateAuthProtocolConfig } from "../../../../admin.applications.v1/api";
-import {
-    ApplicationInterface,
-    ApplicationTemplateInterface,
-    SAML2ConfigurationInterface,
-    SAMLApplicationConfigurationInterface,
-    SupportedAuthProtocolTypes
-} from "../../../../admin.applications.v1/models";
-import { getTechnologyLogos } from "../../../../admin.core.v1/configs";
-import { AppState } from "../../../../admin.core.v1/store";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
@@ -105,7 +105,7 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
             ...inboundProtocolConfig.saml,
             assertionConsumerUrls: acsURLs,
             defaultAssertionConsumerUrl: url
-            
+
         };
 
         updateAuthProtocolConfig<SAML2ConfigurationInterface>(application.id, body, SupportedAuthProtocolTypes.SAML)
@@ -283,7 +283,7 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
                                 samlIssuer: inboundProtocolConfig.saml.issuer,
                                 ssoUrl: samlConfigurations?.ssoUrl,
                                 tomcatHost: userTomcatHost
-                                
+
                             } ) }
                             options={ {
                                 lineWrapping: true

@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
     ReactElement
 } from "react";
-import { BrandingPreferenceInterface } from "../../../common.branding.v1/models";
 
 /**
  * Proptypes for the product header component of login screen skeleton.

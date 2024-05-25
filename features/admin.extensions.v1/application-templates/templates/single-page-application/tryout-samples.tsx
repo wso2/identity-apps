@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
+import {
+    ApplicationInterface,
+    ApplicationTemplateInterface,
+    OIDCDataInterface,
+    SupportedAuthProtocolTypes
+} from "@wso2is/admin.applications.v1/models";
+import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
+import { Config } from "@wso2is/admin.core.v1/configs";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
@@ -39,16 +49,6 @@ import { Button, Divider, Icon } from "semantic-ui-react";
 import { ReactComponent as JavaScriptLogo } from "./assets/javascript-logo.svg";
 import { SDKMeta } from "./meta";
 import { SupportedSPATechnologyTypes } from "./models";
-import { updateAuthProtocolConfig } from "../../../../admin.applications.v1/api";
-import {
-    ApplicationInterface,
-    ApplicationTemplateInterface,
-    OIDCDataInterface,
-    SupportedAuthProtocolTypes
-} from "../../../../admin.applications.v1/models";
-import { ApplicationManagementUtils } from "../../../../admin.applications.v1/utils/application-management-utils";
-import { Config } from "../../../../admin.core.v1/configs";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
 import ReactLogoDataURL from "../../../assets/images/icons/react-icon.svg";
 import {
     VerticalStepper,
@@ -560,7 +560,7 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
 
                             To download the Long Term Support (LTS) version of <strong>Node.js </strong> (which includes
                             <strong> npm</strong>), navigate to the official <DocumentationLink
-                                link={ getLink("develop.applications.editApplication." + 
+                                link={ getLink("develop.applications.editApplication." +
                                     "singlePageApplication.quickStart.nodejsDownload") }
                                 showEmptyLinkText
                             >downloads</DocumentationLink> page.

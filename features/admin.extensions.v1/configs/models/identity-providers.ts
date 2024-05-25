@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ResourceTabPaneInterface } from "@wso2is/react-components";
-import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
-import { ConnectionTabTypes } from "../../../admin.connections.v1/models/connection";
+import { ConnectionTabTypes } from "@wso2is/admin.connections.v1/models/connection";
 import {
     AuthenticatorInterface,
     GenericIdentityProviderCreateWizardPropsInterface
-} from "../../../admin.identity-providers.v1/models";
+} from "@wso2is/admin.identity-providers.v1/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { ResourceTabPaneInterface } from "@wso2is/react-components";
+import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
 
 export interface ExtendedSamlConfigInterface {
     isArtifactBindingEnabled: boolean;

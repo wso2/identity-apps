@@ -17,6 +17,19 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "@wso2is/admin.core.v1";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -34,19 +47,6 @@ import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, use
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "../../admin.core.v1";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../admin.extensions.v1/configs";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
 import { IdentityProviderList } from "../components/identity-provider-list";

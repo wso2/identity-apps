@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { AuthenticationSequenceInterface } from "@wso2is/admin.applications.v1/models/application";
+import { AppState } from "@wso2is/admin.core.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, {  PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AuthenticationSequenceInterface } from "../../admin.applications.v1/models/application";
-import { AppState } from "../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useAILoginFlowGenerationResult } from "../api/use-ai-login-flow-generation-result";
 import LoginFlowAIBanner from "../components/login-flow-ai-banner";
 import LoginFlowAILoadingScreen from "../components/login-flow-ai-loading-screen";
