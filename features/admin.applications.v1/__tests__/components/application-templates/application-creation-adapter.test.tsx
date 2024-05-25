@@ -17,6 +17,7 @@
  */
 
 import React from "react";
+import * as getCORSOrigins from "../../../../admin.core.v1/api/cors-configurations";
 import { render, screen, waitFor } from "../../../../test-configs";
 import ApplicationCreationAdapter, {
     ApplicationCreationAdapterPropsInterface
@@ -32,6 +33,11 @@ describe("[Applications Management Feature] - ApplicationCreationAdapter", () =>
         OauthProtocolSettingsWizardForm, "OauthProtocolSettingsWizardForm");
 
     OauthProtocolSettingsWizardFormMock.mockImplementation(() => jest.fn());
+
+    const getCORSOriginsMock: jest.SpyInstance = jest.spyOn(
+        getCORSOrigins, "getCORSOrigins");
+
+    getCORSOriginsMock.mockImplementation(() => Promise.resolve([]));
 
     const propsWithSPATemplate: ApplicationCreationAdapterPropsInterface = {
         onClose: jest.fn(),

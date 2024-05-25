@@ -182,6 +182,24 @@ interface CustomWindow extends Window {
                             ]
                         }
                     },
+                    branding: {
+                        enabled: true,
+                        disabledFeatures: [],
+                        scopes: {
+                            create: [
+                                "internal_application_mgt_update"
+                            ],
+                            delete: [
+                                "internal_application_mgt_update"
+                            ],
+                            read: [
+                                "internal_application_mgt_view"
+                            ],
+                            update: [
+                                "internal_application_mgt_update"
+                            ]
+                        }
+                    },
                     certificates: {
                         enabled: true,
                         disabledFeatures: [],
