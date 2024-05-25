@@ -29,11 +29,8 @@ import {
 } from "../../../components/dynamic-forms/application-edit-form";
 import { MainApplicationInterface } from "../../../models";
 import { ApplicationEditTabMetadataInterface } from "../../../models/application-templates";
-import {
-    applicationMockResponse,
-    applicationSearchListMockResponse,
-    dynamicApplicationEditTabMetadataMockObject
-} from "../../__mocks__/application-template";
+import { applicationMockResponse, applicationSearchListMockResponse } from "../../__mocks__/application";
+import { dynamicApplicationEditTabMetadataMockObject } from "../../__mocks__/application-template";
 import "@testing-library/jest-dom";
 
 describe("[Applications Management Feature] - ApplicationEditForm", () => {

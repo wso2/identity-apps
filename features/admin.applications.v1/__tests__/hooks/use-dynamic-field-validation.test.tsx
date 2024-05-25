@@ -21,9 +21,9 @@ import React from "react";
 import { render, screen, waitFor } from "../../../test-configs";
 import * as api from "../../api/application";
 import { ApplicationManagementConstants } from "../../constants";
+import { applicationSearchListMockResponse } from "../__mocks__/application";
 import {
     applicationNameDynamicFormFieldMock,
-    applicationSearchListMockResponse,
     domainNameDynamicFormFieldMock
 } from "../__mocks__/application-template";
 import "@testing-library/jest-dom";

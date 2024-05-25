@@ -22,9 +22,9 @@ import { render, screen, waitFor } from "../../../test-configs";
 import * as useGetApplicationTemplates from "../../api/use-get-application-templates";
 import { ApplicationList, ApplicationListPropsInterface } from "../../components/application-list";
 import ApplicationTemplatesProvider from "../../provider/application-templates-provider";
+import { applicationListMockResponse } from "../__mocks__/application";
 import {
     TEMPLATE_NAMES,
-    applicationListMockResponse,
     applicationTemplatesListMockResponse
 } from "../__mocks__/application-template";
 import "@testing-library/jest-dom";

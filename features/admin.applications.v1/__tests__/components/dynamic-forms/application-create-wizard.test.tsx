@@ -32,8 +32,8 @@ import {
 import * as useApplicationSharingEligibility from "../../../hooks/use-application-sharing-eligibility";
 import { MainApplicationInterface } from "../../../models";
 import { ApplicationTemplateMetadataInterface } from "../../../models/application-templates";
+import { applicationSearchListMockResponse } from "../../__mocks__/application";
 import {
-    applicationSearchListMockResponse,
     applicationTemplateMetadataMockResponse,
     applicationTemplateMockResponse,
     applicationTemplatesListMockResponse

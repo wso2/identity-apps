@@ -32,9 +32,11 @@ import { ApplicationManagementUtils } from "../../utils/application-management-u
 import {
     applicationMockResponse,
     applicationSearchListMockResponse,
-    applicationTemplateMetadataMockResponse,
-    applicationTemplatesListMockResponse,
     spaApplicationMockResponse
+} from "../__mocks__/application";
+import {
+    applicationTemplateMetadataMockResponse,
+    applicationTemplatesListMockResponse
 } from "../__mocks__/application-template";
 import "@testing-library/jest-dom";
 
