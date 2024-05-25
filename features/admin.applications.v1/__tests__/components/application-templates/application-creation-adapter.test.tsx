@@ -28,10 +28,10 @@ import {
 import "@testing-library/jest-dom";
 
 describe("[Applications Management Feature] - ApplicationCreationAdapter", () => {
-    const useGetApplicationTemplatesMock: jest.SpyInstance = jest.spyOn(
+    const OauthProtocolSettingsWizardFormMock: jest.SpyInstance = jest.spyOn(
         OauthProtocolSettingsWizardForm, "OauthProtocolSettingsWizardForm");
 
-    useGetApplicationTemplatesMock.mockImplementation(() => jest.fn());
+    OauthProtocolSettingsWizardFormMock.mockImplementation(() => jest.fn());
 
     const propsWithSPATemplate: ApplicationCreationAdapterPropsInterface = {
         onClose: jest.fn(),
