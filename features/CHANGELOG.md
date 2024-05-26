@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.21.3
+
+### Patch Changes
+
+- [#6348](https://github.com/wso2/identity-apps/pull/6348) [`de4201d75c779ee49c5bea1a63955f88f4b6b966`](https://github.com/wso2/identity-apps/commit/de4201d75c779ee49c5bea1a63955f88f4b6b966) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unused dependencies and fix version inconsistencies
+
 ## 2.21.2
 
 ### Patch Changes
