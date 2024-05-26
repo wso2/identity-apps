@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.7.0
+
+### Minor Changes
+
+- [#6334](https://github.com/wso2/identity-apps/pull/6334) [`ac7614608349cd16112c314d5cbdda8f963ef253`](https://github.com/wso2/identity-apps/commit/ac7614608349cd16112c314d5cbdda8f963ef253) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Standardize import paths by changing from `@wso2is/feature` to individual package names.
+
 ## 2.6.7
 
 ### Patch Changes
