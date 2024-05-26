@@ -58,12 +58,12 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         FormControlProps={ {
                             margin: "dense"
                         } }
-                        aria-label={ field["aria-label"] }
-                        data-componentid={ field.dataComponentId }
-                        name={ field.name }
-                        type={ field.type }
-                        label={ field.label }
-                        placeholder={ field.placeholder }
+                        aria-label={ field?.["aria-label"] }
+                        data-componentid={ field?.dataComponentId }
+                        name={ field?.name }
+                        type={ field?.type }
+                        label={ field?.label }
+                        placeholder={ field?.placeholder }
                         component={ CheckboxFieldAdapter }
                         disabled={ readOnly }
                         required={ field?.required }
@@ -76,12 +76,12 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         FormControlProps={ {
                             margin: "dense"
                         } }
-                        aria-label={ field["aria-label"] }
-                        data-componentid={ field.dataComponentId }
-                        name={ field.name }
-                        type={ field.type }
-                        label={ field.label }
-                        placeholder={ field.placeholder }
+                        aria-label={ field?.["aria-label"] }
+                        data-componentid={ field?.dataComponentId }
+                        name={ field?.name }
+                        type={ field?.type }
+                        label={ field?.label }
+                        placeholder={ field?.placeholder }
                         component={ TextFieldAdapter }
                         readOnly={ readOnly }
                         required={ field?.required }
@@ -94,12 +94,12 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         FormControlProps={ {
                             margin: "dense"
                         } }
-                        aria-label={ field["aria-label"] }
-                        data-componentid={ field.dataComponentId }
-                        name={ field.name }
-                        type={ field.type }
-                        label={ field.label }
-                        placeholder={ field.placeholder }
+                        aria-label={ field?.["aria-label"] }
+                        data-componentid={ field?.dataComponentId }
+                        name={ field?.name }
+                        type={ field?.type }
+                        label={ field?.label }
+                        placeholder={ field?.placeholder }
                         component={ TextFieldAdapter }
                         readOnly={ readOnly }
                         rows={ 3 }
@@ -114,12 +114,12 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         FormControlProps={ {
                             margin: "dense"
                         } }
-                        aria-label={ field["aria-label"] }
-                        data-componentid={ field.dataComponentId }
-                        name={ field.name }
-                        type={ field.type }
-                        label={ field.label }
-                        placeholder={ field.placeholder }
+                        aria-label={ field?.["aria-label"] }
+                        data-componentid={ field?.dataComponentId }
+                        name={ field?.name }
+                        type={ field?.type }
+                        label={ field?.label }
+                        placeholder={ field?.placeholder }
                         component={ TextFieldAdapter }
                         readOnly={ readOnly }
                         required={ field?.required }
@@ -130,7 +130,7 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
 
     return (
         <div data-componentid={ componentId } { ...rest }>
-            { getDynamicFieldAdapter(field.type) }
+            { getDynamicFieldAdapter(field?.type) }
         </div>
     );
 };

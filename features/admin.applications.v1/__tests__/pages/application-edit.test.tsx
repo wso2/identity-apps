@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import * as getCORSOrigins from "@wso2is/admin.core.v1/api/cors-configurations";
+import * as useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { I18n } from "@wso2is/i18n";
 import { createMemoryHistory } from "history";
 import React from "react";
-import * as getCORSOrigins from "../../../admin.core.v1/api/cors-configurations";
-import * as useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { render, screen, waitFor, within } from "../../../test-configs";
 import * as api from "../../api/application";
 import * as useGetApplication from "../../api/use-get-application";

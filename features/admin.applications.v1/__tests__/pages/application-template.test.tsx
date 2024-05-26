@@ -17,8 +17,8 @@
  */
 
 import * as Card from "@oxygen-ui/react/Card";
+import * as getCORSOrigins from "@wso2is/admin.core.v1/api/cors-configurations";
 import React, { PropsWithChildren } from "react";
-import * as getCORSOrigins from "../../../admin.core.v1/api/cors-configurations";
 import { fireEvent, render, screen, waitFor, within } from "../../../test-configs";
 import * as useGetApplicationTemplates from "../../api/use-get-application-templates";
 import {

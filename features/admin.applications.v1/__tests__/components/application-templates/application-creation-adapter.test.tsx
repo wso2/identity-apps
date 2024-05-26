@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import * as getCORSOrigins from "@wso2is/admin.core.v1/api/cors-configurations";
 import React from "react";
-import * as getCORSOrigins from "../../../../admin.core.v1/api/cors-configurations";
 import { render, screen, waitFor } from "../../../../test-configs";
 import ApplicationCreationAdapter, {
     ApplicationCreationAdapterPropsInterface

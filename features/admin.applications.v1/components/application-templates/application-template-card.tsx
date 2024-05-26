@@ -103,7 +103,7 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
             return false;
         }
 
-        const property: CustomAttributeInterface = template?.customAttributes.find(
+        const property: CustomAttributeInterface = template?.customAttributes?.find(
             (property: CustomAttributeInterface) =>
                 property?.key === ApplicationTemplateConstants.COMING_SOON_ATTRIBUTE_KEY
         );
@@ -143,7 +143,7 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                 </div>
                 <div>
                     <Typography variant="h6">
-                        { template.name }
+                        { template?.name }
                     </Typography>
                 </div>
             </CardContent>
@@ -151,7 +151,7 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                 <Tooltip title={ template?.description }>
                     <div className="application-template-description">
                         <Typography variant="body2" color="text.secondary">
-                            { template.description }
+                            { template?.description }
                         </Typography>
                     </div>
                 </Tooltip>

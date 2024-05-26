@@ -22,6 +22,11 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState, TierLimitReachErrorModal } from "@wso2is/admin.core.v1";
+import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
@@ -45,11 +50,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, ModalProps } from "semantic-ui-react";
 import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
-import { AppState, TierLimitReachErrorModal } from "../../../admin.core.v1";
-import { ModalWithSidePanel } from "../../../admin.core.v1/components/modals/modal-with-side-panel";
-import { AppConstants } from "../../../admin.core.v1/constants/app-constants";
-import { history } from "../../../admin.core.v1/helpers/history";
-import { EventPublisher } from "../../../admin.core.v1/utils/event-publisher";
 import { createApplication, useApplicationList } from "../../api";
 import useGetApplicationTemplate from "../../api/use-get-application-template";
 import useGetApplicationTemplateMetadata from "../../api/use-get-application-template-metadata";
@@ -172,7 +172,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         let initialValues: Partial<MainApplicationInterface>;
 
         if (templateMetadata?.create?.form?.submitDefinedFieldsOnly) {
-            const paths: string[] = templateMetadata?.create?.form?.fields.map(
+            const paths: string[] = templateMetadata?.create?.form?.fields?.map(
                 (field: DynamicFieldInterface) => field?.name);
 
             initialValues = pick(templateData?.payload, paths);
@@ -278,13 +278,13 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             const defaultTabIndex: number = 0;
 
             if (isClientSecretHashEnabled) {
-                searchParams = `${ searchParams }&${
+                searchParams = `${ searchParams }${
                     ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY }=true`;
             }
 
             history.push({
                 hash: `#${URLFragmentTypes.TAB_INDEX}${defaultTabIndex}`,
-                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", createdAppId),
+                pathname: AppConstants.getPaths()?.get("APPLICATION_EDIT")?.replace(":id", createdAppId),
                 search: searchParams
             });
 
@@ -327,7 +327,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             if (field?.meta?.autoSubmitProperties
                 && Array.isArray(field?.meta?.autoSubmitProperties)
                 && field?.meta?.autoSubmitProperties?.length > 0) {
-                field?.meta?.autoSubmitProperties.forEach(
+                field.meta.autoSubmitProperties.forEach(
                     (property: DynamicFieldAutoSubmitPropertyInterface) =>
                         set(formValues, property?.path, property?.value)
                 );
@@ -335,7 +335,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         });
 
         // Moderate Values to match API restrictions.
-        if (formValues.inboundProtocolConfiguration?.oidc?.callbackURLs) {
+        if (formValues?.inboundProtocolConfiguration?.oidc?.callbackURLs) {
             formValues.inboundProtocolConfiguration.oidc.callbackURLs = buildCallBackUrlsWithRegExp(
                 formValues.inboundProtocolConfiguration.oidc.callbackURLs
             );
@@ -382,7 +382,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     return;
                 }
 
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error?.response?.data?.description) {
                     setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
@@ -471,8 +471,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         >
             <ModalWithSidePanel.MainPanel>
                 <ModalWithSidePanel.Header className="wizard-header">
-                    { template.name }
-                    <Heading as="h6">{ template.description }</Heading>
+                    { template?.name }
+                    <Heading as="h6">{ template?.description }</Heading>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     {
@@ -564,7 +564,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                                                     checked={ isApplicationSharingEnabled }
                                                                     onChange={ (e: ChangeEvent<HTMLInputElement>) => {
                                                                         setIsApplicationSharingEnabled(
-                                                                            e.target.checked
+                                                                            e?.target?.checked
                                                                         );
                                                                     } }
                                                                 />

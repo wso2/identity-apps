@@ -31,8 +31,8 @@ import {
 } from "../../__mocks__/application-template";
 import "@testing-library/jest-dom";
 
-jest.mock("../../../../admin.core.v1", () => {
-    const adminCore: Record<string, any> = jest.requireActual("../../../../admin.core.v1");
+jest.mock("@wso2is/admin.core.v1", () => {
+    const adminCore: Record<string, any> = jest.requireActual("@wso2is/admin.core.v1");
 
     return {
         ...adminCore,

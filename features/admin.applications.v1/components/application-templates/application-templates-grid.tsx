@@ -17,6 +17,7 @@
  */
 
 import { Typography } from "@mui/material";
+import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -32,7 +33,6 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo,
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ApplicationTemplateCard from "./application-template-card";
-import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { ApplicationTemplateConstants } from "../../constants/application-templates";
 import useApplicationTemplates from "../../hooks/use-application-templates";
 import { AuthProtocolMetaListItemInterface } from "../../models";
@@ -93,10 +93,10 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
     }, []);
 
     /**
-     * Show/hide custom application templated based on the availability of custom inbound authenticators.
+     * Show/hide custom application template based on the availability of custom inbound authenticators.
      */
     useEffect(() => {
-        setShowCustomProtocolApplicationTemplate(customInboundProtocols.length > 0);
+        setShowCustomProtocolApplicationTemplate(customInboundProtocols?.length > 0);
     }, [ customInboundProtocols ]);
 
     /**
@@ -139,17 +139,17 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
             }
 
             return template?.tags
-                .some((tagLabel: string) => filterLabels.includes(tagLabel));
+                ?.some((tagLabel: string) => filterLabels.includes(tagLabel));
         };
 
-        return templates.filter((template: ApplicationTemplateListInterface) => {
+        return templates?.filter((template: ApplicationTemplateListInterface) => {
             if (!query) {
                 return isFiltersMatched(template);
             }
 
             const name: string = template?.name?.toLocaleLowerCase();
 
-            if (name.includes(query.toLocaleLowerCase())
+            if (name?.includes(query.toLocaleLowerCase())
                 || template?.tags?.some(
                     (tag: string) => tag?.toLocaleLowerCase()?.includes(query.toLocaleLowerCase()))
             ) {
@@ -176,7 +176,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         // Remove hidden application templates based on the UI config.
         removingApplicationTemplateIds = union(removingApplicationTemplateIds, hiddenApplicationTemplates);
 
-        return templates.filter(
+        return templates?.filter(
             (template: ApplicationTemplateListInterface) => !removingApplicationTemplateIds.includes(template?.id));
     };
 

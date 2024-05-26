@@ -16,20 +16,20 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { ApplicationTemplateManagementUtils } from "../..//utils/application-template-management-utils";
-import { AppState } from "../../../admin.core.v1";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationTemplateListItemInterface } from "../../models";
 import { ApplicationTemplateCategories, ApplicationTemplateListInterface } from "../../models/application-templates";
+import { ApplicationTemplateManagementUtils } from "../../utils/application-template-management-utils";
 import { ApplicationCreateWizard } from "../dynamic-forms/application-create-wizard";
 import { MinimalAppCreateWizard } from "../wizard/minimal-application-create-wizard";
 
 /**
- * Props for the Application templates grid page.
+ * Props for the Application creation adapter component.
  */
 export interface ApplicationCreationAdapterPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -62,29 +62,29 @@ const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPr
         onClose
     } = props;
 
-    const legacyApplicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
+    const oldApplicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state?.application?.groupedTemplates);
 
     const [
-        isLegacyApplicationTemplateRequestLoading,
-        setLegacyApplicationTemplateRequestLoadingStatus
+        isOldApplicationTemplateRequestLoading,
+        setOldApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
 
     /**
-     *  Get legacy Application templates.
+     *  Get old Application templates.
      */
     useEffect(() => {
-        if (legacyApplicationTemplates !== undefined) {
+        if (oldApplicationTemplates !== undefined) {
             return;
         }
 
-        setLegacyApplicationTemplateRequestLoadingStatus(true);
+        setOldApplicationTemplateRequestLoadingStatus(true);
 
         ApplicationTemplateManagementUtils.getApplicationTemplates()
             .finally(() => {
-                setLegacyApplicationTemplateRequestLoadingStatus(false);
+                setOldApplicationTemplateRequestLoadingStatus(false);
             });
-    }, [ legacyApplicationTemplates ]);
+    }, [ oldApplicationTemplates ]);
 
     /**
      * Render the appropriate Application Creation Wizard based on the template category.
@@ -96,20 +96,20 @@ const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPr
             return null;
         }
 
-        const legacyApplicationTemplate: ApplicationTemplateListItemInterface = legacyApplicationTemplates.find(
-            (legacyTemplate: ApplicationTemplateListItemInterface) => legacyTemplate?.templateId === template?.id);
+        const oldApplicationTemplate: ApplicationTemplateListItemInterface = oldApplicationTemplates?.find(
+            (oldTemplate: ApplicationTemplateListItemInterface) => oldTemplate?.templateId === template?.id);
 
         switch(template?.category) {
             case ApplicationTemplateCategories.DEFAULT:
                 return (
                     <MinimalAppCreateWizard
-                        title={ legacyApplicationTemplate?.name }
-                        subTitle={ legacyApplicationTemplate?.description }
+                        title={ oldApplicationTemplate?.name }
+                        subTitle={ oldApplicationTemplate?.description }
                         closeWizard={ (): void => onClose() }
-                        template={ legacyApplicationTemplate }
+                        template={ oldApplicationTemplate }
                         showHelpPanel={ true }
-                        subTemplates={ legacyApplicationTemplate?.subTemplates }
-                        subTemplatesSectionTitle={ legacyApplicationTemplate?.subTemplatesSectionTitle }
+                        subTemplates={ oldApplicationTemplate?.subTemplates }
+                        subTemplatesSectionTitle={ oldApplicationTemplate?.subTemplatesSectionTitle }
                         addProtocol={ false }
                         templateLoadingStrategy={ ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY }
                     />
@@ -126,7 +126,7 @@ const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPr
 
     return (
         showWizard
-            ? isLegacyApplicationTemplateRequestLoading
+            ? isOldApplicationTemplateRequestLoading
                 ? <ContentLoader dimmer/>
                 : renderApplicationCreationWizard()
             : null

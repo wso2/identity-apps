@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -37,8 +39,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
-import { AppState } from "../../../admin.core.v1";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
 import { updateApplicationDetails } from "../../api";
 import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
 import {
@@ -124,7 +124,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
             if (field?.meta?.autoSubmitProperties
                 && Array.isArray(field?.meta?.autoSubmitProperties)
                 && field?.meta?.autoSubmitProperties?.length > 0) {
-                field?.meta?.autoSubmitProperties.forEach(
+                field.meta.autoSubmitProperties.forEach(
                     (property: DynamicFieldAutoSubmitPropertyInterface) =>
                         set(formValues, property?.path, property?.value)
                 );
@@ -145,7 +145,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
             .catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
-                        description: error?.response?.data?.description,
+                        description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("applications:notifications.updateApplication.error" +
                             ".message")
@@ -176,7 +176,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
             return application;
         }
 
-        const paths: string[] = tab?.form?.fields.map((field: DynamicFieldInterface) => field?.name);
+        const paths: string[] = tab?.form?.fields?.map((field: DynamicFieldInterface) => field?.name);
 
         // The ID needs to be submitted to perform the update operation.
         paths.push("id");
