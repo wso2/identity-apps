@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/features/admin.core.v1/store";
+import { AppState } from "@wso2is/admin.core.v1/store";
 
 /**
  * Mocks the Redux store state.

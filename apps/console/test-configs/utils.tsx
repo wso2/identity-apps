@@ -19,8 +19,8 @@
 import { AuthProvider } from "@asgardeo/auth-react";
 import {  RenderResult, render as rtlRender } from "@testing-library/react";
 // import { AccessControlProvider } from "@wso2is/access-control";
-import { AuthenticateUtils } from "@wso2is/features/admin.authentication.v1/utils/authenticate-utils";
-import { PreLoader } from "@wso2is/features/admin.core.v1/components/pre-loader/pre-loader";
+import { AuthenticateUtils } from "@wso2is/admin.authentication.v1/utils/authenticate-utils";
+import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader/pre-loader";
 import React, { PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { mockStore } from "./__mocks__/redux/redux-store";
