@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.21.4
+
+### Patch Changes
+
+- [#6241](https://github.com/wso2/identity-apps/pull/6241) [`a777541cbef5da7de06e273c82303dea445370a9`](https://github.com/wso2/identity-apps/commit/a777541cbef5da7de06e273c82303dea445370a9) Thanks [@RivinduM](https://github.com/RivinduM)! - Fix protocol tab link in MTLS Server endpoints description.
+
 ## 2.21.3
 
 ### Patch Changes
