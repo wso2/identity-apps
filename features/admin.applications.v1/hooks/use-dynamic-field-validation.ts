@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";
@@ -26,7 +27,6 @@ import { MutableRefObject, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState } from "../../admin.core.v1";
 import { getApplicationList } from "../api/application";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationListInterface, MainApplicationInterface } from "../models";
@@ -51,7 +51,7 @@ const useDynamicFieldValidations = (): {
     const dispatch: Dispatch = useDispatch();
 
     const reservedAppNamePattern: string = useSelector((state: AppState) => {
-        return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
+        return state?.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
     });
 
     const previouslyValidatedApplicationName: MutableRefObject<string> = useRef(null);
@@ -68,12 +68,12 @@ const useDynamicFieldValidations = (): {
      */
     const getApplications = (appName: string): Promise<ApplicationListInterface> => {
 
-        return getApplicationList(null, null, "name eq " + appName.trim())
+        return getApplicationList(null, null, "name eq " + appName?.trim())
             .then((response: ApplicationListInterface) => response)
             .catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
-                        description: error?.response?.data?.description,
+                        description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("applications:notifications.fetchApplications.error.message")
                     }));
@@ -123,6 +123,7 @@ const useDynamicFieldValidations = (): {
      * Validates a field based on its validation rules.
      *
      * @param values - The form values to be validated.
+     * @param field - Metadata of the form field.
      * @param validations - An array of validation rules for the field.
      * @returns An error message if validation fails, or `null` if validation succeeds.
      */
@@ -180,7 +181,7 @@ const useDynamicFieldValidations = (): {
             let validations: ValidationRule[] = [];
 
             if (field?.validations && Array.isArray(field?.validations) && field?.validations?.length > 0) {
-                validations = [ ...field?.validations ];
+                validations = [ ...field.validations ];
             }
 
             if (field?.required) {
@@ -202,7 +203,8 @@ const useDynamicFieldValidations = (): {
     /**
      * Check if the field is filled with a value.
      *
-     * value - The value needs validation.
+     * @param values - The values need to be validated.
+     * @param field - Metadata of the form field.
      * @returns Whether the provided value is a non empty value.
      */
     const requiredField = (
@@ -221,7 +223,8 @@ const useDynamicFieldValidations = (): {
     /**
      * Verify if the provided value is a domain name.
      *
-     * value - The value needs validation.
+     * @param values - The values need to be validated.
+     * @param field - Metadata of the form field.
      * @returns Whether the provided value is a valid domain name or not.
      */
     const validateDomainName = (
@@ -262,13 +265,14 @@ const useDynamicFieldValidations = (): {
      * @param name - Name of the application.
      */
     const isNameValid = (name: string) => {
-        return name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
+        return name && !!name?.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
     };
 
     /**
      * Check if there is any application with the given name.
      *
      * @param name - Name of the application.
+     * @param appId - application id.
      */
     const isApplicationNameAlreadyExist: DebouncedFunc<(name: string, appId: string) => Promise<void>> = debounce(
         async (name: string, appId: string) => {
@@ -287,7 +291,9 @@ const useDynamicFieldValidations = (): {
     /**
      * Checks whether the application name is valid.
      *
-     * @param name - Application name.
+     * @param values - The values need to be validated.
+     * @param field - Metadata of the form field.
+     * @returns Whether the provided value is a valid application name.
      */
     const validateApplicationName = async (
         values: MainApplicationInterface,

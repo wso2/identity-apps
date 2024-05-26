@@ -79,7 +79,7 @@ const ApplicationTemplatesProvider = (props: ApplicationTemplatesProviderProps):
             (category: ApplicationTemplateCategoryInterface) => {
                 const categoryData: CategorizedApplicationTemplatesInterface = { ...category, templates: [] };
 
-                categoryData.templates = applicationTemplates.filter(
+                categoryData.templates = applicationTemplates?.filter(
                     (template: ApplicationTemplateListInterface) => template?.category === category?.id);
 
                 categoryMap.push(categoryData);
@@ -92,7 +92,7 @@ const ApplicationTemplatesProvider = (props: ApplicationTemplatesProviderProps):
 
         categoryMap.push({
             ...ApplicationTemplateConstants.OTHER_CATEGORY_INFO,
-            templates: applicationTemplates.filter(
+            templates: applicationTemplates?.filter(
                 (template: ApplicationTemplateListInterface) => !supportedCategories.includes(template?.category))
         });
 

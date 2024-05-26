@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -202,12 +202,12 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
             return;
         }
 
-        const hashComponents: string[] = window.location.hash.split(TAB_URL_HASH_FRAGMENT);
+        const hashComponents: string[] = window?.location?.hash?.split(TAB_URL_HASH_FRAGMENT);
         let tabId: string;
         let tabIndex: number;
 
         // Verify if the hash contains the redirecting tab's ID or index.
-        if (hashComponents.length == 2) {
+        if (hashComponents?.length == 2) {
             const hashTabValue: string = hashComponents[1];
 
             const hashTabIndex: number = parseInt(hashTabValue);
@@ -220,7 +220,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         }
 
         if (tabId) {
-            tabIndex = panes?.findIndex((pane: ResourceTabPaneInterface) => pane["data-tabid"] === tabId);
+            tabIndex = panes?.findIndex((pane: ResourceTabPaneInterface) => pane?.["data-tabid"] === tabId);
         }
 
         if (tabIndex >= 0 && tabIndex < panes?.length) {
@@ -231,7 +231,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         } else {
             if (typeof defaultActiveTab === "string") {
                 tabIndex = panes?.findIndex(
-                    (pane: ResourceTabPaneInterface) => pane["data-tabid"] === defaultActiveTab);
+                    (pane: ResourceTabPaneInterface) => pane?.["data-tabid"] === defaultActiveTab);
             } else if (typeof defaultActiveTab === "number") {
                 tabIndex = defaultActiveTab;
             }
@@ -242,7 +242,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
                 setActiveIndex(0);
             }
         }
-    }, [ window.location.hash, defaultActiveTab, panes ]);
+    }, [ window?.location?.hash, defaultActiveTab, panes ]);
 
     /**
      * Called to set the panes list length initially.
@@ -312,7 +312,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
                     render?: () => ReactNode
                   } = panes[data.activeIndex];
 
-                handleTabChange(e, data.activeIndex, activeTab["data-tabid"]);
+                handleTabChange(e, data.activeIndex, activeTab?.["data-tabid"]);
                 onTabChange && typeof onTabChange === "function" && onTabChange(e, data, {
                     "data-tabid": activeTab["data-tabid"],
                     index: data.activeIndex

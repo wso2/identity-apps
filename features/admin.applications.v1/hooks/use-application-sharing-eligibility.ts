@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { useSelector } from "react-redux";
-import useGlobalVariables from "../../admin.core.v1/hooks/use-global-variables";
-import { AppState } from "../../admin.core.v1/store";
-import { applicationConfig } from "../../admin.extensions.v1/configs/application";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 
 /**
  * Custom hook to determine whether the application sharing feature is eligible.
@@ -43,7 +43,7 @@ const useApplicationSharingEligibility = (): boolean => {
 
     return (isOrganizationManagementEnabled
         && organizationEnabled
-        && applicationConfig?.editApplication?.showApplicationShare
+        && applicationConfig.editApplication.showApplicationShare
         && hasRequiredScopes(
             applicationFeatureAccessConfig, applicationFeatureAccessConfig?.scopes?.update, allowedScopes
         )

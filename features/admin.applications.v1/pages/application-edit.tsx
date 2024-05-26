@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -164,7 +164,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Fetch the application details on initial component load.
      */
     useEffect(() => {
-        const path: string[] = history.location.pathname?.split("/");
+        const path: string[] = history?.location?.pathname?.split("/");
         const id: string = path[ path?.length - 1 ];
 
         setApplicationId(id);
@@ -177,12 +177,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
                 || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
                 return applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
-                    template.id === CustomApplicationTemplate.id);
+                    template?.id === CustomApplicationTemplate.id);
             }
 
             return applicationTemplates?.find(
                 (template: ApplicationTemplateListItemInterface) => {
-                    return template.id === templateId;
+                    return template?.id === templateId;
                 });
         };
 
@@ -202,13 +202,13 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             if (extensionTemplate) {
                 setExtensionApplicationTemplate(extensionTemplate);
 
-                const relatedLegacyTemplateId: string = InboundProtocolDefaultFallbackTemplates.get(
-                    applicationData.inboundProtocols[ 0 /*We pick the first*/ ].type
+                const relatedOldTemplateId: string = InboundProtocolDefaultFallbackTemplates.get(
+                    applicationData?.inboundProtocols?.[ 0 /*We pick the first*/ ]?.type
                 ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
 
-                applicationData.templateId = relatedLegacyTemplateId;
+                applicationData.templateId = relatedOldTemplateId;
 
-                template = getTemplate(relatedLegacyTemplateId);
+                template = getTemplate(relatedOldTemplateId);
             }
         }
 
@@ -249,7 +249,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if (!clonedApplication?.advancedConfigurations?.fragment && !clonedApplication?.templateId) {
             if (clonedApplication?.inboundProtocols?.length > 0) {
                 clonedApplication.templateId = InboundProtocolDefaultFallbackTemplates.get(
-                    clonedApplication.inboundProtocols[ 0 /*We pick the first*/ ].type
+                    clonedApplication?.inboundProtocols?.[ 0 /*We pick the first*/ ]?.type
                 ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
 
                 return determineApplicationTemplate(clonedApplication);

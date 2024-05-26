@@ -308,7 +308,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                      * on the extensions management API side.
                      */
                     if (!templateDisplayName) {
-                        templateDisplayName = extensionApplicationTemplates.find(
+                        templateDisplayName = extensionApplicationTemplates?.find(
                             (template: ApplicationTemplateListInterface) => {
                                 return template?.id === app?.templateId;
                             }

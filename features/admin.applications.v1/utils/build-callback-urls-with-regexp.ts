@@ -32,9 +32,9 @@
  * // Result: ["regexp=(https://example.com/login|https://app.example.com/login)"]
  */
 const buildCallBackUrlsWithRegExp = (urls: string[]): string[] => {
-    const sanitizedURLs: string[] = urls?.map((url: string) => url.replace(/['"]+/g, ""));
+    const sanitizedURLs: string[] = urls?.map((url: string) => url?.replace(/['"]+/g, ""));
 
-    if (sanitizedURLs.length > 1) {
+    if (sanitizedURLs?.length > 1) {
         return [ `regexp=(${sanitizedURLs.join("|")})` ];
     }
 

@@ -231,7 +231,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (extensionTemplateMetadataFetchRequestError?.response?.data?.description) {
             dispatch(addAlert({
-                description: extensionTemplateMetadataFetchRequestError?.response?.data?.description,
+                description: extensionTemplateMetadataFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,
                 message: t("applications:notifications.fetchTemplateMetadata.error.message")
             }));
@@ -338,9 +338,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         return;
                     }
 
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
+                    if (error?.response?.data?.description) {
                         dispatch(addAlert({
-                            description: error.response?.data?.description,
+                            description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t("applications:notifications.getInboundProtocolConfig" +
                                 ".error.message")
@@ -425,10 +425,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
-                readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
+                readOnly={ readOnly || applicationConfig?.editApplication?.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_GENERAL_SETTINGS", application) }
                 data-componentid={ `${ componentId }-general-settings` }
-                isManagementApp={ application.isManagementApp }
+                isManagementApp={ application?.isManagementApp }
             />
         </ResourceTab.Pane>
     );
@@ -611,7 +611,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return [];
         }
 
-        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+        if (tabPaneExtensions && tabPaneExtensions?.length > 0) {
             extensionPanes.push(...cloneDeep(tabPaneExtensions));
         }
 
@@ -802,7 +802,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
             extensionPanes.forEach(
                 (extensionPane: ResourceTabPaneInterface) => {
-                    panes.splice(extensionPane.index, 0, extensionPane);
+                    panes.splice(extensionPane?.index, 0, extensionPane);
                 }
             );
 
@@ -867,7 +867,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Filter the available tabs based on metadata defined in the extension template.
      *
-     * @param tabs - All available templates.
+     * @param tabs - All available tabs.
      * @returns Filtered tabs list.
      */
     const filterTabsBasedOnExtensionTemplateMetadata = (
@@ -883,7 +883,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
          */
         const addPredefineTab = (currentTab: ApplicationEditTabMetadataInterface) => {
             const predefineTab: ResourceTabPaneInterface =
-                        tabs.find((item: ResourceTabPaneInterface) => item?.["data-tabid"] === currentTab?.id);
+                        tabs?.find((item: ResourceTabPaneInterface) => item?.["data-tabid"] === currentTab?.id);
 
             if (predefineTab) {
                 if (currentTab?.displayName) {
@@ -894,7 +894,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
         };
 
-        extensionTemplateMetadata?.edit?.tabs.forEach((tab: ApplicationEditTabMetadataInterface) => {
+        extensionTemplateMetadata?.edit?.tabs?.forEach((tab: ApplicationEditTabMetadataInterface) => {
             switch (tab?.contentType) {
                 case ApplicationEditTabContentTypes.GUIDE:
                     if (tab?.guide) {
@@ -1002,8 +1002,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         if (isSuperOrganization()) {
             getCORSOrigins()
                 .then((response: CORSOriginsListInterface[]) => {
-                    response.map((origin: CORSOriginsListInterface) => {
-                        allowedCORSOrigins.push(origin.url);
+                    response?.map((origin: CORSOriginsListInterface) => {
+                        allowedCORSOrigins.push(origin?.url);
                     });
                     setAllowedOrigins(allowedCORSOrigins);
                 })
@@ -1090,10 +1090,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return;
         }
 
-        if (inboundProtocolConfig && samlConfigurations && samlConfigurations.certificate) {
-            inboundProtocolConfig.certificate = samlConfigurations.certificate;
-            inboundProtocolConfig.ssoUrl = samlConfigurations.ssoUrl;
-            inboundProtocolConfig.issuer = samlConfigurations.issuer;
+        if (inboundProtocolConfig && samlConfigurations && samlConfigurations?.certificate) {
+            inboundProtocolConfig.certificate = samlConfigurations?.certificate;
+            inboundProtocolConfig.ssoUrl = samlConfigurations?.ssoUrl;
+            inboundProtocolConfig.issuer = samlConfigurations?.issuer;
         }
 
         const extensions: ResourceTabPaneInterface[] = applicationConfig.editApplication.getTabExtensions(

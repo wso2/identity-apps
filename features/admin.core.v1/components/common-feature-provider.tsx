@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import ApplicationTemplatesProvider from "@wso2is/admin.applications.v1/provider/application-templates-provider";
 import React, { PropsWithChildren, ReactElement } from "react";
-import ApplicationTemplatesProvider from "../../admin.applications.v1/provider/application-templates-provider";
 
 /**
  * Props interface for the `CommonFeatureProviders` component.
