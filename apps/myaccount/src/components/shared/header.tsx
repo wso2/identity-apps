@@ -34,6 +34,7 @@ import {
     LanguageIcon,
     RectangleLineIcon
 } from "@oxygen-ui/react-icons";
+import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -44,7 +45,6 @@ import {
     CookieStorageUtils,
     StringUtils
 } from "@wso2is/core/utils";
-import { useThemeProvider } from "@wso2is/features/common.branding.v1/hooks/use-theme-provider";
 import { I18n, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";

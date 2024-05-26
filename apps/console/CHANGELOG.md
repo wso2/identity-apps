@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.19.1
+
+### Patch Changes
+
+- [#6241](https://github.com/wso2/identity-apps/pull/6241) [`a777541cbef5da7de06e273c82303dea445370a9`](https://github.com/wso2/identity-apps/commit/a777541cbef5da7de06e273c82303dea445370a9) Thanks [@RivinduM](https://github.com/RivinduM)! - Fix protocol tab link in MTLS Server endpoints description.
+
+## 2.19.0
+
+### Minor Changes
+
+- [#6333](https://github.com/wso2/identity-apps/pull/6333) [`bad412c9f35b38e3e01e17c784d2903106e17990`](https://github.com/wso2/identity-apps/commit/bad412c9f35b38e3e01e17c784d2903106e17990) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Standardize import paths by changing from `@wso2is/feature` to individual package names
+
 ## 2.18.20
 
 ### Patch Changes

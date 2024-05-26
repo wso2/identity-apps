@@ -971,17 +971,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     useEffect(() => {
 
-        if(isEmpty(window.location.hash)){
-
-            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) !==
+        if(isEmpty(window?.location?.hash)){
+            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ===
                 ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
-
-                return;
+                window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.SIGN_IN_METHODS;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_PROTOCOL) === "true") {
+                window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.PROTOCOL;
             }
-
-            window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.SIGN_IN_METHODS;
         }
-    },[ urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ]);
+    },[ urlSearchParams ]);
 
     /**
      * Check whether the application is an M2M Application.
