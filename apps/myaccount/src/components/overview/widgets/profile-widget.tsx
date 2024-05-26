@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { useThemeProvider } from "@wso2is/features/common.branding.v1/hooks/use-theme-provider";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
