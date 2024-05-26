@@ -953,6 +953,7 @@
                 display:flex;
                 align-items:center;
                 white-space:break-spaces;
+                word-break: break-word;
             }
         }
         .card-subheader {
