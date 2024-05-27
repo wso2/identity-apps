@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceTypes
-} from "@wso2is/features/common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
+import { HttpMethods } from "@wso2is/core/models";
 import { I18nConstants } from "../constants";
 import {
     RequestConfigInterface,

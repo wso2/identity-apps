@@ -18,10 +18,10 @@
 import { useAuthContext } from "@asgardeo/auth-react";
 import { useColorScheme } from "@mui/material";
 import { Mode } from "@mui/system/cssVars/useCurrentColorScheme";
+import { ThemeProviderContext } from "@wso2is/common.branding.v1/contexts/theme-provider-context";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { ThemeProviderContext } from "@wso2is/features/common.branding.v1/contexts/theme-provider-context";
 import { I18n } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
