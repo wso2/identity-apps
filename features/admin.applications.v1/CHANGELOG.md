@@ -1,5 +1,32 @@
 # @wso2is/admin.applications.v1
 
+## 2.20.4
+
+### Patch Changes
+
+- [#6353](https://github.com/wso2/identity-apps/pull/6353) [`c1db36e743fa8429a1451980199b2295b3eb9c8a`](https://github.com/wso2/identity-apps/commit/c1db36e743fa8429a1451980199b2295b3eb9c8a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix my account showing in sub orgs even when it's not shared with the suborg
+
+- Updated dependencies [[`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e)]:
+  - @wso2is/react-components@2.2.7
+  - @wso2is/admin.authorization.v1@2.20.3
+  - @wso2is/admin.claims.v1@2.20.4
+  - @wso2is/admin.connections.v1@2.20.4
+  - @wso2is/admin.console-settings.v1@2.20.4
+  - @wso2is/admin.extensions.v1@2.20.4
+  - @wso2is/admin.identity-providers.v1@2.20.4
+  - @wso2is/admin.login-flow.ai.v1@2.20.4
+  - @wso2is/admin.oidc-scopes.v1@2.20.4
+  - @wso2is/admin.organizations.v1@2.20.4
+  - @wso2is/admin.roles.v2@2.20.4
+  - @wso2is/admin.secrets.v1@2.20.4
+  - @wso2is/admin.server-configurations.v1@2.20.4
+  - @wso2is/admin.userstores.v1@2.20.4
+  - @wso2is/admin.wsfed-configuration.v1@2.20.4
+  - @wso2is/admin.api-resources.v2@2.20.4
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.4
+  - @wso2is/admin.core.v1@2.20.4
+  - @wso2is/form@2.0.66
+
 ## 2.20.3
 
 ### Patch Changes
