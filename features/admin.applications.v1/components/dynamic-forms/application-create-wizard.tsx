@@ -161,6 +161,13 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             initialValues.name = generateUniqueApplicationName(templatePayload?.name);
         }
 
+        /**
+         * Template ID must be submitted when creating the application.
+         */
+        if (!initialValues?.templateId) {
+            initialValues.templateId = templatePayload?.templateId;
+        }
+
         return initialValues;
     };
 
