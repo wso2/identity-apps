@@ -122,32 +122,43 @@ export const deleteApplication = (id: string): Promise<any> => {
 };
 
 /**
- * Deletes an application when the relevant id is passed in.
+ * Disables an application when the relevant id is passed in.
  *
  * @param id - ID of the application.
  * @returns A promise containing the response.
+ * @throws IdentityAppsApiException
  */
-export const disableApplication = (id: string, status: boolean): Promise<any> => {
+export const disableApplication = <T>(id: string, status: boolean): Promise<T> => {
     const requestConfig: AxiosRequestConfig = {
         data: { "applicationEnabled":status },
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.applications + "/" + id
+        url: `${ store.getState().config.endpoints.applications }/${  id }`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to disable the application."));
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
-
-            return Promise.resolve(response);
+            return Promise.resolve(response.data as T);
         }).catch((error: AxiosError) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 

@@ -152,7 +152,6 @@ export interface ApplicationsNS {
             content: string;
             assertionHint: string;
         },
-
         deleteOutboundProvisioningIDP: {
             header: string;
             message: string;

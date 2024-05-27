@@ -243,28 +243,26 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         setShowDisableConfirmationModal(true);
     };
 
-
     /**
      * Disables an application.
      */
-    const handleApplicationDisable = () => {
+    const handleApplicationDisable = (): void => {
         setIsDisableInProgress(true);
-        const state : string = enableStatus ? "enabled" : "disabled";
-        const state2 : string = enableStatus ? "enable" : "disable";
-
         disableApplication(appId, enableStatus)
             .then(() => {
                 setIsDisableInProgress(false);
                 dispatch(addAlert({
                     description: t("applications:notifications.disableApplication.success" +
-                            ".description", { state }),
+                            ".description", {  state: enableStatus ? "enabled" : "disabled" }),
                     level: AlertLevels.SUCCESS,
-                    message: t("applications:notifications.disableApplication.success.message", { state })
+                    message: t("applications:notifications.disableApplication.success.message",
+                        { state: enableStatus ? "enabled" : "disabled" })
                 }));
                 setShowDisableConfirmationModal(false);
                 onUpdate(appId);
             })
             .catch((error: AxiosError) => {
+                setIsDisableInProgress(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -278,7 +276,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
                 dispatch(addAlert({
                     description: t("applications:notifications.disableApplication" +
-                        ".genericError.description", { state2 }),
+                        ".genericError.description", {  state: enableStatus ? "enable" : "disable" }),
                     level: AlertLevels.ERROR,
                     message: t("applications:notifications.disableApplication.genericError" +
                         ".message")
