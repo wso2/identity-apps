@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ThemeConfigInterface } from "@wso2is/features/common.branding.v1/models";
+import { ThemeConfigInterface } from "@wso2is/common.branding.v1/models";
 import { rgbToHex } from "@wso2is/react-components";
 
 export const LIGHT_THEME: ThemeConfigInterface ={

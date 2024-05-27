@@ -1,5 +1,39 @@
 # @wso2is/myaccount
 
+## 2.7.0
+
+### Minor Changes
+
+- [#6334](https://github.com/wso2/identity-apps/pull/6334) [`ac7614608349cd16112c314d5cbdda8f963ef253`](https://github.com/wso2/identity-apps/commit/ac7614608349cd16112c314d5cbdda8f963ef253) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Standardize import paths by changing from `@wso2is/feature` to individual package names.
+
+## 2.6.7
+
+### Patch Changes
+
+- Updated dependencies [[`de4201d75c779ee49c5bea1a63955f88f4b6b966`](https://github.com/wso2/identity-apps/commit/de4201d75c779ee49c5bea1a63955f88f4b6b966)]:
+  - @wso2is/features@2.21.3
+
+## 2.6.6
+
+### Patch Changes
+
+- [#6243](https://github.com/wso2/identity-apps/pull/6243) [`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update asgardeo react sdk version
+
+- Updated dependencies [[`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717)]:
+  - @wso2is/core@2.0.48
+  - @wso2is/features@2.21.2
+  - @wso2is/access-control@3.0.8
+  - @wso2is/forms@2.0.38
+  - @wso2is/i18n@2.3.4
+  - @wso2is/react-components@2.2.6
+
+## 2.6.5
+
+### Patch Changes
+
+- Updated dependencies [[`5903ba0d6174e7755299b15f195e4c696ac5543f`](https://github.com/wso2/identity-apps/commit/5903ba0d6174e7755299b15f195e4c696ac5543f)]:
+  - @wso2is/features@2.21.1
+
 ## 2.6.4
 
 ### Patch Changes
