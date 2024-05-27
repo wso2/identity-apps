@@ -150,6 +150,7 @@ export const disableApplication = <T>(id: string, status: boolean): Promise<T> =
                     response,
                     response.config);
             }
+
             return Promise.resolve(response.data as T);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
