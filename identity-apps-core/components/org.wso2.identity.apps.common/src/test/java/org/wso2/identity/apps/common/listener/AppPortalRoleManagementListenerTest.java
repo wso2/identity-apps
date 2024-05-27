@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2024, WSO2 Inc. (http://www.wso2.org).
+ * Copyright (c) 2023-2024, WSO2 LLC. (http://www.wso2.com).
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -61,6 +61,13 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
  */
 public class AppPortalRoleManagementListenerTest {
 
+    private final String roleId = "roleId";
+    private final String deletedUserId = "deletedUserId";
+    private final String adminUserId = "adminUserId";
+    private final String tenantDomain = "abc.com";
+    private final boolean isAdminRole = true;
+    private final boolean isOrganization = true;
+
     private AutoCloseable closeable;
 
     private MockedStatic<PrivilegedCarbonContext> privilegedCarbonContext;
@@ -99,20 +106,20 @@ public class AppPortalRoleManagementListenerTest {
     @DataProvider(name = "preUpdateUserListOfRoleDataProvider")
     public Object[][] preUpdateUserListOfRoleDataProvider() {
         return new Object[][]{
-            // Test case where deletedUserIDList == null
-            {"roleId", Collections.emptyList(), null, CARBON_HOME, true, false, "adminUserId"},
+            // Test case where deletedUserIDList == null.
+            {roleId, Collections.emptyList(), null, tenantDomain, isAdminRole, !isOrganization, adminUserId},
 
-            // Test case where !isAdministratorRole
-            {"roleId", Collections.emptyList(), Collections.singletonList("deletedUser"), CARBON_HOME, false, false,
-                "adminUserId"},
+            // Test case where !isAdministratorRole.
+            {roleId, Collections.emptyList(), Collections.singletonList(deletedUserId), tenantDomain, !isAdminRole,
+                !isOrganization, adminUserId},
 
-            // Test case where isOrganization == true
-            {"roleId", Collections.emptyList(), Collections.singletonList("deletedUser"), CARBON_HOME, true, true,
-                "adminUserId"},
+            // Test case where isOrganization == true.
+            {roleId, Collections.emptyList(), Collections.singletonList(deletedUserId), tenantDomain, isAdminRole,
+                isOrganization, adminUserId},
 
-            // Test case where deletedUserIDList contains adminUserId
-            {"roleId", Collections.emptyList(), Collections.singletonList("adminUserId"), CARBON_HOME, true, false,
-                "adminUserId"}
+            // Test case where deletedUserIDList contains adminUserId.
+            {roleId, Collections.emptyList(), Collections.singletonList(adminUserId), tenantDomain, isAdminRole,
+                !isOrganization, adminUserId}
         };
     }
 
@@ -124,20 +131,19 @@ public class AppPortalRoleManagementListenerTest {
         AppPortalRoleManagementListener appPortalRoleManagementListener = spy(
             new AppPortalRoleManagementListener(true));
 
-        // Set up the mock behaviors
+        // Set up the mock behaviors.
         organizationManagementUtil.when(() ->
             OrganizationManagementUtil.isOrganization(tenantDomain)).thenReturn(isOrganization);
         AbstractUserStoreManager mockUserStoreManager = mock(AbstractUserStoreManager.class);
         when(mockUserRealm.getRealmConfiguration()).thenReturn(mock(RealmConfiguration.class));
         when(mockUserRealm.getRealmConfiguration().getAdminUserName()).thenReturn(ADMINISTRATOR);
         when(mockUserRealm.getUserStoreManager()).thenReturn(mockUserStoreManager);
-        when(mockUserStoreManager.getUserIDFromUserName(anyString()))
-            .thenReturn(adminUserId);
+        when(mockUserStoreManager.getUserIDFromUserName(anyString())).thenReturn(adminUserId);
         mockAppsCommonDataHolder(appsCommonDataHolder);
         when(roleManagementService.getRole(roleId, tenantDomain)).thenReturn(role);
         setRoleAttributes(isAdminRole);
 
-        // Call the method
+        // Call the method.
         if (!isAdminRole || deletedUserIDList == null || isOrganization || !deletedUserIDList.contains(adminUserId)) {
             appPortalRoleManagementListener.preUpdateUserListOfRole(roleId, newUserIDList, deletedUserIDList,
                 tenantDomain);
@@ -171,7 +177,7 @@ public class AppPortalRoleManagementListenerTest {
         } else {
             when(role.getName()).thenReturn(ROLE_NAME);
             when(role.getAudience()).thenReturn(ORGANIZATION);
-            when(role.getAudienceName()).thenReturn("App1");
+            when(role.getAudienceName()).thenReturn("org1");
         }
     }
 
