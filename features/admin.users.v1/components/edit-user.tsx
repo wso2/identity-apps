@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
@@ -24,7 +25,7 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
@@ -94,10 +95,13 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const { UIConfig } = useUIConfig();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
     const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
+
+    const hasUsersUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.update
+    );
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
@@ -118,7 +122,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
-            || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+            || !hasUsersUpdatePermissions
             || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
         ) {
             setReadOnly(true);
