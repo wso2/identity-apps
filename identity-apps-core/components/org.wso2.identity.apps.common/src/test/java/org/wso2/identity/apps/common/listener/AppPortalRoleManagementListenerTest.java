@@ -56,6 +56,9 @@ import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.ORGANIZATI
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.RoleTableColumns.ROLE_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
 
+/**
+ * Test class for AppPortalRoleManagementListener test cases.
+ */
 public class AppPortalRoleManagementListenerTest {
 
     private AutoCloseable closeable;

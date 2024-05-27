@@ -107,8 +107,8 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
                 return;
             }
         } catch (OrganizationManagementException e) {
-            throw new IdentityRoleManagementException(INVALID_REQUEST.getCode(),
-                "Failed to determine if the tenant is a sub-organization for tenant domain: " + tenantDomain, e);
+            throw new IdentityRoleManagementException("Failed to determine if the tenant is a sub-organization for " +
+                "tenant domain: " + tenantDomain, e);
         }
 
         String adminUserId;
