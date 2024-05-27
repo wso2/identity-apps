@@ -16,6 +16,7 @@
  * under the License.
  */
 
+
 import { AppState, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
