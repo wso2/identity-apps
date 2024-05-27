@@ -250,7 +250,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         setIsDisableInProgress(true);
         disableApplication(appId, enableStatus)
             .then(() => {
-                setIsDisableInProgress(false);
                 dispatch(addAlert({
                     description: t("applications:notifications.disableApplication.success" +
                             ".description", {  state: enableStatus ? "enabled" : "disabled" }),
@@ -262,7 +261,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 onUpdate(appId);
             })
             .catch((error: AxiosError) => {
-                setIsDisableInProgress(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -283,6 +281,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 }));
             })
             .finally(() => {
+                setIsDisableInProgress(false);
                 setIsSubmitting(false);
             });
     };
