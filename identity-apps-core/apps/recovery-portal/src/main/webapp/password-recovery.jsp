@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -263,7 +263,7 @@
                                     tabindex="0"
                                     required
                                 >
-                                <i aria-hidden="true" class="envelope outline icon"></i>
+                                <i aria-hidden="true" class="user fill icon"></i>
                             </div>
                             <input id="username" name="username" type="hidden">
                             <%
@@ -378,6 +378,7 @@
                         <input type="hidden" name="sp" value="<%=sp %>"/>
                         <input type="hidden" name="spId" value="<%=spId %>"/>
                         <input type="hidden" name="urlQuery" value="<%=request.getQueryString() %>"/>
+                        <input type="hidden" name="isMultiRecoveryOptionsAvailable" value="<%=multipleRecoveryOptionsAvailable %>"/>
 
                         <%
                             String callback = request.getParameter("callback");

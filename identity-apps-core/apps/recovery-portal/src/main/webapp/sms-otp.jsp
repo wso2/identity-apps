@@ -18,6 +18,8 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.wso2.carbon.identity.governance.IdentityGovernanceService" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
@@ -282,6 +284,19 @@
                                     </button>
                                 </div>
                         </form>
+                        <% if (Boolean.parseBoolean(request.getParameter("isMultiRecoveryOptionsAvailable"))) { %>
+                            <div class="text-center mt-1">
+                                <%
+                                    String baseUrl = ServiceURLBuilder.create().addPath("/accountrecoveryendpoint/recoveraccountrouter.do").build().getRelativePublicURL();
+                                    String multiOptionPathWithQuery = request.getParameter("urlQuery") + "&username=" + request.getParameter("username");
+                                    org.apache.logging.log4j.LogManager.getLogger().error(request.getParameter("username"));
+                                %>
+                                <a class="ui primary basic button link-button" id="goBackLink"
+                                    href=<%=baseUrl + "?" + multiOptionPathWithQuery %>>
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "choose.other.option")%>
+                                </a>
+                            </div>
+                        <% } %>
                     </div>
                 </div>
             </layout:component>
