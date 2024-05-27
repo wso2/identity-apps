@@ -46,18 +46,18 @@ ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
  */
 const checkCDNStatus = async () => {
     try {
-        const response: Response = await fetch("https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs/loader.js");
+        const response: Response = await fetch("https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs/loader.js");
 
         if (response.ok) {
             loader.config({
                 paths: {
-                    vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs"
+                    vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs"
                 }
             });
         } else {
             loader.config({
                 paths: {
-                    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs"
+                    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs"
                 }
             });
         }
