@@ -17,15 +17,10 @@
   ~  under the License.
   -->
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite">
-    <test verbose="2" preserve-order="true"
-          name="/Users/hasinis/Desktop/My Repos/identity-apps/identity-apps-core/components/org.wso2.identity.apps.common/src/test/java/org/wso2/identity/apps/common/listener">
+<suite name="identity-apps-common-test-suite">
+    <test name="identity-apps-common-test-all">
         <classes>
-            <class name="org.wso2.identity.apps.common.listener.AppPortalRoleManagementListenerTest">
-                <methods>
-                    <include name="testPreUpdateUserListOfRole"/>
-                </methods>
-            </class>
+            <class name="org.wso2.identity.apps.common.listener.AppPortalRoleManagementListenerTest" />
         </classes>
     </test>
 </suite>
