@@ -128,7 +128,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.applications?.disabledFeatures;
     });
@@ -597,13 +596,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         >
             {
                 (
-                    isSAASDeployment
-                    || (
-                        !isMyAccountApplicationDataFetchRequestLoading
-                        && myAccountApplicationData?.applications?.length !== 0
-                    )
-                )
-                && renderTenantedMyAccountLink()
+                    !isMyAccountApplicationDataFetchRequestLoading
+                    && myAccountApplicationData?.applications?.length !== 0
+                ) && renderTenantedMyAccountLink()
             }
             <ListLayout
                 advancedSearch={ (
