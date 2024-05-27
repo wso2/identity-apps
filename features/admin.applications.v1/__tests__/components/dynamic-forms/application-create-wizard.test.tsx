@@ -137,7 +137,8 @@ describe("[Applications Management Feature] - ApplicationCreateWizard", () => {
 
         await waitFor(() => {
             expect(createApplicationMock).toHaveBeenCalledWith({
-                name: "Salesforce 2"
+                name: "Salesforce 2",
+                templateId: "salesforce"
             });
         });
     });
