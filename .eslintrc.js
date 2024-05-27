@@ -291,6 +291,11 @@ module.exports = {
                     {
                         message: "Please use import foo from '@oxygen-ui/react/foo' instead.",
                         name: "@oxygen-ui/react"
+                    },
+                    {
+                        importNames: [ "hasRequiredScopes" ],
+                        message: "Please use import { useRequiredScopes } from '@wso2is/access-control' instead.",
+                        name: "@wso2is/core/helpers"
                     }
                 ],
                 patterns: [
