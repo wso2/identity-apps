@@ -1,5 +1,53 @@
 # @wso2is/admin.core.v1
 
+## 2.20.4
+
+### Patch Changes
+
+- Updated dependencies [[`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e), [`c1db36e743fa8429a1451980199b2295b3eb9c8a`](https://github.com/wso2/identity-apps/commit/c1db36e743fa8429a1451980199b2295b3eb9c8a)]:
+  - @wso2is/react-components@2.2.7
+  - @wso2is/admin.applications.v1@2.20.4
+  - @wso2is/admin.authorization.v1@2.20.3
+  - @wso2is/admin.branding.v1@2.20.4
+  - @wso2is/admin.certificates.v1@2.20.4
+  - @wso2is/admin.claims.v1@2.20.4
+  - @wso2is/admin.connections.v1@2.20.4
+  - @wso2is/admin.console-settings.v1@2.20.4
+  - @wso2is/admin.email-and-sms.v1@2.20.4
+  - @wso2is/admin.email-management.v1@2.20.4
+  - @wso2is/admin.email-providers.v1@2.20.4
+  - @wso2is/admin.email-templates.v1@2.20.4
+  - @wso2is/admin.extensions.v1@2.20.4
+  - @wso2is/admin.extensions.v2@2.20.4
+  - @wso2is/admin.groups.v1@2.20.4
+  - @wso2is/admin.identity-providers.v1@2.20.4
+  - @wso2is/admin.identity-verification-providers.v1@2.20.4
+  - @wso2is/admin.layouts.v1@2.20.4
+  - @wso2is/admin.oidc-scopes.v1@2.20.4
+  - @wso2is/admin.org-insights.v1@2.20.4
+  - @wso2is/admin.organization-discovery.v1@2.20.4
+  - @wso2is/admin.organizations.v1@2.20.4
+  - @wso2is/admin.private-key-jwt.v1@2.20.4
+  - @wso2is/admin.remote-repository-configuration.v1@2.20.4
+  - @wso2is/admin.roles.v1@2.20.4
+  - @wso2is/admin.roles.v2@2.20.4
+  - @wso2is/admin.saml2-configuration.v1@2.20.4
+  - @wso2is/admin.secrets.v1@2.20.4
+  - @wso2is/admin.server-configurations.v1@2.20.4
+  - @wso2is/admin.server.v1@2.20.4
+  - @wso2is/admin.session-management.v1@2.20.4
+  - @wso2is/admin.sms-providers.v1@2.20.4
+  - @wso2is/admin.tenants.v1@2.20.4
+  - @wso2is/admin.users.v1@2.20.4
+  - @wso2is/admin.userstores.v1@2.20.4
+  - @wso2is/admin.validation.v1@2.20.4
+  - @wso2is/admin.views.v1@2.20.4
+  - @wso2is/admin.workflow-approvals.v1@2.20.4
+  - @wso2is/admin.wsfed-configuration.v1@2.20.4
+  - @wso2is/admin.api-resources.v1@2.20.4
+  - @wso2is/admin.api-resources.v2@2.20.4
+  - @wso2is/admin.authentication.v1@2.20.4
+
 ## 2.20.3
 
 ### Patch Changes
