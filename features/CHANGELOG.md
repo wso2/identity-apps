@@ -1,5 +1,14 @@
 # @wso2is/features
 
+## 2.21.6
+
+### Patch Changes
+
+- [#6335](https://github.com/wso2/identity-apps/pull/6335) [`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add support to change application status
+
+- Updated dependencies [[`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471)]:
+  - @wso2is/i18n@2.3.5
+
 ## 2.21.5
 
 ### Patch Changes

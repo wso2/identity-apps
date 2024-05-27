@@ -1,5 +1,13 @@
 # @wso2is/common.ai.v1
 
+## 2.20.5
+
+### Patch Changes
+
+- Updated dependencies [[`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471)]:
+  - @wso2is/i18n@2.3.5
+  - @wso2is/admin.core.v1@2.20.5
+
 ## 2.20.4
 
 ### Patch Changes

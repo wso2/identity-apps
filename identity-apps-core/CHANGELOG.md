@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.3.4
+
+### Patch Changes
+
+- [#6356](https://github.com/wso2/identity-apps/pull/6356) [`7c88f1f663c88aa38b231ee43fd335967e79fcbf`](https://github.com/wso2/identity-apps/commit/7c88f1f663c88aa38b231ee43fd335967e79fcbf) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - update error messages for disabled application access
+
 ## 2.3.3
 
 ### Patch Changes
