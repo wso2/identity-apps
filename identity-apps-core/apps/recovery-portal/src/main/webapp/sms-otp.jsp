@@ -142,6 +142,13 @@
                     </div>
                     <div class="ui divider hidden"></div>
                     <% } %>
+                    <%
+                        if ("true".equals(String.valueOf((Object)request.getAttribute("resendSuccess")))) {
+                    %>
+                    <div id="resend-msg" class="ui positive message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "resend.code.success")%></div>
+                    <%
+                        }
+                    %>
                     <div id="alertDiv"></div>
                     <div class="segment-form">
                         <form class="ui large form" id="codeForm" name="codeForm" action="passwordrecoveryotp.do" method="POST">

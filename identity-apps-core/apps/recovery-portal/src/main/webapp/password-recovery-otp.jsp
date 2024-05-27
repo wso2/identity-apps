@@ -240,6 +240,7 @@
              *  happens after the resend operation. */
             request.setAttribute("resendCode", resendResponse.getResendCode());
             request.setAttribute("screenValue", screenValue);
+            request.setAttribute("resendSuccess", true);
             request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
         } catch (ApiException e) {
             if (!StringUtils.isBlank(username)) {
