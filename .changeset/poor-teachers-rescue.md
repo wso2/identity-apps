@@ -5,4 +5,4 @@
 "@wso2is/i18n": patch
 ---
 
-add support to enable&disable apps
+add support to enable & disable apps
