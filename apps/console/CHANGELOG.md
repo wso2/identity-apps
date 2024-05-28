@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.19.5
+
+### Patch Changes
+
+- [#6360](https://github.com/wso2/identity-apps/pull/6360) [`d538ba34a4c498696755f593a8c79e8cea1838c4`](https://github.com/wso2/identity-apps/commit/d538ba34a4c498696755f593a8c79e8cea1838c4) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Support myAccount Disable
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.7
+  - @wso2is/admin.extensions.v1@2.20.7
+  - @wso2is/admin.organizations.v1@2.20.7
+  - @wso2is/admin.authentication.v1@2.20.7
+
 ## 2.19.4
 
 ### Patch Changes

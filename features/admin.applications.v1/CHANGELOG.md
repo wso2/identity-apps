@@ -1,5 +1,29 @@
 # @wso2is/admin.applications.v1
 
+## 2.20.7
+
+### Patch Changes
+
+- [#6360](https://github.com/wso2/identity-apps/pull/6360) [`d538ba34a4c498696755f593a8c79e8cea1838c4`](https://github.com/wso2/identity-apps/commit/d538ba34a4c498696755f593a8c79e8cea1838c4) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Support myAccount Disable
+
+- Updated dependencies []:
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.7
+  - @wso2is/admin.connections.v1@2.20.7
+  - @wso2is/admin.console-settings.v1@2.20.7
+  - @wso2is/admin.core.v1@2.20.7
+  - @wso2is/admin.extensions.v1@2.20.7
+  - @wso2is/admin.identity-providers.v1@2.20.7
+  - @wso2is/admin.login-flow.ai.v1@2.20.7
+  - @wso2is/admin.oidc-scopes.v1@2.20.7
+  - @wso2is/admin.organizations.v1@2.20.7
+  - @wso2is/admin.roles.v2@2.20.7
+  - @wso2is/admin.api-resources.v2@2.20.7
+  - @wso2is/admin.claims.v1@2.20.7
+  - @wso2is/admin.secrets.v1@2.20.7
+  - @wso2is/admin.server-configurations.v1@2.20.7
+  - @wso2is/admin.userstores.v1@2.20.7
+  - @wso2is/admin.wsfed-configuration.v1@2.20.7
+
 ## 2.20.6
 
 ### Patch Changes
