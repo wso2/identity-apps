@@ -46,7 +46,6 @@ import {
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { PropTypes } from "prop-types";
 import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -961,6 +960,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             });
     };
 
+    const applicationsUpdateScopes: string[] = featureConfig?.applications?.scopes?.update;
+
     const MyAccountOverviewTabPane = (): ReactElement => (
         <>
             <ResourceTab.Pane controlledSegmentation>
@@ -968,7 +969,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             </ResourceTab.Pane>
             <Divider hidden />
             <Show
-                when={ featureConfig?.applications?.scopes?.update }
+                when={ applicationsUpdateScopes }
             >
                 <DangerZoneGroup
                     sectionHeader={ t("applications:dangerZoneGroup.header") }
@@ -1331,7 +1332,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
  */
 EditApplication.defaultProps = {
     "data-componentid": "edit-application",
-    featureConfig: PropTypes.object,
     getConfiguredInboundProtocolConfigs: () => null,
     getConfiguredInboundProtocolsList: () => null
 };
