@@ -62,7 +62,7 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import {disableApplication, getInboundProtocolConfig} from "../api";
+import { disableApplication, getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -920,7 +920,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Disables an application.
      */
-    const handleApplicationDisable = () => {
+    const handleApplicationDisable = (): void => {
         setIsDisableInProgress(true);
         disableApplication(application.id, enableStatus)
             .then(() => {
