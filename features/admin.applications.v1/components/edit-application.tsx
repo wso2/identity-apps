@@ -204,7 +204,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const isMyAccountSimplifiedSettingsEnabled: boolean =
         ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId
         && !disabledApplicationFeatures?.includes("applications.myaccount.simplifiedSettings");
-
+    const applicationsUpdateScopes: string[] = featureConfig?.applications?.scopes?.update;
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ isDisableInProgress, setIsDisableInProgress ] = useState<boolean>(false);
@@ -913,7 +913,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * @param data - Checkbox data.
      */
     const handleAppEnableDisableToggleChange = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
-        setEnableStatus(data.checked);
+        setEnableStatus(data?.checked);
         setShowDisableConfirmationModal(true);
     };
 
@@ -936,7 +936,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate(application.id);
             })
             .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
@@ -960,8 +960,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             });
     };
 
-    const applicationsUpdateScopes: string[] = featureConfig?.applications?.scopes?.update;
-
     const MyAccountOverviewTabPane = (): ReactElement => (
         <>
             <ResourceTab.Pane controlledSegmentation>
@@ -982,7 +980,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         subheader={ application.applicationEnabled
                             ? t("applications:dangerZoneGroup.disableApplication.subheader")
                             : t("applications:dangerZoneGroup.disableApplication.subheader2") }
-
                         onActionClick={ undefined }
                         toggle={ {
                             checked: application.applicationEnabled,
@@ -1036,7 +1033,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             </ConfirmationModal>
         </>
     );
-
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
