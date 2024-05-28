@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.19.4
+
+### Patch Changes
+
+- [#6361](https://github.com/wso2/identity-apps/pull/6361) [`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add support to enable & disable apps
+
+- Updated dependencies [[`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85)]:
+  - @wso2is/i18n@2.3.6
+  - @wso2is/admin.core.v1@2.20.6
+  - @wso2is/admin.extensions.v1@2.20.6
+  - @wso2is/admin.organizations.v1@2.20.6
+  - @wso2is/admin.authentication.v1@2.20.6
+  - @wso2is/admin.authorization.v1@2.20.5
+
 ## 2.19.3
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @wso2is/admin.authorization.v1
 
+## 2.20.5
+
+### Patch Changes
+
+- Updated dependencies [[`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85)]:
+  - @wso2is/i18n@2.3.6
+
 ## 2.20.4
 
 ### Patch Changes
