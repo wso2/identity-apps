@@ -248,7 +248,8 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     layout: predefinedLayouts
                 }
             ));
-            setSelectedLayout(originalBrandingPreference.preference.layout.activeLayout);
+
+            setSelectedLayout(brandingPreference?.layout?.activeLayout);
         }
 
     }, [ originalBrandingPreference ]);
