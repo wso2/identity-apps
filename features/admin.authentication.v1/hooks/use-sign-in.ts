@@ -482,10 +482,18 @@ const useSignIn = (): UseSignInInterface => {
                     signOutRedirectURL = null;
                 }
 
-                // If the experimental Platform IdP is enabled and the user is not a privileged user,
-                // We need to append the `homeRealmId` of the platform IdP as a `fidp` query
-                // param to the post logout redirect URL.
-                if (__experimental__platformIdP?.enabled && !isPrivilegedUser) {
+                /**
+                 * If,
+                 *  (i) the experimental Platform IdP is enabled, and
+                 *  (ii) the user is not a privileged user, and
+                 *  (iii) the organization is not super organization,
+                 * We need to append the `homeRealmId` of the platform IdP as a `fidp` query
+                 * param to the post logout redirect URL.
+                 * */
+                if (__experimental__platformIdP?.enabled
+                        && !isPrivilegedUser
+                        && orgType !== OrganizationType.SUPER_ORGANIZATION
+                ) {
                     if (!signOutRedirectURL) {
                         signOutRedirectURL = new URL(window["AppUtils"]?.getConfig()?.logoutCallbackURL);
                     }
