@@ -250,6 +250,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             name: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA,
             value: data.checked.toString()
         });
+        if ("account-recovery-username" in serverConfigurationConfig.connectorToggleName) {
+            updateRecoveryCaptchaData.properties.push({
+                name: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA,
+                value: data.checked.toString()
+            });
+        }
 
         updateGovernanceConnector(updateSSOCaptchaData, categoryId, connectorId)
             .then(() => {
@@ -614,6 +620,14 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                                     "botDetection.info.subSection2"
                                 ) }
                             </li>
+                            { serverConfigurationConfig.connectorToggleName["account-recovery-username"] ??
+                                <li>
+                                    { t(
+                                        "extensions:manage.serverConfigurations.accountSecurity." +
+                                        "botDetection.info.subSection4"
+                                    ) }
+                                </li>
+                            }
                             <li>
                                 { t(
                                     "extensions:manage.serverConfigurations.accountSecurity." +
