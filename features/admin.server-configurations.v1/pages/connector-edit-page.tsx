@@ -621,7 +621,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                                 ) }
                             </li>
                             {
-                                serverConfigurationConfig.connectorToggleName["account-recovery-username"] ??
+                                serverConfigurationConfig.connectorToggleName["account-recovery-username"] ?
                                 (
                                     <li>
                                         { t(
@@ -629,7 +629,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                                             "botDetection.info.subSection4"
                                         ) }
                                     </li>
-                                )
+                                ) : <></>
                             }
                             <li>
                                 { t(
