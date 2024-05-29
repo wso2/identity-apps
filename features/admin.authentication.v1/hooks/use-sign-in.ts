@@ -486,7 +486,7 @@ const useSignIn = (): UseSignInInterface => {
                  * If,
                  *  (i) the experimental Platform IdP is enabled, and
                  *  (ii) the user is not a privileged user, and
-                 *  (iii) the organization is not super organization,
+                 *  (iii) the currently signed-in organization is not super organization,
                  * We need to append the `homeRealmId` of the platform IdP as a `fidp` query
                  * param to the post logout redirect URL.
                  * */
