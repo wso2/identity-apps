@@ -1,5 +1,29 @@
 # @wso2is/admin.applications.v1
 
+## 2.20.8
+
+### Patch Changes
+
+- [#6368](https://github.com/wso2/identity-apps/pull/6368) [`0ff9cb8e75c69d56465cc7b59e6c1649afe12254`](https://github.com/wso2/identity-apps/commit/0ff9cb8e75c69d56465cc7b59e6c1649afe12254) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix myaccount display issue in applications section
+
+- Updated dependencies []:
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.8
+  - @wso2is/admin.connections.v1@2.20.8
+  - @wso2is/admin.console-settings.v1@2.20.8
+  - @wso2is/admin.core.v1@2.20.8
+  - @wso2is/admin.extensions.v1@2.20.8
+  - @wso2is/admin.identity-providers.v1@2.20.8
+  - @wso2is/admin.login-flow.ai.v1@2.20.8
+  - @wso2is/admin.oidc-scopes.v1@2.20.8
+  - @wso2is/admin.organizations.v1@2.20.8
+  - @wso2is/admin.roles.v2@2.20.8
+  - @wso2is/admin.api-resources.v2@2.20.8
+  - @wso2is/admin.claims.v1@2.20.8
+  - @wso2is/admin.secrets.v1@2.20.8
+  - @wso2is/admin.server-configurations.v1@2.20.8
+  - @wso2is/admin.userstores.v1@2.20.8
+  - @wso2is/admin.wsfed-configuration.v1@2.20.8
+
 ## 2.20.7
 
 ### Patch Changes
