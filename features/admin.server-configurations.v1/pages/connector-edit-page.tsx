@@ -622,14 +622,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                             </li>
                             {
                                 serverConfigurationConfig.connectorToggleName["account-recovery-username"] ?
-                                (
-                                    <li>
+                                    (<li>
                                         { t(
                                             "extensions:manage.serverConfigurations.accountSecurity." +
                                             "botDetection.info.subSection4"
                                         ) }
-                                    </li>
-                                ) : <></>
+                                    </li>) : <></>
                             }
                             <li>
                                 { t(
