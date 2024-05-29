@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,
@@ -119,6 +120,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const {
         [ "data-testid" ]: testId
     } = props;
+
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
@@ -596,8 +599,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         >
             {
                 (
-                    !isMyAccountApplicationDataFetchRequestLoading
-                    && myAccountApplicationData?.applications?.length !== 0
+                    legacyAuthzRuntime
+                    || (
+                        !isMyAccountApplicationDataFetchRequestLoading
+                        && myAccountApplicationData?.applications?.length !== 0
+                    )
                 ) && renderTenantedMyAccountLink()
             }
             <ListLayout
