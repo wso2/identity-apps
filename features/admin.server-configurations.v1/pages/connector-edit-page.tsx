@@ -620,14 +620,17 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                                     "botDetection.info.subSection2"
                                 ) }
                             </li>
-                            {(serverConfigurationConfig.connectorToggleName["account-recovery-username"] ??
-                                <li>
-                                    { t(
-                                        "extensions:manage.serverConfigurations.accountSecurity." +
-                                        "botDetection.info.subSection4"
-                                    ) }
-                                </li>
-                            )}
+                            {
+                                serverConfigurationConfig.connectorToggleName["account-recovery-username"] ??
+                                (
+                                    <li>
+                                        { t(
+                                            "extensions:manage.serverConfigurations.accountSecurity." +
+                                            "botDetection.info.subSection4"
+                                        ) }
+                                    </li>
+                                )
+                            }
                             <li>
                                 { t(
                                     "extensions:manage.serverConfigurations.accountSecurity." +
