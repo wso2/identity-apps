@@ -3631,7 +3631,7 @@ export const extensions: Extensions = {
                         heading: "This will enforce reCAPTCHA validation in respective UIs of the following flows.",
                         subSection1: "Login to business applications",
                         subSection2: "Recover the password of a user account",
-                        subSection3: "Self registration for user accounts", 
+                        subSection3: "Self registration for user accounts",
                         subSection4: "Recover the username of a user account"
                     },
                     connectorDescription: "Enable reCAPTCHA for the organization.",
