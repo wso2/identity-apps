@@ -54,7 +54,7 @@ import {
     ContextUtils
 } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { getProfileInformation } from "../store/actions";
@@ -119,15 +119,16 @@ const useSignIn = (): UseSignInInterface => {
         removeUserOrgInLocalStorage
     } = useOrganizations();
 
+    const disabledBrandingFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.branding?.disabledFeatures);
+
     /**
      * Resolves and sets the custom server host.
      *
      * @param orgType - Type of the organization. Ex: sub organization, etc.
      */
     const setCustomServerHost = (orgType: string): void => {
-        const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
-
-        if (!disabledFeatures?.includes("branding.hostnameUrlBranding")) {
+        if (!disabledBrandingFeatures?.includes("branding.hostnameUrlBranding")) {
             axios
                 .get(Config.getServiceResourceEndpoints().wellKnown)
                 .then((response: AxiosResponse) => {
@@ -203,9 +204,7 @@ const useSignIn = (): UseSignInInterface => {
      * @param wellKnownEndpoint - Wellknown discovery endpoint.
      */
     const setLegacyCustomServerHost = (orgType: string, wellKnownEndpoint: string): void => {
-        const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
-
-        if (disabledFeatures?.includes("branding.hostnameUrlBranding")) {
+        if (disabledBrandingFeatures?.includes("branding.hostnameUrlBranding")) {
             return;
         }
 
