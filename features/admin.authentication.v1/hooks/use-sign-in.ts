@@ -54,7 +54,7 @@ import {
     ContextUtils
 } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { getProfileInformation } from "../store/actions";
@@ -119,44 +119,81 @@ const useSignIn = (): UseSignInInterface => {
         removeUserOrgInLocalStorage
     } = useOrganizations();
 
+    const disabledBrandingFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.branding?.disabledFeatures);
+
     /**
      * Resolves and sets the custom server host.
      *
      * @param orgType - Type of the organization. Ex: sub organization, etc.
      */
     const setCustomServerHost = (orgType: string): void => {
-        // In case of failure customServerHost is set to the serverHost.
-        let customServerHost: string = Config?.getDeploymentConfig()?.serverHost;
+        if (!disabledBrandingFeatures?.includes("branding.hostnameUrlBranding")) {
+            axios
+                .get(Config.getServiceResourceEndpoints().wellKnown)
+                .then((response: AxiosResponse) => {
+                    // Use token endpoint to extract the host url.
+                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
 
-        const isSuperTenant: boolean = window["AppUtils"]?.isSuperTenant();
-        const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
-            window["AppUtils"]?.getConfig()?.organizationName.length > 0;
+                    let serverHost: string = splitted?.slice(0, -2)?.join("/");
 
-        if (!window["AppUtils"]?.getConfig()?.tenantContext?.requireSuperTenantInUrls && isSuperTenant) {
-            // Removing super tenant from the server host.
-            const customServerHostSplit: string[] = customServerHost?.split("/t/");
+                    if (orgType === OrganizationType.SUBORGANIZATION) {
+                        serverHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
+                            window["AppUtils"]?.getConfig()?.organizationPrefix
+                        }/${window["AppUtils"]?.getConfig()?.organizationName}`;
+                    }
 
-            if (customServerHostSplit?.length > 0) {
-                customServerHost = customServerHostSplit[0];
+                    window["AppUtils"]?.updateCustomServerHost(serverHost);
+                })
+                .catch((error: any) => {
+                    // In case of failure customServerHost is set to the serverHost.
+                    window["AppUtils"]?.updateCustomServerHost(Config?.getDeploymentConfig()?.serverHost);
+
+                    throw error;
+                })
+                .finally(() => {
+                    // Update store with custom server host.
+                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
+
+                    // Set the deployment configs in the context.
+                    setDeploymentConfig(Config?.getDeploymentConfig());
+
+                    // Update runtime configurations.
+                    ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
+                });
+        } else {
+            // Resolve the custom server host based on server host if the hostname branding is disabled.
+            let customServerHost: string = Config?.getDeploymentConfig()?.serverHost;
+            const isSuperTenant: boolean = window["AppUtils"]?.isSuperTenant();
+            const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
+                window["AppUtils"]?.getConfig()?.organizationName.length > 0;
+
+            if (!window["AppUtils"]?.getConfig()?.tenantContext?.requireSuperTenantInUrls && isSuperTenant) {
+                // Removing super tenant from the server host.
+                const customServerHostSplit: string[] = customServerHost?.split("/t/");
+
+                if (customServerHostSplit?.length > 0) {
+                    customServerHost = customServerHostSplit[0];
+                }
             }
+
+            if (isSubOrganization) {
+                customServerHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
+                    window["AppUtils"]?.getConfig()?.organizationPrefix}/${
+                    window["AppUtils"]?.getConfig()?.organizationName}`;
+            }
+
+            window["AppUtils"]?.updateCustomServerHost(customServerHost);
+
+            // Update store with custom server host.
+            dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
+
+            // Set the deployment configs in the context.
+            setDeploymentConfig(Config?.getDeploymentConfig());
+
+            // Update runtime configurations.
+            ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
         }
-
-        if (isSubOrganization) {
-            customServerHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
-                window["AppUtils"]?.getConfig()?.organizationPrefix}/${
-                window["AppUtils"]?.getConfig()?.organizationName}`;
-        }
-
-        window["AppUtils"]?.updateCustomServerHost(customServerHost);
-
-        // Update store with custom server host.
-        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
-
-        // Set the deployment configs in the context.
-        setDeploymentConfig(Config?.getDeploymentConfig());
-
-        // Update runtime configurations.
-        ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
     };
 
     /**
@@ -167,9 +204,7 @@ const useSignIn = (): UseSignInInterface => {
      * @param wellKnownEndpoint - Wellknown discovery endpoint.
      */
     const setLegacyCustomServerHost = (orgType: string, wellKnownEndpoint: string): void => {
-        const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
-
-        if (disabledFeatures?.includes("branding.hostnameUrlBranding")) {
+        if (disabledBrandingFeatures?.includes("branding.hostnameUrlBranding")) {
             return;
         }
 
