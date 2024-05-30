@@ -253,9 +253,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                     size="mini"
                                     twoTone={ true }
                                     transparent={ true }
-                                    square={ true }
-                                    rounded={ true }
-                                    relaxed={ true }
+                                    shape={ "rounded" }
                                 />
                             </List.Content>
                             <List.Content>
@@ -264,7 +262,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                 }</List.Header>
                                 <List.Description>
                                     {
-                                        mobile || mobile !== "" ?
+                                        mobile ?
                                             t("myAccount:components.accountRecovery.SMSRecovery.descriptions.update",
                                                 { mobile: mobile ? maskMobile(mobile) : "" })
                                             : (
