@@ -311,9 +311,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
                     && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
                 );
-                appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
-                appList.totalResults = appList.totalResults -
-                    (applicationList.applications.length - appList.applications.length);
             }
 
             // Remove the M2M application from the application list if the legacy authz runtime is enabled.
@@ -321,10 +318,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
                     item.templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                 );
-                appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
-                appList.totalResults = appList.totalResults -
-                    (applicationList.applications.length - appList.applications.length);
             }
+
+            appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
+            appList.totalResults = appList.totalResults -
+                (applicationList.applications.length - appList.applications.length);
 
             setFilteredApplicationList(appList);
         }
