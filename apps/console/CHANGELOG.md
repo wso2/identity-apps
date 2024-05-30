@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.19.10
+
+### Patch Changes
+
+- [#6386](https://github.com/wso2/identity-apps/pull/6386) [`ad5bef4a810b73c8f8b2093ee480972f6e2b14fc`](https://github.com/wso2/identity-apps/commit/ad5bef4a810b73c8f8b2093ee480972f6e2b14fc) Thanks [@brionmario](https://github.com/brionmario)! - Trigger release
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.12
+  - @wso2is/admin.extensions.v1@2.20.12
+  - @wso2is/admin.organizations.v1@2.20.12
+  - @wso2is/admin.authentication.v1@2.20.12
+
 ## 2.19.9
 
 ### Patch Changes
