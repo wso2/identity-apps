@@ -91,6 +91,11 @@ export class RoleConstants {
      * filter query for audience type organization.
      */
     public static readonly ROLE_AUDIENCE_ORGANIZATION_FILTER: string = "audience.type eq organization";
+
+    /**
+     * Users tab in the Roles section.
+     */
+    public static readonly USERS_TAB: string = "usersTab";
 }
 
 /**
