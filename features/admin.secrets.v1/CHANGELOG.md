@@ -1,5 +1,12 @@
 # @wso2is/admin.secrets.v1
 
+## 2.20.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.11
+
 ## 2.20.10
 
 ### Patch Changes
