@@ -118,8 +118,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 ): ReactElement => {
 
     const {
-        [ "data-testid" ]: testId,
-        [ "data-componentid"]: componentId
+        [ "data-testid" ]: testId
     } = props;
 
     const { legacyAuthzRuntime } = useAuthorization();
@@ -562,10 +561,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
                 filteredApplicationList?.totalResults > 0) ? (
                     <>
-                        { /* TODO : Check tenant admin access control */ }
                         <Show when={ featureConfig?.applications?.scopes?.create }>
                             <Button
-                                data-componentid={ `applications-settings-button` }
+                                data-componentid={ "applications-settings-button" }
                                 icon="setting"
                                 onClick={ handleSettingsButton }
                             >
@@ -587,10 +585,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         </Show>
                     </>
                 ) : (
-            // TODO : Check tenant admin access control
                     <Show when={ featureConfig?.applications?.scopes?.create }>
                         <Button
-                            data-componentid={ `applications-settings-button` }
+                            data-componentid={ "applications-settings-button" }
                             icon="setting"
                             onClick={ handleSettingsButton }
                         >
