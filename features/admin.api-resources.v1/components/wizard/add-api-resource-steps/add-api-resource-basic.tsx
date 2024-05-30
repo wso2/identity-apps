@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Field, FormField, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
@@ -23,8 +25,6 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AppState } from "../../../../admin.core.v1/store";
-import { ExtendedFeatureConfigInterface } from "../../../../admin.extensions.v1/configs/models";
 import { getAPIResourcesForIdenitifierValidation } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
 import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../models";

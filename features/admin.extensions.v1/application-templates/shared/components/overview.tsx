@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,22 +16,22 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, GenericIconProps, Heading, PageHeader } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Card, Grid, Radio } from "semantic-ui-react";
-import { getApplicationList } from "../../../../admin.applications.v1/api";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
 import {
     ApplicationInterface,
     ApplicationListInterface,
     InboundProtocolListItemInterface,
     URLFragmentTypes
-} from "../../../../admin.applications.v1/models";
-import { EventPublisher, history } from "../../../../admin.core.v1";
-import { QuickStartModes } from "../models";
-import { useDispatch } from "react-redux";
+} from "@wso2is/admin.applications.v1/models";
+import { EventPublisher, history } from "@wso2is/admin.core.v1";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { GenericIcon, GenericIconProps, Heading, PageHeader } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Card, Grid, Radio } from "semantic-ui-react";
+import { QuickStartModes } from "../models";
 
 /**
  * Proptypes for the applications help panel overview component.
@@ -121,12 +121,13 @@ export const QuickStartPanelOverview: FunctionComponent<QuickStartPanelOverviewP
             if (appList?.applications?.length > 1) {
                 setSelectedIntegration(QuickStartModes.INTEGRATE);
                 handleIntegrateSelection(QuickStartModes.INTEGRATE);
+
                 return;
             }
             setSelectedIntegration(QuickStartModes.SAMPLES);
             handleIntegrateSelection(QuickStartModes.SAMPLES);
         }
-    }, [appList]);
+    }, [ appList ]);
 
     /**
      * Called when the integration type changes
@@ -239,7 +240,7 @@ export const QuickStartPanelOverview: FunctionComponent<QuickStartPanelOverviewP
                                                     selectedIntegration === QuickStartModes.INTEGRATE
                                                         ? "card-selected"
                                                         : ""
-                                                    }`
+                                                }`
                                             }
                                             data-testid="integration-mode-selection-card"
                                         >
@@ -286,7 +287,7 @@ export const QuickStartPanelOverview: FunctionComponent<QuickStartPanelOverviewP
                                                     selectedIntegration === QuickStartModes.SAMPLES
                                                         ? "card-selected"
                                                         : ""
-                                                    }`
+                                                }`
                                             }
                                             data-testid="try-out-mode-selection-card"
                                         >

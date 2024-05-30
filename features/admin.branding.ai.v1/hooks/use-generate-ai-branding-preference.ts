@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1";
+import { store } from "@wso2is/admin.core.v1/store";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -23,10 +27,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import useAIBrandingPreference from "./use-ai-branding-preference";
-import { AppConstants } from "../../admin.core.v1";
-import { store } from "../../admin.core.v1/store";
-import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import generateBrandingPreference from "../api/generate-ai-branding-preference";
 import { GenerateBrandingAPIResponseInterface } from "../models/branding-preferences";
 

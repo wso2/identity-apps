@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import { AppConstants, store } from "@wso2is/admin.core.v1";
+import { ExtensionsManager, identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import {
+    EnterpriseIdentityProviderTemplateExtension
+} from "@wso2is/admin.extensions.v1/configs/identity-providers-templates";
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
 import values from "lodash-es/values";
@@ -38,11 +43,6 @@ import OrganizationEnterpriseIDPTemplate from
     "./templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdentityProviderTemplate
     from "./templates/saml-identity-provider/enterprise-saml-identity-provider.json";
-import { ExtensionsManager, identityProviderConfig } from "../../../admin.extensions.v1";
-import {
-    EnterpriseIdentityProviderTemplateExtension
-} from "../../../admin.extensions.v1/configs/identity-providers-templates";
-import { AppConstants, store } from "../../../admin.core.v1";
 import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
 
 /**

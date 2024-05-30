@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GridLayout, PageLayout, Section } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { ExtendedFeatureConfigInterface } from "../admin.extensions.v1/configs/models";
-import { AppConstants, AppState, history } from "../admin.core.v1";
 
 /**
  * Parent role page props interface
@@ -72,7 +72,7 @@ const ParentRolePage = (props: ParentRolePagePropsInterface): ReactElement => {
                                         primaryAction={ t("common:configure") }
                                     >
                                         <Divider hidden/>
-                                    </Section>      
+                                    </Section>
                                 </Grid.Column>
                             </Grid.Row>
                             <Divider hidden/>
@@ -92,7 +92,7 @@ const ParentRolePage = (props: ParentRolePagePropsInterface): ReactElement => {
                                     primaryAction={ t("common:configure") }
                                 >
                                     <Divider hidden/>
-                                </Section>      
+                                </Section>
                             </Grid.Column>
                         </Grid.Row>
                     )

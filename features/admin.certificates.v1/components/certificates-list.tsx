@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -49,7 +50,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Modal, SemanticICONS } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../admin.core.v1";
 import {
     deleteKeystoreCertificate,
     retrieveCertificateAlias,

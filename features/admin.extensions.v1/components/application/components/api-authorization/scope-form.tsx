@@ -17,6 +17,7 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
+import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -35,7 +36,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Header } from "semantic-ui-react";
 import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
-import { APIResourcesConstants } from "../../../../../admin.api-resources.v1/constants";
 import { patchScopesOfAPIResource } from "../../api";
 import { AuthorizedAPIListItemInterface, AuthorizedPermissionListItemInterface } from "../../models";
 

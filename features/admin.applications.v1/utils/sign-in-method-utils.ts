@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import flatten from "lodash-es/flatten";
 import {
     IdentityProviderManagementConstants
-} from "../../admin.identity-providers.v1/constants/identity-provider-management-constants";
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import {
     GenericAuthenticatorInterface,
     ProvisioningInterface
-} from "../../admin.identity-providers.v1/models/identity-provider";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import flatten from "lodash-es/flatten";
 import { ApplicationManagementConstants } from "../constants";
 import {
     AuthenticationStepInterface,

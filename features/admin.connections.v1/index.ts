@@ -69,6 +69,4 @@ export * from "./models/endpoints";
  */
 export * from "./pages/connection-templates";
 export * from "./pages/connections";
-
-
-
+export * from "./pages/connection-edit";

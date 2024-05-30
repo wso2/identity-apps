@@ -1,5 +1,141 @@
 # @wso2is/myaccount
 
+## 2.7.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.20.8
+  - @wso2is/common.branding.v1@2.20.8
+
+## 2.7.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.20.7
+  - @wso2is/common.branding.v1@2.20.7
+
+## 2.7.3
+
+### Patch Changes
+
+- Updated dependencies [[`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85)]:
+  - @wso2is/i18n@2.3.6
+  - @wso2is/admin.organizations.v1@2.20.6
+  - @wso2is/common.branding.v1@2.20.6
+
+## 2.7.2
+
+### Patch Changes
+
+- Updated dependencies [[`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471)]:
+  - @wso2is/i18n@2.3.5
+  - @wso2is/admin.organizations.v1@2.20.5
+  - @wso2is/common.branding.v1@2.20.5
+
+## 2.7.1
+
+### Patch Changes
+
+- [#6352](https://github.com/wso2/identity-apps/pull/6352) [`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e) Thanks [@savindi7](https://github.com/savindi7)! - Fix header text wrap issue in resource card.
+
+- Updated dependencies [[`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e)]:
+  - @wso2is/theme@2.0.85
+  - @wso2is/react-components@2.2.7
+  - @wso2is/admin.organizations.v1@2.20.4
+  - @wso2is/common.branding.v1@2.20.4
+
+## 2.7.0
+
+### Minor Changes
+
+- [#6334](https://github.com/wso2/identity-apps/pull/6334) [`ac7614608349cd16112c314d5cbdda8f963ef253`](https://github.com/wso2/identity-apps/commit/ac7614608349cd16112c314d5cbdda8f963ef253) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Standardize import paths by changing from `@wso2is/feature` to individual package names.
+
+## 2.6.7
+
+### Patch Changes
+
+- Updated dependencies [[`de4201d75c779ee49c5bea1a63955f88f4b6b966`](https://github.com/wso2/identity-apps/commit/de4201d75c779ee49c5bea1a63955f88f4b6b966)]:
+  - @wso2is/features@2.21.3
+
+## 2.6.6
+
+### Patch Changes
+
+- [#6243](https://github.com/wso2/identity-apps/pull/6243) [`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update asgardeo react sdk version
+
+- Updated dependencies [[`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717)]:
+  - @wso2is/core@2.0.48
+  - @wso2is/features@2.21.2
+  - @wso2is/access-control@3.0.8
+  - @wso2is/forms@2.0.38
+  - @wso2is/i18n@2.3.4
+  - @wso2is/react-components@2.2.6
+
+## 2.6.5
+
+### Patch Changes
+
+- Updated dependencies [[`5903ba0d6174e7755299b15f195e4c696ac5543f`](https://github.com/wso2/identity-apps/commit/5903ba0d6174e7755299b15f195e4c696ac5543f)]:
+  - @wso2is/features@2.21.1
+
+## 2.6.4
+
+### Patch Changes
+
+- Updated dependencies [[`a48348d610accf5e6d946579c71475a79bb7a0f8`](https://github.com/wso2/identity-apps/commit/a48348d610accf5e6d946579c71475a79bb7a0f8)]:
+  - @wso2is/features@2.21.0
+
+## 2.6.3
+
+### Patch Changes
+
+- [#6268](https://github.com/wso2/identity-apps/pull/6268) [`e778be5d52269b152402be101ee29eb102b379a3`](https://github.com/wso2/identity-apps/commit/e778be5d52269b152402be101ee29eb102b379a3) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n keys in myaccount recovery section error notifications
+
+- Updated dependencies [[`2c748278a1c389549fece5d77f29d79e9d0c3447`](https://github.com/wso2/identity-apps/commit/2c748278a1c389549fece5d77f29d79e9d0c3447)]:
+  - @wso2is/features@2.20.3
+
+## 2.6.2
+
+### Patch Changes
+
+- Updated dependencies [[`ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c`](https://github.com/wso2/identity-apps/commit/ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c)]:
+  - @wso2is/core@2.0.47
+  - @wso2is/features@2.20.2
+  - @wso2is/access-control@3.0.7
+  - @wso2is/forms@2.0.37
+  - @wso2is/i18n@2.3.3
+  - @wso2is/react-components@2.2.5
+
+## 2.6.1
+
+### Patch Changes
+
+- Updated dependencies [[`57974f4691aad11a9cdf13d03a2526c160936e8d`](https://github.com/wso2/identity-apps/commit/57974f4691aad11a9cdf13d03a2526c160936e8d)]:
+  - @wso2is/theme@2.0.84
+  - @wso2is/features@2.20.1
+  - @wso2is/react-components@2.2.4
+
+## 2.6.0
+
+### Minor Changes
+
+- [#6173](https://github.com/wso2/identity-apps/pull/6173) [`e2b5ed49a2bb54d7711277f4c885b7464c8baede`](https://github.com/wso2/identity-apps/commit/e2b5ed49a2bb54d7711277f4c885b7464c8baede) Thanks [@jathushan-r](https://github.com/jathushan-r)! - identified issue regarding inconsistent branding and styling when utilizing both Oxygen-UI and Semantic UI React. The implementation introduces a ThemeProvider within common.branding.v1. injecting CSS
+
+### Patch Changes
+
+- Updated dependencies [[`e2b5ed49a2bb54d7711277f4c885b7464c8baede`](https://github.com/wso2/identity-apps/commit/e2b5ed49a2bb54d7711277f4c885b7464c8baede)]:
+  - @wso2is/features@2.20.0
+
+## 2.5.99
+
+### Patch Changes
+
+- Updated dependencies [[`cedfc758ce1fda3322842cf95525f6a86cbe6876`](https://github.com/wso2/identity-apps/commit/cedfc758ce1fda3322842cf95525f6a86cbe6876), [`dc00bfc3597af3a24873dbd7e661e030fc5e7696`](https://github.com/wso2/identity-apps/commit/dc00bfc3597af3a24873dbd7e661e030fc5e7696), [`6d99d83e90ad34e92acbddfe2d4b72e704848a87`](https://github.com/wso2/identity-apps/commit/6d99d83e90ad34e92acbddfe2d4b72e704848a87), [`284d29a9855f9748ba087073e8204f8197d4c05b`](https://github.com/wso2/identity-apps/commit/284d29a9855f9748ba087073e8204f8197d4c05b), [`1217047ab9d3a74df5250153a7a1916b3d6b8762`](https://github.com/wso2/identity-apps/commit/1217047ab9d3a74df5250153a7a1916b3d6b8762)]:
+  - @wso2is/features@2.19.5
+  - @wso2is/i18n@2.3.2
+
 ## 2.5.98
 
 ### Patch Changes

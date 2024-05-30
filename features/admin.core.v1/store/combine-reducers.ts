@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,9 @@
  */
 
 import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
+import { applicationReducer } from "@wso2is/admin.applications.v1/store";
+import { commonAuthenticateReducerInitialState } from "@wso2is/admin.authentication.v1/store";
+import { identityProviderReducer } from "@wso2is/admin.identity-providers.v1/store";
 import {
     LinkedAccountInterface,
     ProfileInfoInterface,
@@ -41,9 +44,6 @@ import {
     organizationReducer
 } from "./reducers";
 import { routeReducer } from "./reducers/routes";
-import { applicationReducer } from "../../admin.applications.v1/store";
-import { commonAuthenticateReducerInitialState } from "../../admin.authentication.v1/store";
-import { identityProviderReducer } from "../../admin.identity-providers.v1/store";
 import {
     AuthReducerStateInterface,
     DeploymentConfigInterface,

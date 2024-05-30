@@ -16,13 +16,6 @@
  * under the License.
  */
 
-import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { StringUtils } from "@wso2is/core/utils";
-import isEmpty from "lodash-es/isEmpty";
-import { LAYOUTS } from "./layouts";
-import { THEMES, THEME_SWATCH_UI_CONFIGS } from "./themes";
-import { ThemeSwatchUIConfigsInterface } from "../components";
-import { BrandingPreferencesConstants } from "../constants";
 import {
     BrandingPreferenceImagesInterface,
     BrandingPreferenceOrganizationDetailsInterface,
@@ -30,7 +23,14 @@ import {
     DynamicBrandingPreferenceLayoutInterface,
     DynamicBrandingPreferenceThemeInterface,
     PredefinedThemes
-} from "../models";
+} from "@wso2is/common.branding.v1/models";
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { StringUtils } from "@wso2is/core/utils";
+import isEmpty from "lodash-es/isEmpty";
+import { LAYOUTS } from "./layouts";
+import { THEMES, THEME_SWATCH_UI_CONFIGS } from "./themes";
+import { ThemeSwatchUIConfigsInterface } from "../components";
+import { BrandingPreferencesConstants } from "../constants";
 
 /**
  * Class for the Branding Preference Metadata.
@@ -93,8 +93,11 @@ export class BrandingPreferenceMeta {
                             imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath ?? "")
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.
-                                ui?.appLogo?.defaultLogoPath ?? "")
+                            imgURL: getAbsoluteLogoPath(
+                                window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultLogoPath ??
+                                window[ "AppUtils" ].getConfig().ui.appLogoPath ??
+                                ""
+                            )
                         }
                     }
                 },
@@ -107,8 +110,11 @@ export class BrandingPreferenceMeta {
                             imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appWhiteLogoPath ?? "")
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.
-                                ui?.appLogo?.defaultWhiteLogoPath ?? "")
+                            imgURL: getAbsoluteLogoPath(
+                                window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultWhiteLogoPath ??
+                                window[ "AppUtils" ].getConfig().ui.appWhiteLogoPath ??
+                                ""
+                            )
                         }
                     }
                 }

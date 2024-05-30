@@ -16,7 +16,18 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
+import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { OutboundProvisioningConnectorInterface } from "@wso2is/admin.connections.v1/models/connection";
+import {
+    AppConstants,
+    AppState,
+    AuthenticatorAccordion,
+    FeatureConfigInterface,
+    history
+} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
+import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -33,17 +44,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Icon, Segment } from "semantic-ui-react";
-import { OutboundProvisioningConfigurationInterface } from "../../admin.applications.v1/models/application";
-import { OutboundProvisioningConnectorInterface } from "../../admin.connections.v1/models/connection";
-import {
-    AppConstants,
-    AppState,
-    AuthenticatorAccordion,
-    FeatureConfigInterface,
-    history
-} from "../../admin.core.v1";
-import { useIdentityProviderList } from "../../admin.identity-providers.v1/api/identity-provider";
-import { IdentityProviderInterface } from "../../admin.identity-providers.v1/models/identity-provider";
 import { updateResidentApplicationOutboundProvisioningList } from "../api/outbound-provisioning";
 import {
     useGetResidentApplicationOutboundProvisioningConnectors

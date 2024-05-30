@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { BrandingPreferenceInterface, PreviewScreenType } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
@@ -23,6 +24,7 @@ import React, {
 } from "react";
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import CommonFragment from "./fragments/common-fragment";
+import EmailLinkExpiryFragment from "./fragments/email-link-expiry-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
 import PasswordRecoveryFragment from "./fragments/password-recovery-fragment";
 import PasswordResetFragment from "./fragments/password-reset-fragment";
@@ -31,7 +33,6 @@ import SignUpFragment from "./fragments/sign-up-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
 import useBrandingPreference from "../../../hooks/use-branding-preference";
-import { BrandingPreferenceInterface, PreviewScreenType } from "../../../models";
 
 /**
  * Proptypes for the login box component of login screen skeleton.
@@ -78,6 +79,8 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
             return <PasswordResetFragment />;
         } else if (selectedScreen === PreviewScreenType.PASSWORD_RESET_SUCCESS) {
             return <PasswordResetSuccessFragment />;
+        } else if (selectedScreen === PreviewScreenType.EMAIL_LINK_EXPIRY) {
+            return <EmailLinkExpiryFragment />;
         }
     };
 

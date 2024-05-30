@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../../admin.core.v1";
 import { getAPIResourcePermissions } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
 import { APIResourcePermissionInterface } from "../../../models";

@@ -17,6 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
+import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import {
@@ -31,7 +32,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 import { AddAPIResourcePermission } from "../wizard";
 

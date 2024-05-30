@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import { createApplication, getApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationListInterface, MainApplicationInterface } from "@wso2is/admin.applications.v1/models";
+import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { getUserDetails } from "@wso2is/admin.users.v1/api/users";
+import { AddConsumerUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-consumer-user-wizard";
 import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -33,13 +40,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, List, Modal } from "semantic-ui-react";
-import { createApplication, getApplicationList } from "../../../../admin.applications.v1/api";
-import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
-import { ApplicationListInterface, MainApplicationInterface } from "../../../../admin.applications.v1/models";
-import { AppState, EventPublisher } from "../../../../admin.core.v1";
-import { TierLimitReachErrorModal } from "../../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
-import { getUserDetails } from "../../../../admin.users.v1/api/users";
-import { AddConsumerUserWizard } from "../../../../admin.users.v1/components/wizard/add-consumer-user-wizard";
 import LoginApplicationTemplate from
     "../../../application-templates/templates/single-page-application/login-playground-application.json";
 import InformationIcon from "../../../assets/images/illustrations/information-icon.svg";
@@ -47,7 +47,7 @@ import { getTryItClientId } from "../../application/utils/try-it-utils";
 
 /**
   * Prop types of the `LoginPlaygroundWizard` component.
-  */ 
+  */
 interface LoginPlaygroundWizardPropsInterface extends TestableComponentInterface {
      closeWizard: () => void;
      applicationName: string;
@@ -87,10 +87,10 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    
+
     let response: ApplicationListInterface = null;
 
-    
+
     const addNewUser = (id: string) => {
         setIsLoading(true);
         getUserDetails(id, null)
@@ -120,12 +120,12 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
                     <ContentLoader
                         dimmer
                         size="small"
-                        text="Taking you to the Application ..." 
+                        text="Taking you to the Application ..."
                     />
                 </Modal.Content>
             );
         };
-        
+
         const renderApplicationCreatingScreen = (): ReactElement => {
             return (
                 <Modal.Content className="loading-modal">
@@ -148,7 +148,7 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
 
         return  (
             <Fragment>
-                <Modal.Content className={ "modal-content" }>        
+                <Modal.Content className={ "modal-content" }>
                     <Grid centered columns={ 1 } className="playground-wizard-grid" >
                         <Grid.Row textAlign="center">
                             <Grid.Column stretched width={ "16" }>
@@ -160,24 +160,24 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
                                     spaced={ "right" }
                                     data-testid={ `${ testId }-image` }
                                 />
-                            </Grid.Column>  
+                            </Grid.Column>
                         </Grid.Row>
                         <Grid.Row >
                             <Grid.Column stretched width={ "16" }>
-                                { isUserAdded 
+                                { isUserAdded
                                     ? ( <Heading textAlign="center" as="h1">Almost there!</Heading>)
                                     : <Heading textAlign="center" as="h1">Get Set</Heading>
                                 }
-                            </Grid.Column>  
+                            </Grid.Column>
                         </Grid.Row>
                         <Grid.Row className="row">
                             <Grid.Column stretched textAlign="center" width={ "16" }>
-                                { isLoading 
+                                { isLoading
                                     ? (
                                         <ContentLoader/>
                                     )
                                     : (<>
-                                        { isUserAdded ? 
+                                        { isUserAdded ?
                                             ( <>
                                                 {
                                                     isLoading ? (
@@ -200,20 +200,20 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
                                                                         <Divider hidden />
                                                                     </List.Item>
                                                                 </>
-                                                            
+
                                                             );
                                                         })
                                                 }
                                                 <Text>Next, we will create the Try It application in your organization.
                                                     You can later change the login flow of this application and
                                                     try different login flows with Asgardeo. Click { " " }
-                                                <Text weight="bold" inline> Continue</Text> 
+                                                <Text weight="bold" inline> Continue</Text>
                                                 { " " }to proceed. </Text>
                                                 <List className="add-user-step-list">
-                                                    
+
                                                 </List>
                                             </>
-                                            ) : 
+                                            ) :
                                             (
                                                 <>
                                                     <Text>You are about to experience user login with Asgardeo.
@@ -227,7 +227,7 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
                                                             } }
                                                         >creating a user
                                                         </a>
-                                                        { " " } in this organization. If you already have an account, 
+                                                        { " " } in this organization. If you already have an account,
                                                         click { " " }<Text weight="bold" inline> Continue</Text>
                                                     </Text>
                                                 </>
@@ -235,7 +235,7 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
                                         }
                                     </>)
                                 }
-                            </Grid.Column>  
+                            </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </Modal.Content>
@@ -282,9 +282,9 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
 
             return;
         }
-        
+
         setShowApplicationCreationScreen(true);
-        
+
         const modifiedApplication: MainApplicationInterface = cloneDeep(LoginApplicationTemplate.application);
 
         modifiedApplication.inboundProtocolConfiguration.oidc.clientId = tryItAppClientId;
@@ -305,12 +305,12 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
                          * Navigate to the created playground application
                          */
                         //TODO handle with url builder
-                        window.open(asgardeoLoginPlaygroundURL 
+                        window.open(asgardeoLoginPlaygroundURL
                             + "?client_id="+getTryItClientId(tenantDomain)+ "&org=" + tenantDomain);
                         onApplicationCreate();
                         closeWizard();
                     }, INTERMITTENT_REDIRECTION_TIMEOUT);
-                    
+
                     return;
                 }
                 //TODO handle error
@@ -386,7 +386,7 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
     };
 
     return (
-        <>  
+        <>
             { openLimitReachedModal && (
                 <TierLimitReachErrorModal
                     actionLabel={ t(
@@ -439,7 +439,7 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
                         />
                     )
                 }
-            </Modal>  
-        </>  
+            </Modal>
+        </>
     );
 };

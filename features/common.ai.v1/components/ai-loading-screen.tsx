@@ -22,6 +22,7 @@ import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Variants, motion } from "framer-motion";
 import React, { ReactElement } from "react";
@@ -29,7 +30,6 @@ import { useTranslation } from "react-i18next";
 import "./ai-loading-screen.scss";
 import { useSelector } from "react-redux";
 import AIBotAnimatedWithBackGround from "./ai-bot-animated-with-bg";
-import { AppState } from "../../admin.core.v1/store";
 import { ReactComponent as LoadingPlaceholder }
     from "../../themes/wso2is/assets/images/illustrations/ai-loading-screen-placeholder.svg";
 import { ANIMATED_BOT_FEATURE_TAG } from "../constants/ai-common-constants";

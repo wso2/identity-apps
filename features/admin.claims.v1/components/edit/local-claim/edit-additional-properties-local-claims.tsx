@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
@@ -28,7 +29,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { updateAClaim } from "../../../api";
 
 /**

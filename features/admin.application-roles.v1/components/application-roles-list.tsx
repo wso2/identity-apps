@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { ApplicationRoleInterface } from "@wso2is/admin.extensions.v1/components/groups/models";
 import {
     IdentifiableComponentInterface,
     LoadableComponentInterface
@@ -31,8 +33,6 @@ import React, { Fragment, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Grid } from "semantic-ui-react";
 import RolesList from "./roles-list";
-import { ApplicationRoleInterface } from "../../admin.extensions.v1/components/groups/models";
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
 
 interface ApplicationRolesListProps extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**
@@ -74,7 +74,7 @@ export const ApplicationRolesList = (props: ApplicationRolesListProps): ReactEle
      *
      * @returns placeholder component.
      */
-    const showPlaceholders = (): ReactElement => {        
+    const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
         if (searchQuery && roleList?.length === 0) {
             return (
@@ -128,7 +128,7 @@ export const ApplicationRolesList = (props: ApplicationRolesListProps): ReactEle
 
     /**
      * Handle expand accordion title.
-     * 
+     *
      * @param appRole - Application role.
      */
     const handleAccordionTitleClick = (
@@ -150,9 +150,9 @@ export const ApplicationRolesList = (props: ApplicationRolesListProps): ReactEle
 
     /**
      * Renders the application roles list.
-     * 
+     *
      * @param roles - Role list.
-     * 
+     *
      * @returns Role list component.
      */
     const resolveApplicationRolesList = (filteredApplicationRoles: ApplicationRoleInterface[]): ReactElement => {
@@ -174,8 +174,8 @@ export const ApplicationRolesList = (props: ApplicationRolesListProps): ReactEle
                                             active={ expandedAssignedApplications?.includes(application.app) }
                                             accordionIndex={ application.app }
                                             className="nested-list-accordion-title mb-2 mt-1"
-                                            onClick={ 
-                                                () => 
+                                            onClick={
+                                                () =>
                                                     handleAccordionTitleClick(
                                                         application,
                                                         expandedAssignedApplications,
@@ -224,7 +224,7 @@ export const ApplicationRolesList = (props: ApplicationRolesListProps): ReactEle
                     <Accordion
                         data-componentid={ `${ componentId }-application-roles` }
                     >
-                        { 
+                        {
                             resolveApplicationRolesList(
                                 roleList
                             )

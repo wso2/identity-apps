@@ -1,5 +1,39 @@
 # @wso2is/i18n
 
+## 2.3.6
+
+### Patch Changes
+
+- [#6361](https://github.com/wso2/identity-apps/pull/6361) [`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add support to enable & disable apps
+
+## 2.3.5
+
+### Patch Changes
+
+- [#6335](https://github.com/wso2/identity-apps/pull/6335) [`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add support to change application status
+
+## 2.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717)]:
+  - @wso2is/core@2.0.48
+
+## 2.3.3
+
+### Patch Changes
+
+- Updated dependencies [[`ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c`](https://github.com/wso2/identity-apps/commit/ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c)]:
+  - @wso2is/core@2.0.47
+
+## 2.3.2
+
+### Patch Changes
+
+- [#6276](https://github.com/wso2/identity-apps/pull/6276) [`dc00bfc3597af3a24873dbd7e661e030fc5e7696`](https://github.com/wso2/identity-apps/commit/dc00bfc3597af3a24873dbd7e661e030fc5e7696) Thanks [@savindi7](https://github.com/savindi7)! - Add branding for the message in email link expiry page.
+
+* [#6278](https://github.com/wso2/identity-apps/pull/6278) [`6d99d83e90ad34e92acbddfe2d4b72e704848a87`](https://github.com/wso2/identity-apps/commit/6d99d83e90ad34e92acbddfe2d4b72e704848a87) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Reverting Update recovery portal to support SMS OTP based password recovery
+
 ## 2.3.1
 
 ### Patch Changes

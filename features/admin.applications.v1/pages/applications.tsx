@@ -17,6 +17,23 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    getGeneralIcons,
+    history
+} from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -54,22 +71,6 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    getGeneralIcons,
-    history
-} from "../../admin.core.v1";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../admin.extensions.v1";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
 import { ApplicationList } from "../components/application-list";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
@@ -121,6 +122,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         [ "data-componentid"]: componentId
     } = props;
 
+    const { legacyAuthzRuntime } = useAuthorization();
+
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
@@ -129,7 +132,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.applications?.disabledFeatures;
     });
@@ -624,13 +626,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         >
             {
                 (
-                    isSAASDeployment
+                    legacyAuthzRuntime
                     || (
                         !isMyAccountApplicationDataFetchRequestLoading
                         && myAccountApplicationData?.applications?.length !== 0
                     )
-                )
-                && renderTenantedMyAccountLink()
+                ) && renderTenantedMyAccountLink()
             }
             <ListLayout
                 advancedSearch={ (

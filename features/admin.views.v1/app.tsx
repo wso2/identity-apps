@@ -21,6 +21,26 @@ import AppShell from "@oxygen-ui/react/AppShell";
 import Navbar, { NavbarItems } from "@oxygen-ui/react/Navbar";
 import Snackbar from "@oxygen-ui/react/Snackbar";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
+import {
+    AppConstants,
+    AppState,
+    AppUtils,
+    AppViewTypes,
+    ConfigReducerStateInterface,
+    Header,
+    ProtectedRoute,
+    RouteUtils,
+    StrictAppViewTypes,
+    UIConstants,
+    getAppViewRoutes,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { setActiveView } from "@wso2is/admin.core.v1/store/actions";
+import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import {
     AlertInterface,
     AnnouncementBannerInterface,
@@ -61,26 +81,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
-import { applicationConfig } from "../admin.extensions.v1";
-import { FeatureGateConstants } from "../admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { getProfileInformation } from "../admin.authentication.v1/store";
-import {
-    AppConstants,
-    AppState,
-    AppUtils,
-    AppViewTypes,
-    ConfigReducerStateInterface,
-    Header,
-    ProtectedRoute,
-    RouteUtils,
-    StrictAppViewTypes,
-    UIConstants,
-    getAppViewRoutes,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../admin.core.v1";
-import { setActiveView } from "../admin.core.v1/store/actions";
-import { CommonUtils as ConsoleCommonUtils } from "../admin.core.v1/utils";
 
 /**
  * Parent component for Admin features inherited from Dashboard layout skeleton.

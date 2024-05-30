@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenant-constants";
+import useAppSettings from "@wso2is/admin.core.v1/hooks/use-app-settings";
 import { useContext } from "react";
-import { MultitenantConstants } from "../../admin.core.v1/constants/multitenant-constants";
-import useAppSettings from "../../admin.core.v1/hooks/use-app-settings";
 import OrganizationsContext, { OrganizationsContextProps } from "../context/organizations-context";
 
 /**

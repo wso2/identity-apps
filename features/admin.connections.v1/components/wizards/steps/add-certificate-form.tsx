@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { UploadCertificate } from "@wso2is/admin.core.v1";
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Forms } from "@wso2is/forms";
 import * as forge from "node-forge";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
-import { UploadCertificate } from "../../../../admin.core.v1";
 
 /**
  * Proptypes for the add IDP certificate form component.
@@ -41,11 +41,11 @@ interface AddIDPCertificateFormProps extends TestableComponentInterface {
 export const AddIDPCertificateFormComponent: React.FunctionComponent<AddIDPCertificateFormProps> = (
     props: AddIDPCertificateFormProps): ReactElement => {
 
-     const {
-         triggerCertificateUpload,
-         onSubmit,
-         [ "data-testid" ]: testId
-     } = props;
+    const {
+        triggerCertificateUpload,
+        onSubmit,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ name, setName ] = useState("");
     const [ fileDecoded, setFileDecoded ] = useState("");

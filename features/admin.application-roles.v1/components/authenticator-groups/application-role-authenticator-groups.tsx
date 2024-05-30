@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import {
+    AuthenticatorInterface as ApplicationAuthenticatorInterface,
+    ApplicationInterface,
+    AuthenticationStepInterface
+} from "@wso2is/admin.applications.v1/models";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { ApplicationRolesConstants } from "@wso2is/admin.extensions.v1/components/application/constants";
+import { getAuthenticators } from "@wso2is/admin.identity-providers.v1/api";
+import { AuthenticatorInterface, AuthenticatorTypes } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -25,16 +35,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthenticatorGroupsList } from "./authenticator-groups-list";
-import { ApplicationRolesConstants } from "../../../admin.extensions.v1/components/application/constants";
-import { getApplicationDetails } from "../../../admin.applications.v1/api";
-import {
-    AuthenticatorInterface as ApplicationAuthenticatorInterface,
-    ApplicationInterface,
-    AuthenticationStepInterface
-} from "../../../admin.applications.v1/models";
-import { AuthenticatorManagementConstants } from "../../../admin.connections.v1";
-import { getAuthenticators } from "../../../admin.identity-providers.v1/api";
-import { AuthenticatorInterface, AuthenticatorTypes } from "../../../admin.identity-providers.v1/models";
 
 interface ApplicationRoleAuthenticatorGroupsProps extends IdentifiableComponentInterface {
     appId: string;

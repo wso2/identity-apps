@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
-import { Config } from "../../admin.core.v1/configs";
-import { AppConstants } from "../../admin.core.v1/constants";
+import { Config } from "@wso2is/admin.core.v1/configs";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { HttpMethods } from "@wso2is/core/models";
 import { PredefinedLayouts } from "../meta";
 
 /**

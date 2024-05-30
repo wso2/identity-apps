@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { ContentLoader, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
@@ -26,7 +27,6 @@ import { RoleGroupsList } from "./edit-organization-groups";
 import { RolePermissionDetails } from "./edit-organization-permission";
 import { BasicRoleDetails } from "./edit-organization-role-basic";
 import { RoleUserDetails } from "./edit-organization-role-users";
-import { AppState, FeatureConfigInterface, history } from "../../../admin.core.v1";
 import { OrganizationRoleManagementConstants } from "../../constants";
 import { OrganizationRoleInterface } from "../../models";
 
@@ -84,9 +84,9 @@ export const EditOrganizationRole: FunctionComponent<EditRoleProps> = (props: Ed
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
-                            isReadOnly={ 
-                                isReadOnly || 
-                                roleObject?.displayName === OrganizationRoleManagementConstants.ORG_ADMIN_ROLE_NAME 
+                            isReadOnly={
+                                isReadOnly ||
+                                roleObject?.displayName === OrganizationRoleManagementConstants.ORG_ADMIN_ROLE_NAME
                             }
                             data-testid="role-mgt-edit-role-basic"
                             roleId={ roleId }
@@ -101,9 +101,9 @@ export const EditOrganizationRole: FunctionComponent<EditRoleProps> = (props: Ed
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RolePermissionDetails
-                            isReadOnly={ 
-                                isReadOnly || 
-                                roleObject?.displayName === OrganizationRoleManagementConstants.ORG_ADMIN_ROLE_NAME 
+                            isReadOnly={
+                                isReadOnly ||
+                                roleObject?.displayName === OrganizationRoleManagementConstants.ORG_ADMIN_ROLE_NAME
                             }
                             data-testid="role-mgt-edit-role-permissions"
                             isGroup={ false }

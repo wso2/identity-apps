@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { OutboundProvisioningConnectorInterface } from "@wso2is/admin.connections.v1/models/connection";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { getIdentityProviderDetail } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
+import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { OutboundProvisioningConfigurationInterface } from "../../admin.applications.v1/models/application";
-import { OutboundProvisioningConnectorInterface } from "../../admin.connections.v1/models/connection";
-import { getIdentityProviderDetail } from "../../admin.identity-providers.v1/api/identity-provider";
-import { IdentityProviderInterface } from "../../admin.identity-providers.v1/models/identity-provider";
 
 /**
  * Proptypes for the outbound provisioning connector setup form component.

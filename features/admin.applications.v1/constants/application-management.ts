@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
+import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
-import { IdentityProviderManagementConstants } from "../../admin.identity-providers.v1/constants";
-import { SupportedAuthenticators } from "../../admin.identity-providers.v1/models";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
@@ -106,6 +106,11 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_STRONG_AUTH_PARAM_KEY: string = "isSignOn";
 
     /**
+     * Value for protocol tab navigation.
+     */
+    public static readonly IS_PROTOCOL: string = "isProtocol";
+
+    /**
      * Key for the URL search param for application readonly state.
      */
     public static readonly APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY: string = "readOnly";
@@ -130,6 +135,10 @@ export class ApplicationManagementConstants {
      */
     public static readonly SIGN_IN_METHOD_TAB_URL_FRAG: string = "sign-in-method";
 
+    /**
+     * Value for protocol tab url.
+     */
+    public static readonly PROTOCOL_TAB_URL_FRAG: string = "protocol";
     /**
      * Value for application roles tab url.
      */
@@ -326,6 +335,12 @@ export class ApplicationManagementConstants {
 
     public static readonly MYACCOUNT_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while updating status of the My Account Portal.";
+
+    public static readonly APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while updating the status of the application. ";
+
+    public static readonly APPLICATION_STATUS_UPDATE_ERROR: string = "Error occurred while updating the " +
+        "status of the application. ";
 
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID: string = "second-factor-authenticators";
     public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID: string = "external-authenticators";

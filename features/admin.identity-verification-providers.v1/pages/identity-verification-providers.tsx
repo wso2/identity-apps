@@ -17,13 +17,13 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../admin.core.v1";
 import { useIDVPTemplateTypeMetadataList, useIdentityVerificationProviderList } from "../api";
 import { IdentityVerificationProviderList } from "../components";
 import { IdentityVerificationProviderConstants } from "../constants";

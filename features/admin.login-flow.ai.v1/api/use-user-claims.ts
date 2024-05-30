@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Claim, ClaimsGetParams } from "@wso2is/core/models";
 import { useEffect, useState } from "react";
-import { getAllLocalClaims } from "../../admin.claims.v1/api";
 import { ClaimURI } from "../models/claim-uri";
 
 const useUserClaims = (): {

@@ -17,15 +17,15 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { Config } from "../../admin.core.v1/configs";
-import useRequest, { 
+import { Config } from "@wso2is/admin.core.v1/configs";
+import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Saml2ConfigurationConstants } from "../constants/saml2-configuration";
 import { Saml2ConfigAPIResponseInterface } from "../models/saml2-configuration";
 
@@ -34,7 +34,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 
 /**
  * Get saml2 configurations.
- * 
+ *
  * @returns the saml2 configurations of the tenant.
  */
 export const useSaml2Config = <
@@ -51,7 +51,7 @@ export const useSaml2Config = <
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
-    
+
     return {
         data,
         error: error,
@@ -63,13 +63,13 @@ export const useSaml2Config = <
 
 /**
  * Update saml2 configurations.
- * 
+ *
  * @param data - the updated saml2 configurations.
  * @returns a promise to update the saml2 configurations.
  */
-export const updateSaml2Configurations = (data: Saml2ConfigAPIResponseInterface): 
+export const updateSaml2Configurations = (data: Saml2ConfigAPIResponseInterface):
     Promise<Saml2ConfigAPIResponseInterface> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: data,
         headers: {

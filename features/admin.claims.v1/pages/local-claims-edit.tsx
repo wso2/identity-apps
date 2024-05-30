@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AnimatedAvatar, ResourceTab, TabPageLayout } from "@wso2is/react-components";
@@ -25,8 +27,6 @@ import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Image } from "semantic-ui-react";
-import { attributeConfig } from "../../admin.extensions.v1";
-import { AppConstants, history } from "../../admin.core.v1";
 import { getAClaim } from "../api";
 import {
     EditAdditionalPropertiesLocalClaims,
@@ -188,9 +188,9 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         >
             { attributeConfig.attributes.showEditTabs
                 ? (
-                    <ResourceTab 
+                    <ResourceTab
                         isLoading={ isLocalClaimDetailsRequestLoading }
-                        panes={ panes } 
+                        panes={ panes }
                         data-testid={ `${ testId }-tabs` } />
                 ) : (
                     <EditBasicDetailsLocalClaims

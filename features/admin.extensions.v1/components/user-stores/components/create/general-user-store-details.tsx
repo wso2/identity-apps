@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation } from "@wso2is/forms";
-import { FeatureConfigInterface } from "../../../../../admin.core.v1";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -133,16 +133,16 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
                             className="uppercase"
                             type="text"
                             name="name"
-                            label={ 
+                            label={
                                 t("extensions:manage.features.userStores.create.pageLayout.steps.generalSettings." +
                                 "form.fields.name.label")
                             }
-                            requiredErrorMessage={ 
+                            requiredErrorMessage={
                                 t("extensions:manage.features.userStores.create.pageLayout.steps." +
                                 "generalSettings.form.fields.name.requiredErrorMessage")
                             }
                             required={ true }
-                            placeholder={ 
+                            placeholder={
                                 t("extensions:manage.features.userStores.create.pageLayout.steps." +
                                 "generalSettings.form.fields.name.placeholder")
                             }
@@ -150,7 +150,7 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
                             maxLength={ 50 }
                             width={ 14 }
                             data-testid={ `${testId}-user-store-name-input` }
-                            hint={ 
+                            hint={
                                 t("extensions:manage.features.userStores.create.pageLayout.steps.generalSettings." +
                                 "form.fields.name.hint")
                             }
@@ -216,12 +216,12 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
                             requiredErrorMessage={ null }
                             type="text"
                             name="description"
-                            label={ 
+                            label={
                                 t("extensions:manage.features.userStores.create.pageLayout.steps.generalSettings."
                                 + "form.fields.description.label")
                             }
                             required={ false }
-                            placeholder={ 
+                            placeholder={
                                 t("extensions:manage.features.userStores.create.pageLayout.steps."
                                 + "generalSettings.form.fields.description.placeholder")
                             }
@@ -232,7 +232,7 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
                         />
                         <Field
                             type="radio"
-                            label={ 
+                            label={
                                 t("extensions:manage.features.userStores.create.pageLayout.steps.generalSettings."
                                 + "form.fields.userStoreType.label")
                             }
@@ -246,7 +246,7 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
                         />
                         <Field
                             type="radio"
-                            label={ 
+                            label={
                                 t("extensions:manage.features.userStores.create.pageLayout.steps.generalSettings."
                                 + "form.fields.accessType.label")
                             }
@@ -258,7 +258,7 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
                             children={ accessTypeOptions }
                             value={ userStoreType ?? "true" }
                             tabIndex={ 3 }
-                            hidden={ 
+                            hidden={
                                 !isFeatureEnabled(featureConfig?.userStores,
                                     RemoteUserStoreConstants.FEATURE_DICTIONARY.get("USERSTORES_READ_WRITE_USERSTORES"))
                             }

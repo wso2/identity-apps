@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { AssociatedRolesInterface } from "@wso2is/admin.roles.v2/models";
 import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,
@@ -23,8 +26,6 @@ import {
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
-import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models/identity-provider";
-import { AssociatedRolesInterface } from "../../admin.roles.v2/models";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**
@@ -41,6 +42,7 @@ export interface ApplicationBasicInterface {
     realm?: string;
     templateId?: string;
     isManagementApp?: boolean;
+    applicationEnabled?:boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
     associatedRoles?: AssociatedRolesInterface;
 }
@@ -330,6 +332,7 @@ export interface ApplicationTemplateListItemInterface {
     category?: string;
     displayOrder?: number;
     self?: string;
+    status?: FeatureStatusLabel;
     /**
      * List of Sub templates.
      * ex: `OIDC Web Application` under `Web Application` template.

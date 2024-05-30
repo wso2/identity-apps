@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,23 +17,23 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../../../admin.core.v1";
-import useRequest, { 
+import { store } from "@wso2is/admin.core.v1";
+import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../admin.core.v1/hooks/use-request";
-import { 
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import {
     ApplicationRoleGroupsAPIResponseInterface,
     ApplicationRoleGroupsUpdatePayloadInterface,
-    ApplicationRolesResponseInterface, 
-    AuthorizedAPIListItemInterface, 
-    CreateRolePayloadInterface, 
-    DescendantDataInterface, 
-    SharedApplicationAPIResponseInterface, 
-    SharedApplicationDataInterface, 
+    ApplicationRolesResponseInterface,
+    AuthorizedAPIListItemInterface,
+    CreateRolePayloadInterface,
+    DescendantDataInterface,
+    SharedApplicationAPIResponseInterface,
+    SharedApplicationDataInterface,
     UpdateRolePayloadInterface
 } from "../models";
 
@@ -52,7 +52,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param after - After link.
  * @param filter - Filter query.
  * @param limit - Limit.
- * 
+ *
  * @returns A promise containing the response.
  */
 export const getApplicationRolesList = (
@@ -87,7 +87,7 @@ export const getApplicationRolesList = (
  * Get the authorized APIs of the application with authorized permissions.
  *
  * @param appId - Application ID.
- * 
+ *
  * @returns A promise containing the response.
  */
 export const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListItemInterface[]> => {
@@ -110,7 +110,7 @@ export const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListIte
  *
  * @param appId - Application ID.
  * @param payload - Application role creation payload.
- * 
+ *
  * @returns A promise containing the response.
  */
 export const createRole = (appId: string, payload: CreateRolePayloadInterface):Promise<any> => {
@@ -135,12 +135,12 @@ export const createRole = (appId: string, payload: CreateRolePayloadInterface):P
  * @param appId - Application ID.
  * @param roleName - Selected role name.
  * @param payload - Application role creation payload.
- * 
+ *
  * @returns A promise containing the response.
  */
-export const updateRolePermissions = ( 
-    appId: string, 
-    roleName: string, 
+export const updateRolePermissions = (
+    appId: string,
+    roleName: string,
     payload: UpdateRolePayloadInterface
 ):Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
@@ -163,7 +163,7 @@ export const updateRolePermissions = (
  *
  * @param appId - Application ID.
  * @param roleName - Selected role name.
- * 
+ *
  * @returns A promise containing the response.
  */
 export const deleteRole = (appId: string, roleName: string):Promise<any> => {
@@ -188,7 +188,7 @@ export const deleteRole = (appId: string, roleName: string):Promise<any> => {
  * @param orgId - The current organization id
  * @returns the shared application details of a sub organization
  */
-export const useSharedApplicationData = <Data = SharedApplicationAPIResponseInterface, 
+export const useSharedApplicationData = <Data = SharedApplicationAPIResponseInterface,
     Error = RequestErrorInterface> (
         appId: string,
         orgId: string
@@ -255,7 +255,7 @@ export const createRoleInSharedApplications = (
  * @param roleName - The application role name
  * @returns the role mapped groups of an application for a given role.
  */
-export const useApplicationRoleMappedGroups = <Data = ApplicationRoleGroupsAPIResponseInterface, 
+export const useApplicationRoleMappedGroups = <Data = ApplicationRoleGroupsAPIResponseInterface,
     Error = RequestErrorInterface> (
         appId: string,
         roleName: string
@@ -288,7 +288,7 @@ export const useApplicationRoleMappedGroups = <Data = ApplicationRoleGroupsAPIRe
  * @param roleName - The application role name
  * @returns the role mapped groups of an application for a given role.
  */
-export const useApplicationRoleInvitedUserGroups = <Data = ApplicationRoleGroupsAPIResponseInterface, 
+export const useApplicationRoleInvitedUserGroups = <Data = ApplicationRoleGroupsAPIResponseInterface,
     Error = RequestErrorInterface> (
         appId: string,
         roleName: string
@@ -355,7 +355,7 @@ export const updateApplicationRoleMappedGroups = (
  * @param idpId - The identity provider id
  * @returns identity provider assigned groups
  */
-export const useIdentityProviderAssignedGroups = <Data = ApplicationRoleGroupsAPIResponseInterface, 
+export const useIdentityProviderAssignedGroups = <Data = ApplicationRoleGroupsAPIResponseInterface,
     Error = RequestErrorInterface> (
         appId: string,
         roleName: string,
@@ -422,7 +422,7 @@ export const updateIdentityProviderAssignedGroups = (
  *
  * @returns descendants of the sub organization
  */
-export const useDescendantsOfSubOrg = <Data = DescendantDataInterface[], 
+export const useDescendantsOfSubOrg = <Data = DescendantDataInterface[],
     Error = RequestErrorInterface> (): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {

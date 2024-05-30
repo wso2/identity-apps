@@ -16,6 +16,12 @@
  * under the License.
  */
 
+import { OrganizationType } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
+import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
+import { BrandingSubFeatures, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,13 +36,8 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, u
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { OrganizationType } from "../../admin.core.v1";
-import { AppState } from "../../admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { OrganizationResponseInterface } from "../../admin.organizations.v1/models/organizations";
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";
 import updateCustomTextPreference from "../api/update-custom-text-preference";
-import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
@@ -44,7 +45,6 @@ import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-pre
 import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
-import { BrandingSubFeatures, PreviewScreenType } from "../models/branding-preferences";
 import {
     CustomTextConfigurationModes,
     CustomTextInterface,

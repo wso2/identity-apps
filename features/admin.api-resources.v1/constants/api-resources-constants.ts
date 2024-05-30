@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "../../admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1";
 
 /**
  * Class containing API resources constants.

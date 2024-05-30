@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { updateValidationConfigData, useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import {
+    ValidationConfInterface,
+    ValidationDataInterface,
+    ValidationFormInterface,
+    ValidationPropertyInterface
+} from "@wso2is/admin.validation.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -39,15 +48,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Ref } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
-import { AppConstants, history } from "../../../../admin.core.v1";
-import { updateValidationConfigData, useValidationConfigData } from "../../../../admin.validation.v1/api";
-import {
-    ValidationConfInterface,
-    ValidationDataInterface,
-    ValidationFormInterface,
-    ValidationPropertyInterface
-} from "../../../../admin.validation.v1/models";
 import { UsernameValidationConstants } from "../constants/username-validation-constants";
 import { UsernameTypes } from "../models";
 

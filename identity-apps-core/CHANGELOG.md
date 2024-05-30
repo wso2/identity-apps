@@ -1,5 +1,67 @@
 # @wso2is/identity-apps-core
 
+## 2.3.4
+
+### Patch Changes
+
+- [#6356](https://github.com/wso2/identity-apps/pull/6356) [`7c88f1f663c88aa38b231ee43fd335967e79fcbf`](https://github.com/wso2/identity-apps/commit/7c88f1f663c88aa38b231ee43fd335967e79fcbf) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - update error messages for disabled application access
+
+## 2.3.3
+
+### Patch Changes
+
+- [#6352](https://github.com/wso2/identity-apps/pull/6352) [`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e) Thanks [@savindi7](https://github.com/savindi7)! - Fix header text wrap issue in resource card.
+
+- Updated dependencies [[`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e)]:
+  - @wso2is/theme@2.0.85
+
+## 2.3.2
+
+### Patch Changes
+
+- [#6343](https://github.com/wso2/identity-apps/pull/6343) [`6a9b7886b0b25f6e2e2bb4532fcd490248601249`](https://github.com/wso2/identity-apps/commit/6a9b7886b0b25f6e2e2bb4532fcd490248601249) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve callback URL building issue
+
+## 2.3.1
+
+### Patch Changes
+
+- [#6338](https://github.com/wso2/identity-apps/pull/6338) [`36114ccf9ab86b52c5ad01d9fea434acead64a70`](https://github.com/wso2/identity-apps/commit/36114ccf9ab86b52c5ad01d9fea434acead64a70) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with Federated SMS OTP flow
+
+## 2.3.0
+
+### Minor Changes
+
+- [#6030](https://github.com/wso2/identity-apps/pull/6030) [`368db4133456ba6015b1bb812715350c8d26834e`](https://github.com/wso2/identity-apps/commit/368db4133456ba6015b1bb812715350c8d26834e) Thanks [@ThaminduDilshan](https://github.com/ThaminduDilshan)! - Add internalWait template for "prompt" conditional function
+
+## 2.2.5
+
+### Patch Changes
+
+- [#6279](https://github.com/wso2/identity-apps/pull/6279) [`e79fd1aa04af38da011015f5e4abdead6bc7af4f`](https://github.com/wso2/identity-apps/commit/e79fd1aa04af38da011015f5e4abdead6bc7af4f) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add accessDisbaled error message
+
+## 2.2.4
+
+### Patch Changes
+
+- Updated dependencies [[`57974f4691aad11a9cdf13d03a2526c160936e8d`](https://github.com/wso2/identity-apps/commit/57974f4691aad11a9cdf13d03a2526c160936e8d)]:
+  - @wso2is/theme@2.0.84
+
+## 2.2.3
+
+### Patch Changes
+
+- [#6286](https://github.com/wso2/identity-apps/pull/6286) [`be831f4b8e2f4d6d7727de7984c74d3466695224`](https://github.com/wso2/identity-apps/commit/be831f4b8e2f4d6d7727de7984c74d3466695224) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix issue when errorKey null in password recovery
+
+## 2.2.2
+
+### Patch Changes
+
+- [#6276](https://github.com/wso2/identity-apps/pull/6276) [`dc00bfc3597af3a24873dbd7e661e030fc5e7696`](https://github.com/wso2/identity-apps/commit/dc00bfc3597af3a24873dbd7e661e030fc5e7696) Thanks [@savindi7](https://github.com/savindi7)! - Add branding for the message in email link expiry page.
+
+* [#6278](https://github.com/wso2/identity-apps/pull/6278) [`6d99d83e90ad34e92acbddfe2d4b72e704848a87`](https://github.com/wso2/identity-apps/commit/6d99d83e90ad34e92acbddfe2d4b72e704848a87) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Reverting Update recovery portal to support SMS OTP based password recovery
+
+- [#6275](https://github.com/wso2/identity-apps/pull/6275) [`2f81f0c3eda89fa6da706b4589e0d45367572f77`](https://github.com/wso2/identity-apps/commit/2f81f0c3eda89fa6da706b4589e0d45367572f77) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Support displaying password recovery failures
+
 ## 2.2.1
 
 ### Patch Changes

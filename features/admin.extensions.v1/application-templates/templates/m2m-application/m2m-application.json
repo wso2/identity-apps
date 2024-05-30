@@ -4,6 +4,8 @@
     "category": "DEFAULT",
     "description": "Applications developed to target m2m applciation.",
     "enabled": true,
+    "image": "m2m",
+    "status": "NEW",
     "displayOrder": 5,
     "name": "M2M Application",
     "subTemplatesSectionTitle": "Technology",

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { OrganizationType } from "../../../../admin.organizations.v1/constants";
-import { OrganizationResponseInterface } from "../../../../admin.organizations.v1/models";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 
 export enum OrganizationActionTypes {
     SET_SUPER_ADMIN = "SET_SUPER_ADMIN",

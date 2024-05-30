@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { store } from "../../../admin.core.v1/store";
+import { store } from "@wso2is/admin.core.v1/store";
 import { getConnectorIcons } from "../../configs/ui";
 import { OutboundProvisioningConnectorMetaDataInterface } from "../../models/connection";
 

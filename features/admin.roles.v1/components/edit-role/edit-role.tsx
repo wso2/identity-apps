@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, RolesInterface, SBACInterface } from "@wso2is/core/models";
@@ -27,8 +29,6 @@ import { BasicRoleDetails } from "./edit-role-basic";
 import { RoleGroupsList } from "./edit-role-groups";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
-import { AppState, FeatureConfigInterface, history } from "../../../admin.core.v1";
-import { UserManagementConstants } from "../../../admin.users.v1/constants";
 
 /**
  * Captures props needed for edit role component

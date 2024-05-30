@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { EventPublisher } from "@wso2is/admin.core.v1";
+import { Config } from "@wso2is/admin.core.v1/configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {
@@ -31,8 +33,6 @@ import {
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Card, Form, Grid } from "semantic-ui-react";
-import { EventPublisher } from "../../../../admin.core.v1";
-import { Config } from "../../../../admin.core.v1/configs";
 
 const DEFAULT_REQUESTED_SCOPES: string = "openid profile";
 
@@ -87,10 +87,10 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
         }
 
         const configuredCallbacks: string[] = [];
-        
+
         if (inboundProtocolConfig?.oidc?.callbackURLs.length > 0) {
             const callbacks: string[] = EncodeDecodeUtils.decodeURLRegex(inboundProtocolConfig.oidc.callbackURLs[ 0 ]);
-    
+
             if (callbacks.length > 0) {
                 callbacks.forEach((url: string) => {
                     configuredCallbacks.push(url);
@@ -123,15 +123,15 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
         return (
             <>
                 <div className="custom-config-message">
-                    <Heading as="h6" compact>                     
+                    <Heading as="h6" compact>
                         <Trans
                             i18nKey={
                                 "extensions:console.application.quickStart" +
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
-                            Use the following configurations to integrate your application with Asgardeo. 
-                            For more details on configurations, go to the 
+                            Use the following configurations to integrate your application with Asgardeo.
+                            For more details on configurations, go to the
                             <a
                                 className="link pointing"
                                 onClick={ onProtocolTabClick }
@@ -205,7 +205,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                                 ".spa.customConfig.serverEndpoints"
                             }
                         >
-                            Details on the server endpoints are available in the 
+                            Details on the server endpoints are available in the
                             <a
                                 className="link pointing"
                                 onClick={ onServerEndpointConfigTabClick }
@@ -232,7 +232,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                             ".spa.customConfig.heading"
                         }
                     >
-                        You can implement login using 
+                        You can implement login using
                         <DocumentationLink
                             link={ documentationLink }
                             showEmptyLinkText
@@ -240,7 +240,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                             Authorization Code flow with PKCE
                         </DocumentationLink> with Asgardeo for any SPA technology.
                     </Trans>
-                </Text>  
+                </Text>
             </Card.Content>
             <Card.Content>
                 <div className="tech-array">

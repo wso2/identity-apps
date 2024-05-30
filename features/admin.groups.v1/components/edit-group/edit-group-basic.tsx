@@ -16,6 +16,15 @@
  * under the License.
  */
 import {
+    AppConstants,
+    SharedUserStoreConstants,
+    SharedUserStoreUtils,
+    UserStoreDetails,
+    UserStoreProperty,
+    history
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import {
     AlertInterface,
     AlertLevels,
     TestableComponentInterface
@@ -29,15 +38,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
-import {
-    AppConstants,
-    SharedUserStoreConstants,
-    SharedUserStoreUtils,
-    UserStoreDetails,
-    UserStoreProperty,
-    history
-} from "../../../admin.core.v1";
-import { userstoresConfig } from "../../../admin.extensions.v1";
 import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
 import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
 

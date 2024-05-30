@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Config } from "@wso2is/features/admin.core.v1/configs";
+import { Config } from "@wso2is/admin.core.v1/configs";
 import { handlers as extendedHandlers } from "@wso2is/features/test-configs/__mocks__/server/handlers";
 import { ResponseComposition, RestContext, RestHandler, RestRequest, rest } from "msw";
 

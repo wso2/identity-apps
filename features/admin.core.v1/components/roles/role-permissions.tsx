@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { getRoleById } from "@wso2is/admin.roles.v2/api";
+import { PermissionList } from "@wso2is/admin.roles.v2/components/wizard";
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Icon, Segment } from "semantic-ui-react";
-import { getRoleById } from "../../../admin.roles.v2/api";
-import { PermissionList } from "../../../admin.roles.v2/components/wizard";
 
 /**
  * Proptypes for the role permission component.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { updateRole } from "@wso2is/admin.roles.v2/api";
+import { TreeNode } from "@wso2is/admin.roles.v2/models";
 import { AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";
@@ -23,8 +25,6 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateRole } from "../../../../../admin.roles.v2/api";
-import { TreeNode } from "../../../../../admin.roles.v2/models";
 import { PermissionList } from "../wizard";
 
 /**

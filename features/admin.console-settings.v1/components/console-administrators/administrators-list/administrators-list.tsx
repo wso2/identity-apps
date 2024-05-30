@@ -18,6 +18,22 @@
 
 import { Show } from "@wso2is/access-control";
 import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    UserBasicInterface,
+    UserRoleInterface,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
+import {
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface
@@ -30,22 +46,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    UserBasicInterface,
-    UserRoleInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../../../admin.core.v1";
-import { userstoresConfig } from "../../../../admin.extensions.v1";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
-import { PRIMARY_USERSTORE } from "../../../../admin.userstores.v1/constants";
-import { UserStoreDropdownItem } from "../../../../admin.userstores.v1/models";
 import useAdministrators from "../../../hooks/use-administrators";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import AddExistingUserWizard from "../add-existing-user-wizard/add-existing-user-wizard";

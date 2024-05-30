@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
@@ -43,16 +53,6 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { applicationConfig } from "../../../../admin.extensions.v1";
-import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../../../admin.core.v1";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,

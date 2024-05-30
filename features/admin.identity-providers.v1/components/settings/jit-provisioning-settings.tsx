@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,20 +16,18 @@
  * under the License.
  */
 
+import { SimpleUserStoreListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { SimpleUserStoreListItemInterface } from "../../../admin.applications.v1/models";
-import { store } from "../../../admin.core.v1";
-import { OrganizationUtils } from "../../../admin.organizations.v1/utils";
-import { getUserStoreList } from "../../../admin.userstores.v1/api";
 import { updateJITProvisioningConfigs } from "../../api";
 import { JITProvisioningResponseInterface } from "../../models";
 import { JITProvisioningConfigurationsForm } from "../forms";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the identity provider general details component.

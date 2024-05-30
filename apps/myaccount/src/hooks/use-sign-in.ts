@@ -24,6 +24,7 @@ import {
     OIDCEndpoints,
     useAuthContext
 } from "@asgardeo/auth-react";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { AppConstants as AppConstantsCore, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
 import {
     setDeploymentConfigs,
@@ -33,7 +34,6 @@ import {
     setUIConfigs
 } from "@wso2is/core/store";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
-import { OrganizationType } from "@wso2is/features/admin.organizations.v1/constants";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { useDispatch } from "react-redux";
 import { AnyAction, Dispatch } from "redux";

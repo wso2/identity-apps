@@ -18,6 +18,10 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import ListItemText from "@oxygen-ui/react/ListItemText";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { history, store } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Link } from "@wso2is/react-components";
@@ -35,10 +39,6 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
-import { useApplicationList } from "../../../admin.applications.v1/api/application";
-import { ApplicationListItemInterface } from "../../../admin.applications.v1/models";
-import { history, store } from "../../../admin.core.v1";
-import { AppConstants } from "../../../admin.core.v1/constants";
 import { useRolesList } from "../../api/roles";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { CreateRoleFormData } from "../../models";

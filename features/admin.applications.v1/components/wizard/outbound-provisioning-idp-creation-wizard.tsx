@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { getIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
+import {
+    IdentityProviderInterface,
+    IdentityProviderListResponseInterface
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -26,11 +31,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { OutboundProvisioningWizardIdpForm } from "./outbound-provisioining-idp-wizard-form";
-import { getIdentityProviderList } from "../../../admin.identity-providers.v1/api/identity-provider";
-import {
-    IdentityProviderInterface,
-    IdentityProviderListResponseInterface
-} from "../../../admin.identity-providers.v1/models/identity-provider";
 import { updateApplicationConfigurations } from "../../api";
 import { getApplicationWizardStepIcons } from "../../configs/ui";
 import { ApplicationInterface, OutboundProvisioningConfigurationInterface } from "../../models";
@@ -244,7 +244,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                 content: JSX.Element;
                                 icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
                                 title: string;
-                            }, 
+                            },
                             index: number
                         ) => (
                             <Steps.Step

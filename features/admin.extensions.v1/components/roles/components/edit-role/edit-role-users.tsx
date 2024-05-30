@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { updateRoleDetails } from "@wso2is/admin.roles.v2/api";
+import { PRIMARY_DOMAIN } from "@wso2is/admin.roles.v2/constants";
+import { CreateRoleMemberInterface, PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateRoleDetails } from "../../../../../admin.roles.v2/api";
-import { PRIMARY_DOMAIN } from "../../../../../admin.roles.v2/constants";
-import { CreateRoleMemberInterface, PatchRoleDataInterface } from "../../../../../admin.roles.v2/models";
 import { AddRoleUsers } from "../wizard";
 
 interface RoleUserDetailsProps {
@@ -55,7 +55,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         }
 
         const roleName: string = roleObject.displayName;
-        
+
         if (roleName.indexOf("/") !== -1) {
             setCurrentUserStore(roleName.split("/")[0]);
         } else {
