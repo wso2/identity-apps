@@ -186,11 +186,15 @@ export class ExtensionsManager {
                 // and the '.tsx' extension to overcome rollup limitation
                 //https://www.npmjs.com/package/@rollup/plugin-dynamic-import-vars
                 if (value.includes("application-templates")) {
-                    const valueStripped: string= value.replace(/^\.\/application-templates\//, "").replace(/\.tsx$/, "");
+                    const valueStripped: string = value
+                        .replace(/^\.\/application-templates\//, "")
+                        .replace(/\.tsx$/, "");
 
                     content[ key ] = lazy(() => import(`./application-templates/${ valueStripped }.tsx`));
                 } else if (value.includes("identity-provider-templates")) {
-                    const valueStripped: string= value.replace(/^\.\/identity-provider-templates\//, "").replace(/\.tsx$/, "");
+                    const valueStripped: string = value
+                        .replace(/^\.\/identity-provider-templates\//, "")
+                        .replace(/\.tsx$/, "");
 
                     content[ key ] = lazy(() => import(`./identity-provider-templates/${ valueStripped }.tsx`));
                 } else {
@@ -212,15 +216,21 @@ export class ExtensionsManager {
             // and the '.json' extension to overcome rollup limitation
             //https://www.npmjs.com/package/@rollup/plugin-dynamic-import-vars
             if (resource.includes("application-templates")) {
-                const resourceStripped: string = resource.replace(/^\.\/application-templates\//,"").replace(/\.json$/, "");
+                const resourceStripped: string = resource
+                    .replace(/^\.\/application-templates\//, "")
+                    .replace(/\.json$/, "");
 
-                return import(`./application-templates/${ resourceStripped }.json`).then((module: any) => module.default);
+                return import(`./application-templates/${resourceStripped}.json`).then((module: any) => module.default);
             }
 
             if (resource.includes("identity-provider-templates")) {
-                const resourceStripped: string = resource.replace(/^\.\/identity-provider-templates\//,"").replace(/\.json$/, "");
+                const resourceStripped: string = resource
+                    .replace(/^\.\/identity-provider-templates\//, "")
+                    .replace(/\.json$/, "");
 
-                return import(`./identity-provider-templates/${ resourceStripped }.json`).then((module: any) => module.default);
+                return import(`./identity-provider-templates/${resourceStripped}.json`).then(
+                    (module: any) => module.default
+                );
             }
 
             return import(`${ resource }`).then((module: any) => module.default);
