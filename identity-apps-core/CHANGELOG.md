@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.3.5
+
+### Patch Changes
+
+- [#6375](https://github.com/wso2/identity-apps/pull/6375) [`f3e7cc3fad9630f9b3f9a6aff13887ed6a7d9449`](https://github.com/wso2/identity-apps/commit/f3e7cc3fad9630f9b3f9a6aff13887ed6a7d9449) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update platform IDP display name and logo
+
 ## 2.3.4
 
 ### Patch Changes
