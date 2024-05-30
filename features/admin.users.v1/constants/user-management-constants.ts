@@ -153,6 +153,9 @@ export class UserManagementConstants {
     public static readonly MANAGED_BY_PARENT_TEXT: string = "Parent Organization";
 
     public static readonly GLOBE: string = "globe";
+
+    // Roles tab in the Users section.
+    public static readonly ROLES_TAB: string = "rolesTab";
 }
 
 /**
