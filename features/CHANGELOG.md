@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.21.9
+
+### Patch Changes
+
+- [#6381](https://github.com/wso2/identity-apps/pull/6381) [`b581961a756f50933d9a9a9a105a15f43970dc47`](https://github.com/wso2/identity-apps/commit/b581961a756f50933d9a9a9a105a15f43970dc47) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Avoid application count being updated twice
+
 ## 2.21.8
 
 ### Patch Changes
