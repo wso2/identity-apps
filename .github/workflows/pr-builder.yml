@@ -5,7 +5,7 @@ name: PR Builder
 on:
   pull_request:
     types: [ opened, synchronize, labeled ]
-    branches: [ hotfix-@wso2is/console@2.18.13 ]
+    branches: [ master ]
     paths-ignore:
       - "**.md"
       - "LICENSE"
