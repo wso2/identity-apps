@@ -1,5 +1,17 @@
 # @wso2is/admin.branding.v1
 
+## 2.20.10
+
+### Patch Changes
+
+- Updated dependencies [[`aaee6df156311d50d3852ee332d6894fa5bfd2cf`](https://github.com/wso2/identity-apps/commit/aaee6df156311d50d3852ee332d6894fa5bfd2cf)]:
+  - @wso2is/admin.extensions.v1@2.20.10
+  - @wso2is/admin.core.v1@2.20.10
+  - @wso2is/admin.organizations.v1@2.20.10
+  - @wso2is/admin.server-configurations.v1@2.20.10
+  - @wso2is/admin.branding.ai.v1@2.20.10
+  - @wso2is/common.branding.v1@2.20.10
+
 ## 2.20.9
 
 ### Patch Changes
