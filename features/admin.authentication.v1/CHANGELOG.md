@@ -1,5 +1,17 @@
 # @wso2is/admin.authentication.v1
 
+## 2.20.9
+
+### Patch Changes
+
+- [#6367](https://github.com/wso2/identity-apps/pull/6367) [`06041f556c01054cf199c238fb14be260a738f0b`](https://github.com/wso2/identity-apps/commit/06041f556c01054cf199c238fb14be260a738f0b) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Resolve custom host via wellknown endpoint.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.9
+  - @wso2is/admin.extensions.v1@2.20.9
+  - @wso2is/admin.organizations.v1@2.20.9
+  - @wso2is/admin.users.v1@2.20.9
+
 ## 2.20.8
 
 ### Patch Changes

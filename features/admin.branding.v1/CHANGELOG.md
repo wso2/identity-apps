@@ -1,5 +1,19 @@
 # @wso2is/admin.branding.v1
 
+## 2.20.9
+
+### Patch Changes
+
+- [#6364](https://github.com/wso2/identity-apps/pull/6364) [`95abdadffe4bcd4948fff1b8b788d602ea20e278`](https://github.com/wso2/identity-apps/commit/95abdadffe4bcd4948fff1b8b788d602ea20e278) Thanks [@savindi7](https://github.com/savindi7)! - Fix null pointer exception issue when branding layout isn't defined.
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.ai.v1@2.20.9
+  - @wso2is/admin.core.v1@2.20.9
+  - @wso2is/admin.extensions.v1@2.20.9
+  - @wso2is/admin.organizations.v1@2.20.9
+  - @wso2is/admin.server-configurations.v1@2.20.9
+  - @wso2is/common.branding.v1@2.20.9
+
 ## 2.20.8
 
 ### Patch Changes
