@@ -77,7 +77,6 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const ACCOUNT_RECOVERY_BY_USERNAME: string = "account-recovery-username";
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -185,7 +184,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             // TODO: remove this once the ID is fixed
             updateData.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(
-                    serverConfigurationConfig.connectorToggleName[ACCOUNT_RECOVERY_BY_USERNAME]
+                    serverConfigurationConfig.connectorToggleName[
+                        ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME ]
                 ),
                 value: data.checked.toString()
             });
@@ -251,7 +251,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             name: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA,
             value: data.checked.toString()
         });
-        if (ACCOUNT_RECOVERY_BY_USERNAME in serverConfigurationConfig.connectorToggleName) {
+        if (ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME in
+            serverConfigurationConfig.connectorToggleName) {
             updateRecoveryCaptchaData.properties.push({
                 name: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA,
                 value: data.checked.toString()
@@ -622,7 +623,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                                 ) }
                             </li>
                             {
-                                serverConfigurationConfig.connectorToggleName[ACCOUNT_RECOVERY_BY_USERNAME] ?
+                                serverConfigurationConfig.connectorToggleName[
+                                    ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME ] ?
                                     (<li>
                                         { t(
                                             "extensions:manage.serverConfigurations.accountSecurity." +
