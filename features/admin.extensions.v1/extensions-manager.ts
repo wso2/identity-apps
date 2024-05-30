@@ -197,8 +197,6 @@ export class ExtensionsManager {
                         .replace(/\.tsx$/, "");
 
                     content[ key ] = lazy(() => import(`./identity-provider-templates/${ valueStripped }.tsx`));
-                } else {
-                    content[ key ] = lazy(() => import(`${ value }`));
                 }
             }
 
@@ -232,8 +230,6 @@ export class ExtensionsManager {
                     (module: any) => module.default
                 );
             }
-
-            return import(`${ resource }`).then((module: any) => module.default);
         };
 
         return {
