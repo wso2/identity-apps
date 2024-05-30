@@ -1,5 +1,17 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.20.9
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.9
+  - @wso2is/admin.extensions.v1@2.20.9
+  - @wso2is/admin.users.v1@2.20.9
+  - @wso2is/admin.identity-providers.v1@2.20.9
+  - @wso2is/admin.server-configurations.v1@2.20.9
+  - @wso2is/admin.validation.v1@2.20.9
+
 ## 2.20.8
 
 ### Patch Changes
