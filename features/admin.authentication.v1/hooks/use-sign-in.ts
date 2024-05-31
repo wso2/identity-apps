@@ -556,6 +556,13 @@ const useSignIn = (): UseSignInInterface => {
 
                             sessionStorage.setItem(key, _signOutRedirectURL.href);
                         }
+
+                        if (key.startsWith("config_data-instance_0-CONSOLE")) {
+                            const config: any = JSON.parse(value);
+
+                            config.enableOIDCSessionManagement = true;
+                            sessionStorage.setItem(key,JSON.stringify(config));
+                        }
                     });
                 }
 
