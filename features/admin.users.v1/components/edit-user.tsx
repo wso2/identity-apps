@@ -101,6 +101,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
     const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
 
+    const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
+        return state.config.ui.features?.users?.disabledFeatures;
+    });
+
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
     const [ isSelectedSuperAdmin, setIsSelectedSuperAdmin ] = useState<boolean>(false);
@@ -234,7 +238,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        !isSubOrganization()
+        !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
+        && !isSubOrganization()
         && !legacyAuthzRuntime
         && roleV1Enabled
             ? {
@@ -252,7 +257,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 )
             } : null,
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        !isSubOrganization()
+        !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
+        && !isSubOrganization()
         && !legacyAuthzRuntime
         && !roleV1Enabled
             ? {
