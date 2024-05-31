@@ -113,6 +113,26 @@ type UsersPageInterface = IdentifiableComponentInterface & RouteComponentProps &
 const TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET: number = 1;
 const NUMBER_OF_PAGES_FOR_LDAP: number = 100;
 
+const useUrlState = () => {
+    const searchParams: URLSearchParams = new URLSearchParams(window.location.search);
+
+    const updateSearchParams = (key: string,value: string) => {
+        const url: URL = new URL(window.location.href);
+
+        url.searchParams.set(key, value);
+        window.history.pushState(null, "", url.toString());
+    };
+
+    return {
+        searchParams,
+        updateSearchParams
+    };
+};
+
+const userListPageUrlParams: any = {
+    BULK_USER_IMPORT_WIZARD_OPEN: "bulkImportWizard"
+};
+
 /**
  * Users info page.
  *
@@ -132,7 +152,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const dispatch: Dispatch<any> = useDispatch();
     const { legacyAuthzRuntime }  = useAuthorization();
-    const searchParams: URLSearchParams = new URLSearchParams(window.location.search);
+    const { searchParams, updateSearchParams } = useUrlState();
 
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
@@ -402,7 +422,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     useEffect(() => {
         setShowMultipleInviteConfirmationModal(
-            searchParams.get("bulkImportWizard") === "true"
+            searchParams.get(userListPageUrlParams.BULK_USER_IMPORT_WIZARD_OPEN) === "true"
             && !connectorConfigLoading
             && !emailVerificationEnabled
         );
@@ -675,10 +695,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Handles the `onClose` callback action from the bulk import wizard.
      */
     const handleBulkImportWizardClose = (): void => {
-        const url: URL = new URL(window.location.href);
-
-        url.searchParams.set("bulkImportWizard", "false");
-        window.history.pushState(null, "", url.toString());
+        updateSearchParams(userListPageUrlParams.BULK_USER_IMPORT_WIZARD_OPEN, "false");
         mutateUserListFetchRequest();
     };
 
@@ -801,11 +818,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
                 break;
             case UserAddOptionTypes.BULK_IMPORT:
-                // eslint-disable-next-line no-case-declarations
-                const url: URL = new URL(window.location.href);
-
-                url.searchParams.set("bulkImportWizard", "true");
-                window.history.pushState(null, "", url.toString());
+                updateSearchParams(userListPageUrlParams.BULK_USER_IMPORT_WIZARD_OPEN, "false");
 
                 break;
             case UserAccountTypesMain.INTERNAL:
@@ -970,11 +983,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
                 onClose={ (): void => {
                     setShowMultipleInviteConfirmationModal(false);
-
-                    const url: URL = new URL(window.location.href);
-
-                    url.searchParams.set("bulkImportWizard", "false");
-                    window.history.pushState(null, "", url.toString());
+                    updateSearchParams(userListPageUrlParams.BULK_USER_IMPORT_WIZARD_OPEN, "false");
                 } }
                 type="warning"
                 open={ showMultipleInviteConfirmationModal }
@@ -982,10 +991,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 onPrimaryActionClick={ (): void => {
                     setShowMultipleInviteConfirmationModal(false);
 
-                    const url: URL = new URL(window.location.href);
-
-                    url.searchParams.set("bulkImportWizard", "false");
-                    window.history.pushState(null, "", url.toString());
+                    updateSearchParams(userListPageUrlParams.BULK_USER_IMPORT_WIZARD_OPEN, "false");
                 } }
                 closeOnDimmerClick={ false }
             >
@@ -1059,7 +1065,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 )
             }
             {
-                searchParams.get("bulkImportWizard") === "true"
+                searchParams.get(userListPageUrlParams.BULK_USER_IMPORT_WIZARD_OPEN) === "true"
                 && !connectorConfigLoading
                 && emailVerificationEnabled
                 && (
