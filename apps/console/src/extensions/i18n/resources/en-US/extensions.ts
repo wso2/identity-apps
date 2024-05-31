@@ -3966,7 +3966,7 @@ export const extensions: Extensions = {
                 addCollaboratorBtn: "Add Administrator"
             },
             collaboratorAccounts: {
-                consoleInfo: "Share this link with the users who have administrative priviledges " +
+                consoleInfo: "Share this link with the users who have administrative privileges " +
                     "to allow access to Console"
             },
             list: {
