@@ -132,6 +132,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const dispatch: Dispatch<any> = useDispatch();
     const { legacyAuthzRuntime }  = useAuthorization();
+    const searchParams: URLSearchParams = new URLSearchParams(window.location.search);
+
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
@@ -148,7 +150,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ showBulkImportWizard, setShowBulkImportWizard ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>([]);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
@@ -401,11 +402,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     useEffect(() => {
         setShowMultipleInviteConfirmationModal(
-            showBulkImportWizard
+            searchParams.get("bulkImportWizard") === "true"
             && !connectorConfigLoading
             && !emailVerificationEnabled
         );
-    }, [ showBulkImportWizard, connectorConfigLoading ]);
+    }, [ searchParams, connectorConfigLoading ]);
 
     /**
      * Handles parent user invitation pagination.
@@ -674,7 +675,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Handles the `onClose` callback action from the bulk import wizard.
      */
     const handleBulkImportWizardClose = (): void => {
-        setShowBulkImportWizard(false);
+        const url: URL = new URL(window.location.href);
+
+        url.searchParams.set("bulkImportWizard", "false");
+        window.history.pushState(null, "", url.toString());
         mutateUserListFetchRequest();
     };
 
@@ -797,7 +801,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
                 break;
             case UserAddOptionTypes.BULK_IMPORT:
-                setShowBulkImportWizard(true);
+                // eslint-disable-next-line no-case-declarations
+                const url: URL = new URL(window.location.href);
+
+                url.searchParams.set("bulkImportWizard", "true");
+                window.history.pushState(null, "", url.toString());
 
                 break;
             case UserAccountTypesMain.INTERNAL:
@@ -962,14 +970,22 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
                 onClose={ (): void => {
                     setShowMultipleInviteConfirmationModal(false);
-                    setShowBulkImportWizard(false);
+
+                    const url: URL = new URL(window.location.href);
+
+                    url.searchParams.set("bulkImportWizard", "false");
+                    window.history.pushState(null, "", url.toString());
                 } }
                 type="warning"
                 open={ showMultipleInviteConfirmationModal }
                 primaryAction={ t("common:close") }
                 onPrimaryActionClick={ (): void => {
                     setShowMultipleInviteConfirmationModal(false);
-                    setShowBulkImportWizard(false);
+
+                    const url: URL = new URL(window.location.href);
+
+                    url.searchParams.set("bulkImportWizard", "false");
+                    window.history.pushState(null, "", url.toString());
                 } }
                 closeOnDimmerClick={ false }
             >
@@ -1043,7 +1059,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 )
             }
             {
-                showBulkImportWizard
+                searchParams.get("bulkImportWizard") === "true"
                 && !connectorConfigLoading
                 && emailVerificationEnabled
                 && (
