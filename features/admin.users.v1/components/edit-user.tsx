@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
@@ -90,8 +91,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const { t } = useTranslation();
     const { activeTab, updateActiveTab } = useUserManagement();
+    const { legacyAuthzRuntime }  = useAuthorization();
     const dispatch: Dispatch = useDispatch();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSuperOrganization, isSubOrganization } = useGetCurrentOrganizationType();
     const { UIConfig } = useUIConfig();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -232,29 +234,35 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        isSuperOrganization() && roleV1Enabled ? {
-            menuItem: t("users:editUser.tab.menuItems.2"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserRolesV1List
-                        isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
-                        onAlertFired={ handleAlerts }
-                        user={ user }
-                        handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly }
-                    />
-                </ResourceTab.Pane>
-            )
-        } : null,
+        !isSubOrganization()
+        && !legacyAuthzRuntime
+        && roleV1Enabled
+            ? {
+                menuItem: t("users:editUser.tab.menuItems.2"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserRolesV1List
+                            isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
+                            onAlertFired={ handleAlerts }
+                            user={ user }
+                            handleUserUpdate={ handleUserUpdate }
+                            isReadOnly={ isReadOnly }
+                        />
+                    </ResourceTab.Pane>
+                )
+            } : null,
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        isSuperOrganization() && !roleV1Enabled ? {
-            menuItem: t("users:editUser.tab.menuItems.2"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserRolesList user={ user } />
-                </ResourceTab.Pane>
-            )
-        } : null,
+        !isSubOrganization()
+        && !legacyAuthzRuntime
+        && !roleV1Enabled
+            ? {
+                menuItem: t("users:editUser.tab.menuItems.2"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserRolesList user={ user } />
+                    </ResourceTab.Pane>
+                )
+            } : null,
         {
             menuItem: t("users:editUser.tab.menuItems.3"),
             render: () => (
