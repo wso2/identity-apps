@@ -159,7 +159,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         ];
 
         if (!userRolesDisabledFeatures?.includes(
-            LocalRoleConstants.USERS_TAB
+            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_USERS")
         )) {
             panes.push(
                 {

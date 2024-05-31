@@ -238,8 +238,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        !userRolesDisabledFeatures?.includes(UserManagementConstants.ROLES_TAB)
-        && isSuperOrganization()
+        !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
+        && !isSubOrganization()
         && !legacyAuthzRuntime
         && roleV1Enabled
             ? {
@@ -257,8 +257,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 )
             } : null,
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        !userRolesDisabledFeatures?.includes(UserManagementConstants.ROLES_TAB)
-        && isSuperOrganization()
+        !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
+        && !isSubOrganization()
         && !legacyAuthzRuntime
         && !roleV1Enabled
             ? {

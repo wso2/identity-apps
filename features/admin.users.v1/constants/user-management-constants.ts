@@ -63,7 +63,8 @@ export class UserManagementConstants {
         .set("USER_CREATE", "users.create")
         .set("USER_UPDATE", "users.update")
         .set("USER_DELETE", "users.delete")
-        .set("USER_READ", "users.read");
+        .set("USER_READ", "users.read")
+        .set("USER_ROLES", "users.edit.roles");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
@@ -153,9 +154,6 @@ export class UserManagementConstants {
     public static readonly MANAGED_BY_PARENT_TEXT: string = "Parent Organization";
 
     public static readonly GLOBE: string = "globe";
-
-    // Roles tab in the Users section.
-    public static readonly ROLES_TAB: string = "rolesTab";
 }
 
 /**
