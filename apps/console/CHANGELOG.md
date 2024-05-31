@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.19.11
+
+### Patch Changes
+
+- [#6365](https://github.com/wso2/identity-apps/pull/6365) [`9fe234d3f1cd7cfbdd95647fd6c1fcfc4ec3c72b`](https://github.com/wso2/identity-apps/commit/9fe234d3f1cd7cfbdd95647fd6c1fcfc4ec3c72b) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix spelling mistake in administrators section
+
+* [#6389](https://github.com/wso2/identity-apps/pull/6389) [`1f57b6c10e29e820f0518f15c96e6f463f5bda41`](https://github.com/wso2/identity-apps/commit/1f57b6c10e29e820f0518f15c96e6f463f5bda41) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the error message for empty username in user creation
+
+* Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.13
+  - @wso2is/admin.extensions.v1@2.20.13
+  - @wso2is/admin.organizations.v1@2.20.13
+  - @wso2is/admin.authentication.v1@2.20.13
+
 ## 2.19.10
 
 ### Patch Changes

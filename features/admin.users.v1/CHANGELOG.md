@@ -1,5 +1,29 @@
 # @wso2is/admin.users.v1
 
+## 2.20.13
+
+### Patch Changes
+
+- [#6373](https://github.com/wso2/identity-apps/pull/6373) [`788230e914a98711b0b8643f0e3a5ce837e3bcb0`](https://github.com/wso2/identity-apps/commit/788230e914a98711b0b8643f0e3a5ce837e3bcb0) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add config to enable/disable the users tab in roles section and roles tab in users section
+
+* [#6382](https://github.com/wso2/identity-apps/pull/6382) [`ac34e645160b42ebdae83a8e3d157bd0ecb1d73a`](https://github.com/wso2/identity-apps/commit/ac34e645160b42ebdae83a8e3d157bd0ecb1d73a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix the roles tab display issue in users section
+
+- [#6389](https://github.com/wso2/identity-apps/pull/6389) [`1f57b6c10e29e820f0518f15c96e6f463f5bda41`](https://github.com/wso2/identity-apps/commit/1f57b6c10e29e820f0518f15c96e6f463f5bda41) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the error message for empty username in user creation
+
+- Updated dependencies [[`788230e914a98711b0b8643f0e3a5ce837e3bcb0`](https://github.com/wso2/identity-apps/commit/788230e914a98711b0b8643f0e3a5ce837e3bcb0), [`ac34e645160b42ebdae83a8e3d157bd0ecb1d73a`](https://github.com/wso2/identity-apps/commit/ac34e645160b42ebdae83a8e3d157bd0ecb1d73a), [`1f57b6c10e29e820f0518f15c96e6f463f5bda41`](https://github.com/wso2/identity-apps/commit/1f57b6c10e29e820f0518f15c96e6f463f5bda41)]:
+  - @wso2is/admin.roles.v2@2.20.13
+  - @wso2is/admin.users.v1@2.20.13
+  - @wso2is/admin.core.v1@2.20.13
+  - @wso2is/admin.extensions.v1@2.20.13
+  - @wso2is/admin.groups.v1@2.20.13
+  - @wso2is/admin.identity-providers.v1@2.20.13
+  - @wso2is/admin.organizations.v1@2.20.13
+  - @wso2is/admin.authentication.v1@2.20.13
+  - @wso2is/admin.claims.v1@2.20.13
+  - @wso2is/admin.server-configurations.v1@2.20.13
+  - @wso2is/admin.validation.v1@2.20.13
+  - @wso2is/admin.userstores.v1@2.20.13
+
 ## 2.20.12
 
 ### Patch Changes
