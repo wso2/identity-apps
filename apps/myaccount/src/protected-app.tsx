@@ -38,11 +38,11 @@ import axios, { AxiosResponse } from "axios";
 import React, { FunctionComponent, LazyExoticComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useSelector } from "react-redux";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useGetBrandingPreference } from "./api/branding-preferences";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { AppConstants } from "./constants";
-import { history } from "./helpers";
 import useSignIn from "./hooks/use-sign-in";
 import { AppState, store } from "./store";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
@@ -64,6 +64,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     } = useAuthContext();
 
     const { onSignIn } = useSignIn();
+    const navigate: NavigateFunction = useNavigate();
 
     const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
 
@@ -88,7 +89,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 ? AppConstants.getAppHomePath()
                 : AuthenticationCallbackUrl;
 
-        history.push(location);
+        navigate(location);
     };
 
     /**
@@ -246,7 +247,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 } }
             >
                 <I18nextProvider i18n={ I18n.instance }>
-
                     <App />
                 </I18nextProvider>
             </SecureApp>

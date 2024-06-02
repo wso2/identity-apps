@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { RouteInterface } from "@wso2is/core/models";
 import React,{ FunctionComponent, lazy } from "react";
 import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
+import OverviewPage from "../pages/overview";
 
 /**
  * Get default page layout routes.
@@ -121,7 +122,7 @@ export const getDashboardLayoutRoutes = (): RouteInterface[] => {
 
     return [
         {
-            component: lazy(() => import("../pages/overview")),
+            component: <OverviewPage />,
             exact: true,
             icon: <HomeIcon fill="black" />,
             id: "overview",
@@ -189,7 +190,7 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
             icon: null,
             id: "dashboardLayout",
             name: "Dashboard Layout",
-            path: "/",
+            path: "/*",
             protected: false,
             showOnSidePanel: false
         },

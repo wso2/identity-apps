@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,9 +32,9 @@ import React, {
 } from "react";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Dispatch } from "redux";
-import { Header, ProtectedRoute } from "../components";
+import { Header } from "../components";
 import {
     getDefaultLayoutRoutes
 } from "../configs";
@@ -57,6 +57,7 @@ export const DefaultLayout: FunctionComponent = (): ReactElement => {
     const alertSystem: System = useSelector(
         (state: AppState) => state.global.alertSystem
     );
+    const isAuthenticated: boolean = useSelector((state: any) => state.authenticationInformation.isAuth);
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<
         RouteInterface[]
@@ -85,33 +86,32 @@ export const DefaultLayout: FunctionComponent = (): ReactElement => {
             />
             <AppShell header={ <Header /> }>
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
-                    <Switch>
+                    <Routes>
                         { defaultLayoutRoutes.map((route: RouteInterface, index: number) =>
                             route.redirectTo ? (
-                                <Redirect to={ route.redirectTo } key={ index } />
+                                <Navigate to={ route.redirectTo } key={ index } />
                             ) : route.protected ? (
-                                <ProtectedRoute
-                                    component={
-                                        route.component ? route.component : null
-                                    }
+                                <Route
                                     path={ route.path }
+                                    element={
+                                        isAuthenticated && route.component
+                                            ? <route.component />
+                                            : <Navigate to={ AppConstants.getAppLoginPath() } />
+                                    }
                                     key={ index }
-                                    exact={ route.exact }
                                 />
                             ) : (
                                 <Route
                                     path={ route.path }
-                                    render={ (renderProps: RouteComponentProps) =>
-                                        route.component ? (
-                                            <route.component { ...renderProps } />
-                                        ) : null
+                                    element={    route.component ? (
+                                        <route.component />
+                                    ) : null
                                     }
                                     key={ index }
-                                    exact={ route.exact }
                                 />
                             )
                         ) }
-                    </Switch>
+                    </Routes>
                 </Suspense>
             </AppShell>
         </>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,11 +33,10 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, us
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { StaticContext } from "react-router";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Dispatch } from "redux";
 import { fetchApplications } from "../api";
-import { Header, ProtectedRoute } from "../components";
+import { Header } from "../components";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
@@ -62,10 +61,9 @@ export interface DashboardLayoutPropsInterface {
  * @param props - Props injected to the component.
  * @returns Dashboard Layout component.
  */
-export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayoutPropsInterface>> = (
-    props: PropsWithChildren<DashboardLayoutPropsInterface & RouteComponentProps>
-): ReactElement => {
-    const { location } = props;
+export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayoutPropsInterface>> =
+(): ReactElement => {
+    const location = useLocation();
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -74,6 +72,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isApplicationsPageVisible: boolean = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
+    const isAuthenticated: boolean = useSelector((state: any) => state.authenticationInformation.isAuth);
 
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(
         getDashboardLayoutRoutes()[ 0 ]
@@ -304,36 +303,32 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                         ) }
                     >
                         <Suspense fallback={ <ContentLoader /> }>
-                            <Switch>
+                            <Routes>
                                 { dashboardLayoutRoutes.map((route: RouteInterface, index: number) =>
-                                    route.redirectTo 
+                                    route.redirectTo
                                         ? (
-                                            <Redirect to={ route.redirectTo } key={ index } />
+                                            <Navigate to={ route.redirectTo } key={ index } />
                                         ) : route.protected ? (
-                                            <ProtectedRoute
-                                                component={ route.component ? route.component : null }
+
+                                            <Route
                                                 path={ route.path }
+                                                element={
+                                                    isAuthenticated && route.component
+                                                        ? <route.component />
+                                                        : <Navigate to={ AppConstants.getAppLoginPath() } />
+                                                }
                                                 key={ index }
-                                                exact={ route.exact }
                                             />
+
                                         ) : (
                                             <Route
                                                 path={ route.path }
-                                                render={ (
-                                                    renderProps: RouteComponentProps<
-                                                    {
-                                                        [ x: string ]: string;
-                                                    },
-                                                    StaticContext,
-                                                    unknown
-                                                >
-                                                ) => (route.component ? <route.component { ...renderProps } /> : null) }
+                                                element={ route.component ? <route.component /> : null }
                                                 key={ index }
-                                                exact={ route.exact }
                                             />
                                         )
                                 ) }
-                            </Switch>
+                            </Routes>
                         </Suspense>
                     </ErrorBoundary>
                 </Container>

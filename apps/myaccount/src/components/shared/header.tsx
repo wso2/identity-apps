@@ -295,9 +295,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 !(CommonUtils?.isProfileReadOnly(isReadOnlyUser)) &&
                     consoleAppURL && consoleAppURL != "" ? (
                     <MenuItem
-                        key={
-                            t("myAccount:components.header.appSwitch.console.name")
-                        }
                         onClick={ () => window.open(consoleAppURL, "_blank", "noopener") }>
                         <ListItemIcon>
                             <RectangleLineIcon fill="black" />

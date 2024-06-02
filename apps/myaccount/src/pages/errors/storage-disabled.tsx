@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,8 @@
  */
 
 import { EmptyPlaceholder } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { RouteComponentProps } from "react-router-dom";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
@@ -27,16 +26,17 @@ import { history } from "../../helpers";
 /**
  * Storage disabled error page.
  *
- * @param {RouteComponentProps} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns React element
  */
-const SessionStorageDisabled: FunctionComponent<RouteComponentProps> = (): ReactElement => {
+const SessionStorageDisabled: React.FC = (): ReactElement => {
 
     const { t } = useTranslation();
 
     useEffect(() => {
         try {
-            const storage = sessionStorage;
+            const storage: Storage = sessionStorage;
+
             if (storage) {
                 history.push(AppConstants.getAppHomePath());
             }

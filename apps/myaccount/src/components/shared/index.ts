@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,6 @@ export * from "./global-loader";
 export * from "./icon";
 export * from "./page-header";
 export * from "./pre-loader";
-export * from "./protected-route";
 export * from "./settings-section";
 export * from "./user-avatar";
 export * from "./modal";

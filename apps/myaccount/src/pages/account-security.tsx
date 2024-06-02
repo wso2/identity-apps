@@ -30,6 +30,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteProps } from "react-router";
+import { useLocation } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import {
@@ -52,7 +53,7 @@ import { CommonUtils } from "../utils";
 /**
  * Prop types for the Account Security page.
  */
-interface AccountSecurityPagePropsInterface extends TestableComponentInterface, RouteProps {
+type AccountSecurityPagePropsInterface = TestableComponentInterface & RouteProps & {
     enableNonLocalCredentialUserView?: boolean;
 }
 
@@ -72,6 +73,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const location = useLocation();
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -95,7 +97,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
 
     useEffect(() => {
         setTimeout(() => {
-            switch (props.location.hash) {
+            switch (location.hash) {
                 case `#${ CommonConstants.CONSENTS_CONTROL }`:
                     consentControl.current.scrollIntoView({
                         behavior: "smooth",
@@ -120,7 +122,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
             }
         }, 100);
 
-    }, [ props.location ]);
+    }, [ location ]);
 
     /**
      * Checks if the user is a user without local credentials.

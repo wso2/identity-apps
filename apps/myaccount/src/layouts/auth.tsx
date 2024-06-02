@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,8 +19,9 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { PreLoader, ProtectedRoute } from "../components";
+import { useSelector } from "react-redux";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { PreLoader } from "../components";
 import { getAuthLayoutRoutes } from "../configs";
 import { AppConstants } from "../constants";
 
@@ -47,6 +48,8 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
 
     const { fluid } = props;
 
+    const isAuthenticated: boolean = useSelector((state: any) => state.authenticationInformation.isAuth);
+
     const [ authLayoutRoutes, setAuthLayoutRoutes ] = useState<RouteInterface[]>(getAuthLayoutRoutes());
 
     /**
@@ -59,35 +62,37 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
     return (
         <AuthLayoutSkeleton fluid={ fluid }>
             <Suspense fallback={ <PreLoader /> }>
-                <Switch>
+                <Routes>
                     {
                         authLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
-                                ? <Redirect to={ route.redirectTo } key={ index } />
+                                ? <Navigate to={ route.redirectTo } key={ index } />
                                 : route.protected
                                     ? (
-                                        <ProtectedRoute
-                                            component={ route.component ? route.component : null }
+                                        <Route
                                             path={ route.path }
+                                            element={
+                                                isAuthenticated && route.component
+                                                    ? <route.component />
+                                                    : <Navigate to={ AppConstants.getAppLoginPath() } />
+                                            }
                                             key={ index }
-                                            exact={ route.exact }
                                         />
                                     )
                                     : (
                                         <Route
                                             path={ route.path }
-                                            render={ (renderProps: RouteComponentProps) =>
+                                            element={
                                                 route.component
-                                                    ? <route.component { ...renderProps } />
+                                                    ? <route.component />
                                                     : null
                                             }
                                             key={ index }
-                                            exact={ route.exact }
                                         />
                                     )
                         ))
                     }
-                </Switch>
+                </Routes>
             </Suspense>
         </AuthLayoutSkeleton>
     );

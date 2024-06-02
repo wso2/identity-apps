@@ -28,8 +28,8 @@ import {
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { PreLoader, ProtectedRoute } from "../components";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { PreLoader } from "../components";
 import { getAppLayoutRoutes } from "../configs/routes";
 import { getEmptyPlaceholderIllustrations } from "../configs/ui";
 import { AppConstants } from "../constants";
@@ -50,6 +50,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
     const isCookieConsentBannerEnabled: boolean = useSelector((state: AppState) => {
         return state.config.ui.isCookieConsentBannerEnabled;
     });
+    const isAuthenticated: boolean = useSelector((state: any) => state.authenticationInformation.isAuth);
 
     /**
      * Listen for base name changes and updated the routes.
@@ -80,35 +81,37 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                 ) }
             >
                 <Suspense fallback={ <PreLoader /> }>
-                    <Switch>
+                    <Routes>
                         {
                             appRoutes.map((route: RouteInterface, index: number) => (
                                 route.redirectTo
-                                    ? <Redirect to={ route.redirectTo } key={ index } />
+                                    ? <Navigate to={ route.redirectTo } key={ index } />
                                     : route.protected
                                         ? (
-                                            <ProtectedRoute
-                                                component={ route.component ? route.component : null }
+                                            <Route
                                                 path={ route.path }
+                                                element={
+                                                    isAuthenticated && route.component
+                                                        ? <route.component />
+                                                        : <Navigate to={ AppConstants.getAppLoginPath() } />
+                                                }
                                                 key={ index }
-                                                exact={ route.exact }
                                             />
                                         )
                                         : (
                                             <Route
                                                 path={ route.path }
-                                                render={ (renderProps: RouteComponentProps) =>
+                                                element={
                                                     route.component
-                                                        ? <route.component { ...renderProps } />
+                                                        ? <route.component />
                                                         : null
                                                 }
                                                 key={ index }
-                                                exact={ route.exact }
                                             />
                                         )
                             ))
                         }
-                    </Switch>
+                    </Routes>
                 </Suspense>
                 {
                     isCookieConsentBannerEnabled && (
