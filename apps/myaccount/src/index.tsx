@@ -27,6 +27,7 @@ import ReactDOM, { Root } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PreLoader } from "./components";
+import { GlobalHistory } from "./components/shared/global-history";
 import { Config } from "./configs";
 import { ProtectedApp } from "./protected-app";
 import AppSettingsProvider from "./providers/app-settings-provider";
@@ -82,17 +83,18 @@ const RootWithConfig = () => {
     return (
         <AppSettingsProvider>
             <Provider store={ store }>
-                <BrowserRouter>
-                    <AuthProvider
-                        config={
-                            getAuthInitializeConfig()
-                        }
-                        fallback={ <PreLoader /> }
-                        getAuthParams={ getAuthParams }
-                    >
+                <AuthProvider
+                    config={
+                        getAuthInitializeConfig()
+                    }
+                    fallback={ <PreLoader /> }
+                    getAuthParams={ getAuthParams }
+                >
+                    <BrowserRouter>
+                        <GlobalHistory />
                         <ProtectedApp />
-                    </AuthProvider>
-                </BrowserRouter>
+                    </BrowserRouter>
+                </AuthProvider>
             </Provider>
         </AppSettingsProvider>
     );

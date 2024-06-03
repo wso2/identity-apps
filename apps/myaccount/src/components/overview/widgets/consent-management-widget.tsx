@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
@@ -38,10 +39,7 @@ export const ConsentManagementWidget: FunctionComponent<ConsentManagementWidgetP
 
     const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
-
-    const navigate = () => {
-        history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.CONSENTS_CONTROL);
-    };
+    const navigate = useNavigate()
 
     return (
         <div className="widget consent-management" data-testid={ testId }>
@@ -51,7 +49,9 @@ export const ConsentManagementWidget: FunctionComponent<ConsentManagementWidgetP
                 header={ t("myAccount:components.overview.widgets.consentManagement.header") }
                 description={ t("myAccount:components.overview.widgets.consentManagement.description") }
                 primaryAction={ t("myAccount:components.overview.widgets.consentManagement.actionTitles.manage") }
-                onPrimaryActionClick={ navigate }
+                onPrimaryActionClick={ () => {
+                    navigate(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.CONSENTS_CONTROL)
+                } }
                 icon={ getWidgetIcons().consents }
                 iconMini={ getWidgetIcons().consents }
                 iconSize="x60"

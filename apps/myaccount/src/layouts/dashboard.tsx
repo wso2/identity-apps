@@ -33,7 +33,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, us
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Dispatch } from "redux";
 import { fetchApplications } from "../api";
 import { Header } from "../components";
@@ -64,6 +64,7 @@ export interface DashboardLayoutPropsInterface {
 export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayoutPropsInterface>> =
 (): ReactElement => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -268,7 +269,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                                             "data-testid":  `side-panel-items-${ kebabCase(route.id) }`,
                                             icon: route.icon,
                                             label: t(route.name),
-                                            onClick: () => history.push(route.path),
+                                            onClick: () => navigate(route.path),
                                             selected: selectedRoute?.path === route.path
                                         };
                                     }
@@ -307,8 +308,14 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                                 { dashboardLayoutRoutes.map((route: RouteInterface, index: number) =>
                                     route.redirectTo
                                         ? (
-                                            <Navigate to={ route.redirectTo } key={ index } />
-                                        ) : route.protected ? (
+                                            <Route
+                                                path="*"
+                                                element={ <Navigate to={ route.redirectTo } key={ index } /> }
+                                                key={ index }
+                                            />
+                                        )
+                                        :
+                                        route.protected ? (
 
                                             <Route
                                                 path={ route.path }

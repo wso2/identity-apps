@@ -18,6 +18,7 @@
 
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { AuthenticateUtils } from "@wso2is/core/utils";
+import { globalNavigate } from "../components/shared/global-history";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
@@ -63,14 +64,14 @@ export const onHttpRequestError = (error: any): null => {
         error.response.request.responseURL === sessionStorage.getItem("token_endpoint")
     ) {
         if (error.response.status === 400) {
-            history.push(AppConstants.getAppLogoutPath());
+            globalNavigate(AppConstants.getAppLogoutPath());
             return;
         }
     }
 
     // If the user doesn't have login permission, redirect to login error page.
     if (store.getState()?.auth?.scope && !AuthenticateUtils.hasLoginPermission(store.getState().auth.scope)) {
-        history.push(AppConstants.getPaths().get("LOGIN_ERROR"));
+        globalNavigate(AppConstants.getPaths().get("LOGIN_ERROR"));
         return;
     }
 

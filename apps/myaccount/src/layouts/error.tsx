@@ -66,15 +66,27 @@ export const ErrorLayout: FunctionComponent<PropsWithChildren<ErrorLayoutPropsIn
                     {
                         errorLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
-                                ? <Navigate to={ route.redirectTo } key={ index } />
-                                : route.protected
+                                ?
+                                (<Route
+                                    path="*"
+                                    element={
+                                        <Navigate to={ route.redirectTo } />
+                                    }
+                                    key={ index } />
+                                )
+                                :
+                                route.protected
                                     ? (
                                         <Route
                                             path={ route.path }
                                             element={
                                                 isAuthenticated && route.component
                                                     ? <route.component />
-                                                    : <Navigate to={ AppConstants.getAppLoginPath() } />
+                                                    :
+                                                    (<>
+                                                        <Navigate to={ AppConstants.getAppLoginPath() } />
+                                                    </>)
+
                                             }
                                             key={ index }
                                         />

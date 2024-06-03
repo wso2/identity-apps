@@ -89,27 +89,36 @@ export const DefaultLayout: FunctionComponent = (): ReactElement => {
                     <Routes>
                         { defaultLayoutRoutes.map((route: RouteInterface, index: number) =>
                             route.redirectTo ? (
-                                <Navigate to={ route.redirectTo } key={ index } />
-                            ) : route.protected ? (
                                 <Route
-                                    path={ route.path }
+                                    path="*"
                                     element={
-                                        isAuthenticated && route.component
-                                            ? <route.component />
-                                            : <Navigate to={ AppConstants.getAppLoginPath() } />
+                                        <Navigate to={ route.redirectTo } />
                                     }
                                     key={ index }
                                 />
-                            ) : (
-                                <Route
-                                    path={ route.path }
-                                    element={    route.component ? (
-                                        <route.component />
-                                    ) : null
-                                    }
-                                    key={ index }
-                                />
-                            )
+                            ) :
+                                route.protected ? (
+                                    <Route
+                                        path={ route.path }
+                                        element={
+                                            isAuthenticated && route.component
+                                                ? <route.component />
+                                                : (<>
+                                                    <Navigate to={ AppConstants.getAppLoginPath() } />
+                                                </>)
+                                        }
+                                        key={ index }
+                                    />
+                                ) : (
+                                    <Route
+                                        path={ route.path }
+                                        element={    route.component ? (
+                                            <route.component />
+                                        ) : null
+                                        }
+                                        key={ index }
+                                    />
+                                )
                         ) }
                     </Routes>
                 </Suspense>

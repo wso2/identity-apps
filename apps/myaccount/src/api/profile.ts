@@ -23,9 +23,9 @@ import { PatchOperationRequest, ProfileInfoInterface, ProfileSchemaInterface } f
 import { CommonUtils } from "@wso2is/core/utils";
 import axios, { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
+import { globalNavigate } from "../components/shared/global-history";
 import { Config } from "../configs";
 import { AppConstants } from "../constants";
-import { history } from "../helpers";
 import { BasicProfileInterface, HttpMethods, ReadOnlyUserStatus } from "../models";
 import { store } from "../store";
 import { toggleSCIMEnabled } from "../store/actions";
@@ -173,7 +173,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 store.dispatch(toggleSCIMEnabled(false));
 
                 // Navigate to login error page.
-                history.push(AppConstants.getPaths().get("LOGIN_ERROR"));
+                globalNavigate(AppConstants.getPaths().get("LOGIN_ERROR"));
             }
 
             return Promise.reject(error);

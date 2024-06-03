@@ -36,7 +36,7 @@ import * as moment from "moment";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { PreLoader } from "./components";
 import { getBaseRoutes } from "./configs";
 import { AppConstants } from "./constants";
@@ -68,6 +68,7 @@ export const App = (): ReactElement => {
 
     const { signOut, trySignInSilently } = useAuthContext();
     const { themePreference } = useContext(ThemeProviderContext);
+    const navigate = useNavigate();
 
     const { setMode } = useColorScheme();
 
@@ -111,7 +112,7 @@ export const App = (): ReactElement => {
             return;
         }
 
-        history.push(AppConstants.getPaths().get("UNAUTHORIZED"));
+        navigate(AppConstants.getPaths().get("UNAUTHORIZED"));
     }, [ loginInit, allowedScopes, config ]);
 
     /**
@@ -161,7 +162,7 @@ export const App = (): ReactElement => {
      * @param url - Current URL.
      */
     const handleSessionTimeoutAbort = (url: URL): void => {
-        history.push({
+        navigate({
             pathname: url.pathname,
             search: url.search
         });
@@ -171,7 +172,7 @@ export const App = (): ReactElement => {
      * Handles session logout.
      */
     const handleSessionLogout = (): void => {
-        history.push(AppConstants.getAppLogoutPath());
+        navigate(AppConstants.getAppLogoutPath());
     };
 
     /**
@@ -182,11 +183,11 @@ export const App = (): ReactElement => {
             const storage: Storage = sessionStorage;
 
             if (!storage && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
-                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
+                navigate(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
         } catch {
             if (true && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
-                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
+                navigate(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
         }
     };
@@ -200,13 +201,13 @@ export const App = (): ReactElement => {
         trySignInSilently()
             .then((response: boolean) => {
                 if (response === false) {
-                    history.push(AppConstants.getAppLogoutPath());
+                    navigate(AppConstants.getAppLogoutPath());
                 } else {
                     window.history.replaceState(null, null, window.location.pathname);
                 }
             })
             .catch(() => {
-                history.push(AppConstants.getAppLogoutPath());
+                navigate(AppConstants.getAppLogoutPath());
             });
     };
 
@@ -342,23 +343,38 @@ export const App = (): ReactElement => {
                                     config
                                         ? filterRoutes(baseRoutes, config)
                                             .map((route: RouteInterface, index: number) => {
+
+                                                console.log(config);
+                                                console.log(baseRoutes);
+                                                console.log(filterRoutes(baseRoutes, config));
+
                                                 return (
                                                     route.redirectTo
                                                         ? (
-                                                            <Navigate
-                                                                to={ route.redirectTo }
+                                                            <Route
+                                                                path="*"
+                                                                element={
+                                                                    (<Navigate
+                                                                        to={ route.redirectTo }
+                                                                    />)
+                                                                }
                                                             />
                                                         )
-                                                        : route.protected
+                                                        :
+                                                        route.protected
                                                             ? (
                                                                 <Route
                                                                     path={ route.path }
                                                                     element={
                                                                         isAuthenticated && route.component
                                                                             ? <route.component />
-                                                                            : (<Navigate
-                                                                                to={ AppConstants.getAppLoginPath() }
-                                                                            />)
+                                                                            : (
+                                                                                <Navigate
+                                                                                    to={
+                                                                                        AppConstants.getAppLoginPath()
+                                                                                    }
+                                                                                />
+                                                                            )
                                                                     }
                                                                     key={ index }
                                                                 />
@@ -368,7 +384,7 @@ export const App = (): ReactElement => {
                                                                 <Route
                                                                     path={ route.path }
                                                                     element={
-                                                                        <route.component />
+                                                                        route.component
                                                                     }
                                                                     key={ index }
                                                                 />

@@ -66,8 +66,15 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
                     {
                         authLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
-                                ? <Navigate to={ route.redirectTo } key={ index } />
-                                : route.protected
+                                ? (<Route
+                                    path="*"
+                                    element={
+                                        <Navigate to={ route.redirectTo } key={ index } />
+                                    }
+                                    key={ index }>
+                                </Route>)
+                                :
+                                route.protected
                                     ? (
                                         <Route
                                             path={ route.path }

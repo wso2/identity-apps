@@ -85,15 +85,26 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                         {
                             appRoutes.map((route: RouteInterface, index: number) => (
                                 route.redirectTo
-                                    ? <Navigate to={ route.redirectTo } key={ index } />
-                                    : route.protected
+                                    ?
+                                    (<Route
+                                        path="*"
+                                        key={ index }
+                                        element={
+                                            <Navigate to={ route.redirectTo } />
+                                        }
+                                    />)
+                                    :
+                                    route.protected
                                         ? (
                                             <Route
                                                 path={ route.path }
                                                 element={
                                                     isAuthenticated && route.component
                                                         ? <route.component />
-                                                        : <Navigate to={ AppConstants.getAppLoginPath() } />
+                                                        :
+                                                        (
+                                                            <Navigate to={ AppConstants.getAppLoginPath() } />
+                                                        )
                                                 }
                                                 key={ index }
                                             />

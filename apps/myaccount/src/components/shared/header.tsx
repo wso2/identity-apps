@@ -71,6 +71,7 @@ import {
     handleAccountSwitching
 } from "../../store/actions";
 import { CommonUtils, refreshPage } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Dashboard layout Prop types.
@@ -104,6 +105,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     >(null);
 
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     // TODO: Get this from profile reducer and cast `ProfileInfoInterface`.
     const profileInfo: any = useSelector(
@@ -388,7 +390,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     )
                 },
                 onClick: () => {
-                    history.push(AppConstants.getPaths().get("DASHBOARD"));
+                    navigate(AppConstants.getPaths().get("DASHBOARD"));
                 },
                 title: theme?.images?.myAccountLogo?.title ?? config.ui.appName
             } }
@@ -466,7 +468,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     ))
                 ],
                 onActionClick: () =>
-                    history.push(AppConstants.getAppLogoutPath()),
+                    {
+                        
+                        navigate(AppConstants.getAppLogoutPath())
+                    }
+,
                 triggerOptions: {
                     "data-componentid": "app-header-user-avatar",
                     "data-testid": "app-header-user-avatar"

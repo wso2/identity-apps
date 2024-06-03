@@ -19,6 +19,7 @@
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
@@ -32,13 +33,14 @@ import { history } from "../../helpers";
 const SessionStorageDisabled: React.FC = (): ReactElement => {
 
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         try {
             const storage: Storage = sessionStorage;
 
             if (storage) {
-                history.push(AppConstants.getAppHomePath());
+                navigate(AppConstants.getAppHomePath());
             }
         } catch {
             // Storage is enabled

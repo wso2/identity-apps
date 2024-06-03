@@ -122,7 +122,7 @@ export const getDashboardLayoutRoutes = (): RouteInterface[] => {
 
     return [
         {
-            component: <OverviewPage />,
+            component: lazy(() => import("../pages/overview")),
             exact: true,
             icon: <HomeIcon fill="black" />,
             id: "overview",
@@ -215,11 +215,11 @@ export const getBaseRoutes = (): RouteInterface[] => {
 
     return [
         {
-            component: AppLayout,
+            component: <AppLayout />,
             icon: null,
             id: "app",
             name: "App",
-            path: AppConstants.getPaths().get("ROOT"),
+            path: `${AppConstants.getPaths().get("ROOT")}*`,
             protected: false,
             showOnSidePanel: false
         }

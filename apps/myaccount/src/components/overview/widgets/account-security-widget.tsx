@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
@@ -39,10 +40,7 @@ export const AccountSecurityWidget: FunctionComponent<AccountSecurityWidgetProps
 
     const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
-
-    const navigate = () => {
-        history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.ACCOUNT_SECURITY);
-    };
+    const navigate = useNavigate();
 
     return (
         <div className="widget account-security" data-testid={ testId }>
@@ -52,7 +50,9 @@ export const AccountSecurityWidget: FunctionComponent<AccountSecurityWidgetProps
                 header={ t("myAccount:components.overview.widgets.accountSecurity.header") }
                 description={ t("myAccount:components.overview.widgets.accountSecurity.description") }
                 primaryAction={ t("myAccount:components.overview.widgets.accountSecurity.actionTitles.update") }
-                onPrimaryActionClick={ navigate }
+                onPrimaryActionClick={ () => {
+                    navigate(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.ACCOUNT_SECURITY)
+                } }
                 icon={ getWidgetIcons().accountSecurity }
                 iconMini={ getWidgetIcons().accountSecurity }
                 iconSize="x60"
