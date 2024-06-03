@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.3.6
+
+### Patch Changes
+
+- [#6392](https://github.com/wso2/identity-apps/pull/6392) [`6f48095cba6f26851b376a416eef80f8cb218f55`](https://github.com/wso2/identity-apps/commit/6f48095cba6f26851b376a416eef80f8cb218f55) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add layout data to identify `self-registration-username-request.jsp`
+
 ## 2.3.5
 
 ### Patch Changes
