@@ -1,5 +1,29 @@
 # @wso2is/admin.applications.v1
 
+## 2.20.14
+
+### Patch Changes
+
+- [#6393](https://github.com/wso2/identity-apps/pull/6393) [`47cfae5172361d9f121d35e332752b26ebeb14a5`](https://github.com/wso2/identity-apps/commit/47cfae5172361d9f121d35e332752b26ebeb14a5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide org SSO authenticator in the add authenticator modal in new runtime
+
+- Updated dependencies []:
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.14
+  - @wso2is/admin.connections.v1@2.20.14
+  - @wso2is/admin.console-settings.v1@2.20.14
+  - @wso2is/admin.core.v1@2.20.14
+  - @wso2is/admin.extensions.v1@2.20.14
+  - @wso2is/admin.identity-providers.v1@2.20.14
+  - @wso2is/admin.login-flow.ai.v1@2.20.14
+  - @wso2is/admin.oidc-scopes.v1@2.20.14
+  - @wso2is/admin.organizations.v1@2.20.14
+  - @wso2is/admin.roles.v2@2.20.14
+  - @wso2is/admin.api-resources.v2@2.20.14
+  - @wso2is/admin.claims.v1@2.20.14
+  - @wso2is/admin.secrets.v1@2.20.14
+  - @wso2is/admin.server-configurations.v1@2.20.14
+  - @wso2is/admin.userstores.v1@2.20.14
+  - @wso2is/admin.wsfed-configuration.v1@2.20.14
+
 ## 2.20.13
 
 ### Patch Changes
