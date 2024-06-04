@@ -229,6 +229,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     message: t("applications:notifications.updateApplication.genericError" +
                         ".message")
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
