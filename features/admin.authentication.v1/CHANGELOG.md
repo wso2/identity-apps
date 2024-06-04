@@ -1,5 +1,17 @@
 # @wso2is/admin.authentication.v1
 
+## 2.20.15
+
+### Patch Changes
+
+- [#6391](https://github.com/wso2/identity-apps/pull/6391) [`8c6d068df4b0b8cea0cfaf4ed0edf3b58174f119`](https://github.com/wso2/identity-apps/commit/8c6d068df4b0b8cea0cfaf4ed0edf3b58174f119) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable OIDC session management only after the user is authenticated
+
+- Updated dependencies [[`9dd72ff479e019a6a342f501f14b7d3c6b45a1d3`](https://github.com/wso2/identity-apps/commit/9dd72ff479e019a6a342f501f14b7d3c6b45a1d3)]:
+  - @wso2is/admin.users.v1@2.20.15
+  - @wso2is/admin.core.v1@2.20.15
+  - @wso2is/admin.extensions.v1@2.20.15
+  - @wso2is/admin.organizations.v1@2.20.15
+
 ## 2.20.14
 
 ### Patch Changes

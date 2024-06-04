@@ -1,5 +1,31 @@
 # @wso2is/admin.applications.v1
 
+## 2.20.15
+
+### Patch Changes
+
+- [#6404](https://github.com/wso2/identity-apps/pull/6404) [`e0b02dfaaa438e9ec1e0b7556738b4cafb17edfb`](https://github.com/wso2/identity-apps/commit/e0b02dfaaa438e9ec1e0b7556738b4cafb17edfb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show no suborgs message when searching for suborgs in a root org that has no organizations created
+
+* [#6402](https://github.com/wso2/identity-apps/pull/6402) [`d41eba80eed7f054a16278d7bc665b128fe2a220`](https://github.com/wso2/identity-apps/commit/d41eba80eed7f054a16278d7bc665b128fe2a220) Thanks [@brionmario](https://github.com/brionmario)! - Fix Application general tab button loading issue
+
+* Updated dependencies []:
+  - @wso2is/admin.console-settings.v1@2.20.15
+  - @wso2is/admin.core.v1@2.20.15
+  - @wso2is/admin.extensions.v1@2.20.15
+  - @wso2is/admin.organizations.v1@2.20.15
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.15
+  - @wso2is/admin.connections.v1@2.20.15
+  - @wso2is/admin.identity-providers.v1@2.20.15
+  - @wso2is/admin.login-flow.ai.v1@2.20.15
+  - @wso2is/admin.oidc-scopes.v1@2.20.15
+  - @wso2is/admin.roles.v2@2.20.15
+  - @wso2is/admin.claims.v1@2.20.15
+  - @wso2is/admin.server-configurations.v1@2.20.15
+  - @wso2is/admin.api-resources.v2@2.20.15
+  - @wso2is/admin.secrets.v1@2.20.15
+  - @wso2is/admin.userstores.v1@2.20.15
+  - @wso2is/admin.wsfed-configuration.v1@2.20.15
+
 ## 2.20.14
 
 ### Patch Changes
