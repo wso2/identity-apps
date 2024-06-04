@@ -35,6 +35,7 @@
         "@wso2is/admin.provisioning.v1": "^2.20.19",
         "@wso2is/admin.roles.v2": "^2.20.19",
         "@wso2is/admin.server-configurations.v1": "^2.20.19",
+        "@wso2is/admin.sms-providers.v1": "^2.20.19",
         "@wso2is/admin.tenants.v1": "^2.20.19",
         "@wso2is/admin.users.v1": "^2.20.19",
         "@wso2is/admin.userstores.v1": "^2.20.19",
