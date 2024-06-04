@@ -165,7 +165,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
     };
 
     useEffect(() => {
-        setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+        setListItemLimit(null);
         setUserListMetaContent(new Map<string, string>([
             [ "name", "name" ],
             [ "emails", "emails" ],
