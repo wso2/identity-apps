@@ -557,6 +557,11 @@ const useSignIn = (): UseSignInInterface => {
                             sessionStorage.setItem(key, _signOutRedirectURL.href);
                         }
 
+                        // `updateConfig` doesn't seem to be updating the SDK configs as expected,
+                        // Hence it was needed to modify the session storage manually to
+                        // update check session SDK config.
+                        // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/222
+                        // TODO: Remove this workaround once the above issue is fixed.
                         if (key.startsWith("config_data-instance_0-CONSOLE")) {
                             const config: any = JSON.parse(value);
 
