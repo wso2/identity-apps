@@ -1,5 +1,25 @@
 # @wso2is/admin.users.v1
 
+## 2.20.15
+
+### Patch Changes
+
+- [#6400](https://github.com/wso2/identity-apps/pull/6400) [`9dd72ff479e019a6a342f501f14b7d3c6b45a1d3`](https://github.com/wso2/identity-apps/commit/9dd72ff479e019a6a342f501f14b7d3c6b45a1d3) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix user list pagination
+
+- Updated dependencies [[`8c6d068df4b0b8cea0cfaf4ed0edf3b58174f119`](https://github.com/wso2/identity-apps/commit/8c6d068df4b0b8cea0cfaf4ed0edf3b58174f119), [`9dd72ff479e019a6a342f501f14b7d3c6b45a1d3`](https://github.com/wso2/identity-apps/commit/9dd72ff479e019a6a342f501f14b7d3c6b45a1d3)]:
+  - @wso2is/admin.authentication.v1@2.20.15
+  - @wso2is/admin.users.v1@2.20.15
+  - @wso2is/admin.core.v1@2.20.15
+  - @wso2is/admin.extensions.v1@2.20.15
+  - @wso2is/admin.organizations.v1@2.20.15
+  - @wso2is/admin.identity-providers.v1@2.20.15
+  - @wso2is/admin.roles.v2@2.20.15
+  - @wso2is/admin.claims.v1@2.20.15
+  - @wso2is/admin.groups.v1@2.20.15
+  - @wso2is/admin.server-configurations.v1@2.20.15
+  - @wso2is/admin.validation.v1@2.20.15
+  - @wso2is/admin.userstores.v1@2.20.15
+
 ## 2.20.14
 
 ### Patch Changes
