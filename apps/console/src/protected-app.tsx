@@ -213,7 +213,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 has(idToken, "associated_tenants") ||
                 isPrivilegedUser ||
                 isOrgSwitch ||
-                isNotPlatformIdPFederatedUser != undefined && isNotPlatformIdPFederatedUser
+                isNotPlatformIdPFederatedUser !== undefined && isNotPlatformIdPFederatedUser
             ) {
                 // If there is an association, the user should be redirected to console landing page.
                 const location: string =
