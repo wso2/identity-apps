@@ -20,7 +20,6 @@ export * from "./advanced-search-with-basic-filters";
 export * from "./authenticator-accordion";
 export * from "./footer";
 export * from "./header";
-export * from "./protected-route";
 export * from "./upload-certificate";
 export * from "./groups";
 export * from "./roles";

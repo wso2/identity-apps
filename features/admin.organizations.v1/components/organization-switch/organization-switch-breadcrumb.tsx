@@ -37,6 +37,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Breadcrumb, Dropdown, Icon } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
@@ -107,6 +108,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         shouldSendRequest
     );
 
+    const location: Location<unknown> = useLocation();
+
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
     const isShowSwitcher: boolean = organizationConfigs?.showOrganizationDropdown || isSubOrg;
@@ -114,7 +117,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const [ triggerBackButtonOrganizationSwitch, setTriggerBackButtonOrganizationSwitch ] = useState<boolean>(false);
 
     const previousPushedRouteKey: string = "previousPushedRoute";
-    const currentPath: string = history.location.pathname;
+    const currentPath: string = location.pathname;
 
     const breadcrumbList: BreadcrumbList = useMemo(() => {
         if (!breadcrumbListData || breadcrumbListData.length < 1) {
@@ -135,7 +138,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 setTriggerBackButtonOrganizationSwitch(true);
             }
         });
-    }, []);
+    }, [ location ]);
 
     /**
      * This useEffect will handle the organization switch when the user clicks on the back button.

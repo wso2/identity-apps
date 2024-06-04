@@ -1714,7 +1714,7 @@ export const getBaseRoutes = (): RouteInterface[] => {
             icon: null,
             id: "app",
             name: "App",
-            path: AppConstants.getPaths().get("ROOT"),
+            path: `${AppConstants.getPaths().get("ROOT")}*`,
             protected: false,
             showOnSidePanel: false
         }

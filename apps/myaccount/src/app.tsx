@@ -40,7 +40,6 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { PreLoader } from "./components";
 import { getBaseRoutes } from "./configs";
 import { AppConstants } from "./constants";
-import { history } from "./helpers";
 import {
     ConfigReducerStateInterface,
     FeatureConfigInterface

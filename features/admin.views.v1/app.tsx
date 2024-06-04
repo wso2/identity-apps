@@ -29,7 +29,6 @@ import {
     AppViewTypes,
     ConfigReducerStateInterface,
     Header,
-    ProtectedRoute,
     RouteUtils,
     StrictAppViewTypes,
     UIConstants,
@@ -78,7 +77,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
 
@@ -89,10 +88,8 @@ import { ThunkDispatch } from "redux-thunk";
  *
  * @returns Admin View Wrapper.
  */
-export const AppView: FunctionComponent<RouteComponentProps> = (
-    props: RouteComponentProps
-): ReactElement => {
-    const { location } = props;
+export const AppView: FunctionComponent = (): ReactElement => {
+    const location  = useLocation()
 
     const dispatch: ThunkDispatch<AppState, void, Action> = useDispatch();
     const { t } = useTranslation();
@@ -100,6 +97,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
     const isMarketingConsentBannerEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.ui?.isMarketingConsentBannerEnabled;
     });
+    const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
 
     const [ announcement, setAnnouncement ] = useState<
         AnnouncementBannerInterface
@@ -226,24 +224,22 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
      */
     const renderRoute = (route: RouteInterface, key: number): ReactNode =>
         route.redirectTo ? (
-            <Redirect key={ key } to={ route.redirectTo } />
+            <Route path="*" element={ <Navigate to={ route.redirectTo } /> } key={ key } />
         ) : route.protected ? (
-            <ProtectedRoute
-                component={ route.component ? route.component : null }
+            <Route
+                element={ isAuthenticated && route.component ? <route.component /> : null }
                 path={ route.path }
                 key={ key }
-                exact={ route.exact }
             />
         ) : (
             <Route
                 path={ route.path }
-                render={ (renderProps: RouteComponentProps): ReactNode =>
+                element={ 
                     route.component ? (
-                        <route.component { ...renderProps } />
+                        <route.component />
                     ) : null
                 }
                 key={ key }
-                exact={ route.exact }
             />
         );
 
@@ -456,7 +452,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
                             isMarketingConsentBannerEnabled
                                 && applicationConfig.marketingConsent.getBannerComponent()
                         }
-                        <Switch>{ resolveRoutes() as ReactNode[] }</Switch>
+                        <Routes>{ resolveRoutes() as ReactNode[] }</Routes>
                     </Suspense>
                 </ErrorBoundary>
             </AppShell>

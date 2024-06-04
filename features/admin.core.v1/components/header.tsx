@@ -490,9 +490,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         ? (
                             <MenuItem
                                 color="inherit"
-                                key={ t(
-                                    "myAccount:components.header.appSwitch.console.name"
-                                ) }
                                 onClick={ () => {
                                     eventPublisher.publish(
                                         "console-click-visit-my-account"
