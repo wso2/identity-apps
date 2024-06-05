@@ -53,6 +53,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { userstoresConfig } from "../../../configs";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { GroupList } from "../groups-list";
 import { CreateGroupWizard } from "../wizard";
@@ -104,7 +105,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const excludeMembers: string = "members";
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const [ userStoreOption, setuserStoreOption ] = useState<string>(userstoresConfig.primaryUserstoreNam);
+    const [ userStoreOption, setuserStoreOption ] = useState<string>(userstoresConfig.primaryUserstoreName);
     const [ enabledUserStores, setEnabledUserStores ] = useState<UserStoreListItem[]>([]);
 
     const {
