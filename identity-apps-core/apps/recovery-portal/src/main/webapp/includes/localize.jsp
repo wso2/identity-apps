@@ -45,7 +45,7 @@
     supportedLanguages.put("de", "DE");
     supportedLanguages.put("zh", "CN");
     supportedLanguages.put("ja", "JP");
-    
+
     List<String> languageSupportedCountries = new ArrayList<>();
     languageSupportedCountries.add("US");
     languageSupportedCountries.add("FR");
@@ -55,6 +55,42 @@
     languageSupportedCountries.add("CN");
     languageSupportedCountries.add("JP");
     languageSupportedCountries.add("BR");
+
+    // Specify the file path
+    String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
+
+    // Use a BufferedReader to read the file content
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            // Ignore comments and empty lines
+            if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
+                // Split the line into key and value using '=' as the delimiter
+                String[] keyValue = line.split("=");
+                if (keyValue.length == 2) {
+                    // Split the key further using '.' as the delimiter
+                    String[] parts = keyValue[0].split("\\.");
+                    // Ensure the key has at least one part
+                    if (parts.length > 0) {
+                        // Split the code further using '_' as the delimiter
+                        String[] languageCode = parts[parts.length - 1].split("_");
+                        // Ensure the languageCode has at least two parts (language and country)
+                        if (languageCode.length == 2) {
+                            // Add the values
+                            if (!supportedLanguages.containsKey(languageCode[0])) {
+                                supportedLanguages.put(languageCode[0], languageCode[1]);
+                            }
+                            if (!languageSupportedCountries.contains(languageCode[1])) {
+                                languageSupportedCountries.add(languageCode[1]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } catch (Exception e) {
+        throw e;
+    }
 
     // Check cookie for the user selected language first
     Cookie[] cookies = request.getCookies();
@@ -230,7 +266,7 @@
             String COUNTRY_PLACEHOLDER = "{{country}}";
             String LOCALE_PLACEHOLDER = "{{locale}}";
 
-            if (transformedLink.contains(LANGUAGE_PLACEHOLDER) || transformedLink.contains(COUNTRY_PLACEHOLDER) || transformedLink.contains(LOCALE_PLACEHOLDER)) {            
+            if (transformedLink.contains(LANGUAGE_PLACEHOLDER) || transformedLink.contains(COUNTRY_PLACEHOLDER) || transformedLink.contains(LOCALE_PLACEHOLDER)) {
                 transformedLink = transformedLink
                     .replace("{{lang}}", langCode)
                     .replace("{{country}}", countryCode)

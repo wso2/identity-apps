@@ -140,9 +140,6 @@
 <link href="css/language-selector.css" rel="stylesheet">
 
 <%
-    // Specify the file path
-    String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
-
     // Create a List to store the parsed data
     List<String[]> languageList = new ArrayList<>();
 
