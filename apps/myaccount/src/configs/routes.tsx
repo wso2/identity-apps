@@ -21,7 +21,6 @@ import { RouteInterface } from "@wso2is/core/models";
 import React,{ FunctionComponent, lazy } from "react";
 import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
-import OverviewPage from "../pages/overview";
 
 /**
  * Get default page layout routes.

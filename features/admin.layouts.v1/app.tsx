@@ -31,7 +31,7 @@ import {
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 /**
  * Implementation of the Main app layout skeleton.
@@ -78,35 +78,41 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                 ) }
             >
                 <Suspense fallback={ <PreLoader /> }>
-                    <Routes>
-                        {
-                            appRoutes.map((route: RouteInterface, index: number) => (
-                                route.redirectTo
-                                    ? <Route path="*" element={ <Navigate to={ route.redirectTo } /> } key={ index }/>
-                                    : route.protected
-                                        ? (
-                                            <Route
-                                                element={
-                                                    isAuthenticated && route.component ? <route.component /> : null
-                                                }
-                                                path={ route.path }
-                                                key={ index }
-                                            />
-                                        )
-                                        : (
-                                            <Route
-                                                path={ route.path }
-                                                element={
-                                                    route.component
-                                                        ? <route.component />
-                                                        : null
-                                                }
-                                                key={ index }
-                                            />
-                                        )
-                            ))
-                        }
-                    </Routes>
+                    <BrowserRouter>
+                        <Routes>
+                            {
+                                appRoutes.map((route: RouteInterface, index: number) => (
+                                    route.redirectTo
+                                        ? (<Route
+                                            path="*"
+                                            element={ <Navigate to={ route.redirectTo } /> }
+                                            key={ index }
+                                        />)
+                                        : route.protected
+                                            ? (
+                                                <Route
+                                                    element={
+                                                        isAuthenticated && route.component ? <route.component /> : null
+                                                    }
+                                                    path={ route.path }
+                                                    key={ index }
+                                                />
+                                            )
+                                            : (
+                                                <Route
+                                                    path={ route.path }
+                                                    element={
+                                                        route.component
+                                                            ? <route.component />
+                                                            : null
+                                                    }
+                                                    key={ index }
+                                                />
+                                            )
+                                ))
+                            }
+                        </Routes>
+                    </BrowserRouter>
                 </Suspense>
                 {
                     isCookieConsentBannerEnabled && (

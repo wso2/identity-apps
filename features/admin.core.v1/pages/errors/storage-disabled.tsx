@@ -19,7 +19,6 @@
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { RouteComponentProps } from "react-router-dom";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
@@ -27,10 +26,10 @@ import { history } from "../../helpers";
 /**
  * Storage disabled error page.
  *
- * @param {RouteComponentProps} props - Props injected to the component.
+ * @param props - Props injected to the component.
  * @return {React.ReactElement}
  */
-const SessionStorageDisabled: FunctionComponent<RouteComponentProps> = (): ReactElement => {
+const SessionStorageDisabled: FunctionComponent = (): ReactElement => {
 
     const { t } = useTranslation();
 

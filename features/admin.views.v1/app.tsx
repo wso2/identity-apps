@@ -77,7 +77,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
 
@@ -90,6 +90,7 @@ import { ThunkDispatch } from "redux-thunk";
  */
 export const AppView: FunctionComponent = (): ReactElement => {
     const location  = useLocation()
+    const navigate = useNavigate();
 
     const dispatch: ThunkDispatch<AppState, void, Action> = useDispatch();
     const { t } = useTranslation();
@@ -352,12 +353,12 @@ export const AppView: FunctionComponent = (): ReactElement => {
                                 { ...subRoute.icon }
                             />,
                             label: t(subRoute.name),
-                            onClick: () => history.push(subRoute.path),
+                            onClick: () => navigate(subRoute.path),
                             selected: subRoute.selected ?? selectedRoute?.path === subRoute.path,
                             tag: t(subRoute.featureStatusLabel)
                         })),
                         label: t(route.name),
-                        onClick: () => history.push(route.path),
+                        onClick: () => navigate(route.path),
                         selected: route.selected ?? isRouteActive(route.path),
                         tag: t(route.featureStatusLabel)
                     }))
@@ -372,7 +373,8 @@ export const AppView: FunctionComponent = (): ReactElement => {
      * @returns if the navigation item is active.
      */
     const isRouteActive = (routePath: string): boolean => {
-        return history.location.pathname === routePath;
+        console.log(location.pathname === window.location.pathname)
+        return location.pathname === window.location.pathname;
     };
 
     return (
