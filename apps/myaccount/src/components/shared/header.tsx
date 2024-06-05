@@ -340,6 +340,16 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         return "";
     };
 
+    const resolveEmail = (): string => {
+        let email: string = profileInfo?.email ?? profileInfo?.emails[profileInfo.emails.length - 1];
+
+        if (email === resolveUsername()) {
+            // When both the username and email are the same, the email is not shown.
+            email = "";
+        }
+        return email;
+    };
+
     return (
         <OxygenHeader
             className="is-header"
@@ -396,7 +406,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 title: theme?.images?.myAccountLogo?.title ?? config.ui.appName
             } }
             user={ {
-                email: profileInfo?.email ?? profileInfo?.emails[profileInfo.emails.length - 1],
+                email: resolveEmail(),
                 image: profileInfo?.profileUrl,
                 name: resolveUsername()
             } }
