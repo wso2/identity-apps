@@ -182,8 +182,8 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
-    const showSmsOtpPasswordRecoveryBetaChip: boolean =
-        useSelector((state: AppState) => state?.config?.ui?.showSmsOtpPasswordRecoveryBetaChip);
+    const showSmsOtpPwdRecoveryFeatureStatusChip: boolean =
+        useSelector((state: AppState) => state?.config?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -516,7 +516,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionSubHeadingSMS") as ReactNode }
                     {
-                        showSmsOtpPasswordRecoveryBetaChip ?
+                        showSmsOtpPwdRecoveryFeatureStatusChip ?
                             (<Chip
                                 label="BETA"
                                 className="oxygen-menu-item-chip oxygen-chip-beta" />)
@@ -584,7 +584,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.otpConfigHeading") as ReactNode }
                     {
-                        showSmsOtpPasswordRecoveryBetaChip ?
+                        showSmsOtpPwdRecoveryFeatureStatusChip ?
                             (<Chip
                                 label="BETA"
                                 className="oxygen-menu-item-chip oxygen-chip-beta" />)
@@ -689,7 +689,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.failedAttemptConfigHeading") as ReactNode }
                     {
-                        showSmsOtpPasswordRecoveryBetaChip ?
+                        showSmsOtpPwdRecoveryFeatureStatusChip ?
                             (<Chip
                                 label="BETA"
                                 className="oxygen-menu-item-chip oxygen-chip-beta" />)
