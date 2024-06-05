@@ -42,9 +42,9 @@ import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-pref
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
 import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
-import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import AuthenticationFlowContext from "../context/branding-preference-context";
+import BrandingPreferenceContext from "../context/branding-preference-context";
 import {
     CustomTextConfigurationModes,
     CustomTextInterface,
@@ -102,7 +102,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     >(CustomTextConfigurationModes.TEXT_FIELDS);
 
     const [ isCustomTextPreferenceConfigured, setIsCustomTextPreferenceConfigured ] = useState<boolean>(true);
-
+    const [ selectedApplication, setSelectedApplication ] = useState<string>(null);
+    const [ brandingMode, setBrandingMode ] = useState<BrandingModes>(BrandingModes.ORGANIZATION);
 
     const {
         data: brandingPreference
@@ -350,10 +351,11 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     };
 
     return (
-        <AuthenticationFlowContext.Provider
+        <BrandingPreferenceContext.Provider
             value={ {
                 activeCustomTextConfigurationMode,
                 activeTab,
+                brandingMode,
                 customText: customTextFormSubscription?.values ?? resolvedCustomText?.preference?.text,
                 customTextDefaults: customTextFallbacks?.preference?.text,
                 customTextFormSubscription: customTextFormSubscription ?? {
@@ -401,8 +403,11 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 preference: brandingPreference,
                 resetAllCustomTextPreference: _deleteCustomTextPreference,
                 resetCustomTextField,
+                selectedApplication,
                 selectedLocale,
                 selectedScreen,
+                setBrandingMode,
+                setSelectedApplication,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
                 updateActiveTab: (tab: string) => {
                     // If the tab is the text tab, set the preview screen to common before changing the tab.
@@ -438,7 +443,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
             } }
         >
             { children }
-        </AuthenticationFlowContext.Provider>
+        </BrandingPreferenceContext.Provider>
     );
 };
 
