@@ -234,11 +234,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        if (data.value === GroupConstants.ALL_USER_STORES_OPTION_VALUE) {
-            setUserStore(null);
-        } else {
-            setUserStore(data.value as string);
-        }
+        setUserStore(data.value as string);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {

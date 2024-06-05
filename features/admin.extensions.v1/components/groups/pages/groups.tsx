@@ -32,7 +32,6 @@ import {
     searchGroupList,
     useGroupList
 } from "@wso2is/admin.groups.v1";
-import { GroupConstants } from "@wso2is/admin.groups.v1/constants";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -49,7 +48,6 @@ import {
 import { AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import find from "lodash-es/find";
-import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -106,7 +104,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const excludeMembers: string = "members";
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const [ userStoreOption, setuserStoreOption ] = useState<string>(GroupConstants.ALL_GROUPS);
+    const [ userStoreOption, setuserStoreOption ] = useState<string>();
     const [ enabledUserStores, setEnabledUserStores ] = useState<UserStoreListItem[]>([]);
 
     const {
@@ -122,6 +120,11 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         isLoading: isUserStoreListFetchRequestLoading,
         error: userStoreListFetchRequestError
     } = useUserStores(null);
+
+    useEffect(() => {
+        userStoreList?.length >= 1
+        && setuserStoreOption(userStoreList[0].name);
+    }, [ userStoreList ]);
 
     /**
      * Moderate Groups response from the API.
@@ -415,13 +418,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * Handles the user store wise filtering for groups.
      */
     const filterUserStores = (option: string): void => {
-        if(option === GroupConstants.ALL_GROUPS){
-            setPaginatedFilteredGroups(paginatedGroups);
-
-            return;
-        }
         setPaginatedFilteredGroups(groupList?.filter((group: GroupsInterface) => {
-            return (group.displayName.includes(option.toUpperCase()));
+            return (group.displayName.includes(option?.toUpperCase()));
         }));
     };
 
@@ -430,7 +428,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      */
     const addDefaultValueToDropDownOptions = (): DropdownItemProps[] => {
 
-        const userStoreOptions: DropdownItemProps[] = cloneDeep(enabledUserStores)?.map(
+        return cloneDeep(userStoreList)?.map(
             (item: UserStoreListItem, index: number) => {
                 return {
                     key: index,
@@ -438,12 +436,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     value: item.name.toUpperCase()
                 };
             });
-
-        return union([ {
-            key: GroupConstants.ALL_GROUPS,
-            text: GroupConstants.ALL_GROUPS,
-            value: GroupConstants.ALL_GROUPS
-        } ], userStoreOptions);
     };
 
     return (
@@ -453,9 +445,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 !isGroupListFetchRequestLoading
                 && (
                     userStoreOption === CONSUMER_USERSTORE
-                    || userStoreOption === GroupConstants.ALL_GROUPS
                 )
-                && originalGroupList?.totalResults > 0
+                && originalGroupList.totalResults > 0
                 && (
                     <Show
                         when={ featureConfig?.groups?.scopes?.create }

@@ -170,7 +170,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             );
         }
 
-        if (groupList?.length !== 0) {
+        if (selectedUserStoreOption && groupList?.length === 0) {
             return (
                 <>
                     <Show
@@ -178,8 +178,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     >
                         <EmptyPlaceholder
                             data-testid={ `${ testId }-empty-list-empty-placeholder` }
-                            action={ (selectedUserStoreOption === CONSUMER_USERSTORE
-                                || selectedUserStoreOption === GroupConstants.ALL_GROUPS)
+                            action={ selectedUserStoreOption === CONSUMER_USERSTORE
                                 && (
                                     <PrimaryButton
                                         data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
