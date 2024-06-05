@@ -21,7 +21,11 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
-import { BrandingSubFeatures, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
+import {
+    BrandingPreferenceTypes,
+    BrandingSubFeatures,
+    PreviewScreenType
+} from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -105,9 +109,17 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const [ selectedApplication, setSelectedApplication ] = useState<string>(null);
     const [ brandingMode, setBrandingMode ] = useState<BrandingModes>(BrandingModes.ORGANIZATION);
 
+    const resolvedName: string = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
+        ? selectedApplication : tenantDomain;
+    const resolvedType: BrandingPreferenceTypes = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
+        ? BrandingPreferenceTypes.APP : BrandingPreferenceTypes.ORG;
+
     const {
         data: brandingPreference
-    } = useGetBrandingPreferenceResolve(tenantDomain);
+    } = useGetBrandingPreferenceResolve(
+        resolvedName,
+        resolvedType
+    );
 
     const {
         data: customTextCommons

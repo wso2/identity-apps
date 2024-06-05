@@ -28,6 +28,7 @@ import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
+import { AnimatePresence, LayoutGroup, Variants, motion } from "framer-motion";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -74,6 +75,31 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
 
     const [ isBrandingAppsRedirect, setIsBrandingAppsRedirect ] = useState<boolean>(false);
 
+    const animationVariants: Variants = {
+        enter: {
+            opacity: 0,
+            transition: {
+                duration: 0.1
+            },
+            x: 20
+        },
+        exit: {
+            opacity: 0,
+            transition: {
+                duration: 0.1
+            },
+            x: -20
+        },
+        in: {
+            opacity: 1,
+            transition: {
+                delay: 0.2,
+                duration: 0.1
+            },
+            x: 0
+        }
+    };
+
     /**
     * Fetch the identity provider id & name when calling the app edit through connected apps
     */
@@ -85,8 +111,16 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
 
         setIsBrandingAppsRedirect(true);
         setBrandingMode(BrandingModes.APPLICATION);
-        setSelectedApplication(history.location.state as string);
-    }, [ history?.location?.state ]);
+
+        // Check if application ID from state is available in the application list.
+        if (applicationList?.applications?.find((app: ApplicationListItemInterface) =>
+            app.id === history.location.state)) {
+
+            setSelectedApplication(history.location.state as string);
+
+            return;
+        }
+    }, [ history?.location?.state, applicationList ]);
 
     /**
      * Handles the application list fetch request error.
@@ -128,7 +162,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         event: React.MouseEvent<HTMLElement>,
         mode: BrandingModes
     ) => {
-        setBrandingMode(mode);
+        mode && setBrandingMode(mode);
     };
 
     const resolveBrandingTitle = (): string => {
@@ -172,80 +206,130 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             title={ (
                 <div className="title-container">
                     <div className="title-container-heading">
-                        { resolveBrandingTitle() }
+                        <AnimatePresence >
+                            <motion.div
+                                className="content"
+                                key={ resolveBrandingTitle() }
+                                initial="enter"
+                                animate="in"
+                                exit="exit"
+                                transition={ {
+                                    damping: 50,
+                                    stiffness: 400,
+                                    type: "spring"
+                                } }
+                                variants={ animationVariants }>
+                                <h1>{ resolveBrandingTitle() }</h1>
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
                     {
                         !brandingDisabledFeatures.includes(
                             BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG) && (
                             <div className="branding-mode-container">
-                                <Paper
-                                    className="branding-mode-toggle-container"
-                                    elevation={ 0 }
-                                >
-                                    <ToggleButtonGroup
-                                        exclusive
-                                        onChange={ handleBrandingModeChange }
-                                        size="small"
-                                        value={ brandingMode }
-                                    >
-                                        <ToggleButton value={ BrandingModes.ORGANIZATION }>
-                                            <BuildingIcon
-                                                className="toggle-button-icon"
-                                                size={ 14 }
-                                            />
-                                            { t("extensions:develop.branding.pageHeader.organization") }
-                                        </ToggleButton>
-                                        <ToggleButton value={ BrandingModes.APPLICATION }>
-                                            <TilesIcon
-                                                className="toggle-button-icon"
-                                                size={ 14 }
-                                            />
-                                            { t("extensions:develop.branding.pageHeader.application") }
-                                        </ToggleButton>
-                                    </ToggleButtonGroup>
-                                </Paper>
-                                { brandingMode === BrandingModes.APPLICATION && (
-                                    <Autocomplete
-                                        disablePortal
-                                        clearIcon={ null }
-                                        fullWidth
-                                        options={ applicationList?.applications ?? [] }
-                                        value={ applicationList?.applications?.find(
-                                            (app: ApplicationListItemInterface) => app.id === selectedApplication) }
-                                        onChange={ (
-                                            event: SyntheticEvent<Element, Event>,
-                                            application: ApplicationListItemInterface
-                                        ) => {
-                                            setSelectedApplication(application?.id);
+                                <LayoutGroup>
+                                    <motion.div
+                                        initial="enter"
+                                        animate="in"
+                                        exit="exit"
+                                        transition={ {
+                                            damping: 50,
+                                            stiffness: 400,
+                                            type: "spring"
                                         } }
-                                        isOptionEqualToValue={ (
-                                            option: ApplicationListItemInterface,
-                                            value: ApplicationListItemInterface
-                                        ) =>
-                                            option.id === value.id
-                                        }
-                                        filterOptions={ (options: ApplicationListItemInterface[]) =>
-                                            options.filter((application: ApplicationListItemInterface) =>
-                                                !ApplicationManagementConstants.SYSTEM_APPS.includes(
-                                                    application?.name) &&
-                                                !ApplicationManagementConstants.DEFAULT_APPS.includes(
-                                                    application?.name)
-                                            )
-                                        }
-                                        loading={ isApplicationListFetchRequestLoading }
-                                        getOptionLabel={ (application: ApplicationListItemInterface) =>
-                                            application.name }
-                                        renderInput={ (params: AutocompleteRenderInputParams) => (
-                                            <TextField
-                                                { ...params }
+                                        variants={ animationVariants }
+                                        layout
+                                    >
+                                        <Paper
+                                            className="branding-mode-toggle-container"
+                                            elevation={ 0 }
+                                        >
+                                            <ToggleButtonGroup
+                                                exclusive
+                                                onChange={ handleBrandingModeChange }
                                                 size="small"
-                                                placeholder={
-                                                    t("extensions:develop.branding.pageHeader.selectApplication") }
-                                                margin="none"
+                                                value={ brandingMode }
+                                                disabled={ isBrandingAppsRedirect }
+                                            >
+                                                <ToggleButton value={ BrandingModes.ORGANIZATION }>
+                                                    <BuildingIcon
+                                                        className="toggle-button-icon"
+                                                        size={ 14 }
+                                                    />
+                                                    { t("extensions:develop.branding.pageHeader.organization") }
+                                                </ToggleButton>
+                                                <ToggleButton value={ BrandingModes.APPLICATION }>
+                                                    <TilesIcon
+                                                        className="toggle-button-icon"
+                                                        size={ 14 }
+                                                    />
+                                                    { t("extensions:develop.branding.pageHeader.application") }
+                                                </ToggleButton>
+                                            </ToggleButtonGroup>
+                                        </Paper>
+                                    </motion.div>
+                                    { brandingMode === BrandingModes.APPLICATION && (
+                                        <motion.div
+                                            initial="enter"
+                                            animate="in"
+                                            exit="exit"
+                                            transition={ {
+                                                damping: 50,
+                                                stiffness: 400,
+                                                type: "spring"
+                                            } }
+                                            variants={ animationVariants }
+                                            layout
+                                        >
+                                            <Autocomplete
+                                                sx={ { width: 190 } }
+                                                readOnly={ isBrandingAppsRedirect }
+                                                clearIcon={ null }
+                                                options={ applicationList?.applications ?? [] }
+                                                value={ applicationList?.applications?.find(
+                                                    (app: ApplicationListItemInterface) =>
+                                                        app.id === selectedApplication) }
+                                                onChange={ (
+                                                    event: SyntheticEvent<Element, Event>,
+                                                    application: ApplicationListItemInterface
+                                                ) => {
+                                                    setSelectedApplication(application.id);
+                                                } }
+                                                isOptionEqualToValue={ (
+                                                    option: ApplicationListItemInterface,
+                                                    value: ApplicationListItemInterface
+                                                ) =>
+                                                    option.id === value.id
+                                                }
+                                                filterOptions={ (options: ApplicationListItemInterface[]) =>
+                                                    options.filter((application: ApplicationListItemInterface) =>
+                                                        !ApplicationManagementConstants.SYSTEM_APPS.includes(
+                                                            application?.name) &&
+                                                        !ApplicationManagementConstants.DEFAULT_APPS.includes(
+                                                            application?.name)
+                                                    )
+                                                }
+                                                loading={ isApplicationListFetchRequestLoading }
+                                                getOptionLabel={ (application: ApplicationListItemInterface) =>
+                                                    application.name }
+                                                renderInput={ (params: AutocompleteRenderInputParams) => (
+                                                    <TextField
+                                                        { ...params }
+                                                        size="small"
+                                                        placeholder={ isBrandingAppsRedirect
+                                                            ? applicationList?.applications?.find(
+                                                                (app: ApplicationListItemInterface) =>
+                                                                    app.id === selectedApplication)?.name
+                                                            : t("extensions:develop.branding.pageHeader." +
+                                                                "selectApplication") }
+                                                        margin="none"
+                                                        value={ selectedApplication }
+                                                    />
+                                                ) }
                                             />
-                                        ) }
-                                    />
-                                ) }
+                                        </motion.div>
+                                    ) }
+                                </LayoutGroup>
                             </div>
                         )
                     }
@@ -253,7 +337,22 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             ) }
             description={ (
                 <div className="with-label">
-                    { resolveBrandingDescription() }
+                    <AnimatePresence >
+                        <motion.div
+                            className="content"
+                            key={ resolveBrandingTitle() }
+                            initial="enter"
+                            animate="in"
+                            exit="exit"
+                            transition={ {
+                                damping: 50,
+                                stiffness: 400,
+                                type: "spring"
+                            } }
+                            variants={ animationVariants }>
+                            { resolveBrandingDescription() }
+                        </motion.div>
+                    </AnimatePresence>
                     <DocumentationLink
                         link={ getLink("develop.branding.learnMore") }
                     >
@@ -264,19 +363,25 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             data-componentid={ `${ componentId }-layout` }
             className="branding-page"
         >
-            {
-                brandingMode === BrandingModes.APPLICATION && !selectedApplication && (
-                    <Alert
-                        severity="warning"
-                        sx={ { marginBottom: 2 } }
-                    >
-                        { t("extensions:develop.branding.pageHeader.applicationListWarning") }
-                    </Alert>
-                )
-            }
-            <AIBrandingPreferenceProvider>
-                <BrandingCore />
-            </AIBrandingPreferenceProvider>
+            <LayoutGroup>
+                <motion.div layout>
+                    {
+                        brandingMode === BrandingModes.APPLICATION && !selectedApplication && (
+                            <Alert
+                                severity="warning"
+                                sx={ { marginBottom: 2 } }
+                            >
+                                { t("extensions:develop.branding.pageHeader.applicationListWarning") }
+                            </Alert>
+                        )
+                    }
+                </motion.div>
+                <motion.div layout>
+                    <AIBrandingPreferenceProvider>
+                        <BrandingCore />
+                    </AIBrandingPreferenceProvider>
+                </motion.div>
+            </LayoutGroup>
         </PageLayout>
     );
 };
