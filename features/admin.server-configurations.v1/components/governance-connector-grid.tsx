@@ -40,6 +40,7 @@ import {
 } from "@oxygen-ui/react-icons";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
@@ -211,6 +212,15 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
         }
     };
 
+    const resolveFeatureLabelClass = (featureStatus: FeatureStatusLabel) => {
+        switch (featureStatus) {
+            case FeatureStatusLabel.BETA:
+                return "oxygen-chip-beta";
+            case FeatureStatusLabel.NEW:
+                return "oxygen-chip-new";
+        }
+    };
+
     return (
         <div>
             { combinedConnectors?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
@@ -236,10 +246,17 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     data-componentid={ connector.testId }
                                                 >
                                                     {
-                                                        showStatusLabelForNewAuthzRuntimeFeatures
-                                                        && connector.status
+                                                        connector.status
                                                         && (
-                                                            <div className="ribbon">{ t(connector.status) }</div>
+                                                            <div
+                                                                className={
+                                                                    "ribbon " + resolveFeatureLabelClass(
+                                                                        connector.status as FeatureStatusLabel
+                                                                    )
+                                                                }
+                                                            >
+                                                                { t(connector.status).toUpperCase() }
+                                                            </div>
                                                         )
                                                     }
                                                     <CardContent className="governance-connector-header">
