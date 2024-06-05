@@ -170,7 +170,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             );
         }
 
-        if (selectedUserStoreOption && groupList?.length === 0) {
+        if (groupList?.length === 0) {
             return (
                 <>
                     <Show

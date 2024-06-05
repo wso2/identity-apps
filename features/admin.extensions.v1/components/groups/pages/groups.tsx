@@ -104,7 +104,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const excludeMembers: string = "members";
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const [ userStoreOption, setuserStoreOption ] = useState<string>();
+    const [ userStoreOption, setuserStoreOption ] = useState<string>(userstoresConfig.primaryUserstoreNam);
     const [ enabledUserStores, setEnabledUserStores ] = useState<UserStoreListItem[]>([]);
 
     const {
@@ -120,11 +120,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         isLoading: isUserStoreListFetchRequestLoading,
         error: userStoreListFetchRequestError
     } = useUserStores(null);
-
-    useEffect(() => {
-        userStoreList?.length >= 1
-        && setuserStoreOption(userStoreList[0].name);
-    }, [ userStoreList ]);
 
     /**
      * Moderate Groups response from the API.
@@ -419,7 +414,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      */
     const filterUserStores = (option: string): void => {
         setPaginatedFilteredGroups(groupList?.filter((group: GroupsInterface) => {
-            return (group.displayName.includes(option?.toUpperCase()));
+            return (group.displayName.includes(option.toUpperCase()));
         }));
     };
 
@@ -443,9 +438,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             pageTitle="Groups"
             action={
                 !isGroupListFetchRequestLoading
-                && (
-                    userStoreOption === CONSUMER_USERSTORE
-                )
+                && userStoreOption === CONSUMER_USERSTORE
                 && originalGroupList.totalResults > 0
                 && (
                     <Show
