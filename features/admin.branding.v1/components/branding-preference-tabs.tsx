@@ -453,7 +453,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                     disabled={ brandingMode === BrandingModes.APPLICATION }
                 >
                     { t("branding:tabs.text.label") }
-                    { isSAASDeployment && (
+                    { isSAASDeployment && brandingMode !== BrandingModes.APPLICATION && (
                         <Chip
                             size="small"
                             sx={ { marginLeft: 1 } }

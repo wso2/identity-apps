@@ -35,6 +35,7 @@ interface AIBannerProps extends IdentifiableComponentInterface {
     onActionButtonClick?: () => void;
     actionButtonText?: string;
     titleLabel?: ReactElement;
+    readonly?: boolean;
 }
 
 /**
@@ -47,6 +48,7 @@ const AIBanner = (props: AIBannerProps): ReactElement => {
         aiText,
         description,
         onActionButtonClick,
+        readonly,
         title,
         titleLabel
     } = props;
@@ -81,6 +83,7 @@ const AIBanner = (props: AIBannerProps): ReactElement => {
                         onClick={ onActionButtonClick }
                         color="primary"
                         variant="contained"
+                        disabled={ readonly }
                     >
                         { actionButtonText }
                     </Button>
@@ -88,6 +91,14 @@ const AIBanner = (props: AIBannerProps): ReactElement => {
             }
         </Box>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+AIBanner.defaultProps = {
+    "data-componentid": "ai-banner",
+    readonly: false
 };
 
 export default AIBanner;

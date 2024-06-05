@@ -351,13 +351,13 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                             } }
                             variants={ animationVariants }>
                             { resolveBrandingDescription() }
+                            <DocumentationLink
+                                link={ getLink("develop.branding.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
                         </motion.div>
                     </AnimatePresence>
-                    <DocumentationLink
-                        link={ getLink("develop.branding.learnMore") }
-                    >
-                        { t("common:learnMore") }
-                    </DocumentationLink>
                 </div>
             ) }
             data-componentid={ `${ componentId }-layout` }
@@ -377,7 +377,9 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                     }
                 </motion.div>
                 <motion.div layout>
-                    <AIBrandingPreferenceProvider>
+                    <AIBrandingPreferenceProvider
+                        readonly={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                    >
                         <BrandingCore />
                     </AIBrandingPreferenceProvider>
                 </motion.div>

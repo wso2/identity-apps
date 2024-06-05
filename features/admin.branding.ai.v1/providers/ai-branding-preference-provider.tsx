@@ -46,7 +46,9 @@ import AIFeatureContext from "../context/ai-branding-feature-context";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
 import { BannerState } from "../models/types";
 
-type AIBrandingPreferenceProviderProps = PropsWithChildren;
+interface AIBrandingPreferenceProviderProps {
+    readonly?: boolean;
+}
 
 /**
  * Provider for the AI branding preference context.
@@ -54,11 +56,11 @@ type AIBrandingPreferenceProviderProps = PropsWithChildren;
  * @param props - Props injected to the component.
  * @returns AI branding preference provider.
  */
-const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProviderProps> = (
-    props: AIBrandingPreferenceProviderProps
+const AIBrandingPreferenceProvider: FunctionComponent<PropsWithChildren<AIBrandingPreferenceProviderProps>> = (
+    props: PropsWithChildren<AIBrandingPreferenceProviderProps>
 ): ReactElement => {
 
-    const { children } = props;
+    const { readonly, children } = props;
 
     const { t } = useTranslation();
 
@@ -192,7 +194,7 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
                             !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
                             !isSubOrganization() && (
                                 <div className="mb-2">
-                                    <BrandingAIBanner/>
+                                    <BrandingAIBanner readonly={ readonly }/>
                                 </div>
                             )
                         }
@@ -202,6 +204,13 @@ const AIBrandingPreferenceProvider: FunctionComponent<AIBrandingPreferenceProvid
             }
         </AIFeatureContext.Provider>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+AIBrandingPreferenceProvider.defaultProps = {
+    readonly: false
 };
 
 export default AIBrandingPreferenceProvider;
