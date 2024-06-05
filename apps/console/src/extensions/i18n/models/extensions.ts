@@ -1159,7 +1159,7 @@ export interface Extensions {
                     message: string;
                 };
                 unpublishBranding: {
-                    assertionHint: string
+                    assertionHint: string;
                     enableContent: string;
                     disableContent: string
                     header: string;

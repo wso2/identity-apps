@@ -167,7 +167,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: () => history.push(AppConstants.getPaths().get("APPLICATION_EDIT")
                     .replace(":id", selectedApplication)),
-                text: t("extensions:develop.branding.pageHeader.backButton")
+                text: t("extensions:develop.branding.pageHeader.backButtonText")
             } }
             title={ (
                 <div className="title-container">
