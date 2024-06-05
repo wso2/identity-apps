@@ -38,14 +38,13 @@ import {
     UserGearIcon,
     UserPlusIcon
 } from "@oxygen-ui/react-icons";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import "./governance-connector-grid.scss";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
@@ -83,8 +82,6 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
     } = props;
 
     const { t } = useTranslation();
-    const showStatusLabelForNewAuthzRuntimeFeatures: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.showStatusLabelForNewAuthzRuntimeFeatures);
 
     /**
      * Combine the connectors and dynamic connectors and group them by category.
