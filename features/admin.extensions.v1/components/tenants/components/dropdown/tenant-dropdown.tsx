@@ -144,11 +144,11 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     dispatch(
                         addAlert({
                             description:
-                                error?.description &&
+                                error?.description ??
                                 t("extensions:manage.features.tenant.notifications." + "getTenants.description"),
                             level: AlertLevels.ERROR,
                             message:
-                                error?.description &&
+                                error?.description ??
                                 t("extensions:manage.features.tenant.notifications." + "getTenants.message")
                         })
                     );
