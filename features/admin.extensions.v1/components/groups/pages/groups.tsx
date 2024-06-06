@@ -440,7 +440,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             action={
                 !isGroupListFetchRequestLoading
                 && userStoreOption === CONSUMER_USERSTORE
-                && originalGroupList.totalResults > 0
+                && originalGroupList?.totalResults > 0
                 && (
                     <Show
                         when={ featureConfig?.groups?.scopes?.create }
