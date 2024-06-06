@@ -199,17 +199,17 @@ export const applications: ApplicationsNS = {
         },
         disableApplication: {
             header: "Are you sure?",
-            content: "This may cause the consumers being unable to access the application. This is temporary and" +
+            content: "This may cause the consumers being unable to access the application. This is temporary and " +
             "reversible by enabling the application.",
             message: "If you disable this application, consumers will not be able to access the application. "+
-            "And the application may loose access to user data. Please proceed with caution.",
+            "The application also will loose access to user data. Please proceed with caution.",
             assertionHint: "Please confirm your action."
         },
         enableApplication: {
             header: "Are you sure?",
             content: "This may lead to consumers accessing the application. This action is reversible.",
             message: "If you enable this application, consumers will have the access to the application. "+
-            "And the application can gain access to user data. Please proceed with caution.",
+            "The application also will gain access to user data. Please proceed with caution.",
             assertionHint: "Please confirm your action."
         },
         deleteOutboundProvisioningIDP: {
