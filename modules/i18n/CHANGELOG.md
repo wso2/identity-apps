@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.3.7
+
+### Patch Changes
+
+- [#6401](https://github.com/wso2/identity-apps/pull/6401) [`5906e411dd31ceb41711159eddfdea025781288d`](https://github.com/wso2/identity-apps/commit/5906e411dd31ceb41711159eddfdea025781288d) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the empty placeholder error message for groups in roles section
+
 ## 2.3.6
 
 ### Patch Changes
