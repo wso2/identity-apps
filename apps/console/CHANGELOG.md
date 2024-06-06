@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.19.17
+
+### Patch Changes
+
+- Updated dependencies [[`873362943e2514b84759027c10a555827f12a1ef`](https://github.com/wso2/identity-apps/commit/873362943e2514b84759027c10a555827f12a1ef)]:
+  - @wso2is/admin.extensions.v1@2.20.19
+  - @wso2is/admin.authentication.v1@2.20.19
+  - @wso2is/admin.core.v1@2.20.19
+  - @wso2is/admin.organizations.v1@2.20.19
+
 ## 2.19.16
 
 ### Patch Changes
