@@ -1,5 +1,21 @@
 # @wso2is/admin.identity-providers.v1
 
+## 2.20.19
+
+### Patch Changes
+
+- Updated dependencies [[`873362943e2514b84759027c10a555827f12a1ef`](https://github.com/wso2/identity-apps/commit/873362943e2514b84759027c10a555827f12a1ef)]:
+  - @wso2is/admin.extensions.v1@2.20.19
+  - @wso2is/admin.applications.v1@2.20.19
+  - @wso2is/admin.claims.v1@2.20.19
+  - @wso2is/admin.connections.v1@2.20.19
+  - @wso2is/admin.core.v1@2.20.19
+  - @wso2is/admin.identity-providers.v1@2.20.19
+  - @wso2is/admin.organizations.v1@2.20.19
+  - @wso2is/admin.roles.v2@2.20.19
+  - @wso2is/admin.server-configurations.v1@2.20.19
+  - @wso2is/admin.userstores.v1@2.20.19
+
 ## 2.20.18
 
 ### Patch Changes

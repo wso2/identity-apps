@@ -1,5 +1,30 @@
 # @wso2is/admin.extensions.v1
 
+## 2.20.19
+
+### Patch Changes
+
+- [#6415](https://github.com/wso2/identity-apps/pull/6415) [`873362943e2514b84759027c10a555827f12a1ef`](https://github.com/wso2/identity-apps/commit/873362943e2514b84759027c10a555827f12a1ef) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix empty error message notifications
+
+- Updated dependencies []:
+  - @wso2is/admin.api-resources.v1@2.20.19
+  - @wso2is/admin.applications.v1@2.20.19
+  - @wso2is/admin.authentication.v1@2.20.19
+  - @wso2is/admin.claims.v1@2.20.19
+  - @wso2is/admin.connections.v1@2.20.19
+  - @wso2is/admin.core.v1@2.20.19
+  - @wso2is/admin.extensions.v2@2.20.19
+  - @wso2is/admin.groups.v1@2.20.19
+  - @wso2is/admin.identity-providers.v1@2.20.19
+  - @wso2is/admin.organizations.v1@2.20.19
+  - @wso2is/admin.roles.v2@2.20.19
+  - @wso2is/admin.server-configurations.v1@2.20.19
+  - @wso2is/admin.tenants.v1@2.20.19
+  - @wso2is/admin.users.v1@2.20.19
+  - @wso2is/admin.userstores.v1@2.20.19
+  - @wso2is/admin.validation.v1@2.20.19
+  - @wso2is/admin.provisioning.v1@2.20.19
+
 ## 2.20.18
 
 ### Patch Changes
