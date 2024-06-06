@@ -1,5 +1,20 @@
 # @wso2is/admin.application-roles.v1
 
+## 2.20.16
+
+### Patch Changes
+
+- [#6401](https://github.com/wso2/identity-apps/pull/6401) [`5906e411dd31ceb41711159eddfdea025781288d`](https://github.com/wso2/identity-apps/commit/5906e411dd31ceb41711159eddfdea025781288d) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the empty placeholder error message for groups in roles section
+
+- Updated dependencies [[`e96de7f6afc24c3117a2e833eb5229ca1ebb88e4`](https://github.com/wso2/identity-apps/commit/e96de7f6afc24c3117a2e833eb5229ca1ebb88e4)]:
+  - @wso2is/admin.applications.v1@2.20.16
+  - @wso2is/admin.extensions.v1@2.20.16
+  - @wso2is/admin.core.v1@2.20.16
+  - @wso2is/admin.identity-providers.v1@2.20.16
+  - @wso2is/admin.connections.v1@2.20.16
+  - @wso2is/admin.groups.v1@2.20.16
+  - @wso2is/admin.userstores.v1@2.20.16
+
 ## 2.20.15
 
 ### Patch Changes

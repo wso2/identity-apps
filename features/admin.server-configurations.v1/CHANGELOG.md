@@ -1,5 +1,20 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.20.16
+
+### Patch Changes
+
+- [#6411](https://github.com/wso2/identity-apps/pull/6411) [`e96de7f6afc24c3117a2e833eb5229ca1ebb88e4`](https://github.com/wso2/identity-apps/commit/e96de7f6afc24c3117a2e833eb5229ca1ebb88e4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix issues with feature labels for features introduced with new authz runtime
+
+- Updated dependencies [[`e96de7f6afc24c3117a2e833eb5229ca1ebb88e4`](https://github.com/wso2/identity-apps/commit/e96de7f6afc24c3117a2e833eb5229ca1ebb88e4), [`5906e411dd31ceb41711159eddfdea025781288d`](https://github.com/wso2/identity-apps/commit/5906e411dd31ceb41711159eddfdea025781288d)]:
+  - @wso2is/admin.server-configurations.v1@2.20.16
+  - @wso2is/admin.extensions.v1@2.20.16
+  - @wso2is/admin.core.v1@2.20.16
+  - @wso2is/i18n@2.3.7
+  - @wso2is/admin.identity-providers.v1@2.20.16
+  - @wso2is/admin.users.v1@2.20.16
+  - @wso2is/admin.validation.v1@2.20.16
+
 ## 2.20.15
 
 ### Patch Changes
