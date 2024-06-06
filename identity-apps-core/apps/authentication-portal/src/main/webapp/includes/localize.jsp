@@ -63,29 +63,44 @@
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
-            // Ignore comments and empty lines
-            if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
-                // Split the line into key and value using '=' as the delimiter
-                String[] keyValue = line.split("=");
-                if (keyValue.length == 2) {
-                    // Split the key further using '.' as the delimiter
-                    String[] parts = keyValue[0].split("\\.");
-                    // Ensure the key has at least one part
-                    if (parts.length > 0) {
-                        // Split the code further using '_' as the delimiter
-                        String[] languageCode = parts[parts.length - 1].split("_");
-                        // Ensure the languageCode has at least two parts (language and country)
-                        if (languageCode.length == 2) {
-                            // Add the values
-                            if (!supportedLanguages.containsKey(languageCode[0])) {
-                                supportedLanguages.put(languageCode[0], languageCode[1]);
-                            }
-                            if (!languageSupportedCountries.contains(languageCode[1])) {
-                                languageSupportedCountries.add(languageCode[1]);
-                            }
-                        }
+            // Trim the line and ignore comments and empty lines
+            line = line.trim();
+            if (line.isEmpty() || line.startsWith("#")) {
+                continue;
+            }
+
+            String[] keyValue = line.split("=");
+            if (keyValue.length != 2) {
+                continue;
+            }
+
+            // Split the key further using '.' as the delimiter
+            String[] parts = keyValue[0].split("\\.");
+            if (parts.length == 0) {
+                continue;
+            }
+
+            // Split the code further using '_' as the delimiter
+            String[] languageCode = parts[parts.length - 1].split("_");
+            if (languageCode.length != 2) {
+                continue;
+            }
+
+            // Find out whether we have resource bundle for the given locale
+            Locale tempLocale = new Locale(languageCode[0], languageCode[1]);
+            try {
+                ResourceBundle foundBundle = ResourceBundle.getBundle(BUNDLE, tempLocale);
+
+                if (tempLocale.getLanguage().equals(foundBundle.getLocale().getLanguage()) &&
+                    tempLocale.getCountry().equals(foundBundle.getLocale().getCountry())) {
+                    // If the bundle is found, add the language to the supported list
+                    supportedLanguages.putIfAbsent(languageCode[0], languageCode[1]);
+                    if (!languageSupportedCountries.contains(languageCode[1])) {
+                        languageSupportedCountries.add(languageCode[1]);
                     }
                 }
+            } catch (Exception e) {
+                // Bundle not found, do not add this language
             }
         }
     } catch (Exception e) {
