@@ -1,5 +1,19 @@
 # @wso2is/admin.groups.v1
 
+## 2.20.17
+
+### Patch Changes
+
+- [#6407](https://github.com/wso2/identity-apps/pull/6407) [`1777f087c138d37bc23104e6fe23302ccd561953`](https://github.com/wso2/identity-apps/commit/1777f087c138d37bc23104e6fe23302ccd561953) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Remove All user stores option from the user store dropdown in groups section
+
+- Updated dependencies [[`1777f087c138d37bc23104e6fe23302ccd561953`](https://github.com/wso2/identity-apps/commit/1777f087c138d37bc23104e6fe23302ccd561953)]:
+  - @wso2is/admin.extensions.v1@2.20.17
+  - @wso2is/admin.core.v1@2.20.17
+  - @wso2is/admin.organizations.v1@2.20.17
+  - @wso2is/admin.roles.v2@2.20.17
+  - @wso2is/admin.users.v1@2.20.17
+  - @wso2is/admin.userstores.v1@2.20.17
+
 ## 2.20.16
 
 ### Patch Changes
