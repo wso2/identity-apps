@@ -38,13 +38,13 @@ import {
     UserGearIcon,
     UserPlusIcon
 } from "@oxygen-ui/react-icons";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import "./governance-connector-grid.scss";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
@@ -82,8 +82,6 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
     } = props;
 
     const { t } = useTranslation();
-    const showStatusLabelForNewAuthzRuntimeFeatures: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.showStatusLabelForNewAuthzRuntimeFeatures);
 
     /**
      * Combine the connectors and dynamic connectors and group them by category.
@@ -211,6 +209,15 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
         }
     };
 
+    const resolveFeatureLabelClass = (featureStatus: FeatureStatusLabel) => {
+        switch (featureStatus) {
+            case FeatureStatusLabel.BETA:
+                return "oxygen-chip-beta";
+            case FeatureStatusLabel.NEW:
+                return "oxygen-chip-new";
+        }
+    };
+
     return (
         <div>
             { combinedConnectors?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
@@ -236,10 +243,17 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     data-componentid={ connector.testId }
                                                 >
                                                     {
-                                                        showStatusLabelForNewAuthzRuntimeFeatures
-                                                        && connector.status
+                                                        connector.status
                                                         && (
-                                                            <div className="ribbon">{ t(connector.status) }</div>
+                                                            <div
+                                                                className={
+                                                                    "ribbon " + resolveFeatureLabelClass(
+                                                                        connector.status as FeatureStatusLabel
+                                                                    )
+                                                                }
+                                                            >
+                                                                { t(connector.status).toUpperCase() }
+                                                            </div>
                                                         )
                                                     }
                                                     <CardContent className="governance-connector-header">
