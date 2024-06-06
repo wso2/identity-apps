@@ -237,18 +237,22 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         }
 
         if  (!overridenBrandingPreference)  {
-            setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
-                BrandingPreferenceUtils.migrateThemePreference(
-                    originalBrandingPreference.preference,
+
+            const migratedBrandingPreference: BrandingPreferenceInterface = BrandingPreferenceUtils
+                .migrateLayoutPreference(
+                    BrandingPreferenceUtils.migrateThemePreference(
+                        originalBrandingPreference.preference,
+                        {
+                            theme: predefinedThemes
+                        }
+                    ),
                     {
-                        theme: predefinedThemes
+                        layout: predefinedLayouts
                     }
-                ),
-                {
-                    layout: predefinedLayouts
-                }
-            ));
-            setSelectedLayout(originalBrandingPreference.preference.layout.activeLayout);
+                );
+
+            setBrandingPreference(migratedBrandingPreference);
+            setSelectedLayout(migratedBrandingPreference?.layout?.activeLayout);
         }
 
     }, [ originalBrandingPreference ]);

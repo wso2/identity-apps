@@ -4,6 +4,7 @@
     "name": "M2M Application",
     "description": "Applications tailored for Machine to Machine communication",
     "image": "m2m",
+    "status": "NEW",
     "authenticationProtocol": "",
     "category": "DEFAULT",
     "displayOrder": -1,

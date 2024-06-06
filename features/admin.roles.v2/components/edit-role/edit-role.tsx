@@ -78,6 +78,9 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
+    const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
+        return state.config.ui.features?.userRoles?.disabledFeatures;
+    });
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(featureConfig,
@@ -152,21 +155,28 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                         />
                     </ResourceTab.Pane>
                 )
-            },
-            {
-                menuItem: t("roles:edit.menuItems.users"),
-                render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <RoleUsersList
-                            isReadOnly={ isReadOnly || isUserReadOnly }
-                            role={ roleObject }
-                            onRoleUpdate={ onRoleUpdate }
-                            tabIndex={ 3 }
-                        />
-                    </ResourceTab.Pane>
-                )
             }
         ];
+
+        if (!userRolesDisabledFeatures?.includes(
+            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_USERS")
+        )) {
+            panes.push(
+                {
+                    menuItem: t("roles:edit.menuItems.users"),
+                    render: () => (
+                        <ResourceTab.Pane controlledSegmentation attached={ false }>
+                            <RoleUsersList
+                                isReadOnly={ isReadOnly || isUserReadOnly }
+                                role={ roleObject }
+                                onRoleUpdate={ onRoleUpdate }
+                                tabIndex={ 3 }
+                            />
+                        </ResourceTab.Pane>
+                    )
+                }
+            );
+        }
 
         return panes;
     };

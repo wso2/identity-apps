@@ -1,5 +1,172 @@
 # @wso2is/console
 
+## 2.19.15
+
+### Patch Changes
+
+- Updated dependencies [[`1777f087c138d37bc23104e6fe23302ccd561953`](https://github.com/wso2/identity-apps/commit/1777f087c138d37bc23104e6fe23302ccd561953)]:
+  - @wso2is/admin.extensions.v1@2.20.17
+  - @wso2is/admin.authentication.v1@2.20.17
+  - @wso2is/admin.core.v1@2.20.17
+  - @wso2is/admin.organizations.v1@2.20.17
+
+## 2.19.14
+
+### Patch Changes
+
+- [#6411](https://github.com/wso2/identity-apps/pull/6411) [`e96de7f6afc24c3117a2e833eb5229ca1ebb88e4`](https://github.com/wso2/identity-apps/commit/e96de7f6afc24c3117a2e833eb5229ca1ebb88e4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix issues with feature labels for features introduced with new authz runtime
+
+- Updated dependencies [[`e96de7f6afc24c3117a2e833eb5229ca1ebb88e4`](https://github.com/wso2/identity-apps/commit/e96de7f6afc24c3117a2e833eb5229ca1ebb88e4), [`3777b2553280fd18972e0fc728facfd18a55e160`](https://github.com/wso2/identity-apps/commit/3777b2553280fd18972e0fc728facfd18a55e160), [`5906e411dd31ceb41711159eddfdea025781288d`](https://github.com/wso2/identity-apps/commit/5906e411dd31ceb41711159eddfdea025781288d)]:
+  - @wso2is/admin.extensions.v1@2.20.16
+  - @wso2is/admin.core.v1@2.20.16
+  - @wso2is/admin.organizations.v1@2.20.16
+  - @wso2is/i18n@2.3.7
+  - @wso2is/admin.authentication.v1@2.20.16
+  - @wso2is/admin.authorization.v1@2.20.6
+
+## 2.19.13
+
+### Patch Changes
+
+- Updated dependencies [[`8c6d068df4b0b8cea0cfaf4ed0edf3b58174f119`](https://github.com/wso2/identity-apps/commit/8c6d068df4b0b8cea0cfaf4ed0edf3b58174f119)]:
+  - @wso2is/admin.authentication.v1@2.20.15
+  - @wso2is/admin.core.v1@2.20.15
+  - @wso2is/admin.extensions.v1@2.20.15
+  - @wso2is/admin.organizations.v1@2.20.15
+
+## 2.19.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.14
+  - @wso2is/admin.extensions.v1@2.20.14
+  - @wso2is/admin.organizations.v1@2.20.14
+  - @wso2is/admin.authentication.v1@2.20.14
+
+## 2.19.11
+
+### Patch Changes
+
+- [#6365](https://github.com/wso2/identity-apps/pull/6365) [`9fe234d3f1cd7cfbdd95647fd6c1fcfc4ec3c72b`](https://github.com/wso2/identity-apps/commit/9fe234d3f1cd7cfbdd95647fd6c1fcfc4ec3c72b) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix spelling mistake in administrators section
+
+* [#6389](https://github.com/wso2/identity-apps/pull/6389) [`1f57b6c10e29e820f0518f15c96e6f463f5bda41`](https://github.com/wso2/identity-apps/commit/1f57b6c10e29e820f0518f15c96e6f463f5bda41) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the error message for empty username in user creation
+
+* Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.13
+  - @wso2is/admin.extensions.v1@2.20.13
+  - @wso2is/admin.organizations.v1@2.20.13
+  - @wso2is/admin.authentication.v1@2.20.13
+
+## 2.19.10
+
+### Patch Changes
+
+- [#6386](https://github.com/wso2/identity-apps/pull/6386) [`ad5bef4a810b73c8f8b2093ee480972f6e2b14fc`](https://github.com/wso2/identity-apps/commit/ad5bef4a810b73c8f8b2093ee480972f6e2b14fc) Thanks [@brionmario](https://github.com/brionmario)! - Trigger release
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.12
+  - @wso2is/admin.extensions.v1@2.20.12
+  - @wso2is/admin.organizations.v1@2.20.12
+  - @wso2is/admin.authentication.v1@2.20.12
+
+## 2.19.9
+
+### Patch Changes
+
+- Updated dependencies [[`1966e16c22a09b45ffb5e7459c2aaf9b972df518`](https://github.com/wso2/identity-apps/commit/1966e16c22a09b45ffb5e7459c2aaf9b972df518), [`5f2605962390d4a6055d744e138c5daf10f72b91`](https://github.com/wso2/identity-apps/commit/5f2605962390d4a6055d744e138c5daf10f72b91)]:
+  - @wso2is/admin.authentication.v1@2.20.11
+  - @wso2is/admin.extensions.v1@2.20.11
+  - @wso2is/admin.core.v1@2.20.11
+  - @wso2is/admin.organizations.v1@2.20.11
+
+## 2.19.8
+
+### Patch Changes
+
+- Updated dependencies [[`aaee6df156311d50d3852ee332d6894fa5bfd2cf`](https://github.com/wso2/identity-apps/commit/aaee6df156311d50d3852ee332d6894fa5bfd2cf)]:
+  - @wso2is/admin.extensions.v1@2.20.10
+  - @wso2is/admin.authentication.v1@2.20.10
+  - @wso2is/admin.core.v1@2.20.10
+  - @wso2is/admin.organizations.v1@2.20.10
+
+## 2.19.7
+
+### Patch Changes
+
+- Updated dependencies [[`06041f556c01054cf199c238fb14be260a738f0b`](https://github.com/wso2/identity-apps/commit/06041f556c01054cf199c238fb14be260a738f0b)]:
+  - @wso2is/admin.authentication.v1@2.20.9
+  - @wso2is/admin.core.v1@2.20.9
+  - @wso2is/admin.extensions.v1@2.20.9
+  - @wso2is/admin.organizations.v1@2.20.9
+
+## 2.19.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.8
+  - @wso2is/admin.extensions.v1@2.20.8
+  - @wso2is/admin.organizations.v1@2.20.8
+  - @wso2is/admin.authentication.v1@2.20.8
+
+## 2.19.5
+
+### Patch Changes
+
+- [#6360](https://github.com/wso2/identity-apps/pull/6360) [`d538ba34a4c498696755f593a8c79e8cea1838c4`](https://github.com/wso2/identity-apps/commit/d538ba34a4c498696755f593a8c79e8cea1838c4) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Support myAccount Disable
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.7
+  - @wso2is/admin.extensions.v1@2.20.7
+  - @wso2is/admin.organizations.v1@2.20.7
+  - @wso2is/admin.authentication.v1@2.20.7
+
+## 2.19.4
+
+### Patch Changes
+
+- [#6361](https://github.com/wso2/identity-apps/pull/6361) [`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add support to enable & disable apps
+
+- Updated dependencies [[`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85)]:
+  - @wso2is/i18n@2.3.6
+  - @wso2is/admin.core.v1@2.20.6
+  - @wso2is/admin.extensions.v1@2.20.6
+  - @wso2is/admin.organizations.v1@2.20.6
+  - @wso2is/admin.authentication.v1@2.20.6
+  - @wso2is/admin.authorization.v1@2.20.5
+
+## 2.19.3
+
+### Patch Changes
+
+- [#6335](https://github.com/wso2/identity-apps/pull/6335) [`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add support to change application status
+
+- Updated dependencies [[`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471)]:
+  - @wso2is/i18n@2.3.5
+  - @wso2is/admin.core.v1@2.20.5
+  - @wso2is/admin.extensions.v1@2.20.5
+  - @wso2is/admin.organizations.v1@2.20.5
+  - @wso2is/admin.authentication.v1@2.20.5
+  - @wso2is/admin.authorization.v1@2.20.4
+
+## 2.19.2
+
+### Patch Changes
+
+- [#6352](https://github.com/wso2/identity-apps/pull/6352) [`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e) Thanks [@savindi7](https://github.com/savindi7)! - Fix header text wrap issue in resource card.
+
+- Updated dependencies [[`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e)]:
+  - @wso2is/theme@2.0.85
+  - @wso2is/react-components@2.2.7
+  - @wso2is/admin.authorization.v1@2.20.3
+  - @wso2is/admin.extensions.v1@2.20.4
+  - @wso2is/admin.organizations.v1@2.20.4
+  - @wso2is/admin.core.v1@2.20.4
+  - @wso2is/dynamic-forms@2.0.65
+  - @wso2is/form@2.0.66
+  - @wso2is/admin.authentication.v1@2.20.4
+
 ## 2.19.1
 
 ### Patch Changes

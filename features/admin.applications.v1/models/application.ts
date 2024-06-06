@@ -42,6 +42,7 @@ export interface ApplicationBasicInterface {
     realm?: string;
     templateId?: string;
     isManagementApp?: boolean;
+    applicationEnabled?:boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
     associatedRoles?: AssociatedRolesInterface;
 }

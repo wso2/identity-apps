@@ -20,7 +20,7 @@
  * Enum that lists the currently defined feature status label types and their corresponding i18n keys.
  */
 enum FeatureStatusLabel {
-    NEW = "comon:new",
+    NEW = "common:new",
     BETA = "common:beta",
     EXPERIMENTAL = "common:experimental",
     PREMIUM = "common:premium",

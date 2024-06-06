@@ -1,5 +1,54 @@
 # @wso2is/features
 
+## 2.21.10
+
+### Patch Changes
+
+- Updated dependencies [[`5906e411dd31ceb41711159eddfdea025781288d`](https://github.com/wso2/identity-apps/commit/5906e411dd31ceb41711159eddfdea025781288d)]:
+  - @wso2is/i18n@2.3.7
+
+## 2.21.9
+
+### Patch Changes
+
+- [#6381](https://github.com/wso2/identity-apps/pull/6381) [`b581961a756f50933d9a9a9a105a15f43970dc47`](https://github.com/wso2/identity-apps/commit/b581961a756f50933d9a9a9a105a15f43970dc47) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Avoid application count being updated twice
+
+## 2.21.8
+
+### Patch Changes
+
+- [#6360](https://github.com/wso2/identity-apps/pull/6360) [`d538ba34a4c498696755f593a8c79e8cea1838c4`](https://github.com/wso2/identity-apps/commit/d538ba34a4c498696755f593a8c79e8cea1838c4) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Support myAccount Disable
+
+## 2.21.7
+
+### Patch Changes
+
+- [#6361](https://github.com/wso2/identity-apps/pull/6361) [`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add support to enable & disable apps
+
+- Updated dependencies [[`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85)]:
+  - @wso2is/i18n@2.3.6
+
+## 2.21.6
+
+### Patch Changes
+
+- [#6335](https://github.com/wso2/identity-apps/pull/6335) [`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add support to change application status
+
+- Updated dependencies [[`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471)]:
+  - @wso2is/i18n@2.3.5
+
+## 2.21.5
+
+### Patch Changes
+
+- [#6352](https://github.com/wso2/identity-apps/pull/6352) [`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e) Thanks [@savindi7](https://github.com/savindi7)! - Fix header text wrap issue in resource card.
+
+- Updated dependencies [[`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e)]:
+  - @wso2is/theme@2.0.85
+  - @wso2is/react-components@2.2.7
+  - @wso2is/dynamic-forms@2.0.65
+  - @wso2is/form@2.0.66
+
 ## 2.21.4
 
 ### Patch Changes

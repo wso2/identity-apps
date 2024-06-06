@@ -251,7 +251,7 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
                                     emptyPlaceholderContent={ t("transferList:list." +
-                                        "emptyPlaceholders.users.roles.unselected", { type: "groups" }) }
+                                        "emptyPlaceholders.roles.unselected", { type: "groups" }) }
                                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
                                     emptyPlaceholderDefaultContent={ t("transferList:list."
                                         + "emptyPlaceholders.default") }

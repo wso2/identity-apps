@@ -1,5 +1,182 @@
 # @wso2is/admin.branding.v1
 
+## 2.20.17
+
+### Patch Changes
+
+- Updated dependencies [[`1777f087c138d37bc23104e6fe23302ccd561953`](https://github.com/wso2/identity-apps/commit/1777f087c138d37bc23104e6fe23302ccd561953)]:
+  - @wso2is/admin.extensions.v1@2.20.17
+  - @wso2is/admin.core.v1@2.20.17
+  - @wso2is/admin.organizations.v1@2.20.17
+  - @wso2is/admin.server-configurations.v1@2.20.17
+  - @wso2is/admin.branding.ai.v1@2.20.17
+  - @wso2is/common.branding.v1@2.20.17
+
+## 2.20.16
+
+### Patch Changes
+
+- Updated dependencies [[`e96de7f6afc24c3117a2e833eb5229ca1ebb88e4`](https://github.com/wso2/identity-apps/commit/e96de7f6afc24c3117a2e833eb5229ca1ebb88e4), [`3777b2553280fd18972e0fc728facfd18a55e160`](https://github.com/wso2/identity-apps/commit/3777b2553280fd18972e0fc728facfd18a55e160), [`5906e411dd31ceb41711159eddfdea025781288d`](https://github.com/wso2/identity-apps/commit/5906e411dd31ceb41711159eddfdea025781288d)]:
+  - @wso2is/admin.server-configurations.v1@2.20.16
+  - @wso2is/admin.extensions.v1@2.20.16
+  - @wso2is/admin.core.v1@2.20.16
+  - @wso2is/admin.organizations.v1@2.20.16
+  - @wso2is/i18n@2.3.7
+  - @wso2is/admin.branding.ai.v1@2.20.16
+  - @wso2is/common.branding.v1@2.20.16
+
+## 2.20.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.15
+  - @wso2is/admin.extensions.v1@2.20.15
+  - @wso2is/admin.organizations.v1@2.20.15
+  - @wso2is/admin.server-configurations.v1@2.20.15
+  - @wso2is/admin.branding.ai.v1@2.20.15
+  - @wso2is/common.branding.v1@2.20.15
+
+## 2.20.14
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.14
+  - @wso2is/admin.extensions.v1@2.20.14
+  - @wso2is/admin.organizations.v1@2.20.14
+  - @wso2is/admin.branding.ai.v1@2.20.14
+  - @wso2is/admin.server-configurations.v1@2.20.14
+  - @wso2is/common.branding.v1@2.20.14
+
+## 2.20.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.13
+  - @wso2is/admin.extensions.v1@2.20.13
+  - @wso2is/admin.organizations.v1@2.20.13
+  - @wso2is/admin.server-configurations.v1@2.20.13
+  - @wso2is/admin.branding.ai.v1@2.20.13
+  - @wso2is/common.branding.v1@2.20.13
+
+## 2.20.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.12
+  - @wso2is/admin.extensions.v1@2.20.12
+  - @wso2is/admin.organizations.v1@2.20.12
+  - @wso2is/admin.branding.ai.v1@2.20.12
+  - @wso2is/admin.server-configurations.v1@2.20.12
+  - @wso2is/common.branding.v1@2.20.12
+
+## 2.20.11
+
+### Patch Changes
+
+- Updated dependencies [[`5f2605962390d4a6055d744e138c5daf10f72b91`](https://github.com/wso2/identity-apps/commit/5f2605962390d4a6055d744e138c5daf10f72b91)]:
+  - @wso2is/admin.extensions.v1@2.20.11
+  - @wso2is/admin.core.v1@2.20.11
+  - @wso2is/admin.organizations.v1@2.20.11
+  - @wso2is/admin.server-configurations.v1@2.20.11
+  - @wso2is/admin.branding.ai.v1@2.20.11
+  - @wso2is/common.branding.v1@2.20.11
+
+## 2.20.10
+
+### Patch Changes
+
+- Updated dependencies [[`aaee6df156311d50d3852ee332d6894fa5bfd2cf`](https://github.com/wso2/identity-apps/commit/aaee6df156311d50d3852ee332d6894fa5bfd2cf)]:
+  - @wso2is/admin.extensions.v1@2.20.10
+  - @wso2is/admin.core.v1@2.20.10
+  - @wso2is/admin.organizations.v1@2.20.10
+  - @wso2is/admin.server-configurations.v1@2.20.10
+  - @wso2is/admin.branding.ai.v1@2.20.10
+  - @wso2is/common.branding.v1@2.20.10
+
+## 2.20.9
+
+### Patch Changes
+
+- [#6364](https://github.com/wso2/identity-apps/pull/6364) [`95abdadffe4bcd4948fff1b8b788d602ea20e278`](https://github.com/wso2/identity-apps/commit/95abdadffe4bcd4948fff1b8b788d602ea20e278) Thanks [@savindi7](https://github.com/savindi7)! - Fix null pointer exception issue when branding layout isn't defined.
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.ai.v1@2.20.9
+  - @wso2is/admin.core.v1@2.20.9
+  - @wso2is/admin.extensions.v1@2.20.9
+  - @wso2is/admin.organizations.v1@2.20.9
+  - @wso2is/admin.server-configurations.v1@2.20.9
+  - @wso2is/common.branding.v1@2.20.9
+
+## 2.20.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.8
+  - @wso2is/admin.extensions.v1@2.20.8
+  - @wso2is/admin.organizations.v1@2.20.8
+  - @wso2is/admin.branding.ai.v1@2.20.8
+  - @wso2is/admin.server-configurations.v1@2.20.8
+  - @wso2is/common.branding.v1@2.20.8
+
+## 2.20.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.7
+  - @wso2is/admin.extensions.v1@2.20.7
+  - @wso2is/admin.organizations.v1@2.20.7
+  - @wso2is/admin.branding.ai.v1@2.20.7
+  - @wso2is/admin.server-configurations.v1@2.20.7
+  - @wso2is/common.branding.v1@2.20.7
+
+## 2.20.6
+
+### Patch Changes
+
+- Updated dependencies [[`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85)]:
+  - @wso2is/i18n@2.3.6
+  - @wso2is/admin.core.v1@2.20.6
+  - @wso2is/admin.extensions.v1@2.20.6
+  - @wso2is/admin.organizations.v1@2.20.6
+  - @wso2is/admin.branding.ai.v1@2.20.6
+  - @wso2is/admin.server-configurations.v1@2.20.6
+  - @wso2is/common.branding.v1@2.20.6
+
+## 2.20.5
+
+### Patch Changes
+
+- Updated dependencies [[`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471)]:
+  - @wso2is/i18n@2.3.5
+  - @wso2is/admin.core.v1@2.20.5
+  - @wso2is/admin.extensions.v1@2.20.5
+  - @wso2is/admin.organizations.v1@2.20.5
+  - @wso2is/admin.branding.ai.v1@2.20.5
+  - @wso2is/admin.server-configurations.v1@2.20.5
+  - @wso2is/common.branding.v1@2.20.5
+
+## 2.20.4
+
+### Patch Changes
+
+- Updated dependencies [[`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e)]:
+  - @wso2is/theme@2.0.85
+  - @wso2is/react-components@2.2.7
+  - @wso2is/admin.branding.ai.v1@2.20.4
+  - @wso2is/admin.extensions.v1@2.20.4
+  - @wso2is/admin.organizations.v1@2.20.4
+  - @wso2is/admin.server-configurations.v1@2.20.4
+  - @wso2is/admin.core.v1@2.20.4
+  - @wso2is/dynamic-forms@2.0.65
+  - @wso2is/form@2.0.66
+  - @wso2is/common.branding.v1@2.20.4
+
 ## 2.20.3
 
 ### Patch Changes

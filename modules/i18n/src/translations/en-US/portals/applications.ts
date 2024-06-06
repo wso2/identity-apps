@@ -197,6 +197,21 @@ export const applications: ApplicationsNS = {
             message: "If you delete this application, authentication flows for this application will " +
                 "stop working. Please proceed with caution."
         },
+        disableApplication: {
+            header: "Are you sure?",
+            content: "This may cause the consumers being unable to access the application. This is temporary and" +
+            "reversible by enabling the application.",
+            message: "If you disable this application, consumers will not be able to access the application. "+
+            "And the application may loose access to user data. Please proceed with caution.",
+            assertionHint: "Please confirm your action."
+        },
+        enableApplication: {
+            header: "Are you sure?",
+            content: "This may lead to consumers accessing the application. This action is reversible.",
+            message: "If you enable this application, consumers will have the access to the application. "+
+            "And the application can gain access to user data. Please proceed with caution.",
+            assertionHint: "Please confirm your action."
+        },
         deleteOutboundProvisioningIDP: {
             assertionHint: "Please type <1>{{ name }}</1> to confirm.",
             content: "If you delete this outbound provisioning IDP, you will not be able to get it back. " +
@@ -282,6 +297,14 @@ export const applications: ApplicationsNS = {
             header: "Delete application",
             subheader: "Once the application is deleted, it cannot be recovered and the clients " +
                 "using this application will no longer work."
+        },
+        disableApplication: {
+            actionTitle: "{{ state }} application",
+            header: "{{ state }} application",
+            subheader: "Once the application is disabled, it will not be accessible by the consumers." +
+                " And the application also can not access consumer data.",
+            subheader2: "Enable the application to be accessible by the consumers. " +
+            "After enabling, application can access consumer data"
         },
         header: "Danger Zone"
     },
@@ -2696,6 +2719,20 @@ export const applications: ApplicationsNS = {
             success: {
                 description: "Successfully updated the application.",
                 message: "Update successful"
+            }
+        },
+        disableApplication: {
+            error: {
+                description: "{{description}}",
+                message: "Update error"
+            },
+            genericError: {
+                description: "Failed to {{state}} the application.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully {{state}} the application.",
+                message: "Application {{state}}. "
             }
         },
         updateAuthenticationFlow: {

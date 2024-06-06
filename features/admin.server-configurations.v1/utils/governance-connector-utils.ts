@@ -176,6 +176,9 @@ export class GovernanceConnectorUtils {
     }
 
     public static getPredefinedConnectorCategories(): Array<any> {
+        const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
+            store.getState()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
+
         return [
             {
                 connectors: [
@@ -197,7 +200,7 @@ export class GovernanceConnectorUtils {
                         id: ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
                         route: AppConstants.getPaths()
                             .get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
-                        status: "beta",
+                        status: FeatureStatusLabel.BETA,
                         testId: "alternative-login-identifier-card"
                     },
                     {
@@ -376,7 +379,7 @@ export class GovernanceConnectorUtils {
                         header: I18n.instance.t("pages:emailDomainDiscovery.title"),
                         id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
-                        status: FeatureStatusLabel.NEW,
+                        status: showStatusLabelForNewAuthzRuntimeFeatures ? FeatureStatusLabel.NEW : null,
                         testId: "email-domain-discovery-card"
                     }
                 ],

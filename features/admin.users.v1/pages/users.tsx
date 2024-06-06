@@ -517,9 +517,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 !resource[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg);
         }
 
-        if (clonedUserList.totalResults && clonedUserList.totalResults > 0) {
-            clonedUserList.totalResults = clonedUserList?.Resources?.length;
-        }
 
         return moderateUsersList(clonedUserList, modifiedLimit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
     };

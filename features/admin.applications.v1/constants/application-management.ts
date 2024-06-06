@@ -336,6 +336,12 @@ export class ApplicationManagementConstants {
     public static readonly MYACCOUNT_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while updating status of the My Account Portal.";
 
+    public static readonly APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while updating the status of the application. ";
+
+    public static readonly APPLICATION_STATUS_UPDATE_ERROR: string = "Error occurred while updating the " +
+        "status of the application. ";
+
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID: string = "second-factor-authenticators";
     public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID: string = "external-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";

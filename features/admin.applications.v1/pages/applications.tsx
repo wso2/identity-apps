@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,
@@ -120,6 +121,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
+    const { legacyAuthzRuntime } = useAuthorization();
+
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
@@ -128,7 +131,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.applications?.disabledFeatures;
     });
@@ -309,9 +311,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
                     && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
                 );
-                appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
-                appList.totalResults = appList.totalResults -
-                    (applicationList.applications.length - appList.applications.length);
             }
 
             // Remove the M2M application from the application list if the legacy authz runtime is enabled.
@@ -319,10 +318,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
                     item.templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                 );
-                appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
-                appList.totalResults = appList.totalResults -
-                    (applicationList.applications.length - appList.applications.length);
             }
+
+            appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
+            appList.totalResults = appList.totalResults -
+                (applicationList.applications.length - appList.applications.length);
 
             setFilteredApplicationList(appList);
         }
@@ -597,13 +597,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         >
             {
                 (
-                    isSAASDeployment
+                    legacyAuthzRuntime
                     || (
                         !isMyAccountApplicationDataFetchRequestLoading
                         && myAccountApplicationData?.applications?.length !== 0
                     )
-                )
-                && renderTenantedMyAccountLink()
+                ) && renderTenantedMyAccountLink()
             }
             <ListLayout
                 advancedSearch={ (

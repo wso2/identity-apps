@@ -17,6 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
@@ -91,8 +92,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const { t } = useTranslation();
     const { activeTab, updateActiveTab } = useUserManagement();
+    const { legacyAuthzRuntime }  = useAuthorization();
     const dispatch: Dispatch = useDispatch();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSuperOrganization, isSubOrganization } = useGetCurrentOrganizationType();
     const { UIConfig } = useUIConfig();
 
     const isGroupAndRoleSeparationEnabled: boolean = useSelector(
@@ -102,6 +104,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
     );
+
+    const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
+        return state.config.ui.features?.users?.disabledFeatures;
+    });
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
@@ -236,29 +242,37 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        isSuperOrganization() && roleV1Enabled ? {
-            menuItem: t("users:editUser.tab.menuItems.2"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserRolesV1List
-                        isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
-                        onAlertFired={ handleAlerts }
-                        user={ user }
-                        handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly }
-                    />
-                </ResourceTab.Pane>
-            )
-        } : null,
+        !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
+        && !isSubOrganization()
+        && !legacyAuthzRuntime
+        && roleV1Enabled
+            ? {
+                menuItem: t("users:editUser.tab.menuItems.2"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserRolesV1List
+                            isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
+                            onAlertFired={ handleAlerts }
+                            user={ user }
+                            handleUserUpdate={ handleUserUpdate }
+                            isReadOnly={ isReadOnly }
+                        />
+                    </ResourceTab.Pane>
+                )
+            } : null,
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        isSuperOrganization() && !roleV1Enabled ? {
-            menuItem: t("users:editUser.tab.menuItems.2"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserRolesList user={ user } />
-                </ResourceTab.Pane>
-            )
-        } : null,
+        !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
+        && !isSubOrganization()
+        && !legacyAuthzRuntime
+        && !roleV1Enabled
+            ? {
+                menuItem: t("users:editUser.tab.menuItems.2"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserRolesList user={ user } />
+                    </ResourceTab.Pane>
+                )
+            } : null,
         {
             menuItem: t("users:editUser.tab.menuItems.3"),
             render: () => (
