@@ -84,7 +84,7 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
                 </Box>
                 {
                     !isAnimatedBotDisabled && (
-                        <div className="ai-loading-screen-animation-container">
+                        <div className="ai-loading-screen-animation-container" data-testid="ai-loading-screen-animation">
                             <AIBotAnimatedWithBackGround />
                         </div>
                     )

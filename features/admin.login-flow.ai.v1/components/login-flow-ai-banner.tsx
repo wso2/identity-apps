@@ -208,6 +208,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                 >
                     <TextField
                         name="loginFlowInput"
+                        data-testid="login-flow-ai-input-field"
                         className="login-flow-ai-input-field"
                         placeholder={ t("ai:aiLoginFlow.banner.input.placeholder") }
                         fullWidth
@@ -283,6 +284,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                                         color="secondary"
                                         size="small"
                                         className="login-flow-ai-banner-history-button"
+                                        data-testid="login-flow-ai-banner-history-button"
                                     >
                                         { t("ai:aiLoginFlow.promptsHistory") }
                                     </Button>
