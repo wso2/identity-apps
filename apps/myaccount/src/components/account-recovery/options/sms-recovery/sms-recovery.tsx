@@ -254,6 +254,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                     twoTone={ true }
                                     transparent={ true }
                                     shape={ "rounded" }
+                                    relaxed={ true }
                                 />
                             </List.Content>
                             <List.Content>
@@ -277,7 +278,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                         </Grid.Column>
                         <Grid.Column width={ 5 } className="last-column">
                             <List.Content floated="right">
-                                { (mobile || mobile !== "") && (
+                                { (mobile) && (
                                     enableEditMobile ? (
                                         <Icon
                                             link={ true }
@@ -324,7 +325,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                             render={ ({ handleSubmit }: FormRenderProps) => {return (
                                                 <form onSubmit={ handleSubmit }>
                                                     {
-                                                        (mobile || mobile !== "") && (
+                                                        (mobile) && (
                                                             <FinalFormField
                                                                 data-componentid=
                                                                     { `${componentId}-edit-section-form-mobile-field` }

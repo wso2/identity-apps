@@ -128,9 +128,12 @@
 <%
     final String USERNAME_CLAIM_URI_FOR_TENANT = "http://wso2.org/claims/username";
     final RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
-    final String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
-
-    String recoveryStage = Encode.forHtmlAttribute(request.getParameter("recoveryStage"));
+    
+    String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
+    if (StringUtils.isBlank(username)) {
+        username = request.getParameter("username");
+    }
+    String recoveryStage = request.getParameter("recoveryStage");
 
     if (RecoveryStage.INITIATE.equalsValue(recoveryStage)) {
         // if otp is supported by a new channel (eg: email) update this value assignment. null means unsupported.
@@ -198,7 +201,7 @@
              * Manage user don't have phone number set up in the account.
              */
             if (StringUtils.isBlank(channelId)) {
-                String recoveryPageQueryString = Encode.forHtmlAttribute(request.getParameter("urlQuery"));
+                String recoveryPageQueryString = request.getParameter("urlQuery");
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", "Channel.unavailable.for.user");
                 String redirectString = "recoveraccountrouter.do?" + recoveryPageQueryString;
@@ -223,8 +226,7 @@
         // Redirect to enter the OTP.
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
     } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
-        String resendCode = Encode.forHtmlAttribute(request.getParameter("resendCode"));
-        String screenValue = Encode.forHtmlAttribute(request.getParameter("screenValue"));
+        String resendCode = request.getParameter("resendCode");
         // Sending resend request
         try {
             Map<String, String> requestHeaders = new HashedMap();
@@ -239,13 +241,11 @@
             /** Resend code re-attached to the reqeust to avoid value being missed after the page refresh that
              *  happens after the resend operation. */
             request.setAttribute("resendCode", resendResponse.getResendCode());
-            request.setAttribute("screenValue", screenValue);
             request.setAttribute("resendSuccess", true);
             request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
+            request.setAttribute("isMultiRecoveryOptionsAvailable",
+                request.getParameter("isMultiRecoveryOptionsAvailable"));
         } catch (ApiException e) {
-            if (!StringUtils.isBlank(username)) {
-                request.setAttribute("username", username);
-            }
             /** Status code 406 is used for invalid/expired channel id/recovery code. Other error are considered
             unexpected and redirected to the error page. */
             if (e.getCode() != 406) {
@@ -256,13 +256,11 @@
             request.setAttribute("isResendFailure","true");
             request.setAttribute("resendFailureMsg", "resend.fail.message");
             request.setAttribute("resendCode", resendCode);
-            request.setAttribute("screenValue", screenValue);
-            request.setAttribute("flowConfirmationCode", Encode.forHtmlAttribute(request.getParameter("flowConfirmationCode")));
         }
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
     } else if (RecoveryStage.CONFIRM.equalsValue(recoveryStage)) {
-        String flowConfirmationCode = Encode.forHtmlAttribute(request.getParameter("flowConfirmationCode")); 
-        String OTPcode = Encode.forHtmlAttribute(request.getParameter("OTPcode"));
+        String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
+        String OTPcode = request.getParameter("OTPcode");
         try {
             Map<String, String> requestHeaders = new HashedMap();
             if (request.getParameter("g-recaptcha-response") != null) {
@@ -276,9 +274,6 @@
                 recoveryApiV2.confirmPasswordRecovery(confirmRequest, tenantDomain, requestHeaders);
             request.setAttribute("resetCode", confirmResponse.getResetCode());
         } catch (ApiException e) {
-            if (!StringUtils.isBlank(username)) {
-                request.setAttribute("username", username);
-            }
             /** Status code 406 is used for invalid/expired channel id/recovery code. Other error are considered
             unexpected and redirected to the error page. */
             if (e.getCode() != 406) {
@@ -288,17 +283,13 @@
             }
             request.setAttribute("isAuthFailure","true");
             request.setAttribute("authFailureMsg", "authentication.fail.message");
-            request.setAttribute("resendCode", Encode.forHtmlAttribute(request.getParameter("resendCode")));
-            request.setAttribute("screenValue", Encode.forHtmlAttribute(request.getParameter("screenValue")));
-            request.setAttribute("flowConfirmationCode", Encode.forHtmlAttribute(request.getParameter("flowConfirmationCode")));
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
             return;
         }
-        request.setAttribute("spId", Encode.forHtmlAttribute(request.getParameter("spId")));
+        request.setAttribute("spId", request.getParameter("spId"));
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
     } else if (RecoveryStage.RESET.equalsValue(recoveryStage)) {
         request.setAttribute("useRecoveryV2API", "true");
-        request.setAttribute("spId", Encode.forHtmlAttribute(request.getParameter("spId")));
         request.getRequestDispatcher("password-reset-complete.jsp").forward(request, response);
     } else {
         request.setAttribute("errorMsg", "Invalid password recovery stage.");

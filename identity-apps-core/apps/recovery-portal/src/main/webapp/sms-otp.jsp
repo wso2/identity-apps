@@ -1,5 +1,5 @@
 <%--
-~ Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
 ~
 ~ WSO2 LLC. licenses this file to you under the Apache License,
 ~ Version 2.0 (the "License"); you may not use this file except
@@ -68,9 +68,24 @@
         // Exception is caught and ignored. otpLength will be kept as 10 to trigger the full input field.
     }
 
+    String username = request.getParameter("username");
+    if (username == null) {
+        username = (String) request.getAttribute("username");
+    }
+    String urlQuery = request.getParameter("urlQuery");
+    if (urlQuery == null) {
+        urlQuery = (String) request.getAttribute("urlQuery");
+    }
+    String screenValue = request.getParameter("screenValue");
+    if (screenValue == null) {
+        screenValue = (String) request.getAttribute("screenValue");
+    }
     String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error");
     boolean authenticationFailed = Boolean.parseBoolean((String)request.getAttribute("isAuthFailure"));
     boolean resendFailed = Boolean.parseBoolean((String)request.getAttribute("isResendFailure"));
+    boolean isMultiRecoveryOptionsAvailable = 
+        Boolean.parseBoolean(request.getParameter("isMultiRecoveryOptionsAvailable")) ||
+        Boolean.parseBoolean((String)request.getAttribute("isMultiRecoveryOptionsAvailable"));
 
     if (authenticationFailed) {
         if (request.getAttribute("authFailureMsg") != null) {
@@ -116,7 +131,8 @@
             <jsp:include page="util/timeout.jsp"/>
         <% } %>
 
-        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:main layoutName="<%= layout %>"
+            layoutFileRelativePath="<%=layoutFileRelativePath%>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
                 <%
@@ -145,35 +161,41 @@
                     <%
                         if ("true".equals(String.valueOf((Object)request.getAttribute("resendSuccess")))) {
                     %>
-                    <div id="resend-msg" class="ui positive message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "resend.code.success")%></div>
+                    <div id="resend-msg" class="ui positive message">
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "resend.code.success")%>
+                    </div>
                     <%
                         }
                     %>
                     <div id="alertDiv"></div>
                     <div class="segment-form">
-                        <form class="ui large form" id="codeForm" name="codeForm" action="passwordrecoveryotp.do" method="POST">
+                        <form class="ui large form" id="codeForm" name="codeForm"
+                            action="passwordrecoveryotp.do" method="POST">
                             <%
                                 String loginFailed = request.getParameter("authFailure");
                                 if (loginFailed != null && "true".equals(loginFailed)) {
                                     String authFailureMsg = request.getParameter("authFailureMsg");
                                     if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
                             %>
-                            <div class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%>
+                            <div class="ui negative message">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%>
                             </div>
                             <div class="ui divider hidden"></div>
                             <% }
                             } %>
 
                             <div class="field">
-                                <% if (request.getAttribute("screenValue") != null) { %>
-                                    <input type='hidden' name='screenValue' id='screenValue' value='<%=Encode.forHtmlContent((String)request.getAttribute("screenValue"))%>'/>
+                                <% if (screenValue != null) { %>
+                                    <input type='hidden' name='screenValue' id='screenValue' 
+                                        value='<%=Encode.forHtmlContent(screenValue)%>'/>
                                     <label for="password">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.code.sent.smsotp")%>
-                                        (<%=Encode.forHtmlContent((String)request.getAttribute("screenValue"))%>)
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            "enter.code.sent.smsotp")%> (<%=Encode.forHtmlContent(screenValue)%>)
                                     </label>
                                 <% } else { %>
                                     <label for="password">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.code.sent.smsotp")%>:
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            "enter.code.sent.smsotp")%>:
                                     </label>
                                 <% } %>
 
@@ -186,7 +208,8 @@
                                             name="OTPcode"
                                             class="form-control"
                                             data-testid="recovery-otp-page-segmented-otp-input"
-                                            placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "verification.code")%>"
+                                            placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                                "verification.code")%>"
                                         >
                                         <% for (int index = 1; index <= otpLength;) {
                                             String previousStringIndex = null;
@@ -205,7 +228,8 @@
                                                     class="text-center pl-0 pr-0 pt-3 pb-3"
                                                     id=<%= currentStringIndex %>
                                                     name=<%= currentStringIndex %>
-                                                    onkeyup="movetoNext(this, '<%= nextStringIndex %>', '<%= previousStringIndex %>')"
+                                                    onkeyup="movetoNext(this, '<%= nextStringIndex %>',
+                                                        '<%= previousStringIndex %>')"
                                                     tabindex="1"
                                                     placeholder="·"
                                                     autofocus
@@ -216,18 +240,21 @@
                                     </div>
                                 <% } else { %>
                                     <div class="ui fluid icon input addon-wrapper mt-3">
-                                        <input 
-                                            type="text" 
+                                        <input
+                                            type="text"
                                             id='OTPCode'
-                                            name="OTPcode" 
+                                            name="OTPcode"
                                             size='30'
                                             data-testid="recovery-otp-page-non-segmented-otp-input"
                                         />
-                                        <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
+                                        <i id="password-eye" class="eye icon right-align password-toggle slash"
+                                            onclick="showOTPCode()"></i>
                                     </div>
                                 <% } %>
                             </div>
 
+                            <input type='hidden' name='username' id='resendFlagElement'
+                                value='<%=Encode.forHtmlAttribute(username)%>'/>
                             <input type="hidden" name="channel"
                                 value='<%=IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP%>'/>
                             <input type="hidden" id="recoveryStage" name="recoveryStage"
@@ -239,12 +266,16 @@
                             <input type="hidden" name="spId"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("spId"))%>'/>
                             <input type="hidden" name="flowConfirmationCode"
-                                value='<%=Encode.forHtmlAttribute((String)request.getAttribute("flowConfirmationCode"))%>'/>
+                                value='<%=Encode.forHtmlAttribute(
+                                    (String)request.getAttribute("flowConfirmationCode"))%>'/>
                             <input type="hidden" name="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
                             <input id="multiOptionURI" type="hidden" name="multiOptionURI"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
                             <input type='hidden' name='resendFlagElement' id='resendFlagElement' value='false'/>
+                            <input type="hidden" name="isMultiRecoveryOptionsAvailable" 
+                                value='<%=isMultiRecoveryOptionsAvailable%>' />
+                            <input type="hidden" name="urlQuery" value='<%=urlQuery%>'/>
 
                             <div class="ui divider hidden"></div>
 
@@ -252,16 +283,24 @@
                                     request.getParameter("multiOptionURI").contains("backup-code-authenticator")) { %>
                                 <div class="social-login blurring social-dimmer text-left">
                                     <div class="field text-left">
-                                        <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "cannot.access.smsotp")%></label>
+                                        <label>
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            "cannot.access.smsotp")%>
+                                        </label>
                                         <a
-                                            onclick="window.location.href = '<%= commonauthURL %>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%= Encode.forUriComponent(request.getParameter("sessionDataKey")) %>&multiOptionURI=<%= Encode.forUriComponent(request.getParameter("multiOptionURI")) %>';"
+                                            onclick="window.location.href = '<%= commonauthURL %>?' +
+                                                'idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=' +
+                                                '<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>' +
+                                                '&multiOptionURI=<%=Encode.forUriComponent(
+                                                request.getParameter("multiOptionURI")) %>';"
                                             target="_blank"
                                             class="clickable-link text-left ui form"
                                             rel="noopener noreferrer"
                                             data-testid="login-page-backup-code-link"
                                             style="cursor: pointer;display:block"
                                         >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "use.backup.code")%>
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                                "use.backup.code")%>
                                         </a>
                                     </div>
                                 </div>
@@ -273,33 +312,40 @@
                                             <input type="button"
                                                 id="subButton"
                                                 onclick="sub(); return false;"
-                                                value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "sms.otp.submit.button")%>"
+                                                value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                                    "sms.otp.submit.button")%>"
                                                 class="ui primary fluid large button" />
                                         </div>
                                     <% } else { %>
                                         <input type="submit"
                                             name="authenticate"
                                             id="authenticate"
-                                            value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "sms.otp.submit.button")%>"
+                                            value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                                "sms.otp.submit.button")%>"
                                             class="ui primary fluid large button"/>
                                     <% } %>
 
                                     <button type="button"
                                             class="ui fluid large button secondary mt-2"
                                             id="resend">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "sms.otp.resend.code")%>
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            "sms.otp.resend.code")%>
                                     </button>
                                 </div>
                         </form>
-                        <% if (Boolean.parseBoolean(request.getParameter("isMultiRecoveryOptionsAvailable"))) { %>
+                        <% if (isMultiRecoveryOptionsAvailable) { %>
                             <div class="text-center mt-1">
                                 <%
-                                    String baseUrl = ServiceURLBuilder.create().addPath("/accountrecoveryendpoint/recoveraccountrouter.do").build().getRelativePublicURL();
-                                    String multiOptionPathWithQuery = request.getParameter("urlQuery") + "&username=" + request.getParameter("username");
+                                    String baseUrl = ServiceURLBuilder.create()
+                                        .addPath("/accountrecoveryendpoint/recoveraccountrouter.do").build()
+                                        .getRelativePublicURL();
+                                    String multiOptionPathWithQuery = urlQuery + "&username=" + username 
+                                        + "&selectedOption=SMSOTP";
                                 %>
                                 <a class="ui primary basic button link-button" id="goBackLink"
                                     href=<%=baseUrl + "?" + multiOptionPathWithQuery %>>
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "choose.other.option")%>
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            "choose.other.option")%>
                                 </a>
                             </div>
                         <% } %>
@@ -378,7 +424,7 @@
             }
 
             // Handle paste events
-    	    function handlePaste(e) {
+            function handlePaste(e) {
                 var clipboardData, value;
 
                 // Stop data get being pasted into element
@@ -397,7 +443,8 @@
                 }
             }
 
-            document.getElementById('pincode-1') ? document.getElementById('pincode-1').addEventListener('paste', handlePaste) : null;
+            document.getElementById('pincode-1') ? document.getElementById('pincode-1')
+                .addEventListener('paste', handlePaste) : null;
 
             $(document).ready(function () {
                 $.fn.preventDoubleSubmission = function() {
@@ -412,7 +459,8 @@
                             if (code == "" && isResend == "false") {
                                 e.preventDefault();
                                 document.getElementById('alertDiv').innerHTML
-                                    = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.enter.code")%></div>'
+                                    = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil
+                                    .i18n(recoveryResourceBundle, "error.enter.code")%></div>'
                                     +'<div class="ui divider hidden"></div>';
                             } else {
                                 $('#codeForm').data("submitted", true);
@@ -454,7 +502,8 @@
                 resendButton.disabled = true;
                 const resendButtonText = resendButton.innerHTML;
                 // Update the button text initially to avoid waiting until the first tick to update.
-                resendButton.innerHTML = Math.floor(WAIT_TIME_SECONDS / 60).toString().padStart(2, '0') + " : " + (WAIT_TIME_SECONDS % 60).toString().padStart(2, '0');
+                resendButton.innerHTML = Math.floor(WAIT_TIME_SECONDS / 60).toString().padStart(2, '0') + " : " 
+                    + (WAIT_TIME_SECONDS % 60).toString().padStart(2, '0');
 
                 const countdown = new Countdown(
                     Countdown.seconds(WAIT_TIME_SECONDS),
@@ -463,7 +512,8 @@
                         resendButton.disabled = false;
                     },
                     (time) => {
-                        resendButton.innerHTML = time.minutes.toString().padStart(2, '0') + " : " + time.seconds.toString().padStart(2, '0');
+                        resendButton.innerHTML = time.minutes.toString().padStart(2, '0') + " : "
+                            + time.seconds.toString().padStart(2, '0');
                     },
                     "SMS_OTP_TIMER"
                 ).start();

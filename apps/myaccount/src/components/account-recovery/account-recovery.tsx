@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -67,7 +67,8 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
     const RECOVERY_USERNAME_NOTIFICATION: string = "Recovery.Notification.Username.Enable";
     const [ isQsRecoveryEnabled, setIsQsRecoveryEnabled ] = useState<boolean>(false);
     const [ isNotificationRecoveryEnabled, setIsNotificationRecoveryEnabled ] = useState<boolean>(false);
-    const [ isNotificationRecoveryEmailLinkEnabled, setIsNotificationRecoveryEmailLinkEnabled ] = useState<boolean>(false);
+    const [ isNotificationRecoveryEmailLinkEnabled, setIsNotificationRecoveryEmailLinkEnabled ] =
+        useState<boolean>(false);
     const [ isNotificationRecoverySMSOTPEnabled, setIsNotificationRecoverySMSOTPEnabled ] = useState<boolean>(false);
     const [ isUsernameRecoveryEnabled, setIsUsernameRecoveryEnabled ] = useState<boolean>(false);
     const [ isAccountRecoveryDetailsLoading, setIsAccountRecoveryDetailsLoading ] = useState<boolean>(false);

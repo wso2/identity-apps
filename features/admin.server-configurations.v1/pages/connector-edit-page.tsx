@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -287,10 +287,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
         if (
             serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
-            serverConfigurationConfig.autoEnableConnectorToggleProperty &&
-            // Recovery connector does not use  a connector property. If either email link or
-            // sms-otp recovery is enabled, the connector is considered to be enabled.
-            connectorId !== ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
+            serverConfigurationConfig.autoEnableConnectorToggleProperty
         ) {
             data.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(

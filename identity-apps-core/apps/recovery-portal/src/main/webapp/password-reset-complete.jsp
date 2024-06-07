@@ -354,7 +354,7 @@
                         <%
                             }
                         %>
-                        <% } else {  %>
+                        <% } else { %>
                             <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
                                     applicationAccessURLWithoutEncoding)%>">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
