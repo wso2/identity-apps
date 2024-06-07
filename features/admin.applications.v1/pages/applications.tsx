@@ -72,6 +72,7 @@ import {
     PaginationProps
 } from "semantic-ui-react";
 import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
+import { useGetApplication } from "../api/use-get-application";
 import { ApplicationList } from "../components/application-list";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "../constants";
@@ -150,6 +151,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     // Note: If we are providing strong auth for applications use this state to handle it.
     const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
     const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
+    const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
 
     const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
 
@@ -168,6 +170,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         error: myAccountApplicationDataFetchRequestError
     } = useMyAccountApplicationData("advancedConfigurations,templateId,clientId,issuer");
 
+    const {
+        data: myAccountApplication,
+        isLoading: isMyAccountApplicationGetRequestLoading,
+        error: myAccountApplicationGetRequestError
+    } = useGetApplication(myAccountAppId , !!myAccountAppId && !legacyAuthzRuntime);
+
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
     const {
@@ -177,34 +185,63 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
 
     /**
+     * Set the application id for My Account.
+     */
+    useEffect(() => {
+        if (myAccountApplicationData?.applications?.length === 1) {
+            myAccountApplicationData.applications.forEach((
+                item: ApplicationListItemInterface
+            ) => {
+                setMyAccountAppId(item?.id);
+            });
+        }
+    }, [ myAccountApplicationData ]);
+
+    /**
      * Sets the initial spinner.
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
-            && !isMyAccountApplicationDataFetchRequestLoading) {
-            let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
+        let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
-            if (myAccountStatus) {
-                const enableProperty: string = myAccountStatus["value"];
+        if (legacyAuthzRuntime) {
+            if (
+                !isApplicationListFetchRequestLoading
+                && !isMyAccountStatusLoading
+                && !isMyAccountApplicationDataFetchRequestLoading
+            ) {
+                if (myAccountStatus) {
+                    const enableProperty: string = myAccountStatus["value"];
 
-                if (enableProperty && enableProperty === "false") {
-                    status = false;
+                    if (enableProperty && enableProperty === "false") {
+                        status = false;
+                    }
                 }
             }
-            setMyAccountStatus(status);
+        } else {
+            if (
+                !isApplicationListFetchRequestLoading
+                && !isMyAccountApplicationGetRequestLoading
+                && !isMyAccountApplicationDataFetchRequestLoading
+            ) {
+                if (myAccountApplication) {
+                    status = myAccountApplication?.applicationEnabled;
+                }
+            }
         }
+        setMyAccountStatus(status);
     }, [
         isApplicationListFetchRequestLoading,
+        isMyAccountApplicationGetRequestLoading,
         isMyAccountStatusLoading,
-        isMyAccountApplicationDataFetchRequestLoading
+        isMyAccountApplicationDataFetchRequestLoading,
+        myAccountAppId
     ]);
 
     /**
      * Handles the application list fetch request error.
      */
     useEffect(() => {
-
         if (!applicationListFetchRequestError) {
             return;
         }
@@ -235,7 +272,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Handles the my account application fetch request error.
      */
     useEffect(() => {
-
         if (!myAccountApplicationDataFetchRequestError) {
             return;
         }
@@ -261,6 +297,40 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     }, [ myAccountApplicationDataFetchRequestError ]);
 
     /**
+     * Handles the My Account application data fetch request error.
+     */
+    useEffect(() => {
+        if (!myAccountApplicationGetRequestError) {
+            return;
+        }
+
+        if (
+            myAccountApplicationGetRequestError?.response?.data?.description
+        ) {
+            if (myAccountApplicationGetRequestError.response?.status === 404) {
+                return;
+            }
+
+            dispatch(addAlert({
+                description: myAccountApplicationGetRequestError.response.data.description ??
+                    t("applications:myaccount.fetchMyAccountStatus.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:myaccount.fetchMyAccountStatus.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("applications:myaccount.fetchMyAccountStatus" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:myaccount.fetchMyAccountStatus" +
+                ".genericError.message")
+        }));
+    }, [ myAccountApplicationGetRequestError ]);
+
+    /**
      * Handles the application list fetch request error.
      */
     useEffect(() => {
@@ -269,10 +339,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             return;
         }
 
-        if (myAccountStatusFetchRequestError.response
-            && myAccountStatusFetchRequestError.response.data
-            && myAccountStatusFetchRequestError.response.data.description) {
-            if (myAccountStatusFetchRequestError.response.status === 404) {
+        if (
+            myAccountStatusFetchRequestError?.response?.data?.description
+        ) {
+            if (myAccountStatusFetchRequestError.response?.status === 404) {
                 return;
             }
             dispatch(addAlert({
