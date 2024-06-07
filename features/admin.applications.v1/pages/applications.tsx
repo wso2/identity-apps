@@ -305,11 +305,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         }
 
         if (
-            myAccountApplicationGetRequestError?.response
-            && myAccountApplicationGetRequestError?.response.data
-            && myAccountApplicationGetRequestError?.response.data.description
+            myAccountApplicationGetRequestError?.response?.data?.description
         ) {
-            if (myAccountApplicationGetRequestError?.response.status === 404) {
+            if (myAccountApplicationGetRequestError.response?.status === 404) {
                 return;
             }
 
@@ -342,11 +340,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         }
 
         if (
-            myAccountStatusFetchRequestError?.response
-            && myAccountStatusFetchRequestError?.response.data
-            && myAccountStatusFetchRequestError?.response.data.description
+            myAccountStatusFetchRequestError?.response?.data?.description
         ) {
-            if (myAccountStatusFetchRequestError?.response.status === 404) {
+            if (myAccountStatusFetchRequestError.response?.status === 404) {
                 return;
             }
             dispatch(addAlert({
