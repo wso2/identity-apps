@@ -296,7 +296,6 @@
                                 <%
                                     String baseUrl = ServiceURLBuilder.create().addPath("/accountrecoveryendpoint/recoveraccountrouter.do").build().getRelativePublicURL();
                                     String multiOptionPathWithQuery = request.getParameter("urlQuery") + "&username=" + request.getParameter("username");
-                                    org.apache.logging.log4j.LogManager.getLogger().error(request.getParameter("username"));
                                 %>
                                 <a class="ui primary basic button link-button" id="goBackLink"
                                     href=<%=baseUrl + "?" + multiOptionPathWithQuery %>>

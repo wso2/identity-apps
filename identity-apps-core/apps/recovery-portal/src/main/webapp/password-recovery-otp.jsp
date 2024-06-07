@@ -289,6 +289,7 @@
             request.setAttribute("isAuthFailure","true");
             request.setAttribute("authFailureMsg", "authentication.fail.message");
             request.setAttribute("resendCode", Encode.forHtmlAttribute(request.getParameter("resendCode")));
+            request.setAttribute("screenValue", Encode.forHtmlAttribute(request.getParameter("screenValue")));
             request.setAttribute("flowConfirmationCode", Encode.forHtmlAttribute(request.getParameter("flowConfirmationCode")));
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
             return;
