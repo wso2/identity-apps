@@ -23,8 +23,10 @@ import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Au
 import Paper from "@oxygen-ui/react/Paper";
 import TextField from "@oxygen-ui/react/TextField";
 import { BuildingIcon, TilesIcon } from "@oxygen-ui/react-icons";
-import AIBrandingPreferenceProvider from "@wso2is/admin.branding.ai.v1/providers/ai-branding-preference-provider";
+import BrandingAIBanner from "@wso2is/admin.branding.ai.v1/components/branding-ai-banner";
+import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-branding-preference";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
@@ -38,6 +40,7 @@ import { useApplicationList } from "../../admin.applications.v1/api";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models";
 import { BrandingModes, BrandingPreferencesConstants } from "../constants";
+import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";
 import "./branding-page-layout.scss";
 
@@ -56,6 +59,12 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const {
+        setMergedBrandingPreference
+    } = useAIBrandingPreference();
 
     const {
         brandingMode,
@@ -162,7 +171,10 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         event: React.MouseEvent<HTMLElement>,
         mode: BrandingModes
     ) => {
-        mode && setBrandingMode(mode);
+        if (!mode) return;
+
+        setBrandingMode(mode);
+        setMergedBrandingPreference(null);
     };
 
     const resolveBrandingTitle = (): string => {
@@ -294,6 +306,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                     application: ApplicationListItemInterface
                                                 ) => {
                                                     setSelectedApplication(application.id);
+                                                    setMergedBrandingPreference(null);
                                                 } }
                                                 isOptionEqualToValue={ (
                                                     option: ApplicationListItemInterface,
@@ -377,11 +390,15 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                     }
                 </motion.div>
                 <motion.div layout>
-                    <AIBrandingPreferenceProvider
-                        readonly={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
-                    >
-                        <BrandingCore />
-                    </AIBrandingPreferenceProvider>
+                    {
+                        !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
+                        !isSubOrganization() && (
+                            <BrandingAIBanner
+                                readonly={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                            />
+                        )
+                    }
+                    <BrandingCore />
                 </motion.div>
             </LayoutGroup>
         </PageLayout>

@@ -16,11 +16,8 @@
  * under the License.
  */
 
-import { AI_BRANDING_FEATURE_ID } from "@wso2is/admin.branding.v1/constants/ai-branding-constants";
 import useBrandingPreference from "@wso2is/admin.branding.v1/hooks/use-branding-preference";
 import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -37,18 +34,15 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import useGetAIBrandingGenerationResult from "../api/use-get-ai-branding-generation-result";
-import BrandingAIBanner from "../components/branding-ai-banner";
 import BrandingAILoadingScreen from "../components/branding-ai-loading-screen";
 import AIFeatureContext from "../context/ai-branding-feature-context";
 import { BrandingGenerationResultAPIResponseInterface } from "../models/branding-preferences";
 import { BannerState } from "../models/types";
 
-interface AIBrandingPreferenceProviderProps {
-    readonly?: boolean;
-}
+type AIBrandingPreferenceProviderProps = PropsWithChildren;
 
 /**
  * Provider for the AI branding preference context.
@@ -60,16 +54,11 @@ const AIBrandingPreferenceProvider: FunctionComponent<PropsWithChildren<AIBrandi
     props: PropsWithChildren<AIBrandingPreferenceProviderProps>
 ): ReactElement => {
 
-    const { readonly, children } = props;
+    const { children } = props;
 
     const { t } = useTranslation();
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-
     const dispatch: Dispatch = useDispatch();
-
-    const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
-        state.config.ui.features?.branding?.disabledFeatures);
 
     const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const [ mergedBrandingPreference, setMergedBrandingPreference ] = useState<BrandingPreferenceInterface>(null);
@@ -190,27 +179,12 @@ const AIBrandingPreferenceProvider: FunctionComponent<PropsWithChildren<AIBrandi
                     <BrandingAILoadingScreen />
                 ) : (
                     <>
-                        {
-                            !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
-                            !isSubOrganization() && (
-                                <div className="mb-2">
-                                    <BrandingAIBanner readonly={ readonly }/>
-                                </div>
-                            )
-                        }
                         { children }
                     </>
                 )
             }
         </AIFeatureContext.Provider>
     );
-};
-
-/**
- * Default props for the component.
- */
-AIBrandingPreferenceProvider.defaultProps = {
-    readonly: false
 };
 
 export default AIBrandingPreferenceProvider;
