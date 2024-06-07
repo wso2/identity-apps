@@ -532,7 +532,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     }, [ selectedGrantTypes, isGrantChanged ]);
 
-
     /**
      * Check whether to enable refresh token grant type or not.
      */
@@ -2441,6 +2440,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Row>
                     </>
                 ) }
+                
             { /* Access Token */ }
             {
                 !isSystemApplication
