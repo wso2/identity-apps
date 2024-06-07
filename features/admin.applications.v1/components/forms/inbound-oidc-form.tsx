@@ -2006,8 +2006,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden />
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Box display="flex" alignItems="flex-end">
-                                    <Heading as="h4">
+                                <Box display="flex" alignItems="self-start">
+                                    <Heading as="h4" className="hybrid-flow-heading">
                                         { t("applications:forms.inboundOIDC.sections" +
                                         ".hybridFlow.heading") }
                                     </Heading>
