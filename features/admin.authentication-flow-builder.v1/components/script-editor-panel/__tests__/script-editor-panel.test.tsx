@@ -27,6 +27,10 @@ import ScriptEditorPanel, {
     ScriptEditorPanelPropsInterface
 } from "../script-editor-panel";
 
+/**
+ * Rendering ScriptEditor inside the editor panel causes JSDOM to
+ * not render the entire ScriptEditorPanel component.
+ */
 describe.skip("ScriptEditorPanel", () => {
     const defaultProps: ScriptEditorPanelPropsInterface = {};
 

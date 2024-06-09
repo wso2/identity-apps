@@ -16,15 +16,23 @@
  * under the License.
  */
 
+import { MotionGlobalConfig } from "framer-motion";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/branding-permissions";
 import { render, screen, waitFor } from "../../test-configs/utils";
 import BrandingPage from "../pages/branding";
 
-describe.skip("Test if the Branding page is working as expected", () => {
+describe("Test if the Branding page is working as expected", () => {
+    beforeAll(() => {
+        MotionGlobalConfig.skipAnimations = true;
+    });
 
-    it("<BrandingPage /> matches snapshot", () => {
+    /**
+     * Handling snapshots currently fails due to the usage of
+     * framer-motion library.
+     */
+    it.skip("<BrandingPage /> matches snapshot", () => {
         const { container } = render(<BrandingPage />, {
             allowedScopes: fullPermissions
         });

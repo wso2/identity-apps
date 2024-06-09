@@ -28,6 +28,12 @@ import AuthenticationFlowBuilder, { AuthenticationFlowBuilderPropsInterface } fr
 /**
  * Running this spec throws error `Unable to find an element by: [data-componentid="authentication-flow-builder"]`
  * Hence skipped until fixed.
+ *
+ * It appears that the Oxygen UI Box component in the <AuthenticationFlowBuilder /> is not being
+ * rendered by jsdom for some reason. This issue does not occur when the Box component is imported
+ * from "mui/material".
+ *
+ * Tracked with https://github.com/wso2/product-is/issues/20519
  */
 describe.skip("AuthenticationFlowBuilder", () => {
     const defaultProps: AuthenticationFlowBuilderPropsInterface = {

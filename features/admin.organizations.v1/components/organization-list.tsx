@@ -17,7 +17,7 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
 import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
@@ -30,7 +30,7 @@ import {
 } from "@wso2is/admin.core.v1";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -165,7 +165,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state?.organization?.isFirstLevelOrganization
@@ -190,6 +189,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const { data: breadcrumbList, mutate: mutateOrganizationBreadCrumbFetchRequest } = useGetOrganizationBreadCrumb(
         shouldSendRequest
     );
+
+    const hasOrganizationUpdatePermissions: boolean= useRequiredScopes(featureConfig?.organizations?.scopes?.update);
 
     /**
      * Redirects to the organizations edit page when the edit button is clicked.
@@ -456,11 +457,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         }
                     });
 
-                    return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
-                        allowedScopes
-                    ) || !isAuthorized
+                    return !hasOrganizationUpdatePermissions || !isAuthorized
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -476,11 +473,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         }
                     });
 
-                    return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
-                        allowedScopes
-                    ) || !isAuthorized
+                    return !hasOrganizationUpdatePermissions || !isAuthorized
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -498,11 +491,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         }
                     });
 
-                    return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.delete,
-                        allowedScopes
-                    ) || !isAuthorized;
+                    return !hasOrganizationUpdatePermissions || !isAuthorized;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void => {
