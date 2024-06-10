@@ -81,6 +81,7 @@ const AIBanner = (props: AIBannerProps): ReactElement => {
                         onClick={ onActionButtonClick }
                         color="primary"
                         variant="contained"
+                        data-componentid="ai-banner-action-button"
                     >
                         { actionButtonText }
                     </Button>
