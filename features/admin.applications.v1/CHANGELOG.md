@@ -1,5 +1,31 @@
 # @wso2is/admin.applications.v1
 
+## 2.20.21
+
+### Patch Changes
+
+- [#6420](https://github.com/wso2/identity-apps/pull/6420) [`e6a9e979f4cacc8b83770c374a93b3ae6b5805b8`](https://github.com/wso2/identity-apps/commit/e6a9e979f4cacc8b83770c374a93b3ae6b5805b8) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Enable myaccount status in applications section based on the config
+
+* [#6424](https://github.com/wso2/identity-apps/pull/6424) [`cd34ad60e21e6106d6404c54d7f059c789062dc1`](https://github.com/wso2/identity-apps/commit/cd34ad60e21e6106d6404c54d7f059c789062dc1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix org SSO authenticator not being shown in the login flow when the app is shared
+
+* Updated dependencies [[`16f16d3ed494a488bf5c0cda370371a047c0de3f`](https://github.com/wso2/identity-apps/commit/16f16d3ed494a488bf5c0cda370371a047c0de3f)]:
+  - @wso2is/admin.organizations.v1@2.20.21
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.21
+  - @wso2is/admin.connections.v1@2.20.21
+  - @wso2is/admin.console-settings.v1@2.20.21
+  - @wso2is/admin.core.v1@2.20.21
+  - @wso2is/admin.extensions.v1@2.20.21
+  - @wso2is/admin.identity-providers.v1@2.20.21
+  - @wso2is/admin.login-flow.ai.v1@2.20.21
+  - @wso2is/admin.roles.v2@2.20.21
+  - @wso2is/admin.oidc-scopes.v1@2.20.21
+  - @wso2is/admin.api-resources.v2@2.20.21
+  - @wso2is/admin.claims.v1@2.20.21
+  - @wso2is/admin.secrets.v1@2.20.21
+  - @wso2is/admin.server-configurations.v1@2.20.21
+  - @wso2is/admin.userstores.v1@2.20.21
+  - @wso2is/admin.wsfed-configuration.v1@2.20.21
+
 ## 2.20.20
 
 ### Patch Changes
