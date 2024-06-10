@@ -84,6 +84,7 @@ const AIBanner = (props: AIBannerProps): ReactElement => {
                         color="primary"
                         variant="contained"
                         disabled={ readonly }
+                        data-componentid="ai-banner-action-button"
                     >
                         { actionButtonText }
                     </Button>

@@ -24,9 +24,6 @@ import {
     FeatureConfigInterface
 } from "@wso2is/admin.core.v1";
 import { history } from "@wso2is/admin.core.v1/helpers";
-import {
-    useSMSNotificationSenders
-}from "@wso2is/admin.extensions.v1/components/identity-providers/api/identity-provider";
 import smsProviderConfig from "@wso2is/admin.extensions.v1/configs/sms-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -126,9 +123,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         mutate: mutateSMSProviderConfig,
         error: smsProviderConfigFetchRequestError
     } = useSMSProviders();
-    const {
-        mutate: mutateNotificationSendersFetchRequest
-    } = useSMSNotificationSenders();
 
     const [ isLoading, setIsLoading ] = useState(true);
     const [ isChoreoSMSOTPProvider, setChoreoSMSOTPProvider ] = useState<boolean>(false);
@@ -214,6 +208,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         setIsLoading(false);
 
     }, [ originalSMSProviderConfig ]);
+
+    const mutateGetSMSProviderConfig = (): void => {
+        mutateSMSProviderConfig();
+    };
 
     /**
      * Displays the error banner when unable to fetch sms provider configuration.
@@ -365,7 +363,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             }).finally(() => {
                 setIsSubmitting(false);
                 mutateSMSProviderConfig();
-                mutateNotificationSendersFetchRequest();
             });
     };
 
@@ -611,7 +608,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                     data-componentid={ "custom-sms-provider" }
                                                 />
                                                 { smsProviderConfig.renderAlternativeSmsProviderOptions({
-                                                    existingSMSProviders
+                                                    existingSMSProviders,
+                                                    mutateGetSMSProviderConfig,
+                                                    originalSMSProviderConfig,
+                                                    smsProviderConfigFetchRequestError
                                                 }) }
                                             </>
                                         ) }
