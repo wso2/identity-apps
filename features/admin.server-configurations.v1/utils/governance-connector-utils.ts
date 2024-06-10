@@ -176,8 +176,6 @@ export class GovernanceConnectorUtils {
     }
 
     public static getPredefinedConnectorCategories(): Array<any> {
-        const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
-            store.getState()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
         return [
             {
@@ -379,7 +377,7 @@ export class GovernanceConnectorUtils {
                         header: I18n.instance.t("pages:emailDomainDiscovery.title"),
                         id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
-                        status: showStatusLabelForNewAuthzRuntimeFeatures ? FeatureStatusLabel.NEW : null,
+                        status: FeatureStatusLabel.NEW,
                         testId: "email-domain-discovery-card"
                     }
                 ],
