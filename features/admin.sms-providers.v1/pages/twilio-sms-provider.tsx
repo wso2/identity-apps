@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,6 +32,7 @@ import { SMSProviderConstants } from "../constants";
 interface TwilioSMSProviderPageInterface extends IdentifiableComponentInterface {
     "data-componentid": string;
     isReadOnly: boolean;
+    isLoading?: boolean;
     onSubmit: (values: any) => void;
 }
 
@@ -41,6 +42,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
     const {
         ["data-componentid"]: componentId,
         onSubmit,
+        isLoading,
         isReadOnly
     } = props;
     const { t } = useTranslation();
@@ -171,6 +173,8 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                                         onClick={ onSubmit }
                                         ariaLabel="SMS provider form update button"
                                         data-componentid={ `${componentId}-update-button` }
+                                        loading={ isLoading }
+                                        disabled={ isLoading }
                                     >
                                         { "Submit" }
                                     </PrimaryButton>
@@ -185,7 +189,8 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
 };
 
 TwilioSMSProvider.defaultProps = {
-    "data-componentid": "twilio-sms-provider"
+    "data-componentid": "twilio-sms-provider",
+    isLoading: false
 };
 
 export default TwilioSMSProvider;
