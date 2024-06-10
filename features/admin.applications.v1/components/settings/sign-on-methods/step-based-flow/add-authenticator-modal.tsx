@@ -727,12 +727,13 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                         : (
                             <div>
                                 <EmptyPlaceholder
-                                    subtitle={
-                                        [
-                                            t("applications:placeholders" +
-                                                ".emptyAuthenticatorsList.subtitles")
-                                        ]
-                                    }
+                                    subtitle={ [
+                                        t(
+                                            "applications:placeholders" +
+                                            ".emptyAuthenticatorsList.subtitles",
+                                            { type: searchQuery }
+                                        )
+                                    ] }
                                 />
                                 {
                                     allowSocialLoginAddition && (
