@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, AuthClientConfig, Config, DecodedIDTokenPayload } from "@asgardeo/auth-react";
+import {
+    AsgardeoSPAClient,
+    AuthClientConfig,
+    AuthContextInterface,
+    Config,
+    DecodedIDTokenPayload
+} from "@asgardeo/auth-react";
 
 const AsgardeoSPAClientMock: {
     getInstance: jest.Mock<AsgardeoSPAClient>
@@ -48,13 +54,6 @@ const getOIDCServiceEndpoints = () => {
         "revocationEndpoint": "",
         "tokenEndpoint": "",
         "userinfoEndpoint": ""
-
-
-
-
-
-
-
     };
 };
 
@@ -67,7 +66,7 @@ enum ResponseMode {
     query = "query"
 }
 
-const useAuthContext = jest.fn().mockReturnValue({
+const useAuthContext: jest.Mock<AuthContextInterface> = jest.fn().mockReturnValue({
     getDecodedIDToken,
     getOIDCServiceEndpoints,
     updateConfig
