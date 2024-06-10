@@ -193,7 +193,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                             ) }
                         </p>
                         <DynamicField
-                            data={ organization.attributes }
+                            data={ organization?.attributes }
                             keyType="text"
                             keyName={ t(
                                 "organizations:edit.attributes.key"
