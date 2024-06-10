@@ -33,7 +33,6 @@ import {
 import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
 import { commonConfig, identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "@wso2is/admin.layouts.v1";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { AppView, FullScreenView } from "@wso2is/admin.views.v1";
@@ -44,7 +43,7 @@ import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
-import { AppConstants, OrganizationType } from "../constants";
+import { AppConstants } from "../constants";
 import { store } from "../store";
 
 /**
@@ -73,7 +72,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         = store.getState()?.config?.ui?.features?.applicationRoles;
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
-    const orgType: OrganizationType = store.getState().organization.organizationType;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -277,14 +275,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.users.v1/pages/users")),
             exact: true,
-            featureStatus:
-                showStatusLabelForNewAuthzRuntimeFeatures && orgType === OrganizationType.SUBORGANIZATION
-                    ? "NEW"
-                    : "",
-            featureStatusLabel:
-                showStatusLabelForNewAuthzRuntimeFeatures && orgType === OrganizationType.SUBORGANIZATION
-                    ? FeatureStatusLabel.NEW
-                    : null,
             icon: {
                 icon: getSidePanelIcons().users
             },
