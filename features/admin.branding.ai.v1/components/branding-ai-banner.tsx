@@ -125,6 +125,7 @@ const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     <TextField
                         name="brandingAIInput"
                         className="branding-ai-input-field mt-5"
+                        data-componentid="branding-ai-input-field"
                         placeholder={ t("branding:ai.banner.input.placeholder") }
                         fullWidth
                         inputProps={ {
