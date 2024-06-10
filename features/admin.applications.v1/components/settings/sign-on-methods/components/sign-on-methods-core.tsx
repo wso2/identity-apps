@@ -20,7 +20,6 @@ import AuthenticationFlowBuilder
     from "@wso2is/admin.authentication-flow-builder.v1/components/authentication-flow-builder";
 import AuthenticationFlowProvider
     from "@wso2is/admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
@@ -156,7 +155,6 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
     const dispatch: Dispatch = useDispatch();
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
     const isApplicationShared: boolean = application?.advancedConfigurations?.additionalSpProperties?.find(
@@ -279,11 +277,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                 setMicrosoftAuthenticators(microsoft);
                 setAppleAuthenticators(apple);
 
-                // If the current runtime is legacy (old) runtime, add the organization sso
-                // authenticator to the connections list.
-                if (legacyAuthzRuntime) {
-                    response[1].push(OrganizationUtils.getOrganizationAuthenticator());
-                }
+                // Add the organization sso authenticator to the connections list.
+                response[1].push(OrganizationUtils.getOrganizationAuthenticator());
 
                 setAuthenticators(response);
 
