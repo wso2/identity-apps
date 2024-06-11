@@ -231,7 +231,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                         ariaLabel="SMS provider form update button"
                                         data-componentid={ `${componentId}-update-button` }
                                         loading={ isLoading }
-                                        disabled={ isLoading }
                                     >
                                         { "Submit" }
                                     </PrimaryButton>

@@ -174,7 +174,6 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                                         ariaLabel="SMS provider form update button"
                                         data-componentid={ `${componentId}-update-button` }
                                         loading={ isLoading }
-                                        disabled={ isLoading }
                                     >
                                         { "Submit" }
                                     </PrimaryButton>
@@ -189,8 +188,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
 };
 
 VonageSMSProvider.defaultProps = {
-    "data-componentid": "vonage-sms-provider",
-    isLoading: false
+    "data-componentid": "vonage-sms-provider"
 };
 
 export default VonageSMSProvider;

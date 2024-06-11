@@ -174,7 +174,6 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                                         ariaLabel="SMS provider form update button"
                                         data-componentid={ `${componentId}-update-button` }
                                         loading={ isLoading }
-                                        disabled={ isLoading }
                                     >
                                         { "Submit" }
                                     </PrimaryButton>
@@ -189,8 +188,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
 };
 
 TwilioSMSProvider.defaultProps = {
-    "data-componentid": "twilio-sms-provider",
-    isLoading: false
+    "data-componentid": "twilio-sms-provider"
 };
 
 export default TwilioSMSProvider;
