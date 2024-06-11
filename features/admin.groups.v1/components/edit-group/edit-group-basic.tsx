@@ -387,35 +387,37 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                 )
             }
             {
-                showGroupDeleteConfirmation &&
-                (<ConfirmationModal
-                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="negative"
-                    open={ showGroupDeleteConfirmation }
-                    assertionHint={ t("roles:edit.basics.confirmation.assertionHint") }
-                    assertionType="checkbox"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
-                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => handleOnDelete(groupObject.id) }
-                    data-testid={
-                        isGroup
-                            ? `${ testId }-group-confirmation-modal`
-                            : `${ testId }-role-confirmation-modal`
-                    }
-                >
-                    <ConfirmationModal.Header>
-                        { t("roles:edit.basics.confirmation.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached negative>
-                        { t("roles:edit.basics.confirmation.message",
-                            { type: isGroup ? "group." : "role." }) }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content>
-                        { t("roles:edit.basics.confirmation.content",
-                            { type: isGroup ? "group" : "role" }) }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>)
+                showGroupDeleteConfirmation
+                && groupObject.id
+                && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="negative"
+                        open={ showGroupDeleteConfirmation }
+                        assertionHint={ t("roles:edit.basics.confirmation.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => handleOnDelete(groupObject.id) }
+                        data-testid={
+                            isGroup
+                                ? `${ testId }-group-confirmation-modal`
+                                : `${ testId }-role-confirmation-modal`
+                        }
+                    >
+                        <ConfirmationModal.Header>
+                            { t("roles:edit.basics.confirmation.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached negative>
+                            { t("roles:edit.basics.confirmation.message",
+                                { type: isGroup ? "group." : "role." }) }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t("roles:edit.basics.confirmation.content",
+                                { type: isGroup ? "group" : "role" }) }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>)
             }
         </>
     );
