@@ -177,7 +177,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
     );
 
     return (
-        <EmphasizedSegment key={ organization.id } >
+        <EmphasizedSegment key={ organization?.id } >
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column
@@ -193,7 +193,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                             ) }
                         </p>
                         <DynamicField
-                            data={ organization.attributes }
+                            data={ organization?.attributes }
                             keyType="text"
                             keyName={ t(
                                 "organizations:edit.attributes.key"

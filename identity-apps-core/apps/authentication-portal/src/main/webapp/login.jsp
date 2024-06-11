@@ -584,6 +584,9 @@
                                         String GOOGLE_CALLBACK_URL = "";
                                         boolean GOOGLE_ONE_TAP_ENABLED = false;
 
+                                        if ("Asgardeo Platform IDP".equals(idpName)) {
+                                            idpDisplayName = "Asgardeo";
+                                        }
                                         if (idpName.endsWith(".hub")) {
                                             isHubIdp = true;
                                             idpName = idpName.substring(0, idpName.length() - 4);
@@ -835,6 +838,10 @@
 
                                         if (imageURL == null || imageURL.isEmpty()) {
                                             logoPath = "libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+                                        }
+
+                                        if ("Asgardeo Platform IDP".equals(idpName)) {
+                                            logoPath = "libs/themes/wso2is/assets/images/identity-providers/asgardeo.svg";
                                         }
 
                                         if (!imageURL.isEmpty() && imageURL.contains("assets/images/logos/")) {

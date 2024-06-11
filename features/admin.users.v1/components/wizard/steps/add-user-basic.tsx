@@ -742,10 +742,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         placeholder={ t("extensions:manage.features.user.addUser.inputLabel" +
                             ".alphanumericUsernamePlaceholder") }
                         required={ true }
-                        requiredErrorMessage={ t(
-                            "user:forms.addUserForm.inputs.email." +
-                            "validations.empty"
-                        ) }
+                        requiredErrorMessage={ t("extensions:manage.features.user.addUser.validation" +
+                            ".usernameEmpty") }
                         validation={ async (value: string, validation: Validation) => {
                             let regExpInvalidUsername: RegExp = new RegExp(
                                 UserManagementConstants.USERNAME_VALIDATION_REGEX);

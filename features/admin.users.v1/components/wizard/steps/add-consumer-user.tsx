@@ -468,9 +468,8 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                         placeholder={ t("extensions:manage.features.user.addUser.inputLabel" +
                                         ".alphanumericUsernamePlaceholder") }
                                         required={ true }
-                                        requiredErrorMessage={ t(
-                                            "user:forms.addUserForm.inputs.email." +
-                                            "validations.empty"
+                                        requiredErrorMessage={ t("extensions:manage.features.user.addUser.validation" +
+                                        ".usernameEmpty"
                                         ) }
                                         validation={ async (value: string, validation: Validation) => {
                                             // Regular expression to validate having alphanumeric characters.

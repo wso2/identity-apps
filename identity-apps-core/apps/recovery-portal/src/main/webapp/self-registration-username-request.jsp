@@ -78,6 +78,11 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isSelfRegistrationUsernameRequestPage", true);
+%>
+
 <%
     String BASIC_AUTHENTICATOR = "BasicAuthenticator";
     String OPEN_ID_AUTHENTICATOR = "OpenIDAuthenticator";
