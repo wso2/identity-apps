@@ -56,14 +56,14 @@
     languageSupportedCountries.add("JP");
     languageSupportedCountries.add("BR");
 
-    // Specify the file path
+    // Specify the file path.
     String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
 
-    // Use a BufferedReader to read the file content
+    // Use a BufferedReader to read the file content.
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
-            // Trim the line and ignore comments and empty lines
+            // Trim the line and ignore comments and empty lines.
             line = line.trim();
             if (line.isEmpty() || line.startsWith("#")) {
                 continue;
@@ -74,19 +74,19 @@
                 continue;
             }
 
-            // Split the key further using '.' as the delimiter
+            // Split the key further using '.' as the delimiter.
             String[] parts = keyValue[0].split("\\.");
             if (parts.length == 0) {
                 continue;
             }
 
-            // Split the code further using '_' as the delimiter
+            // Split the code further using '_' as the delimiter.
             String[] languageCode = parts[parts.length - 1].split("_");
             if (languageCode.length != 2) {
                 continue;
             }
 
-            // Find out whether we have resource bundle for the given locale
+            // Find out whether we have resource bundle for the given locale.
             Locale tempLocale = new Locale(languageCode[0], languageCode[1]);
             try {
                 ResourceBundle foundBundle = ResourceBundle.getBundle(BUNDLE, tempLocale);
@@ -107,7 +107,7 @@
         throw e;
     }
 
-    // Check cookie for the user selected language first
+    // Check cookie for the user selected language first.
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
         for (Cookie cookie : cookies) {

@@ -154,12 +154,12 @@
                 // Split the key further using '.' as the delimiter
                 String[] parts = keyValue[0].split("\\.");
                 String languageCode = parts[parts.length - 1];
-                // Split the code further using '_' as the delimiter
+                // Split the code further using '_' as the delimiter.
                 String[] languageCodeParts = languageCode.split("_");
                 if (languageCodeParts.length != 2) {
                     continue;
                 }
-                // Split the value further using ',' as the delimiter
+                // Split the value further using ',' as the delimiter.
                 String[] values = keyValue[1].split(",");
                 String country = values[0];
                 String displayName = values[1];
