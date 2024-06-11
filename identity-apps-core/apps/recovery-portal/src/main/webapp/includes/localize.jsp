@@ -93,14 +93,14 @@
 
                 if (tempLocale.getLanguage().equals(foundBundle.getLocale().getLanguage()) &&
                     tempLocale.getCountry().equals(foundBundle.getLocale().getCountry())) {
-                    // If the bundle is found, add the language to the supported list
+                    // If the bundle is found, add the language to the supported list.
                     supportedLanguages.putIfAbsent(languageCode[0], languageCode[1]);
                     if (!languageSupportedCountries.contains(languageCode[1])) {
                         languageSupportedCountries.add(languageCode[1]);
                     }
                 }
             } catch (Exception e) {
-                // Bundle not found, do not add this language
+                // Bundle not found, do not add this language.
             }
         }
     } catch (Exception e) {
