@@ -899,6 +899,59 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         );
     };
 
+    const renderLegacyAuthenticationFlowBuilder = (): ReactElement => {
+        if (isLoading || isAuthenticatorsFetchRequestLoading) {
+            return (
+                <ContentLoader inline="centered" active />
+            );
+        }
+
+        const isDefaultAuthFlow: boolean = isDefaultFlowConfiguration();
+
+        return (
+            !readOnly && !loginFlow && isDefaultAuthFlow ? (
+                <SignInMethodLanding
+                    readOnly={ readOnly }
+                    clientId={ clientId }
+                    onLoginFlowSelect={ (type: LoginFlowTypes) => {
+                        handleLoginFlowSelect(
+                            type,
+                            googleAuthenticators,
+                            gitHubAuthenticators,
+                            facebookAuthenticators,
+                            microsoftAuthenticators,
+                            appleAuthenticators
+                        );
+                    } }
+                    data-componentid={ `${componentId}-landing` }
+                />
+            ) : (
+                <SignInMethodCustomization
+                    appId={ appId }
+                    applicationName={ application?.name }
+                    isApplicationShared={ isApplicationShared }
+                    authenticators={ authenticators }
+                    clientId={ clientId }
+                    authenticationSequence={ moderatedAuthenticationSequence }
+                    onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
+                        setSelectedIDPTemplate(template);
+                        setIDPCreateWizardTriggerOrigin("EXTERNAL");
+                        setIDPTemplateTypeToTrigger(type);
+                        setShowMissingSocialAuthenticatorModal(false);
+                        setShowIDPCreateWizard(true);
+                        broadcastIDPCreateSuccessMessage = cb;
+                    } }
+                    onUpdate={ onUpdate }
+                    onReset={ handleLoginFlowReset }
+                    data-componentid={ componentId }
+                    isLoading={ isAuthenticatorsFetchRequestLoading }
+                    setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
+                    readOnly={ readOnly }
+                />
+            )
+        );
+    };
+
     return (
         <AuthenticationFlowProvider
             application={ cloneDeep(application) }
@@ -912,54 +965,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
             authenticationSequence={ moderatedAuthenticationSequence }
         >
             <AuthenticationFlowBuilder
-                legacyBuilder={ (
-                    <>
-                        { !(isLoading || isAuthenticatorsFetchRequestLoading) ? (
-                            !readOnly && !loginFlow && isDefaultFlowConfiguration() ? (
-                                <SignInMethodLanding
-                                    readOnly={ readOnly }
-                                    clientId={ clientId }
-                                    onLoginFlowSelect={ (type: LoginFlowTypes) => {
-                                        handleLoginFlowSelect(
-                                            type,
-                                            googleAuthenticators,
-                                            gitHubAuthenticators,
-                                            facebookAuthenticators,
-                                            microsoftAuthenticators,
-                                            appleAuthenticators
-                                        );
-                                    } }
-                                    data-componentid={ `${componentId}-landing` }
-                                />
-                            ) : (
-                                <SignInMethodCustomization
-                                    appId={ appId }
-                                    applicationName={ application?.name }
-                                    isApplicationShared={ isApplicationShared }
-                                    authenticators={ authenticators }
-                                    clientId={ clientId }
-                                    authenticationSequence={ moderatedAuthenticationSequence }
-                                    onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
-                                        setSelectedIDPTemplate(template);
-                                        setIDPCreateWizardTriggerOrigin("EXTERNAL");
-                                        setIDPTemplateTypeToTrigger(type);
-                                        setShowMissingSocialAuthenticatorModal(false);
-                                        setShowIDPCreateWizard(true);
-                                        broadcastIDPCreateSuccessMessage = cb;
-                                    } }
-                                    onUpdate={ onUpdate }
-                                    onReset={ handleLoginFlowReset }
-                                    data-componentid={ componentId }
-                                    isLoading={ isAuthenticatorsFetchRequestLoading }
-                                    setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
-                                    readOnly={ readOnly }
-                                />
-                            )
-                        ) : (
-                            <ContentLoader inline="centered" active />
-                        ) }
-                    </>
-                ) }
+                legacyBuilder={ renderLegacyAuthenticationFlowBuilder() }
                 onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
                     setSelectedIDPTemplate(template);
                     setIDPCreateWizardTriggerOrigin("EXTERNAL");
