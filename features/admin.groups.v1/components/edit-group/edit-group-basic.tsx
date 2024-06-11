@@ -388,7 +388,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
             }
             {
                 showGroupDeleteConfirmation
-                && groupObject.id
+                && groupObject?.id
                 && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
