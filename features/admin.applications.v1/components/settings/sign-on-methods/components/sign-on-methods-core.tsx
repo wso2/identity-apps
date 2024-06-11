@@ -924,32 +924,32 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                     data-componentid={ `${componentId}-landing` }
                 />
             );
-        } else {
-            return (
-                <SignInMethodCustomization
-                    appId={ appId }
-                    applicationName={ application?.name }
-                    isApplicationShared={ isApplicationShared }
-                    authenticators={ authenticators }
-                    clientId={ clientId }
-                    authenticationSequence={ moderatedAuthenticationSequence }
-                    onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
-                        setSelectedIDPTemplate(template);
-                        setIDPCreateWizardTriggerOrigin("EXTERNAL");
-                        setIDPTemplateTypeToTrigger(type);
-                        setShowMissingSocialAuthenticatorModal(false);
-                        setShowIDPCreateWizard(true);
-                        broadcastIDPCreateSuccessMessage = cb;
-                    } }
-                    onUpdate={ onUpdate }
-                    onReset={ handleLoginFlowReset }
-                    data-componentid={ componentId }
-                    isLoading={ isAuthenticatorsFetchRequestLoading }
-                    setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
-                    readOnly={ readOnly }
-                />
-            );
         }
+
+        return (
+            <SignInMethodCustomization
+                appId={ appId }
+                applicationName={ application?.name }
+                isApplicationShared={ isApplicationShared }
+                authenticators={ authenticators }
+                clientId={ clientId }
+                authenticationSequence={ moderatedAuthenticationSequence }
+                onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
+                    setSelectedIDPTemplate(template);
+                    setIDPCreateWizardTriggerOrigin("EXTERNAL");
+                    setIDPTemplateTypeToTrigger(type);
+                    setShowMissingSocialAuthenticatorModal(false);
+                    setShowIDPCreateWizard(true);
+                    broadcastIDPCreateSuccessMessage = cb;
+                } }
+                onUpdate={ onUpdate }
+                onReset={ handleLoginFlowReset }
+                data-componentid={ componentId }
+                isLoading={ isAuthenticatorsFetchRequestLoading }
+                setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
+                readOnly={ readOnly }
+            />
+        );
     };
 
     return (
