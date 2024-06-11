@@ -51,22 +51,22 @@
         tenantForTheming = tenantDomain;
         userTenant = tenantDomain;
 
-        spAppName = Encode.forHtmlAttribute(request.getParameter(SERVICE_PROVIDER_NAME_SHORT));
+        spAppName = request.getParameter(SERVICE_PROVIDER_NAME_SHORT);
         if (StringUtils.isBlank(spAppName) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT))) {
             spAppName = (String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT);
         }
 
-        spAppId = Encode.forHtmlAttribute(request.getParameter(SERVICE_PROVIDER_ID_SHORT));
+        spAppId = request.getParameter(SERVICE_PROVIDER_ID_SHORT);
         if (StringUtils.isBlank(spAppId) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT))) {
             spAppId = (String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT);
         }
 
-        String tenantDomainFromURL = Encode.forHtmlAttribute(request.getParameter(TENANT_DOMAIN_SHORT));
+        String tenantDomainFromURL = request.getParameter(TENANT_DOMAIN_SHORT);
         if (StringUtils.isBlank(tenantDomainFromURL) && StringUtils.isNotBlank((String) request.getAttribute(TENANT_DOMAIN_SHORT))) {
             tenantDomainFromURL = (String) request.getAttribute(TENANT_DOMAIN_SHORT);
         }
 
-        String tenantDomainOfUser = Encode.forHtmlAttribute(request.getParameter(USER_TENANT_DOMAIN_SHORT));
+        String tenantDomainOfUser = request.getParameter(USER_TENANT_DOMAIN_SHORT);
         if (StringUtils.isBlank(tenantDomainOfUser) && StringUtils.isNotBlank((String) request.getAttribute(USER_TENANT_DOMAIN_SHORT))) {
             tenantDomainOfUser = (String) request.getAttribute(USER_TENANT_DOMAIN_SHORT);
         }
@@ -93,33 +93,33 @@
             }
         }
     } else {
-        tenantDomain = Encode.forHtmlAttribute(request.getParameter(TENANT_DOMAIN_KEY));
+        tenantDomain = request.getParameter(TENANT_DOMAIN_KEY);
         if (StringUtils.isBlank(tenantDomain) && StringUtils.isNotBlank((String) request.getAttribute(TENANT_DOMAIN_KEY))) {
             tenantDomain = (String) request.getAttribute(TENANT_DOMAIN_KEY);
         }
 
-        String tenantDomainFromURL = Encode.forHtmlAttribute(request.getParameter(TENANT_DOMAIN_SHORT));
+        String tenantDomainFromURL = request.getParameter(TENANT_DOMAIN_SHORT);
         if (StringUtils.isBlank(tenantDomainFromURL) && StringUtils.isNotBlank((String) request.getAttribute(TENANT_DOMAIN_SHORT))) {
             tenantDomainFromURL = (String) request.getAttribute(TENANT_DOMAIN_SHORT);
         }
 
-        String tenantDomainOfUser = Encode.forHtmlAttribute(request.getParameter(USER_TENANT_DOMAIN_SHORT));
+        String tenantDomainOfUser = request.getParameter(USER_TENANT_DOMAIN_SHORT);
         if (StringUtils.isBlank(tenantDomainOfUser) && StringUtils.isNotBlank((String) request.getAttribute(USER_TENANT_DOMAIN_SHORT))) {
             tenantDomainOfUser = (String) request.getAttribute(USER_TENANT_DOMAIN_SHORT);
         }
 
-        spAppName = Encode.forHtmlAttribute(request.getParameter(SERVICE_PROVIDER_NAME_SHORT));
+        spAppName = request.getParameter(SERVICE_PROVIDER_NAME_SHORT);
         if (StringUtils.isBlank(spAppName) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT))) {
             spAppName = (String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT);
         }
 
-        spAppId = Encode.forHtmlAttribute(request.getParameter(SERVICE_PROVIDER_ID_SHORT));
+        spAppId = request.getParameter(SERVICE_PROVIDER_ID_SHORT);
         if (StringUtils.isBlank(spAppId) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT))) {
             spAppId = (String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT);
         }
 
         if (StringUtils.isBlank(tenantDomain)) {
-            tenantDomain = Encode.forHtmlAttribute(request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN));
+            tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
             if (StringUtils.isBlank(tenantDomain) && StringUtils.isNotBlank((String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN))) {
                 tenantDomain = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
             }

@@ -226,7 +226,7 @@
                             response);
                     return;
                 } else if(notificationChannel.equals("SMS")) {
-                    request.setAttribute("screenValue", Encode.forHtmlAttribute(request.getParameter("screenValue")));
+                    request.setAttribute("screenValue", request.getParameter("screenValue"));
                     request.setAttribute("resendCode", recoveryResponse.getResendCode());
                     request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
                     request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
