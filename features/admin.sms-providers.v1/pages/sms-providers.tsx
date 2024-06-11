@@ -603,6 +603,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                         SMSProviderConstants.CUSTOM_SMS_PROVIDER && (
                                             <>
                                                 <CustomSMSProvider
+                                                    isLoading={ isSubmitting }
                                                     isReadOnly={ isReadOnly }
                                                     onSubmit={ handleSubmit }
                                                     data-componentid={ "custom-sms-provider" }
@@ -618,6 +619,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                         { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.TWILIO_SMS_PROVIDER && (
                                             <TwilioSMSProvider
+                                                isLoading={ isSubmitting }
                                                 isReadOnly={ isReadOnly }
                                                 onSubmit={ handleSubmit }
                                                 data-componentid={ "twilio-sms-provider" }
@@ -626,6 +628,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                         { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.VONAGE_SMS_PROVIDER && (
                                             <VonageSMSProvider
+                                                isLoading={ isSubmitting }
                                                 isReadOnly={ isReadOnly }
                                                 onSubmit={ handleSubmit }
                                                 data-componentid={ "vonage-sms-provider" }
