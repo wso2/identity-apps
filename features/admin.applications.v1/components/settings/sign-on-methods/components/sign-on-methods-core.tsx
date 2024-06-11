@@ -906,10 +906,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
             );
         }
 
-        const isDefaultAuthFlow: boolean = isDefaultFlowConfiguration();
-
-        return (
-            !readOnly && !loginFlow && isDefaultAuthFlow ? (
+        if (!readOnly && !loginFlow && isDefaultFlowConfiguration()) {
+            return (
                 <SignInMethodLanding
                     readOnly={ readOnly }
                     clientId={ clientId }
@@ -925,7 +923,9 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                     } }
                     data-componentid={ `${componentId}-landing` }
                 />
-            ) : (
+            );
+        } else {
+            return (
                 <SignInMethodCustomization
                     appId={ appId }
                     applicationName={ application?.name }
@@ -948,8 +948,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                     setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
                     readOnly={ readOnly }
                 />
-            )
-        );
+            );
+        }
     };
 
     return (
