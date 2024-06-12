@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.19.23
+
+### Patch Changes
+
+- [#6398](https://github.com/wso2/identity-apps/pull/6398) [`21be1861e4544c2660e7ee801fce9025a230970f`](https://github.com/wso2/identity-apps/commit/21be1861e4544c2660e7ee801fce9025a230970f) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix issue with loading tenant create page for users without associated tenants
+
 ## 2.19.22
 
 ### Patch Changes
