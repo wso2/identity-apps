@@ -1,5 +1,16 @@
 # @wso2is/admin.sms-providers.v1
 
+## 2.20.24
+
+### Patch Changes
+
+- [#6430](https://github.com/wso2/identity-apps/pull/6430) [`9784d2778b0a4e73a05389a5c47adca4c01e6e83`](https://github.com/wso2/identity-apps/commit/9784d2778b0a4e73a05389a5c47adca4c01e6e83) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add loading state to sms provider form
+
+- Updated dependencies [[`1aedc77eff0290d8263e290fef298039e4c98e34`](https://github.com/wso2/identity-apps/commit/1aedc77eff0290d8263e290fef298039e4c98e34)]:
+  - @wso2is/admin.extensions.v1@2.20.24
+  - @wso2is/admin.connections.v1@2.20.24
+  - @wso2is/admin.core.v1@2.20.24
+
 ## 2.20.23
 
 ### Patch Changes

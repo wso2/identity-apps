@@ -1,5 +1,31 @@
 # @wso2is/admin.extensions.v1
 
+## 2.20.24
+
+### Patch Changes
+
+- [#6425](https://github.com/wso2/identity-apps/pull/6425) [`1aedc77eff0290d8263e290fef298039e4c98e34`](https://github.com/wso2/identity-apps/commit/1aedc77eff0290d8263e290fef298039e4c98e34) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Enable simplified my account settings by default
+
+- Updated dependencies [[`1aedc77eff0290d8263e290fef298039e4c98e34`](https://github.com/wso2/identity-apps/commit/1aedc77eff0290d8263e290fef298039e4c98e34), [`9784d2778b0a4e73a05389a5c47adca4c01e6e83`](https://github.com/wso2/identity-apps/commit/9784d2778b0a4e73a05389a5c47adca4c01e6e83), [`333ae84dc00304ad13db3461647ec8e4a3ec2214`](https://github.com/wso2/identity-apps/commit/333ae84dc00304ad13db3461647ec8e4a3ec2214), [`1d69a31443cb004b5bcfef411bbf863022fefaec`](https://github.com/wso2/identity-apps/commit/1d69a31443cb004b5bcfef411bbf863022fefaec)]:
+  - @wso2is/admin.applications.v1@2.20.24
+  - @wso2is/admin.sms-providers.v1@2.20.24
+  - @wso2is/admin.groups.v1@2.20.24
+  - @wso2is/admin.connections.v1@2.20.24
+  - @wso2is/admin.core.v1@2.20.24
+  - @wso2is/admin.identity-providers.v1@2.20.24
+  - @wso2is/admin.organizations.v1@2.20.24
+  - @wso2is/admin.provisioning.v1@2.20.24
+  - @wso2is/admin.roles.v2@2.20.24
+  - @wso2is/admin.api-resources.v1@2.20.24
+  - @wso2is/admin.authentication.v1@2.20.24
+  - @wso2is/admin.claims.v1@2.20.24
+  - @wso2is/admin.extensions.v2@2.20.24
+  - @wso2is/admin.server-configurations.v1@2.20.24
+  - @wso2is/admin.tenants.v1@2.20.24
+  - @wso2is/admin.users.v1@2.20.24
+  - @wso2is/admin.userstores.v1@2.20.24
+  - @wso2is/admin.validation.v1@2.20.24
+
 ## 2.20.23
 
 ### Patch Changes
