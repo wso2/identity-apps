@@ -600,14 +600,18 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                             ""
                                         ] }
                                         emptyPlaceholderContent={
-                                            t("console:develop.placeholders.emptySearchResult.subtitles.0",
-                                                { query: filter }) + ". " +
-                                            t("console:develop.placeholders.emptySearchResult.subtitles.1")
+                                            !subOrganizationList || subOrganizationList?.length === 0
+                                                ? t("organizations:placeholders.emptyList.subtitles.0")
+                                                : filter
+                                                    ? t("console:develop.placeholders.emptySearchResult.subtitles.0",
+                                                        { query: filter }) + ". " +
+                                                      t("console:develop.placeholders.emptySearchResult.subtitles.1")
+                                                    : null
+
                                         }
                                         data-testid="application-share-modal-organization-transfer-component-all-items"
                                         emptyPlaceholderDefaultContent={ t(
-                                            "transferList:list." +
-                                            "emptyPlaceholders.default"
+                                            "organizations:placeholders.emptyList.subtitles.0"
                                         ) }
                                     >
                                         { tempOrganizationList?.map(

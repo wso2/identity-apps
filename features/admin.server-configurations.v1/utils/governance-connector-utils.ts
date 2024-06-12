@@ -176,6 +176,7 @@ export class GovernanceConnectorUtils {
     }
 
     public static getPredefinedConnectorCategories(): Array<any> {
+
         return [
             {
                 connectors: [
@@ -197,7 +198,7 @@ export class GovernanceConnectorUtils {
                         id: ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
                         route: AppConstants.getPaths()
                             .get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
-                        status: "beta",
+                        status: FeatureStatusLabel.BETA,
                         testId: "alternative-login-identifier-card"
                     },
                     {

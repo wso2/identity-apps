@@ -43,12 +43,5 @@ export class GroupConstants {
         .set("GROUP_DELETE", "groups.delete")
         .set("GROUP_READ", "groups.read")
 
-    /**
-     * Set all groups option
-     */
-    public static ALL_GROUPS: string = "All user stores";
-
-    public static ALL_USER_STORES_OPTION_VALUE: string = "all";
-
     public static readonly PRIMARY_USER_STORE_OPTION_VALUE: string = "primary";
 }

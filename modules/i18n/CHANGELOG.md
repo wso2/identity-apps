@@ -1,5 +1,29 @@
 # @wso2is/i18n
 
+## 2.3.8
+
+### Patch Changes
+
+- [#6414](https://github.com/wso2/identity-apps/pull/6414) [`2ed2890039a51739721918c224da1b0ffc51d7d0`](https://github.com/wso2/identity-apps/commit/2ed2890039a51739721918c224da1b0ffc51d7d0) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - update disable app error message
+
+## 2.3.7
+
+### Patch Changes
+
+- [#6401](https://github.com/wso2/identity-apps/pull/6401) [`5906e411dd31ceb41711159eddfdea025781288d`](https://github.com/wso2/identity-apps/commit/5906e411dd31ceb41711159eddfdea025781288d) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the empty placeholder error message for groups in roles section
+
+## 2.3.6
+
+### Patch Changes
+
+- [#6361](https://github.com/wso2/identity-apps/pull/6361) [`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add support to enable & disable apps
+
+## 2.3.5
+
+### Patch Changes
+
+- [#6335](https://github.com/wso2/identity-apps/pull/6335) [`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add support to change application status
+
 ## 2.3.4
 
 ### Patch Changes

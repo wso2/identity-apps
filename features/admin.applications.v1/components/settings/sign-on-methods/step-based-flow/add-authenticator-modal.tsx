@@ -253,18 +253,26 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.RECOVERY)))
         ];
 
-        // Remove SMS OTP authenticator from the list at the sub org level.
-        _filteredAuthenticators = (orgType === OrganizationType.SUBORGANIZATION &&
-            identityProviderConfig?.disableSMSOTPInSubOrgs)
-            ? _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+        // Remove SMS OTP authenticator from the list for sub orgs, if the SMS OTP for sub orgs is disabled.
+        if (orgType === OrganizationType.SUBORGANIZATION && identityProviderConfig?.disableSMSOTPInSubOrgs) {
+            _filteredAuthenticators = _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
                 return (
                     authenticator.name !==
                           IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
                     authenticator.name !==authenticatorConfig?.overriddenAuthenticatorNames
                         ?.SMS_OTP_AUTHENTICATOR
                 );
-            })
-            : _filteredAuthenticators;
+            });
+        }
+
+        // Remove organization SSO authenticator from the list, as organization SSO authenticator
+        // should be handled automatically in the login flow, based on whether the app is shared or not.
+        _filteredAuthenticators = _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+            return (
+                authenticator.name !==
+                      IdentityProviderManagementConstants.ORGANIZATION_AUTHENTICATOR
+            );
+        });
 
         setFilteredAuthenticators(_filteredAuthenticators);
         setAllAuthenticators(_filteredAuthenticators);
@@ -719,12 +727,13 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                         : (
                             <div>
                                 <EmptyPlaceholder
-                                    subtitle={
-                                        [
-                                            t("applications:placeholders" +
-                                                ".emptyAuthenticatorsList.subtitles")
-                                        ]
-                                    }
+                                    subtitle={ [
+                                        t(
+                                            "applications:placeholders" +
+                                            ".emptyAuthenticatorsList.subtitles",
+                                            { type: searchQuery }
+                                        )
+                                    ] }
                                 />
                                 {
                                     allowSocialLoginAddition && (

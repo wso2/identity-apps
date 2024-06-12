@@ -34,7 +34,7 @@ env:
     IS_HOTFIX: 'false'
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
-    
+
 jobs:
     release:
         name: 🚀 Release

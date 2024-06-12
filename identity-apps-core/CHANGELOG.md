@@ -1,5 +1,32 @@
 # @wso2is/identity-apps-core
 
+## 2.3.6
+
+### Patch Changes
+
+- [#6392](https://github.com/wso2/identity-apps/pull/6392) [`6f48095cba6f26851b376a416eef80f8cb218f55`](https://github.com/wso2/identity-apps/commit/6f48095cba6f26851b376a416eef80f8cb218f55) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add layout data to identify `self-registration-username-request.jsp`
+
+## 2.3.5
+
+### Patch Changes
+
+- [#6375](https://github.com/wso2/identity-apps/pull/6375) [`f3e7cc3fad9630f9b3f9a6aff13887ed6a7d9449`](https://github.com/wso2/identity-apps/commit/f3e7cc3fad9630f9b3f9a6aff13887ed6a7d9449) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update platform IDP display name and logo
+
+## 2.3.4
+
+### Patch Changes
+
+- [#6356](https://github.com/wso2/identity-apps/pull/6356) [`7c88f1f663c88aa38b231ee43fd335967e79fcbf`](https://github.com/wso2/identity-apps/commit/7c88f1f663c88aa38b231ee43fd335967e79fcbf) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - update error messages for disabled application access
+
+## 2.3.3
+
+### Patch Changes
+
+- [#6352](https://github.com/wso2/identity-apps/pull/6352) [`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e) Thanks [@savindi7](https://github.com/savindi7)! - Fix header text wrap issue in resource card.
+
+- Updated dependencies [[`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e)]:
+  - @wso2is/theme@2.0.85
+
 ## 2.3.2
 
 ### Patch Changes

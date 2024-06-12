@@ -3228,7 +3228,8 @@ export const extensions: Extensions = {
                             "characters: a-z, A-Z, 0-9, !@#$&'+\\=^.{|}~-.",
                         usernameLength: "The username length should be between {{minLength}} and {{maxLength}}.",
                         usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter.",
-                        usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines."
+                        usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines.",
+                        usernameEmpty: "Username cannot be empty"
                     }
                 }
             },
@@ -3966,7 +3967,7 @@ export const extensions: Extensions = {
                 addCollaboratorBtn: "Add Administrator"
             },
             collaboratorAccounts: {
-                consoleInfo: "Share this link with the users who have administrative priviledges " +
+                consoleInfo: "Share this link with the users who have administrative privileges " +
                     "to allow access to Console"
             },
             list: {

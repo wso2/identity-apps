@@ -51,7 +51,6 @@ import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } fro
 import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizardUpdated } from "../components/wizard/create-group-wizard-updated";
-import { GroupConstants } from "../constants";
 import { GroupsInterface, WizardStepsFormTypes } from "../models";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -145,7 +144,10 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     },[ groupsError ]);
 
     useEffect(() => {
-        if (!isSuperOrganization()) {
+        if (!(
+            isSuperOrganization()
+            || isFirstLevelOrganization()
+        )) {
             return;
         }
 
@@ -234,11 +236,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        if (data.value === GroupConstants.ALL_USER_STORES_OPTION_VALUE) {
-            setUserStore(null);
-        } else {
-            setUserStore(data.value as string);
-        }
+        setUserStore(data?.value as string);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {

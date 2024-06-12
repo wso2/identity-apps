@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AppState,
@@ -37,6 +38,8 @@ import {
     ConfirmationModal,
     ContentLoader,
     CopyInputField,
+    DangerZone,
+    DangerZoneGroup,
     ResourceTab,
     ResourceTabPaneInterface,
     TAB_URL_HASH_FRAGMENT
@@ -44,11 +47,11 @@ import {
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Form, Grid, Menu, TabProps } from "semantic-ui-react";
+import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { ApplicationEditForm } from "./dynamic-forms/application-edit-form";
 import { MarkdownGuide } from "./help-panel/markdown-guide";
 import { InboundProtocolsMeta } from "./meta";
@@ -62,7 +65,7 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import { getInboundProtocolConfig } from "../api";
+import { disableApplication, getInboundProtocolConfig } from "../api";
 import useGetApplicationTemplateMetadata from "../api/use-get-application-template-metadata";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
@@ -214,12 +217,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
     const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
-    const disabledApplicationFeatures: string[] = useSelector((state: AppState) =>
-        state.config.ui.features.applications?.disabledFeatures);
-    const isMyAccountSimplifiedSettingsEnabled: boolean =
-        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId
-        && !disabledApplicationFeatures?.includes("applications.myaccount.simplifiedSettings");
-
+    const isMyAccount: boolean =
+        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId;
+    const applicationsUpdateScopes: string[] = featureConfig?.applications?.scopes?.update;
+  
+    const [ isDisableInProgress, setIsDisableInProgress ] = useState<boolean>(false);
+    const [ enableStatus, setEnableStatus ] = useState<boolean>(false);
+    const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
 
     /**
      * Handle errors that occur during the application template meta data fetch request.
@@ -404,10 +408,132 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         setShowClientSecretHashDisclaimerModal(true);
     };
 
+    /**
+     * Handles the toggle change to show confirmation modal.
+     *
+     * @param event - Form event.
+     * @param data - Checkbox data.
+     */
+    const handleAppEnableDisableToggleChange = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+        setEnableStatus(data?.checked);
+        setShowDisableConfirmationModal(true);
+    };
+
+    /**
+     * Disables an application.
+     */
+    const handleApplicationDisable = (): void => {
+        setIsDisableInProgress(true);
+        disableApplication(application.id, enableStatus)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("applications:notifications.disableApplication.success" +
+                        ".description", { state: enableStatus ? "enabled" : "disabled" }),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.disableApplication.success.message", {
+                        state : enableStatus ? "enabled" : "disabled" })
+                }));
+
+                setShowDisableConfirmationModal(false);
+                onUpdate(application.id);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.disableApplication.error" +
+                            ".message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.disableApplication" +
+                        ".genericError.description", { state: enableStatus ? "enable" : "disable" }),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.disableApplication.genericError" +
+                        ".message")
+                }));
+            })
+            .finally(() => {
+                setIsDisableInProgress(false);
+            });
+    };
+
     const MyAccountOverviewTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <MyAccountOverview/>
-        </ResourceTab.Pane>
+        <>
+            <ResourceTab.Pane controlledSegmentation>
+                <MyAccountOverview/>
+            </ResourceTab.Pane>
+            <Divider hidden />
+            <Show
+                when={ applicationsUpdateScopes }
+            >
+                <DangerZoneGroup
+                    sectionHeader={ t("applications:dangerZoneGroup.header") }
+                >
+                    <DangerZone
+                        actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle",
+                            { state: application.applicationEnabled ? t("common:disable") : t("common:enable") }) }
+                        header={ t("applications:dangerZoneGroup.disableApplication.header",
+                            { state: application.applicationEnabled ? t("common:disable") : t("common:enable") } ) }
+                        subheader={ application.applicationEnabled
+                            ? t("applications:dangerZoneGroup.disableApplication.subheader")
+                            : t("applications:dangerZoneGroup.disableApplication.subheader2") }
+                        onActionClick={ undefined }
+                        toggle={ {
+                            checked: application.applicationEnabled,
+                            onChange: handleAppEnableDisableToggleChange
+                        } }
+                        data-testid={ `${ componentId }-danger-zone-disable` }
+                    />
+                </DangerZoneGroup>
+            </Show>
+            <ConfirmationModal
+                onClose={ (): void => setShowDisableConfirmationModal(false) }
+                type="warning"
+                open={ showDisableConfirmationModal }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => setShowDisableConfirmationModal(false) }
+                onPrimaryActionClick={ (): void => handleApplicationDisable() }
+                closeOnDimmerClick={ false }
+                primaryActionLoading={ isDisableInProgress }
+                data-testid={ `${ componentId }-myAccount-disable-confirmation-modal` }
+            >
+                <ConfirmationModal.Header
+                    data-testid={
+                        `${ componentId }-myAccount-disable-confirmation-modal-header`
+                    }
+                >
+                    { enableStatus
+                        ? t("applications:confirmations.enableApplication.header")
+                        : t("applications:confirmations.disableApplication.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    warning
+                    data-testid={
+                        `${ componentId }-myAccount-disable-confirmation-modal-message`
+                    }
+                >
+                    { enableStatus
+                        ? t("applications:confirmations.enableApplication.message")
+                        : t("applications:confirmations.disableApplication.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content
+                    data-testid={
+                        `${ componentId }-application-disable-confirmation-modal-content`
+                    }
+                >
+                    { enableStatus
+                        ? t("applications:confirmations.enableApplication.content")
+                        : t("applications:confirmations.disableApplication.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        </>
     );
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
@@ -616,7 +742,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         if (featureConfig) {
-            if (!legacyAuthzRuntime && isMyAccountSimplifiedSettingsEnabled) {
+            if (!legacyAuthzRuntime && isMyAccount) {
                 panes.push({
                     componentId: "overview",
                     menuItem: t("applications:myaccount.overview.tabName"),
@@ -626,7 +752,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
                 && !isSubOrganization()
-                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
+                && (legacyAuthzRuntime || !isMyAccount)) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -656,7 +782,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
                 && !isFragmentApp
-                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)
+                && (legacyAuthzRuntime || !isMyAccount)
             ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -781,7 +907,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
                  && !isFragmentApp
-                 && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
+                 && (legacyAuthzRuntime || !isMyAccount)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(

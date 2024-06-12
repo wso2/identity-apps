@@ -3007,6 +3007,7 @@ export interface Extensions {
                         usernameLength: string;
                         usernameSymbols: string;
                         usernameSpecialCharSymbols: string;
+                        usernameEmpty: string;
                     };
                     summary: {
                         invitation: string;

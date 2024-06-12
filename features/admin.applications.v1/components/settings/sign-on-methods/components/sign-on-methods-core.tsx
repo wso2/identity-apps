@@ -277,7 +277,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                 setMicrosoftAuthenticators(microsoft);
                 setAppleAuthenticators(apple);
 
-                // Add the organization authenticator to the connections list.
+                // Add the organization sso authenticator to the connections list.
                 response[1].push(OrganizationUtils.getOrganizationAuthenticator());
 
                 setAuthenticators(response);
