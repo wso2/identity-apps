@@ -413,6 +413,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                                 return;
                             }
+
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
+                                tempProfileInfo.set(
+                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                );
+
+                                return;
+                            }
                             tempProfileInfo.set(schema.name, userInfo[schemaName]);
                         }
                     } else {
