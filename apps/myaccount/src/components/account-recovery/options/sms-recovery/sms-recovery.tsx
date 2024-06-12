@@ -17,8 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
-import { FormValue } from "@wso2is/forms";
+import { FinalForm, FinalFormField, FormRenderProps, FormValue, TextFieldAdapter } from "@wso2is/form";
 import { Button, GenericIcon, Hint, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
@@ -77,15 +76,11 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
     );
     const phoneNumberSchema: ProfileSchema = useSelector((state: AppState) => {
         const phoneNumberSchemas: ProfileSchema = state.authenticationInformation.profileSchemas.find(
-            (profileSchema: ProfileSchema) => {
-                return profileSchema.name === "phoneNumbers";
-            });
+            (profileSchema: ProfileSchema) => profileSchema.name === "phoneNumbers");
 
         if (phoneNumberSchemas && phoneNumberSchemas.subAttributes) {
             const mobileSchema: ProfileSchema = phoneNumberSchemas.subAttributes?.find(
-                (subAttribute: ProfileSchema) => {
-                    return subAttribute.name === "mobile";
-                });
+                (subAttribute: ProfileSchema) => subAttribute.name === "mobile");
 
             if (mobileSchema) return mobileSchema;
         }
@@ -94,8 +89,8 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
     });
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
-    const [ mobile, setMobile ] = useState("");
-    const [ editedMobile, setEditedMobile ] = useState("");
+    const [ mobile, setMobile ] = useState<string>(undefined);
+    const [ editedMobile, setEditedMobile ] = useState<string>(undefined);
 
     let mobileType: string;
 
@@ -217,14 +212,14 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
      * This is called when the edit icon is clicked.
      *
      */
-    const handleEdit = () => {
+    const handleEdit = () : void => {
         dispatch(setActiveForm(CommonConstants.SECURITY + SMS));
     };
 
     /**
      * This is called when the cancel button is pressed
      */
-    const handleCancel = () => {
+    const handleCancel = () : void => {
         dispatch(setActiveForm(null));
     };
 
@@ -233,15 +228,14 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
      * The text between the third character of the mobile and the second last character is masked.
      * @param mobileNumber - mobile number.
      */
-    const maskMobile = (mobileNumber: string) => {
-        return mobileNumber.slice(0,3) + "*".repeat(mobileNumber.length - 5) + mobileNumber.slice(-2);
-    };
+    const maskMobile = (mobileNumber: string) : string => mobileNumber.slice(0,3) +
+        "*".repeat(mobileNumber.length - 5) + mobileNumber.slice(-2);
 
     /**
      * This function returns the EditSection component and the recovery option
      * elements based on if the edit icon has been clicked
      */
-    const showEditView = () => {
+    const showEditView = () : ReactElement => {
         if (activeForm!==CommonConstants.SECURITY+SMS) {
             return (
                 <Grid padded={ true }>
@@ -261,7 +255,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                 <List.Header>{
                                     t("myAccount:components.accountRecovery.SMSRecovery.heading")
                                 }</List.Header>
-                                <List.Description>
+                                <List.Description >
                                     {
                                         mobile ?
                                             t("myAccount:components.accountRecovery.SMSRecovery.descriptions.update",
@@ -318,15 +312,15 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                 <List.Item>
                                     <List.Content>
                                         <FinalForm
-                                            onSubmit={ (values: { mobile:string }) => {
-                                                handleUpdate(values.mobile.toString());
-                                            } }
+                                            onSubmit={ (values: { mobile:string }) =>
+                                                handleUpdate(values.mobile.toString()) }
                                             data-componentid={ `${componentId}-edit-section-form` }
-                                            render={ ({ handleSubmit }: FormRenderProps) => {return (
+                                            render={ ({ handleSubmit }: FormRenderProps) => (
                                                 <form onSubmit={ handleSubmit }>
                                                     {
                                                         (mobile) && (
                                                             <FinalFormField
+                                                                className={ "mobile-field" }
                                                                 data-componentid=
                                                                     { `${componentId}-edit-section-form-mobile-field` }
                                                                 autoFocus={ true }
@@ -368,7 +362,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                                             />) }
                                                     { enableEditMobile ? (
                                                         <>
-                                                            <p>
+                                                            <p className={ "small-description" }>
                                                                 <Icon color="grey" floated="left" name="info circle" />
                                                                 { t( "myAccount:components.profile.forms." +
                                                                 "mobileChangeForm.inputs.mobile.note"
@@ -376,6 +370,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                                             </p>
                                                             <Form.Group inline={ true }>
                                                                 <PrimaryButton
+                                                                    className={ "mr-3" }
                                                                     size="small"
                                                                     data-componentid={
                                                                         `${componentId}--edit-section-form" +
@@ -397,20 +392,19 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                                         </>
                                                     ):
                                                         (
-                                                            <Form.Group inline={ true }>
-                                                                <Button
-                                                                    onClick={ handleCancel }
-                                                                    size="small"
-                                                                    data-componentid={
-                                                                        `${componentId}--edit-section-form-done-button`
-                                                                    }
-                                                                >
-                                                                    { t("common:done").toString() }
-                                                                </Button>
-                                                            </Form.Group>
+                                                            <Button
+                                                                onClick={ handleCancel }
+                                                                size="small"
+                                                                data-componentid={
+                                                                    `${componentId}--edit-section-form-done-button`
+                                                                }
+                                                                className={ "mt-2" }
+                                                            >
+                                                                { t("common:done").toString() }
+                                                            </Button>
                                                         )
                                                     }
-                                                </form>);} }
+                                                </form>) }
                                         />
                                     </List.Content>
                                 </List.Item>

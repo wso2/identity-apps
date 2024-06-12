@@ -16,23 +16,19 @@
  * under the License.
  */
 
-form > div.oxygen-text-field > div {
+.mobile-field {
     width: 200px !important;
 }
 
-form > p{
+.small-description{
     margin-top: 10px !important;
     font-size: 12px;
 }
 
-div.description {
-    margin-top: 5px;
+.description {
+    margin-top: 7px;
 }
 
-form > div.inline.fields > button {
+.inline.fields {
     margin-top: 8px;
-}
-
-form > div.inline.fields > button.ui.small.primary.button {
-    margin-right: 1em;
 }

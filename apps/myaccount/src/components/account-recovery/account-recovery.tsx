@@ -99,21 +99,30 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                     const responseProperties: PreferenceProperty[] = passwordRecoveryOptions[0].properties;
 
                     responseProperties.forEach((prop: PreferenceProperty) => {
-                        if (prop.name === RECOVERY_PASSWORD_QUESTION) {
-                            setIsQsRecoveryEnabled(prop.value.toLowerCase() == "true" ? true : false);
-                        }
-                        if (prop.name === RECOVERY_PASSWORD_NOTIFICATION) {
-                            setIsNotificationRecoveryEnabled(prop.value.toLowerCase() == "true" ? true : false);
-                        }
-                        if (prop.name === RECOVERY_PASSWORD_NOTIFICATION_EMAIL_LINK) {
-                            setIsNotificationRecoveryEmailLinkEnabled(
-                                prop.value.toLowerCase() == "true" ? true : false);
-                        }
-                        if (prop.name === RECOVERY_PASSWORD_NOTIFICATION_SMS_OTP) {
-                            setIsNotificationRecoverySMSOTPEnabled(prop.value.toLowerCase() == "true" ? true : false);
-                        }
-                        if (prop.name === RECOVERY_USERNAME_NOTIFICATION) {
-                            setIsUsernameRecoveryEnabled(prop.value.toLowerCase() == "true" ? true : false);
+                        switch (prop.name) {
+                            case RECOVERY_PASSWORD_QUESTION:
+                                setIsQsRecoveryEnabled(prop.value.toLowerCase() === "true");
+
+                                break;
+                            case RECOVERY_PASSWORD_NOTIFICATION:
+                                setIsNotificationRecoveryEnabled(prop.value.toLowerCase() === "true");
+
+                                break;
+                            case RECOVERY_PASSWORD_NOTIFICATION_EMAIL_LINK:
+                                setIsNotificationRecoveryEmailLinkEnabled(prop.value.toLowerCase() === "true");
+
+                                break;
+                            case RECOVERY_PASSWORD_NOTIFICATION_SMS_OTP:
+                                setIsNotificationRecoverySMSOTPEnabled(prop.value.toLowerCase() === "true");
+
+                                break;
+                            case RECOVERY_USERNAME_NOTIFICATION:
+                                setIsUsernameRecoveryEnabled(prop.value.toLowerCase() === "true");
+
+                                break;
+                            default:
+                                // Cases where prop.name doesn't match any of the above cases are not handled.
+                                break;
                         }
                     });
                 } else {

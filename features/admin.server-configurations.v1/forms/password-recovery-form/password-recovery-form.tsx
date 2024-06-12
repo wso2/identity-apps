@@ -17,7 +17,12 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import {
+    PasswordRecoveryConfigurationFormPropsInterface,
+    PasswordRecoveryFormConstants,
+    PasswordRecoveryFormErrorValidationsInterface,
+    PasswordRecoveryFormUpdatableConfigsInterface,
+    PasswordRecoveryFormValuesInterface } from "@wso2is/admin.server-configurations.v1";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Heading, Hint } from "@wso2is/react-components";
@@ -30,128 +35,8 @@ import { Divider, Label } from "semantic-ui-react";
 import { AppState } from "../../../admin.core.v1";
 import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface
-} from "../../models/governance-connectors";
+import { ConnectorPropertyInterface } from "../../models/governance-connectors";
 import "./password-recovery-form.scss";
-
-/**
- * Interface for Password Recovery Configuration Form props.
- */
-interface PasswordRecoveryConfigurationFormPropsInterface extends TestableComponentInterface {
-    /**
-     * Connector's initial values.
-     */
-    initialValues: GovernanceConnectorInterface;
-    /**
-     * Callback for form submit.
-     * @param values - Resolved Form Values.
-     */
-    onSubmit: (values) => void;
-    /**
-     * Is readonly.
-     */
-    readOnly?: boolean;
-    /**
-     * Whether the connector is enabled using the toggle button.
-     */
-    isConnectorEnabled?: boolean;
-    /**
-     * Specifies if the form is submitting.
-     */
-    isSubmitting?: boolean;
-}
-
-/**
- * Form initial values interface.
- */
-interface PasswordRecoveryFormInitialValuesInterface {
-    /**
-     * Recovery link expiry time.
-     */
-    expiryTime: string;
-    /**
-     * Notify user on successful password recovery.
-     */
-    notifySuccess: boolean;
-    /**
-     * Whether email based recovery is enabled.
-     */
-    enableEmailBasedRecovery: boolean;
-    /**
-     * Whether SMS based recovery is enabled.
-     */
-    enableSMSBasedRecovery: boolean;
-    /**
-     * SMS OTP expiry time.
-     */
-    smsOtpExpiryTime: string;
-    /**
-     * Whether to use upper case letters in SMS OTP code.
-     */
-    passwordRecoveryOtpUseUppercase: boolean;
-    /**
-     * Whether to use lower case letters in SMS OTP code.
-     */
-    passwordRecoveryOtpUseLowercase: boolean;
-    /**
-     * Whether to use numeric characters in SMS OTP code.
-     */
-    passwordRecoveryOtpUseNumeric: boolean;
-    /**
-     * The length of the SMS OTP code.
-     */
-    smsOtpLength: string;
-    /**
-     * The maximum amount of times recovery code/link is resent.
-     */
-    maxResendCount: string;
-    /**
-     * The maximum allowed failed attempts for a recovery flow.
-     */
-    maxFailedAttemptCount: string;
-}
-
-/**
- * Proptypes for the Password Recovery Form error messages.
- */
-export interface PasswordRecoveryFormErrorValidationsInterface {
-    /**
-     * Recovery link expiry time field.
-     */
-    expiryTime: string;
-    /**
-     * Sms otp expiry time field
-     */
-    smsOtpExpiryTime: string;
-    /**
-     * SMS OTP code length field.
-     */
-    smsOtpLength: string;
-    /**
-     * max resend count field.
-     */
-    maxResendCount: string;
-    /**
-     * Max allowed failed attempts count field.
-     */
-    maxFailedAttemptCount: string;
-}
-
-const allowedConnectorFields: string[] = [
-    ServerConfigurationsConstants.NOTIFY_SUCCESS,
-    ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME,
-    ServerConfigurationsConstants.RECOVERY_EMAIL_LINK_ENABLE,
-    ServerConfigurationsConstants.RECOVERY_SMS_OTP_ENABLE,
-    ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME,
-    ServerConfigurationsConstants.RECOVERY_OTP_USE_UPPERCASE,
-    ServerConfigurationsConstants.RECOVERY_OTP_USE_LOWERCASE,
-    ServerConfigurationsConstants.RECOVERY_OTP_USE_NUMERIC,
-    ServerConfigurationsConstants.RECOVERY_OTP_LENGTH,
-    ServerConfigurationsConstants.RECOVERY_MAX_RESEND_COUNT,
-    ServerConfigurationsConstants.RECOVERY_MAX_FAILED_ATTEMPTS_COUNT
-];
 
 const FORM_ID: string = "governance-connectors-password-recovery-form";
 
@@ -171,12 +56,12 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
         readOnly,
         isConnectorEnabled,
         isSubmitting,
-        ["data-testid"]: testId
+        ["data-componentid"]: testId
     } = props;
 
     const { t } = useTranslation();
     const [ initialConnectorValues, setInitialConnectorValues ]
-        = useState<PasswordRecoveryFormInitialValuesInterface>(undefined);
+        = useState<PasswordRecoveryFormValuesInterface>(undefined);
     const [ isEmailRecoveryEnabled, setIsEmailRecoveryEnabled ] = useState<boolean>(false);
     const [ isSMSRecoveryEnabled, setIsSMSRecoveryEnabled ] = useState<boolean>(false);
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
@@ -193,65 +78,91 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             return;
         }
 
-        let resolvedInitialValues: PasswordRecoveryFormInitialValuesInterface = null;
+        let resolvedInitialValues: PasswordRecoveryFormValuesInterface = null;
 
         initialValues.properties.map((property: ConnectorPropertyInterface) => {
-            if (allowedConnectorFields.includes(property.name)) {
-                if (property.name === ServerConfigurationsConstants.NOTIFY_SUCCESS) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        notifySuccess: CommonUtils.parseBoolean(property.value)
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        expiryTime: property.value
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_EMAIL_LINK_ENABLE) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        enableEmailBasedRecovery: CommonUtils.parseBoolean(property.value)
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_SMS_OTP_ENABLE) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        enableSMSBasedRecovery: CommonUtils.parseBoolean(property.value)
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        smsOtpExpiryTime: property.value
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_OTP_USE_UPPERCASE) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        passwordRecoveryOtpUseUppercase: CommonUtils.parseBoolean(property.value)
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_OTP_USE_LOWERCASE) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        passwordRecoveryOtpUseLowercase: CommonUtils.parseBoolean(property.value)
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_OTP_USE_NUMERIC) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        passwordRecoveryOtpUseNumeric: CommonUtils.parseBoolean(property.value)
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_OTP_LENGTH) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        smsOtpLength: property.value
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_MAX_RESEND_COUNT) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        maxResendCount : property.value
-                    };
-                }  else if (property.name === ServerConfigurationsConstants.RECOVERY_MAX_FAILED_ATTEMPTS_COUNT) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        maxFailedAttemptCount : property.value
-                    };
+            if (PasswordRecoveryFormConstants.allowedConnectorFields.includes(property.name)) {
+                switch (property.name) {
+                    case ServerConfigurationsConstants.NOTIFY_SUCCESS:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            notifySuccess: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            expiryTime: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_EMAIL_LINK_ENABLE:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            enableEmailBasedRecovery: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_SMS_OTP_ENABLE:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            enableSMSBasedRecovery: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            smsOtpExpiryTime: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_OTP_USE_UPPERCASE:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            passwordRecoveryOtpUseUppercase: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_OTP_USE_LOWERCASE:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            passwordRecoveryOtpUseLowercase: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_OTP_USE_NUMERIC:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            passwordRecoveryOtpUseNumeric: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_OTP_LENGTH:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            smsOtpLength: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_MAX_RESEND_COUNT:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            maxResendCount: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_MAX_FAILED_ATTEMPTS_COUNT:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            maxFailedAttemptCount: property.value
+                        };
+
+                        break;
+                    default:
+                        // Invalid type is not handled since the form is generated based on the allowed fields.
+                        break;
                 }
             }
         });
@@ -269,7 +180,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
      * @param values - Form values.
      * @returns Form validation.
      */
-    const validateForm = (values: any):
+    const validateForm = (values: PasswordRecoveryFormValuesInterface):
         PasswordRecoveryFormErrorValidationsInterface => {
         const errors: PasswordRecoveryFormErrorValidationsInterface = {
             expiryTime: undefined,
@@ -366,19 +277,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Record<string, any>) => {
-        const data: {
-            "Recovery.ExpiryTime": any;
-            "Recovery.Notification.Password.emailLink.Enable": boolean;
-            "Recovery.Notification.Password.ExpiryTime.smsOtp": number;
-            "Recovery.Notification.Password.MaxFailedAttempts": number;
-            "Recovery.Notification.Password.MaxResendAttempts": number;
-            "Recovery.Notification.Password.smsOtp.Enable": boolean;
-            "Recovery.Notification.Password.OTP.UseUppercaseCharactersInOTP": number;
-            "Recovery.Notification.Password.OTP.UseLowercaseCharactersInOTP": number;
-            "Recovery.Notification.Password.OTP.UseNumbersInOTP": number;
-            "Recovery.Notification.Password.OTP.OTPLength": number;
-            "Recovery.NotifySuccess": boolean;
-        } = {
+        const data: PasswordRecoveryFormUpdatableConfigsInterface = {
             "Recovery.ExpiryTime": values.expiryTime !== undefined
                 ? values.expiryTime
                 : initialConnectorValues?.expiryTime,
@@ -451,6 +350,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     disabled={ !isConnectorEnabled }
                     listen={ (value: boolean) => setIsEmailRecoveryEnabled(value) }
                     data-testid={ `${ testId }-email-link-based-recovery` }
+                    data-componentid={ `${ testId }-email-link-based-recovery` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -466,6 +366,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     width={ 10 }
                     disabled={ !isEmailRecoveryEnabled }
                     data-testid={ `${ testId }-notify-success` }
+                    data-componentid={ `${ testId }-notify-success` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -501,6 +402,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     labelPosition="right"
                     disabled={ !isEmailRecoveryEnabled }
                     data-testid={ `${ testId }-link-expiry-time` }
+                    data-componentid={ `${ testId }-link-expiry-time` }
                 >
                     <input/>
                     <Label
@@ -516,11 +418,10 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionSubHeadingSMS") as ReactNode }
                     {
-                        showSmsOtpPwdRecoveryFeatureStatusChip ?
-                            (<Chip
-                                label="BETA"
-                                className="oxygen-menu-item-chip oxygen-chip-beta" />)
-                            : <></>
+                        showSmsOtpPwdRecoveryFeatureStatusChip &&
+                        (<Chip
+                            label="BETA"
+                            className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
                 <Field.Checkbox
@@ -534,6 +435,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     disabled={ !isConnectorEnabled }
                     listen={ (value: boolean) => setIsSMSRecoveryEnabled(value) }
                     data-testid={ `${ testId }-sms-based-recovery` }
+                    data-componentid={ `${ testId }-sms-based-recovery` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -569,6 +471,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     labelPosition="right"
                     disabled={ !isSMSRecoveryEnabled }
                     data-testid={ `${ testId }-sms-otp-expiry-time` }
+                    data-componentid={ `${ testId }-sms-otp-expiry-time` }
                 >
                     <input/>
                     <Label
@@ -584,11 +487,10 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.otpConfigHeading") as ReactNode }
                     {
-                        showSmsOtpPwdRecoveryFeatureStatusChip ?
-                            (<Chip
-                                label="BETA"
-                                className="oxygen-menu-item-chip oxygen-chip-beta" />)
-                            : <></>
+                        showSmsOtpPwdRecoveryFeatureStatusChip &&
+                        (<Chip
+                            label="BETA"
+                            className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
                 <Field.Checkbox
@@ -604,6 +506,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled) }
                     listen={ (value: boolean) => setIsUpperCaseEnabled(value) }
                     data-testid={ `${ testId }-sms-otp-uppercase` }
+                    data-componentid={ `${ testId }-sms-otp-uppercase` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -622,6 +525,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled) }
                     listen={ (value: boolean) => setIsLowerCaseEnabled(value) }
                     data-testid={ `${ testId }-sms-otp-lowercase` }
+                    data-componentid={ `${ testId }-sms-otp-lowercase` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -640,6 +544,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled) }
                     listen={ (value: boolean) => setIsNumericEnabled(value) }
                     data-testid={ `${ testId }-sms-otp-numeric` }
+                    data-componentid={ `${ testId }-sms-otp-numeric` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -674,6 +579,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     labelPosition="right"
                     disabled={ !isConnectorEnabled }
                     data-testid={ `${ testId }-otp-length` }
+                    data-componentid={ `${ testId }-otp-length` }
                 >
                     <input/>
                     <Label
@@ -689,11 +595,10 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.failedAttemptConfigHeading") as ReactNode }
                     {
-                        showSmsOtpPwdRecoveryFeatureStatusChip ?
-                            (<Chip
-                                label="BETA"
-                                className="oxygen-menu-item-chip oxygen-chip-beta" />)
-                            : <></>
+                        showSmsOtpPwdRecoveryFeatureStatusChip &&
+                        (<Chip
+                            label="BETA"
+                            className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
                 <Field.Input
@@ -726,6 +631,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     labelPosition="right"
                     disabled={ !isConnectorEnabled }
                     data-testid={ `${ testId }-max-fail-attempt-count` }
+                    data-componentid={ `${ testId }-max-fail-attempt-count` }
                 >
                     <input/>
                     <Label
@@ -766,6 +672,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     labelPosition="right"
                     disabled={ !isConnectorEnabled }
                     data-testid={ `${ testId }-otp-resend-count` }
+                    data-componentid={ `${ testId }-otp-resend-count` }
                 >
                     <input/>
                     <Label
@@ -783,6 +690,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     ariaLabel="Password Recovery update button"
                     name="update-button"
                     data-testid={ `${ testId }-submit-button` }
+                    data-componentid={ `${ testId }-submit-button` }
                     disabled={ isSubmitting }
                     loading={ isSubmitting }
                     label={ t("common:update") }
@@ -797,5 +705,5 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
  * Default props for the component.
  */
 PasswordRecoveryConfigurationForm.defaultProps = {
-    "data-testid": "password-recovery-edit-form"
+    "data-componentid": "password-recovery-edit-form"
 };
