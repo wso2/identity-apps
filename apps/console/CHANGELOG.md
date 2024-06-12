@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.19.22
+
+### Patch Changes
+
+- [#6425](https://github.com/wso2/identity-apps/pull/6425) [`1aedc77eff0290d8263e290fef298039e4c98e34`](https://github.com/wso2/identity-apps/commit/1aedc77eff0290d8263e290fef298039e4c98e34) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Enable simplified my account settings by default
+
+- Updated dependencies [[`1aedc77eff0290d8263e290fef298039e4c98e34`](https://github.com/wso2/identity-apps/commit/1aedc77eff0290d8263e290fef298039e4c98e34)]:
+  - @wso2is/admin.extensions.v1@2.20.24
+  - @wso2is/admin.core.v1@2.20.24
+  - @wso2is/admin.organizations.v1@2.20.24
+  - @wso2is/admin.authentication.v1@2.20.24
+
 ## 2.19.21
 
 ### Patch Changes
