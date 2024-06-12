@@ -292,7 +292,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         };
 
                         if (values?.image && values.image !== " " && !ImageUtils.isValidImageExtension(values?.image)) {
-                            errors.image = "Input a valid image URL";
+                            errors.image = t(
+                                "authenticationProvider:forms.generalDetails.image.validations.invalid"
+                            );
                         }
 
                         return errors;
