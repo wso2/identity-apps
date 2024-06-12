@@ -36,7 +36,7 @@ import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/fea
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "@wso2is/admin.layouts.v1";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { AppView, FullScreenView } from "@wso2is/admin.views.v1";
-import { FeatureAccessConfigInterface, LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
+import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
@@ -44,7 +44,6 @@ import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { AppConstants } from "../constants";
-import { store } from "../store";
 
 /**
  * Get App View Routes.
@@ -68,10 +67,9 @@ import { store } from "../store";
 export const getAppViewRoutes = (): RouteInterface[] => {
 
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
-    const applicationRolesFeatureConfig: FeatureAccessConfigInterface
-        = store.getState()?.config?.ui?.features?.applicationRoles;
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
+    const legacyAuthzRuntime: boolean = window["AppUtils"]?.getConfig()?.legacyAuthzRuntime;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -1417,7 +1415,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         );
     }
 
-    if (applicationRolesFeatureConfig?.enabled) {
+    if (legacyAuthzRuntime) {
         defaultRoutes.push(
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
