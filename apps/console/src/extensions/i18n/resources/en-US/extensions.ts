@@ -4060,11 +4060,22 @@ export const extensions: Extensions = {
             }
         },
         invite: {
+            assignAdminUser: {
+                confirmationModal: {
+                    assertionHint: "Assign Administator role to the user.",
+                    header: "Assign Administator Role",
+                    message: "The user already exists as a collaborator. Do you want to assign them to Administator role?"
+                }
+            },
             notifications: {
                 sendInvite: {
                     limitReachError: {
                         description: "Maximum number of allowed collaborator users have been reached.",
                         message: "Error while sending the invitation"
+                    },
+                    userAlreadyExistsError: {
+                        description: "The user {{userName}} already exists.",
+                        message: "Unable to send invite"
                     }
                 }
             }
