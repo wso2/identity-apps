@@ -1,5 +1,17 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.20.25
+
+### Patch Changes
+
+- Updated dependencies [[`9b3e0fdb829ec2f4bb9000f599ad2b1153a03642`](https://github.com/wso2/identity-apps/commit/9b3e0fdb829ec2f4bb9000f599ad2b1153a03642), [`76d6a48c92070eb6716197c5488f16fce7dc8bf2`](https://github.com/wso2/identity-apps/commit/76d6a48c92070eb6716197c5488f16fce7dc8bf2)]:
+  - @wso2is/admin.core.v1@2.20.25
+  - @wso2is/admin.extensions.v1@2.20.25
+  - @wso2is/admin.identity-providers.v1@2.20.25
+  - @wso2is/admin.server-configurations.v1@2.20.25
+  - @wso2is/admin.users.v1@2.20.25
+  - @wso2is/admin.validation.v1@2.20.25
+
 ## 2.20.24
 
 ### Patch Changes
