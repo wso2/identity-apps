@@ -219,7 +219,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     identityProviderConfig
                         .utils
                         ?.hideLogoInputFieldInIdPGeneralSettingsForm(
-                            identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
+                            identityProvider?.templateId
                         )
                 }
                 templateType={ type }
