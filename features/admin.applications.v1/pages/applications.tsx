@@ -629,14 +629,16 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
                 filteredApplicationList?.totalResults > 0) ? (
                     <>
-                        <Show when={ featureConfig?.applicationsSettings?.enabled && 
-                            featureConfig?.applications?.scopes?.create }>
-                            <Button
-                                data-componentid={ "applications-settings-button" }
-                                icon="setting"
-                                onClick={ handleSettingsButton }
-                            >
-                            </Button>
+                        <Show when={ featureConfig?.applications?.scopes?.create }>
+                            {
+                                (featureConfig?.applicationsSettings?.enabled) &&
+                                (<Button
+                                    data-componentid={ "applications-settings-button" }
+                                    icon="setting"
+                                    onClick={ handleSettingsButton }
+                                >
+                                </Button>)
+                            }
                         </Show>
                         <Show
                             when={ featureConfig?.applications?.scopes?.create }
@@ -654,14 +656,16 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         </Show>
                     </>
                 ) : (
-                    <Show when={ featureConfig?.applicationsSettings?.enabled &&
-                        featureConfig?.applications?.scopes?.create }>
-                        <Button
-                            data-componentid={ "applications-settings-button" }
-                            icon="setting"
-                            onClick={ handleSettingsButton }
-                        >
-                        </Button>
+                    <Show when={ featureConfig?.applications?.scopes?.create }>
+                        {
+                            (featureConfig?.applicationsSettings?.enabled) &&
+                            (<Button
+                                data-componentid={ "applications-settings-button" }
+                                icon="setting"
+                                onClick={ handleSettingsButton }
+                            >
+                            </Button>)
+                        }
                     </Show>
 
                 ) }
