@@ -26,7 +26,8 @@ import {
     Heading,
     Link,
     Popup,
-    Text
+    Text,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -42,6 +43,7 @@ export const MyAccountOverview: FunctionComponent<IdentifiableComponentInterface
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     return (
         <EmphasizedSegment padded="very">
@@ -52,8 +54,7 @@ export const MyAccountOverview: FunctionComponent<IdentifiableComponentInterface
                 <Text>
                     { t("applications:myaccount.overview.contentIntro") }
                     <DocumentationLink
-                        link={ "develop.applications.myaccount.overview.learnMore" }
-                        isLinkRef
+                        link={ getLink("develop.applications.myaccount.overview.learnMore") }
                     >
                         <Trans
                             i18nKey={ "extensions:common.learnMore" }

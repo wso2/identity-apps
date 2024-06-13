@@ -144,7 +144,10 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     },[ groupsError ]);
 
     useEffect(() => {
-        if (!isSuperOrganization()) {
+        if (!(
+            isSuperOrganization()
+            || isFirstLevelOrganization()
+        )) {
             return;
         }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,7 @@ import { SMSProviderConstants } from "../constants";
 
 interface VonageSMSProviderPageInterface extends IdentifiableComponentInterface {
     "data-componentid": string;
+    isLoading?: boolean;
     isReadOnly: boolean;
     onSubmit: (values: any) => void;
 }
@@ -40,6 +41,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
 ): ReactElement => {
     const {
         ["data-componentid"]: componentId,
+        isLoading,
         isReadOnly,
         onSubmit
     } = props;
@@ -171,6 +173,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                                         onClick={ onSubmit }
                                         ariaLabel="SMS provider form update button"
                                         data-componentid={ `${componentId}-update-button` }
+                                        loading={ isLoading }
                                     >
                                         { "Submit" }
                                     </PrimaryButton>

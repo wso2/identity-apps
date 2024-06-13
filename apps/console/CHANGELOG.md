@@ -1,5 +1,33 @@
 # @wso2is/console
 
+## 2.19.24
+
+### Patch Changes
+
+- Updated dependencies [[`9b3e0fdb829ec2f4bb9000f599ad2b1153a03642`](https://github.com/wso2/identity-apps/commit/9b3e0fdb829ec2f4bb9000f599ad2b1153a03642), [`76d6a48c92070eb6716197c5488f16fce7dc8bf2`](https://github.com/wso2/identity-apps/commit/76d6a48c92070eb6716197c5488f16fce7dc8bf2)]:
+  - @wso2is/admin.core.v1@2.20.25
+  - @wso2is/admin.authentication.v1@2.20.25
+  - @wso2is/admin.extensions.v1@2.20.25
+  - @wso2is/admin.organizations.v1@2.20.25
+
+## 2.19.23
+
+### Patch Changes
+
+- [#6398](https://github.com/wso2/identity-apps/pull/6398) [`21be1861e4544c2660e7ee801fce9025a230970f`](https://github.com/wso2/identity-apps/commit/21be1861e4544c2660e7ee801fce9025a230970f) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix issue with loading tenant create page for users without associated tenants
+
+## 2.19.22
+
+### Patch Changes
+
+- [#6425](https://github.com/wso2/identity-apps/pull/6425) [`1aedc77eff0290d8263e290fef298039e4c98e34`](https://github.com/wso2/identity-apps/commit/1aedc77eff0290d8263e290fef298039e4c98e34) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Enable simplified my account settings by default
+
+- Updated dependencies [[`1aedc77eff0290d8263e290fef298039e4c98e34`](https://github.com/wso2/identity-apps/commit/1aedc77eff0290d8263e290fef298039e4c98e34)]:
+  - @wso2is/admin.extensions.v1@2.20.24
+  - @wso2is/admin.core.v1@2.20.24
+  - @wso2is/admin.organizations.v1@2.20.24
+  - @wso2is/admin.authentication.v1@2.20.24
+
 ## 2.19.21
 
 ### Patch Changes
