@@ -17,6 +17,7 @@
  */
 
 // TODO: Change this back to Oxygen UI import once the unit test issues are sorted out.
+// Tracked with: https://github.com/wso2/oxygen-ui/issues/218
 import ListItemText from "@mui/material/ListItemText";
 import Alert from "@oxygen-ui/react/Alert";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
