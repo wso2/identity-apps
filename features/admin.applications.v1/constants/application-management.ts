@@ -111,6 +111,11 @@ export class ApplicationManagementConstants {
     public static readonly IS_PROTOCOL: string = "isProtocol";
 
     /**
+     * Value for protocol tab navigation.
+     */
+        public static readonly IS_ROLES: string = "isRoles";
+
+    /**
      * Key for the URL search param for application readonly state.
      */
     public static readonly APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY: string = "readOnly";
@@ -139,10 +144,11 @@ export class ApplicationManagementConstants {
      * Value for protocol tab url.
      */
     public static readonly PROTOCOL_TAB_URL_FRAG: string = "protocol";
+
     /**
      * Value for application roles tab url.
      */
-    public static readonly ROLES_TAB_URL_FRAG: string = "5";
+    public static readonly ROLES_TAB_URL_FRAG: string = "application-roles";
 
     /**
      * Role callback redirect type
