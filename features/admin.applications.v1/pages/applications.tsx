@@ -629,7 +629,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
                 filteredApplicationList?.totalResults > 0) ? (
                     <>
-                        <Show when={ featureConfig?.applications?.scopes?.create }>
+                        <Show when={ featureConfig?.applicationsSettings?.enabled && 
+                            featureConfig?.applications?.scopes?.create }>
                             <Button
                                 data-componentid={ "applications-settings-button" }
                                 icon="setting"
@@ -653,7 +654,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         </Show>
                     </>
                 ) : (
-                    <Show when={ featureConfig?.applications?.scopes?.create }>
+                    <Show when={ featureConfig?.applicationsSettings?.enabled &&
+                        featureConfig?.applications?.scopes?.create }>
                         <Button
                             data-componentid={ "applications-settings-button" }
                             icon="setting"
