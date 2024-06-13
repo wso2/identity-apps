@@ -16,8 +16,6 @@
  * under the License.
  */
 
-/* eslint-disable sort-keys */
-
 import React from "react";
 import { fireEvent, render, screen, within } from "../../../../test-configs/utils";
 import { RoleBasics } from "../role-basics";
@@ -27,15 +25,15 @@ jest.mock("@wso2is/admin.applications.v1/api/application", () => ({
         data: {
             applications: [
                 {
-                    "id": "2a2014c0-1a81-400c-91e3-034a443b31ef",
-                    "name": "DHDHD",
-                    "clientId": "QRCkHOhBpRHHpNR21Xr5WzGJmBsa",
-                    "realm": "",
                     "access": "WRITE",
-                    "self": "/t/pavindu119/api/server/v1/applications/2a2014c0-1a81-400c-91e3-034a443b31ef",
                     "associatedRoles": {
                         "allowedAudience": "ORGANIZATION"
-                    }
+                    },
+                    "clientId": "QRCkHOhBpRHHpNR21Xr5WzGJmBsa",
+                    "id": "2a2014c0-1a81-400c-91e3-034a443b31ef",
+                    "name": "Test App",
+                    "realm": "",
+                    "self": "/t/testorg/api/server/v1/applications/2a2014c0-1a81-400c-91e3-034a443b31ef"
                 }
             ]
         },
@@ -59,10 +57,9 @@ describe("Create Role Wizard works as expected", () => {
         const autocomplete: HTMLElement = screen.getByTestId("add-role-basics-form-typography-font-family-dropdown");
         const input: HTMLElement = within(autocomplete).getByRole("textbox");
 
-        //        fireEvent.click(input);
         autocomplete.focus();
 
-        fireEvent.change(input, { target: { value: "DHDHD" } });
+        fireEvent.change(input, { target: { value: "Test App" } });
         fireEvent.keyDown(autocomplete, { key: "ArrowDown" });
 
         const changeAudienceBtn: HTMLElement = screen.getByTestId("add-role-basics-form-link-navigate-roles");
