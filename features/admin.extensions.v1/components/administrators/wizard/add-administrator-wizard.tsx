@@ -212,12 +212,12 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             // If an admin, show an error message.
             dispatch(addAlert({
                 description: t(
-                    "console:manage.features.invite.notifications.sendInvite.userAlreadyExistsError.description",
+                    "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.description",
                     { userName: originalAdminUserList.Resources[ 0 ].userName }
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "console:manage.features.invite.notifications.sendInvite.userAlreadyExistsError.message"
+                    "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.message"
                 )
             }));
         } else {
@@ -807,15 +807,19 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                         <ConfirmationModal
                             primaryActionLoading={ confirmationModalLoading }
                             data-componentid={ `${ componentId }-confirmation-modal` }
-                            onClose={ (): void => setShowAdminRoleAddConfirmationModal(false) }
+                            onClose={ (): void => {
+                                setSubmitGeneralSettings();
+                                setShowAdminRoleAddConfirmationModal(false);
+                            } }
                             type="warning"
                             open={ showAdminRoleAddConfirmationModal }
                             assertionHint={
-                                t("console:manage.features.invite.assignAdminUser.confirmationModal.assertionHint") }
+                                t("extensions:manage.invite.assignAdminUser.confirmationModal.assertionHint") }
                             assertionType="checkbox"
                             primaryAction="Confirm"
                             secondaryAction="Cancel"
                             onSecondaryActionClick={ (): void => {
+                                setSubmitGeneralSettings();
                                 setShowAdminRoleAddConfirmationModal(false);
                                 setAlert(null);
                             } }
@@ -826,15 +830,15 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                             closeOnDimmerClick={ false }
                         >
                             <ConfirmationModal.Header data-componentid={ `${ componentId }-confirmation-modal-header` }>
-                                { t("console:manage.features.invite.assignAdminUser.confirmationModal.header") }
+                                { t("extensions:manage.invite.assignAdminUser.confirmationModal.header") }
                             </ConfirmationModal.Header>
-                            <ConfirmationModal.Message
+                            <ConfirmationModal.Content
                                 data-componentid={ `${ componentId }-confirmation-modal-message` }
                                 attached
                                 warning
                             >
-                                { t("console:manage.features.invite.assignAdminUser.confirmationModal.message") }
-                            </ConfirmationModal.Message>
+                                { t("extensions:manage.invite.assignAdminUser.confirmationModal.message") }
+                            </ConfirmationModal.Content>
                         </ConfirmationModal>
                     )
                 }
