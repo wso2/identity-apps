@@ -113,7 +113,7 @@ export class ApplicationManagementConstants {
     /**
      * Value for protocol tab navigation.
      */
-        public static readonly IS_ROLES: string = "isRoles";
+    public static readonly IS_ROLES: string = "isRoles";
 
     /**
      * Key for the URL search param for application readonly state.

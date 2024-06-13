@@ -524,7 +524,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         element.componentId === ApplicationManagementConstants.ROLES_TAB_URL_FRAG
                 );
 
-                if(rolesTabIndex !== -1) {
+                if (rolesTabIndex !== -1) {
                     handleActiveTabIndexChange(rolesTabIndex);
                 }
 
