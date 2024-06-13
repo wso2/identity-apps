@@ -43,27 +43,27 @@ interface CustomExtendedWindow extends Window {
             accountApp: {
                 commonPostLogoutUrl: true,
                 path: "https://localhost:9000/myaccount/overview",
-                tenantQualifiedPath: "https://localhost:9000/t/brionmario"
+                tenantQualifiedPath: "https://localhost:9000/t/testorg"
             },
             adminApp: {
-                basePath: "/t/brionmario/manage",
+                basePath: "/t/testorg/manage",
                 displayName: "Manage",
-                path: "/t/brionmario/manage/users"
+                path: "/t/testorg/manage/users"
             },
             allowMultipleAppProtocols: false,
             appBase: "",
             appBaseNameForHistoryAPI: "/",
-            appBaseWithTenant: "/t/brionmario",
+            appBaseWithTenant: "/t/testorg",
             clientID: "CONSOLE",
-            clientOrigin: "https://dev.console.asgardeo.io",
-            clientOriginWithTenant: "https://dev.console.asgardeo.io/t/brionmario",
+            clientOrigin: "https://console.wso2iam.io",
+            clientOriginWithTenant: "https://console.wso2iam.io/t/testorg",
             debug: false,
             developerApp: {
-                basePath: "/t/brionmario/develop",
-                displayName: "Develop",
-                path: "/t/brionmario/develop/applications"
+                basePath: "/t/testorg/app",
+                displayName: "app",
+                path: "/t/testorg/develop/applications"
             },
-            docSiteUrl: "https://dev.docs.asgardeo.io/",
+            docSiteUrl: "https://is.docs.wso2.com/",
             documentation: {
                 baseURL: "https://api.github.com",
                 contentBaseURL: "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
@@ -97,9 +97,9 @@ interface CustomExtendedWindow extends Window {
                     "SYSTEM"
                 ],
                 storage: "webWorker",
-                authorizeEndpointURL: "https://dev.api.asgardeo.io/t/a/oauth2/authorize?ut=brionmario",
-                logoutEndpointURL: "https://dev.api.asgardeo.io/t/a/oidc/logout",
-                oidcSessionIFrameEndpointURL: "https://dev.api.asgardeo.io/t/a/oidc/checksession"
+                authorizeEndpointURL: "https://api.wso2iam.io/t/a/oauth2/authorize?ut=testorg",
+                logoutEndpointURL: "https://api.wso2iam.io/t/a/oidc/logout",
+                oidcSessionIFrameEndpointURL: "https://api.wso2iam.io/t/a/oidc/checksession"
             },
             isSaas: true,
             loginCallbackURL: "https://dev.console.asgardeo.io/login",
@@ -108,12 +108,12 @@ interface CustomExtendedWindow extends Window {
                 productVersion: "BETA"
             },
             routes: {
-                home: "/t/brionmario/getting-started",
-                login: "/t/brionmario/login",
-                logout: "/t/brionmario/logout"
+                home: "/t/testorg/getting-started",
+                login: "/t/testorg/login",
+                logout: "/t/testorg/logout"
             },
             serverOrigin: "https://dev.api.asgardeo.io",
-            serverOriginWithTenant: "https://dev.api.asgardeo.io/t/brionmario",
+            serverOriginWithTenant: "https://api.wso2iam.io/t/testorg",
             session: {
                 sessionRefreshTimeOut: 300,
                 userIdleWarningTimeOut: 1740,
@@ -121,8 +121,8 @@ interface CustomExtendedWindow extends Window {
                 userIdleTimeOut: 1800
             },
             superTenant: "carbon.super",
-            tenant: "brionmario",
-            tenantPath: "/t/brionmario",
+            tenant: "testorg",
+            tenantPath: "/t/testorg",
             tenantPrefix: "t",
             ui: {
                 appCopyright: "${copyright} ${year} WSO2, Inc.",
