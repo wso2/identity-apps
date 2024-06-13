@@ -220,6 +220,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                     "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.message"
                 )
             }));
+            closeWizard();
         } else {
             // If not, prompt to assign the admin role to the user.
             setShowAdminRoleAddConfirmationModal(true);
@@ -507,7 +508,6 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                         "extensions:manage.users.wizard.addAdmin.internal.updateRole.success.message"
                     )
                 }));
-                closeWizard();
                 onUserUpdate();
             })
             .catch((error: AxiosError) => {
@@ -548,6 +548,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             .finally(() => {
                 setIsSubmitting(false);
                 setConfirmationModalLoading(false);
+                closeWizard();
             });
     };
 
