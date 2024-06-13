@@ -3084,6 +3084,7 @@ export interface Extensions {
                         subSection1: string;
                         subSection2: string;
                         subSection3: string;
+                        subSection4: string;
                     };
                     connectorDescription: string;
                     heading: string;

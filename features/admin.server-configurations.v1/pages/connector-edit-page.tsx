@@ -184,7 +184,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             // TODO: remove this once the ID is fixed
             updateData.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(
-                    serverConfigurationConfig.connectorToggleName["account-recovery-username"]
+                    serverConfigurationConfig.connectorToggleName[
+                        ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME ]
                 ),
                 value: data.checked.toString()
             });
@@ -250,6 +251,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             name: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA,
             value: data.checked.toString()
         });
+        if (ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME in
+            serverConfigurationConfig.connectorToggleName) {
+            updateRecoveryCaptchaData.properties.push({
+                name: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA,
+                value: data.checked.toString()
+            });
+        }
 
         updateGovernanceConnector(updateSSOCaptchaData, categoryId, connectorId)
             .then(() => {
@@ -614,6 +622,16 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                                     "botDetection.info.subSection2"
                                 ) }
                             </li>
+                            {
+                                serverConfigurationConfig.connectorToggleName[
+                                    ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME ] ?
+                                    (<li>
+                                        { t(
+                                            "extensions:manage.serverConfigurations.accountSecurity." +
+                                            "botDetection.info.subSection4"
+                                        ) }
+                                    </li>) : <></>
+                            }
                             <li>
                                 { t(
                                     "extensions:manage.serverConfigurations.accountSecurity." +

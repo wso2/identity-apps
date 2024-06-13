@@ -239,6 +239,17 @@ export class ServerConfigurationsConstants {
 		"Recovery.Question.Password.Forced.Enable";
 
 	/**
+	 * Connector toggle constants.
+	 */
+	public static readonly ACCOUNT_RECOVERY: string = "account-recovery";
+	public static readonly ACCOUNT_RECOVERY_BY_USERNAME: string = "account-recovery-username";
+	public static readonly ACCOUNT_LOCK_HANDLER: string = "account.lock.handler";
+	public static readonly MULTI_ATTRIBUTE_LOGIN_HANDLER: string = "multiattribute.login.handler";
+	public static readonly ORGANIZATION_SELF_SERVICE: string = "organization-self-service";
+	public static readonly SELF_SIGNUP: string = "self-sign-up";
+	public static readonly SSO_LOGIN_RECAPTCHA: string = "sso.login.recaptcha";
+
+	/**
 	 * Login policies - account locking API Keyword constants.
 	 */
 	public static readonly ACCOUNT_LOCK_ENABLE: string = "account.lock.handler.lock.on.max.failed.attempts.enable";
