@@ -131,6 +131,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isFinishButtonDisabled, setFinishButtonDisabled ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
+    const [ invite, setInvite ] = useState<UserInviteInterface>(null);
     const [ showAdminRoleAddConfirmationModal, setShowAdminRoleAddConfirmationModal ] = useState<boolean>(false);
     const [ confirmationModalLoading, setConfirmationModalLoading ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>(null);
@@ -165,7 +166,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         null,
         null,
         `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`,
-        !legacyAuthzRuntime
+        !legacyAuthzRuntime && !!searchQuery
     );
 
     /**
@@ -209,7 +210,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
      * This hook will check if the user is an admin user and prompt to add the admin role to the user.
      */
     useEffect(() => {
-        if (!originalAdminUserList) {
+        if (!originalAdminUserList || !invite?.email) {
             return;
         }
 
@@ -219,13 +220,14 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             dispatch(addAlert({
                 description: t(
                     "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.description",
-                    { userName: originalAdminUserList.Resources[ 0 ].userName }
+                    { userName: invite.email }
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
                     "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.message"
                 )
             }));
+            setIsSubmitting(false);
             closeWizard();
 
             return;
@@ -237,16 +239,18 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             dispatch(addAlert({
                 description: t(
                     "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.description",
-                    { userName: originalAdminUserList.Resources[ 0 ].userName }
+                    { userName: invite.email }
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
                     "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.message"
                 )
             }));
+            setIsSubmitting(false);
             closeWizard();
         } else {
             // If not, prompt to assign the admin role to the user.
+            setIsSubmitting(false);
             setShowAdminRoleAddConfirmationModal(true);
             setSelectedUser(originalAdminUserList.Resources[ 0 ]);
         }
@@ -594,6 +598,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                             "console:manage.features.invite.notifications.sendInvite.success.message"
                         )
                     }));
+                    setIsSubmitting(false);
                     closeWizard();
                     onInvitationSendSuccessful();
                 })
@@ -602,6 +607,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                     // As a temporary solution, a check to see if a response
                     // is available has be used.
                     if (!error.response || error.response.status === 401) {
+                        setIsSubmitting(false);
                         closeWizard();
                         dispatch(addAlert({
                             description: t(
@@ -614,6 +620,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                         }));
                     } else if (error.response.status === 403 &&
                         error?.response?.data?.code === UserManagementConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
+                        setIsSubmitting(false);
                         closeWizard();
                         dispatch(addAlert({
                             description: t(
@@ -629,6 +636,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                         // We need to check if this user is having the Administator role.
                         handleAlredyExistingUser(invite);
                     } else if (error?.response?.data?.description) {
+                        setIsSubmitting(false);
                         closeWizard();
                         dispatch(addAlert({
                             description: t(
@@ -641,6 +649,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                             )
                         }));
                     } else {
+                        setIsSubmitting(false);
                         closeWizard();
                         // Generic error message
                         dispatch(addAlert({
@@ -653,9 +662,6 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                             )
                         }));
                     }
-                })
-                .finally(() => {
-                    setIsSubmitting(false);
                 });
         }
     };
@@ -667,16 +673,20 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
      */
     const handleAlredyExistingUser = (invite: UserInviteInterface): void => {
         if (!invite?.email) {
+            setIsSubmitting(false);
+
             return;
         }
 
-        if (!selectedUser) {
+        if (!selectedUser || selectedUser?.userName !== invite.email) {
             // If the user is not selected. Query the user.
             setSearchQuery(`userName eq ${ invite.email }`);
+            setInvite(invite);
         } else {
             // If the user is already selected, prompt to assign the admin role.
             // Handles cancelling and re-opening the modal.
             setShowAdminRoleAddConfirmationModal(true);
+            setIsSubmitting(false);
         }
     };
 
