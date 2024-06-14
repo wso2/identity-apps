@@ -424,7 +424,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             {
                 showWizard && (
                     <CreateGroupWizardUpdated
-                        data-testid="group-mgt-create-group-wizard"
+                        data-componentid="group-mgt-create-group-wizard"
                         closeWizard={ () => setShowWizard(false) }
                         onCreate={ () => mutateGroupsFetchRequest() }
                         requiredSteps={ [
