@@ -191,7 +191,8 @@ export const branding: BrandingNS = {
                 button: "Try Branding AI"
             }
         },
-        disclaimer: "Branding AI can make errors. Verify the information for accuracy. Do not include any personal data such as usernames, mobile numbers, or any other sensitive information.",
+        disclaimer: "Branding AI can make errors. Verify the information for accuracy. Do not include any personal data such "+
+        "as usernames, mobile numbers, or any other sensitive information.",
         notifications: {
             generateError: {
                 description: "An error occurred while generating the branding.",
