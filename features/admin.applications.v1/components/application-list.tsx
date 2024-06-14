@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -61,6 +61,7 @@ import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
+import useApplicationTemplates from "../hooks/use-application-templates";
 import {
     ApplicationAccessTypes,
     ApplicationInboundTypes,
@@ -68,6 +69,7 @@ import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
 } from "../models";
+import { ApplicationTemplateListInterface } from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
@@ -75,8 +77,8 @@ import { ApplicationTemplateManagementUtils } from "../utils/application-templat
  *
  * Proptypes for the applications list component.
  */
-interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
-    TestableComponentInterface, IdentifiableComponentInterface {
+export interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    LoadableComponentInterface, TestableComponentInterface, IdentifiableComponentInterface {
 
     /**
      * Advanced Search component.
@@ -166,6 +168,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const { organizationType } = useGetCurrentOrganizationType();
+    const {
+        templates: extensionApplicationTemplates,
+        isApplicationTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+    } = useApplicationTemplates();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -348,6 +354,18 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 return template?.id === app?.templateId;
                             })?.name;
                         }
+                    }
+
+                    /**
+                     * This condition block will help identify the applications created from templates
+                     * on the extensions management API side.
+                     */
+                    if (!templateDisplayName) {
+                        templateDisplayName = extensionApplicationTemplates?.find(
+                            (template: ApplicationTemplateListInterface) => {
+                                return template?.id === app?.templateId;
+                            }
+                        )?.name;
                     }
 
                     return (
@@ -608,7 +626,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             <DataTable<ApplicationListItemInterface>
                 className="applications-table"
                 externalSearch={ advancedSearch }
-                isLoading={ isLoading || isApplicationTemplateRequestLoading }
+                isLoading={
+                    isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading
+                }
                 actions={ !isSetStrongerAuth && resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ list?.applications }
@@ -619,7 +641,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ applicationListConfig.enableTableHeaders }
-                transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
+                transparent={
+                    !(isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading)
+                        && (showPlaceholders() !== null)
+                }
                 data-testid={ testId }
             />
             {

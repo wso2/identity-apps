@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
 import { store } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -29,6 +31,7 @@ import startCase  from "lodash-es/startCase";
 import {
     getApplicationTemplateList
 } from "../api";
+import { ApplicationTemplateConstants } from "../constants/application-templates";
 import { TemplateConfigInterface, getApplicationTemplatesConfig } from "../data/application-templates";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -439,5 +442,45 @@ export class ApplicationTemplateManagementUtils {
         });
 
         return templates;
+    }
+
+    /**
+     * Util to resolve application resource path.
+     *
+     * @param path - Resource path.
+     * @returns The absolute path to the resource location.
+     */
+    public static resolveApplicationResourcePath(path: string): string {
+        if (typeof path !== "string") {
+            return path;
+        }
+
+        const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
+        const clientOrigin: string = AppConstants.getClientOrigin();
+
+        if (path?.includes(ApplicationTemplateConstants.CONSOLE_BASE_URL_PLACEHOLDER)) {
+            return path.replace(
+                ApplicationTemplateConstants.CONSOLE_BASE_URL_PLACEHOLDER,
+                `${clientOrigin}${basename}`
+            );
+        }
+
+        if (URLUtils.isHttpsOrHttpUrl(path) && ImageUtils.isValidImageExtension(path)) {
+            return path;
+        }
+
+        if (URLUtils.isDataUrl(path)) {
+            return path;
+        }
+
+        if (AppConstants.getClientOrigin()) {
+
+            if (path?.includes(clientOrigin)) {
+
+                return path;
+            }
+
+            return AppConstants.getClientOrigin() + basename + "/resources/applications/" + path;
+        }
     }
 }

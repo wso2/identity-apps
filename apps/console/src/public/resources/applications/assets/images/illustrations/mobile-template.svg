@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="oidc-mobile-template-illustration" class="icon" width="54" height="65" viewBox="0 0 54 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="39" height="65" rx="4" fill="#ECECEC"/>
+<path d="M4 10C4 8.89543 4.89543 8 6 8H33C34.1046 8 35 8.89543 35 10V19C35 20.1046 34.1046 21 33 21H6C4.89543 21 4 20.1046 4 19V10Z" fill="url(#paint0_linear_927_10485)"/>
+<path d="M4 26C4 24.8954 4.89543 24 6 24H33C34.1046 24 35 24.8954 35 26V35C35 36.1046 34.1046 37 33 37H6C4.89543 37 4 36.1046 4 35V26Z" fill="white"/>
+<path d="M4 42C4 40.8954 4.89543 40 6 40H33C34.1046 40 35 40.8954 35 42V51C35 52.1046 34.1046 53 33 53H6C4.89543 53 4 52.1046 4 51V42Z" fill="white"/>
+<path d="M16 59C16 58.4477 16.4477 58 17 58H22C22.5523 58 23 58.4477 23 59V59C23 59.5523 22.5523 60 22 60H17C16.4477 60 16 59.5523 16 59V59Z" fill="black"/>
+<circle cx="40" cy="20" r="14" fill="#67777E"/>
+<path d="M32 26H48" stroke="white" stroke-linecap="round"/>
+<path d="M32 20H48" stroke="white" stroke-linecap="round"/>
+<path d="M35 12V16" stroke="white" stroke-linecap="round"/>
+<path d="M40 18V22" stroke="white" stroke-linecap="round"/>
+<path d="M45 24V28" stroke="white" stroke-linecap="round"/>
+<path d="M32 14H48" stroke="white" stroke-linecap="round"/>
+<defs>
+<linearGradient id="paint0_linear_927_10485" x1="19.5" y1="8" x2="19.5" y2="21" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EE575C"/>
+<stop offset="1" stop-color="#F67147"/>
+</linearGradient>
+</defs>
+</svg>
+

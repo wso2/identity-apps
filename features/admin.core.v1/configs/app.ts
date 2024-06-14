@@ -337,6 +337,7 @@ export class Config {
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
+            hiddenApplicationTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenApplicationTemplates ?? [],
             hiddenAuthenticators: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenAuthenticators,
             hiddenConnectionTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenConnectionTemplates,
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,

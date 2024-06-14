@@ -103,6 +103,19 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
     return identityRegex.test(claim.mappedLocalClaimURI);
 };
 
+export enum ApplicationTabIDs {
+    GENERAL = "general",
+    PROTOCOL = "protocol",
+    USER_ATTRIBUTES = "user-attributes",
+    SIGN_IN_METHODS = "sign-in-method",
+    PROVISIONING = "provisioning",
+    ADVANCED = "advanced",
+    SHARED_ACCESS = "shared-access",
+    INFO = "info",
+    API_AUTHORIZATION = "api-authorization",
+    APPLICATION_ROLES = "application-roles"
+}
+
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
@@ -421,6 +434,7 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "api-authorization",
+                        "data-tabid": ApplicationTabIDs.API_AUTHORIZATION,
                         index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
@@ -458,6 +472,7 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "application-roles",
+                        "data-tabid": ApplicationTabIDs.APPLICATION_ROLES,
                         index: APPLICATION_ROLES_INDEX + tabExtensions.length,
                         menuItem: I18n.instance.t(
                             "extensions:develop.applications.edit.sections.roles.heading"

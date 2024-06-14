@@ -18,12 +18,14 @@
 
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import useApplicationTemplates from "@wso2is/admin.applications.v1/hooks/use-application-templates";
 import {
     ApplicationAccessTypes,
     ApplicationBasicInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
 } from "@wso2is/admin.applications.v1/models";
+import { ApplicationTemplateListInterface } from "@wso2is/admin.applications.v1/models/application-templates";
 import {
     ApplicationTemplateManagementUtils
 } from "@wso2is/admin.applications.v1/utils/application-template-management-utils";
@@ -38,6 +40,7 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
+import { ApplicationTabIDs } from "@wso2is/admin.extensions.v1";
 import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -80,7 +83,6 @@ import {
     ConnectedAppsInterface,
     ConnectionInterface
 } from "../../../models/connection";
-
 
 /**
  * Proptypes for the advance settings component.
@@ -172,6 +174,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     ] = useState<boolean>(false);
 
     const { t } = useTranslation();
+    const {
+        templates: extensionApplicationTemplates,
+        isApplicationTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+    } = useApplicationTemplates();
 
     useEffect(() => {
         setIsAppsLoading(true);
@@ -295,6 +301,18 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                     return (group.id === templateGroupId || group.templateGroup === templateGroupId);
                                 }).name;
                         }
+                    }
+
+                    /**
+                     * This condition block will help identify the applications created from templates
+                     * on the extensions management API side.
+                     */
+                    if (!templateDisplayName) {
+                        templateDisplayName = extensionApplicationTemplates?.find(
+                            (template: ApplicationTemplateListInterface) => {
+                                return template?.id === app?.templateId;
+                            }
+                        )?.name;
                     }
 
                     return (
@@ -502,7 +520,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         app.id,
                         app.access,
                         `#tab=${
-                            ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                            ApplicationTabIDs.SIGN_IN_METHODS
                         }`,
                         app.name
                     );
@@ -567,7 +585,11 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             ) }
             <DataTable<ConnectedAppInterface>
                 className="connected-applications-table"
-                isLoading={ isLoading || isApplicationTemplateRequestLoading }
+                isLoading={
+                    isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading
+                }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
@@ -580,7 +602,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         app.id,
                         app.access,
                         `#tab=${
-                            ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                            ApplicationTabIDs.SIGN_IN_METHODS
                         }`,
                         app.name
                     );
@@ -589,7 +611,12 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ applicationListConfig.enableTableHeaders }
-                transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
+                transparent={
+                    !(isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading)
+                        && (showPlaceholders() !== null)
+                }
                 data-componentid={ `${ componentId }-data-table` }
             />
         </EmphasizedSegment>

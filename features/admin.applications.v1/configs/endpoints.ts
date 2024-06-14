@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,9 @@ export const getApplicationsResourceEndpoints = (serverHost: string): Applicatio
     const serverHostWithoutOPath: string = serverHost.replace("/o/", "/");
 
     return {
+        applicationTemplate: `${serverHost}/api/server/v1/extensions/applications/{{id}}/template`,
+        applicationTemplateMetadata: `${serverHost}/api/server/v1/extensions/applications/{{id}}/metadata`,
+        applicationTemplates: `${serverHost}/api/server/v1/extensions/applications`,
         applications: `${ serverHost }/api/server/v1/applications`,
         myAccountConfigMgt: `${ serverHostWithoutOPath }/api/identity/config-mgt/v1.0/resource/myaccount`,
         requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`

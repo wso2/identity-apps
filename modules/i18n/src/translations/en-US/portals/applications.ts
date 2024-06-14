@@ -2137,6 +2137,18 @@ export const applications: ApplicationsNS = {
                 },
                 urlDeepLinkError: "The entered URL is not a deep link."
             }
+        },
+        dynamicApplicationCreateWizard: {
+            common: {
+                validations: {
+                    required: "This is a required field."
+                }
+            },
+            domainName: {
+                validations: {
+                    invalid: "Invalid domain name. Please enter a valid domain name."
+                }
+            }
         }
     },
     helpPanel: {
@@ -2600,6 +2612,16 @@ export const applications: ApplicationsNS = {
                 message: "Retrieval successful"
             }
         },
+        fetchTemplateMetadata: {
+            error: {
+                description: "{{description}}",
+                message: "Retrieval error"
+            },
+            genericError: {
+                description: "An error occurred while retrieving application template meta data.",
+                message: "Something went wrong"
+            }
+        },
         fetchTemplate: {
             error: {
                 description: "{{description}}",
@@ -2830,6 +2852,13 @@ export const applications: ApplicationsNS = {
         }
     },
     placeholders: {
+        emptyApplicationTypeList: {
+            subtitles: {
+                0: "There are currently no application types available.",
+                1: "for configuration."
+            },
+            title: "No application types found"
+        },
         emptyAttributesList: {
             action: "Add User Attribute",
             subtitles: "There are no user attributes selected for the application at the moment.",
@@ -2891,6 +2920,21 @@ export const applications: ApplicationsNS = {
         }
     },
     templates: {
+        categories: {
+            default: {
+                displayName: "Application Types",
+                description: "Integrate applications based on technology and platform."
+            },
+            ssoIntegration: {
+                displayName: "SSO Integrations",
+                description: "Configure single sign-on seamlessly across SaaS services such as"
+                    + " Google Workspace, Salesforce, and more."
+            },
+            other: {
+                displayName: "Others",
+                description: "Other types of un-categorized integrations."
+            }
+        },
         emptyPlaceholder: {
             action: null,
             subtitles: "Please add templates to display here.",

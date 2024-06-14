@@ -1114,6 +1114,7 @@
         "gravatarConfig": {
             "fallback": "404"
         },
+        "hiddenApplicationTemplates": [],
         "hiddenAuthenticators": [
             "BasicAuthRequestPathAuthenticator",
             "OAuthRequestPathAuthenticator"

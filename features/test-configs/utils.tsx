@@ -23,6 +23,8 @@ import React, { PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { mockStore } from "./__mocks__/redux/redux-store";
 import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
+import { AppConfigProvider } from "../admin.core.v1/providers/app-config-provider";
+import GlobalVariablesProvider from "../admin.core.v1/providers/global-variables-provider";
 // import { AuthenticateUtils } from "../src/features/authentication/utils/authenticate-utils";
 // import { PreLoader } from "../src/features/core/components/pre-loader/pre-loader";
 
@@ -60,17 +62,26 @@ const render = (
         //     fallback={ <PreLoader /> }
         //     getAuthParams={ AuthenticateUtils.getAuthParams }
         // >
-            <Provider store={ store }>
-                <AccessControlProvider
-                    allowedScopes={ allowedScopes }
-                    features={ featureConfig }
-                    isLegacyRuntimeEnabled={ false }
-                    organizationType="FIRST_LEVEL_ORGANIZATION"
-                >
-                    { children }
-                </AccessControlProvider>
-            </Provider>
-            // </AuthProvider>
+            <GlobalVariablesProvider
+                value={ {
+                    isAdaptiveAuthenticationAvailable: true,
+                    isOrganizationManagementEnabled: true
+                } }
+            >
+                <Provider store={ store }>
+                    <AppConfigProvider>
+                        <AccessControlProvider
+                            allowedScopes={ allowedScopes }
+                            features={ featureConfig }
+                            isLegacyRuntimeEnabled={ false }
+                            organizationType="FIRST_LEVEL_ORGANIZATION"
+                        >
+                            { children }
+                        </AccessControlProvider>
+                    </AppConfigProvider>
+                </Provider>
+            </GlobalVariablesProvider>
+        // </AuthProvider>
         );
     };
 

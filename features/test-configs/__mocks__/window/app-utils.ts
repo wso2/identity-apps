@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -179,6 +179,24 @@ interface CustomWindow extends Window {
                             ],
                             delete: [
                                 "internal_claim_meta_delete"
+                            ]
+                        }
+                    },
+                    branding: {
+                        enabled: true,
+                        disabledFeatures: [],
+                        scopes: {
+                            create: [
+                                "internal_application_mgt_update"
+                            ],
+                            delete: [
+                                "internal_application_mgt_update"
+                            ],
+                            read: [
+                                "internal_application_mgt_view"
+                            ],
+                            update: [
+                                "internal_application_mgt_update"
                             ]
                         }
                     },
@@ -458,6 +476,23 @@ interface CustomWindow extends Window {
                 isCookieConsentBannerEnabled: false,
                 isGroupAndRoleSeparationEnabled: true,
                 isSignatureValidationCertificateAliasEnabled: false,
+                legacyMode: {
+                    apiResourcesV1: false,
+                    apiResourcesV2: true,
+                    applicationListSystemApps: false,
+                    applicationOIDCSubjectIdentifier: true,
+                    applicationRequestPathAuthentication: false,
+                    applicationSystemAppsSettings: false,
+                    backupCodesForSubOrganizations: true,
+                    certificates: false,
+                    consoleFeatureScopeCheck: true,
+                    loginAndRegistrationEmailDomainDiscovery: true,
+                    organizations: true,
+                    roleMapping: false,
+                    rolesV1: false,
+                    saasApplications: false,
+                    secretsManagement: false
+                },
                 isClientSecretHashEnabled: false,
                 isDefaultDialectEditingEnabled: false,
                 isDialectAddingEnabled: true,

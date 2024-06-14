@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,18 @@ import { ClaimConfigurationInterface } from "./application";
  * Interface for the Application Management feature resource endpoints.
  */
 export interface ApplicationsResourceEndpointsInterface {
+    /**
+     * Endpoint to get the application templates list.
+     */
+    applicationTemplates: string;
+    /**
+     * Endpoint to get the application template.
+     */
+    applicationTemplate: string;
+    /**
+     * Endpoint to get the application template metadata.
+     */
+    applicationTemplateMetadata: string;
     applications: string;
     myAccountConfigMgt: string;
     requestPathAuthenticators: string;
