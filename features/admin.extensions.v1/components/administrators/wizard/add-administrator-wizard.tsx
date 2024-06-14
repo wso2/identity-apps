@@ -183,14 +183,20 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         return null;
     }, [ applicationListData ]);
 
-    // Retrieving the administator role.
+    /**
+     * Retrieve the roles list.
+     * Only retrieve roles when there an edge case where the user
+     * is already in the system and the user is not an admin user.
+     */
     const {
         data: rolesList,
         error: rolesListFetchRequestError
     } = useRolesList(
         null,
         null,
-        roleSearchFilter
+        roleSearchFilter,
+        null,
+        !!searchQuery
     );
 
     useEffect(() => {
@@ -203,13 +209,31 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
      * This hook will check if the user is an admin user and prompt to add the admin role to the user.
      */
     useEffect(() => {
-        if (!originalAdminUserList || originalAdminUserList?.Resources?.length <= 0) {
+        if (!originalAdminUserList) {
+            return;
+        }
+
+        // If total results are 0, the user does not exists.
+        // This means there is a pending invitation for the user.
+        if (originalAdminUserList.totalResults <= 0) {
+            dispatch(addAlert({
+                description: t(
+                    "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.description",
+                    { userName: originalAdminUserList.Resources[ 0 ].userName }
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.message"
+                )
+            }));
+            closeWizard();
+
             return;
         }
 
         // Check if the user in the first index is with Administrator role.
+        // If an admin, show an error message.
         if (isAdminUser(originalAdminUserList.Resources[ 0 ])) {
-            // If an admin, show an error message.
             dispatch(addAlert({
                 description: t(
                     "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.description",
@@ -642,12 +666,18 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
      * @param error - Axios error response.
      */
     const handleAlredyExistingUser = (invite: UserInviteInterface): void => {
-        const invitedUsername: string = invite.email;
+        if (!invite?.email) {
+            return;
+        }
 
-        setSearchQuery(`userName eq ${ invitedUsername }`);
-
-        // Handles cancelling and re-opening the modal.
-        selectedUser && adminRoleId && setShowAdminRoleAddConfirmationModal(true);
+        if (!selectedUser) {
+            // If the user is not selected. Query the user.
+            setSearchQuery(`userName eq ${ invite.email }`);
+        } else {
+            // If the user is already selected, prompt to assign the admin role.
+            // Handles cancelling and re-opening the modal.
+            setShowAdminRoleAddConfirmationModal(true);
+        }
     };
 
     /**

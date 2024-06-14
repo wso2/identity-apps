@@ -4069,6 +4069,10 @@ export const extensions: Extensions = {
             },
             notifications: {
                 sendInvite: {
+                    inviteAlreadyExistsError: {
+                        description: "The invite for the user {{userName}} already exists.",
+                        message: "Unable to send invite"
+                    },
                     limitReachError: {
                         description: "Maximum number of allowed collaborator users have been reached.",
                         message: "Error while sending the invitation"

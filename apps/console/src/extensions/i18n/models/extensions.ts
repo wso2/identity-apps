@@ -3392,6 +3392,7 @@ export interface Extensions {
             };
             notifications: {
                 sendInvite: {
+                    inviteAlreadyExistsError: NotificationItem;
                     limitReachError: NotificationItem;
                     userAlreadyExistsError: NotificationItem;
                 };
