@@ -2440,7 +2440,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Row>
                     </>
                 ) }
-                
+
             { /* Access Token */ }
             {
                 !isSystemApplication
