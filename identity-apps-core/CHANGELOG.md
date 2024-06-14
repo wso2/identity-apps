@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.3.7
+
+### Patch Changes
+
+- [#6436](https://github.com/wso2/identity-apps/pull/6436) [`82b1c8fc68f354246fec860e29f033da43554279`](https://github.com/wso2/identity-apps/commit/82b1c8fc68f354246fec860e29f033da43554279) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix XSS vulnerability
+
 ## 2.3.6
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.20.26
+
+### Patch Changes
+
+- [#6369](https://github.com/wso2/identity-apps/pull/6369) [`31d2e8976ff8d02de3409840b979301ae8a2ea27`](https://github.com/wso2/identity-apps/commit/31d2e8976ff8d02de3409840b979301ae8a2ea27) Thanks [@hwupathum](https://github.com/hwupathum)! - Add username recovery for reCaptcha toggle
+
+- Updated dependencies [[`31d2e8976ff8d02de3409840b979301ae8a2ea27`](https://github.com/wso2/identity-apps/commit/31d2e8976ff8d02de3409840b979301ae8a2ea27), [`70604ae98b23ca3d9c061c56c5bad7a6d144c0f4`](https://github.com/wso2/identity-apps/commit/70604ae98b23ca3d9c061c56c5bad7a6d144c0f4), [`305f37225bcb656a16ce616e0a48b3c27c7da3ab`](https://github.com/wso2/identity-apps/commit/305f37225bcb656a16ce616e0a48b3c27c7da3ab)]:
+  - @wso2is/admin.server-configurations.v1@2.20.26
+  - @wso2is/admin.extensions.v1@2.20.26
+  - @wso2is/i18n@2.3.9
+  - @wso2is/admin.core.v1@2.20.26
+  - @wso2is/admin.identity-providers.v1@2.20.26
+  - @wso2is/admin.users.v1@2.20.26
+  - @wso2is/admin.validation.v1@2.20.26
+
 ## 2.20.25
 
 ### Patch Changes

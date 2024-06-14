@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.3.9
+
+### Patch Changes
+
+- [#6450](https://github.com/wso2/identity-apps/pull/6450) [`305f37225bcb656a16ce616e0a48b3c27c7da3ab`](https://github.com/wso2/identity-apps/commit/305f37225bcb656a16ce616e0a48b3c27c7da3ab) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Update the disclaimers of the AI features
+
 ## 2.3.8
 
 ### Patch Changes
