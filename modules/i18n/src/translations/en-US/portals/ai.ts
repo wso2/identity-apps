@@ -51,7 +51,8 @@ export const ai: aiNS = {
             }
         },
         didYouKnow: "Did you know?",
-        disclaimer: "Login Flow AI can make errors. Verify the information for accuracy.",
+        disclaimer: "Login Flow AI can make errors. Verify the information for accuracy. Do not include any "+
+        "personal data such as usernames, mobile numbers, or any other sensitive information.",
         notifications: {
             generateError: {
                 description: "An error occurred while generating the login flow. Please try again.",
