@@ -494,7 +494,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         setDefaultActiveIndex(defaultTabIndex);
 
         if(isEmpty(window.location.hash)){
-
             if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ===
                 ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
                 // When application selection is done through the strong authentication flow.
@@ -516,6 +515,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                 if(protocolTabIndex !== -1) {
                     handleActiveTabIndexChange(protocolTabIndex);
+                }
+
+                return;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_ROLES) === "true") {
+                const rolesTabIndex: number = renderedTabPanes?.findIndex(
+                    (element: {"componentId": string}) =>
+                        element.componentId === ApplicationManagementConstants.ROLES_TAB_URL_FRAG
+                );
+
+                if (rolesTabIndex !== -1) {
+                    handleActiveTabIndexChange(rolesTabIndex);
                 }
 
                 return;
