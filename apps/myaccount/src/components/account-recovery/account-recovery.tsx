@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -72,6 +73,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
     const [ isNotificationRecoverySMSOTPEnabled, setIsNotificationRecoverySMSOTPEnabled ] = useState<boolean>(false);
     const [ isUsernameRecoveryEnabled, setIsUsernameRecoveryEnabled ] = useState<boolean>(false);
     const [ isAccountRecoveryDetailsLoading, setIsAccountRecoveryDetailsLoading ] = useState<boolean>(false);
+    const hasRequiredScopes: boolean = useRequiredScopes( featureConfig?.security?.scopes?.read );
 
     /**
      * The following method gets the preference for account recovery.
@@ -184,11 +186,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
             { !isAccountRecoveryDetailsLoading ? (
                 <List divided={ true } verticalAlign="middle" className="main-content-inner">
                     <List.Item className="inner-list-item">
-                        { hasRequiredScopes(
-                            featureConfig?.security,
-                            featureConfig?.security?.scopes?.read,
-                            allowedScopes
-                        ) &&
+                        { hasRequiredScopes &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS")
@@ -201,11 +199,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             ) : null }
                     </List.Item>
                     <List.Item className="inner-list-item">
-                        { hasRequiredScopes(
-                            featureConfig?.security,
-                            featureConfig?.security?.scopes?.read,
-                            allowedScopes
-                        ) &&
+                        { hasRequiredScopes &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
@@ -218,12 +212,8 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             ) : null }
                     </List.Item>
                     <List.Item className="inner-list-item">
-                        { hasRequiredScopes(
-                            featureConfig?.security,
-                            featureConfig?.security?.scopes?.read,
-                            allowedScopes
-                        ) &&
-                        (isNotificationRecoverySMSOTPEnabled) ? (
+                        { hasRequiredScopes &&
+                        isNotificationRecoverySMSOTPEnabled ? (
                                 <SMSRecovery
                                     onAlertFired={ onAlertFired }
                                     data-testid={ `${testId}-settings-section-sms-recovery` }

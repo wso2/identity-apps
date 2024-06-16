@@ -3610,7 +3610,7 @@ export const extensions: Extensions = {
                                     range:
                                         "Password recovery OTP resend count should be between 1 & 5.",
                                     maxLengthReached:
-                                        "Password recovery OTP resend count should be a number with 1 digits."
+                                        "Password recovery OTP resend count should be a number with 1 digit."
                                 }
                             },
                             maxFailedAttemptCount: {

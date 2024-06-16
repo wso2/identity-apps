@@ -177,24 +177,26 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
     };
 
     /**
-     * This function gets the mobile number from the response passed as the argument
+     * This function gets the mobile number from the profileInfo passed as the argument
      * and assigns it to mobile and editedMobile.
-     * @param response - response as the parameter.
+     *
+     * @param profileInfo - profileInfo as the parameter.
+     * @remarks
      * Temporarily the first mobile type element in the phoneNumbers array is shown.
      * In the future, we need to decide whether or not to allow multiple recovery mobiles.
      */
-    const setMobileNumber = (response: BasicProfileInterface) => {
+    const setMobileNumber = (profileInfo: BasicProfileInterface) => {
         let mobileNumber: string = "";
 
-        if (response.phoneNumbers) {
-            if (typeof response.phoneNumbers[0] === "object") {
-                const mobileValue : MultiValue = response.phoneNumbers.find(
+        if (profileInfo.phoneNumbers) {
+            if (typeof profileInfo.phoneNumbers[0] === "object") {
+                const mobileValue : MultiValue = profileInfo.phoneNumbers.find(
                     (phoneNumber : MultiValue) => phoneNumber.type === "mobile");
 
                 mobileNumber = mobileValue?.value;
                 mobileType = mobileValue?.type;
             } else {
-                mobileNumber = response.phoneNumbers[0] as string;
+                mobileNumber = profileInfo.phoneNumbers[0] as string;
                 mobileType = "array";
             }
         }
@@ -210,7 +212,6 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
 
     /**
      * This is called when the edit icon is clicked.
-     *
      */
     const handleEdit = () : void => {
         dispatch(setActiveForm(CommonConstants.SECURITY + SMS));
@@ -226,6 +227,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
     /**
      * This function masks the mobile number passed as the argument and returns the masked mobile number.
      * The text between the third character of the mobile and the second last character is masked.
+     *
      * @param mobileNumber - mobile number.
      */
     const maskMobile = (mobileNumber: string) : string => mobileNumber.slice(0,3) +
@@ -236,9 +238,9 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
      * elements based on if the edit icon has been clicked
      */
     const showEditView = () : ReactElement => {
-        if (activeForm!==CommonConstants.SECURITY+SMS) {
+        if (activeForm !== CommonConstants.SECURITY+SMS) {
             return (
-                <Grid padded={ true }>
+                <Grid padded>
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">

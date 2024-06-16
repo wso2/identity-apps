@@ -21,9 +21,9 @@ import { ServerConfigurationsConstants } from "./server-configurations-constants
 export class PasswordRecoveryFormConstants {
 
     /**
-	 * Private constructor to avoid object instantiation from outside the class.
-	 *
-	 */
+     * Private constructor to avoid object instantiation from outside the class.
+     *
+     */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 

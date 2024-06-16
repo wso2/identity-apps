@@ -19,7 +19,6 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GovernanceConnectorInterface } from "./governance-connectors";
 
-
 /**
  * Proptypes for the Password Recovery Form error messages.
  */
