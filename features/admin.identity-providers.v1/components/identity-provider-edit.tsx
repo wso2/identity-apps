@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConnectionTabTypes } from "@wso2is/admin.connections.v1";
+import { ConnectionAdvanceInterface, ConnectionTabTypes } from "@wso2is/admin.connections.v1";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -46,7 +46,6 @@ import {
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
 import {
-    IdentityProviderAdvanceInterface,
     IdentityProviderInterface,
     IdentityProviderTemplateInterface
 } from "../models";
@@ -150,7 +149,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
-    const idpAdvanceConfig: IdentityProviderAdvanceInterface = {
+    const idpAdvanceConfig: ConnectionAdvanceInterface = {
         alias: identityProvider.alias,
         certificate: identityProvider.certificate,
         homeRealmIdentifier: identityProvider.homeRealmIdentifier,

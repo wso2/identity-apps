@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionAdvanceInterface } from "@wso2is/admin.connections.v1";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
@@ -23,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateIdentityProviderDetails } from "../../api";
-import { IdentityProviderAdvanceInterface, IdentityProviderInterface } from "../../models";
+import { IdentityProviderInterface } from "../../models";
 import { AdvanceConfigurationsForm } from "../forms";
 import { handleIDPUpdateError } from "../utils";
 
@@ -38,7 +39,7 @@ interface AdvanceSettingsPropsInterface extends TestableComponentInterface {
     /**
      * Current advanced configurations.
      */
-    advancedConfigurations: IdentityProviderAdvanceInterface;
+    advancedConfigurations: ConnectionAdvanceInterface;
     /**
      * Callback to update the idp details.
      */

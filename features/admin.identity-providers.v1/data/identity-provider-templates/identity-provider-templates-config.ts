@@ -43,7 +43,7 @@ import OrganizationEnterpriseIDPTemplate from
     "./templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdentityProviderTemplate
     from "./templates/saml-identity-provider/enterprise-saml-identity-provider.json";
-import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
+import { ConnectionTemplateCategoryInterface, ConnectionTemplateGroupInterface } from "@wso2is/admin.connections.v1";
 
 /**
  * This is used to extend two configurations. Say for example,
@@ -58,8 +58,8 @@ const EnterpriseIdentityProviderTemplateExtended: any = {
 };
 
 export interface IdentityProviderTemplatesConfigInterface {
-    categories: TemplateConfigInterface<IdentityProviderTemplateCategoryInterface>[];
-    groups?: TemplateConfigInterface<IdentityProviderTemplateGroupInterface>[];
+    categories: TemplateConfigInterface<ConnectionTemplateCategoryInterface>[];
+    groups?: TemplateConfigInterface<ConnectionTemplateGroupInterface>[];
     templates: TemplateConfigInterface<any>[];
 }
 

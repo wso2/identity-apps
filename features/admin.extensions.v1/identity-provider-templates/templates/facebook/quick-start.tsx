@@ -17,7 +17,6 @@
  */
 
 import {
-    IdentityProviderInterface,
     IdentityProviderTemplateInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -34,10 +33,6 @@ import ApplicationSelectionModal from "../../../components/shared/application-se
  * Prop types of the component.
  */
 interface FacebookAuthenticatorQuickStartPropsInterface extends TestableComponentInterface {
-    /**
-     * Identity provider object.
-     */
-    identityProvider: IdentityProviderInterface;
     /**
      * Identity provider template object.
      */

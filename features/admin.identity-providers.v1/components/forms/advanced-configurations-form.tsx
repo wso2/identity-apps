@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { ConnectionAdvanceInterface } from "@wso2is/admin.connections.v1";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -25,16 +26,15 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { IdentityProviderAdvanceInterface } from "../../models";
 
 /**
  *  Advance Configurations for the Identity Provider.
  */
-interface AdvanceConfigurationsFormPropsInterface extends IdentityProviderAdvanceInterface, TestableComponentInterface {
+interface AdvanceConfigurationsFormPropsInterface extends ConnectionAdvanceInterface, TestableComponentInterface {
     /**
      * IDP configuration details.
      */
-    config: IdentityProviderAdvanceInterface;
+    config: ConnectionAdvanceInterface;
     /**
      * Callback to update the idp details.
      */

@@ -21,17 +21,7 @@ import { GovernanceConnectorInterface } from "@wso2is/admin.server-configuration
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
 import { TemplateContentInterface } from "../data/identity-provider-templates";
-
-export interface IdentityProviderTemplateGroupInterface {
-    category?: string;
-    description?: string;
-    id?: string;
-    image?: string;
-    name?: string;
-    subTemplates?: IdentityProviderInterface[];
-    subTemplatesSectionTitle?: string;
-    docLink?: string;
-}
+import { CertificateConfigInterface } from "@wso2is/admin.connections.v1";
 
 /**
  * Available Identity Provider list.
@@ -111,18 +101,6 @@ export interface IdentityProviderClaimInterface {
     displayName?: string;
 }
 
-export interface IdentityProviderAdvanceInterface {
-    isFederationHub?: boolean;
-    homeRealmIdentifier?: string;
-    alias?: string;
-    certificate?: CertificateConfigInterface;
-}
-
-export interface CertificateConfigInterface {
-    certificates?: string[];
-    jwksUri?: string; // TODO  Check for upload option.
-}
-
 export interface FederatedAuthenticatorMetaDataInterface {
     authenticatorId: string;
     description: string;
@@ -152,11 +130,6 @@ export interface FederatedAuthenticatorWithMetaInterface {
     data?: FederatedAuthenticatorInterface;
 }
 
-export interface AuthenticatorPropertyInterface {
-    key: string;
-    value: string;
-}
-
 export interface FederatedAuthenticatorListResponseInterface {
     defaultAuthenticatorId?: string;
     authenticators?: FederatedAuthenticatorListItemInterface[];
@@ -177,13 +150,6 @@ export interface IdentityProviderResponseInterface {
     image?: string;
     isEnabled?: string;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
-}
-
-/**
- *  Identity provider template list interface.
- */
-export interface IdentityProviderTemplateListInterface {
-    templates: IdentityProviderTemplateInterface[];
 }
 
 /**
@@ -254,63 +220,6 @@ export interface IdentityProviderTemplateListItemInterface extends IdentityProvi
 }
 
 /**
- * Interface for IDP template categories.
- */
-export interface IdentityProviderTemplateCategoryInterface {
-    /**
-     * Category id.
-     */
-    id: string;
-    /**
-     * Category Display Name.
-     */
-    displayName: string;
-    /**
-     * Category Description.
-     */
-    description: string;
-    /**
-     * Templates belonging to the category.
-     */
-    templates?: IdentityProviderTemplateInterface[];
-    /**
-     * View configurations.
-     */
-    viewConfigs?: IdentityProviderTemplateCategoryViewConfigInterface;
-}
-
-/**
- * Interface for the IDP templates category view config.
- */
-export interface IdentityProviderTemplateCategoryViewConfigInterface {
-    /**
-     * Config for the UI tags displayed on templates.
-     */
-    tags: {
-        /**
-         * Element to render the tag as.
-         */
-        as: "icon" | "label" | "default";
-        /**
-         * Title for the section.
-         */
-        sectionTitle: string;
-        /**
-         * Show/Hide the tag icon.
-         */
-        showTagIcon: boolean;
-        /**
-         * Show/Hide the tags.
-         */
-        showTags: boolean;
-        /**
-         * Where to find the tags in the templates object.
-         */
-        tagsKey: string;
-    };
-}
-
-/**
  * Enum for IDP template loading strategies.
  *
  * @readonly
@@ -327,15 +236,6 @@ export enum IdentityProviderTemplateLoadingStrategies {
 }
 
 /**
- * Enum for the supported quick start template types.
- *
- * @readonly
- */
-export enum SupportedQuickStartTemplateTypes {
-    GOOGLE = "Google"
-}
-
-/**
  * Enum for the supported authenticator types.
  *
  * @readonly
@@ -349,24 +249,6 @@ export enum SupportedAuthenticators {
     MICROSOFT= "MicrosoftAuthenticator",
     OIDC = "OpenIDConnectAuthenticator",
     SAML = "SAMLSSOAuthenticator"
-}
-
-/**
- * Enum for the supported provisioning connector types.
- *
- * @readonly
- */
-export enum SupportedProvisioningConnectors {
-    NONE = "none",
-    GOOGLE = "google"
-}
-
-/**
- *  Provisioning list response interface.
- */
-export interface ProvisioningResponseInterface {
-    jit?: JITProvisioningResponseInterface;
-    outboundConnectors?: OutboundProvisioningConnectorsListResponseInterface;
 }
 
 export interface ProvisioningInterface {
