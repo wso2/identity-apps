@@ -109,7 +109,7 @@ export const applicationConfig: ApplicationConfig = {
         showFapiFeatureStatusChip: false,
         showMtlsAliases: false,
         showMyAccount: true,
-        showMyAccountStatus: false,
+        showMyAccountStatus: true,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
