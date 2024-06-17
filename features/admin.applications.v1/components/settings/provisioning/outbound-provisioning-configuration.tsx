@@ -43,7 +43,6 @@ import {
     ProvisioningConfigurationInterface
 } from "../../../models";
 import { OutboundProvisioningIdpCreateWizard, OutboundProvisioningWizardIdpForm } from "../../wizard";
-import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
 
 /**
  *  Provisioning Configurations for the Application.
@@ -115,7 +114,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
             return;
         }
 
-        getConnections()
+        getIdentityProviderList()
             .then((response: IdentityProviderListResponseInterface) => {
                 setIdpList(response.identityProviders);
             });
