@@ -23,6 +23,7 @@ import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { updateIdentityProviderDetails } from "../../api";
 import { IdentityProviderInterface } from "../../models";
 import { AdvanceConfigurationsForm } from "../forms";
@@ -61,8 +62,8 @@ interface AdvanceSettingsPropsInterface extends TestableComponentInterface {
 /**
  *  Advance settings component.
  *
- * @param {AdvanceSettingsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns - AdvanceSettings component.
  */
 export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> = (
     props: AdvanceSettingsPropsInterface
@@ -78,7 +79,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
@@ -103,7 +104,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
                 }));
                 onUpdate(editingIDP.id);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 handleIDPUpdateError(error);
             })
             .finally(() => {

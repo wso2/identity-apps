@@ -17,11 +17,11 @@
  */
 
 import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models";
+import { CertificateConfigInterface } from "@wso2is/admin.connections.v1";
 import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
 import { TemplateContentInterface } from "../data/identity-provider-templates";
-import { CertificateConfigInterface } from "@wso2is/admin.connections.v1";
 
 /**
  * Available Identity Provider list.
@@ -273,11 +273,6 @@ export enum SupportedJITProvisioningSchemes {
 export interface OutboundProvisioningConnectorsInterface {
     defaultConnectorId?: string;
     connectors?: OutboundProvisioningConnectorInterface[];
-}
-
-export interface OutboundProvisioningConnectorsListResponseInterface {
-    defaultConnectorId?: string;
-    connectors?: OutboundProvisioningConnectorListItemInterface[];
 }
 
 export interface OutboundProvisioningConnectorListItemInterface {

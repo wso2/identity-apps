@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionTemplateCategoryInterface, ConnectionTemplateGroupInterface } from "@wso2is/admin.connections.v1";
 import { AppConstants, store } from "@wso2is/admin.core.v1";
 import { ExtensionsManager, identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import {
@@ -43,7 +44,6 @@ import OrganizationEnterpriseIDPTemplate from
     "./templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdentityProviderTemplate
     from "./templates/saml-identity-provider/enterprise-saml-identity-provider.json";
-import { ConnectionTemplateCategoryInterface, ConnectionTemplateGroupInterface } from "@wso2is/admin.connections.v1";
 
 /**
  * This is used to extend two configurations. Say for example,

@@ -400,36 +400,6 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
 /**
  * Get federated authenticator details.
  *
- * @param id - ID of the Federated Authenticator.
- * @returns A promise containing the response.
- */
-export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.identityProviders + "/meta/federated-authenticators/" + id
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get federated authenticator meta details for: " + id));
-            }
-
-            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
- * Get federated authenticator details.
- *
  * @returns A promise containing the response.
  */
 export const getFederatedAuthenticatorsList = (): Promise<any> => {

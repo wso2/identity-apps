@@ -24,6 +24,10 @@ import {
     ApplicationTemplateInterface
 } from "@wso2is/admin.applications.v1/models";
 import {
+    ConnectionTemplateCategoryInterface,
+    ConnectionTemplateGroupInterface
+} from "@wso2is/admin.connections.v1/models/connection";
+import {
     IdentityProviderTemplateListItemInterface
 } from "@wso2is/admin.identity-providers.v1/models";
 import isObject from "lodash-es/isObject";
@@ -34,7 +38,6 @@ import {
     ExtensionsConfigInterface,
     IdentityProviderTemplateExtensionsConfigInterface
 } from "./models";
-import { ConnectionTemplateCategoryInterface, ConnectionTemplateGroupInterface } from "@wso2is/admin.connections.v1/models/connection";
 
 /**
  * Class to manage extensions.
