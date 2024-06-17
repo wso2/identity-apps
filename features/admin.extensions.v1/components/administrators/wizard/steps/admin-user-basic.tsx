@@ -410,7 +410,10 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             submitState={ triggerSubmit }
         >
             {
-                isUserRoleOptionsRequestLoading ? (
+                (isUserRoleOptionsRequestLoading ||
+                    !userRoleOptions ||
+                    userRoleOptions?.length <= 0
+                ) ? (
                     <ContentLoader/>
                 ) : (
                     <Grid>
