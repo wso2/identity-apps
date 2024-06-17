@@ -1635,7 +1635,7 @@ export const myAccount: MyAccountNS = {
             "heading": "Passwort erstellen"
         },
         "federatedAssociations": {
-            "description": "Zeigen Sie Ihre Konten von anderen Identitätsanbietern an, die mit diesem Konto verknüpft sind",
+            "description": "Sehen Sie sich Ihre Konten von anderen Verbindungen an, die mit diesem Konto verknüpft sind",
             "heading": "Verknüpfte soziale Konten"
         },
         "linkedAccounts": {

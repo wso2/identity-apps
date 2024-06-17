@@ -1634,7 +1634,7 @@ export const myAccount: MyAccountNS = {
             "heading": "创建密码"
         },
         "federatedAssociations": {
-            "description": "查看与此帐户相关的其他身份提供商的帐户",
+            "description": "通过与此帐户关联的其他连接查看您的帐户",
             "heading": "链接的社会帐户"
         },
         "linkedAccounts": {

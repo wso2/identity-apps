@@ -1634,7 +1634,7 @@ export const myAccount: MyAccountNS = {
             "heading": "パスワードを作成します"
         },
         "federatedAssociations": {
-            "description": "このアカウントにリンクされている他のIDプロバイダーからアカウントを表示します",
+            "description": "このアカウントにリンクされている他の接続からアカウントを表示する",
             "heading": "リンクされたソーシャルアカウント"
         },
         "linkedAccounts": {

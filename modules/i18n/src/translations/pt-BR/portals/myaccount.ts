@@ -1639,7 +1639,7 @@ export const myAccount: MyAccountNS = {
             heading: "Criar Senha"
         },
         federatedAssociations: {
-            description: "Veja suas contas de outros provedores de identidade que estão vinculadas a esta conta",
+            description: "Visualize suas contas de outras conexões vinculadas a esta conta",
             heading: "Contas de Login Social Vinculadas"
         },
         linkedAccounts: {

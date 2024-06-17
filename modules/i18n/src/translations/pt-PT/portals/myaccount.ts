@@ -1759,7 +1759,7 @@ export const myAccount: MyAccountNS = {
             heading: "Criar senha"
         },
         federatedAssociations: {
-            description: "Veja suas contas de outros provedores de identidade que estão vinculados a esta conta",
+            description: "Visualize suas contas de outras conexões vinculadas a esta conta",
             heading: "Logins Externos"
         },
         linkedAccounts: {

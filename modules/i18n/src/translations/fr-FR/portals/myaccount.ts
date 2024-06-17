@@ -1817,8 +1817,7 @@ export const myAccount: MyAccountNS = {
             heading: "Créer un mot de passe"
         },
         federatedAssociations: {
-            description: "Visualisez les comptes enregistrés auprès de services d'authentifications tiers liés à " +
-                "votre compte",
+            description: "Afficher vos comptes à partir d'autres connexions liées à ce compte",
             heading: "Services d'authentification tiers"
         },
         linkedAccounts: {

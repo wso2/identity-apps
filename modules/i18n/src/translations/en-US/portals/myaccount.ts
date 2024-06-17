@@ -1773,7 +1773,7 @@ export const myAccount: MyAccountNS = {
             heading: "Create Password"
         },
         federatedAssociations: {
-            description: "View your accounts from other identity providers that are linked with this account",
+            description: "View your accounts from other connections that are linked with this account",
             heading: "Linked Social Accounts"
         },
         linkedAccounts: {
