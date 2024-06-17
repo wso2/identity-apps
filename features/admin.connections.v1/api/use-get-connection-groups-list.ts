@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { IdentityProviderGroupInterface } from "../models/identity-provider";
+import { ConnectionGroupInterface } from "../models/connection";
 
 /**
  * Hook to get the list of groups associated with an Identity Provider.
@@ -31,7 +31,7 @@ import { IdentityProviderGroupInterface } from "../models/identity-provider";
  * @param idpID - Identity Provider ID.
  * @param shouldFetch - Whether to fetch the data or not.
  */
-export const useGetIdentityProviderGroupList = <Data = IdentityProviderGroupInterface[], Error = RequestErrorInterface>(
+export const useGetConnectionGroupList = <Data = ConnectionGroupInterface[], Error = RequestErrorInterface>(
     idpID: string,
     shouldFetch?: boolean
 ): RequestResultInterface<Data, Error> => {
