@@ -27,7 +27,6 @@ export class PasswordRecoveryFormConstants {
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
-
     public static readonly allowedConnectorFields: string[] = [
         ServerConfigurationsConstants.NOTIFY_SUCCESS,
         ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME,

@@ -73,7 +73,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
     const [ isNotificationRecoverySMSOTPEnabled, setIsNotificationRecoverySMSOTPEnabled ] = useState<boolean>(false);
     const [ isUsernameRecoveryEnabled, setIsUsernameRecoveryEnabled ] = useState<boolean>(false);
     const [ isAccountRecoveryDetailsLoading, setIsAccountRecoveryDetailsLoading ] = useState<boolean>(false);
-    const hasRequiredScopes: boolean = useRequiredScopes( featureConfig?.security?.scopes?.read );
+    const hasAccountSecurityConfigReadPermissions: boolean = useRequiredScopes( featureConfig?.security?.scopes?.read );
 
     /**
      * The following method gets the preference for account recovery.
@@ -186,7 +186,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
             { !isAccountRecoveryDetailsLoading ? (
                 <List divided={ true } verticalAlign="middle" className="main-content-inner">
                     <List.Item className="inner-list-item">
-                        { hasRequiredScopes &&
+                        { hasAccountSecurityConfigReadPermissions &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS")
@@ -199,7 +199,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             ) : null }
                     </List.Item>
                     <List.Item className="inner-list-item">
-                        { hasRequiredScopes &&
+                        { hasAccountSecurityConfigReadPermissions &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
@@ -212,7 +212,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             ) : null }
                     </List.Item>
                     <List.Item className="inner-list-item">
-                        { hasRequiredScopes &&
+                        { hasAccountSecurityConfigReadPermissions &&
                         isNotificationRecoverySMSOTPEnabled ? (
                                 <SMSRecovery
                                     onAlertFired={ onAlertFired }

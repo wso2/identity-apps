@@ -22,7 +22,8 @@ import {
     PasswordRecoveryFormConstants,
     PasswordRecoveryFormErrorValidationsInterface,
     PasswordRecoveryFormUpdatableConfigsInterface,
-    PasswordRecoveryFormValuesInterface } from "@wso2is/admin.server-configurations.v1";
+    PasswordRecoveryFormValuesInterface
+} from "@wso2is/admin.server-configurations.v1";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Heading, Hint } from "@wso2is/react-components";
@@ -60,6 +61,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     } = props;
 
     const { t } = useTranslation();
+
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<PasswordRecoveryFormValuesInterface>(undefined);
     const [ isEmailRecoveryEnabled, setIsEmailRecoveryEnabled ] = useState<boolean>(false);
@@ -67,6 +69,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
+
     const showSmsOtpPwdRecoveryFeatureStatusChip: boolean =
         useSelector((state: AppState) => state?.config?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip);
 
@@ -81,7 +84,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
         let resolvedInitialValues: PasswordRecoveryFormValuesInterface = null;
 
         initialValues.properties.map((property: ConnectorPropertyInterface) => {
-            if (PasswordRecoveryFormConstants.allowedConnectorFields.includes(property.name)) {
+            if (PasswordRecoveryFormConstants.allowedConnectorFields.includes(property?.name)) {
                 switch (property.name) {
                     case ServerConfigurationsConstants.NOTIFY_SUCCESS:
                         resolvedInitialValues = {

@@ -91,6 +91,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
 
     const [ mobile, setMobile ] = useState<string>(undefined);
     const [ editedMobile, setEditedMobile ] = useState<string>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     let mobileType: string;
 
@@ -101,6 +102,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
     }, []);
 
     const handleUpdate = (mobile: string) => {
+        setIsSubmitting(true);
         const data: {
             Operations: {
                 op: string;
@@ -174,6 +176,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                     )
                 });
             });
+        setIsSubmitting(false);
     };
 
     /**
@@ -374,6 +377,8 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                                                 <PrimaryButton
                                                                     className={ "mr-3" }
                                                                     size="small"
+                                                                    disabled={ isSubmitting }
+                                                                    loading={ isSubmitting }
                                                                     data-componentid={
                                                                         `${componentId}--edit-section-form" +
                                                                         "-submit-button`
