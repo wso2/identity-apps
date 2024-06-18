@@ -16,17 +16,14 @@
  * under the License.
  */
 
-import { DocPanelUICardInterface, store } from "@wso2is/admin.core.v1";
+import { DocPanelUICardInterface } from "@wso2is/admin.core.v1";
 import { Config } from "@wso2is/admin.core.v1/configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
-import { I18n } from "@wso2is/i18n";
 import axios, { AxiosError } from "axios";
 import camelCase from "lodash-es/camelCase";
 import isEmpty from "lodash-es/isEmpty";
-import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
+import { getIdentityProviderList, getLocalAuthenticators } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
@@ -41,7 +38,6 @@ import {
     ProvisioningInterface,
     StrictIdentityProviderInterface
 } from "../models";
-import { setAvailableAuthenticatorsMeta } from "../store/actions";
 
 /**
  * Utility class for identity provider operations.
@@ -56,51 +52,7 @@ export class IdentityProviderManagementUtils {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
-    /**
-     * Gets the list of available authenticator list and sets them in the redux store.
-     */
-    public static getAuthenticators(): Promise<void> {
-        return getFederatedAuthenticatorsList()
-            .then((response: FederatedAuthenticatorListItemInterface[]): void => {
-                store.dispatch(
-                    setAvailableAuthenticatorsMeta(response)
-                );
-            })
-            .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    store.dispatch(
-                        addAlert({
-                            description: I18n.instance.t(
-                                "authenticationProvider:notifications." +
-                                    "getFederatedAuthenticatorsList.error.description",
-                                { description: error.response.data.description }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: I18n.instance.t(
-                                "authenticationProvider:notifications." +
-                                    "getFederatedAuthenticatorsList.error.message"
-                            )
-                        })
-                    );
 
-                    return;
-                }
-
-                store.dispatch(
-                    addAlert({
-                        description: I18n.instance.t(
-                            "authenticationProvider:notifications." +
-                                "getFederatedAuthenticatorsList.genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: I18n.instance.t(
-                            "authenticationProvider:notifications." +
-                                "getFederatedAuthenticatorsList.genericError.message"
-                        )
-                    })
-                );
-            });
-    }
 
     /**
      * Modifies the federated and local authenticators to convert them to a more
