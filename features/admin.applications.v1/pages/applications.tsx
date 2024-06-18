@@ -631,7 +631,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     <>
                         <Show when={ featureConfig?.applications?.scopes?.create }>
                             {
-                                (featureConfig?.applicationsSettings?.enabled) &&
+                                !applicationDisabledFeatures?.includes(
+                                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
+                                ) &&
                                 (<Button
                                     data-componentid={ "applications-settings-button" }
                                     icon="setting"
@@ -658,7 +660,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 ) : (
                     <Show when={ featureConfig?.applications?.scopes?.create }>
                         {
-                            (featureConfig?.applicationsSettings?.enabled) &&
+                            !applicationDisabledFeatures?.includes(
+                                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
+                            ) &&
                             (<Button
                                 data-componentid={ "applications-settings-button" }
                                 icon="setting"

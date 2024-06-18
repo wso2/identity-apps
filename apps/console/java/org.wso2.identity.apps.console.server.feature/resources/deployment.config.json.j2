@@ -521,36 +521,6 @@
                 }
             },
             {% endif %}
-            {% if console.applications_settings is defined %}
-            "applicationsSettings": {
-                "disabledFeatures": [
-                    {% if console.applications_settings.disabled_features is defined %}
-                    {% for feature in console.applications_settings.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "enabled": {% if console.applications_settings.enabled is defined %} {{ console.applications_settings.enabled }},
-                {% else %} true,
-                {% endif %}
-                "scopes": {
-                    {% if console.applications_settings.scopes is defined %}
-                    {% for operation, scopes in console.applications_settings.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            {% endif %}
             {% if console.approvals is defined %}
             "approvals": {
                 "disabledFeatures": [
