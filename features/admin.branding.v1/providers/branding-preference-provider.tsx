@@ -21,7 +21,11 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
-import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceInterface, BrandingSubFeatures, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
+import {
+    BrandingPreferenceAPIResponseInterface,
+    BrandingSubFeatures,
+    PreviewScreenType
+} from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -53,7 +57,6 @@ import {
 } from "../models/custom-text-preference";
 import BrandingPreferenceMigrationClient from "../utils/branding-preference-migration-client";
 import processCustomTextTemplateLiterals from "../utils/process-custom-text-template-literals";
-import { BrandingPreferenceUtils } from "../utils/branding-preference-utils";
 
 /**
  * Props interface for the Branding preference provider.
@@ -107,7 +110,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
     const {
         data: originalBrandingPreference,
-        error: brandingPreferenceFetchRequestError,
+        error: brandingPreferenceFetchRequestError
     } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const {
