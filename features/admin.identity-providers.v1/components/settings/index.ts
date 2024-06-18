@@ -16,6 +16,4 @@
  * under the License.
  */
 
-export * from "./idp-certificates";
 export * from "./attribute-management";
-export * from "./connected-apps";
