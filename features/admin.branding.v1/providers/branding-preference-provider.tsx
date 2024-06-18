@@ -21,7 +21,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
-import { BrandingSubFeatures, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
+import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceInterface, BrandingSubFeatures, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -53,6 +53,7 @@ import {
 } from "../models/custom-text-preference";
 import BrandingPreferenceMigrationClient from "../utils/branding-preference-migration-client";
 import processCustomTextTemplateLiterals from "../utils/process-custom-text-template-literals";
+import { BrandingPreferenceUtils } from "../utils/branding-preference-utils";
 
 /**
  * Props interface for the Branding preference provider.
@@ -88,6 +89,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state?.organization?.organization
     );
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ selectedScreen, setSelectedPreviewScreen ] = useState<PreviewScreenType>(PreviewScreenType.COMMON);
     const [ selectedLocale, setSelectedCustomTextLocale ] = useState<string>(
@@ -100,12 +102,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const [ activeCustomTextConfigurationMode, setActiveCustomTextConfigurationMode ] = useState<
         CustomTextConfigurationModes
     >(CustomTextConfigurationModes.TEXT_FIELDS);
-
     const [ isCustomTextPreferenceConfigured, setIsCustomTextPreferenceConfigured ] = useState<boolean>(true);
-
+    const [ brandingPreference, setBrandingPreference ] = useState<BrandingPreferenceAPIResponseInterface>(null);
 
     const {
-        data: brandingPreference
+        data: originalBrandingPreference,
+        error: brandingPreferenceFetchRequestError,
     } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const {
@@ -163,6 +165,17 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     }, [ customTextFallbacks, customText ]);
 
     /**
+     * Get the tenant name based on the organization type.
+     */
+    const tenantName: string = useMemo(() => {
+        if (orgType === OrganizationType.SUBORGANIZATION) {
+            return currentOrganization?.name;
+        }
+
+        return tenantDomain;
+    }, [ tenantDomain, currentOrganization ]);
+
+    /**
      * Check if the custom text preference fetch request has failed.
      */
     useEffect(() => {
@@ -189,6 +202,52 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
             })
         );
     }, [ customTextPreferenceFetchRequestError ]);
+
+    /**
+     * Check if the branding preference fetch request has failed.
+     */
+    useEffect(() => {
+        if (!brandingPreferenceFetchRequestError) {
+            return;
+        }
+
+        // Check if Branding is not configured for the tenant. If so, silent the errors.
+        if (brandingPreferenceFetchRequestError.response?.data?.code
+            === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
+            return;
+        }
+
+        dispatch(
+            addAlert<AlertInterface>({
+                description: t("extensions:develop.branding.notifications.fetch.genericError.description",
+                    { tenant: tenantName }),
+                level: AlertLevels.ERROR,
+                message: t("extensions:develop.branding.notifications.fetch.genericError.message")
+            })
+        );
+    }, [ brandingPreferenceFetchRequestError ]);
+
+    /**
+     * Moderates the Branding Peference response.
+     */
+    useEffect(() => {
+        if (!originalBrandingPreference) {
+            return;
+        }
+
+        if (originalBrandingPreference instanceof IdentityAppsApiException) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("extensions:develop.branding.notifications.fetch.invalidStatus.description",
+                    { tenant: tenantName }),
+                level: AlertLevels.ERROR,
+                message: t("extensions:develop.branding.notifications.fetch.invalidStatus.message")
+            }));
+
+            return;
+        }
+
+        setBrandingPreference(originalBrandingPreference);
+    }, [ originalBrandingPreference ]);
 
     /**
      * Moderates the Custom Text Preference response.
