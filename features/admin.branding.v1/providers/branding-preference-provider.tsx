@@ -217,6 +217,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         // Check if Branding is not configured for the tenant. If so, silent the errors.
         if (brandingPreferenceFetchRequestError.response?.data?.code
             === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
+            setBrandingPreference(null);
+
             return;
         }
 
