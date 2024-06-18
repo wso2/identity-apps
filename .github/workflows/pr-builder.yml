@@ -21,7 +21,7 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
-    if: ${{ false }}
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
