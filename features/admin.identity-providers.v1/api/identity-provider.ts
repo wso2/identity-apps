@@ -27,7 +27,6 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
-    AuthenticatorInterface,
     ConnectedAppsInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
@@ -35,7 +34,6 @@ import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
-    IdentityProviderRolesInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateListResponseInterface,
     LocalAuthenticatorInterface,
@@ -374,48 +372,6 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 IdentityProviderManagementConstants.LOCAL_AUTHENTICATORS_FETCH_ERROR,
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config);
-        });
-};
-
-/**
- * Get Local Authenticator details from `t/<TENANT>>/api/server/v1/configs/authenticators/<AUTHENTICATOR_ID>`
- *
- * @param id - Authenticator ID.
- * @returns Response as a promise.
- * @throws IdentityAppsApiException
- */
-export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterface> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.localAuthenticators }/${ id }`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse<AuthenticatorInterface>) => {
-            if (response.status !== 200) {
-                throw new IdentityAppsApiException(
-                    IdentityProviderManagementConstants.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
-                    null,
-                    response.status,
-                    response.request,
-                    response,
-                    response.config);
-            }
-
-            return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                IdentityProviderManagementConstants.LOCAL_AUTHENTICATOR_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,
