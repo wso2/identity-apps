@@ -190,19 +190,14 @@ jobs:
         run:  pnpm build:modules
 
       - name: 🃏 Run Jest & Collect Coverage
-        id: run-jest-test-and-coverage
-        # TODO: Update the command to "test:unit:coverage" once the coverage command related issues
-        # are sorted out
+        id: run-jest-tests
         run: pnpm test:unit
 
-      - name: 🤖 Aggregate Test Coverage
-        # TODO: Enable this step once the coverage command related issues are fixed
-        if: false
-        id: aggregate-coverage-reports
-        run: |
-          pnpm test:unit:coverage:aggregate
-          pnpm nyc:text-summary-report
-          pnpm nyc:text-report
+      - name: Upload coverage reports to Codecov
+        id: collect-and-upload-coverage
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   build:
     name: 🚧 Build
