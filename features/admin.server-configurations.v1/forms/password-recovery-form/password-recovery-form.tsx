@@ -248,7 +248,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 "passwordRecovery.form.fields.smsOtpLength.validations.maxLengthReached");
         } else if (!values.maxResendCount) {
             // Check for required error
-            errors.smsOtpLength = t("extensions:manage.serverConfigurations.accountRecovery." +
+            errors.maxResendCount = t("extensions:manage.serverConfigurations.accountRecovery." +
             "passwordRecovery.form.fields.maxResendCount.validations.empty");
         } else if (parseInt(values.maxResendCount, 10) < GovernanceConnectorConstants
             .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_RESEND_COUNT_MIN_VALUE ||
@@ -408,9 +408,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     data-componentid={ `${ testId }-link-expiry-time` }
                 >
                     <input/>
-                    <Label
-                        content={ "mins" }
-                    />
+                    <label className="ui label">mins</label>
                 </Field.Input>
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -477,9 +475,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     data-componentid={ `${ testId }-sms-otp-expiry-time` }
                 >
                     <input/>
-                    <Label
-                        content={ "mins" }
-                    />
+                    <label className="ui label">mins</label>
                 </Field.Input>
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -585,9 +581,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     data-componentid={ `${ testId }-otp-length` }
                 >
                     <input/>
-                    <Label
-                        content={ "characters" }
-                    />
+                    <label className="ui label">characters</label>
                 </Field.Input>
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -637,9 +631,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     data-componentid={ `${ testId }-max-fail-attempt-count` }
                 >
                     <input/>
-                    <Label
-                        content={ "attempts" }
-                    />
+                    <label className="ui label">attempts</label>
                 </Field.Input>
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -678,9 +670,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     data-componentid={ `${ testId }-otp-resend-count` }
                 >
                     <input/>
-                    <Label
-                        content={ "attempts" }
-                    />
+                    <label className="ui label">attempts</label>
                 </Field.Input>
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
