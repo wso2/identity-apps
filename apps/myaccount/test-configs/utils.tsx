@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,7 +46,7 @@ const render = (
     } = {}
 ): RenderResult => {
 
-    const Wrapper = (props: PropsWithChildren<Record<string, unknown>>): ReactElement => {
+    const Wrapper = (props: PropsWithChildren): ReactElement => {
 
         const { children } = props;
 
@@ -54,7 +54,9 @@ const render = (
             <Provider store={ store }>
                 <AccessControlProvider
                     allowedScopes={ allowedScopes }
-                    featureConfig={ featureConfig }
+                    features={ featureConfig }
+                    isLegacyRuntimeEnabled={ false }
+                    organizationType="FIRST_LEVEL_ORGANIZATION"
                 >
                     { children }
                 </AccessControlProvider>

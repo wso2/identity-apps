@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+/* eslint-disable sort-keys */
+
 /**
  *
  * @remarks If you had to mock a certain global object,
@@ -28,3 +30,23 @@ import { TextDecoder, TextEncoder } from "util";
 // Hence adding the node.js one. See https://github.com/jsdom/jsdom/issues/2524.
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
+
+global.crypto = {
+    getRandomValues: jest.fn(),
+    subtle: {
+        // Mock subtle methods you need
+        encrypt: jest.fn(),
+        decrypt: jest.fn(),
+        digest: jest.fn(),
+        deriveBits: jest.fn(),
+        deriveKey: jest.fn(),
+        exportKey: jest.fn(),
+        generateKey: jest.fn(),
+        importKey: jest.fn(),
+        sign: jest.fn(),
+        unwrapKey: jest.fn(),
+        verify: jest.fn(),
+        wrapKey: jest.fn()
+    },
+    randomUUID: jest.fn(() => "mocked-uuid")
+};
