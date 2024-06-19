@@ -115,7 +115,8 @@ const initialProps : PasswordRecoveryConfigurationFormPropsInterface = {
 
 describe("PasswordRecoveryForm", () => {
 
-    it("renders the PasswordRecoveryForm component.", async () => {
+    it("Renders the PasswordRecoveryForm component.", async () => {
+
         render(<PasswordRecoveryConfigurationForm
             { ...initialProps }
             data-componentid="password-recovery-edit-form" />);
@@ -123,51 +124,65 @@ describe("PasswordRecoveryForm", () => {
         expect(screen.getByTestId(`${data_component_id}-email-link-based-recovery`)).toBeInTheDocument();
     });
 
-    it("recovery option selection checkboxes are checkable.", async () => {
+    it("Recovery option selection checkboxes are checkable.", async () => {
+
         render(<PasswordRecoveryConfigurationForm { ...initialProps } />);
+        const emailCheckbox: HTMLInputElement | null =
+            screen.getByTestId(`${data_component_id}-email-link-based-recovery`).querySelector("input");
+        const smsCheckbox: HTMLInputElement | null =
+            screen.getByTestId(`${data_component_id}-sms-based-recovery`).querySelector("input");
 
-        const email_checkbox: HTMLInputElement = screen.getByRole("checkbox", { name: "enableEmailBasedRecovery" });
-        const sms_checkbox: HTMLInputElement = screen.getByRole("checkbox", { name: "enableSMSBasedRecovery" });
+        expect(emailCheckbox).not.toBeNull();
+        expect(smsCheckbox).not.toBeNull();
 
-        fireEvent.click(email_checkbox);
-        fireEvent.click(sms_checkbox);
+        emailCheckbox && !(emailCheckbox.checked) && fireEvent.click(emailCheckbox);
+        smsCheckbox && !(smsCheckbox.checked) && fireEvent.click(smsCheckbox);
 
-        expect(email_checkbox).toBeChecked();
-        expect(sms_checkbox).toBeChecked();
+        expect(emailCheckbox).toBeChecked();
+        expect(smsCheckbox).toBeChecked();
     });
 
-    it("otp code configuration checkboxes don't allow all checkboxes to be unchecked.", async () => {
-        render(<PasswordRecoveryConfigurationForm { ...initialProps } />);
+    it("OTP code configuration checkboxes don't allow all checkboxes to be unchecked.", async () => {
 
-        const uppercase_checkbox: HTMLInputElement = screen.getByRole("checkbox",
-            { name: "passwordRecoveryOtpUseUppercase" });
-        const lowercase_checkbox: HTMLInputElement = screen.getByRole("checkbox",
-            { name: "passwordRecoveryOtpUseLowercase" });
-        const numeric_checkbox: HTMLInputElement = screen.getByRole("checkbox",
-            { name: "passwordRecoveryOtpUseNumeric" });
+        render(<PasswordRecoveryConfigurationForm
+            { ...initialProps }
+            data-componentid="password-recovery-edit-form" />);
 
-        (!uppercase_checkbox.checked) && fireEvent.click(uppercase_checkbox);
-        (!lowercase_checkbox.checked) && fireEvent.click(lowercase_checkbox);
-        (numeric_checkbox.checked) && fireEvent.click(numeric_checkbox);
-        expect(uppercase_checkbox).toBeChecked();
-        expect(lowercase_checkbox).toBeChecked();
-        expect(numeric_checkbox).not.toBeChecked();
-        expect(numeric_checkbox).toBeDisabled();
+        const uppercaseCheckbox: HTMLInputElement | null =
+            screen.getByTestId(`${data_component_id}-sms-otp-uppercase`).querySelector("input");
+        const lowercaseCheckbox: HTMLInputElement | null =
+            screen.getByTestId(`${data_component_id}-sms-otp-lowercase`).querySelector("input");
+        const numericCheckbox: HTMLInputElement | null =
+            screen.getByTestId(`${data_component_id}-sms-otp-numeric`).querySelector("input");
 
-        (!uppercase_checkbox.checked) && fireEvent.click(uppercase_checkbox);
-        (!numeric_checkbox.checked) && fireEvent.click(numeric_checkbox);
-        (lowercase_checkbox.checked) && fireEvent.click(lowercase_checkbox);
-        expect(uppercase_checkbox).toBeChecked();
-        expect(numeric_checkbox).toBeChecked();
-        expect(lowercase_checkbox).not.toBeChecked();
-        expect(lowercase_checkbox).toBeDisabled();
+        expect(uppercaseCheckbox).not.toBeNull();
+        expect(lowercaseCheckbox).not.toBeNull();
+        expect(numericCheckbox).not.toBeNull();
 
-        (!lowercase_checkbox.checked) && fireEvent.click(lowercase_checkbox);
-        (!numeric_checkbox.checked) && fireEvent.click(numeric_checkbox);
-        (uppercase_checkbox.checked) && fireEvent.click(uppercase_checkbox);
-        expect(lowercase_checkbox).toBeChecked();
-        expect(numeric_checkbox).toBeChecked();
-        expect(uppercase_checkbox).not.toBeChecked();
-        expect(uppercase_checkbox.checked).toBeDisabled();
+        if (!uppercaseCheckbox || !lowercaseCheckbox || !numericCheckbox ) return;
+
+        (!uppercaseCheckbox.checked) && fireEvent.click(uppercaseCheckbox);
+        (lowercaseCheckbox.checked) && fireEvent.click(lowercaseCheckbox);
+        (numericCheckbox.checked) && fireEvent.click(numericCheckbox);
+        expect(lowercaseCheckbox).not.toBeChecked();
+        expect(numericCheckbox).not.toBeChecked();
+        expect(uppercaseCheckbox).toBeChecked();
+        expect(uppercaseCheckbox).toBeDisabled();
+
+        (!lowercaseCheckbox.checked) && fireEvent.click(lowercaseCheckbox);
+        (uppercaseCheckbox.checked) && fireEvent.click(uppercaseCheckbox);
+        (numericCheckbox.checked) && fireEvent.click(numericCheckbox);
+        expect(uppercaseCheckbox).not.toBeChecked();
+        expect(numericCheckbox).not.toBeChecked();
+        expect(lowercaseCheckbox).toBeChecked();
+        expect(lowercaseCheckbox).toBeDisabled();
+
+        (!numericCheckbox.checked) && fireEvent.click(numericCheckbox);
+        (uppercaseCheckbox.checked) && fireEvent.click(uppercaseCheckbox);
+        (lowercaseCheckbox.checked) && fireEvent.click(lowercaseCheckbox);
+        expect(lowercaseCheckbox).not.toBeChecked();
+        expect(uppercaseCheckbox).not.toBeChecked();
+        expect(numericCheckbox).toBeChecked();
+        expect(numericCheckbox).toBeDisabled();
     });
 });
