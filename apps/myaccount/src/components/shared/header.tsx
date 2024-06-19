@@ -115,7 +115,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     // B2B organization name if the user has logged in through B2B organization.
     const orgName: string = useSelector(
-        (state: AppState) => state.authenticationInformation.orgName
+        (state: AppState) => state?.authenticationInformation?.orgName
     );
 
     const linkedAccounts: LinkedAccountInterface[] = useSelector(
