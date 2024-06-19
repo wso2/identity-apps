@@ -65,7 +65,7 @@ const ENTER_KEY: string = "Enter";
 export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
-
+debugger
     return (
         <Form.Input
             aria-label={ childFieldProps?.ariaLabel }
@@ -99,10 +99,14 @@ export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): Re
                     ? "number"
                     : "text"
             }
-            error={
-                ((meta.error || meta.submitError) && meta.touched)
-                    ? meta.error || meta.submitError
-                    : null
+            error={ ((meta.error || meta.submitError) && meta.touched)
+                ? {
+                    content: ((meta.error || meta.submitError) && meta.touched)
+                        ? meta.error || meta.submitError
+                        : null,
+                    "data-componentid": `${childFieldProps["data-componentid"]}-error`
+                }
+                : false
             }
             onKeyDown={
                 // Restrict typing non-numeric characters in the "number" input fields.
