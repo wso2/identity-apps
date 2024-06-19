@@ -161,25 +161,25 @@ describe("PasswordRecoveryForm", () => {
 
         if (!uppercaseCheckbox || !lowercaseCheckbox || !numericCheckbox ) return;
 
-        (!uppercaseCheckbox.checked) && fireEvent.click(uppercaseCheckbox);
-        (lowercaseCheckbox.checked) && fireEvent.click(lowercaseCheckbox);
-        (numericCheckbox.checked) && fireEvent.click(numericCheckbox);
+        if (!uppercaseCheckbox.checked) fireEvent.click(uppercaseCheckbox);
+        if (lowercaseCheckbox.checked) fireEvent.click(lowercaseCheckbox);
+        if (numericCheckbox.checked) fireEvent.click(numericCheckbox);
         expect(lowercaseCheckbox).not.toBeChecked();
         expect(numericCheckbox).not.toBeChecked();
         expect(uppercaseCheckbox).toBeChecked();
         expect(uppercaseCheckbox).toBeDisabled();
 
-        (!lowercaseCheckbox.checked) && fireEvent.click(lowercaseCheckbox);
-        (uppercaseCheckbox.checked) && fireEvent.click(uppercaseCheckbox);
-        (numericCheckbox.checked) && fireEvent.click(numericCheckbox);
+        if (!lowercaseCheckbox.checked) fireEvent.click(lowercaseCheckbox);
+        if (uppercaseCheckbox.checked) fireEvent.click(uppercaseCheckbox);
+        if (numericCheckbox.checked) fireEvent.click(numericCheckbox);
         expect(uppercaseCheckbox).not.toBeChecked();
         expect(numericCheckbox).not.toBeChecked();
         expect(lowercaseCheckbox).toBeChecked();
         expect(lowercaseCheckbox).toBeDisabled();
 
-        (!numericCheckbox.checked) && fireEvent.click(numericCheckbox);
-        (uppercaseCheckbox.checked) && fireEvent.click(uppercaseCheckbox);
-        (lowercaseCheckbox.checked) && fireEvent.click(lowercaseCheckbox);
+        if (!numericCheckbox.checked) fireEvent.click(numericCheckbox);
+        if (uppercaseCheckbox.checked) fireEvent.click(uppercaseCheckbox);
+        if (lowercaseCheckbox.checked) fireEvent.click(lowercaseCheckbox);
         expect(lowercaseCheckbox).not.toBeChecked();
         expect(uppercaseCheckbox).not.toBeChecked();
         expect(numericCheckbox).toBeChecked();
