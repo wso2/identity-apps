@@ -280,7 +280,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const resolveOrganizationLabel =  (): ReactElement => {
         let organizationName: string = tenantName;
 
-        if (tenantName === "carbon.super") {
+        if (tenantName === AppConstants.getSuperTenant()) {
             organizationName = commonConfig.header.organization.replace("{{productName}}", productName);
         } else if (!!orgName && orgName !== tenantName) {
             organizationName = orgName;
