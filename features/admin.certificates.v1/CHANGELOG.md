@@ -1,5 +1,12 @@
 # @wso2is/admin.certificates.v1
 
+## 2.20.28
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.28
+
 ## 2.20.27
 
 ### Patch Changes
