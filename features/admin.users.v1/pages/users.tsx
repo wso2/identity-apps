@@ -708,8 +708,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             selectedUserStore === userstoresConfig.primaryUserstoreName
                             && isSAASDeployment
                         )
-                            ? true
-                            : false
                 } }
                 isLoading={ isUserListFetchRequestLoading }
             >
