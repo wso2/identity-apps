@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.3.8
+
+### Patch Changes
+
+- [#6462](https://github.com/wso2/identity-apps/pull/6462) [`70048afece4de5a3c049a6eb858eeed586a469c1`](https://github.com/wso2/identity-apps/commit/70048afece4de5a3c049a6eb858eeed586a469c1) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Skip custom domains for console and my account.
+
 ## 2.3.7
 
 ### Patch Changes
