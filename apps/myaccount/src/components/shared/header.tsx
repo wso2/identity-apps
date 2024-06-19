@@ -112,6 +112,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const tenantName: string = useSelector(
         (state: AppState) => state.authenticationInformation.tenantDomain
     );
+
+    // B2B organization name if the user has logged in through B2B organization.
+    const orgName: string = useSelector(
+        (state: AppState) => state.authenticationInformation.orgName
+    );
+
     const linkedAccounts: LinkedAccountInterface[] = useSelector(
         (state: AppState) => state.profile.linkedAccounts
     );
@@ -271,16 +277,19 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Resolves the organization label in the header.
      */
-    const resolveOrganizationLabel = (): ReactElement => {
-        const organization: string =
-            tenantName == "carbon.super"
-                ? commonConfig.header.organization.replace("{{productName}}", productName)
-                : tenantName;
+    const resolveOrganizationLabel =  (): ReactElement => {
+        let organizationName: string = tenantName;
+
+        if (tenantName === "carbon.super") {
+            organizationName = commonConfig.header.organization.replace("{{productName}}", productName);
+        } else if (!!orgName && orgName !== tenantName) {
+            organizationName = orgName;
+        }
 
         return (
             <Alert classes={ { root: "organization-label-alert" } } severity="info" icon={ false }>
                 { t("myAccount:components.header.organizationLabel") }{ " " }
-                <strong>{ organization }</strong>
+                <strong>{ organizationName }</strong>
             </Alert>
         );
     };
