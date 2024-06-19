@@ -188,6 +188,12 @@ interface ApplicationsDocumentationLinksInterface {
         }
         mobileApplication: {
             learnMore: string;
+        },
+        m2mApplication: {
+            learnMore: string
+        },
+        customApplication: {
+            learnMore: string
         }
     }
     managementApplication: {

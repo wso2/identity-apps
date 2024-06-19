@@ -174,6 +174,12 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     smsOtp: undefined
                 },
                 newApplication: {
+                    customApplication: {
+                        learnMore: undefined
+                    },
+                    m2mApplication: {
+                        learnMore: undefined
+                    },
                     mobileApplication: {
                         learnMore: undefined
                     },
