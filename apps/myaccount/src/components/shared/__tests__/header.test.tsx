@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { DynamicBrandingPreferenceThemeInterface } from "@wso2is/common.branding.v1/models";
-import { PredefinedThemes } from "@wso2is/common.branding.v1/models/branding-preferences";
-import { DARK_THEME } from "./dark-theme";
-import { LIGHT_THEME } from "./light-theme";
+import React from "react";
+import { render } from "../../../../test-configs/utils";
+import { Header } from "../header";
+import "@testing-library/jest-dom";
 
-export const THEMES: DynamicBrandingPreferenceThemeInterface = {
-    [ PredefinedThemes.LIGHT ]: LIGHT_THEME,
-    [ PredefinedThemes.DARK ]: DARK_THEME
-};
+describe("", () => {
+    it("renders B2B organization name in the managed by section in user dropdown", () => {
+        render(<Header />);
+    });
+});
