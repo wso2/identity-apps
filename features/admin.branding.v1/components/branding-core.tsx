@@ -30,6 +30,7 @@ import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
+    BrandingPreferenceTypes,
     PredefinedLayouts
 } from "@wso2is/common.branding.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -55,8 +56,9 @@ import { deleteBrandingPreference, updateBrandingPreference } from "../api";
 import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
 import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
-import { BrandingPreferencesConstants } from "../constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
+import useBrandingPreference from "../hooks/use-branding-preference";
 import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
 import { BrandingPreferenceUtils } from "../utils";
 
@@ -106,6 +108,16 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     const { organizationType } = useGetCurrentOrganizationType();
 
     const {
+        brandingMode,
+        selectedApplication
+    } = useBrandingPreference();
+
+    const resolvedName: string = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
+        ? selectedApplication : tenantDomain;
+    const resolvedType: BrandingPreferenceTypes = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
+        ? BrandingPreferenceTypes.APP : BrandingPreferenceTypes.ORG;
+
+    const {
         mergedBrandingPreference: overridenBrandingPreference,
         setMergedBrandingPreference
     } = useAIBrandingPreference();
@@ -115,7 +127,10 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         isLoading: isBrandingPreferenceFetchRequestLoading,
         error: brandingPreferenceFetchRequestError,
         mutate: mutateBrandingPreferenceFetchRequest
-    } = useGetBrandingPreferenceResolve(tenantDomain);
+    } = useGetBrandingPreferenceResolve(
+        resolvedName,
+        resolvedType
+    );
 
     const {
         mutateMultiple: mutateCustomTextPreferenceFetchRequests
@@ -418,7 +433,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             setIsBrandingPreferenceUpdateRequestLoading(true);
         }
 
-        updateBrandingPreference(_isBrandingConfigured, tenantDomain, preference)
+        updateBrandingPreference(_isBrandingConfigured, resolvedName, preference, resolvedType)
             .then((response: BrandingPreferenceAPIResponseInterface) => {
                 if (response instanceof IdentityAppsApiException) {
                     if (shouldShowNotifications) {
@@ -542,7 +557,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         setIsBrandingPreferenceDeleteRequestLoading(true);
 
         try {
-            await deleteBrandingPreference(tenantDomain);
+            await deleteBrandingPreference(resolvedName, resolvedType);
 
             dispatch(addAlert<AlertInterface>({
                 description: t("extensions:develop.branding.notifications.delete.success.description",
@@ -671,7 +686,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     handlePreferenceFormSubmit(values, shouldShowNotifications);
                 } }
                 isSplitView={ isGreaterThanComputerViewport }
-                readOnly={ isReadOnly }
+                readOnly={ isReadOnly || (brandingMode === BrandingModes.APPLICATION && !selectedApplication) }
                 onLayoutChange={ (values: DesignFormValuesInterface): void => {
                     setSelectedLayout(values.layout.activeLayout);
                 } }
@@ -738,6 +753,9 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                             }
                             onActionClick={ (): void => handleBrandingUnpublish() }
                             data-componentid={ `${ componentId }-danger-zone-unpublish` }
+                            isButtonDisabled={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                            buttonDisableHint={
+                                t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.disableHint") }
                         />
                     ) }
                     <DangerZone
@@ -753,6 +771,9 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                         }
                         onActionClick={ (): void => setShowRevertConfirmationModal(true) }
                         data-componentid={ `${ componentId }-danger-zone` }
+                        isButtonDisabled={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                        buttonDisableHint={
+                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.disableHint") }
                     />
                 </DangerZoneGroup>
             </Show>

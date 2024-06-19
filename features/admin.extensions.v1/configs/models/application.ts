@@ -86,6 +86,7 @@ export interface ApplicationConfig {
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
         isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
         getActions: (
+            applicationId: string,
             clientId: string,
             tenant: string,
             testId: string
