@@ -264,9 +264,9 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
 
     const { data: consoleApplicationFilter } = useApplicationList(null, null, null, "name eq Console");
 
-    const consoleId: string = useMemo(() => {
-        return consoleApplicationFilter?.applications[0]?.id;
-    }, [ consoleApplicationFilter ]);
+    const consoleId: string = useMemo(() => (
+        consoleApplicationFilter?.applications[0]?.id
+    ), [ consoleApplicationFilter ]);
 
     const {
         data: serverConfigs,
