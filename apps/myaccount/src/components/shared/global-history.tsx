@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,12 @@
  * under the License.
  */
 
-export * from "./advanced-search-with-basic-filters";
-export * from "./authenticator-accordion";
-export * from "./footer";
-export * from "./header";
-export * from "./upload-certificate";
-export * from "./groups";
-export * from "./roles";
-export * from "./attribute-select-list";
-export * from "./pre-loader";
-export * from "./protocol-card";
-export * from "./quick-start-tab";
-export * from "./modals";
-export * from "./vertical-stepper";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+
+export let globalNavigate: NavigateFunction;
+
+export const GlobalHistory = () => {
+    globalNavigate = useNavigate();
+
+    return null;
+};

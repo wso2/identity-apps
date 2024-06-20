@@ -29,7 +29,6 @@ import {
     AppViewTypes,
     ConfigReducerStateInterface,
     Header,
-    ProtectedRoute,
     RouteUtils,
     StrictAppViewTypes,
     UIConstants,
@@ -78,7 +77,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
 
@@ -89,10 +88,9 @@ import { ThunkDispatch } from "redux-thunk";
  *
  * @returns Admin View Wrapper.
  */
-export const AppView: FunctionComponent<RouteComponentProps> = (
-    props: RouteComponentProps
-): ReactElement => {
-    const { location } = props;
+export const AppView: FunctionComponent = (): ReactElement => {
+    const location  = useLocation()
+    const navigate = useNavigate();
 
     const dispatch: ThunkDispatch<AppState, void, Action> = useDispatch();
     const { t } = useTranslation();
@@ -100,6 +98,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
     const isMarketingConsentBannerEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.ui?.isMarketingConsentBannerEnabled;
     });
+    const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
 
     const [ announcement, setAnnouncement ] = useState<
         AnnouncementBannerInterface
@@ -226,24 +225,22 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
      */
     const renderRoute = (route: RouteInterface, key: number): ReactNode =>
         route.redirectTo ? (
-            <Redirect key={ key } to={ route.redirectTo } />
+            <Route path="*" element={ <Navigate to={ route.redirectTo } /> } key={ key } />
         ) : route.protected ? (
-            <ProtectedRoute
-                component={ route.component ? route.component : null }
+            <Route
+                element={ isAuthenticated && route.component ? <route.component /> : null }
                 path={ route.path }
                 key={ key }
-                exact={ route.exact }
             />
         ) : (
             <Route
                 path={ route.path }
-                render={ (renderProps: RouteComponentProps): ReactNode =>
+                element={ 
                     route.component ? (
-                        <route.component { ...renderProps } />
+                        <route.component />
                     ) : null
                 }
                 key={ key }
-                exact={ route.exact }
             />
         );
 
@@ -356,12 +353,12 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
                                 { ...subRoute.icon }
                             />,
                             label: t(subRoute.name),
-                            onClick: () => history.push(subRoute.path),
+                            onClick: () => navigate(subRoute.path),
                             selected: subRoute.selected ?? selectedRoute?.path === subRoute.path,
                             tag: t(subRoute.featureStatusLabel)
                         })),
                         label: t(route.name),
-                        onClick: () => history.push(route.path),
+                        onClick: () => navigate(route.path),
                         selected: route.selected ?? isRouteActive(route.path),
                         tag: t(route.featureStatusLabel)
                     }))
@@ -376,7 +373,8 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
      * @returns if the navigation item is active.
      */
     const isRouteActive = (routePath: string): boolean => {
-        return history.location.pathname === routePath;
+        console.log(location.pathname === window.location.pathname)
+        return location.pathname === window.location.pathname;
     };
 
     return (
@@ -456,7 +454,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
                             isMarketingConsentBannerEnabled
                                 && applicationConfig.marketingConsent.getBannerComponent()
                         }
-                        <Switch>{ resolveRoutes() as ReactNode[] }</Switch>
+                        <Routes>{ resolveRoutes() as ReactNode[] }</Routes>
                     </Suspense>
                 </ErrorBoundary>
             </AppShell>

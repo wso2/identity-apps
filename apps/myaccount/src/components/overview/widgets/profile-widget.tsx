@@ -22,6 +22,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Progress } from "semantic-ui-react";
 import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants, UIConstants } from "../../../constants";
@@ -58,12 +59,9 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
 
     const { t } = useTranslation();
     const { organizationDetails } = useThemeProvider();
+    const navigate = useNavigate();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
-    const navigate = () => {
-        history.push(AppConstants.getPaths().get("PERSONAL_INFO") + "#" + CommonConstants.PERSONAL_INFO);
-    };
 
     const profileCompletion: ProfileCompletion = useSelector((state: AppState) => state.profile.completion);
     const isReadOnlyUser: string = useSelector((state: AppState) => {
@@ -163,7 +161,9 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
                         ? t("myAccount:components.overview.widgets.profileStatus.description")
                         : t("myAccount:components.overview.widgets.profileStatus.readOnlyDescription")
                 }
-                onPrimaryActionClick={ navigate }
+                onPrimaryActionClick={ () => {
+                    navigate(AppConstants.getPaths().get("PERSONAL_INFO") + "#" + CommonConstants.PERSONAL_INFO);
+                } }
                 icon={ getWidgetIcons().profile }
                 iconMini={ getWidgetIcons().profile }
                 iconSize="x60"

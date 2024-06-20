@@ -23,6 +23,7 @@ import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Button, Modal } from "semantic-ui-react";
 import { terminateAllUserSessions } from "../../api";
@@ -60,12 +61,13 @@ export const UserSessionTerminationModal: FunctionComponent<UserSessionTerminati
 
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
+    const navigate = useNavigate();
 
     /**
      * The following function handles redirecting the user to the active session list.
      */
     const handleNavigatingToSessionList = () => {
-        history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.ACCOUNT_ACTIVITY);
+        navigate(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.ACCOUNT_ACTIVITY);
         handleModalClose();
     };
 
@@ -75,7 +77,7 @@ export const UserSessionTerminationModal: FunctionComponent<UserSessionTerminati
     const handleTerminateAllUserSessions = () => {
         terminateAllUserSessions()
             .then(() => {
-                history.push(AppConstants.getPaths().get("LOGOUT"));
+                navigate(AppConstants.getPaths().get("LOGOUT"));
                 dispatch(addAlert({
                     description: t(
                         "myAccount:components.userSessions.notifications.terminateAllUserSessions.success.description"

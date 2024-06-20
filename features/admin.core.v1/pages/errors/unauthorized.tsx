@@ -19,7 +19,7 @@
 import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 
@@ -29,11 +29,9 @@ import { AppConstants } from "../../constants";
  * @param {RouteComponentProps} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
-    props: RouteComponentProps
-): ReactElement => {
+const UnauthorizedErrorPage: FunctionComponent = (): ReactElement => {
 
-    const { location } = props;
+    const location = useLocation();
 
     const error = new URLSearchParams(location.search).get("error");
 

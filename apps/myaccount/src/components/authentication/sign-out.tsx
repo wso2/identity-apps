@@ -26,6 +26,7 @@ import { Dispatch } from "redux";
 import { history } from "../../helpers";
 import useOrganizations from "../../hooks/use-organizations";
 import { AppState } from "../../store";
+import { globalNavigate } from "../shared/global-history";
 import { PreLoader } from "../shared/pre-loader/pre-loader";
 
 /**
@@ -59,7 +60,7 @@ const SignOut: FunctionComponent<Record<string, unknown>> = (): ReactElement => 
 
             signOut()
                 .catch(() => {
-                    history.push(window[ "AppUtils" ].getConfig().routes.home);
+                    globalNavigate(window[ "AppUtils" ].getConfig().routes.home);
                 });
         }
     }, [ logoutInit ]);

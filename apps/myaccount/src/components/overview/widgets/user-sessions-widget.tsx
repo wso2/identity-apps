@@ -24,6 +24,7 @@ import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Placeholder } from "semantic-ui-react";
 import { fetchUserSessions } from "../../../api";
@@ -50,6 +51,7 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
 ): ReactElement => {
     const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const dispatch: Dispatch = useDispatch();
 
@@ -115,13 +117,6 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
         getUserSessions();
     }, []);
 
-    /**
-     * Navigates to the Security page.
-     */
-    const navigate = () => {
-        history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.ACCOUNT_ACTIVITY);
-    };
-
     return (
         <div className="widget account-status" data-testid={ testId }>
             <SettingsSection
@@ -136,7 +131,9 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
                         : null
                 }
                 primaryAction={ t("myAccount:components.overview.widgets.accountActivity.actionTitles.update") }
-                onPrimaryActionClick={ navigate }
+                onPrimaryActionClick={ () => {
+                    navigate(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.ACCOUNT_ACTIVITY);
+                } }
             >
                 { !isSessionDetailsLoading ? (
                     <UserSessionsList

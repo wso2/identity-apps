@@ -21,7 +21,6 @@ import {
     AppState,
     AppUtils,
     FeatureConfigInterface,
-    ProtectedRoute,
     RouteUtils,
     getEmptyPlaceholderIllustrations,
     getFullScreenViewRoutes
@@ -46,7 +45,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 /**
  * Full Screen View Prop types.
@@ -64,18 +63,15 @@ interface FullScreenViewPropsInterface {
  * @param props - Props injected to the component.
  * @returns Full screen view layout component.
  */
-export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
-    props: FullScreenViewPropsInterface & RouteComponentProps
-): ReactElement => {
+export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (): ReactElement => {
 
-    const {
-        location
-    } = props;
+    const location = useLocation();
 
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getFullScreenViewRoutes());
 
@@ -109,26 +105,24 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
      */
     const renderRoute = (route, key): ReactNode => (
         route.redirectTo
-            ? <Redirect key={ key } to={ route.redirectTo }/>
+            ? <Route path="*" element={ <Navigate key={ key } to={ route.redirectTo }/> } />
             : route.protected
                 ? (
-                    <ProtectedRoute
-                        component={ route.component ? route.component : null }
+                    <Route
+                        element={ isAuthenticated && route.component ? route.component : null }
                         path={ route.path }
                         key={ key }
-                        exact={ route.exact }
                     />
                 )
                 : (
                     <Route
                         path={ route.path }
-                        render={ (renderProps): ReactNode =>
+                        element={ 
                             route.component
-                                ? <route.component { ...renderProps } />
+                                ? <route.component />
                                 : null
                         }
                         key={ key }
-                        exact={ route.exact }
                     />
                 )
     );
@@ -182,9 +176,9 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
                 ) }
             >
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
-                    <Switch>
+                    <Routes>
                         { resolveRoutes() as ReactNode[] }
-                    </Switch>
+                    </Routes>
                 </Suspense>
             </ErrorBoundary>
         </FullScreenLayoutSkeleton>

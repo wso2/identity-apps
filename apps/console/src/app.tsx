@@ -20,10 +20,8 @@ import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
 import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
-import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
-import { history } from "@wso2is/admin.core.v1/helpers";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import {
     ConfigReducerStateInterface,
@@ -59,8 +57,7 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { StaticContext } from "react-router";
-import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-router-dom";
+import { Navigate, NavigateFunction, Route, Routes, useNavigate } from "react-router-dom";
 import { Dispatch } from "redux";
 import "moment/locale/si";
 import "moment/locale/fr";
@@ -92,6 +89,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
+    const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
@@ -102,6 +100,8 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         data: allFeatures,
         error: featureGateAPIException
     } = useGetAllFeatures();
+
+    const navigate: NavigateFunction = useNavigate();
 
     /**
      * Set the deployment configs in redux state.
@@ -184,13 +184,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
                     if(has(idToken, "associated_tenants") || isPrivilegedUser) {
                         // If there is an association, the user is likely unauthorized by other criteria.
-                        history.push({
+                        navigate({
                             pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                             search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
                         });
                     } else {
                         // If there is no association, the user should be redirected to creation flow.
-                        history.push({
+                        navigate({
                             pathname: AppConstants.getPaths().get("CREATE_TENANT")
                         });
                     }
@@ -201,7 +201,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                     // Tracked here https://github.com/wso2/product-is/issues/11650.
                 });
         } else {
-            history.push({
+            navigate({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                 search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
             });
@@ -258,7 +258,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
      * @param url - Current URL.
      */
     const handleSessionTimeoutAbort = (url: URL): void => {
-        history.push({
+        navigate({
             pathname: url.pathname,
             search: url.search
         });
@@ -269,7 +269,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
      */
     const handleSessionLogout = (): void => {
         AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
-        history.push(AppConstants.getAppLogoutPath());
+        navigate(AppConstants.getAppLogoutPath());
     };
 
     const sessionStorageDisabled = () => {
@@ -277,11 +277,11 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             const storage: Storage = sessionStorage;
 
             if (!storage && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
-                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
+                navigate(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
         } catch {
             if (true && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
-                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
+                navigate(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
         }
     };
@@ -297,7 +297,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                 if (response === false) {
                     AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
 
-                    history.push(AppConstants.getAppLogoutPath());
+                    navigate(AppConstants.getAppLogoutPath());
                 } else {
                     window.history.replaceState(null, null, window.location.pathname);
                 }
@@ -305,7 +305,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             .catch(() => {
                 AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
 
-                history.push(AppConstants.getAppLogoutPath());
+                navigate(AppConstants.getAppLogoutPath());
             });
     };
 
@@ -314,209 +314,206 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     }
 
     return (
-        <Router history={ history }>
-            <div className="container-fluid">
-                <DocumentationProvider<DocumentationLinksInterface> links={ DocumentationLinks }>
-                    <Suspense fallback={ <PreLoader /> }>
-                        <MediaContextProvider>
-                            <AccessControlProvider
-                                allowedScopes={ allowedScopes }
-                                features={ featureGateConfigData }
-                                isLegacyRuntimeEnabled={ legacyAuthzRuntime }
-                                organizationType={ organizationType }
-                            >
-                                <SessionManagementProvider
-                                    onSessionTimeoutAbort={ handleSessionTimeoutAbort }
-                                    onSessionLogout={ handleSessionLogout }
-                                    onLoginAgain={ handleStayLoggedIn }
-                                    setSessionTimedOut={ handleSessionTimeOut }
-                                    sessionTimedOut={ sessionTimedOut }
-                                    modalOptions={ {
-                                        description: (
-                                            <Trans
-                                                i18nKey={
-                                                    "console:common.modals.sessionTimeoutModal." +
+        <div className="container-fluid">
+            <DocumentationProvider<DocumentationLinksInterface> links={ DocumentationLinks }>
+                <Suspense fallback={ <PreLoader /> }>
+                    <MediaContextProvider>
+                        <AccessControlProvider
+                            allowedScopes={ allowedScopes }
+                            features={ featureGateConfigData }
+                            isLegacyRuntimeEnabled={ legacyAuthzRuntime }
+                            organizationType={ organizationType }
+                        >
+                            <SessionManagementProvider
+                                onSessionTimeoutAbort={ handleSessionTimeoutAbort }
+                                onSessionLogout={ handleSessionLogout }
+                                onLoginAgain={ handleStayLoggedIn }
+                                setSessionTimedOut={ handleSessionTimeOut }
+                                sessionTimedOut={ sessionTimedOut }
+                                modalOptions={ {
+                                    description: (
+                                        <Trans
+                                            i18nKey={
+                                                "console:common.modals.sessionTimeoutModal." +
                                                     "description"
-                                                }
-                                            >
+                                            }
+                                        >
                                                 When you click on the <Code>Go back</Code> button, we
                                                 will try to recover the session if it exists. If you
                                                 don&apos;t have an active session, you will be
                                                 redirected to the login page
-                                            </Trans>
-                                        ),
-                                        headingI18nKey: "console:common.modals.sessionTimeoutModal" +
+                                        </Trans>
+                                    ),
+                                    headingI18nKey: "console:common.modals.sessionTimeoutModal" +
                                             ".heading",
-                                        loginAgainButtonText: (
-                                            <Trans
-                                                i18nKey={
-                                                    "console:common.modals" +
+                                    loginAgainButtonText: (
+                                        <Trans
+                                            i18nKey={
+                                                "console:common.modals" +
                                                     ".sessionTimeoutModal.loginAgainButton"
-                                                }>
+                                            }>
                                                 Login again
-                                            </Trans>
-                                        ),
-                                        primaryButtonText: (
-                                            <Trans
-                                                i18nKey={
-                                                    "console:common.modals" +
+                                        </Trans>
+                                    ),
+                                    primaryButtonText: (
+                                        <Trans
+                                            i18nKey={
+                                                "console:common.modals" +
                                                     ".sessionTimeoutModal.primaryButton"
-                                                }>
+                                            }>
                                                 Go back
-                                            </Trans>
-                                        ),
-                                        secondaryButtonText: (
-                                            <Trans
-                                                i18nKey={
-                                                    "console:common.modals" +
+                                        </Trans>
+                                    ),
+                                    secondaryButtonText: (
+                                        <Trans
+                                            i18nKey={
+                                                "console:common.modals" +
                                                     ".sessionTimeoutModal.secondaryButton"
-                                                }>
+                                            }>
                                                 Logout
-                                            </Trans>
-                                        ),
-                                        sessionTimedOutDescription: (
-                                            <Trans
-                                                i18nKey={
-                                                    "console:common.modals" +
+                                        </Trans>
+                                    ),
+                                    sessionTimedOutDescription: (
+                                        <Trans
+                                            i18nKey={
+                                                "console:common.modals" +
                                                     ".sessionTimeoutModal.sessionTimedOutDescription"
-                                                }>
+                                            }>
                                                 Please log in again to continue from where you left off.
-                                            </Trans>
-                                        ),
-                                        sessionTimedOutHeadingI18nKey: "console:common.modals" +
+                                        </Trans>
+                                    ),
+                                    sessionTimedOutHeadingI18nKey: "console:common.modals" +
                                             ".sessionTimeoutModal.sessionTimedOutHeading"
-                                    } }
-                                    type={ SessionTimeoutModalTypes.DEFAULT }
-                                >
-                                    <>
-                                        <Helmet>
-                                            <title>{ appTitle }</title>
-                                            {
-                                                (window?.themeHash && window?.publicPath && theme)
-                                                    ? (
-                                                        <link
-                                                            href={
-                                                                `${
-                                                                    window?.origin
-                                                                }${
-                                                                    window?.publicPath
-                                                                }/libs/themes/${
-                                                                    theme
-                                                                }/theme.${ window?.themeHash }.min.css`
-                                                            }
-                                                            rel="stylesheet"
-                                                            type="text/css"
-                                                        />
-                                                    )
-                                                    : null
-                                            }
-                                        </Helmet>
-                                        <NetworkErrorModal
-                                            heading={
-                                                (<Trans
-                                                    i18nKey={ "common:networkErrorMessage.heading" }
-                                                >
+                                } }
+                                type={ SessionTimeoutModalTypes.DEFAULT }
+                            >
+                                <>
+                                    <Helmet>
+                                        <title>{ appTitle }</title>
+                                        {
+                                            (window?.themeHash && window?.publicPath && theme)
+                                                ? (
+                                                    <link
+                                                        href={
+                                                            `${
+                                                                window?.origin
+                                                            }${
+                                                                window?.publicPath
+                                                            }/libs/themes/${
+                                                                theme
+                                                            }/theme.${ window?.themeHash }.min.css`
+                                                        }
+                                                        rel="stylesheet"
+                                                        type="text/css"
+                                                    />
+                                                )
+                                                : null
+                                        }
+                                    </Helmet>
+                                    <NetworkErrorModal
+                                        heading={
+                                            (<Trans
+                                                i18nKey={ "common:networkErrorMessage.heading" }
+                                            >
                                                     Your session has expired
-                                                </Trans>)
-                                            }
-                                            description={
-                                                (<Trans
-                                                    i18nKey={ "common:networkErrorMessage.description" }
-                                                >
+                                            </Trans>)
+                                        }
+                                        description={
+                                            (<Trans
+                                                i18nKey={ "common:networkErrorMessage.description" }
+                                            >
                                                     Please try signing in again.
-                                                </Trans>)
-                                            }
-                                            primaryActionText={
-                                                (<Trans
-                                                    i18nKey={
-                                                        "common:networkErrorMessage.primaryActionText"
-                                                    }
-                                                >
+                                            </Trans>)
+                                        }
+                                        primaryActionText={
+                                            (<Trans
+                                                i18nKey={
+                                                    "common:networkErrorMessage.primaryActionText"
+                                                }
+                                            >
                                                     Sign In
-                                                </Trans>)
-                                            }
-                                            primaryAction={
-                                                signOut
-                                            }
-                                        />
-                                        <ChunkErrorModal
-                                            heading={
-                                                (<Trans
-                                                    i18nKey={
-                                                        "common:chunkLoadErrorMessage.heading"
-                                                    }
-                                                >
+                                            </Trans>)
+                                        }
+                                        primaryAction={
+                                            signOut
+                                        }
+                                    />
+                                    <ChunkErrorModal
+                                        heading={
+                                            (<Trans
+                                                i18nKey={
+                                                    "common:chunkLoadErrorMessage.heading"
+                                                }
+                                            >
                                                     Something went wrong
-                                                </Trans>)
-                                            }
-                                            description={
-                                                (<Trans
-                                                    i18nKey={
-                                                        "common:chunkLoadErrorMessage.description"
-                                                    }
-                                                >
+                                            </Trans>)
+                                        }
+                                        description={
+                                            (<Trans
+                                                i18nKey={
+                                                    "common:chunkLoadErrorMessage.description"
+                                                }
+                                            >
                                                     An error occurred when serving the requested
                                                     application. Please try reloading the app.
-                                                </Trans>)
-                                            }
-                                            primaryActionText={
-                                                (<Trans
-                                                    i18nKey={
-                                                        "common:chunkLoadErrorMessage.primaryActionText"
-                                                    }
-                                                >
+                                            </Trans>)
+                                        }
+                                        primaryActionText={
+                                            (<Trans
+                                                i18nKey={
+                                                    "common:chunkLoadErrorMessage.primaryActionText"
+                                                }
+                                            >
                                                     Reload the App
-                                                </Trans>)
+                                            </Trans>)
+                                        }
+                                    />
+                                    <Routes>
+                                        {
+                                            baseRoutes.map((route: RouteInterface, index: number) => {
+                                                return (
+                                                    route.protected ?
+                                                        (
+                                                            <Route
+                                                                element={ isAuthenticated && route.component
+                                                                    ? <route.component />
+                                                                    : (<Navigate
+                                                                        to={ AppConstants.getAppLoginPath() }
+                                                                    />) }
+                                                                path={ route.path }
+                                                                key={ index }
+                                                            />
+                                                        )
+                                                        :
+                                                        (
+                                                            <Route
+                                                                path={ route.path }
+                                                                element={
+                                                                    <route.component />
+                                                                }
+                                                                key={ index }
+                                                            />
+                                                        )
+                                                );
+                                            })
+                                        }
+                                        <Route
+                                            path="*"
+                                            element={
+                                                (<Navigate
+                                                    to={ AppConstants.getAppHomePath() }
+                                                    replace={ true }
+                                                />)
                                             }
                                         />
-                                        <Switch>
-                                            <Redirect
-                                                exact
-                                                from="/"
-                                                to={ AppConstants.getAppHomePath() }
-                                            />
-                                            {
-                                                baseRoutes.map((route: RouteInterface, index: number) => {
-                                                    return (
-                                                        route.protected ?
-                                                            (
-                                                                <ProtectedRoute
-                                                                    component={ route.component }
-                                                                    path={ route.path }
-                                                                    key={ index }
-                                                                    exact={ route.exact }
-                                                                />
-                                                            )
-                                                            :
-                                                            (
-                                                                <Route
-                                                                    path={ route.path }
-                                                                    render={
-                                                                        (props:  RouteComponentProps<
-                                                                            { [p: string]: string },
-                                                                            StaticContext, unknown
-                                                                        >) => {
-                                                                            return (<route.component
-                                                                                { ...props }
-                                                                            />);
-                                                                        }
-                                                                    }
-                                                                    key={ index }
-                                                                    exact={ route.exact }
-                                                                />
-                                                            )
-                                                    );
-                                                })
-                                            }
-                                        </Switch>
-                                    </>
-                                </SessionManagementProvider>
-                            </AccessControlProvider>
-                        </MediaContextProvider>
-                    </Suspense>
-                </DocumentationProvider>
-            </div>
-        </Router>
+                                    </Routes>
+                                </>
+                            </SessionManagementProvider>
+                        </AccessControlProvider>
+                    </MediaContextProvider>
+                </Suspense>
+            </DocumentationProvider>
+        </div>
     );
 };
 

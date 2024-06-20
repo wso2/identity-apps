@@ -21,7 +21,6 @@ import {
     AppState,
     Footer,
     Header,
-    ProtectedRoute,
     UIConstants,
     getDefaultLayoutRoutes
 } from "@wso2is/admin.core.v1";
@@ -43,8 +42,7 @@ import React, {
 } from "react";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { StaticContext } from "react-router";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Dispatch } from "redux";
 
 /**
@@ -80,6 +78,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
+    const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -128,38 +127,32 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             ) }
         >
             <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
-                <Switch>
+                <Routes>
                     {
                         defaultLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
-                                ? <Redirect to={ route.redirectTo } key={ index } />
+                                ? <Route path="*" element={ <Navigate to={ route.redirectTo } /> } key={ index } />
                                 : route.protected
                                     ? (
-                                        <ProtectedRoute
-                                            component={ route.component ? route.component : null }
+                                        <Route
+                                            element={ isAuthenticated && route.component ? <route.component /> : null }
                                             path={ route.path }
                                             key={ index }
-                                            exact={ route.exact }
                                         />
                                     )
                                     : (
                                         <Route
                                             path={ route.path }
-                                            render={
-                                                (renderProps: RouteComponentProps<{
-                                                    [x: string]: string; },
-                                                    StaticContext, unknown>
-                                                ) => route.component
-                                                    ? <route.component { ...renderProps } />
-                                                    : null
+                                            element={ route.component
+                                                ? <route.component />
+                                                : null
                                             }
                                             key={ index }
-                                            exact={ route.exact }
                                         />
                                     )
                         ))
                     }
-                </Switch>
+                </Routes>
             </Suspense>
         </DefaultLayoutSkeleton>
     );

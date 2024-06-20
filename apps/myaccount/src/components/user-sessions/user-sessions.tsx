@@ -37,6 +37,7 @@ import {
     emptyUserSessions
 } from "../../models";
 import { SettingsSection } from "../shared";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Proptypes for the user sessions component.
@@ -59,6 +60,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     const { onAlertFired, ["data-testid"]: testId } = props;
 
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const [ userSessions, setUserSessions ] = useState<UserSessions>(emptyUserSessions);
     const [ editingUserSession, setEditingUserSession ] = useState<UserSession>(emptyUserSession);
@@ -203,7 +205,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     const handleTerminateAllUserSessions = (): void => {
         terminateAllUserSessions()
             .then(() => {
-                history.push(AppConstants.getPaths().get("LOGOUT"));
+                navigate(AppConstants.getPaths().get("LOGOUT"));
                 onAlertFired({
                     description: t(
                         "myAccount:components.userSessions.notifications.terminateAllUserSessions.success.description"

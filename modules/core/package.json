@@ -107,7 +107,6 @@
         "@types/lodash-es": "^4.17.4",
         "@types/node": "^13.9.2",
         "@types/node-forge": "^0.9.3",
-        "@types/react": "^18.0.18",
         "@types/react-notification-system": "0.2.39",
         "@types/ua-parser-js": "0.7.36",
         "@typescript-eslint/eslint-plugin": "^4.32.0",

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -189,7 +189,7 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
             icon: null,
             id: "dashboardLayout",
             name: "Dashboard Layout",
-            path: "/",
+            path: "/*",
             protected: false,
             showOnSidePanel: false
         },
@@ -214,11 +214,11 @@ export const getBaseRoutes = (): RouteInterface[] => {
 
     return [
         {
-            component: AppLayout,
+            component: <AppLayout />,
             icon: null,
             id: "app",
             name: "App",
-            path: AppConstants.getPaths().get("ROOT"),
+            path: `${AppConstants.getPaths().get("ROOT")}*`,
             protected: false,
             showOnSidePanel: false
         }

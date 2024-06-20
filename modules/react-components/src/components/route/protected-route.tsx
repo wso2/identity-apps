@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 
 /**
  * Proptypes for the protected route component.
@@ -82,16 +82,19 @@ export const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = (
         onAuthCallbackUrlUpdate(currentPath);
     }
 
+    const ChildComponentWithProps = () => {
+        return isAuthorized
+            ? <Component { ...props } />
+            : <Navigate to={ loginPath } />;
+    };
+
     return (
         <Route
-            render={ (props) =>
-                isAuthorized ?
-                    <Component { ...props } /> :
-                    <Redirect to={ loginPath } />
-            }
             data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
-        />
+        >
+            <ChildComponentWithProps />
+        </Route>
     );
 };

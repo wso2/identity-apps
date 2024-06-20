@@ -29,7 +29,6 @@
         "@rollup/plugin-typescript": "^11.1.6",
         "@svgr/rollup": "^6.2.1",
         "@types/lodash-es": "^4.17.4",
-        "@types/react": "^18.0.18",
         "@types/react-redux": "^7.1.25",
         "rollup": "^4.17.2",
         "rollup-plugin-dts": "^6.1.1",
