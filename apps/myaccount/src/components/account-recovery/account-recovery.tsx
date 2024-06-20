@@ -23,7 +23,6 @@ import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { List, Placeholder } from "semantic-ui-react";
 import { EmailRecovery, SMSRecovery, SecurityQuestionsComponent } from "./options";
 import { getPreference } from "../../api";
@@ -36,7 +35,6 @@ import {
     PreferenceProperty,
     PreferenceRequest
 } from "../../models";
-import { AppState } from "../../store";
 import { SettingsSection } from "../shared";
 
 /**
@@ -59,7 +57,6 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
     const { onAlertFired, featureConfig, ["data-testid"]: testId } = props;
 
     const { t } = useTranslation();
-    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const RECOVERY_CONNECTOR: string = "account-recovery";
     const RECOVERY_PASSWORD_QUESTION: string = "Recovery.Question.Password.Enable";
     const RECOVERY_PASSWORD_NOTIFICATION: string = "Recovery.Notification.Password.Enable";
