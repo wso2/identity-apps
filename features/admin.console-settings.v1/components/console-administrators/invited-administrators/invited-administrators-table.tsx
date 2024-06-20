@@ -302,7 +302,7 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                     data-componentid={ `${ componentId }-empty-placeholder` }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ [ "There are no collaborator users associated with your organization at the moment." ] }
+                    subtitle={ [ "There are no administrator users associated with your organization at the moment." ] }
                 />
             );
         }

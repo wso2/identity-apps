@@ -1278,6 +1278,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return getLink("develop.applications.newApplication.mobileApplication.learnMore");
         }
 
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            return getLink("develop.applications.newApplication.m2mApplication.learnMore");
+        }
+
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.CUSTOM_APPLICATION) {
+            return getLink("develop.applications.newApplication.customApplication.learnMore");
+        }
+
         // Returns undefined for application which does not have doc links.
         // Used to hide the learn more link.
         return undefined;
