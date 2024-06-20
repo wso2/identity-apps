@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.3.9
+
+### Patch Changes
+
+- [#6342](https://github.com/wso2/identity-apps/pull/6342) [`3bd397aa6c69124b57238f20a37f3b4247c9a53a`](https://github.com/wso2/identity-apps/commit/3bd397aa6c69124b57238f20a37f3b4247c9a53a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Enable Role Modification for Sub-Org Admins in AppPortalRoleManagementListener.
+
 ## 2.3.8
 
 ### Patch Changes

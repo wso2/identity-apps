@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.19.28
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.29
+  - @wso2is/admin.authentication.v1@2.20.29
+  - @wso2is/admin.extensions.v1@2.20.29
+  - @wso2is/admin.organizations.v1@2.20.29
+
 ## 2.19.27
 
 ### Patch Changes
