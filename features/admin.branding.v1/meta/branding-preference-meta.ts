@@ -26,6 +26,7 @@ import {
 } from "@wso2is/common.branding.v1/models";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { StringUtils } from "@wso2is/core/utils";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { LAYOUTS } from "./layouts";
 import { THEMES, THEME_SWATCH_UI_CONFIGS } from "./themes";
@@ -163,7 +164,7 @@ export class BrandingPreferenceMeta {
      * @returns Default themes.
      */
     public static getThemes(): DynamicBrandingPreferenceThemeInterface {
-        return THEMES;
+        return cloneDeep(THEMES);
     }
 
     /**
@@ -172,7 +173,7 @@ export class BrandingPreferenceMeta {
      * @returns Default layout.s
      */
     public static getLayouts(): DynamicBrandingPreferenceLayoutInterface {
-        return LAYOUTS;
+        return cloneDeep(LAYOUTS);
     }
 
     /**
