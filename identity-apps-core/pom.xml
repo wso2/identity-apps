@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -563,6 +563,19 @@
                 <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <!-- Testing related dependencies -->
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${testng.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -740,5 +753,9 @@
 
         <lint.exec.skip>true</lint.exec.skip>
         <bootstrap.exec.skip>false</bootstrap.exec.skip>
+
+        <!-- Unit test versions -->
+        <testng.version>7.10.1</testng.version>
+        <mockito.version>5.3.1</mockito.version>
     </properties>
 </project>
