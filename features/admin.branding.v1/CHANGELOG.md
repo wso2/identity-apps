@@ -1,5 +1,19 @@
 # @wso2is/admin.branding.v1
 
+## 2.20.29
+
+### Patch Changes
+
+- [#6458](https://github.com/wso2/identity-apps/pull/6458) [`f510d2472d00ee47a1941be5e7ade130515c228f`](https://github.com/wso2/identity-apps/commit/f510d2472d00ee47a1941be5e7ade130515c228f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in branding preview
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.ai.v1@2.20.29
+  - @wso2is/admin.core.v1@2.20.29
+  - @wso2is/admin.extensions.v1@2.20.29
+  - @wso2is/admin.organizations.v1@2.20.29
+  - @wso2is/admin.server-configurations.v1@2.20.29
+  - @wso2is/common.branding.v1@2.20.29
+
 ## 2.20.28
 
 ### Patch Changes
