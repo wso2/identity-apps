@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { render, screen } from "@wso2is/unit-test-configs/utils";
 import React from "react";
 import { fullPermissions } from "./__mocks__/getting-started-permissions";
-import { render, screen } from "../../../../test-configs";
 import GettingStartedPage from "../getting-started";
 import "@testing-library/jest-dom";
 

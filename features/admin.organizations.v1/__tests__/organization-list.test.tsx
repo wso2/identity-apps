@@ -19,8 +19,8 @@
 import AppSettingsProvider from "@wso2is/admin.core.v1/providers/app-settings-provider";
 import DeploymentConfigProvider from "@wso2is/admin.core.v1/providers/deployment-config-provider";
 import ResourceEndpointsProvider from "@wso2is/admin.core.v1/providers/resource-enpoints-provider";
+import { fireEvent, render, screen, waitFor, within } from "@wso2is/unit-test-configs/utils";
 import React from "react";
-import { fireEvent, render, screen, waitFor, within } from "../../test-configs";
 import { getOrganizationsEmptyMockResponse, getOrganizationsPageOneMockResponse } from "../__mocks__/organization";
 import * as api from "../api/organization";
 import { OrganizationList, OrganizationListPropsInterface } from "../components/organization-list";

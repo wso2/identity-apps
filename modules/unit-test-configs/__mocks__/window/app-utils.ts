@@ -182,6 +182,30 @@ interface CustomWindow extends Window {
                             ]
                         }
                     },
+                    branding: {
+                        disabledFeatures: [
+                            "branding.ai",
+                            "branding.hostnameUrlBranding"
+                        ],
+                        enabled: true,
+                        scopes: {
+                            create: [
+                                "internal_branding_preference_update"
+                            ],
+                            delete: [
+                                "internal_branding_preference_update"
+                            ],
+                            feature: [
+                                "console:branding"
+                            ],
+                            read: [
+                                "internal_application_mgt_view"
+                            ],
+                            update: [
+                                "internal_branding_preference_update"
+                            ]
+                        }
+                    },
                     certificates: {
                         enabled: true,
                         disabledFeatures: [],
@@ -490,5 +514,4 @@ interface CustomWindow extends Window {
     getOrganizationType: function () {
         return "FIRST_LEVEL_ORGANIZATION";
     }
-    /* eslint-disable sort-keys, max-len */
 };

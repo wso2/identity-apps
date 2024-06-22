@@ -18,10 +18,10 @@
 
 import ResourceEndpointsProvider from "@wso2is/admin.core.v1/providers/resource-enpoints-provider";
 import UserPreferenceProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
+import { render, screen } from "@wso2is/unit-test-configs/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../test-configs/utils";
 import AuthenticationFlowProvider from "../../../providers/authentication-flow-provider";
 import ScriptEditorPanel, {
     ScriptEditorPanelPropsInterface

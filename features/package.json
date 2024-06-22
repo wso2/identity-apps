@@ -108,6 +108,7 @@
         "@typescript-eslint/eslint-plugin": "^4.32.0",
         "@typescript-eslint/parser": "^4.32.0",
         "connect-history-api-fallback": "^2.0.0",
+        "@wso2is/unit-test-configs": "workspace:*",
         "copy-webpack-plugin": "^12.0.2",
         "css-loader": "^1.0.0",
         "eslint": "^7.20.0",

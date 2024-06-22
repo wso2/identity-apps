@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { fireEvent,render, screen, waitFor, within } from "@wso2is/unit-test-configs/utils";
 import React from "react";
-import { fireEvent,render, screen, waitFor, within } from "../../test-configs";
 import {
     addOrganizationMockResponse,
     getOrganizationsEmptyMockResponse,
@@ -40,8 +40,8 @@ const addComponentModalProps: AddOrganizationModalPropsInterface = {
 };
 
 describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal", () => {
-    const addOrganizationMock = jest.spyOn(api, "addOrganization");
-    const getOrganizationsMock = jest.spyOn(api, "getOrganizations");
+    const addOrganizationMock: any = jest.spyOn(api, "addOrganization");
+    const getOrganizationsMock: any = jest.spyOn(api, "getOrganizations");
 
     addOrganizationMock.mockImplementation(() => Promise.resolve(addOrganizationMockResponse));
 
