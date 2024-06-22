@@ -42,25 +42,25 @@ interface CustomWindow extends Window {
             accountApp: {
                 commonPostLogoutUrl: false,
                 path: "https://localhost:9000/myaccount/overview",
-                tenantQualifiedPath: ""
+                tenantQualifiedPath: "https://localhost:9000/t/testorg/myaccount"
             },
             adminApp: {
-                basePath: "/console/manage",
+                basePath: "t/testorg/manage",
                 displayName: "Manage",
-                path: "/console/manage/users"
+                path: "/t/testorg/manage/users"
             },
             allowMultipleAppProtocols: false,
             appBase: "console",
             appBaseNameForHistoryAPI: "/",
-            appBaseWithTenant: "/console",
+            appBaseWithTenant: "/t/testorg",
             clientID: "CONSOLE",
             clientOrigin: "https://localhost:9001",
-            clientOriginWithTenant: "https://localhost:9001",
+            clientOriginWithTenant: "https://localhost:9001/t/testorg",
             debug: false,
             developerApp: {
-                basePath: "/console/develop",
-                displayName: "Develop",
-                path: "/console/develop/applications"
+                basePath: "/t/testorg/app",
+                displayName: "app",
+                path: "/t/testorg/app/applications"
             },
             documentation: {
                 baseURL: "https://api.github.com",
@@ -81,7 +81,10 @@ interface CustomWindow extends Window {
                 scope: [
                     "SYSTEM"
                 ],
-                storage: "webWorker"
+                storage: "webWorker",
+                authorizeEndpointURL: "https://api.wso2iam.io/t/a/oauth2/authorize?ut=testorg",
+                logoutEndpointURL: "https://api.wso2iam.io/t/a/oidc/logout",
+                oidcSessionIFrameEndpointURL: "https://api.wso2iam.io/t/a/oidc/checksession"
             },
             isSaas: true,
             loginCallbackURL: "https://localhost:9001/console",
@@ -92,12 +95,12 @@ interface CustomWindow extends Window {
                 labelColor: "primary"
             },
             routes: {
-                home: "/console/develop/applications",
-                login: "/console",
-                logout: "/console/logout"
+                home: "/t/testorg/getting-started",
+                login: "/t/testorg/login",
+                logout: "/t/testorg/logout"
             },
             serverOrigin: "https://localhost:9443",
-            serverOriginWithTenant: "https://localhost:9443",
+            serverOriginWithTenant: "https://localhost:9443/t/testorg",
             session: {
                 userIdleTimeOut: 600,
                 userIdleWarningTimeOut: 580,
