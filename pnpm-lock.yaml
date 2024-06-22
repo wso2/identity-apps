@@ -19751,6 +19751,12 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.3.1
+      redux:
+        specifier: ^4.0.4
+        version: 4.2.1
+      redux-mock-store:
+        specifier: ^1.5.4
+        version: 1.5.4
 
   modules/validation:
     dependencies:
