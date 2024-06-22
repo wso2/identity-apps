@@ -26,7 +26,7 @@ import thunk from "redux-thunk";
 
 /**
  * Middleware for the Redux store.
- * @see {@link src/features/core/store/index.ts} for middleware used in the actual store.
+ * @see {@link @wso2is/features/admin.core.v1/store/index.ts#configureStore} for middleware used in the actual store.
  */
 const middleware: Middleware[] = [
     thunk

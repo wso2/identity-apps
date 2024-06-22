@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Stubs files such as .jpg, .png, etc.
+ * Stubs files such as .jpg, .png, etc.
  *
  * @see {@link jest.config.ts} for more file types that uses this stub.
  */
