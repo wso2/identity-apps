@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { fireEvent, render, screen, within } from "@wso2is/unit-test-configs/utils";
 import React from "react";
-import { fireEvent, render, screen, within } from "../../../../test-configs/utils";
 import { RoleBasics } from "../role-basics";
 
 jest.mock("@wso2is/admin.applications.v1/api/application", () => ({
