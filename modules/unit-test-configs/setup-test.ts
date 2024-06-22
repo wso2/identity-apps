@@ -16,9 +16,19 @@
  * under the License.
  */
 
-/**
- * Mocks SVGs loaded with `SVGR` plugin.
- */
+import { configure } from "@testing-library/react";
+import "./__mocks__/global";
+import "./__mocks__/module";
+import "./__mocks__/window";
+import "./__mocks__/server/hooks";
+import "babel-polyfill";
 
-export default "SvgrURL";
-export const ReactComponent: string = "div";
+// Needed for React 18.
+// The purpose of the flag is to tell React that it’s running in a unit test-like environment.
+// React will log helpful warnings if you forget to wrap an update with act.
+// https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#configuring-your-testing-environment
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+
+configure({
+    testIdAttribute: "data-componentid"
+});

@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { render, screen, waitFor } from "@wso2is/unit-test-configs/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/branding-permissions";
-import { render, screen, waitFor } from "../../test-configs/utils";
 import BrandingPage from "../pages/branding";
 
 describe.skip("Test if the Branding page is working as expected", () => {

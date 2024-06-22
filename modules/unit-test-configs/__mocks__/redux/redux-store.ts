@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,23 @@
  * under the License.
  */
 
-import { RestHandler } from "msw";
-import { handlers as extendedHandlers } from "../../../src/extensions/test-configs/__mocks__/server/handlers";
+/**
+ * Mocks the Redux store.
+ */
+
+import { Middleware } from "redux";
+import configureStore, { MockStoreCreator } from "redux-mock-store";
+import thunk from "redux-thunk";
 
 /**
- * MSW Request Handlers.
- * @see {@link https://mswjs.io/docs/basics/request-handler}
+ * Middleware for the Redux store.
+ * @see {@link src/features/core/store/index.ts} for middleware used in the actual store.
  */
-export const handlers: RestHandler[] = [
-
-    // TODO: Use server.use once the extension model issue is fixed.
-    // Tracker: https://github.com/wso2/product-is/issues/13134
-    ...extendedHandlers
+const middleware: Middleware[] = [
+    thunk
 ];
+
+/**
+ * Configure mock store.
+ */
+export const mockStore: MockStoreCreator<any, Record<string, unknown>> = configureStore(middleware);

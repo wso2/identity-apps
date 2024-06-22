@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1/store";
-
 /**
  * Mocks the Redux store state.
  *
@@ -25,7 +23,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
  */
 
 /* eslint-disable sort-keys, max-len */
-const ReduxStoreStateMock: AppState = {
+const ReduxStoreStateMock: any = {
     accessControl: {
         isDevelopAllowed: true,
         isManageAllowed: true

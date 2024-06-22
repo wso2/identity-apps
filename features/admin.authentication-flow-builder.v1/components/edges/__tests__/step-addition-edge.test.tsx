@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { render, screen } from "@wso2is/unit-test-configs/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { Position, ReactFlowProvider } from "reactflow";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../test-configs/utils";
 import StepAdditionEdge, { StepAdditionEdgePropsInterface } from "../step-addition-edge";
 
 describe.skip("StepAdditionEdge", () => {
