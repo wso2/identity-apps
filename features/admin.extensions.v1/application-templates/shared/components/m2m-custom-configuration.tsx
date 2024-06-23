@@ -285,7 +285,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                             data-componentid={ `${ componentId }-scope-readonly-input` }
                                         />
                                     </Form.Field>
-                                )}
+                                ) }
                                 <Form.Field>
                                     <label>
                                         {
