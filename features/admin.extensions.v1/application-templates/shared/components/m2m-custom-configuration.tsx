@@ -168,6 +168,10 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
         tokenRequest = tokenRequest.concat(` -d 'scope=${copyScopesValue}'`);
     }
 
+    const isScopeAvailable = (value: string) => {
+        return value != null && value.trim() !== "";
+    };
+
     const renderConfigurationFields = (): ReactElement => {
         return (
             <>
@@ -250,36 +254,38 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                         className="mt-2"
                                     />
                                 </Form.Field>
-                                <Form.Field>
-                                    <label>
-                                        {
-                                            t("extensions:develop.applications.quickstart.mobileApp" +
-                                                ".configurations.scope.label")
-                                        }
-                                        <Hint className="mt-0 mb-0" popup>
-                                            <Trans
-                                                i18nKey={
-                                                    "extensions:develop.applications.quickstart" +
-                                                    ".m2m.configurations.scopes"
-                                                }
-                                            >
-                                                The list of authorized scopes.
-                                                Include required scopes by authorizing APIs through the
-                                                <a
-                                                    className="link pointing"
-                                                    onClick={ onAPIAuthorizationTabClick }
+                                { isScopeAvailable(copyScopesValue) && (
+                                    <Form.Field>
+                                        <label>
+                                            {
+                                                t("extensions:develop.applications.quickstart.mobileApp" +
+                                                    ".configurations.scope.label")
+                                            }
+                                            <Hint className="mt-0 mb-0" popup>
+                                                <Trans
+                                                    i18nKey={
+                                                        "extensions:develop.applications.quickstart" +
+                                                        ".m2m.configurations.scopes"
+                                                    }
                                                 >
-                                                    API Authorization
-                                                </a>
-                                                tab.
-                                            </Trans>
-                                        </Hint>
-                                    </label>
-                                    <CopyInputField
-                                        value={ copyScopesValue }
-                                        data-componentid={ `${ componentId }-scope-readonly-input` }
-                                    />
-                                </Form.Field>
+                                                    The list of authorized scopes.
+                                                    Include required scopes by authorizing APIs through the
+                                                    <a
+                                                        className="link pointing"
+                                                        onClick={ onAPIAuthorizationTabClick }
+                                                    >
+                                                        API Authorization
+                                                    </a>
+                                                    tab.
+                                                </Trans>
+                                            </Hint>
+                                        </label>
+                                        <CopyInputField
+                                            value={ copyScopesValue }
+                                            data-componentid={ `${ componentId }-scope-readonly-input` }
+                                        />
+                                    </Form.Field>
+                                )}
                                 <Form.Field>
                                     <label>
                                         {
