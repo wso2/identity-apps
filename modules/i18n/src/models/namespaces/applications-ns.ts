@@ -1007,6 +1007,34 @@ export interface ApplicationsNS {
                 };
             };
         };
+        applicationsSettings: {
+            fields :{
+                dcrEndpoint: {
+                    label: string,
+                    hint: string
+                };
+                ssaJwks: {
+                    label: string,
+                    placeholder: string,
+                    hint: string,
+                    validations: {
+                        empty: string
+                    }
+                };
+                mandateSSA: {
+                    label: string,
+                    hint: string
+                };
+                authenticationRequired: {
+                    label: string,
+                    hint: string
+                };
+                enforceFapi: {
+                    label: string,
+                    hint: string
+                };
+            }
+        };
         generalDetails: {
             fields: {
                 name: {

@@ -239,6 +239,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("APPLICATION_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("../../admin.applications.v1/pages/applications-settings")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "applicationsSettings",
+                    name: "Applications Settings",
+                    path: AppConstants.getPaths().get("APPLICATIONS_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() => import("@wso2is/admin.applications.v1/pages/applications")),
