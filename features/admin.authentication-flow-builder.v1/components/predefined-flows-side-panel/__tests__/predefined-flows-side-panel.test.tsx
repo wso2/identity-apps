@@ -17,7 +17,7 @@
  */
 
 import ResourceEndpointsProvider from "@wso2is/admin.core.v1/providers/resource-enpoints-provider";
-import { render, screen } from "@wso2is/unit-test-configs/utils";
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";

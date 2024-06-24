@@ -47,10 +47,10 @@ module.exports = {
         "@wso2is/form": "<rootDir>/../modules/form/dist",
         "@wso2is/forms": "<rootDir>/../modules/forms/dist",
         "@wso2is/react-components": "<rootDir>/../modules/react-components/dist",
-        "\\.(css|less|scss)$": "<rootDir>/../modules/unit-test-configs/__mocks__/style-file.ts",
+        "\\.(css|less|scss)$": "<rootDir>/../modules/unit-testing/__mocks__/style-file.ts",
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$":
-            "<rootDir>/../modules/unit-test-configs/__mocks__/file.ts",
-        "\\.svg": "<rootDir>/../modules/unit-test-configs/__mocks__/svgr.ts",
+            "<rootDir>/../modules/unit-testing/__mocks__/file.ts",
+        "\\.svg": "<rootDir>/../modules/unit-testing/__mocks__/svgr.ts",
         "^lodash-es/(.*)$": "<rootDir>/../node_modules/lodash/$1",
         "^react($|/.+)": "<rootDir>/node_modules/react$1",
         "uuid": "<rootDir>/node_modules/uuid"
@@ -62,7 +62,7 @@ module.exports = {
         "."
     ],
     setupFilesAfterEnv: [
-        "<rootDir>/../modules/unit-test-configs/setup-test.ts"
+        "<rootDir>/../modules/unit-testing/setup-test.ts"
     ],
     testEnvironment: "jest-environment-jsdom-global",
     testMatch: [
