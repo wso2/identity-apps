@@ -16,12 +16,9 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api";
 import { ApplicationList } from "@wso2is/admin.applications.v1/components/application-list";
-import {
-    ConnectionInterface,
-    ConnectionTemplateInterface
-} from "@wso2is/admin.connections.v1/models/connection";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
@@ -31,8 +28,6 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import ApplicationSelectionModal from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, Link, LinkButton, ListLayout, PageHeader, Text } from "@wso2is/react-components";
@@ -40,7 +35,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo,
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, Grid, PaginationProps } from "semantic-ui-react";
+import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
 import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
@@ -48,16 +43,7 @@ import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
 /**
  * Prop types of the component.
  */
-interface SIWEAuthenticationProviderQuickStartPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * IdP Object.
-     */
-    identityProvider: ConnectionInterface;
-    /**
-     * IdP Template.
-     */
-    template: ConnectionTemplateInterface;
-}
+type SIWEAuthenticationProviderQuickStartPropsInterface = IdentifiableComponentInterface;
 
 const ITEMS_PER_PAGE: number = 6;
 
@@ -86,12 +72,8 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
-        hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    const isApplicationReadAccessAllowed: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
     const {
         data: applicationList,
@@ -193,7 +175,11 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
                             }
                         >
                             Choose the { isApplicationReadAccessAllowed ? (
-                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                                <Link
+                                    external={ false }
+                                    data-componentid="siwe-quick-start-select-application-link"
+                                    onClick={ () => setShowApplicationModal(true) }
+                                >
                                 application </Link>) : "application" }
                             for which you want to set up Sign In With Ethereum.
                         </Trans>
@@ -258,17 +244,102 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
             </Grid>
             {
                 showApplicationModal && (
-                    <ApplicationSelectionModal
-                        data-testid={ `${ componentId }-application-selection-modal` }
-                        open={ showApplicationModal }
+                    <Modal
+                        data-testid={ componentId }
+                        open={ true }
+                        className="wizard application-create-wizard"
+                        dimmer="blurring"
+                        size="large"
                         onClose={ () => setShowApplicationModal(false) }
-                        heading={
-                            t("extensions:develop.identityProviders.github.quickStart.addLoginModal.heading")
-                        }
-                        subHeading={
-                            t("extensions:develop.identityProviders.github.quickStart.addLoginModal.subHeading")
-                        }
-                    />
+                        closeOnDimmerClick={ false }
+                        closeOnEscape
+                    >
+                        <Modal.Header className="wizard-header">
+                            { t("extensions:develop.identityProviders.siwe.quickStart.addLoginModal.heading") }
+                            <Heading as="h6">
+                                {
+                                    t("extensions:develop.identityProviders.siwe.quickStart." +
+                                    "addLoginModal.subHeading")
+                                }
+                            </Heading>
+                        </Modal.Header>
+                        <Modal.Content className="content-container" scrolling>
+                            <ListLayout
+                                advancedSearch={ (
+                                    <AdvancedSearchWithBasicFilters
+                                        onFilter={ handleApplicationFilter }
+                                        filterAttributeOptions={ [
+                                            {
+                                                key: 0,
+                                                text: t("common:name"),
+                                                value: "name"
+                                            }
+                                        ] }
+                                        filterAttributePlaceholder={
+                                            t("applications:advancedSearch.form." +
+                                            "inputs.filterAttribute.placeholder")
+                                        }
+                                        filterConditionsPlaceholder={
+                                            t("applications:advancedSearch.form." +
+                                            "inputs.filterCondition.placeholder")
+                                        }
+                                        filterValuePlaceholder={
+                                            t("applications:advancedSearch.form." +
+                                            "inputs.filterValue.placeholder")
+                                        }
+                                        placeholder={ t("applications:" +
+                                        "advancedSearch.placeholder") }
+                                        defaultSearchAttribute="name"
+                                        defaultSearchOperator="co"
+                                        triggerClearQuery={ triggerClearQuery }
+                                        data-testid={ `${ componentId }-list-advanced-search` }
+                                    />
+                                ) }
+                                currentListSize={ applicationList?.count }
+                                listItemLimit={ listItemLimit }
+                                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                                onPageChange={ handlePaginationChange }
+                                showPagination={ applicationList?.totalResults > listItemLimit }
+                                totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
+                                totalListSize={ applicationList?.totalResults }
+                                data-testid={ `${ componentId }-list-layout` }
+                                showTopActionPanel={ applicationList?.totalResults > listItemLimit }
+                                paginationOptions={ {
+                                    itemsPerPageDropdownLowerLimit: ITEMS_PER_PAGE
+                                } }
+                            >
+                                <ApplicationList
+                                    isSetStrongerAuth
+                                    list={ applicationList }
+                                    onEmptyListPlaceholderActionClick={
+                                        () => history.push(
+                                            AppConstants.getPaths().get("APPLICATION_TEMPLATES")
+                                        )
+                                    }
+                                    onSearchQueryClear={ handleSearchQueryClear }
+                                    searchQuery={ searchQuery }
+                                    isLoading={ isApplicationListFetchRequestLoading }
+                                    isRenderedOnPortal={ true }
+                                    data-testid={ `${ componentId }-list` }
+                                />
+                            </ListLayout>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Grid>
+                                <Grid.Row column={ 1 }>
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                        <LinkButton
+                                            data-testid={ `${ componentId }-cancel-button` }
+                                            floated="left"
+                                            onClick={ () => setShowApplicationModal(false) }
+                                        >
+                                            { t("common:cancel") }
+                                        </LinkButton>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Modal.Actions>
+                    </Modal>
                 )
             }
         </>
