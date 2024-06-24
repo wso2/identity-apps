@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { fireEvent, render, screen, waitFor, within } from "@wso2is/unit-test-configs/utils";
+import { fireEvent, render, screen, waitFor, within } from "@wso2is/unit-testing/utils";
 import "@testing-library/jest-dom";
 import React from "react";
 import {

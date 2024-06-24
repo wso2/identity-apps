@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { fireEvent, render, screen, within } from "@wso2is/unit-test-configs/utils";
+import { fireEvent, render, screen, within } from "@wso2is/unit-testing/utils";
 import React from "react";
 import { RoleBasics } from "../role-basics";
 

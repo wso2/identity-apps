@@ -62,7 +62,7 @@ module.exports = {
         "src"
     ],
     setupFilesAfterEnv: [
-        "<rootDir>/../../modules/unit-test-configs/setup-test.ts"
+        "<rootDir>/../../modules/unit-testing/setup-test.ts"
     ],
     testEnvironment: "jest-environment-jsdom-global",
     testMatch: [

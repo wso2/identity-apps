@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { render, screen } from "@wso2is/unit-test-configs/utils";
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { Position, ReactFlowProvider } from "reactflow";
