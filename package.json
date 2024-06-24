@@ -198,8 +198,6 @@
     },
     "pnpm": {
         "overrides": {
-            "react": "18.3.1",
-            "react-dom": "18.3.1",
             "@mui/material": "5.13.0",
             "@types/react": "18.0.18",
             "webpack": "5.84.1"
