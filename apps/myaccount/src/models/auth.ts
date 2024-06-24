@@ -28,6 +28,7 @@ export interface AuthStateInterface {
     location: string;
     loginInit: boolean;
     logoutInit: boolean;
+    orgName: string;
     profileSchemas: ProfileSchema[];
     profileInfo: BasicProfileInterface;
     tenantDomain?: string;
