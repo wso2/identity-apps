@@ -126,7 +126,7 @@ export interface PasswordRecoveryFormUpdatableConfigsInterface {
     /**
      * Expiry time for the recovery link.
      */
-    "Recovery.ExpiryTime": any;
+    "Recovery.ExpiryTime": number;
     /**
      * Enable email based recovery.
      */

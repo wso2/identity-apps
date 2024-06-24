@@ -45,9 +45,9 @@ import {
 import { QueryParameters, Scopes } from "../../addons";
 import {
     ColorPickerAdapterPropsInterface,
-    __DEPRECATED__CheckboxAdapterPropsInterface,
     FieldButtonTypes,
-    RadioAdapterPropsInterface
+    RadioAdapterPropsInterface,
+    __DEPRECATED__CheckboxAdapterPropsInterface
 } from "../../models";
 
 /**
@@ -65,7 +65,7 @@ const ENTER_KEY: string = "Enter";
 export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
-debugger
+
     return (
         <Form.Input
             aria-label={ childFieldProps?.ariaLabel }
