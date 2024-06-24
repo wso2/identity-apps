@@ -32,6 +32,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import ApplicationSelectionModal from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -41,7 +42,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo,
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
+import { DropdownProps, Grid, PaginationProps } from "semantic-ui-react";
 import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
@@ -267,103 +268,19 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
             </Grid>
             {
                 showApplicationModal && (
-                    <Modal
-                        data-testid={ testId }
-                        open={ true }
-                        className="wizard application-create-wizard"
-                        dimmer="blurring"
-                        size="large"
+                    <ApplicationSelectionModal
+                        data-testid={ `${ testId }-application-selection-modal` }
+                        open={ showApplicationModal }
                         onClose={ () => setShowApplicationModal(false) }
-                        closeOnDimmerClick={ false }
-                        closeOnEscape
-                    >
-                        <Modal.Header className="wizard-header">
-                            { t("extensions:develop.identityProviders.google.quickStart.addLoginModal.heading") }
-                            <Heading as="h6">
-                                {
-                                    t("extensions:develop.identityProviders.google.quickStart." +
-                                        "addLoginModal.subHeading")
-                                }
-                            </Heading>
-                        </Modal.Header>
-                        <Modal.Content className="content-container" scrolling>
-                            <ListLayout
-                                advancedSearch={
-                                    (<AdvancedSearchWithBasicFilters
-                                        onFilter={ handleApplicationFilter }
-                                        filterAttributeOptions={ [
-                                            {
-                                                key: 0,
-                                                text: t("common:name"),
-                                                value: "name"
-                                            }
-                                        ] }
-                                        filterAttributePlaceholder={
-                                            t("applications:advancedSearch.form." +
-                                                "inputs.filterAttribute.placeholder")
-                                        }
-                                        filterConditionsPlaceholder={
-                                            t("applications:advancedSearch.form." +
-                                                "inputs.filterCondition.placeholder")
-                                        }
-                                        filterValuePlaceholder={
-                                            t("applications:advancedSearch.form." +
-                                                "inputs.filterValue.placeholder")
-                                        }
-                                        placeholder={ t("applications:" +
-                                            "advancedSearch.placeholder") }
-                                        defaultSearchAttribute="name"
-                                        defaultSearchOperator="co"
-                                        triggerClearQuery={ triggerClearQuery }
-                                        data-testid={ `${ testId }-list-advanced-search` }
-                                    />)
-                                }
-                                currentListSize={ appList.count }
-                                listItemLimit={ listItemLimit }
-                                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                                onPageChange={ handlePaginationChange }
-                                showPagination={ appList?.totalResults > listItemLimit }
-                                totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
-                                totalListSize={ appList.totalResults }
-                                data-testid={ `${ testId }-list-layout` }
-                                showTopActionPanel={ appList?.totalResults > listItemLimit }
-                                paginationOptions={ {
-                                    itemsPerPageDropdownLowerLimit: ITEMS_PER_PAGE
-                                } }
-                            >
-                                <ApplicationList
-                                    isSetStrongerAuth
-                                    list={ appList }
-                                    onEmptyListPlaceholderActionClick={
-                                        () => history.push(
-                                            AppConstants.getPaths().get("APPLICATION_TEMPLATES")
-                                        )
-                                    }
-                                    onSearchQueryClear={ handleSearchQueryClear }
-                                    searchQuery={ searchQuery }
-                                    isLoading={ isApplicationListRequestLoading }
-                                    isRenderedOnPortal={ true }
-                                    data-testid={ `${ testId }-list` }
-                                />
-                            </ListLayout>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Grid>
-                                <Grid.Row column={ 1 }>
-                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                        <LinkButton
-                                            data-testid={ `${ testId }-cancel-button` }
-                                            floated="left"
-                                            onClick={ () => setShowApplicationModal(false) }
-                                        >
-                                            { t("common:cancel") }
-                                        </LinkButton>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Modal.Actions>
-                    </Modal>
-                ) }
+                        heading={
+                            t("extensions:develop.identityProviders.github.quickStart.addLoginModal.heading")
+                        }
+                        subHeading={
+                            t("extensions:develop.identityProviders.github.quickStart.addLoginModal.subHeading")
+                        }
+                    />
+                )
+            }
         </>
     );
 };
