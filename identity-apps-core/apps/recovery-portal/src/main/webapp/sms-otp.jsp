@@ -38,7 +38,9 @@
 
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
-<%@ include file="includes/branding-preferences.jsp" %>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%!
     private static final String LOCAL_SMS_OTP_AUTHENTICATOR_ID = "sms-otp-authenticator";
