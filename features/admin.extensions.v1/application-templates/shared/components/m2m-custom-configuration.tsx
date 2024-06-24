@@ -168,7 +168,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
         tokenRequest = tokenRequest.concat(` -d 'scope=${copyScopesValue}'`);
     }
 
-    const isScopeAvailable = (value: string) => {
+    const isScopeAvailable = (value: string): boolean => {
         return value != null && value.trim() !== "";
     };
 
