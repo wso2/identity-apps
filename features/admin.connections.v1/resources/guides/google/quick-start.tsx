@@ -16,33 +16,20 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api";
-import { ApplicationList } from "@wso2is/admin.applications.v1/components/application-list";
-import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models";
-import {
-    ConnectionInterface,
-    ConnectionTemplateInterface
-} from "@wso2is/admin.connections.v1/models/connection";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1";
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
-import { history } from "@wso2is/admin.core.v1/helpers";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import ApplicationSelectionModal from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, Heading, Link, LinkButton, ListLayout, PageHeader, Text } from "@wso2is/react-components";
-import { AxiosError } from "axios";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { DropdownProps, Grid, PaginationProps } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { Grid } from "semantic-ui-react";
 import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
@@ -50,12 +37,7 @@ import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
 /**
  * Prop types of the component.
  */
-interface GoogleQuickStartPropsInterface extends TestableComponentInterface {
-    identityProvider: ConnectionInterface;
-    template: ConnectionTemplateInterface;
-}
-
-const ITEMS_PER_PAGE: number = 6;
+type GoogleQuickStartPropsInterface = TestableComponentInterface;
 
 /**
  * Quick start content for the Google IDP template.
@@ -73,15 +55,7 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch: Dispatch = useDispatch();
-
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
-    const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(ITEMS_PER_PAGE);
-    const [ appList, setAppList ] = useState<ApplicationListInterface>({});
-    const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -90,103 +64,6 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
         hasRequiredScopes(
             featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
-
-    /**
-     * Retrieves the list of applications.
-     *
-     * @param limit - List limit.
-     * @param offset - List offset.
-     * @param filter - Search query.
-     */
-    const getAppLists = (limit: number, offset: number, filter: string): void => {
-        if (!isApplicationReadAccessAllowed) {
-            return;
-        }
-
-        setApplicationListRequestLoading(true);
-
-        getApplicationList(limit, offset, filter)
-            .then((response: ApplicationListInterface) => {
-                setAppList(response);
-            })
-            .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("applications:notifications.fetchApplications" +
-                            ".error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("applications:notifications.fetchApplications" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:notifications.fetchApplications." +
-                        "genericError.message")
-                }));
-            })
-            .finally(() => {
-                setApplicationListRequestLoading(false);
-            });
-    };
-
-    /**
-     * Called on every `listOffset` & `listItemLimit` change.
-     */
-    useEffect(() => {
-        getAppLists(listItemLimit, listOffset, null);
-    }, [ listOffset, listItemLimit ]);
-
-    /**
-     * Handles per page dropdown page.
-     *
-     * @param event - Mouse event.
-     * @param data - Dropdown data.
-     */
-    const handleItemsPerPageDropdownChange = (
-        event: MouseEvent<HTMLAnchorElement>,
-        data: DropdownProps
-    ): void => {
-        setListItemLimit(data.value as number);
-    };
-
-    /**
-     * Handles the pagination change.
-     *
-     * @param event - Mouse event.
-     * @param data - Pagination component data.
-     */
-    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
-    };
-
-    /**
-     * Handles the `onFilter` callback action from the
-     * application search component.
-     *
-     * @param query - Search query.
-     */
-    const handleApplicationFilter = (query: string): void => {
-        setSearchQuery(query);
-        if (query === "") {
-            getAppLists(listItemLimit, listOffset, null);
-        } else {
-            getAppLists(listItemLimit, listOffset, query);
-        }
-    };
-
-    /**
-     * Handles the `onSearchQueryClear` callback action.
-     */
-    const handleSearchQueryClear = (): void => {
-        getAppLists(listItemLimit, listOffset, null);
-        setSearchQuery("");
-        setTriggerClearQuery(!triggerClearQuery);
-    };
 
     /**
      * Vertical Stepper steps.
@@ -203,8 +80,13 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                             }
                         >
                             Choose the { isApplicationReadAccessAllowed ? (
-                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
-                                application </Link>) : "application" }
+                                <Link
+                                    data-componentid="google-idp-quick-start-application-selection-modal"
+                                    external={ false }
+                                    onClick={ () => setShowApplicationModal(true) }
+                                >
+                                    application
+                                </Link>) : "application" }
                             for which you want to set up Google login.
                         </Trans>
                     </Text>
