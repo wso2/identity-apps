@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.19.31
+
+### Patch Changes
+
+- [#6477](https://github.com/wso2/identity-apps/pull/6477) [`9aa4bc23ba1398e05af3b9ea5f4c3003df4df3d3`](https://github.com/wso2/identity-apps/commit/9aa4bc23ba1398e05af3b9ea5f4c3003df4df3d3) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Append fidp param on tenant switch
+
 ## 2.19.30
 
 ### Patch Changes
