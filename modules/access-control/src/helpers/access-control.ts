@@ -65,7 +65,6 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  * @param allowedScopes - `string` Set of allowed scopes.
  * @param organizationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
  * `modules/common/src/constants/organization-constants.ts`.
- * @param isLegacyRuntimeDisabled - `boolean` Is legacy runtime disabled. This is used to ensure backward compatibility.
  *
  * @returns `boolean` True is scopes are enough and false if not.
  */
@@ -136,8 +135,7 @@ export const hasRequiredScopes = (
 export const isPortalAccessGranted = <T = unknown>(
     featureConfig: T,
     allowedScopes: string,
-    organzationType?: string,
-    isLegacyRuntimeDisabled?: boolean
+    organzationType?: string
 ): boolean => {
     const isDefined: boolean = featureConfig && !isEmpty(featureConfig);
 
