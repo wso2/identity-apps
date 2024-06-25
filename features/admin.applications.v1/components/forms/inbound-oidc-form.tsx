@@ -904,7 +904,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
     * Retrieves the list of hybrid flow response types.
-    * 
+    *
     * @returns List of response types with labels and values.
     */
     const getHybridFlowResponseTypes = (): CheckboxChild[] => {
@@ -968,7 +968,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Retrieves the hint description for a given hybrid flow response type value.
-     * 
+     *
      * @param value - The hybrid flow response type value.
      * @returns The hint description corresponding to the response type.
      */
