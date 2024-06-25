@@ -902,20 +902,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         ]
     ]);
 
-    const getHybridFlowResponseTypesHintDescription = (value: string): string => {
-        switch (value) {
-            case ApplicationManagementConstants.CODE_TOKEN:
-                return t("applications:forms.inboundOIDC.fields.hybridFlow.hybridFlowResponseType.children." +
-                    "code_token.hint");
-            case ApplicationManagementConstants.CODE_IDTOKEN_TOKEN:
-                return t("applications:forms.inboundOIDC.fields.hybridFlow.hybridFlowResponseType.children." +
-                    "code_idtoken_token.hint");
-            default:
-                return null;
-        }
-    };
-
-    const getHybridFlowResponseTypes = () => {
+    /**
+    * Retrieves the list of hybrid flow response types.
+    * 
+    * @returns List of response types with labels and values.
+    */
+    const getHybridFlowResponseTypes = (): CheckboxChild[] => {
         type CheckboxChildWithIndex = CheckboxChild & { index?: number; };
         const allowedList: CheckboxChildWithIndex[] = [];
 
@@ -972,6 +964,25 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         return label;
+    };
+
+    /**
+     * Retrieves the hint description for a given hybrid flow response type value.
+     * 
+     * @param value - The hybrid flow response type value.
+     * @returns The hint description corresponding to the response type.
+     */
+    const getHybridFlowResponseTypesHintDescription = (value: string): string => {
+        switch (value) {
+            case ApplicationManagementConstants.CODE_TOKEN:
+                return t("applications:forms.inboundOIDC.fields.hybridFlow.hybridFlowResponseType.children." +
+                    "code_token.hint");
+            case ApplicationManagementConstants.CODE_IDTOKEN_TOKEN:
+                return t("applications:forms.inboundOIDC.fields.hybridFlow.hybridFlowResponseType.children." +
+                    "code_idtoken_token.hint");
+            default:
+                return null;
+        }
     };
 
     /**
