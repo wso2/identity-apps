@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
@@ -29,7 +30,6 @@ import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import { LinkButton, Message, PasswordValidation, PrimaryButton } from "@wso2is/react-components";
@@ -120,7 +120,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const hasLoginAndRegistrationFeaturePermissions: boolean = useRequiredScopes(
+        featureConfig?.loginAndRegistration?.scopes?.feature
+    );
 
     const {
         data: validationConfig
@@ -320,9 +323,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                                 Password reset via recovery email is not enabled.
                                                 Please make sure to enable it from
                                                 {
-                                                    hasRequiredScopes(featureConfig?.loginAndRegistration,
-                                                        featureConfig?.loginAndRegistration?.scopes?.feature,
-                                                        allowedScopes)
+                                                    hasLoginAndRegistrationFeaturePermissions
                                                         ? (
                                                             <a
                                                                 onClick={ handleLoginAndRegistrationPageRedirect }

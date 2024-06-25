@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppState,
     FeatureConfigInterface,
     UserListInterface,
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -90,8 +90,11 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
     const [ resendUserInvite, setResendUserInvite ] = useState<UserInviteInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasUsersUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.update
+    );
 
     const handleDeleteInvite = (traceID: string): Promise<void> => {
 
@@ -376,11 +379,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                     {
                         hidden: () =>
                             userTypeSelection === UserAccountTypesMain.EXTERNAL
-                            || !hasRequiredScopes(
-                                featureConfig?.users,
-                                featureConfig?.users?.scopes?.update,
-                                allowedScopes
-                            ),
+                            || !hasUsersUpdatePermissions,
                         icon: (): SemanticICONS => "redo alternate",
                         onClick: (e: SyntheticEvent, invite: UserInviteInterface): void => {
                             setResendUserInvite(invite);
@@ -391,8 +390,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                     },
                     {
                         "data-componentid": `${ componentId }-users-list-item-delete-invitation-button`,
-                        hidden: () => !hasRequiredScopes(
-                            featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes),
+                        hidden: () => !hasUsersUpdatePermissions,
                         icon: (): SemanticICONS => "trash alternate",
                         onClick: (e: SyntheticEvent, invite: UserInviteInterface): void => {
                             setDeleteUserInvite(invite);

@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
@@ -53,13 +53,14 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isManagedByChoreo, setIsManagedByChoreo ] = useState<boolean>(false);
     const [ apiResourceId, setAPIResourceId ] = useState<string>(null);
 
     const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasApiResourcesUpdatePermissions: boolean = useRequiredScopes(featureConfig?.apiResources?.scopes?.update);
 
     const {
         data: apiResourceData,
@@ -79,8 +80,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
      * The following useEffect is used to handle if the user has the required scopes to update the API resource
      */
     useEffect(() => {
-        if (!hasRequiredScopes(
-            featureConfig?.apiResources, featureConfig?.apiResources?.scopes?.update, allowedScopes)) {
+        if (!hasApiResourcesUpdatePermissions) {
             setReadOnly(true);
         }
     }, [ apiResourceData ]);
