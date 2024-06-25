@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.3.10
+
+### Patch Changes
+
+- [#6475](https://github.com/wso2/identity-apps/pull/6475) [`93caef578c2533f637ea1c679a01987600ac9def`](https://github.com/wso2/identity-apps/commit/93caef578c2533f637ea1c679a01987600ac9def) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Enable self registration link when email otp is the only step in authentication flow
+
 ## 2.3.9
 
 ### Patch Changes
