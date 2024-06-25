@@ -56,6 +56,14 @@
                 "parallel": false
             }
         },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test -- --coverage --collect-coverage",
+                "cwd": "modules/react-components",
+                "parallel": false
+            }
+        },
         "storybook": {
             "executor": "@nx/storybook:storybook",
             "options": {

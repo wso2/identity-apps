@@ -183,6 +183,14 @@
                 "cwd": "apps/myaccount",
                 "parallel": false
             }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test -- --coverage --collect-coverage",
+                "cwd": "apps/myaccount",
+                "parallel": false
+            }
         }
     }
 }

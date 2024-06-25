@@ -52,6 +52,14 @@
                 "cwd": "modules/dynamic-forms",
                 "parallel": false
             }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test -- --coverage --collect-coverage",
+                "cwd": "modules/dynamic-forms",
+                "parallel": false
+            }
         }
     }
 }

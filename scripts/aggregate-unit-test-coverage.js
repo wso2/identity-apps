@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,14 +25,7 @@ const lernaManifest = require("../lerna.json");
  * TODO: Remove this once the logger is added.
  * Tracked here https://github.com/wso2/product-is/issues/11650.
  */
-const logger = {
-    // eslint-disable-next-line no-console
-    debug: console.log,
-    // eslint-disable-next-line no-console
-    error: console.error,
-    // eslint-disable-next-line no-console
-    info: console.log
-};
+const logger = console;
 
 const debug = process.argv.indexOf("--debug") > -1 || true;        // CLI arg to set the debug mode.
 const silent = process.argv.indexOf("--silent") > -1 || false;     // CLI arg to set the silent mode.

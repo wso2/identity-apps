@@ -34,6 +34,14 @@
                 "cwd": "modules/access-control",
                 "parallel": false
             }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test -- --coverage --collect-coverage",
+                "cwd": "modules/access-control",
+                "parallel": false
+            }
         }
     }
 }
