@@ -1769,7 +1769,7 @@ export const myAccount: MyAccountNS = {
             heading: "මුරපදය සාදන්න"
         },
         federatedAssociations: {
-            description: "මෙම ගිණුම හා සම්බන්ධ වෙනත් අනන්‍යතා සපයන්නන්ගෙන් ඔබගේ ගිණුම් බලන්න",
+            description: "මෙම ගිණුම සමඟ සම්බන්ධ වී ඇති වෙනත් සම්බන්ධතා වලින් ඔබගේ ගිණුම් බලන්න",
             heading: "බාහිර පිවිසුම්"
         },
         linkedAccounts: {
