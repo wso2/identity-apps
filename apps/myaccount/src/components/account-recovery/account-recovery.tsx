@@ -213,7 +213,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                         isNotificationRecoverySMSOTPEnabled ? (
                                 <SMSRecovery
                                     onAlertFired={ onAlertFired }
-                                    data-testid={ `${testId}-settings-section-sms-recovery` }
+                                    data-componentid={ `${testId}-settings-section-sms-recovery` }
                                 />
                             ) : null }
                     </List.Item>

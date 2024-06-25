@@ -39,16 +39,23 @@ import { EditSection } from "../../../shared";
 import "./sms-recovery.scss";
 
 /**
- * SMS key.
+ * SMS form type to be used as active form key.
  */
-const SMS: string = "sms";
+const FORM_TYPE_SMS: string = "sms";
 
 /**
  * Prop types for the SMSRecoveryComponent component.
  * Also see {@link SMSRecovery.defaultProps}
  */
 interface SMSRecoveryProps extends IdentifiableComponentInterface {
+    /**
+     * The function to be called when an alert is fired.
+     * @param alert - The fired event.
+     */
     onAlertFired: (alert: AlertInterface) => void;
+    /**
+     * Enable editing mobile number.
+     */
     enableEditMobile?: boolean;
 }
 
@@ -147,7 +154,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                 dispatch(setActiveForm(null));
             })
             .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.detail) {
+                if (error?.response?.data?.detail) {
                     onAlertFired({
                         description: t(
                             "myAccount:components.accountRecovery.SMSRecovery." +
@@ -217,7 +224,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
      * This is called when the edit icon is clicked.
      */
     const handleEdit = () : void => {
-        dispatch(setActiveForm(CommonConstants.SECURITY + SMS));
+        dispatch(setActiveForm(CommonConstants.SECURITY + FORM_TYPE_SMS));
     };
 
     /**
@@ -241,7 +248,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
      * elements based on if the edit icon has been clicked
      */
     const showEditView = () : ReactElement => {
-        if (activeForm !== CommonConstants.SECURITY+SMS) {
+        if (activeForm !== CommonConstants.SECURITY+FORM_TYPE_SMS) {
             return (
                 <Grid padded>
                     <Grid.Row columns={ 2 }>
@@ -330,18 +337,18 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                                                     { `${componentId}-edit-section-form-mobile-field` }
                                                                 autoFocus={ true }
                                                                 readOnly={ !enableEditMobile }
-                                                                label={ t( "myAccount:components.accountRecovery." +
+                                                                label={ t("myAccount:components.accountRecovery." +
                                                                 "SMSRecovery.forms.mobileResetForm.inputs." +
                                                                 "mobile.label"
                                                                 ) }
                                                                 onSubmit={ handleSubmit }
                                                                 name="mobile"
-                                                                placeholder={ t( "myAccount:components." +
+                                                                placeholder={ t("myAccount:components." +
                                                                 "accountRecovery.SMSRecovery.forms" +
                                                                 ".mobileResetForm.inputs.mobile.placeholder"
                                                                 ) }
                                                                 required={ true }
-                                                                requiredErrorMessage={ t( "myAccount:" +
+                                                                requiredErrorMessage={ t("myAccount:" +
                                                                 "components.accountRecovery.SMSRecovery.forms" +
                                                                 ".mobileResetForm.inputs.mobile.validations.empty"
                                                                 ) }
@@ -355,7 +362,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                                                             ".forms.mobileResetForm.inputs.mobile."
                                                                             + "validations.empty"
                                                                             ).toString();
-                                                                        } else if ( !FormValidation
+                                                                        } else if (!FormValidation
                                                                             .mobileNumber(value.toString())) {
                                                                             return t("myAccount:components." +
                                                                             "accountRecovery.SMSRecovery" +
@@ -369,7 +376,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                                         <>
                                                             <p className={ "small-description" }>
                                                                 <Icon color="grey" floated="left" name="info circle" />
-                                                                { t( "myAccount:components.profile.forms." +
+                                                                { t("myAccount:components.profile.forms." +
                                                                 "mobileChangeForm.inputs.mobile.note"
                                                                 ) }
                                                             </p>
