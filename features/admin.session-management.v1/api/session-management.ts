@@ -17,15 +17,15 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { Config } from "../../admin.core.v1/configs";
-import useRequest, { 
+import { Config } from "@wso2is/admin.core.v1/configs";
+import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { SessionManagementConstants } from "../constants/session-management";
 import { PatchData, SessionManagementConfigAPIResponseInterface } from "../models/session-management";
 
@@ -35,7 +35,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 
 /**
  * Get session management configurations.
- * 
+ *
  * @returns the session management configurations of the tenant.
  */
 export const useSessionManagementConfig = <
@@ -52,7 +52,7 @@ export const useSessionManagementConfig = <
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
-    
+
     return {
         data,
         error: error,
@@ -64,13 +64,13 @@ export const useSessionManagementConfig = <
 
 /**
  * Update session management configurations.
- * 
+ *
  * @param data - the updated session management configurations.
  * @returns a promise to update the session management configurations.
  */
-export const updateSessionManagmentConfigurations = (data: PatchData[]): 
+export const updateSessionManagmentConfigurations = (data: PatchData[]):
     Promise<SessionManagementConfigAPIResponseInterface> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: data,
         headers: {

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -41,8 +43,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
-import { serverConfigurationConfig } from "../../admin.extensions.v1/configs/server-configuration";
 import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorFormFactory } from "../forms";
@@ -184,7 +184,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             // TODO: remove this once the ID is fixed
             updateData.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(
-                    serverConfigurationConfig.connectorToggleName["account-recovery-username"]
+                    serverConfigurationConfig.connectorToggleName[
+                        ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME ]
                 ),
                 value: data.checked.toString()
             });
@@ -250,6 +251,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             name: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA,
             value: data.checked.toString()
         });
+        if (ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME in
+            serverConfigurationConfig.connectorToggleName) {
+            updateRecoveryCaptchaData.properties.push({
+                name: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA,
+                value: data.checked.toString()
+            });
+        }
 
         updateGovernanceConnector(updateSSOCaptchaData, categoryId, connectorId)
             .then(() => {
@@ -287,10 +295,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
         if (
             serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
-            serverConfigurationConfig.autoEnableConnectorToggleProperty &&
-            // Recovery connector does not use  a connector property. If either email link or
-            // sms-otp recovery is enabled, the connector is considered to be enabled.
-            connectorId !== ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
+            serverConfigurationConfig.autoEnableConnectorToggleProperty
         ) {
             data.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(
@@ -575,6 +580,10 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE;
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
                 return ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE;
+            case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
+                return type === "username"
+                    ? undefined
+                    : ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE;
             case ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID:
                 return ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE;
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
@@ -613,6 +622,16 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                                     "botDetection.info.subSection2"
                                 ) }
                             </li>
+                            {
+                                serverConfigurationConfig.connectorToggleName[
+                                    ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME ] ?
+                                    (<li>
+                                        { t(
+                                            "extensions:manage.serverConfigurations.accountSecurity." +
+                                            "botDetection.info.subSection4"
+                                        ) }
+                                    </li>) : <></>
+                            }
                             <li>
                                 { t(
                                     "extensions:manage.serverConfigurations.accountSecurity." +

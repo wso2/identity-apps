@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -26,7 +27,6 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { ExtendedFeatureConfigInterface } from "../../../admin.extensions.v1/configs/models";
 import {
     APIResourcePanesCommonPropsInterface
 } from "../../models";

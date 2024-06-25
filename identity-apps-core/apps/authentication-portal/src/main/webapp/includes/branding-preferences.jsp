@@ -29,7 +29,10 @@
 <%@ page import="javax.servlet.http.HttpServletRequest" %>
 <%@ page import="java.util.*" %>
 
-<%-- TODO: UNIFICATION TASK: This block should be moved to a `locale-code-resolver.jsp` file. And used in `localize` as well. --%>
+<%--
+    TODO: UNIFICATION TASK: This block should be moved to a `locale-code-resolver.jsp` file. And used in `localize` as well.
+    Tracked By: https://github.com/wso2/product-is/issues/20372
+--%>
 <%!
     /**
     * Get the user's preferred locale based on the request, cookies, and URL parameters.

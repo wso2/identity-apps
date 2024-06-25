@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SettingsSection } from "./settings-section";
-import { AppConstants, history } from "../../admin.core.v1";
-import { serverConfigurationConfig } from "../../admin.extensions.v1/configs";
 import { getSettingsSectionIcons } from "../configs";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
@@ -172,10 +172,7 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
             header={ resolveConnectorTitle(connector) }
             onPrimaryActionClick={ handleSelection }
             primaryAction={ "Configure" }
-            connectorEnabled={ connector?.id === ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
-                ? undefined
-                : enableOption
-            }
+            connectorEnabled={ enableOption }
         >
         </SettingsSection>
     );

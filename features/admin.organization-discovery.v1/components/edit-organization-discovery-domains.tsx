@@ -25,6 +25,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import TextField from "@oxygen-ui/react/TextField";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -39,7 +40,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../admin.core.v1";
 import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import updateOrganizationDiscoveryAttributes from "../api/update-organization-email-domains";
 import {
@@ -213,6 +213,8 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
      * @param emailDomainList - Email domains.
      */
     const validateEmailDomainCreation = async (emailDomainList: string[]) => {
+        setEmailDomains(emailDomainList);
+
         // Convert email domain list to a lower case array.
         emailDomainList = emailDomainList.map((emailDomain: string) => emailDomain.toLowerCase());
 
@@ -221,6 +223,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
         if (!isEmailDomainValid) {
             setIsEmailDomainDataError(true);
             emailDomainList.pop();
+            setEmailDomains(emailDomainList);
 
             return;
         }
@@ -231,11 +234,10 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
         if (!isEmailDomainAvailable) {
             setIsEmailDomainAvailableError(true);
             emailDomainList.pop();
+            setEmailDomains(emailDomainList);
 
             return;
         }
-
-        setEmailDomains(emailDomainList);
     };
 
     return (
@@ -289,6 +291,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                 multiple
                                 freeSolo
                                 disableCloseOnSelect
+                                data-componentid={ `${componentId}-form-organization-email-domain-field` }
                                 size="small"
                                 id="tags-filled"
                                 options={ optionsArray.map((option: string) => option) }
@@ -319,6 +322,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                             } }
                                             { ...params }
                                             margin="dense"
+                                            data-componentid={ `${componentId}-email-domain-message-field` }
                                             error={ isEmailDomainDataError || isEmailDomainAvailableError }
                                             helperText= {
                                                 isEmailDomainDataError

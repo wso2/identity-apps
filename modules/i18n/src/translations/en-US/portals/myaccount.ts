@@ -1574,6 +1574,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error getting the verification on update preference"
+                    },
+                    genericError: {
+                        description: "Error occurred while getting the verification on update preference",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the verification on update preference",
+                        message: "verification on update preference retrieval successful"
+                    }
+                }
+            }
         }
     },
     modals: {
@@ -1755,7 +1773,7 @@ export const myAccount: MyAccountNS = {
             heading: "Create Password"
         },
         federatedAssociations: {
-            description: "View your accounts from other identity providers that are linked with this account",
+            description: "View your accounts from other connections that are linked with this account",
             heading: "Linked Social Accounts"
         },
         linkedAccounts: {

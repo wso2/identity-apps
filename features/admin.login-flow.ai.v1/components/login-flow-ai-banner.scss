@@ -16,29 +16,6 @@
  * under the License.
  */
 
-.login-flow-ai-banner {
-    &.hidden {
-        display: none;
-    }
-}
-
-.login-flow-ai-banner {
-    background: #FEFEFE;
-    align-items: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: right center;
-    border: 1px solid #DCDAD8;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    padding: 30px 25px;
-
-    &.collapsed, &.input {
-        flex-direction: column;
-    }
-}
-
 .login-flow-ai-banner-input {
     background-size: cover;
     background-repeat: no-repeat;
@@ -50,20 +27,18 @@
     border-radius: 8px;
 }
 
-.login-flow-ai-banner-container {
-    background: #FEFEFE;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: right top;
-    border: 1px solid #DCDAD8;
-    border-radius: 8px;
+.login-flow-ai-banner-history-container {
+    background: transparent;
+    width: 100%;
 }
 
-.login-flow-ai-banner-history {
-    border: none;
-    background: transparent;
-    padding: 0px 10px 25px;
-    width: 100%;
+.login-flow-ai-banner-history-title {
+    padding: 0px;
+}
+
+.login-flow-ai-banner-history-card-container {
+    padding: 0px;
+    margin: 0px;
 }
 
 .login-flow-ai-banner-history-card {
@@ -80,32 +55,9 @@
     max-height: 5.1rem;
 }
 
-.login-flow-ai-banner-history-card-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.login-flow-ai-banner-input-heading-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.login-flow-ai-banner-text-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 70%;
-}
-
-.login-flow-ai-banner-close-icon {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: flex-end;
+.login-flow-ai-banner-history-button {
+    padding: 3px 10px;
+    font-size: 0.8rem;
 }
 
 .login-flow-ai-banner-caret-icon {
@@ -123,71 +75,14 @@
     }
 }
 
-.login-flow-ai-banner-button-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.login-flow-ai-banner-heading {
-    font-size: 19px;
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-.login-flow-ai-banner-sub-heading {
-    font-size: 15px;
-    font-weight: 400;
-    color: #8D91A3;
-}
-
 .login-flow-ai-input-field {
+    margin-top: 1rem;
     width: 60%;
 }
 
 .login-flow-ai-input-field-inner {
-    background-color: #fefefe;
-    width: 100%;
-    padding: 0px 15px;
-    min-height: 62px;
-}
-
-.login-flow-ai-input-button {
-    padding: 10px;
-    margin-left: 10px;
-}
-
-.login-flow-ai-input-button-icon {
-    color: var(--oxygen-palette-gradients-primary-stop2);
-    height: 20px;
-    width: 20px;
-
-    &.disabled {
-        color: #cdcdcd;
-    }
-}
-
-.login-flow-ai-text {
-    background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.login-flow-ai-preview-chip {
-    color: #01698a;
-    background-color: #c3e6f6;
-    margin-bottom: 4px;
-    margin-left: 5px;
-}
-
-.login-flow-ai-disclaimer {
-    display: flex;
-    width: 60%;
-    color: #8D91A3;
-    margin-top: 5px;
-    margin-left: 2px;
+    min-height: 76px;
+    background-color: #ffffff;
 }
 
 .login-flow-ai-input-field-inner textarea::-webkit-scrollbar {
@@ -203,22 +98,18 @@
     border-radius: 10px; /* roundness of the scroll thumb */
 }
 
-.ai-icon {
-    fill: var(--oxygen-palette-gradients-primary-stop2);
-    height: 25px;
-    width: 25px;
-    margin-left: 1px;
-    transform: rotate(180deg);
-    -moz-transform: scale(-1, 1);
-    -webkit-transform: scale(-1, 1);
-    -o-transform: scale(-1, 1);
-    -ms-transform: scale(-1, 1);
-    transform: scale(-1, 1);
+.login-flow-ai-input-button-icon {
+    color: var(--oxygen-palette-gradients-primary-stop2);
 
-    &.primary-button {
-        fill: white;
-        height: 15px;
-        width: 15px;
-        margin-right: 5px;
+    &.disabled {
+        color: #cdcdcd;
     }
+}
+
+.login-flow-ai-disclaimer {
+    display: flex;
+    width: 60%;
+    color: #8D91A3;
+    margin-top: 5px;
+    margin-left: 2px;
 }

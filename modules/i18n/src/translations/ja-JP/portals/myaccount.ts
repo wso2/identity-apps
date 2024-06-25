@@ -1445,6 +1445,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "更新設定の検証を取得中にエラーが発生しました"
+                    },
+                    genericError: {
+                        description: "更新設定の検証を取得中にエラーが発生しました",
+                        message: "何か問題が発生しました"
+                    },
+                    success: {
+                        description: "更新設定の検証を正常に取得しました",
+                        message: "更新設定の取得の検証が成功しました"
+                    }
+                }
+            }
         }
     },
     "modals": {
@@ -1616,7 +1634,7 @@ export const myAccount: MyAccountNS = {
             "heading": "パスワードを作成します"
         },
         "federatedAssociations": {
-            "description": "このアカウントにリンクされている他のIDプロバイダーからアカウントを表示します",
+            "description": "このアカウントにリンクされている他の接続からアカウントを表示する",
             "heading": "リンクされたソーシャルアカウント"
         },
         "linkedAccounts": {

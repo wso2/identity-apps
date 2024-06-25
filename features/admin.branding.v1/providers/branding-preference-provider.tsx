@@ -16,6 +16,17 @@
  * under the License.
  */
 
+import { OrganizationType } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
+import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
+import {
+    BrandingPreferenceAPIResponseInterface,
+    BrandingSubFeatures,
+    PreviewScreenType,
+    PreviewScreenVariationType
+} from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,13 +41,8 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, u
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { OrganizationType } from "../../admin.core.v1";
-import { AppState } from "../../admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { OrganizationResponseInterface } from "../../admin.organizations.v1/models/organizations";
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";
 import updateCustomTextPreference from "../api/update-custom-text-preference";
-import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
@@ -44,7 +50,6 @@ import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-pre
 import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
-import { BrandingSubFeatures, PreviewScreenType, PreviewScreenVariationType } from "../models/branding-preferences";
 import {
     BASE_DISPLAY_VARIATION,
     CustomTextConfigurationModes,
@@ -89,6 +94,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state?.organization?.organization
     );
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ selectedScreen, setSelectedPreviewScreen ] = useState<PreviewScreenType>(PreviewScreenType.COMMON);
     const [ selectedScreenVariation, setSelectedPreviewScreenVariation ]
@@ -103,12 +109,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const [ activeCustomTextConfigurationMode, setActiveCustomTextConfigurationMode ] = useState<
         CustomTextConfigurationModes
     >(CustomTextConfigurationModes.TEXT_FIELDS);
-
     const [ isCustomTextPreferenceConfigured, setIsCustomTextPreferenceConfigured ] = useState<boolean>(true);
-
+    const [ brandingPreference, setBrandingPreference ] = useState<BrandingPreferenceAPIResponseInterface>(null);
 
     const {
-        data: brandingPreference
+        data: originalBrandingPreference,
+        error: brandingPreferenceFetchRequestError
     } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const {
@@ -166,6 +172,17 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     }, [ customTextFallbacks, customText ]);
 
     /**
+     * Get the tenant name based on the organization type.
+     */
+    const tenantName: string = useMemo(() => {
+        if (orgType === OrganizationType.SUBORGANIZATION) {
+            return currentOrganization?.name;
+        }
+
+        return tenantDomain;
+    }, [ tenantDomain, currentOrganization ]);
+
+    /**
      * Check if the custom text preference fetch request has failed.
      */
     useEffect(() => {
@@ -192,6 +209,54 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
             })
         );
     }, [ customTextPreferenceFetchRequestError ]);
+
+    /**
+     * Check if the branding preference fetch request has failed.
+     */
+    useEffect(() => {
+        if (!brandingPreferenceFetchRequestError) {
+            return;
+        }
+
+        // Check if Branding is not configured for the tenant. If so, silent the errors.
+        if (brandingPreferenceFetchRequestError.response?.data?.code
+            === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
+            setBrandingPreference(null);
+
+            return;
+        }
+
+        dispatch(
+            addAlert<AlertInterface>({
+                description: t("extensions:develop.branding.notifications.fetch.genericError.description",
+                    { tenant: tenantName }),
+                level: AlertLevels.ERROR,
+                message: t("extensions:develop.branding.notifications.fetch.genericError.message")
+            })
+        );
+    }, [ brandingPreferenceFetchRequestError ]);
+
+    /**
+     * Moderates the Branding Peference response.
+     */
+    useEffect(() => {
+        if (!originalBrandingPreference) {
+            return;
+        }
+
+        if (originalBrandingPreference instanceof IdentityAppsApiException) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("extensions:develop.branding.notifications.fetch.invalidStatus.description",
+                    { tenant: tenantName }),
+                level: AlertLevels.ERROR,
+                message: t("extensions:develop.branding.notifications.fetch.invalidStatus.message")
+            }));
+
+            return;
+        }
+
+        setBrandingPreference(originalBrandingPreference);
+    }, [ originalBrandingPreference ]);
 
     /**
      * Moderates the Custom Text Preference response.

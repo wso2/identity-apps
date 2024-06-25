@@ -34,6 +34,9 @@ export interface BrandingNS {
                 copyright: {
                     hint: string;
                 };
+                "email.link.expiry.message": {
+                    hint: string;
+                };
                 "privacy.policy": {
                     hint: string;
                 };
@@ -75,7 +78,7 @@ export interface BrandingNS {
                     hint: string;
                     warning?: string;
                 };
-                "password.recovery.button.email.link": {
+                "password.recovery.button": {
                     hint: string;
                 };
                 "password.recovery.heading": {
@@ -161,6 +164,7 @@ export interface BrandingNS {
     };
     screens: {
         common: string;
+        "email-link-expiry": string;
         login: string;
         "sms-otp": string;
         "email-otp": string;

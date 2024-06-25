@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -35,8 +37,6 @@ import {
     OrganizationEnterpriseAuthenticationProviderCreateWizard
 } from "./organization-enterprise/organization-enterprise-authentication-provider-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "./trusted-token-issuer/trusted-token-issuer-create-wizard";
-import { identityProviderConfig } from "../../../admin.extensions.v1/configs/identity-provider";
-import { AppState, ConfigReducerStateInterface } from "../../../admin.core.v1";
 import { getIdentityProviderList, getIdentityProviderTemplate } from "../../api";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {

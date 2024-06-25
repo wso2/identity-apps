@@ -3007,6 +3007,7 @@ export interface Extensions {
                         usernameLength: string;
                         usernameSymbols: string;
                         usernameSpecialCharSymbols: string;
+                        usernameEmpty: string;
                     };
                     summary: {
                         invitation: string;
@@ -3055,24 +3056,10 @@ export interface Extensions {
                     form: {
                         fields: {
                             enable: FormAttributes;
-                            enableSMSBasedRecovery: FormAttributes;
-                            enableEmailBasedRecovery: FormAttributes;
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
-                            maxResendCount: FormAttributes;
-                            maxFailedAttemptCount: FormAttributes;
-                            smsOtpExpiryTime: FormAttributes;
-                            passwordRecoveryOtpUseUppercase: FormAttributes;
-                            passwordRecoveryOtpUseLowercase: FormAttributes;
-                            passwordRecoveryOtpUseNumeric: FormAttributes;
-                            passwordRecoveryOtpLength: FormAttributes;
                         };
                     };
-                    recoveryOptionSubHeadingEmailLink: string;
-                    recoveryOptionSubHeadingSMS: string;
-                    recoveryOptionHeading: string;
-                    otpConfigHeading: string;
-                    failedAttemptConfigHeading: string;
                     connectorDescription: string;
                     heading: string;
                     notification: {
@@ -3097,6 +3084,7 @@ export interface Extensions {
                         subSection1: string;
                         subSection2: string;
                         subSection3: string;
+                        subSection4: string;
                     };
                     connectorDescription: string;
                     heading: string;

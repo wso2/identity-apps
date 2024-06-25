@@ -17,7 +17,7 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 
 /**
  * Class containing app constants which can be used across several applications.
@@ -63,7 +63,8 @@ export class UserManagementConstants {
         .set("USER_CREATE", "users.create")
         .set("USER_UPDATE", "users.update")
         .set("USER_DELETE", "users.delete")
-        .set("USER_READ", "users.read");
+        .set("USER_READ", "users.read")
+        .set("USER_ROLES", "users.edit.roles");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";

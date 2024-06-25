@@ -18,17 +18,18 @@
 
 import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AllFeatureInterface } from "@wso2is/access-control";
-import { HttpMethods } from "@wso2is/core/models";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import useAuthorization from "../../../../admin.authorization.v1/hooks/use-authorization";
-import { Config } from "../../../../admin.core.v1/configs/app";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { OrganizationManagementConstants } from "@wso2is/admin.core.v1";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../admin.core.v1/hooks/use-request";
-import { AppState } from "../../../../admin.core.v1/store";
-import { OrganizationType } from "../../../../admin.organizations.v1/constants";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { HttpMethods } from "@wso2is/core/models";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { getFeatureGateResourceEndpoints } from "../configs";
 
 /**
@@ -53,7 +54,9 @@ export const useGetAllFeatures = <
 
     // TODO: Remove this config once the deployment issues are sorted out.
     const isFeatureGateEnabled: boolean = useSelector((state: AppState) => state?.config?.ui?.isFeatureGateEnabled);
-    const shouldSendRequest : string = isFeatureGateEnabled && orgIdentifier;
+    const shouldSendRequest : boolean = isFeatureGateEnabled
+        && !!orgIdentifier
+        && orgIdentifier !== OrganizationManagementConstants.ROOT_ORGANIZATION.name;
 
     useEffect(() => {
         getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
@@ -77,12 +80,10 @@ export const useGetAllFeatures = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: shouldSendRequest
-            ? `${getFeatureGateResourceEndpoints(baseUrl).allFeatures?.replace("{org-uuid}", orgIdentifier)}`
-            : ""
+        url: `${getFeatureGateResourceEndpoints(baseUrl).allFeatures?.replace("{org-uuid}", orgIdentifier)}`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldSendRequest ? requestConfig : null, {
         shouldRetryOnError: false
     });
 

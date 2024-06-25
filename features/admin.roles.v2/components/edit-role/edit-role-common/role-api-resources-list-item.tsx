@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { ChevronDownIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
@@ -25,13 +24,14 @@ import Grid from "@oxygen-ui/react/Grid";
 import IconButton from "@oxygen-ui/react/IconButton";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
+import { ChevronDownIcon, XMarkIcon } from "@oxygen-ui/react-icons";
+import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Popup, Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
 import { PermissionsList } from "./permissions-list";
-import { APIResourceUtils } from "../../../../admin.api-resources.v2/utils/api-resource-utils";
 import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
 
 interface RoleAPIResourcesListItemProp extends IdentifiableComponentInterface {

@@ -16,6 +16,15 @@
  * under the License.
  */
 import {
+    AppConstants,
+    SharedUserStoreConstants,
+    SharedUserStoreUtils,
+    UserStoreDetails,
+    UserStoreProperty,
+    history
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import {
     AlertInterface,
     AlertLevels,
     TestableComponentInterface
@@ -29,15 +38,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
-import {
-    AppConstants,
-    SharedUserStoreConstants,
-    SharedUserStoreUtils,
-    UserStoreDetails,
-    UserStoreProperty,
-    history
-} from "../../../admin.core.v1";
-import { userstoresConfig } from "../../../admin.extensions.v1";
 import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
 import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
 
@@ -387,35 +387,37 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                 )
             }
             {
-                showGroupDeleteConfirmation &&
-                (<ConfirmationModal
-                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="negative"
-                    open={ showGroupDeleteConfirmation }
-                    assertionHint={ t("roles:edit.basics.confirmation.assertionHint") }
-                    assertionType="checkbox"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
-                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => handleOnDelete(groupObject.id) }
-                    data-testid={
-                        isGroup
-                            ? `${ testId }-group-confirmation-modal`
-                            : `${ testId }-role-confirmation-modal`
-                    }
-                >
-                    <ConfirmationModal.Header>
-                        { t("roles:edit.basics.confirmation.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached negative>
-                        { t("roles:edit.basics.confirmation.message",
-                            { type: isGroup ? "group." : "role." }) }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content>
-                        { t("roles:edit.basics.confirmation.content",
-                            { type: isGroup ? "group" : "role" }) }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>)
+                showGroupDeleteConfirmation
+                && groupObject?.id
+                && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="negative"
+                        open={ showGroupDeleteConfirmation }
+                        assertionHint={ t("roles:edit.basics.confirmation.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => handleOnDelete(groupObject.id) }
+                        data-testid={
+                            isGroup
+                                ? `${ testId }-group-confirmation-modal`
+                                : `${ testId }-role-confirmation-modal`
+                        }
+                    >
+                        <ConfirmationModal.Header>
+                            { t("roles:edit.basics.confirmation.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached negative>
+                            { t("roles:edit.basics.confirmation.message",
+                                { type: isGroup ? "group." : "role." }) }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t("roles:edit.basics.confirmation.content",
+                                { type: isGroup ? "group" : "role" }) }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>)
             }
         </>
     );

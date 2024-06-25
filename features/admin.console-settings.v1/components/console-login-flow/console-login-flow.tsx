@@ -16,16 +16,16 @@
  * under the License.
  */
 
+import { SignOnMethods } from "@wso2is/admin.applications.v1/components/settings/sign-on-methods/sign-on-methods";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
+import "./console-login-flow.scss";
+import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { SignOnMethods } from "../../../admin.applications.v1/components/settings/sign-on-methods/sign-on-methods";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
-import { AppState } from "../../../admin.core.v1/store";
-import { IdentityProviderManagementConstants } from "../../../admin.identity-providers.v1/constants";
-import "./console-login-flow.scss";
-import AILoginFlowProvider from "../../../admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import useConsoleSettings from "../../hooks/use-console-settings";
 
 /**

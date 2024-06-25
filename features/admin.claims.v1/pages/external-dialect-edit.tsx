@@ -17,6 +17,9 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api";
+import { AppConstants, AppState, FeatureConfigInterface, history, sortList } from "@wso2is/admin.core.v1";
+import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
@@ -32,9 +35,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
-import { getAllExternalClaims } from "../../admin.claims.v1/api";
-import { AppConstants, AppState, FeatureConfigInterface, history, sortList } from "../../admin.core.v1";
-import { attributeConfig } from "../../admin.extensions.v1";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
 import { ClaimManagementConstants } from "../constants";

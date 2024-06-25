@@ -17,11 +17,11 @@
  */
 
 import { GearIcon } from "@oxygen-ui/react-icons";
+import { AdaptiveAuthTemplateInterface } from "@wso2is/admin.applications.v1/models/application";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, ConfirmationModal, ConfirmationModalPropsInterface, Link, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { AdaptiveAuthTemplateInterface } from "../../../admin.applications.v1/models/application";
 
 /**
  * Proptypes for the Predefined flows side panel component.

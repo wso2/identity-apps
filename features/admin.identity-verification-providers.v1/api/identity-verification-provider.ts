@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,15 +17,15 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance, HttpResponse } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
-import { AxiosError } from "axios";
-import { store } from "../../admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
+import { AxiosError } from "axios";
 import { IDVPListResponseInterface, IdentityVerificationProviderInterface } from "../models";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient

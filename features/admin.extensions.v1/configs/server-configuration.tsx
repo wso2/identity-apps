@@ -18,6 +18,18 @@
 
 /* eslint-disable sort-keys */
 
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    GovernanceConnectorUtils,
+    UpdateGovernanceConnectorConfigInterface,
+    UpdateGovernanceConnectorConfigPropertyInterface,
+    UpdateMultipleGovernanceConnectorsInterface
+} from "@wso2is/admin.server-configurations.v1";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
 import { Card, Divider, Grid, Header } from "semantic-ui-react";
@@ -27,18 +39,6 @@ import {
     PasswordPoliciesInterface,
     ServerConfigurationConfig
 } from "./models/server-configuration";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    GovernanceConnectorUtils,
-    UpdateGovernanceConnectorConfigInterface,
-    UpdateGovernanceConnectorConfigPropertyInterface,
-    UpdateMultipleGovernanceConnectorsInterface
-} from "../../admin.server-configurations.v1";
-import {
-    ServerConfigurationsConstants
-} from "../../admin.server-configurations.v1/constants/server-configurations-constants";
-import { ValidationFormInterface } from "../../admin.validation.v1/models";
 import {
     updatePasswordExpiryProperties,
     useGetPasswordExpiryProperties
@@ -66,13 +66,20 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
     ],
     connectorToggleName: {
-        "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
-        "account-recovery-username": ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
-        "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
-        "multiattribute.login.handler": ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
-        "organization-self-service": ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
-        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
+        [ServerConfigurationsConstants.ACCOUNT_RECOVERY]:
+            ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
+        [ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME]:
+            ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
+        [ServerConfigurationsConstants.ACCOUNT_LOCK_HANDLER]:
+            ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
+        [ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_HANDLER]:
+            ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
+        [ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE]:
+            ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
+        [ServerConfigurationsConstants.SELF_SIGNUP]:
+            ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
+        [ServerConfigurationsConstants.SSO_LOGIN_RECAPTCHA]:
+            ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
     },
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,

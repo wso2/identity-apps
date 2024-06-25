@@ -77,6 +77,7 @@ export interface CommonNS {
     endsWith: string;
     equals: string;
     exitFullScreen: string;
+    experimental: string;
     explore: string;
     export: string;
     featureAvailable: string;
@@ -116,6 +117,7 @@ export interface CommonNS {
     personalInfo: string;
     pin: string;
     pinned: string;
+    premium: string;
     preview: string;
     previous: string;
     priority: string;

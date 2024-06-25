@@ -718,6 +718,11 @@
                 justify-content: space-around;
                 clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
                 -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+
+                &.new {
+                    background: #3fb81f;
+                    min-width: 75px;
+                }
             }
         }
     }
@@ -940,14 +945,18 @@
             justify-content:space-between;
 
             .card-header {
-                font-weight:500;
+                font-weight: 500;
                 font-size: 20px;
-                padding-bottom: 10px;
-                padding-top:10px;
-                color:#444444;
-                display:flex;
-                align-items:center;
-                white-space:break-spaces;
+                margin-bottom: 10px;
+                margin-top: 10px;
+                color: #444444;
+                display: -webkit-box;
+                align-items: center;
+                white-space: break-spaces;
+                word-break: break-word;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
         }
         .card-subheader {

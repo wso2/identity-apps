@@ -17,6 +17,16 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    MinimalAppCreateWizard
+} from "@wso2is/admin.applications.v1/components/wizard/minimal-application-create-wizard";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import {
+    ApplicationListItemInterface,
+    ApplicationTemplateListItemInterface
+} from "@wso2is/admin.applications.v1/models";
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
@@ -26,16 +36,6 @@ import { useSelector } from "react-redux";
 import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import { ApplicationTemplateCard } from "./application-template-card";
 import { PlaygroundApplicationCard } from "./playground-app-card";
-import {
-    MinimalAppCreateWizard
-} from "../../../../admin.applications.v1/components/wizard/minimal-application-create-wizard";
-import { ApplicationManagementConstants } from "../../../../admin.applications.v1/constants";
-import {
-    ApplicationListItemInterface,
-    ApplicationTemplateListItemInterface
-} from "../../../../admin.applications.v1/models";
-import { AppState, ConfigReducerStateInterface } from "../../../../admin.core.v1";
-import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
 
 export type NewUserViewContextCardPropsInterface = {
     applications: ApplicationListItemInterface[];

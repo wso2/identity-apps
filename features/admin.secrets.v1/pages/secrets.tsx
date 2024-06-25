@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -26,7 +27,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../admin.core.v1";
 import { getSecretList } from "../api/secret";
 import AddSecretWizard from "../components/add-secret-wizard";
 import SecretsList from "../components/secrets-list";

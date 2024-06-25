@@ -55,6 +55,7 @@ End-user apps in WSO2 Identity Server
 
 3. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
 4. Install JDK 11 [https://openjdk.org/projects/jdk/](https://openjdk.org/projects/jdk/).
+5. Install the [recommended developer tools](./docs/SET_UP_DEV_ENVIRONMENT.md).
 
 ### Download WSO2 Identity Server
 
@@ -128,8 +129,8 @@ For instructions on startup, [read the docs](https://is.docs.wso2.com/en/latest/
 #### Configure Callback URLs for System Applications (for WSO2 IS below v7.0)
 
 > ℹ️ Note
-> 
-> This step is only applicable for WSO2 Identity Server versions below v7.0. 
+>
+> This step is only applicable for WSO2 Identity Server versions below v7.0.
 
 1. Navigate to the Management Console i.e `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
 

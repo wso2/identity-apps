@@ -73,6 +73,11 @@ export interface MyAccountNS {
             };
             resultsIndicator: string;
         };
+        verificationOnUpdate: {
+            preference?: {
+                notifications?: Notification;
+            }
+        }
         accountRecovery: {
             codeRecovery: {
                 descriptions: {

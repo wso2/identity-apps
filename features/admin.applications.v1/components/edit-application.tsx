@@ -15,6 +15,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { Show } from "@wso2is/access-control";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import {
+    AppState,
+    CORSOriginsListInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    getCORSOrigins,
+    history
+} from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/components/my-account-overview";
+import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -22,16 +39,18 @@ import {
     ConfirmationModal,
     ContentLoader,
     CopyInputField,
+    DangerZone,
+    DangerZoneGroup,
     ResourceTab,
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Form, Grid, Menu, TabProps } from "semantic-ui-react";
+import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -43,22 +62,7 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
-import {
-    AppState,
-    CORSOriginsListInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    getCORSOrigins,
-    history
-} from "../../admin.core.v1";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "../../admin.extensions.v1";
-import { MyAccountOverview } from "../../admin.extensions.v1/configs/components/my-account-overview";
-import AILoginFlowProvider from "../../admin.login-flow.ai.v1/providers/ai-login-flow-provider";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { getInboundProtocolConfig } from "../api";
+import { disableApplication, getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -195,14 +199,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
     const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
-    const disabledApplicationFeatures: string[] = useSelector((state: AppState) =>
-        state.config.ui.features.applications?.disabledFeatures);
-    const isMyAccountSimplifiedSettingsEnabled: boolean =
-        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId
-        && !disabledApplicationFeatures?.includes("applications.myaccount.simplifiedSettings");
-
+    const isMyAccount: boolean =
+        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId;
+    const applicationsUpdateScopes: string[] = featureConfig?.applications?.scopes?.update;
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const [ isDisableInProgress, setIsDisableInProgress ] = useState<boolean>(false);
+    const [ enableStatus, setEnableStatus ] = useState<boolean>(false);
+    const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
 
     /**
      * Called when an application updates.
@@ -235,7 +239,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         if (featureConfig) {
-            if (!legacyAuthzRuntime && isMyAccountSimplifiedSettingsEnabled) {
+            if (!legacyAuthzRuntime && isMyAccount) {
                 panes.push({
                     componentId: "overview",
                     menuItem: t("applications:myaccount.overview.tabName"),
@@ -245,7 +249,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
                 && !isSubOrganization()
-                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
+                && (legacyAuthzRuntime || !isMyAccount)) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -274,7 +278,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
                 && !isFragmentApp
-                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)
+                && (legacyAuthzRuntime || !isMyAccount)
             ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -393,7 +397,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
                  && !isFragmentApp
-                 && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
+                 && (legacyAuthzRuntime || !isMyAccount)) {
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -490,25 +494,47 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         setDefaultActiveIndex(defaultTabIndex);
 
         if(isEmpty(window.location.hash)){
-
-            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) !==
+            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ===
                 ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
-                handleDefaultTabIndexChange(defaultTabIndex);
+                // When application selection is done through the strong authentication flow.
+                const signInMethodtabIndex: number = renderedTabPanes?.findIndex(
+                    (element: {"componentId": string}) =>
+                        element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                );
+
+                if (signInMethodtabIndex !== -1) {
+                    handleActiveTabIndexChange(signInMethodtabIndex);
+                }
+
+                return;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_PROTOCOL) === "true") {
+                const protocolTabIndex: number = renderedTabPanes?.findIndex(
+                    (element: {"componentId": string}) =>
+                        element.componentId === ApplicationManagementConstants.PROTOCOL_TAB_URL_FRAG
+                );
+
+                if(protocolTabIndex !== -1) {
+                    handleActiveTabIndexChange(protocolTabIndex);
+                }
+
+                return;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_ROLES) === "true") {
+                const rolesTabIndex: number = renderedTabPanes?.findIndex(
+                    (element: {"componentId": string}) =>
+                        element.componentId === ApplicationManagementConstants.ROLES_TAB_URL_FRAG
+                );
+
+                if (rolesTabIndex !== -1) {
+                    handleActiveTabIndexChange(rolesTabIndex);
+                }
 
                 return;
             }
-
-            // When application selection is done through the strong authentication flow.
-            const signInMethodtabIndex: number = renderedTabPanes?.findIndex(
-                (element: {"componentId": string}) =>
-                    element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
-            );
-
-            if (signInMethodtabIndex !== -1) {
-                handleActiveTabIndexChange(signInMethodtabIndex);
+            else {
+                handleDefaultTabIndexChange(defaultTabIndex);
             }
         }
-    },[ template, renderedTabPanes ]);
+    },[ template, renderedTabPanes, urlSearchParams ]);
 
     /**
      * Check whether the application is an M2M Application.
@@ -887,10 +913,132 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         setShowClientSecretHashDisclaimerModal(true);
     };
 
+    /**
+     * Handles the toggle change to show confirmation modal.
+     *
+     * @param event - Form event.
+     * @param data - Checkbox data.
+     */
+    const handleAppEnableDisableToggleChange = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+        setEnableStatus(data?.checked);
+        setShowDisableConfirmationModal(true);
+    };
+
+    /**
+     * Disables an application.
+     */
+    const handleApplicationDisable = (): void => {
+        setIsDisableInProgress(true);
+        disableApplication(application.id, enableStatus)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("applications:notifications.disableApplication.success" +
+                        ".description", { state: enableStatus ? "enabled" : "disabled" }),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.disableApplication.success.message", {
+                        state : enableStatus ? "enabled" : "disabled" })
+                }));
+
+                setShowDisableConfirmationModal(false);
+                onUpdate(application.id);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.disableApplication.error" +
+                            ".message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.disableApplication" +
+                        ".genericError.description", { state: enableStatus ? "enable" : "disable" }),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.disableApplication.genericError" +
+                        ".message")
+                }));
+            })
+            .finally(() => {
+                setIsDisableInProgress(false);
+            });
+    };
+
     const MyAccountOverviewTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <MyAccountOverview/>
-        </ResourceTab.Pane>
+        <>
+            <ResourceTab.Pane controlledSegmentation>
+                <MyAccountOverview/>
+            </ResourceTab.Pane>
+            <Divider hidden />
+            <Show
+                when={ applicationsUpdateScopes }
+            >
+                <DangerZoneGroup
+                    sectionHeader={ t("applications:dangerZoneGroup.header") }
+                >
+                    <DangerZone
+                        actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle",
+                            { state: application.applicationEnabled ? t("common:disable") : t("common:enable") }) }
+                        header={ t("applications:dangerZoneGroup.disableApplication.header",
+                            { state: application.applicationEnabled ? t("common:disable") : t("common:enable") } ) }
+                        subheader={ application.applicationEnabled
+                            ? t("applications:dangerZoneGroup.disableApplication.subheader")
+                            : t("applications:dangerZoneGroup.disableApplication.subheader2") }
+                        onActionClick={ undefined }
+                        toggle={ {
+                            checked: application.applicationEnabled,
+                            onChange: handleAppEnableDisableToggleChange
+                        } }
+                        data-testid={ `${ componentId }-danger-zone-disable` }
+                    />
+                </DangerZoneGroup>
+            </Show>
+            <ConfirmationModal
+                onClose={ (): void => setShowDisableConfirmationModal(false) }
+                type="warning"
+                open={ showDisableConfirmationModal }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => setShowDisableConfirmationModal(false) }
+                onPrimaryActionClick={ (): void => handleApplicationDisable() }
+                closeOnDimmerClick={ false }
+                primaryActionLoading={ isDisableInProgress }
+                data-testid={ `${ componentId }-myAccount-disable-confirmation-modal` }
+            >
+                <ConfirmationModal.Header
+                    data-testid={
+                        `${ componentId }-myAccount-disable-confirmation-modal-header`
+                    }
+                >
+                    { enableStatus
+                        ? t("applications:confirmations.enableApplication.header")
+                        : t("applications:confirmations.disableApplication.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    warning
+                    data-testid={
+                        `${ componentId }-myAccount-disable-confirmation-modal-message`
+                    }
+                >
+                    { enableStatus
+                        ? t("applications:confirmations.enableApplication.message")
+                        : t("applications:confirmations.disableApplication.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content
+                    data-testid={
+                        `${ componentId }-application-disable-confirmation-modal-content`
+                    }
+                >
+                    { enableStatus
+                        ? t("applications:confirmations.enableApplication.content")
+                        : t("applications:confirmations.disableApplication.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        </>
     );
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (

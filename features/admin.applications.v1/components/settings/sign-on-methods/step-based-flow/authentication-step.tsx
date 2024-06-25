@@ -16,27 +16,27 @@
  * under the License.
  */
 
+import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { AuthenticatorCategories } from "@wso2is/admin.connections.v1/models/authenticators";
+import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
+import { getGeneralIcons } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import {
+    IdentityProviderManagementConstants
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import {
+    FederatedAuthenticatorInterface,
+    GenericAuthenticatorInterface
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup, Tooltip } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
-import useAuthenticationFlow from "../../../../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AuthenticatorManagementConstants } from "../../../../../admin.connections.v1";
-import { AuthenticatorCategories } from "../../../../../admin.connections.v1/models/authenticators";
-import { ConnectionsManagementUtils } from "../../../../../admin.connections.v1/utils/connection-utils";
-import { getGeneralIcons } from "../../../../../admin.core.v1";
-import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
-import {
-    IdentityProviderManagementConstants
-} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import {
-    FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface
-} from "../../../../../admin.identity-providers.v1/models/identity-provider";
-import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { OrganizationUtils } from "../../../../../admin.organizations.v1/utils/organization";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
 
 /**

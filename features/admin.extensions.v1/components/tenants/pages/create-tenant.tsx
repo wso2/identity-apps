@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import { history } from "@wso2is/admin.core.v1/helpers";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { handleTenantSwitch } from "@wso2is/admin.tenants.v1/utils/tenant-switch";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -47,10 +51,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Card, Divider, Flag, FlagNameValues, Grid, Icon } from "semantic-ui-react";
-import { history } from "../../../../admin.core.v1/helpers";
-import { AppState } from "../../../../admin.core.v1/store";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
-import { handleTenantSwitch } from "../../../../admin.tenants.v1/utils/tenant-switch";
 import { addNewTenant, checkDuplicateTenants } from "../api";
 import { TenantCreationIcons } from "../configs";
 import { TenantManagementConstants } from "../constants";

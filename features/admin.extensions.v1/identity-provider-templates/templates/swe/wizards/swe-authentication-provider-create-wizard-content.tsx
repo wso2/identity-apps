@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api";
+import { handleGetIDPListCallError } from "@wso2is/admin.identity-providers.v1/components/utils";
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
+import {
+    IdentityProviderTemplateInterface,
+    StrictIdentityProviderInterface
+} from "@wso2is/admin.identity-providers.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import { ContentLoader } from "@wso2is/react-components";
@@ -25,13 +32,6 @@ import {
     SIWEAuthenticationProviderCreateWizardFormErrorValidationsInterface,
     SIWEAuthenticationProviderCreateWizardFormValuesInterface
 } from "./swe-authentication-provider-create-wizard";
-import { useIdentityProviderList } from "../../../../../admin.identity-providers.v1/api";
-import { handleGetIDPListCallError } from "../../../../../admin.identity-providers.v1/components/utils";
-import { IdentityProviderManagementConstants } from "../../../../../admin.identity-providers.v1/constants";
-import {
-    IdentityProviderTemplateInterface,
-    StrictIdentityProviderInterface
-} from "../../../../../admin.identity-providers.v1/models";
 
 /**
  * Prop-types for the SIWE Authentication Wizard From.

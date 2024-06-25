@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
@@ -24,8 +26,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import { FeatureConfigInterface } from "../../../../admin.core.v1/models";
-import { AppState } from "../../../../admin.core.v1/store";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
 

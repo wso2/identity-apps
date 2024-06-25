@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { RoleConstants } from "@wso2is/core/constants";
 import { RolesInterface, SBACInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
@@ -24,7 +25,6 @@ import { useTranslation } from "react-i18next";
 import { BasicRoleDetails } from "./edit-role-basic";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
-import { FeatureConfigInterface, history } from "../../../../../admin.core.v1";
 
 /**
  * Captures props needed for edit role component

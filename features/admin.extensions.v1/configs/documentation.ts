@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { DocumentationLinksExtensionInterface } from "./models/documentation";
-import { Config } from "../../admin.core.v1/configs/app";
 
 export const getDocumentationLinksExtension = () : DocumentationLinksExtensionInterface => {
     const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL;
@@ -51,6 +51,14 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         rbac: {
                             learnMore: undefined
                         }
+                    }
+                },
+                applicationsSettings: {
+                    dcr: {
+                        authenticationRequired: {
+                            learnMore: undefined
+                        },
+                        learnMore: undefined
                     }
                 },
                 editApplication: {
@@ -174,6 +182,12 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     smsOtp: undefined
                 },
                 newApplication: {
+                    customApplication: {
+                        learnMore: undefined
+                    },
+                    m2mApplication: {
+                        learnMore: undefined
+                    },
                     mobileApplication: {
                         learnMore: undefined
                     },

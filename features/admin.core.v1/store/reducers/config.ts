@@ -103,6 +103,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientCertificates: "",
             createSecret: "",
             createSecretType: "",
+            dcrConfiguration:"",
             deleteSecret: "",
             deleteSecretType: "",
             externalClaims: "",
@@ -267,7 +268,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             productVersionConfig: null,
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
-            showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
+            showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
             theme: {
                 name: "",

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -29,8 +31,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppConstants, AppState, history } from "../../../admin.core.v1";
-import { applicationConfig } from "../../../admin.extensions.v1";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
@@ -101,11 +101,6 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const [ isWSFed, setIsWSFed ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const mtlsEndpointsPresent: boolean = oidcConfigurations.mtlsTokenEndpoint !== undefined;
-
-    /**
-     * Index of the protocols tab.
-     */
-    const PROTOCOLS_TAB_INDEX: number = 1;
 
     useEffect(() => {
         if (inboundProtocols == undefined) {
@@ -181,14 +176,14 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                                     <Link
                                                         external={ false }
                                                         onClick={ () => {
-                                                            history.push(
-                                                                AppConstants.getPaths()
-                                                                    .get("APPLICATION_SIGN_IN_METHOD_EDIT")
-                                                                    .replace(":id", appId)
-                                                                    .replace(
-                                                                        ":tabName",
-                                                                        `#tab=${ PROTOCOLS_TAB_INDEX }`
-                                                                    )
+                                                            history.push({
+                                                                pathname: AppConstants.getPaths()
+                                                                    .get("APPLICATION_EDIT")
+                                                                    .replace(":id", appId),
+                                                                search: "?" +
+                                                                    ApplicationManagementConstants.IS_PROTOCOL +
+                                                                    "=true"
+                                                            }
                                                             );
                                                         } }
                                                     > protocol </Link>

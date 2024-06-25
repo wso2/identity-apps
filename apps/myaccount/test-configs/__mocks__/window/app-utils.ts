@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,20 +17,18 @@
  */
 
 /**
- * @fileoverview AppUtils object Mock.
- *
  * @remarks Document and place all the AppUtils mocks in this file.
  */
 
 interface CustomWindow extends Window {
-    AppUtils: { 
+    AppUtils: {
         getConfig: () => any;
     };
 }
 
 /**
  * `AppUtils` Mock.
- * @remarks The `deployment.config.json file is resolved and stored in the window object under `AppUtils`.
+ * @remarks The `deployment.config.json` file is resolved and stored in the window object under `AppUtils`.
  * This has a method called `getConfig` that needs mocking.
  * IMPORTANT: Constantly keep this updated by executing `window.AppUtils.getConfig()` on the browser.
  */
@@ -116,9 +114,7 @@ interface CustomWindow extends Window {
                         }
                     },
                     personalInfo: {
-                        disabledFeatures: [
-                            "profileInfo.mobileVerification"
-                        ],
+                        disabledFeatures: [],
                         enabled: true,
                         scopes: {
                             create: [],
@@ -129,7 +125,8 @@ interface CustomWindow extends Window {
                     },
                     security: {
                         disabledFeatures: [
-                            "security.loginVerifyData.typingDNA"
+                            "security.loginVerifyData.typingDNA",
+                            "security.mfa.sms"
                         ],
                         enabled: true,
                         scopes: {

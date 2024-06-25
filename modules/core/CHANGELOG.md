@@ -1,5 +1,23 @@
 # @wso2is/core
 
+## 2.0.48
+
+### Patch Changes
+
+- [#6243](https://github.com/wso2/identity-apps/pull/6243) [`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update asgardeo react sdk version
+
+## 2.0.47
+
+### Patch Changes
+
+- [#6256](https://github.com/wso2/identity-apps/pull/6256) [`ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c`](https://github.com/wso2/identity-apps/commit/ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add new label to the features
+
+## 2.0.46
+
+### Patch Changes
+
+- [#6220](https://github.com/wso2/identity-apps/pull/6220) [`538ffee532d3106bc798552791b0d86b3fcc61f1`](https://github.com/wso2/identity-apps/commit/538ffee532d3106bc798552791b0d86b3fcc61f1) Thanks [@lashinijay](https://github.com/lashinijay)! - Changes to rely on mobile number verification in my account on governance config `verification on update`
+
 ## 2.0.45
 
 ### Patch Changes

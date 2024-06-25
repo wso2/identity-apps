@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { ReadOnlyRoleList } from "@wso2is/admin.roles.v2/components/readonly-role-list";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
 import React, {
@@ -26,8 +28,6 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
-import { ReadOnlyRoleList } from "../../../admin.roles.v2/components/readonly-role-list";
 import { GroupsInterface } from "../../models";
 import "./edit-group-roles.scss";
 

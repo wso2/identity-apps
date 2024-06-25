@@ -17,6 +17,22 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    SharedUserStoreUtils,
+    UIConstants,
+    UserStoreProperty,
+    getAUserStore,
+    getEmptyPlaceholderIllustrations
+} from "@wso2is/admin.core.v1";
+import { commonConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
+import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserStorePostData } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -32,26 +48,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    SharedUserStoreUtils,
-    UIConstants,
-    UserStoreProperty,
-    getAUserStore,
-    getEmptyPlaceholderIllustrations
-} from "../../admin.core.v1";
-import { commonConfig, userstoresConfig } from "../../admin.extensions.v1/configs";
-import { RootOnlyComponent } from "../../admin.organizations.v1/components";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { getUserStoreList } from "../../admin.userstores.v1/api";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../admin.userstores.v1/constants";
-import { UserStorePostData } from "../../admin.userstores.v1/models/user-stores";
 import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizardUpdated } from "../components/wizard/create-group-wizard-updated";
-import { GroupConstants } from "../constants";
 import { GroupsInterface, WizardStepsFormTypes } from "../models";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -145,7 +144,10 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     },[ groupsError ]);
 
     useEffect(() => {
-        if (!isSuperOrganization()) {
+        if (!(
+            isSuperOrganization()
+            || isFirstLevelOrganization()
+        )) {
             return;
         }
 
@@ -234,11 +236,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        if (data.value === GroupConstants.ALL_USER_STORES_OPTION_VALUE) {
-            setUserStore(null);
-        } else {
-            setUserStore(data.value as string);
-        }
+        setUserStore(data?.value as string);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -426,7 +424,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             {
                 showWizard && (
                     <CreateGroupWizardUpdated
-                        data-testid="group-mgt-create-group-wizard"
+                        data-componentid="group-mgt-create-group-wizard"
                         closeWizard={ () => setShowWizard(false) }
                         onCreate={ () => mutateGroupsFetchRequest() }
                         requiredSteps={ [

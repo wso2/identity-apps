@@ -17,6 +17,24 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations
+} from "@wso2is/admin.core.v1";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import {
+    GroupsInterface,
+    SearchGroupInterface,
+    deleteGroupById,
+    searchGroupList,
+    useGroupList
+} from "@wso2is/admin.groups.v1";
+import { useUserStores } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -30,31 +48,12 @@ import {
 import { AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import find from "lodash-es/find";
-import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations
-} from "../../../../admin.core.v1";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
-import {
-    GroupsInterface,
-    SearchGroupInterface,
-    deleteGroupById,
-    searchGroupList,
-    useGroupList
-} from "../../../../admin.groups.v1";
-import { GroupConstants } from "../../../../admin.groups.v1/constants";
-import { useUserStores } from "../../../../admin.userstores.v1/api/user-stores";
-import { CONSUMER_USERSTORE } from "../../../../admin.userstores.v1/constants/user-store-constants";
-import { UserStoreListItem } from "../../../../admin.userstores.v1/models/user-stores";
+import { userstoresConfig } from "../../../configs";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { GroupList } from "../groups-list";
 import { CreateGroupWizard } from "../wizard";
@@ -106,7 +105,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const excludeMembers: string = "members";
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const [ userStoreOption, setuserStoreOption ] = useState<string>(GroupConstants.ALL_GROUPS);
+    const [ userStoreOption, setuserStoreOption ] = useState<string>(userstoresConfig.primaryUserstoreName);
     const [ enabledUserStores, setEnabledUserStores ] = useState<UserStoreListItem[]>([]);
 
     const {
@@ -415,11 +414,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * Handles the user store wise filtering for groups.
      */
     const filterUserStores = (option: string): void => {
-        if(option === GroupConstants.ALL_GROUPS){
-            setPaginatedFilteredGroups(paginatedGroups);
-
-            return;
-        }
         setPaginatedFilteredGroups(groupList?.filter((group: GroupsInterface) => {
             return (group.displayName.includes(option.toUpperCase()));
         }));
@@ -430,7 +424,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      */
     const addDefaultValueToDropDownOptions = (): DropdownItemProps[] => {
 
-        const userStoreOptions: DropdownItemProps[] = cloneDeep(enabledUserStores)?.map(
+        return cloneDeep(userStoreList)?.map(
             (item: UserStoreListItem, index: number) => {
                 return {
                     key: index,
@@ -438,12 +432,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     value: item.name.toUpperCase()
                 };
             });
-
-        return union([ {
-            key: GroupConstants.ALL_GROUPS,
-            text: GroupConstants.ALL_GROUPS,
-            value: GroupConstants.ALL_GROUPS
-        } ], userStoreOptions);
     };
 
     return (
@@ -451,10 +439,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             pageTitle="Groups"
             action={
                 !isGroupListFetchRequestLoading
-                && (
-                    userStoreOption === CONSUMER_USERSTORE
-                    || userStoreOption === GroupConstants.ALL_GROUPS
-                )
+                && userStoreOption === CONSUMER_USERSTORE
                 && originalGroupList?.totalResults > 0
                 && (
                     <Show

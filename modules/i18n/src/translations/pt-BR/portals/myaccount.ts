@@ -1450,6 +1450,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erro ao obter a verificação na preferência de atualização"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao obter a verificação da preferência de atualização",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "A verificação da preferência de atualização foi recuperada com sucesso",
+                        message: "verificação na recuperação de preferência de atualização bem-sucedida"
+                    }
+                }
+            }
         }
     },
     modals: {
@@ -1621,7 +1639,7 @@ export const myAccount: MyAccountNS = {
             heading: "Criar Senha"
         },
         federatedAssociations: {
-            description: "Veja suas contas de outros provedores de identidade que estão vinculadas a esta conta",
+            description: "Visualize suas contas de outras conexões vinculadas a esta conta",
             heading: "Contas de Login Social Vinculadas"
         },
         linkedAccounts: {

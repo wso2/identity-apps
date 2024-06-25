@@ -18,6 +18,18 @@
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import { Show } from "@wso2is/access-control";
+import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import {
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -43,18 +55,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import useSignIn from "../../admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
-import {
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "../../admin.core.v1";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
-import { organizationConfigs } from "../../admin.extensions.v1";
 import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";

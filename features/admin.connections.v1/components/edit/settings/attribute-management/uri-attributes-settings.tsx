@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, Hint, Message } from "@wso2is/react-components";
 import find from "lodash-es/find";

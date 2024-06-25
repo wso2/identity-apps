@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
+import { AuthenticationStepInterface, AuthenticatorInterface } from "@wso2is/admin.applications.v1/models/application";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import {
+    PatchGroupAddOpInterface,
+    PatchGroupRemoveOpInterface
+} from "@wso2is/admin.groups.v1";
+import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
+import { IdentityProviderInterface, StrictIdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { AlertLevels, IdentifiableComponentInterface, RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
@@ -32,15 +41,6 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
 import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
-import { useGetApplication } from "../../../admin.applications.v1/api/use-get-application";
-import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../admin.applications.v1/models/application";
-import { AuthenticatorManagementConstants } from "../../../admin.connections.v1/constants/autheticator-constants";
-import {
-    PatchGroupAddOpInterface,
-    PatchGroupRemoveOpInterface
-} from "../../../admin.groups.v1";
-import { useIdentityProviderList } from "../../../admin.identity-providers.v1/api/identity-provider";
-import { IdentityProviderInterface, StrictIdentityProviderInterface } from "../../../admin.identity-providers.v1/models";
 import { updateRoleDetails } from "../../api";
 import { RoleAudienceTypes, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";

@@ -25,8 +25,27 @@ module.exports = {
         "plugin:testing-library/react",
         "plugin:jest-dom/recommended"
     ],
-    plugins: [
-        "jest-dom",
-        "testing-library"
-    ]
+    overrides: [
+        {
+            files: [ "deployment.config.json" ],
+            parser: "jsonc-eslint-parser",
+            plugins: [ "jsonc" ],
+            rules: {
+                "jsonc/sort-array-values": [ "error", { order: { type: "asc" }, pathPattern: ".*" } ],
+                "jsonc/sort-keys": "error",
+                "max-len": "off",
+                "semi": "off"
+            }
+        },
+        {
+            files: [ "*.json" ],
+            parser: "jsonc-eslint-parser",
+            plugins: [ "jsonc" ],
+            rules: {
+                "max-len": "off",
+                "semi": "off"
+            }
+        }
+    ],
+    plugins: [ "jest-dom", "testing-library" ]
 };

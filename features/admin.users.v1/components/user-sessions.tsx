@@ -17,6 +17,13 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AppState,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { UserAgentParser } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -50,13 +57,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
-import {
-    AppState,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
-import { userstoresConfig } from "../../admin.extensions.v1";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 

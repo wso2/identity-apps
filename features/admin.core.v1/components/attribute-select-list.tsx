@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { ExtendedExternalClaimInterface } from "@wso2is/admin.applications.v1/components/settings";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ExtendedExternalClaimInterface } from "../../admin.applications.v1/components/settings";
 
 interface AttributeSelectListPropsInterface extends TestableComponentInterface {
     setAvailableExternalClaims: (claims: ExtendedExternalClaimInterface[]) => void;

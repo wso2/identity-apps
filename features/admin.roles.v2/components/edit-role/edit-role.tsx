@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface, OrganizationType } from "@wso2is/admin.core.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, RolesInterface, SBACInterface } from "@wso2is/core/models";
@@ -27,9 +30,6 @@ import { BasicRoleDetails } from "./edit-role-basic";
 import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
-import { AppState, FeatureConfigInterface, OrganizationType } from "../../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { UserManagementConstants } from "../../../admin.users.v1/constants";
 import { RoleConstants as LocalRoleConstants } from "../../constants";
 
 /**
@@ -78,6 +78,9 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
+    const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
+        return state.config.ui.features?.userRoles?.disabledFeatures;
+    });
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(featureConfig,
@@ -152,21 +155,28 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                         />
                     </ResourceTab.Pane>
                 )
-            },
-            {
-                menuItem: t("roles:edit.menuItems.users"),
-                render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <RoleUsersList
-                            isReadOnly={ isReadOnly || isUserReadOnly }
-                            role={ roleObject }
-                            onRoleUpdate={ onRoleUpdate }
-                            tabIndex={ 3 }
-                        />
-                    </ResourceTab.Pane>
-                )
             }
         ];
+
+        if (!userRolesDisabledFeatures?.includes(
+            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_USERS")
+        )) {
+            panes.push(
+                {
+                    menuItem: t("roles:edit.menuItems.users"),
+                    render: () => (
+                        <ResourceTab.Pane controlledSegmentation attached={ false }>
+                            <RoleUsersList
+                                isReadOnly={ isReadOnly || isUserReadOnly }
+                                role={ roleObject }
+                                onRoleUpdate={ onRoleUpdate }
+                                tabIndex={ 3 }
+                            />
+                        </ResourceTab.Pane>
+                    )
+                }
+            );
+        }
 
         return panes;
     };

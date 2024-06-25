@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1/configs/ui";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AuthenticatorSettings } from "@wso2is/admin.identity-providers.v1/components/wizards/steps";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -38,7 +39,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AuthenticatorTemplateSelection } from "./steps/authenticator-template-selection";
-import { AuthenticatorSettings } from "../../../admin.identity-providers.v1/components/wizards/steps";
 import {
     getFederatedAuthenticatorMetadata,
     updateFederatedAuthenticator

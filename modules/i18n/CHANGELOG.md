@@ -1,5 +1,78 @@
 # @wso2is/i18n
 
+## 2.4.0
+
+### Minor Changes
+
+- [#5964](https://github.com/wso2/identity-apps/pull/5964) [`b339d3a607f060015b115a90219989d663ec02bf`](https://github.com/wso2/identity-apps/commit/b339d3a607f060015b115a90219989d663ec02bf) Thanks [@anjuchamantha](https://github.com/anjuchamantha)! - Adding a new page with tenant-wise DCR configurations
+
+## 2.3.9
+
+### Patch Changes
+
+- [#6450](https://github.com/wso2/identity-apps/pull/6450) [`305f37225bcb656a16ce616e0a48b3c27c7da3ab`](https://github.com/wso2/identity-apps/commit/305f37225bcb656a16ce616e0a48b3c27c7da3ab) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Update the disclaimers of the AI features
+
+## 2.3.8
+
+### Patch Changes
+
+- [#6414](https://github.com/wso2/identity-apps/pull/6414) [`2ed2890039a51739721918c224da1b0ffc51d7d0`](https://github.com/wso2/identity-apps/commit/2ed2890039a51739721918c224da1b0ffc51d7d0) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - update disable app error message
+
+## 2.3.7
+
+### Patch Changes
+
+- [#6401](https://github.com/wso2/identity-apps/pull/6401) [`5906e411dd31ceb41711159eddfdea025781288d`](https://github.com/wso2/identity-apps/commit/5906e411dd31ceb41711159eddfdea025781288d) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the empty placeholder error message for groups in roles section
+
+## 2.3.6
+
+### Patch Changes
+
+- [#6361](https://github.com/wso2/identity-apps/pull/6361) [`e01cad085da65461dce7337ef71a1ace2fbfff85`](https://github.com/wso2/identity-apps/commit/e01cad085da65461dce7337ef71a1ace2fbfff85) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add support to enable & disable apps
+
+## 2.3.5
+
+### Patch Changes
+
+- [#6335](https://github.com/wso2/identity-apps/pull/6335) [`12c6333330c4e22d30f5644800dc9b57b4ca4471`](https://github.com/wso2/identity-apps/commit/12c6333330c4e22d30f5644800dc9b57b4ca4471) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add support to change application status
+
+## 2.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`6cee2b738be4d56d8eba01a78d7e3549ca54b717`](https://github.com/wso2/identity-apps/commit/6cee2b738be4d56d8eba01a78d7e3549ca54b717)]:
+  - @wso2is/core@2.0.48
+
+## 2.3.3
+
+### Patch Changes
+
+- Updated dependencies [[`ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c`](https://github.com/wso2/identity-apps/commit/ee89f102c092b8b15229e5cf6ba12f7ec8c77c2c)]:
+  - @wso2is/core@2.0.47
+
+## 2.3.2
+
+### Patch Changes
+
+- [#6276](https://github.com/wso2/identity-apps/pull/6276) [`dc00bfc3597af3a24873dbd7e661e030fc5e7696`](https://github.com/wso2/identity-apps/commit/dc00bfc3597af3a24873dbd7e661e030fc5e7696) Thanks [@savindi7](https://github.com/savindi7)! - Add branding for the message in email link expiry page.
+
+* [#6278](https://github.com/wso2/identity-apps/pull/6278) [`6d99d83e90ad34e92acbddfe2d4b72e704848a87`](https://github.com/wso2/identity-apps/commit/6d99d83e90ad34e92acbddfe2d4b72e704848a87) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Reverting Update recovery portal to support SMS OTP based password recovery
+
+## 2.3.1
+
+### Patch Changes
+
+- [#6220](https://github.com/wso2/identity-apps/pull/6220) [`538ffee532d3106bc798552791b0d86b3fcc61f1`](https://github.com/wso2/identity-apps/commit/538ffee532d3106bc798552791b0d86b3fcc61f1) Thanks [@lashinijay](https://github.com/lashinijay)! - Changes to rely on mobile number verification in my account on governance config `verification on update`
+
+- Updated dependencies [[`538ffee532d3106bc798552791b0d86b3fcc61f1`](https://github.com/wso2/identity-apps/commit/538ffee532d3106bc798552791b0d86b3fcc61f1)]:
+  - @wso2is/core@2.0.46
+
+## 2.3.0
+
+### Minor Changes
+
+- [#5817](https://github.com/wso2/identity-apps/pull/5817) [`186c8e7bf9640ef6cbb0a56d4f12dd881355e639`](https://github.com/wso2/identity-apps/commit/186c8e7bf9640ef6cbb0a56d4f12dd881355e639) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Adds sms otp support to password recovery flows.
+
 ## 2.2.17
 
 ### Patch Changes

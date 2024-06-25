@@ -1445,6 +1445,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "验证更新首选项时出错"
+                    },
+                    genericError: {
+                        description: "验证更新首选项时发生错误",
+                        message: "出了些问题"
+                    },
+                    success: {
+                        description: "已成功检索更新首选项的验证",
+                        message: "验证更新偏好检索成功"
+                    }
+                }
+            }
         }
     },
     "modals": {
@@ -1616,7 +1634,7 @@ export const myAccount: MyAccountNS = {
             "heading": "创建密码"
         },
         "federatedAssociations": {
-            "description": "查看与此帐户相关的其他身份提供商的帐户",
+            "description": "通过与此帐户关联的其他连接查看您的帐户",
             "heading": "链接的社会帐户"
         },
         "linkedAccounts": {

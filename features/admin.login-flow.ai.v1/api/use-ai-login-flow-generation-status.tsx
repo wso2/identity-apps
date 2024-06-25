@@ -16,24 +16,23 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
-import { useEffect, useState } from "react";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
+import { useEffect, useState } from "react";
 import useAILoginFlow from "../hooks/use-ai-login-flow";
 import { AILoginFlowGenerationStatusAPIResponseInterface } from "../models/ai-login-flow";
 
-export const useAILoginFlowGenerationStatus = (
-    operationId: string
-): RequestResultInterface<AILoginFlowGenerationStatusAPIResponseInterface, RequestErrorInterface> =>{
+export const useAILoginFlowGenerationStatus = ():
+    RequestResultInterface<AILoginFlowGenerationStatusAPIResponseInterface, RequestErrorInterface> =>{
 
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
-    const { setLoginFlowGenerationCompleted } = useAILoginFlow();
+    const { setLoginFlowGenerationCompleted, operationId } = useAILoginFlow();
 
     const requestConfig: RequestConfigInterface = {
         headers: {

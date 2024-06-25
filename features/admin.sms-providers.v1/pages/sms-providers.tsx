@@ -17,6 +17,14 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface
+} from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers";
+import smsProviderConfig from "@wso2is/admin.extensions.v1/configs/sms-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -39,17 +47,6 @@ import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
-import { AuthenticatorManagementConstants } from "../../admin.connections.v1/constants/autheticator-constants";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface
-} from "../../admin.core.v1";
-import { history } from "../../admin.core.v1/helpers";
-import {
-    useSMSNotificationSenders
-}from "../../admin.extensions.v1/components/identity-providers/api/identity-provider";
-import smsProviderConfig from "../../admin.extensions.v1/configs/sms-provider";
 import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
 import { providerCards } from "../configs/provider-cards";
 import { SMSProviderConstants } from "../constants";
@@ -126,9 +123,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         mutate: mutateSMSProviderConfig,
         error: smsProviderConfigFetchRequestError
     } = useSMSProviders();
-    const {
-        mutate: mutateNotificationSendersFetchRequest
-    } = useSMSNotificationSenders();
 
     const [ isLoading, setIsLoading ] = useState(true);
     const [ isChoreoSMSOTPProvider, setChoreoSMSOTPProvider ] = useState<boolean>(false);
@@ -214,6 +208,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         setIsLoading(false);
 
     }, [ originalSMSProviderConfig ]);
+
+    const mutateGetSMSProviderConfig = (): void => {
+        mutateSMSProviderConfig();
+    };
 
     /**
      * Displays the error banner when unable to fetch sms provider configuration.
@@ -365,7 +363,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             }).finally(() => {
                 setIsSubmitting(false);
                 mutateSMSProviderConfig();
-                mutateNotificationSendersFetchRequest();
             });
     };
 
@@ -606,18 +603,23 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                         SMSProviderConstants.CUSTOM_SMS_PROVIDER && (
                                             <>
                                                 <CustomSMSProvider
+                                                    isLoading={ isSubmitting }
                                                     isReadOnly={ isReadOnly }
                                                     onSubmit={ handleSubmit }
                                                     data-componentid={ "custom-sms-provider" }
                                                 />
                                                 { smsProviderConfig.renderAlternativeSmsProviderOptions({
-                                                    existingSMSProviders
+                                                    existingSMSProviders,
+                                                    mutateGetSMSProviderConfig,
+                                                    originalSMSProviderConfig,
+                                                    smsProviderConfigFetchRequestError
                                                 }) }
                                             </>
                                         ) }
                                         { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.TWILIO_SMS_PROVIDER && (
                                             <TwilioSMSProvider
+                                                isLoading={ isSubmitting }
                                                 isReadOnly={ isReadOnly }
                                                 onSubmit={ handleSubmit }
                                                 data-componentid={ "twilio-sms-provider" }
@@ -626,6 +628,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                         { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.VONAGE_SMS_PROVIDER && (
                                             <VonageSMSProvider
+                                                isLoading={ isSubmitting }
                                                 isReadOnly={ isReadOnly }
                                                 onSubmit={ handleSubmit }
                                                 data-componentid={ "vonage-sms-provider" }

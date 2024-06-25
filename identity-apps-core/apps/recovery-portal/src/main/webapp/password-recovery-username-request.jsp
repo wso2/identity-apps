@@ -79,7 +79,6 @@
     layoutData.put("containerSize", "medium");
 %>
 
-<!doctype html>
 <html lang="en-US">
     <head>
         <%-- header --%>
@@ -112,25 +111,24 @@
             </layout:component>
             <layout:component componentName="MainSection" >
                 <div class="ui segment">
-                    <h2>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.password.recovery")%>
-                    </h2>
-                    <div class="ui negative message"
-                        id="error-msg" hidden="hidden">
-                    </div>
-                    <% if (error) { %>
-                    <div class="ui negative message"
-                        id="server-error-msg">
-                        <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-                    </div>
-                    <% } %>
-                    <p>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "password.recovery.body")%>
-                    </p>
-                    <div class="ui divider hidden"></div>
-
+                    <%-- page content --%>
                     <div class="segment-form">
                         <form class="ui large form" action="recoverpassword.do" method="post" id="tenantBasedRecovery">
+                            <h2>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.password.recovery")%>
+                            </h2>
+                            <div class="ui negative message"
+                                id="error-msg" hidden="hidden">
+                            </div>
+                            <% if (error) { %>
+                            <div class="ui negative message"
+                                id="server-error-msg">
+                                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                            </div>
+                            <% } %>
+                            <p>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
+                            </p>
                             <div class="field">
                                 <% if (isMultiAttributeLoginEnabledInTenant) { %>
                                     <label><%=usernameLabel %></label>
@@ -139,21 +137,20 @@
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
                                     </label>
                                 <% } %>
-                                <input id="username" name="username" type="text" tabindex="0" required
-                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>">
+                                <input id="username" name="username" type="text" tabindex="0" required>
                                 <%
                                     if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                                 %>
                                 <input id="tenantDomain" name="tenantDomain" value="<%= Encode.forHtmlAttribute(tenantDomain) %>"
-                                    type="hidden">
+                                       type="hidden">
                                 <%
                                     }
                                 %>
                                 <input id="isSaaSApp" name="isSaaSApp" value="<%= isSaaSApp %>" type="hidden">
                             </div>
-                            <div class="ui message info align-center">
-                                <small><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "If.you.do.not.specify.tenant.domain.consider.as.super.tenant")%></small>
+                            <div class="ui message info">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "If.you.do.not.specify.tenant.domain.consider.as.super.tenant")%>
                             </div>
                             <%
                                 String callback = Encode.forHtmlAttribute
@@ -163,25 +160,18 @@
                             <div>
                                 <input type="hidden" name="callback" value="<%=callback %>"/>
                             </div>
-                            <div>
-                                <input type="hidden" name="isTenantQualifiedUsername" value="true"/>
-                            </div>
                             <%
                                 }
                             %>
                             <div class="ui divider hidden"></div>
                             <div class="align-right buttons">
-                                <button id="registrationSubmit" 
-                                        class="ui primary button large fluid" 
-                                        type="submit">
+                                <a href="javascript:goBack()" class="ui button secondary">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                                </a>
+                                <button id="registrationSubmit" class="ui primary button" type="submit">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                             "Proceed.password.recovery")%>
                                 </button>
-                                <div class="mt-1 align-center">
-                                    <a href="javascript:goBack()" class="ui button secondary large fluid">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                                    </a>
-                                </div>
                             </div>
                         </form>
                     </div>

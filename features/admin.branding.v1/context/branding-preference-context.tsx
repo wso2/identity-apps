@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { FormState } from "@wso2is/form";
-import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Context, createContext } from "react";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingSubFeatures,
     PreviewScreenType,
     PreviewScreenVariationType
-} from "../models/branding-preferences";
+} from "@wso2is/common.branding.v1/models/branding-preferences";
+import { FormState } from "@wso2is/form";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { Context, createContext } from "react";
 import {
     CustomTextConfigurationModes,
     CustomTextInterface,

@@ -17,6 +17,16 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -40,16 +50,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Header, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
-import { getApplicationDetails } from "../../admin.applications.v1/api";
-import { ApplicationBasicInterface } from "../../admin.applications.v1/models";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
 import { deleteIdentityProvider, getIDPConnectedApps } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import {

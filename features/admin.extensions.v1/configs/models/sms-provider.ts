@@ -16,11 +16,17 @@
  * under the License.
  */
 
+import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { SMSProviderAPIResponseInterface } from "@wso2is/admin.sms-providers.v1/models/sms-providers";
+import { AxiosError } from "axios";
 import { ReactNode } from "react";
 
 interface SmsProviderConfig {
     renderAlternativeSmsProviderOptions: (options?: {
         existingSMSProviders: string[]
+        mutateGetSMSProviderConfig: () => void,
+        originalSMSProviderConfig: SMSProviderAPIResponseInterface[],
+        smsProviderConfigFetchRequestError: AxiosError<RequestErrorInterface>,
     }) => ReactNode
 }
 

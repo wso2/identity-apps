@@ -17,6 +17,7 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     PageLayout,
@@ -32,7 +33,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { MenuItem, TabProps } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../../admin.core.v1";
 import { AuditLogsPage } from "../../audit-logs/audit-logs";
 import { DiagnosticLogsPage } from "../../diagnostic-logs/diagnostic-logs";
 import { TabIndex } from "../models/log-models";

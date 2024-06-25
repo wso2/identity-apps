@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import { UserBasicInterface } from "@wso2is/admin.core.v1";
+import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { sendInvite } from "@wso2is/admin.users.v1/api";
+import { getUserWizardStepIcons } from "@wso2is/admin.users.v1/configs/ui";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -35,15 +42,8 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import {
     AddAdminUserBasic
 } from "./steps/admin-user-basic";
-import { UserBasicInterface } from "../../../../admin.core.v1";
-import { updateRoleDetails } from "../../../../admin.roles.v2/api/roles";
-import { PatchRoleDataInterface } from "../../../../admin.roles.v2/models/roles";
-import { getUserWizardStepIcons } from "../../../../admin.users.v1/configs/ui";
 import { AdminAccountTypes } from "../constants";
 import { InternalAdminFormDataInterface } from "../models";
-import { UserInviteInterface } from "../../../../admin.users.v1/models";
-import { sendInvite } from "../../../../admin.users.v1/api";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     closeWizard: () => void;

@@ -1568,6 +1568,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "යාවත්කාලීන මනාප මත සත්‍යාපනය ලබා ගැනීමේ දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "යාවත්කාලීන මනාප මත සත්‍යාපනය ලබා ගැනීමේදී දෝෂයක් සිදු විය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "යාවත්කාලීන මනාප මත සත්‍යාපනය සාර්ථකව ලබා ගන්නා ලදී",
+                        message: "යාවත්කාලීන මනාප ලබා ගැනීම පිළිබඳ සත්‍යාපනය සාර්ථකයි"
+                    }
+                }
+            }
         }
     },
     modals: {
@@ -1751,7 +1769,7 @@ export const myAccount: MyAccountNS = {
             heading: "මුරපදය සාදන්න"
         },
         federatedAssociations: {
-            description: "මෙම ගිණුම හා සම්බන්ධ වෙනත් අනන්‍යතා සපයන්නන්ගෙන් ඔබගේ ගිණුම් බලන්න",
+            description: "මෙම ගිණුම සමඟ සම්බන්ධ වී ඇති වෙනත් සම්බන්ධතා වලින් ඔබගේ ගිණුම් බලන්න",
             heading: "බාහිර පිවිසුම්"
         },
         linkedAccounts: {

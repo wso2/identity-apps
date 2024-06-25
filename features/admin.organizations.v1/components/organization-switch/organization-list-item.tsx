@@ -17,14 +17,14 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppConstants, AppState, FeatureConfigInterface, getMiscellaneousIcons, history } from "@wso2is/admin.core.v1";
+import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Placeholder } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, getMiscellaneousIcons, history } from "../../../admin.core.v1";
-import { organizationConfigs } from "../../../admin.extensions.v1";
 import { GenericOrganization } from "../../models";
 import { OrganizationUtils } from "../../utils";
 

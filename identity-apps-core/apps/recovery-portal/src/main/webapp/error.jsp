@@ -124,12 +124,12 @@
                         if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode()
                                 .equals(errorCode)) {
                     %>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.reset.link")%>
+                        <%=i18n(recoveryResourceBundle, customText, "email.link.expiry.message")%>
                     <%
                         } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_EXPIRED_CODE.getCode()
                                 .equals(errorCode)) {
                     %>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.reset.link")%>
+                        <%=i18n(recoveryResourceBundle, customText, "email.link.expiry.message")%>
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
                     <% } %>

@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import {
+    IdentityProviderInterface,
+    IdentityProviderTemplateInterface
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -24,10 +28,6 @@ import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import ConditionalAuthIllustration from "./assets/conditional-auth.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
-import {
-    IdentityProviderInterface,
-    IdentityProviderTemplateInterface
-} from "../../../../admin.identity-providers.v1/models/identity-provider";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../../components/component-extensions";
 import ApplicationSelectionModal from "../../../components/shared/application-selection-modal";
 

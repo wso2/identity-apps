@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants";
+import { getUsersList } from "@wso2is/admin.users.v1/api/users";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { RolesMemberInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import {
@@ -38,10 +42,6 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "../../../admin.core.v1";
-import { OrganizationManagementConstants } from "../../../admin.organizations.v1/constants";
-import { getUsersList } from "../../../admin.users.v1/api/users";
-import { UserBasicInterface, UserListInterface } from "../../../admin.users.v1/models/user";
 
 /**
  * Proptypes for the role user list component.
@@ -602,7 +602,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                                 <UserAvatar
                                                                                     data-testid={ `${ testId }-users
                                                                                     -list-${ user.display }-avatar` }
-                                                                                    name={ 
+                                                                                    name={
                                                                                         user.display
                                                                                     }
                                                                                     size="mini"
@@ -614,18 +614,18 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                             </Table.Cell>
                                                                             <Table.Cell>
                                                                                 {
-                                                                                    user.orgId === 
+                                                                                    user.orgId ===
                                                                                     OrganizationManagementConstants
-                                                                                        .SUPER_ORGANIZATION_ID ? 
+                                                                                        .SUPER_ORGANIZATION_ID ?
                                                                                         productName : user.orgName
                                                                                 }
                                                                             </Table.Cell>
                                                                         </Table.Row>
                                                                     );
                                                                 } else {
-                                                                    const selectedUser: UserBasicInterface = 
+                                                                    const selectedUser: UserBasicInterface =
                                                                     selectedUsers?.find(
-                                                                        (userObj: UserBasicInterface) => 
+                                                                        (userObj: UserBasicInterface) =>
                                                                             userObj.id === user.value
                                                                     );
 
@@ -637,7 +637,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                                         data-testid={ `${ testId }-users
                                                                                         -list-${ selectedUser.userName }
                                                                                         -avatar` }
-                                                                                        name={ 
+                                                                                        name={
                                                                                             resolveUserDisplayName(
                                                                                                 selectedUser
                                                                                             )

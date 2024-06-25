@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { BrandingPreferenceTypes, PreviewScreenType, PreviewScreenVariationType } from "./branding-preferences";
+import {
+    BrandingPreferenceTypes,
+    PreviewScreenType,
+    PreviewScreenVariationType
+    } from "@wso2is/common.branding.v1/models";
 
 /**
  * Interface for the custom text preference API response.

@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AlertLevels,
@@ -45,7 +46,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../admin.core.v1";
 import { deleteOrganization, patchOrganization } from "../../api";
 import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,

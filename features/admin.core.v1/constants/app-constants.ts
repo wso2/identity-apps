@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
-import { StringUtils } from "@wso2is/core/utils";
-import { MultitenantConstants } from "./multitenant-constants";
-import { identityProviderConfig } from "../../admin.extensions.v1/configs";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
     GovernanceCategoryForOrgsInterface,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorUtils
-} from "../../admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1";
+import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
+import { MultitenantConstants } from "./multitenant-constants";
 
 /**
  * Class containing app constants.
@@ -271,6 +271,7 @@ export class AppConstants {
             [ "APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications` ],
             [ "APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates` ],
             [ "APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id` ],
+            [ "APPLICATIONS_SETTINGS", `${ AppConstants.getDeveloperViewBasePath() }/applications-settings` ],
             [ "APPLICATION_ROLES", `${ AppConstants.getAdminViewBasePath() }/application-roles` ],
             [ "APPLICATION_ROLES_EDIT",
                 `${ AppConstants.getAdminViewBasePath() }/application-roles/:applicationId/:roleId` ],

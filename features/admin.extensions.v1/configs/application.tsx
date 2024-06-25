@@ -16,6 +16,23 @@
  * under the License.
  */
 
+import { APIAuthorization } from "@wso2is/admin.applications.v1/components/api-authorization/api-authorization";
+import {
+    ExtendedClaimInterface,
+    ExtendedExternalClaimInterface,
+    SelectedDialectInterface
+} from "@wso2is/admin.applications.v1/components/settings";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import {
+    ApplicationInterface,
+    ApplicationTabTypes,
+    SupportedAuthProtocolTypes,
+    additionalSpProperty
+} from "@wso2is/admin.applications.v1/models";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
 import { LegacyModeInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import {
@@ -36,23 +53,6 @@ import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
-import { APIAuthorization } from "../../admin.applications.v1/components/api-authorization/api-authorization";
-import {
-    ExtendedClaimInterface,
-    ExtendedExternalClaimInterface,
-    SelectedDialectInterface
-} from "../../admin.applications.v1/components/settings";
-import { ApplicationManagementConstants } from "../../admin.applications.v1/constants";
-import {
-    ApplicationInterface,
-    ApplicationTabTypes,
-    SupportedAuthProtocolTypes,
-    additionalSpProperty
-} from "../../admin.applications.v1/models";
-import { ClaimManagementConstants } from "../../admin.claims.v1/constants/claim-management-constants";
-import { EventPublisher, FeatureConfigInterface } from "../../admin.core.v1";
-import { AppConstants } from "../../admin.core.v1/constants";
-import { ApplicationRoles } from "../../admin.roles.v2/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SamlWebAppTemplate
@@ -109,7 +109,7 @@ export const applicationConfig: ApplicationConfig = {
         showFapiFeatureStatusChip: false,
         showMtlsAliases: false,
         showMyAccount: true,
-        showMyAccountStatus: false,
+        showMyAccountStatus: true,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
@@ -396,7 +396,6 @@ export const applicationConfig: ApplicationConfig = {
         ): ResourceTabPaneInterface[] => {
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
             const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
-            const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
 
             const application: ApplicationInterface = props?.application as ApplicationInterface;
 
@@ -442,7 +441,6 @@ export const applicationConfig: ApplicationConfig = {
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
-                && applicationRolesFeatureEnabled
                 && !legacyMode?.rolesV1
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
                     applicationRoles?.enabled)

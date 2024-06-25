@@ -16,6 +16,27 @@
  * under the License.
  */
 
+import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
+import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    history
+} from "@wso2is/admin.core.v1";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.identity-providers.v1/api";
+import {
+    IdentityProviderManagementConstants
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -41,26 +62,6 @@ import { Divider, Grid, Icon  } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
-import useAuthenticationFlow from "../../../../admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AuthenticatorManagementConstants } from "../../../../admin.connections.v1";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    history
-} from "../../../../admin.core.v1";
-import { getMultiFactorAuthenticatorDetails } from "../../../../admin.identity-providers.v1/api";
-import {
-    IdentityProviderManagementConstants
-} from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
-import { OrganizationType } from "../../../../admin.organizations.v1/constants";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface
-} from "../../../../admin.server-configurations.v1/models/governance-connectors";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
@@ -166,6 +167,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         state?.organization?.organizationType);
 
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(undefined);
+    const { isAdaptiveAuthenticationAvailable } = useGlobalVariables();
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
     const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);

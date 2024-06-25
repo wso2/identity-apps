@@ -18,6 +18,11 @@
 
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface, getMiscellaneousIcons } from "@wso2is/admin.core.v1";
+import OrganizationSwitcherList from
+    "@wso2is/admin.organizations.v1/components/organization-switch/organization-switch-list";
+import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationInterface } from "@wso2is/admin.organizations.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert, setTenants } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
@@ -30,11 +35,6 @@ import { Button, Dropdown, Grid, Icon, Input, Item, Loader, Segment } from "sema
 import {
     ReactComponent as CrossIcon
 } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppState, FeatureConfigInterface, getMiscellaneousIcons } from "../../../admin.core.v1";
-import OrganizationSwitcherList from
-    "../../../admin.organizations.v1/components/organization-switch/organization-switch-list";
-import { OrganizationManagementConstants } from "../../../admin.organizations.v1/constants";
-import { OrganizationInterface } from "../../../admin.organizations.v1/models";
 import { getAssociatedTenants } from "../../api";
 import { TenantInfo, TenantRequestResponse } from "../../models";
 import { AddTenantWizard } from "../add-modal";

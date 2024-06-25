@@ -17,15 +17,15 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface,
     SWRConfig
-} from "../../../../admin.core.v1/hooks/use-request";
-import { store } from "../../../../admin.core.v1/store";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { OrganizationInterface } from "../models/organization";
 
 /**

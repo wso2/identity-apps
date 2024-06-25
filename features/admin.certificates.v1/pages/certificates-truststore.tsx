@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -25,7 +26,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../admin.core.v1";
 import { listClientCertificates } from "../api";
 import { CertificatesList } from "../components";
 

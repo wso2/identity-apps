@@ -42,6 +42,9 @@ export const branding: BrandingNS = {
                 copyright: {
                     hint: "Text that appears at the footer of the login screens. You can use `{{currentYear}}` placeholder to automatically display the current year."
                 },
+                "email.link.expiry.message": {
+                    hint: "The message that appears when the email link expires. If not set, {{productName}} defaults are used."
+                },
                 "privacy.policy": {
                     hint: "The privacy policy text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
                 },
@@ -83,7 +86,7 @@ export const branding: BrandingNS = {
                     hint: "The placeholder of the identifier input field in the password recovery box. If not set, {{productName}} defaults are used.",
                     warning: "<0>IMPORTANT</0>: Customizing the password recovery identifier placeholder will replace the dynamic placeholder when {{feature}} are <1>configured</1>."
                 },
-                "password.recovery.button.email.link": {
+                "password.recovery.button": {
                     hint: "The text that appears on the main action button of the password recovery box. If not set, {{productName}} defaults are used."
                 },
                 "password.recovery.heading": {
@@ -161,6 +164,7 @@ export const branding: BrandingNS = {
     },
     screens: {
         common: "Common",
+        "email-link-expiry": "Email Link Expiry",
         "email-otp": "Email OTP",
         "email-template": "Email Templates",
         login: "Login",
@@ -197,7 +201,8 @@ export const branding: BrandingNS = {
                 button: "Try Branding AI"
             }
         },
-        disclaimer: "Branding AI can make errors. Verify the information for accuracy.",
+        disclaimer: "Branding AI can make errors. Verify the information for accuracy. Do not include any personal data such "+
+        "as usernames, mobile numbers, or any other sensitive information.",
         notifications: {
             generateError: {
                 description: "An error occurred while generating the branding.",

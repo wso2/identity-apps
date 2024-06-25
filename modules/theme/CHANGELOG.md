@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.0.85
+
+### Patch Changes
+
+- [#6352](https://github.com/wso2/identity-apps/pull/6352) [`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e) Thanks [@savindi7](https://github.com/savindi7)! - Fix header text wrap issue in resource card.
+
+## 2.0.84
+
+### Patch Changes
+
+- [#6300](https://github.com/wso2/identity-apps/pull/6300) [`57974f4691aad11a9cdf13d03a2526c160936e8d`](https://github.com/wso2/identity-apps/commit/57974f4691aad11a9cdf13d03a2526c160936e8d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add enterprise idp logo for saas deployment
+
+## 2.0.83
+
+### Patch Changes
+
+- [#6229](https://github.com/wso2/identity-apps/pull/6229) [`6f04b0edc079c6c784000455cfc12689d2d8644f`](https://github.com/wso2/identity-apps/commit/6f04b0edc079c6c784000455cfc12689d2d8644f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Unify AI feature codebase and UX improvments
+
 ## 2.0.82
 
 ### Patch Changes

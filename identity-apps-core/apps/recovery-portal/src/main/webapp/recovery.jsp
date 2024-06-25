@@ -69,7 +69,6 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
-    String spId = Encode.forHtmlAttribute(request.getParameter("spId"));
     String userTenantHint = request.getParameter("t");
     String applicationAccessUrl = "";
 
@@ -225,11 +224,6 @@
                     request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                             response);
                     return;
-                } else if(notificationChannel.equals("SMS")) {
-                    request.setAttribute("screenValue", Encode.forHtmlAttribute(request.getParameter("screenValue")));
-                    request.setAttribute("resendCode", recoveryResponse.getResendCode());
-                    request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
-                    request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
                 } else {
                     request.setAttribute("error", true);
                     request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -264,9 +258,11 @@
             if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(recoveryOption)) {
                 request.setAttribute("callback", callback);
                 request.getRequestDispatcher("password-recovery-notify.jsp").forward(request, response);
-            } else if(IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(recoveryOption)) {
-                request.setAttribute("channel", IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP);
-                request.getRequestDispatcher("password-recovery-otp.jsp").forward(request, response);
+            } else if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SECURITY_QUESTIONS
+                    .equals(recoveryOption)) {
+                request.setAttribute("callback", callback);
+                request.getRequestDispatcher("challenge-question-request.jsp?username=" + username).forward(request,
+                        response);
             } else {
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -279,3 +275,11 @@
         }
     }
 %>
+<html lang="en-US">
+<head>
+    <title></title>
+</head>
+<body>
+
+</body>
+</html>

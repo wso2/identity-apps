@@ -140,6 +140,18 @@ export interface ApplicationsNS {
             content: string;
             assertionHint: string;
         };
+        disableApplication: {
+            header: string;
+            message: string;
+            content: string;
+            assertionHint: string;
+        },
+        enableApplication: {
+            header: string;
+            message: string;
+            content: string;
+            assertionHint: string;
+        },
         deleteOutboundProvisioningIDP: {
             header: string;
             message: string;
@@ -248,6 +260,12 @@ export interface ApplicationsNS {
             header: string;
             subheader: string;
         };
+        disableApplication: {
+            actionTitle: string
+            header: string;
+            subheader: string;
+            subheader2: string
+        },
     };
     edit: {
         sections: {
@@ -988,6 +1006,34 @@ export interface ApplicationsNS {
                     };
                 };
             };
+        };
+        applicationsSettings: {
+            fields :{
+                dcrEndpoint: {
+                    label: string,
+                    hint: string
+                };
+                ssaJwks: {
+                    label: string,
+                    placeholder: string,
+                    hint: string,
+                    validations: {
+                        empty: string
+                    }
+                };
+                mandateSSA: {
+                    label: string,
+                    hint: string
+                };
+                authenticationRequired: {
+                    label: string,
+                    hint: string
+                };
+                enforceFapi: {
+                    label: string,
+                    hint: string
+                };
+            }
         };
         generalDetails: {
             fields: {
@@ -2335,6 +2381,20 @@ export interface ApplicationsNS {
                 description: string;
             };
         };
+        disableApplication: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        },
         updateAuthenticationFlow: {
             error: {
                 message: string;

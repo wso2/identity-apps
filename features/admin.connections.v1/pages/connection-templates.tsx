@@ -16,14 +16,15 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "@wso2is/admin.core.v1";
 import {
     getEmptyPlaceholderIllustrations
-} from "../../admin.core.v1/configs/ui";
+} from "@wso2is/admin.core.v1/configs/ui";
 import {
     AppConstants
-} from "../../admin.core.v1/constants/app-constants";
-import useDeploymentConfig from "../../admin.core.v1/hooks/use-app-configs";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
+} from "@wso2is/admin.core.v1/constants/app-constants";
+import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -44,7 +45,6 @@ import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../admin.core.v1";
 import { useGetConnectionTemplates } from "../api/connections";
 import {
     AuthenticatorCreateWizardFactory

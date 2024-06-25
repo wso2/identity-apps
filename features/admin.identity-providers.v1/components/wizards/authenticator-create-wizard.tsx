@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -37,7 +38,6 @@ import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AuthenticatorSettings } from "./steps";
 import { AuthenticatorTemplateSelection } from "./steps/authenticator-create-steps/authenticator-template-selection";
-import { getEmptyPlaceholderIllustrations } from "../../../admin.core.v1/configs/ui";
 import {
     getFederatedAuthenticatorMetadata,
     updateFederatedAuthenticator

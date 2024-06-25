@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { ResourceTabPaneInterface } from "@wso2is/react-components";
-import { ReactElement, ReactNode } from "react";
-import { Dispatch } from "redux";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
-} from "../../../admin.applications.v1/components/settings";
-import { ApplicationInterface, ApplicationTabTypes } from "../../../admin.applications.v1/models";
-import { FeatureConfigInterface } from "../../../admin.core.v1";
+} from "@wso2is/admin.applications.v1/components/settings";
+import { ApplicationInterface, ApplicationTabTypes } from "@wso2is/admin.applications.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { ResourceTabPaneInterface } from "@wso2is/react-components";
+import { ReactElement, ReactNode } from "react";
+import { Dispatch } from "redux";
 import { OIDCSDKMeta } from "../../application-templates/templates/oidc-web-application/models";
 import { SAMLSDKMeta } from "../../application-templates/templates/saml-web-application/models";
 import { SDKMetaInterface } from "../../application-templates/templates/single-page-application/models";

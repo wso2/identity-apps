@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -29,8 +31,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { FIDOTrustedApps } from "./fido-trusted-apps";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1";
-import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import { updateFidoConfigs, useFIDOConnectorConfigs } from "../../../../api/fido-configs";
 import { IdentityProviderManagementConstants } from "../../../../constants";
 import {
@@ -88,7 +88,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         isLoading: fidoConnectorConfigFetchRequestIsLoading,
         error: fidoConnectorConfigFetchError,
         mutate: mutateFIDOConnectorConfigs
-    } = useFIDOConnectorConfigs();
+    } = useFIDOConnectorConfigs(!isSubOrganization());
 
     /**
      * Retrieve the list of FIDO trusted origins from the FIDO connector configuration response.
@@ -371,41 +371,45 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-usernameless-authentication` }
             />
-            <URLInput
-                urlState={ FIDOTrustedOrigins }
-                setURLState={ (urls: string) => {
-                    if (urls !== undefined) {
-                        setFIDOTrustedOrigins(urls);
-                    }
-                } }
-                labelName={
-                    t("authenticationProvider:forms." +
-                            "authenticatorSettings.fido2.trustedOrigins.label")
-                }
-                placeholder={
-                    t("authenticationProvider:forms." +
-                            "authenticatorSettings.fido2.trustedOrigins.placeholder")
-                }
-                validationErrorMsg={
-                    t("authenticationProvider:forms." +
-                            "authenticatorSettings.fido2.trustedOrigins.validations.invalid")
-                }
-                computerWidth={ 10 }
-                hint={
-                    t("authenticationProvider:forms." +
-                        "authenticatorSettings.fido2.trustedOrigins.hint")
-                }
-                addURLTooltip={ t("common:addURL") }
-                duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                data-testid={ `${ testId }-fido-trusted-origin-input` }
-                required = { false }
-                showPredictions={ false }
-                isAllowEnabled={ false }
-                skipValidation
-                readOnly={ isReadOnly }
-            />
             {
-                identityProviderConfig?.editIdentityProvider?.enableFIDOTrustedAppsConfiguration
+                !isSubOrganization() &&
+                (<URLInput
+                    urlState={ FIDOTrustedOrigins }
+                    setURLState={ (urls: string) => {
+                        if (urls !== undefined) {
+                            setFIDOTrustedOrigins(urls);
+                        }
+                    } }
+                    labelName={
+                        t("authenticationProvider:forms." +
+                            "authenticatorSettings.fido2.trustedOrigins.label")
+                    }
+                    placeholder={
+                        t("authenticationProvider:forms." +
+                            "authenticatorSettings.fido2.trustedOrigins.placeholder")
+                    }
+                    validationErrorMsg={
+                        t("authenticationProvider:forms." +
+                            "authenticatorSettings.fido2.trustedOrigins.validations.invalid")
+                    }
+                    computerWidth={ 10 }
+                    hint={
+                        t("authenticationProvider:forms." +
+                        "authenticatorSettings.fido2.trustedOrigins.hint")
+                    }
+                    addURLTooltip={ t("common:addURL") }
+                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                    data-testid={ `${ testId }-fido-trusted-origin-input` }
+                    required = { false }
+                    showPredictions={ false }
+                    isAllowEnabled={ false }
+                    skipValidation
+                    readOnly={ isReadOnly }
+                />)
+            }
+
+            {
+                identityProviderConfig?.editIdentityProvider?.enableFIDOTrustedAppsConfiguration && !isSubOrganization()
                     ? (
                         <FIDOTrustedApps
                             readOnly={ isReadOnly }

@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import {
+    IdentityProviderManagementConstants
+} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, ConfirmationModal, ConfirmationModalPropsInterface, LabeledCard, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import {
-    IdentityProviderManagementConstants
-} from "../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../admin.identity-providers.v1/models/identity-provider";
 
 /**
  * Proptypes for the duplicate social authenticator selection modal component.

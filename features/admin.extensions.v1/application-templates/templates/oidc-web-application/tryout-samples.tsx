@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
+import {
+    ApplicationInterface,
+    ApplicationTemplateInterface,
+    OIDCDataInterface,
+    SupportedAuthProtocolTypes
+} from "@wso2is/admin.applications.v1/models";
+import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
+import { Config, getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
@@ -28,16 +38,6 @@ import { Button, Divider, Form, Icon, InputOnChangeData } from "semantic-ui-reac
 import { dotNetSDKInstallerConfigCode, tomcatOIDCSamplePropertiesFileCode } from "./code-blocks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalOIDCAppTechnologyTypes } from "./models";
-import { updateAuthProtocolConfig } from "../../../../admin.applications.v1/api";
-import {
-    ApplicationInterface,
-    ApplicationTemplateInterface,
-    OIDCDataInterface,
-    SupportedAuthProtocolTypes
-} from "../../../../admin.applications.v1/models";
-import { ApplicationManagementUtils } from "../../../../admin.applications.v1/utils/application-management-utils";
-import { Config, getTechnologyLogos } from "../../../../admin.core.v1/configs";
-import { EventPublisher } from "../../../../admin.core.v1/utils";
 import {
     VerticalStepper,
     VerticalStepperStepInterface

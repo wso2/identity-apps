@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
+import {
+    ApplicationInterface,
+    ApplicationTemplateInterface,
+    OIDCDataInterface,
+    SupportedAuthProtocolTypes
+} from "@wso2is/admin.applications.v1/models";
+import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
+import { Config } from "@wso2is/admin.core.v1/configs";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils, URLUtils } from "@wso2is/core/utils";
@@ -56,15 +65,6 @@ import {
 } from "./code-blocks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalOIDCAppTechnologyTypes } from "./models";
-import { updateAuthProtocolConfig } from "../../../../admin.applications.v1/api";
-import {
-    ApplicationInterface,
-    ApplicationTemplateInterface,
-    OIDCDataInterface,
-    SupportedAuthProtocolTypes
-} from "../../../../admin.applications.v1/models";
-import { ApplicationManagementUtils } from "../../../../admin.applications.v1/utils/application-management-utils";
-import { Config } from "../../../../admin.core.v1/configs";
 import MavenLogo from "../../../assets/images/icons/maven-logo.svg";
 import TomcatLogo from "../../../assets/images/icons/tomcat-icon.svg";
 import {
@@ -502,7 +502,7 @@ export const IntegrateSDKs: FunctionComponent<IntegrateSDKsPropsInterface> = (
                                     <p>
                                         For successful integration, you need to
                                         add <strong>
-                                            { appContextPath 
+                                            { appContextPath
                                             + SDKMeta.tomcatOIDCAgent.integrate.defaultCallbackContext }
                                         </strong> to <strong>Authorized redirect URIs</strong>
                                         <Button

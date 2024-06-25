@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import { AppConstants, store } from "@wso2is/admin.core.v1";
+import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
+import { TreeNode } from "@wso2is/admin.roles.v2/models";
+import { RoleManagementUtils } from "@wso2is/admin.roles.v2/utils";
+import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
@@ -23,11 +28,6 @@ import Tree, { TreeNodeProps } from "rc-tree";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { AppConstants, store } from "../../../../../admin.core.v1";
-import { RoleConstants } from "../../../../../admin.roles.v2/constants";
-import { TreeNode } from "../../../../../admin.roles.v2/models";
-import { RoleManagementUtils } from "../../../../../admin.roles.v2/utils";
-import { ServerConfigurationsInterface, getServerConfigs } from "../../../../../admin.server-configurations.v1";
 import { hiddenPermissions } from "../../meta";
 
 /**
