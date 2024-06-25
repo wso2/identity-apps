@@ -194,8 +194,6 @@ jobs:
         run: pnpm test:unit:coverage
 
       - name: 🤖 Aggregate Test Coverage
-        # TODO: Enable this step once the coverage command related issues are fixed
-        if: false
         id: aggregate-coverage-reports
         run: |
           pnpm test:unit:coverage:aggregate
