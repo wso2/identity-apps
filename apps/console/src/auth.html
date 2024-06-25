@@ -392,7 +392,7 @@
 
                         if(isTenantSwitchPath) {
                             auth.initialize(authConfig);
-                            auth.signIn();
+                            auth.signIn(getAuthParams({}));
                         } else {
                             window.location = applicationDomain + '/<%= htmlWebpackPlugin.options.basename %>?disable_silent_sign_in=true&invite_user=true';
                         }
