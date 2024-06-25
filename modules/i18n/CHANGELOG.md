@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.4.1
+
+### Patch Changes
+
+- [#6454](https://github.com/wso2/identity-apps/pull/6454) [`2539cb9a769fdeedb6c44985dd76fee91114ced6`](https://github.com/wso2/identity-apps/commit/2539cb9a769fdeedb6c44985dd76fee91114ced6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - `identity-providers` -> `connections` in linked accounts description in my account
+
+- Updated dependencies [[`0215c1a74a2f8940d7049e54ec2425b996e50d78`](https://github.com/wso2/identity-apps/commit/0215c1a74a2f8940d7049e54ec2425b996e50d78)]:
+  - @wso2is/core@2.0.49
+
 ## 2.4.0
 
 ### Minor Changes
