@@ -202,6 +202,14 @@
                 "cwd": "apps/console",
                 "parallel": false
             }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test -- --coverage --collect-coverage",
+                "cwd": "apps/console",
+                "parallel": false
+            }
         }
     }
 }
