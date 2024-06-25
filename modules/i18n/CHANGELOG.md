@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.4.0
+
+### Minor Changes
+
+- [#5964](https://github.com/wso2/identity-apps/pull/5964) [`b339d3a607f060015b115a90219989d663ec02bf`](https://github.com/wso2/identity-apps/commit/b339d3a607f060015b115a90219989d663ec02bf) Thanks [@anjuchamantha](https://github.com/anjuchamantha)! - Adding a new page with tenant-wise DCR configurations
+
 ## 2.3.9
 
 ### Patch Changes
