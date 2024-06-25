@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
@@ -138,12 +137,11 @@ export class AppUtils {
      * @returns If the auth callback URL belongs to another tenant.
      */
     public static isAuthCallbackURLFromAnotherTenant(authCallbackURL: string, tenantDomain: string): boolean {
-        const tenantName: string = (isLegacyAuthzRuntime() &&
-                AppConstants.getSuperTenant() === tenantDomain) ? "" : tenantDomain;
+        const tenantName: string = tenantDomain;
         const tenantRegex: RegExp = new RegExp("t/([^/]+)/");
         const matches: RegExpExecArray = tenantRegex.exec(authCallbackURL);
 
-        const tenantFromURL: string = matches?.[ 1 ] ?? (isLegacyAuthzRuntime() ? "" : AppConstants.getSuperTenant());
+        const tenantFromURL: string = matches?.[ 1 ] ?? AppConstants.getSuperTenant();
 
         if (tenantFromURL === tenantName) {
             return false;

@@ -26,7 +26,6 @@
         "serverOrigin": "https://localhost:9443"
     },
     "isSaas": false,
-    "legacyAuthzRuntime": false,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
     "routePaths": {

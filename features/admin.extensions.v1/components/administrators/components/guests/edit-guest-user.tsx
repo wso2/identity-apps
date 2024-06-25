@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { ConnectorPropertyInterface, RealmConfigInterface } from "@wso2is/admin.server-configurations.v1/models";
@@ -36,10 +34,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { UserRolesList as LegacyUserRolesList } from "./user-roles-edit";
 import { administratorConfig } from "../../../../configs/administrator";
 import { SCIMConfigs } from "../../../../configs/scim";
-import { hiddenPermissions } from "../../../roles/meta";
 import { AdminAccountTypes } from "../../constants";
 
 interface EditGuestUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
@@ -90,11 +86,8 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ allowDeleteOnly, setAllowDeleteOnly ] = useState<boolean>(false);
@@ -197,26 +190,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
                 menuItem: t("users:editUser.tab.menuItems.2"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        { legacyAuthzRuntime ?
-                            (<LegacyUserRolesList
-                                showDomain={ false }
-                                hideApplicationRoles={ true }
-                                isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
-                                onAlertFired={ handleAlerts }
-                                user={ user }
-                                handleUserUpdate={ handleUserUpdate }
-                                isReadOnly={ false }
-                                permissionsToHide={
-                                    (AppConstants.getTenant() !== AppConstants.getSuperTenant())
-                                        ? hiddenPermissions
-                                        : []
-                                }
-                                realmConfigs={ realmConfigs }
-                            />)
-                            : <UserRolesList user={ user } /> }
-
-
-
+                        <UserRolesList user={ user } />
                     </ResourceTab.Pane>
                 )
             }

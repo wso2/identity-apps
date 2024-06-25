@@ -33,8 +33,7 @@ const useRequiredScopes = (scopes: string[]): boolean => {
     return hasRequiredScopes(
         scopes,
         accessControlContext?.allowedScopes,
-        accessControlContext?.organizationType,
-        accessControlContext?.isLegacyRuntimeEnabled
+        accessControlContext?.organizationType
     );
 };
 

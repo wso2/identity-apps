@@ -72,8 +72,7 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
 export const hasRequiredScopes = (
     scopes: string[],
     allowedScopes: string,
-    organizationType: string,
-    isLegacyRuntimeEnabled: boolean
+    organizationType: string
 ): boolean => {
     const isDefined: boolean = scopes && !isEmpty(scopes);
 
@@ -82,7 +81,7 @@ export const hasRequiredScopes = (
     }
 
     if (scopes instanceof Array) {
-        if (!isLegacyRuntimeEnabled && organizationType === OrganizationType.SUBORGANIZATION) {
+        if (organizationType === OrganizationType.SUBORGANIZATION) {
             /**
              * If the organization type is `SUBORGANIZATION`, the `internal_` scopes should be replaced with
              * `internal_org_` scopes.
@@ -108,7 +107,7 @@ export const hasRequiredScopes = (
             });
         }
 
-        if (isLegacyRuntimeEnabled ||
+        if (
             !organizationType ||
             organizationType === OrganizationType.SUPER_ORGANIZATION ||
             organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
@@ -154,8 +153,7 @@ export const isPortalAccessGranted = <T = unknown>(
         if (hasRequiredScopes(
             feature?.scopes?.read,
             allowedScopes,
-            organzationType,
-            isLegacyRuntimeDisabled
+            organzationType
         )) {
             isAllowed = true;
 

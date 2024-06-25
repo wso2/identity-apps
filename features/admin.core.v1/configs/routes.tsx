@@ -69,7 +69,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
-    const legacyAuthzRuntime: boolean = window["AppUtils"]?.getConfig()?.legacyAuthzRuntime;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -1427,71 +1426,37 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         );
     }
 
-    if (legacyAuthzRuntime) {
-        defaultRoutes.push(
+    defaultRoutes.push({
+        category: "extensions:manage.sidePanel.categories.userManagement",
+        children: [
             {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() =>
-                            import("@wso2is/admin.extensions.v1/components/groups/pages/groups-edit")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "groupsEdit",
-                        name: "console:manage.features.sidePanel.editGroups",
-                        path: AppConstants.getPaths().get("GROUP_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("@wso2is/admin.extensions.v1/components/groups/pages/groups")),
+                component: lazy(() =>
+                    import("@wso2is/admin.groups.v1/pages/group-edit")
+                ),
                 exact: true,
                 icon: {
-                    icon: <UserGroupIcon className="icon" fill="black" />
+                    icon: getSidePanelIcons().childIcon
                 },
-                id: "groups",
-                name: "Groups",
-                order: 6,
-                path: AppConstants.getPaths().get("GROUPS"),
+                id: "groupsEdit",
+                name: "console:manage.features.sidePanel.editGroups",
+                path: AppConstants.getPaths().get("GROUP_EDIT"),
                 protected: true,
-                showOnSidePanel: true
+                showOnSidePanel: false
             }
-        );
-    } else {
-        defaultRoutes.push({
-            category: "extensions:manage.sidePanel.categories.userManagement",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.groups.v1/pages/group-edit")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "groupsEdit",
-                    name: "console:manage.features.sidePanel.editGroups",
-                    path: AppConstants.getPaths().get("GROUP_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => import("@wso2is/admin.groups.v1/pages/groups")),
-            exact: true,
-            icon: {
-                icon: <UserGroupIcon className="icon" fill="black" />
-            },
-            id: "groups",
-            name: "Groups",
-            order: 6,
-            path: AppConstants.getPaths().get("GROUPS"),
-            protected: true,
-            showOnSidePanel: true
-        });
-    }
+        ],
+        component: lazy(() => import("@wso2is/admin.groups.v1/pages/groups")),
+        exact: true,
+        icon: {
+            icon: <UserGroupIcon className="icon" fill="black" />
+        },
+        id: "groups",
+        name: "Groups",
+        order: 6,
+        path: AppConstants.getPaths().get("GROUPS"),
+        protected: true,
+        showOnSidePanel: true
+    });
+
 
     const routes: RouteInterface[] = values(
         merge(

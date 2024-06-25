@@ -17,7 +17,6 @@
  */
 
 import useAppSettings from "./use-app-settings";
-import useAuthorization from "./use-authorization";
 import { MultiTenantConstants } from "../constants/multi-tenant-constants";
 
 /**
@@ -69,8 +68,6 @@ export interface UseOrganizationsInterface {
  * @returns An object containing the current Organizations context.
  */
 const useOrganizations = (): UseOrganizationsInterface => {
-    const { legacyAuthzRuntime } = useAuthorization();
-
     const { getLocalStorageSetting, setLocalStorageSetting, removeLocalStorageSetting } = useAppSettings();
 
     /**
@@ -80,11 +77,8 @@ const useOrganizations = (): UseOrganizationsInterface => {
      * @returns Transformed tenant domain.
      */
     const transformTenantDomain = (tenantDomain: string): string => {
-        if (!legacyAuthzRuntime) {
-        // With the latest Authz framework, `carbon.super` is resolved as `Super`.
-            if (tenantDomain === MultiTenantConstants.SUPER_TENANT_DISPLAY_NAME) {
-                return MultiTenantConstants.SUPER_TENANT_DOMAIN_NAME;
-            }
+        if (tenantDomain === MultiTenantConstants.SUPER_TENANT_DISPLAY_NAME) {
+            return MultiTenantConstants.SUPER_TENANT_DOMAIN_NAME;
         }
 
         return tenantDomain;
