@@ -911,7 +911,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         const allowedList: CheckboxChildWithIndex[] = [];
 
         hybridFlowResponseTypeMap.forEach((responseType: string, label: string) => {
-
             const responseTypeList: CheckboxChildWithIndex = {
                 label: modifyResponseTypeLabel(responseType, label),
                 value: responseType
