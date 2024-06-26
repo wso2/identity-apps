@@ -241,7 +241,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             }
         );
 
-        filteredOptions.forEach((option: AuthenticatorInterface) => {
+        filteredOptions?.forEach((option: AuthenticatorInterface) => {
             if (option.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR) {
                 basicSignInOption = IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
             } else if (option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR) {

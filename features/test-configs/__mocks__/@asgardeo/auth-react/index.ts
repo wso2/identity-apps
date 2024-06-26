@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
+import {
+    AsgardeoSPAClient,
+    AuthClientConfig,
+    AuthContextInterface,
+    Config,
+    DecodedIDTokenPayload
+} from "@asgardeo/auth-react";
 
 const AsgardeoSPAClientMock: {
     getInstance: jest.Mock<AsgardeoSPAClient>
@@ -36,13 +42,39 @@ const getDecodedIDToken: jest.Mock<Promise<DecodedIDTokenPayload | undefined>> =
     tenant_domain: ""
 });
 
+const getOIDCServiceEndpoints = () => {
+    return {
+        "authorizationEndpoint": "",
+        "checkSessionIframe": "",
+        "endSessionEndpoint": "",
+        "introspectionEndpoint": "",
+        "issuer": "",
+        "jwksUri": "",
+        "registrationEndpoint": "",
+        "revocationEndpoint": "",
+        "tokenEndpoint": "",
+        "userinfoEndpoint": ""
+    };
+};
+
+const updateConfig = (_config: Partial<AuthClientConfig<Config>>) => {
+    return new Promise(jest.fn());
+};
+
 enum ResponseMode {
     formPost = "form_post",
     query = "query"
 }
 
+const useAuthContext: jest.Mock<AuthContextInterface> = jest.fn().mockReturnValue({
+    getDecodedIDToken,
+    getOIDCServiceEndpoints,
+    updateConfig
+});
+
 export {
     AsgardeoSPAClientMock as AsgardeoSPAClient,
     getDecodedIDToken,
-    ResponseMode
+    ResponseMode,
+    useAuthContext
 };

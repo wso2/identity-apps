@@ -29,6 +29,7 @@ import {
 } from "../__mocks__/organization";
 import * as api from "../api/organization";
 import OrganizationsPage from "../pages/organizations";
+import "@testing-library/jest-dom";
 
 /**
  * FIXME: Temporarily disabled the suite since it was causing other suites to fail.

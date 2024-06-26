@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import ResourceEndpointsProvider from "@wso2is/admin.core.v1/providers/resource-enpoints-provider";
+import UIConfigProvider from "@wso2is/admin.core.v1/providers/ui-config-provider";
 import UserPreferenceProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
 import React from "react";
 import "@testing-library/jest-dom";
@@ -26,12 +26,12 @@ import { render, screen } from "../../../../test-configs/utils";
 import AuthenticationFlowProvider from "../../../providers/authentication-flow-provider";
 import DoneNode, { DoneNodePropsInterface } from "../done-node";
 
-describe.skip("DoneNode", () => {
+describe("DoneNode", () => {
     const defaultProps: DoneNodePropsInterface = {};
 
     it("renders the DoneNode component", () => {
         render(
-            <ResourceEndpointsProvider>
+            <UIConfigProvider>
                 <UserPreferenceProvider>
                     <AuthenticationFlowProvider
                         application={ {
@@ -51,7 +51,7 @@ describe.skip("DoneNode", () => {
                         </ReactFlowProvider>
                     </AuthenticationFlowProvider>
                 </UserPreferenceProvider>
-            </ResourceEndpointsProvider>
+            </UIConfigProvider>
             , { allowedScopes: fullPermissions });
 
         const doneNode: Element = screen.getByTestId("done-node");
@@ -59,9 +59,9 @@ describe.skip("DoneNode", () => {
         expect(doneNode).toBeInTheDocument();
     });
 
-    it("renders the circular Fab button", () => {
+    it.skip("renders the circular Fab button", () => {
         render(
-            <ResourceEndpointsProvider>
+            <UIConfigProvider>
                 <UserPreferenceProvider>
                     <AuthenticationFlowProvider
                         application={ {
@@ -81,19 +81,19 @@ describe.skip("DoneNode", () => {
                         </ReactFlowProvider>
                     </AuthenticationFlowProvider>
                 </UserPreferenceProvider>
-            </ResourceEndpointsProvider>
+            </UIConfigProvider>
             , { allowedScopes: fullPermissions });
 
-        const fabButton: HTMLButtonElement = screen.getByTestId("circular-fab");
+        const fabButton: HTMLButtonElement = screen.getByTestId("done-node-circular-fab");
 
         expect(fabButton).toBeInTheDocument();
         expect(fabButton).toHaveAttribute("aria-label", "done");
         expect(fabButton).toHaveClass("done-node");
     });
 
-    it("renders the CheckIcon inside the Fab button", () => {
+    it.skip("renders the CheckIcon inside the Fab button", () => {
         render(
-            <ResourceEndpointsProvider>
+            <UIConfigProvider>
                 <UserPreferenceProvider>
                     <AuthenticationFlowProvider
                         application={ {
@@ -113,7 +113,7 @@ describe.skip("DoneNode", () => {
                         </ReactFlowProvider>
                     </AuthenticationFlowProvider>
                 </UserPreferenceProvider>
-            </ResourceEndpointsProvider>
+            </UIConfigProvider>
             , { allowedScopes: fullPermissions });
 
         const checkIcon: HTMLElement = screen.getByTestId("done-node-check-icon");
