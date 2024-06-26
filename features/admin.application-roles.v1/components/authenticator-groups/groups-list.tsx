@@ -17,6 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import { getConnectionDetails } from "@wso2is/admin.connections.v1/api/connections";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
@@ -27,7 +28,6 @@ import {
     ApplicationRoleGroupInterface,
     ApplicationRoleGroupsUpdatePayloadInterface
 } from "@wso2is/admin.extensions.v1/components/application/models";
-import { getIdentityProviderDetail } from "@wso2is/admin.identity-providers.v1/api";
 import { IdentityProviderGroupInterface, IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -91,7 +91,7 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
     useEffect(() => {
         setGroupListRequestLoading(true);
         // Get authenticator groups.
-        getIdentityProviderDetail(authenticatorId)
+        getConnectionDetails(authenticatorId)
             .then((response: IdentityProviderInterface) => {
                 const groupNameList: string[] = [];
 

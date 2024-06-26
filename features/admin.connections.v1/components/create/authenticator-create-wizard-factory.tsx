@@ -89,6 +89,8 @@ interface AuthenticatorCreateWizardFactoryInterface extends IdentifiableComponen
 export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFactoryInterface> = (
     props: AuthenticatorCreateWizardFactoryInterface
 ): ReactElement => {
+    console.log("AuthenticatorCreateWizardFactory");
+
 
     const {
         isModalOpen,
@@ -272,6 +274,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
 
         return idpName;
     };
+    console.log("type", type);
+
 
     if (isModalOpen && !isEmpty(selectedTemplateWithUniqueName)) {
         switch (type) {

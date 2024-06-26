@@ -500,6 +500,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * @returns Authenticator content.
      */
     const renderAddNewAuthenticatorContent = (): ReactElement => {
+        console.log("categorizedIdPTemplates", categorizedIdPTemplates);
+
 
         return (
             <Modal.Content

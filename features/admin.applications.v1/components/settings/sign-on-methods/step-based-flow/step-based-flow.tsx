@@ -946,6 +946,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         });
     };
 
+    console.log({
+        enterprise: enterpriseAuthenticators,
+        local: localAuthenticators,
+        recovery: recoveryAuthenticators,
+        secondFactor: secondFactorAuthenticators,
+        social: socialAuthenticators
+    });
+
+
     return (
         <div className="authentication-flow-wrapper" data-componentid={ componentId }>
             <div className="authentication-flow-section timeline">
