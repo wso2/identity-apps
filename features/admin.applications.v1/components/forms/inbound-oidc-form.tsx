@@ -366,7 +366,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     const hybridFlowConfigValuesChangeListener = (tempForm: Map<string, FormValue>): void => {
-
         if (tempForm.has(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG)) {
             const values: string[] = tempForm.get(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG) as string[];
 
