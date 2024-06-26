@@ -1,5 +1,22 @@
 # @wso2is/myaccount
 
+## 2.7.29
+
+### Patch Changes
+
+- [#6478](https://github.com/wso2/identity-apps/pull/6478) [`d6a846aec10597470a11ecce90c27cdf0c6b240d`](https://github.com/wso2/identity-apps/commit/d6a846aec10597470a11ecce90c27cdf0c6b240d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove legacyAuthzRuntime config from the codebase
+
+* [#6418](https://github.com/wso2/identity-apps/pull/6418) [`1e59bc54a206b22f49ddeae4ef3645e5ca351188`](https://github.com/wso2/identity-apps/commit/1e59bc54a206b22f49ddeae4ef3645e5ca351188) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Introduce sms otp for password recovery
+
+* Updated dependencies [[`d6a846aec10597470a11ecce90c27cdf0c6b240d`](https://github.com/wso2/identity-apps/commit/d6a846aec10597470a11ecce90c27cdf0c6b240d), [`1e59bc54a206b22f49ddeae4ef3645e5ca351188`](https://github.com/wso2/identity-apps/commit/1e59bc54a206b22f49ddeae4ef3645e5ca351188)]:
+  - @wso2is/admin.organizations.v1@2.20.32
+  - @wso2is/access-control@3.0.10
+  - @wso2is/core@2.0.50
+  - @wso2is/i18n@2.4.2
+  - @wso2is/common.branding.v1@2.20.32
+  - @wso2is/forms@2.0.40
+  - @wso2is/react-components@2.2.9
+
 ## 2.7.28
 
 ### Patch Changes
