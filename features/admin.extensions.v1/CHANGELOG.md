@@ -1,5 +1,39 @@
 # @wso2is/admin.extensions.v1
 
+## 2.21.2
+
+### Patch Changes
+
+- [#6478](https://github.com/wso2/identity-apps/pull/6478) [`d6a846aec10597470a11ecce90c27cdf0c6b240d`](https://github.com/wso2/identity-apps/commit/d6a846aec10597470a11ecce90c27cdf0c6b240d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove legacyAuthzRuntime config from the codebase
+
+- Updated dependencies [[`d6a846aec10597470a11ecce90c27cdf0c6b240d`](https://github.com/wso2/identity-apps/commit/d6a846aec10597470a11ecce90c27cdf0c6b240d), [`1e59bc54a206b22f49ddeae4ef3645e5ca351188`](https://github.com/wso2/identity-apps/commit/1e59bc54a206b22f49ddeae4ef3645e5ca351188)]:
+  - @wso2is/admin.authentication.v1@2.20.32
+  - @wso2is/admin.authorization.v1@2.20.11
+  - @wso2is/admin.organizations.v1@2.20.32
+  - @wso2is/admin.applications.v1@2.21.2
+  - @wso2is/admin.groups.v1@2.20.32
+  - @wso2is/admin.roles.v2@2.20.32
+  - @wso2is/admin.users.v1@2.20.32
+  - @wso2is/admin.core.v1@2.21.2
+  - @wso2is/access-control@3.0.10
+  - @wso2is/core@2.0.50
+  - @wso2is/admin.server-configurations.v1@2.20.32
+  - @wso2is/i18n@2.4.2
+  - @wso2is/admin.connections.v1@2.20.32
+  - @wso2is/admin.identity-providers.v1@2.20.32
+  - @wso2is/admin.tenants.v1@2.20.32
+  - @wso2is/admin.validation.v1@2.20.32
+  - @wso2is/admin.provisioning.v1@2.20.32
+  - @wso2is/admin.api-resources.v1@2.20.32
+  - @wso2is/admin.claims.v1@2.20.32
+  - @wso2is/admin.extensions.v2@2.20.32
+  - @wso2is/admin.sms-providers.v1@2.20.32
+  - @wso2is/admin.userstores.v1@2.20.32
+  - @wso2is/dynamic-forms@2.0.67
+  - @wso2is/form@2.0.68
+  - @wso2is/forms@2.0.40
+  - @wso2is/react-components@2.2.9
+
 ## 2.21.1
 
 ### Patch Changes
