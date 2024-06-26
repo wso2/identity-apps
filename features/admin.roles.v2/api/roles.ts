@@ -17,7 +17,6 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
 import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
@@ -141,8 +140,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: (isLegacyAuthzRuntime() ?
-            store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -216,8 +214,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: (isLegacyAuthzRuntime() ?
-            store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -241,9 +238,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: (isLegacyAuthzRuntime()
-            ? store?.getState()?.config?.endpoints?.rolesWithoutOrgPath
-            : store?.getState()?.config?.endpoints?.rolesV2) + "/.search"
+        url: store?.getState()?.config?.endpoints?.rolesV2 + "/.search"
     };
 
     return httpClient(requestConfig)
@@ -414,8 +409,7 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: (isLegacyAuthzRuntime() ?
-            store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -460,8 +454,7 @@ export const getRolesList = (domain: string, filter?: string): Promise<RoleListI
             domain,
             filter
         },
-        url: isLegacyAuthzRuntime() ?
-            store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2
+        url: store.getState().config.endpoints.rolesV2
     };
 
     return httpClient(requestConfig)

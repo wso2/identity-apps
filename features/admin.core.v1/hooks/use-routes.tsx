@@ -17,7 +17,6 @@
  */
 
 import { AccessControlUtils } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
@@ -50,7 +49,6 @@ export type useRoutesInterface = {
 const useRoutes = (): useRoutesInterface => {
     const dispatch: Dispatch = useDispatch();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
-    const { legacyAuthzRuntime }  = useAuthorization();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -58,7 +56,6 @@ const useRoutes = (): useRoutesInterface => {
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
     const superAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const isPrivilegedUser: boolean = useSelector((state: AppState) => state?.auth?.isPrivilegedUser);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
@@ -70,7 +67,7 @@ const useRoutes = (): useRoutesInterface => {
      *
      * @returns A promise containing void.
      */
-    const filterRoutes = async (onRoutesFilterComplete: () => void, isFirstLevelOrg: boolean): Promise<void> => {
+    const filterRoutes = async (onRoutesFilterComplete: () => void): Promise<void> => {
         if (
             isEmpty(allowedScopes) ||
             !featureConfig.applications ||
@@ -91,36 +88,6 @@ const useRoutes = (): useRoutesInterface => {
                 }
 
                 const isCurrentOrgRootAndSuperTenant: boolean = isSuperOrganization();
-
-                if (legacyAuthzRuntime) {
-                    if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
-                        if (isPrivilegedUser) {
-                            if (loggedUserName === superAdmin) {
-                                return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
-                            } else {
-                                return [
-                                    ...commonHiddenRoutes,
-                                    ...AppConstants.ORGANIZATION_ROUTES,
-                                    ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
-                                ];
-                            }
-                        } else {
-                            if (loggedUserName === superAdmin) {
-                                return commonHiddenRoutes;
-                            } else {
-                                return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
-                            }
-                        }
-                    } else {
-                        if (window["AppUtils"].getConfig().organizationName) {
-                            return [
-                                ...AppUtils.getHiddenRoutes()
-                            ];
-                        } else {
-                            return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
-                        }
-                    }
-                }
 
                 if (window["AppUtils"].getConfig().organizationName) {
                     return [
@@ -146,15 +113,9 @@ const useRoutes = (): useRoutesInterface => {
             return [ ...additionalRoutes ];
         };
 
-        let allowedRoutes: string[] = window["AppUtils"].getConfig().organizationName
+        const allowedRoutes: string[] = window["AppUtils"].getConfig().organizationName
             ? AppConstants.ORGANIZATION_ENABLED_ROUTES
             : undefined;
-
-        if (legacyAuthzRuntime) {
-            allowedRoutes = !isSuperOrganization()
-                && !isFirstLevelOrg
-                && AppConstants.ORGANIZATION_ENABLED_ROUTES;
-        }
 
         // Console feature scope check is disabled when the consoleFeatureScopeCheck flag is explicitly set to false.
         const checkConsoleScopes: boolean = !(legacyModeConfigs?.consoleFeatureScopeCheck === false);

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
@@ -115,7 +114,6 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
     const dispatch: Dispatch = useDispatch();
     const { isFirstLevelOrganization } = useGetCurrentOrganizationType();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
@@ -173,7 +171,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         }
 
         if (roleList?.length < 1) {
-            if (isFirstLevelOrganization() || !legacyAuthzRuntime) {
+            if (isFirstLevelOrganization()) {
                 getRolesList(null)
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
                         const systemRolesFilteredRolesList: RolesV2Interface[] =

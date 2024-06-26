@@ -19,23 +19,21 @@
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { AppConstants, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Button, GenericIcon, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { getOrganization, useAuthorizedOrganizationsList, useGetOrganizationBreadCrumb } from "../api";
+import { getOrganization, useAuthorizedOrganizationsList } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
-import { useGetCurrentOrganizationType } from "../hooks/use-get-organization-type";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { OrganizationInterface, OrganizationResponseInterface } from "../models";
 
@@ -60,20 +58,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const [ isAuthorizedOrganization, setIsAuthorizedOrganization ] = useState(false);
     const [ filterQuery, setFilterQuery ] = useState<string>("");
 
-    const { switchOrganization, switchOrganizationInLegacyMode } = useOrganizationSwitch();
-    const { legacyAuthzRuntime }  = useAuthorization();
+    const { switchOrganization } = useOrganizationSwitch();
     const { onSignIn } = useSignIn();
-    const { isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
-
-    const shouldSendRequest: boolean = useMemo(() => {
-        return (
-            isFirstLevelOrganization() || isSuperOrganization() || window[ "AppUtils" ].getConfig().organizationName
-        );
-    }, [ isFirstLevelOrganization, isSuperOrganization ]);
-
-    const { data: breadcrumbList, mutate: mutateOrganizationBreadCrumbFetchRequest } = useGetOrganizationBreadCrumb(
-        shouldSendRequest
-    );
 
     useEffect(() => {
         setIsReadOnly(
@@ -189,18 +175,11 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
      * Method that handles the organization switch.
      */
     const handleOrganizationSwitch = async (): Promise<void> => {
-        if (legacyAuthzRuntime) {
-            switchOrganizationInLegacyMode(breadcrumbList, organization);
-
-            return;
-        }
-
         let response: BasicUserInfo = null;
 
         try {
             response = await switchOrganization(organization.id);
             await onSignIn(response, () => null, () => null, () => null);
-            await mutateOrganizationBreadCrumbFetchRequest();
 
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {

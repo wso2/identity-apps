@@ -18,7 +18,6 @@
 
 import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -96,7 +95,6 @@ import { TenantInfo } from "../../tenants/models";
 import { getAssociationType } from "../../tenants/utils/tenants";
 import { getAgentConnections } from "../../user-stores/api";
 import { AgentConnectionInterface } from "../../user-stores/models";
-import { useOrganizationConfig } from "../api";
 import { GuestUsersList, OnboardedGuestUsersList } from "../components";
 import {
     ADVANCED_USER_MGT,
@@ -150,9 +148,8 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
-    const { legacyAuthzRuntime }  = useAuthorization();
-    const useOrgConfig: UseOrganizationConfigType = legacyAuthzRuntime
-        ? useOrganizationConfig : useOrganizationConfigV2;
+
+    const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -765,7 +762,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     if (response?.data?.Resources.length > 0) {
                         let adminId: string = response?.data?.Resources[0]?.id;
 
-                        if (!legacyAuthzRuntime && response?.data?.Resources?.length > 1) {
+                        if (response?.data?.Resources?.length > 1) {
                             const filteredRoleList: RolesV2Interface[] = response?.data?.Resources?.filter(
                                 (role: RolesV2Interface) => role?.audience?.type === RoleAudienceTypes.APPLICATION);
 

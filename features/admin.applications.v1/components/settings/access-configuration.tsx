@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+
 import {
     AppState,
     AuthenticatorAccordion,
@@ -245,7 +245,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
@@ -796,8 +795,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                                     featureConfig?.applications,
                                                                     featureConfig?.applications?.scopes?.update,
                                                                     allowedScopes,
-                                                                    organizationType,
-                                                                    legacyAuthzRuntime
+                                                                    organizationType
                                                                 )
                                                             }
                                                             showSAMLCreation={
@@ -871,8 +869,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
                                                     allowedScopes,
-                                                    organizationType,
-                                                    legacyAuthzRuntime
+                                                    organizationType
                                                 )
                                             }
                                             template={ template }
@@ -936,8 +933,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
                                                     allowedScopes,
-                                                    organizationType,
-                                                    legacyAuthzRuntime
+                                                    organizationType
                                                 )
                                             }
                                             showSAMLCreation={
@@ -999,8 +995,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
                                                     allowedScopes,
-                                                    organizationType,
-                                                    legacyAuthzRuntime
+                                                    organizationType
                                                 )
                                             }
                                             template={ template }

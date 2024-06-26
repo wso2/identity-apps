@@ -27,7 +27,6 @@ import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from 
 export interface AccessControlProviderInterface {
     allowedScopes: string;
     features: FeatureGateInterface;
-    isLegacyRuntimeEnabled: boolean;
     organizationType: string;
 }
 
@@ -58,7 +57,6 @@ const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlPr
         allowedScopes,
         children,
         features,
-        isLegacyRuntimeEnabled,
         organizationType
     } = props;
 
@@ -72,7 +70,6 @@ const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlPr
         <FeatureGateContext.Provider value={ { dispatch, features } }>
             <AccessControlContextProvider
                 allowedScopes={ allowedScopes }
-                isLegacyRuntimeEnabled={ isLegacyRuntimeEnabled }
                 organizationType={ organizationType }
             >
                 { children }
