@@ -1180,6 +1180,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
             "Console",

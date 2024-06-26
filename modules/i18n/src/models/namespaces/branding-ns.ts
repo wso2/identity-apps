@@ -78,7 +78,7 @@ export interface BrandingNS {
                     hint: string;
                     warning?: string;
                 };
-                "password.recovery.button": {
+                "password.recovery.button.email.link": {
                     hint: string;
                 };
                 "password.recovery.heading": {
