@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -76,7 +75,6 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const { UIConfig } = useUIConfig();
     const dispatch: Dispatch = useDispatch();
 
     const [ roleList, setRoleList ] = useState<RolesInterface[]>();
