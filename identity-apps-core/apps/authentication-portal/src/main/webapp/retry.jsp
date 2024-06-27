@@ -45,6 +45,7 @@
     private static final String SERVER_AUTH_URL = "/api/identity/auth/v1.1/";
     private static final String DATA_AUTH_ERROR_URL = "data/AuthenticationError/";
     private static final String REQUEST_PARAM_ERROR_KEY = "errorKey";
+    private static final String APP_DISABLED_I18N_ERROR_KEY = "application.flow.app.disabled";
 
     /*
      * This error code should be defined in a public repo along with related logic
@@ -214,8 +215,8 @@
 
                     <% if (
                            StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)
-                           && !StringUtils.equals(statAuthParam,"application.flow.app.disabled")
-                        ) { %>
+                           && !StringUtils.equals(statAuthParam,APP_DISABLED_I18N_ERROR_KEY)
+                       ) { %>
                         <button class="ui primary basic button"
                             onclick="location.href='<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding) %>';">
                             <%= i18n(resourceBundle, customText, "login.button") %>
