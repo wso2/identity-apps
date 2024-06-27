@@ -33,7 +33,12 @@
     if (Boolean.parseBoolean(request.getParameter("authFailure"))) {
         loginFailed = true;
         if (request.getParameter("authFailureMsg") != null) {
-            String error = request.getParameter("authFailureMsg");
+            /* 
+            * Only allowing error messages defined in the resourceBundle.
+            * AuthenticationEndpointUtil.i18n() will return the value of the provided key if the key is found
+            * in the resourceBundle. If the key is not found, it will return the key itself.
+            */
+            String error = Encode.forJava(request.getParameter("authFailureMsg"));
             if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
             }
