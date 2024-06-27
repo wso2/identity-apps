@@ -215,7 +215,7 @@
 
                     <% if (
                            StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)
-                           && !StringUtils.equals(statAuthParam,APP_DISABLED_I18N_ERROR_KEY)
+                           && !StringUtils.equals(statAuthParam, APP_DISABLED_I18N_ERROR_KEY)
                        ) { %>
                         <button class="ui primary basic button"
                             onclick="location.href='<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding) %>';">
