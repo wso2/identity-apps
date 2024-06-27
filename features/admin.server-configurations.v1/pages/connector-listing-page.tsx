@@ -78,7 +78,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         const refinedConnectorCategories: Array<any> = [];
 
         const isOrganizationDiscoveryEnabled: boolean = featureConfig?.organizationDiscovery?.enabled
-            && UIConfig?.legacyMode?.loginAndRegistrationEmailDomainDiscovery
             && hasRequiredScopes(
                 featureConfig?.organizationDiscovery,
                 featureConfig?.organizationDiscovery?.scopes?.read,

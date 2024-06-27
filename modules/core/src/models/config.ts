@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LegacyModeInterface, ProductVersionConfigInterface } from "./core";
+import { ProductVersionConfigInterface } from "./core";
 import { GravatarConfig } from "./profile";
 
 /**
@@ -225,10 +225,6 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      * ex: allowSnapshot, override etc.
      */
     productVersionConfig?: ProductVersionConfigInterface;
-    /**
-     * Legacy mode
-     */
-    legacyMode?: LegacyModeInterface;
     /**
      * Theme configs.
      */

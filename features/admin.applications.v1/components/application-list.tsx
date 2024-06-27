@@ -203,27 +203,26 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      */
     const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes, appName: string): void => {
         if (isSetStrongerAuth) {
-            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
-                if (appName === ApplicationManagementConstants.CONSOLE_APP_NAME) {
-                    history.push({
-                        hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
-                        pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
-                    });
+            if (appName === ApplicationManagementConstants.CONSOLE_APP_NAME) {
+                history.push({
+                    hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
+                    pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
+                });
 
-                    return;
-                } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
-                    history.push({
-                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
-                        search: `#tab=${
-                            organizationType === OrganizationType.SUBORGANIZATION
-                                ? ApplicationManagementConstants.SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB
-                                : ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB
-                        }`
-                    });
+                return;
+            } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
+                history.push({
+                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                    search: `#tab=${
+                        organizationType === OrganizationType.SUBORGANIZATION
+                            ? ApplicationManagementConstants.SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB
+                            : ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB
+                    }`
+                });
 
-                    return;
-                }
+                return;
             }
+
 
             history.push({
                 pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),

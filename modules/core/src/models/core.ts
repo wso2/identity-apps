@@ -209,22 +209,3 @@ export interface SVGRLoadedInterface {
      */
     default: string;
 }
-
-export interface LegacyModeInterface {
-    apiResourcesV1: boolean;
-    apiResourcesV2: boolean;
-    applicationListSystemApps: boolean;
-    applicationOIDCSubjectIdentifier: boolean;
-    applicationRequestPathAuthentication: boolean;
-    applicationSystemAppsSettings: boolean;
-    approvals: boolean;
-    certificates: boolean;
-    backupCodesForSubOrganizations: boolean;
-    loginAndRegistrationEmailDomainDiscovery: boolean;
-    organizations: boolean;
-    rolesV1: boolean;
-    roleMapping: boolean;
-    secretsManagement: boolean;
-    saasApplications: boolean;
-    consoleFeatureScopeCheck: boolean;
-}

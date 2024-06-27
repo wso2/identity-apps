@@ -1127,7 +1127,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                     {
                         isOrganizationManagementEnabled
-                        && UIConfig?.legacyMode?.organizations
                         && applicationConfig.editApplication.showApplicationShare
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION
