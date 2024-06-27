@@ -184,7 +184,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 .includes(authenticator.defaultAuthenticator.authenticatorId)) {
 
                 filteredSocialAuthenticators.push(authenticator);
-            } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.defaultAuthenticator.authenticatorId)) {
+            } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS
+                .includes(authenticator.defaultAuthenticator.authenticatorId)) {
                 secondFactorAuth.push(authenticator);
             } else {
                 filteredEnterpriseAuthenticators.push(authenticator);
@@ -945,15 +946,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             }
         });
     };
-
-    console.log({
-        enterprise: enterpriseAuthenticators,
-        local: localAuthenticators,
-        recovery: recoveryAuthenticators,
-        secondFactor: secondFactorAuthenticators,
-        social: socialAuthenticators
-    });
-
 
     return (
         <div className="authentication-flow-wrapper" data-componentid={ componentId }>
