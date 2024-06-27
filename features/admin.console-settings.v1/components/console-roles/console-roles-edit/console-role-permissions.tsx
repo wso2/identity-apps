@@ -21,7 +21,6 @@ import Autocomplete, {
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import { RenderChip } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-common/render-chip";
 import { Schemas } from "@wso2is/admin.roles.v2/constants/role-constants";
@@ -30,7 +29,6 @@ import {
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
-    LegacyModeInterface,
     LoadableComponentInterface,
     RolePermissionInterface,
     RolesInterface
@@ -45,7 +43,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
@@ -120,8 +118,6 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         "apiResources"
     );
 
-    const legacyMode: LegacyModeInterface = useSelector((state: AppState) => state?.config?.ui?.legacyMode);
-
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
 
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
@@ -134,13 +130,8 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if (legacyMode?.rolesV1) {
-            filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ROLE_API_RESOURCES_COLLECTION_NAME);
-        } else {
-            filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
-        }
+        filteringAPIResourceCollectionNames.push(
+            ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
         clonedTenantAPIResourceCollections.apiResourceCollections =
                 clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
@@ -161,13 +152,8 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if (legacyMode?.rolesV1) {
-            filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ORG_ROLE_API_RESOURCES_COLLECTION_NAME);
-        } else {
-            filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
-        }
+        filteringAPIResourceCollectionNames.push(
+            ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
         clonedOrganizationAPIResourceCollections.apiResourceCollections =
                 clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(

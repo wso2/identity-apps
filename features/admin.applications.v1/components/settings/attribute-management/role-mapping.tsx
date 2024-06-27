@@ -118,7 +118,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
 
     return (
         <>
-            { (UIConfig?.legacyMode?.roleMapping) && (
+            { false && (
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Heading as="h5">

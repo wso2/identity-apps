@@ -18,7 +18,7 @@
 
 import { AccessControlUtils } from "@wso2is/access-control";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
+import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,7 +52,6 @@ const useRoutes = (): useRoutesInterface => {
     const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const legacyModeConfigs: LegacyModeInterface = useSelector((state: AppState) => state.config.ui.legacyMode);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
     const superAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -117,9 +116,6 @@ const useRoutes = (): useRoutesInterface => {
             ? AppConstants.ORGANIZATION_ENABLED_ROUTES
             : undefined;
 
-        // Console feature scope check is disabled when the consoleFeatureScopeCheck flag is explicitly set to false.
-        const checkConsoleScopes: boolean = !(legacyModeConfigs?.consoleFeatureScopeCheck === false);
-
         const [
             appRoutes,
             sanitizedAppRoutes
@@ -127,7 +123,6 @@ const useRoutes = (): useRoutesInterface => {
             getAppViewRoutes(),
             featureConfig,
             allowedScopes,
-            checkConsoleScopes,
             resolveHiddenRoutes(),
             allowedRoutes
         );

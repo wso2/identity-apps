@@ -906,11 +906,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     />
                 )
             }
-            {
-                (config?.ui?.legacyMode?.applicationRequestPathAuthentication && requestPathAuthenticators)
-                    ? showRequestPathAuthenticators
-                    : null
-            }
             { renderUpdateButton() }
         </div>
     );

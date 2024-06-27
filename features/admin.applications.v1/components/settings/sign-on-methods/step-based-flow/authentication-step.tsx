@@ -184,13 +184,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
                 ].includes(option.authenticator)
             ) {
-                // Disabling backup codes option for suborganization users until the IS7 migration is completed.
-                if (
-                    !isSubOrganization()
-                    || (isSubOrganization() && UIConfig?.legacyMode?.backupCodesForSubOrganizations)
-                ) {
-                    isBackupCodeSupportedAuthenticator = true;
-                }
+                isBackupCodeSupportedAuthenticator = true;
             }
         });
         setShowBackupCodesEnableCheckBox(isBackupCodeSupportedAuthenticator);

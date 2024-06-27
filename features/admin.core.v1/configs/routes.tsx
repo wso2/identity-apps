@@ -30,13 +30,12 @@ import {
     UserCircleDotIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
-import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
 import { commonConfig, identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "@wso2is/admin.layouts.v1";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { AppView, FullScreenView } from "@wso2is/admin.views.v1";
-import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
+import { RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
@@ -66,7 +65,6 @@ import { AppConstants } from "../constants";
 
 export const getAppViewRoutes = (): RouteInterface[] => {
 
-    const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
@@ -547,7 +545,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             order: 12,
             path: AppConstants.getPaths().get("ORGANIZATIONS"),
             protected: true,
-            showOnSidePanel: legacyMode?.organizations
+            showOnSidePanel: true
         },
         {
             children: [
@@ -1164,7 +1162,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             order: 27,
             path: AppConstants.getPaths().get("CERTIFICATES"),
             protected: true,
-            showOnSidePanel: legacyMode?.certificates
+            showOnSidePanel: false
         },
         {
             category: "console:manage.features.sidePanel.categories.legacy",
@@ -1188,7 +1186,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             order: 28,
             path: AppConstants.getPaths().get("SECRETS"),
             protected: true,
-            showOnSidePanel: legacyMode?.secretsManagement
+            showOnSidePanel: false
         },
         {
             children: [
@@ -1227,7 +1225,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             order: 29,
             path: AppConstants.getPaths().get("CONSOLE_SETTINGS"),
             protected: true,
-            showOnSidePanel: !legacyMode?.applicationListSystemApps
+            // hide console settings from the side panel until it is onboarded.
+            showOnSidePanel: false
         },
         // the following routes are not onboarded to the side panel
         {
@@ -1273,158 +1272,90 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         }
     ];
 
-    if (legacyMode?.apiResourcesV1) {
-        defaultRoutes.unshift({
-            category: "console:develop.features.sidePanel.categories.application",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.api-resources.v1/pages/api-resource-edit")
-                    ),
-                    exact: true,
-                    id: "apiResources-edit",
-                    name: "extensions:develop.sidePanel.apiResources",
-                    path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() =>
-                import("@wso2is/admin.api-resources.v1/pages/api-resources")
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().apiResources
-            },
-            id: "apiResources",
-            name: "extensions:develop.sidePanel.apiResources",
-            order: 2,
-            path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
-            protected: true,
-            showOnSidePanel: legacyMode?.apiResourcesV1
-        });
-    }
-
-    if (legacyMode?.apiResourcesV2) {
-        defaultRoutes.unshift({
-            category: "console:develop.features.sidePanel.categories.application",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.api-resources.v2/pages/api-resource-edit")
-                    ),
-                    exact: true,
-                    id: "apiResources-edit",
-                    name: "extensions:develop.sidePanel.apiResources",
-                    path: AppConstants.getPaths().get("API_RESOURCE_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.api-resources.v2/pages/api-resources-internal-list")
-                    ),
-                    exact: true,
-                    id: "apiResources-list",
-                    name: "extensions:develop.sidePanel.apiResources",
-                    path: AppConstants.getPaths().get("API_RESOURCES_CATEGORY"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() =>
-                import("@wso2is/admin.api-resources.v2/pages/api-resources")
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().apiResources
-            },
-            id: "apiResources",
-            name: "extensions:develop.sidePanel.apiResources",
-            order: 2,
-            path: AppConstants.getPaths().get("API_RESOURCES"),
-            protected: true,
-            showOnSidePanel: legacyMode?.apiResourcesV2
-        });
-    }
-
-    if (legacyMode?.rolesV1) {
-        defaultRoutes.push(
+    defaultRoutes.unshift({
+        category: "console:develop.features.sidePanel.categories.application",
+        children: [
             {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() => import("@wso2is/admin.roles.v1/pages/role-edit")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "rolesV1Edit",
-                        name: "console:manage.features.sidePanel.editRoles",
-                        path: AppConstants.getPaths().get("ROLE_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("@wso2is/admin.roles.v1/pages/role")),
+                component: lazy(() =>
+                    import("@wso2is/admin.api-resources.v2/pages/api-resource-edit")
+                ),
                 exact: true,
-                icon: {
-                    icon: getSidePanelIcons().applicationRoles
-                },
-                id: "userV1Roles",
-                name: "console:manage.features.sidePanel.roles",
-                order: 7,
-                path: AppConstants.getPaths().get("ROLES"),
+                id: "apiResources-edit",
+                name: "extensions:develop.sidePanel.apiResources",
+                path: AppConstants.getPaths().get("API_RESOURCE_EDIT"),
                 protected: true,
-                showOnSidePanel: legacyMode?.rolesV1
-            }
-        );
-    } else {
-        defaultRoutes.push(
+                showOnSidePanel: false
+            },
             {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() => import("@wso2is/admin.roles.v2/pages/role-edit")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "rolesEdit",
-                        name: "console:manage.features.sidePanel.editRoles",
-                        path: AppConstants.getPaths().get("ROLE_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
+                component: lazy(() =>
+                    import("@wso2is/admin.api-resources.v2/pages/api-resources-internal-list")
+                ),
+                exact: true,
+                id: "apiResources-list",
+                name: "extensions:develop.sidePanel.apiResources",
+                path: AppConstants.getPaths().get("API_RESOURCES_CATEGORY"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        component: lazy(() =>
+            import("@wso2is/admin.api-resources.v2/pages/api-resources")
+        ),
+        exact: true,
+        icon: {
+            icon: getSidePanelIcons().apiResources
+        },
+        id: "apiResources",
+        name: "extensions:develop.sidePanel.apiResources",
+        order: 2,
+        path: AppConstants.getPaths().get("API_RESOURCES"),
+        protected: true,
+        showOnSidePanel: true
+    });
+    defaultRoutes.push(
+        {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.roles.v2/pages/role-edit")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
                     },
-                    {
-                        component: lazy(() => import("@wso2is/admin.roles.v2/pages/create-role-wizard")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "rolesCreate",
-                        name: "console:manage.features.sidePanel.createRole",
-                        path: AppConstants.getPaths().get("ROLE_CREATE"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("@wso2is/admin.roles.v2/pages/role")),
-                exact: true,
-                featureStatus: showStatusLabelForNewAuthzRuntimeFeatures ? "NEW" : "",
-                featureStatusLabel: showStatusLabelForNewAuthzRuntimeFeatures ? "common:new": "",
-                icon: {
-                    icon: getSidePanelIcons().applicationRoles
+                    id: "rolesEdit",
+                    name: "console:manage.features.sidePanel.editRoles",
+                    path: AppConstants.getPaths().get("ROLE_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
                 },
-                id: "userRoles",
-                name: "console:manage.features.sidePanel.roles",
-                order: 7,
-                path: AppConstants.getPaths().get("ROLES"),
-                protected: true,
-                showOnSidePanel: !legacyMode?.rolesV1
-            }
-        );
-    }
+                {
+                    component: lazy(() => import("@wso2is/admin.roles.v2/pages/create-role-wizard")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "rolesCreate",
+                    name: "console:manage.features.sidePanel.createRole",
+                    path: AppConstants.getPaths().get("ROLE_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.roles.v2/pages/role")),
+            exact: true,
+            featureStatus: showStatusLabelForNewAuthzRuntimeFeatures ? "NEW" : "",
+            featureStatusLabel: showStatusLabelForNewAuthzRuntimeFeatures ? "common:new": "",
+            icon: {
+                icon: getSidePanelIcons().applicationRoles
+            },
+            id: "userRoles",
+            name: "console:manage.features.sidePanel.roles",
+            order: 7,
+            path: AppConstants.getPaths().get("ROLES"),
+            protected: true,
+            showOnSidePanel: true
+        }
+    );
 
     defaultRoutes.push({
         category: "extensions:manage.sidePanel.categories.userManagement",

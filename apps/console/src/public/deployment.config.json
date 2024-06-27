@@ -144,8 +144,6 @@
         "serverOrigin": "https://localhost:9443",
         "storage": "webWorker"
     },
-    "isSaas": false,
-    "legacyMode": false,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
     "routePaths": {
@@ -1155,23 +1153,6 @@
         "isSAASDeployment": false,
         "isSignatureValidationCertificateAliasEnabled": false,
         "isXacmlConnectorEnabled": false,
-        "legacyMode": {
-            "apiResourcesV1": false,
-            "apiResourcesV2": true,
-            "applicationListSystemApps": false,
-            "applicationOIDCSubjectIdentifier": true,
-            "applicationRequestPathAuthentication": false,
-            "applicationSystemAppsSettings": false,
-            "backupCodesForSubOrganizations": true,
-            "certificates": false,
-            "consoleFeatureScopeCheck": true,
-            "loginAndRegistrationEmailDomainDiscovery": true,
-            "organizations": true,
-            "roleMapping": false,
-            "rolesV1": false,
-            "saasApplications": false,
-            "secretsManagement": false
-        },
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",

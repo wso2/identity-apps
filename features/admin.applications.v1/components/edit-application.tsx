@@ -296,8 +296,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                && application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
@@ -340,8 +339,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                && application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
@@ -355,8 +353,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                && application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -387,7 +384,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         ApplicationTabTypes.INFO,
                         tenantDomain
                     ) &&
-                    UIConfig?.legacyMode?.organizations &&
                     panes.push({
                         componentId: "shared-access",
                         menuItem: t("applications:edit.sections.sharedAccess.tabName"),
