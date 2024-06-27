@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ import {
     ApplicationInterface,
     IdpRoleMappingInterface
 } from "@wso2is/admin.applications.v1/models";
-import { getAuthenticators } from "@wso2is/admin.identity-providers.v1/api";
+import { getAuthenticators } from "@wso2is/admin.connections.v1/api/authenticators";
 import { AuthenticatorInterface, AuthenticatorTypes } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";

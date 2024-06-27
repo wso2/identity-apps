@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,11 +27,10 @@ import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
+import { useGetConnectionGroupList } from "@wso2is/admin.connections.v1/api/use-get-connection-groups-list";
 import { getConnectionIcons } from "@wso2is/admin.connections.v1/configs/ui";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { useGetIdentityProviderGroupList }
-    from "@wso2is/admin.identity-providers.v1/api/use-get-identity-provider-groups-list";
 import { IdentityProviderGroupInterface, StrictIdentityProviderInterface }
     from "@wso2is/admin.identity-providers.v1/models";
 import { AlertLevels, RoleGroupsInterface } from "@wso2is/core/models";
@@ -98,7 +97,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
         data: originalGroupList,
         isLoading: isGroupListFetchRequestLoading,
         error: groupListFetchRequestError
-    } = useGetIdentityProviderGroupList(identityProvider.id, shouldFetchGroups);
+    } = useGetConnectionGroupList(identityProvider.id, shouldFetchGroups);
 
     /**
      * Set groups options.

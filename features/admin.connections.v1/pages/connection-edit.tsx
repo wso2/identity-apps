@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,9 +27,6 @@ import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
 } from "@wso2is/admin.extensions.v1/configs";
-import {
-    EditMultiFactorAuthenticator
-} from "@wso2is/admin.identity-providers.v1/components/edit-multi-factor-authenticator";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -71,6 +68,7 @@ import {
     getConnectionTemplates
 } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
+import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";

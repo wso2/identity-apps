@@ -18,6 +18,7 @@
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.connections.v1/api/authenticators";
 import {
     AppConstants,
     AppState,
@@ -27,7 +28,6 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
-import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.identity-providers.v1/api";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -72,6 +72,7 @@ import {
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
+
 import "./sign-in-method-customization.scss";
 
 /**

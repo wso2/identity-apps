@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import {
     identityProviderConfig
 } from "@wso2is/admin.extensions.v1";
 import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authenticator";
+import { AuthenticatorFormFactory } from "@wso2is/admin.identity-providers.v1/components/forms";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -31,10 +32,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
-import { AuthenticatorFormFactory } from "./forms/factories";
-import { updateMultiFactorAuthenticatorDetails } from "../api";
-import { IdentityProviderManagementConstants } from "../constants";
-import { AuthenticatorInterface, AuthenticatorSettingsFormModes, MultiFactorAuthenticatorInterface } from "../models";
+import { updateMultiFactorAuthenticatorDetails } from "../../api/authenticators";
+import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
+import {
+    AuthenticatorInterface,
+    AuthenticatorSettingsFormModes,
+    MultiFactorAuthenticatorInterface
+} from "../../models/authenticators";
 
 /**
  * Proptypes for the Multi-factor Authenticator edit component.
@@ -169,9 +173,9 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
     const getI18nKeyForMultiFactorAuthenticator =
         (authenticator: MultiFactorAuthenticatorInterface | AuthenticatorInterface) => {
-            if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+            if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
                 return "updateSMSOTPAuthenticator";
-            } else if (authenticator.id === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID) {
+            } else if (authenticator.id === AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID) {
                 return "updateEmailOTPAuthenticator";
             } else {
                 return "updateGenericAuthenticator";
@@ -179,7 +183,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         };
 
     const displayExternalResourcesButton = () => {
-        if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+        if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
             return true;
         }
 
@@ -249,8 +253,8 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         // If the MFA is TOTP/Magic Link skip the settings tab.
         if (
             ![
-                IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-                IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
+                AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID,
+                AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
             ].includes(authenticator.id)
         ) {
             panes.push({
@@ -271,8 +275,8 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
     const resolveDefaultActiveIndex = (activeIndex: number): number => {
 
         if (![
-            IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-            IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
+            AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID,
+            AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
         ].includes(authenticator.id)) {
             return activeIndex;
         }
