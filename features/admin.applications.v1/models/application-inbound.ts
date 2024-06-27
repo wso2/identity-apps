@@ -71,6 +71,7 @@ export interface OIDCMetadataInterface {
     accessTokenBindingValidation?: boolean;
     revokeTokensWhenIDPSessionTerminated?: boolean;
     tokenEndpointAuthMethod?: MetadataPropertyInterface;
+    tokenEndpointAllowReusePvtKeyJwt?: boolean;
     tokenEndpointSignatureAlgorithm?: MetadataPropertyInterface;
     requestObjectSignatureAlgorithm?: MetadataPropertyInterface;
     requestObjectEncryptionMethod?: MetadataPropertyInterface;
@@ -95,6 +96,7 @@ export interface OAuth2PKCEConfigurationInterface {
  */
 export interface ClientAuthenticationConfigurationInterface {
     tokenEndpointAuthMethod?: string;
+    tokenEndpointAllowReusePvtKeyJwt?: boolean;
     tokenEndpointAuthSigningAlg?: string;
     tlsClientAuthSubjectDn?: string;
 }

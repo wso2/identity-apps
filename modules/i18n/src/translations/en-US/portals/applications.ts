@@ -1629,6 +1629,10 @@ export const applications: ApplicationsNS = {
                             label: "Client authentication method",
                             placeholder: "Select method"
                         },
+                        reusePvtKeyJWT: {
+                            hint: "By default private key JWT is not allowed to reuse. But if you have a requirment to reuse it. Please click on the checkbox.",
+                            label: "Allow reuse of same private key JWT"
+                        },
                         signingAlgorithm: {
                             hint: "The dropdown contains the supported client assertion signing" +
                                 " algorithms.",
