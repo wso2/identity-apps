@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.2
+
+### Patch Changes
+
+- [#6453](https://github.com/wso2/identity-apps/pull/6453) [`5daa86deeff7880b8d1e840482cc1f90d3fa0f97`](https://github.com/wso2/identity-apps/commit/5daa86deeff7880b8d1e840482cc1f90d3fa0f97) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide sign in button in the retry page when the application is disabled
+
 ## 2.4.1
 
 ### Patch Changes
