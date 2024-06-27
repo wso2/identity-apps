@@ -17,7 +17,6 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -96,7 +95,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     } = props;
 
     const { t } = useTranslation();
-    const { UIConfig } = useUIConfig();
 
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state.config.ui.features?.applications?.disabledFeatures);
