@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { getIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
+import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
 import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface
@@ -96,7 +96,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                 return;
             }
 
-            getIdentityProviderList()
+            getConnections()
                 .then((response: IdentityProviderListResponseInterface) => {
                     setIdpList(response.identityProviders);
                 });

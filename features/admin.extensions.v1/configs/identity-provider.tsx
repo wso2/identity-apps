@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,10 +20,8 @@ import { ConnectionTabTypes } from "@wso2is/admin.connections.v1";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import {
     AuthenticatorLabels,
-    GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTabTypes
 } from "@wso2is/admin.identity-providers.v1/models";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { ElementType, FunctionComponent, ReactElement, SVGProps, lazy } from "react";
@@ -35,7 +33,6 @@ import QuickStartTab from "../components/component-extensions/application/quick-
 import { getIdPIcons } from "../components/identity-providers/configs/ui";
 import { SIWEAuthenticatorForm } from "../identity-provider-templates/templates/swe/swe-authenticator-form";
 import SIWEIdPTemplate from "../identity-provider-templates/templates/swe/swe.json";
-import { SIWEAuthenticationProviderCreateWizard } from "../identity-provider-templates/templates/swe/wizards";
 
 /**
  * A class to hold authenticator constants that get overidden.
@@ -88,37 +85,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
             isComingSoon: false,
             isEnabled: true,
             useAuthenticatorsAPI: true
-        }
-    },
-    createIdentityProvider: {
-        getOverriddenCreateWizard: (
-            templateId: string,
-            props: GenericIdentityProviderCreateWizardPropsInterface & IdentifiableComponentInterface
-        ): ReactElement => {
-
-            const {
-                "data-componentid": componentId,
-                title,
-                subTitle,
-                onWizardClose,
-                template,
-                ...rest
-            } = props;
-
-            if (templateId === SIWEIdPTemplate.templateId) {
-                return (
-                    <SIWEAuthenticationProviderCreateWizard
-                        title={ title }
-                        subTitle={ subTitle }
-                        onWizardClose={ onWizardClose }
-                        template={ template }
-                        data-componentid={ componentId }
-                        { ...rest }
-                    />
-                );
-            }
-
-            return null;
         }
     },
     disableSMSOTPInSubOrgs: false,
