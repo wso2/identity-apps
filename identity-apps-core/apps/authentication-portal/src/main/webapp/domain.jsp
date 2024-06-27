@@ -28,14 +28,17 @@
 
 <%
     String domainUnknown = AuthenticationEndpointUtil.i18n(resourceBundle, "domain.unknown");
-    String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.failed");
+    String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.failed.please.retry");
     boolean loginFailed = false;
     if (Boolean.parseBoolean(request.getParameter("authFailure"))) {
         loginFailed = true;
         if (request.getParameter("authFailureMsg") != null) {
-            errorMessage = request.getParameter("authFailureMsg");
-
-            if (domainUnknown.equalsIgnoreCase(errorMessage)) {
+            String error = request.getParameter("authFailureMsg");
+            if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
+            }
+            
+            if (domainUnknown.equalsIgnoreCase(error)) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "domain.cannot.be.identified");
             }
         }
