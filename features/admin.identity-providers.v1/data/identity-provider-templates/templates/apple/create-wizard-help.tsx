@@ -18,10 +18,9 @@
 
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, CopyInputField, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
@@ -50,20 +49,6 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
     const { getLink } = useDocumentation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
-
-    /**
-     * Checks if the listing view defined in the config is the new connections view.
-     */
-    useEffect(() => {
-
-        if (useNewConnectionsView !== undefined) {
-            return;
-        }
-
-        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-    }, [ identityProviderConfig ]);
 
     return (
         <div data-componentid={ componentId }>
@@ -139,11 +124,8 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
             </Heading>
             <p>
                 {
-                    useNewConnectionsView
-                        ? t("authenticationProvider:templates.apple." +
-                                "wizardHelp.name.connectionDescription")
-                        : t("authenticationProvider:templates.apple." +
-                                "wizardHelp.name.idpDescription")
+                    t("authenticationProvider:templates.apple." +
+                        "wizardHelp.name.connectionDescription")
                 }
             </p>
 
