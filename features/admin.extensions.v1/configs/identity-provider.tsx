@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConnectionTabTypes } from "@wso2is/admin.connections.v1";
+import { ConnectionManagementConstants, ConnectionTabTypes } from "@wso2is/admin.connections.v1";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import {
     AuthenticatorLabels,
@@ -303,7 +303,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     utils: {
         hideIdentityClaimAttributes(authenticatorId: string): boolean {
             const identityClaimsHiddenAuthenticators: Set<string> = new Set([
-                IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID
+                ConnectionManagementConstants.SAML_AUTHENTICATOR_ID
             ]);
 
             return identityClaimsHiddenAuthenticators.has(authenticatorId);
@@ -313,7 +313,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         },
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {
             const excludedAuthenticators: Set<string> = new Set([
-                IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID
+                ConnectionManagementConstants.SAML_AUTHENTICATOR_ID
             ]);
             /**
              * If the authenticatorId is not in the excluded set we
