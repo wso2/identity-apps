@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.4
+
+### Patch Changes
+
+- [#6488](https://github.com/wso2/identity-apps/pull/6488) [`76a09897311f5a245d3c135a8ae6110557147feb`](https://github.com/wso2/identity-apps/commit/76a09897311f5a245d3c135a8ae6110557147feb) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Validate the auth fail massege in domain.jsp with the resourceBundle.
+
 ## 2.4.3
 
 ### Patch Changes

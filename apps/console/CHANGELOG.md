@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.20.4
+
+### Patch Changes
+
+- [#6271](https://github.com/wso2/identity-apps/pull/6271) [`10d2166f6fc3447fee4cb28ba9c28962542ff700`](https://github.com/wso2/identity-apps/commit/10d2166f6fc3447fee4cb28ba9c28962542ff700) Thanks [@asha15](https://github.com/asha15)! - Add hybrid flow response types application level configuration
+
+- Updated dependencies [[`e44d40bd90aeb8b04042aa3b4836f9b4883d0e34`](https://github.com/wso2/identity-apps/commit/e44d40bd90aeb8b04042aa3b4836f9b4883d0e34)]:
+  - @wso2is/i18n@2.4.3
+  - @wso2is/admin.authentication.v1@2.20.36
+  - @wso2is/admin.authorization.v1@2.20.13
+  - @wso2is/admin.core.v1@2.21.6
+  - @wso2is/admin.extensions.v1@2.21.6
+  - @wso2is/admin.organizations.v1@2.20.36
+
 ## 2.20.3
 
 ### Patch Changes
