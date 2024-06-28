@@ -400,7 +400,6 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             action={ (
                 (!isConnectionsFetchRequestLoading || !isAuthenticatorsFetchRequestLoading) &&
                 !(!searchQuery && connectionsList?.identityProviders?.length <= 0)) &&
-                identityProviderConfig.useNewConnectionsView !== undefined &&
                 (
                     <Show when={ featureConfig?.identityProviders?.scopes?.create }>
                         <PrimaryButton
@@ -411,18 +410,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                             data-testid={ `${ testId }-add-button` }
                         >
                             <Icon name="add" />
-                            { identityProviderConfig.useNewConnectionsView
-                                ? t("authenticationProvider:buttons.addIDP")
-                                : t("idp:buttons.addIDP") }
+                            { t("authenticationProvider:buttons.addIDP") }
                         </PrimaryButton>
                     </Show>
                 )
             }
-            title={
-                identityProviderConfig.useNewConnectionsView
-                    ? t("console:develop.pages.authenticationProvider.title")
-                    : t("console:develop.pages.idp.title")
-            }
+            title={ t("console:develop.pages.authenticationProvider.title") }
             description={
                 (<>
                     { t("console:develop.pages.authenticationProvider.subTitle") }

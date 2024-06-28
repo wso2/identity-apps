@@ -31,7 +31,7 @@ import {
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
 import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
-import { commonConfig, identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "@wso2is/admin.layouts.v1";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
@@ -360,9 +360,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: <NodesIcon />
             },
             id: "identityProviders",
-            name: identityProviderConfig?.useNewConnectionsView
-                ? "console:develop.features.sidePanel.authenticationProviders"
-                : "console:develop.features.sidePanel.identityProviders",
+            name: "console:develop.features.sidePanel.authenticationProviders",
             order: 3,
             path: AppConstants.getPaths().get("IDP"),
             protected: true,

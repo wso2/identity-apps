@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import MicrosoftIDPTemplate from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
@@ -213,7 +214,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID:
+        case ConnectionManagementConstants.SAML_AUTHENTICATOR_ID:
             return (
                 <SamlAuthenticatorSettingsForm
                     mode={ mode }
