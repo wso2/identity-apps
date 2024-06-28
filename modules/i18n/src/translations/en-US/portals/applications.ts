@@ -1412,6 +1412,18 @@ export const applications: ApplicationsNS = {
                     validations: {
                         empty: "This is a required field."
                     }
+                },
+                hybridFlow: {
+                    hybridFlowResponseType: {
+                        children: {
+                            code_token: {
+                                hint: "This response type is not recommended."
+                            },
+                            code_idtoken_token: {
+                                hint: "This response type is not recommended."
+                            }
+                        }
+                    }
                 }
             },
             messages: {
@@ -1722,6 +1734,29 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     heading: "Scope validators"
+                },
+                hybridFlow: {
+                    heading: "Hybrid Flow",
+                    enable: {
+                        label: "Enable Hybrid Flow"
+                    },
+                    hybridFlowResponseType: {
+                        label: "Allowed response types",
+                        fields: {
+                            children: {
+                                code_token: {
+                                    label: "code token"
+                                },
+                                code_idtoken: {
+                                    label: "code id_token"
+                                },
+                                code_idtoken_token: {
+                                    label: "code id_token token"
+                                }
+                            },
+                            hint: "Select the allowed hybrid flow response type."
+                        }
+                    }
                 }
             }
         },

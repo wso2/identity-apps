@@ -34,6 +34,7 @@ export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
         showFapiFeatureStatusChip: boolean;
+        showHybridFlowFeatureStatusChip: boolean;
         showMtlsAliases: boolean;
         showMyAccount: boolean;
         showMyAccountStatus: boolean;

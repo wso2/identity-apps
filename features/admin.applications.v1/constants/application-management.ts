@@ -209,6 +209,11 @@ export class ApplicationManagementConstants {
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
+    public static readonly CODE_TOKEN: string = "code token";
+    public static readonly CODE_IDTOKEN: string = "code id_token";
+    public static readonly CODE_IDTOKEN_TOKEN: string = "code id_token token"
+    public static readonly  HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
+    public static readonly HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
 
     /**
      * List of available grant types.
