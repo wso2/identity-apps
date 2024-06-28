@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
 import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
-import { getIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface
@@ -114,7 +114,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
             return;
         }
 
-        getIdentityProviderList()
+        getConnections()
             .then((response: IdentityProviderListResponseInterface) => {
                 setIdpList(response.identityProviders);
             });

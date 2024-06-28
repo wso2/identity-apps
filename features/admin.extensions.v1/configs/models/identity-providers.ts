@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,11 +17,7 @@
  */
 
 import { ConnectionTabTypes } from "@wso2is/admin.connections.v1/models/connection";
-import {
-    AuthenticatorInterface,
-    GenericIdentityProviderCreateWizardPropsInterface
-} from "@wso2is/admin.identity-providers.v1/models";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
 
@@ -50,17 +46,6 @@ export interface IdentityProviderConfig {
     authenticators: {
         [key: string]: AuthenticatorExtensionsConfigInterface;
     };
-    createIdentityProvider: {
-        /**
-         * Used to the IDP create wizard of a certain IDP template type.
-         * @param templateId - The IDP Template Type.
-         * @param templateId - Props for the component.
-         */
-        getOverriddenCreateWizard: (
-            templateId: string,
-            props: GenericIdentityProviderCreateWizardPropsInterface & IdentifiableComponentInterface
-        ) => ReactElement | null;
-    },
     editIdentityProvider: {
         enableFIDOTrustedAppsConfiguration: boolean;
         showAdvancedSettings: boolean;

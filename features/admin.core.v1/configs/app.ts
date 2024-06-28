@@ -28,7 +28,6 @@ import { getFeatureGateResourceEndpoints } from "@wso2is/admin.extensions.v1/com
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
 import { getExtendedFeatureResourceEndpointsV2 } from "@wso2is/admin.extensions.v2/config/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1";
-import { getIDPResourceEndpoints } from "@wso2is/admin.identity-providers.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1";
 import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
@@ -260,7 +259,6 @@ export class Config {
             ...getBrandingResourceEndpoints(this.resolveServerHost()),
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getIDPResourceEndpoints(this.resolveServerHost()),
             ...getIDVPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.resolveServerHost()),
             ...getConnectionResourceEndpoints(this.resolveServerHost()),

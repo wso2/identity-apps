@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
 import { DocPanelUICardInterface } from "@wso2is/admin.core.v1";
 import { Config } from "@wso2is/admin.core.v1/configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -23,7 +24,7 @@ import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import axios, { AxiosError } from "axios";
 import camelCase from "lodash-es/camelCase";
 import isEmpty from "lodash-es/isEmpty";
-import { getIdentityProviderList, getLocalAuthenticators } from "../api";
+import { getLocalAuthenticators } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
@@ -78,7 +79,7 @@ export class IdentityProviderManagementUtils {
             const getIdPs = ():Promise<IdentityProviderListResponseInterface> => {
                 const attrs: string = "federatedAuthenticators,provisioning";
 
-                return getIdentityProviderList(limit, offset, "isEnabled eq \"true\"", attrs)
+                return getConnections(limit, offset, "isEnabled eq \"true\"", attrs)
                     .then((response: IdentityProviderListResponseInterface) => {
                         if (!isEmpty(idp)) {
                             idp = {
