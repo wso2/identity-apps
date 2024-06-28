@@ -61,6 +61,14 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
      */
     mappedLocalClaims: string[];
     /**
+     * Is the button enabled.
+     */
+    isButtonEnabled: boolean;
+    /**
+     * Button Text.
+     */
+    buttonText: string;
+    /**
      * Update mapped claims on delete or edit
      */
     updateMappedClaims?: ReactDispatch<SetStateAction<boolean>>;
@@ -79,6 +87,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
         attributeType,
         attributeUri,
         mappedLocalClaims,
+        isButtonEnabled,
+        buttonText,
         updateMappedClaims,
         [ "data-testid" ]: testId,
         id: dialectId
@@ -333,6 +343,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 attributeUri={ attributeUri }
                 mappedLocalClaims={ mappedLocalClaims }
                 updateMappedClaims={ updateMappedClaims }
+                isButtonEnabled={ isButtonEnabled }
+                buttonText={ buttonText }
             />
 
             <Divider hidden />

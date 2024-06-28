@@ -395,7 +395,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             if (type === ClaimManagementConstants.SCIM) {
                 const panes: StrictTabProps[ "panes" ] = [];
 
-                ClaimManagementConstants.SCIM_TABS.forEach((tab: { name: string; uri: string }) => {
+                ClaimManagementConstants.SCIM_TABS.forEach((tab: {
+                    name: string;
+                    uri: string;
+                    isButtonEnabled: boolean;
+                    buttonText: string;
+                }) => {
                     if (!SCIMConfigs.hideCore1Schema || SCIMConfigs.scim.core1Schema !== tab.uri) {
                         const dialect: ClaimDialect = dialects?.find(
                             (dialect: ClaimDialect) => dialect.dialectURI === tab.uri
@@ -412,6 +417,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                             attributeType={ type }
                                             mappedLocalClaims={ mappedLocalclaims }
                                             updateMappedClaims={ setTriggerFetchMappedClaims }
+                                            isButtonEnabled={ tab.isButtonEnabled }
+                                            buttonText= { t(tab.buttonText) }
                                         />
                                     </ResourceTab.Pane>
                                 )
@@ -435,6 +442,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                         attributeUri={ dialect.dialectURI }
                                         mappedLocalClaims={ mappedLocalclaims }
                                         updateMappedClaims={ setTriggerFetchMappedClaims }
+                                        isButtonEnabled={ true }
+                                        buttonText= { t("claims:external.pageLayout.edit.attributePrimaryAction") }
                                     />
                                 </ResourceTab.Pane>
                             )
@@ -448,7 +457,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             if (type === ClaimManagementConstants.EIDAS) {
                 const panes: StrictTabProps[ "panes" ] = [];
 
-                ClaimManagementConstants.EIDAS_TABS.forEach((tab: { name: string; uri: string }) => {
+                ClaimManagementConstants.EIDAS_TABS.forEach((tab: {
+                    name: string;
+                    uri: string;
+                    isButtonEnabled: boolean;
+                    buttonText: string;
+                }) => {
                     const dialect: ClaimDialect = dialects?.find(
                         (dialect: ClaimDialect) => dialect.dialectURI === tab.uri
                     );
@@ -464,6 +478,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                         attributeType={ type }
                                         mappedLocalClaims={ mappedLocalclaims }
                                         updateMappedClaims={ setTriggerFetchMappedClaims }
+                                        isButtonEnabled={ tab.isButtonEnabled }
+                                        buttonText= { tab.buttonText }
                                     />
                                 </ResourceTab.Pane>
                             )
@@ -485,6 +501,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                 attributeUri={ dialect.dialectURI }
                                 mappedLocalClaims={ mappedLocalclaims }
                                 updateMappedClaims={ setTriggerFetchMappedClaims }
+                                isButtonEnabled={ true }
+                                buttonText= { t("claims:external.pageLayout.edit.attributePrimaryAction") }
                             />
                         </ResourceTab.Pane>
                     )
@@ -516,6 +534,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         attributeUri={ dialects &&  dialects[ 0 ]?.dialectURI }
                         mappedLocalClaims={ mappedLocalclaims }
                         updateMappedClaims={ setTriggerFetchMappedClaims }
+                        isButtonEnabled={ true }
+                        buttonText= { t("claims:external.pageLayout.edit.attributePrimaryAction") }
                     />
                 ) }
             </PageLayout>
