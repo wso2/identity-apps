@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/identity-apps-core",
-    "version": "2.4.2",
+    "version": "2.4.3",
     "private": true,
     "description": "WSO2 Identity Server Authentication Portal",
     "author": "WSO2",
@@ -13,7 +13,7 @@
         "clean:node-modules": "pnpm rimraf node_modules"
     },
     "dependencies": {
-        "@wso2is/theme": "^2.0.85",
+        "@wso2is/theme": "^2.0.86",
         "rimraf": "^3.0.2"
     }
 }
