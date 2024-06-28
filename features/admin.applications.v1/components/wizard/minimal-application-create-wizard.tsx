@@ -19,7 +19,6 @@
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AppConstants,
     AppState,
@@ -171,7 +170,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const reservedAppPattern: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
@@ -185,10 +183,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("FAPI_APP_CREATION"));
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
-    );
-    const isManagementApplicationsEnabled: boolean = isFeatureEnabled(
-        featureConfig?.applications,
-        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_ADD_MANAGEMENT_APPLICATIONS")
     );
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
@@ -340,26 +334,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
-        // If the application is a OIDC standard-based application
-        if (
-            legacyAuthzRuntime &&
-            isManagementApplicationsEnabled &&
-            customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
-            (selectedTemplate?.templateId === "custom-application" ||
-                selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
-        ) {
-            application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2 ? true : false;
-        }
 
         // Adding `APPLICATION` as the default audience for the associated roles,
         // if a value is not set from the template.
-        if (!legacyAuthzRuntime) {
-            if (isEmpty(application.associatedRoles)) {
-                application.associatedRoles = {
-                    allowedAudience: RoleConstants.DEFAULT_ROLE_AUDIENCE as RoleAudienceTypes,
-                    roles: []
-                };
-            }
+        if (isEmpty(application.associatedRoles)) {
+            application.associatedRoles = {
+                allowedAudience: RoleConstants.DEFAULT_ROLE_AUDIENCE as RoleAudienceTypes,
+                roles: []
+            };
         }
 
         // If the selected template is Custom, assign the proper `template ids`.
@@ -1105,36 +1087,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             { resolveMinimalProtocolFormFields() }
                         </Grid.Column>
                     </Grid.Row>
-                    {
-                        // The Management App checkbox is only present in OIDC Standard-Based apps
-                        (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
-                            (selectedTemplate?.templateId === "custom-application" ||
-                            selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
-                            && isManagementApplicationsEnabled
-                        ) && (
-                            <div className="pt-0 mt-0">
-                                <Field
-                                    data-testid={ `${ testId }-management-app-checkbox` }
-                                    name={ "isManagementApp" }
-                                    required={ false }
-                                    requiredErrorMessage={ "is required" }
-                                    type="checkbox"
-                                    value={ [ "isManagementApp" ] }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.generalDetails" +
-                                                ".fields.isManagementApp.label" ),
-                                            value: "manageApp"
-                                        }
-                                    ] }
-                                />
-                                <Hint compact>
-                                    { t("applications:forms.generalDetails.fields" +
-                                            ".isManagementApp.hint" ) }
-                                </Hint>
-                            </div>
-                        )
-                    }
                     {
                         // The FAPI App creation checkbox is only present in OIDC Standard-Based apps
                         customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC

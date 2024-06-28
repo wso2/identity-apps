@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { getConnectionDetails } from "@wso2is/admin.connections.v1/api/connections";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { getIdentityProviderDetail } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface
@@ -142,7 +142,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
             value: ""
         };
 
-        getIdentityProviderDetail(selectedIdp)
+        getConnectionDetails(selectedIdp)
             .then((response: IdentityProviderInterface) => {
                 response.provisioning.outboundConnectors.connectors.map(
                     (connector: OutboundProvisioningConnectorInterface, index: number) => {

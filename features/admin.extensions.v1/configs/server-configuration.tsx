@@ -79,7 +79,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         [ServerConfigurationsConstants.SELF_SIGNUP]:
             ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
         [ServerConfigurationsConstants.SSO_LOGIN_RECAPTCHA]:
-            ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
+            ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
     },
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,

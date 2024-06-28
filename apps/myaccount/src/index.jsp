@@ -167,7 +167,7 @@
             var applicationDomain = window.location.origin;
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
 
-            if(startupConfig.legacyAuthzRuntime && isSignOutSuccess && userTenant) {
+            if(isSignOutSuccess && userTenant) {
                 if (startupConfig.subdomainApplication) {
                     window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
                 } else {
@@ -218,14 +218,6 @@
                 };
 
                 function getApiPath(path) {
-                    if (startupConfig.legacyAuthzRuntime) {
-                        if (path) {
-                            return serverOrigin + path;
-                        }
-
-                        return serverOrigin;
-                    }
-
                     var tenantDomain = getTenantName();
 
                     if (!tenantDomain) {
@@ -309,10 +301,6 @@
                  * @returns {string} Contructed auth params.
                  */
                 function getAuthParamsForOrganizationLogins(originalParams) {
-                    if (startupConfig.legacyAuthzRuntime) {
-                        return originalParams;
-                    }
-
                     var authParams = Object.assign({}, originalParams);
 
                     if (getOrganizationPath()) {
@@ -368,19 +356,6 @@
                         tokenRevocationEndpointURL: undefined,
                     },
                     enablePKCE: true
-                }
-
-                if (startupConfig.legacyAuthzRuntime) {
-                    authConfig.signInRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath()
-                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
-                    authConfig.signOutRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
-                    authConfig.endpoints.authorizationEndpoint = getApiPath(
-                        userTenant
-                            ? "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
-                            : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize"
-                    );
-                    authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/logout");
-                    authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/checksession");
                 }
 
                 auth.initialize(authConfig);

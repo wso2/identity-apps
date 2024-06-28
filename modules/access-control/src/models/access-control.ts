@@ -96,6 +96,5 @@ export enum OrganizationType {
 
 export interface AccessControlContextPropsInterface {
     allowedScopes: string;
-    isLegacyRuntimeEnabled: boolean;
     organizationType: string;
 }

@@ -1,5 +1,36 @@
 # @wso2is/identity-apps-core
 
+## 2.4.3
+
+### Patch Changes
+
+- Updated dependencies [[`b1e9c3064894e54fce5dcaa9c5afcf3be68cde49`](https://github.com/wso2/identity-apps/commit/b1e9c3064894e54fce5dcaa9c5afcf3be68cde49)]:
+  - @wso2is/theme@2.0.86
+
+## 2.4.2
+
+### Patch Changes
+
+- [#6453](https://github.com/wso2/identity-apps/pull/6453) [`5daa86deeff7880b8d1e840482cc1f90d3fa0f97`](https://github.com/wso2/identity-apps/commit/5daa86deeff7880b8d1e840482cc1f90d3fa0f97) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide sign in button in the retry page when the application is disabled
+
+## 2.4.1
+
+### Patch Changes
+
+- [#6482](https://github.com/wso2/identity-apps/pull/6482) [`b621ddbe524698d6a0280d47fdb354f3628ce7d2`](https://github.com/wso2/identity-apps/commit/b621ddbe524698d6a0280d47fdb354f3628ce7d2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Release @wso2is/identity-apps-core `2.4.1`
+
+## 2.4.0
+
+### Minor Changes
+
+- [#6418](https://github.com/wso2/identity-apps/pull/6418) [`1e59bc54a206b22f49ddeae4ef3645e5ca351188`](https://github.com/wso2/identity-apps/commit/1e59bc54a206b22f49ddeae4ef3645e5ca351188) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Introduce sms otp for password recovery
+
+## 2.3.10
+
+### Patch Changes
+
+- [#6475](https://github.com/wso2/identity-apps/pull/6475) [`93caef578c2533f637ea1c679a01987600ac9def`](https://github.com/wso2/identity-apps/commit/93caef578c2533f637ea1c679a01987600ac9def) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Enable self registration link when email otp is the only step in authentication flow
+
 ## 2.3.9
 
 ### Patch Changes

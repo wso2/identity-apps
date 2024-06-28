@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -293,9 +293,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             });
         }
 
+        // Special case for password recovery notification based enable since the connector state
+        // depends on the state of recovery options.
         if (
             serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
-            serverConfigurationConfig.autoEnableConnectorToggleProperty
+            serverConfigurationConfig.autoEnableConnectorToggleProperty &&
+            connector?.name !== "account-recovery"
         ) {
             data.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(
@@ -580,10 +583,6 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE;
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
                 return ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE;
-            case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
-                return type === "username"
-                    ? undefined
-                    : ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE;
             case ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID:
                 return ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE;
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:

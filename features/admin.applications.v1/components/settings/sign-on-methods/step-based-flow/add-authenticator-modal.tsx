@@ -17,7 +17,7 @@
  */
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
+import { ConnectionManagementConstants, ConnectionTemplateCategoryInterface } from "@wso2is/admin.connections.v1";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
@@ -33,7 +33,6 @@ import { AuthenticatorMeta } from "@wso2is/admin.identity-providers.v1/meta/auth
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface,
-    IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
@@ -214,7 +213,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const [
         categorizedIdPTemplates,
         setCategorizedIdPTemplates
-    ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
+    ] = useState<ConnectionTemplateCategoryInterface[]>([]);
 
     /**
      * Fetches IdP templates if not available.
@@ -287,14 +286,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      */
     const persistCategorizedTemplates = (
         templates: IdentityProviderTemplateInterface[]
-    ): Promise<void | IdentityProviderTemplateCategoryInterface[]> => {
+    ): Promise<void | ConnectionTemplateCategoryInterface[]> => {
 
         return IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
-            .then((response: IdentityProviderTemplateCategoryInterface[]) => {
+            .then((response: ConnectionTemplateCategoryInterface[]) => {
 
                 let tags: string[] = [];
 
-                response.filter((category: IdentityProviderTemplateCategoryInterface) => {
+                response.filter((category: ConnectionTemplateCategoryInterface) => {
                     // Order the templates by pushing coming soon items to the end.
                     category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
 
@@ -522,7 +521,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 <Divider hidden/>
                 {
                     categorizedIdPTemplates
-                        .map((category: IdentityProviderTemplateCategoryInterface, index: number) => {
+                        .map((category: ConnectionTemplateCategoryInterface, index: number) => {
                             return (
                                 <ResourceGrid
                                     key={ index }

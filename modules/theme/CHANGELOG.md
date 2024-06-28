@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.86
+
+### Patch Changes
+
+- [#6490](https://github.com/wso2/identity-apps/pull/6490) [`b1e9c3064894e54fce5dcaa9c5afcf3be68cde49`](https://github.com/wso2/identity-apps/commit/b1e9c3064894e54fce5dcaa9c5afcf3be68cde49) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Clean up identity-providers feature
+
 ## 2.0.85
 
 ### Patch Changes
