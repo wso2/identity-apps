@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.7.33
+
+### Patch Changes
+
+- [#6497](https://github.com/wso2/identity-apps/pull/6497) [`abe5940f15dd2d7bc1506090d1466b6704d60d20`](https://github.com/wso2/identity-apps/commit/abe5940f15dd2d7bc1506090d1466b6704d60d20) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Remove use of useRequiredScopes hook
+
+- Updated dependencies [[`e44d40bd90aeb8b04042aa3b4836f9b4883d0e34`](https://github.com/wso2/identity-apps/commit/e44d40bd90aeb8b04042aa3b4836f9b4883d0e34)]:
+  - @wso2is/i18n@2.4.3
+  - @wso2is/admin.organizations.v1@2.20.36
+  - @wso2is/common.branding.v1@2.20.36
+
 ## 2.7.32
 
 ### Patch Changes
