@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { PreviewScreenType, PreviewScreenVariationType } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownProps, Form, Select } from "semantic-ui-react";
 import useBrandingPreference from "../hooks/use-branding-preference";
-import { PreviewScreenType, PreviewScreenVariationType } from "../models/branding-preferences";
 import { BASE_DISPLAY_VARIATION } from "../models/custom-text-preference";
 
 /**

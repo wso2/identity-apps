@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,7 @@ import {
     BrandingPreferenceTypes,
     PreviewScreenType,
     PreviewScreenVariationType
-    } from "@wso2is/common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 
 /**
  * Interface for the custom text preference API response.
@@ -115,15 +115,16 @@ export interface CustomTextPreferenceScreenMetaInterface {
  * Base variations for screens. Represents the basic state of the screen.
  */
 export const BASE_DISPLAY_VARIATION :Record<PreviewScreenType, PreviewScreenVariationType> = {
-    "common" : PreviewScreenVariationType.BASE,
-    "email-otp" : PreviewScreenVariationType.BASE,
-    "email-template" : PreviewScreenVariationType.BASE,
-    "login" : PreviewScreenVariationType.BASE,
-    "myaccount" : PreviewScreenVariationType.BASE,
-    "password-recovery" : PreviewScreenVariationType.EMAIL_LINK,
-    "password-reset" : PreviewScreenVariationType.BASE,
-    "password-reset-success" : PreviewScreenVariationType.BASE,
-    "sign-up" : PreviewScreenVariationType.BASE,
-    "sms-otp" : PreviewScreenVariationType.BASE,
-    "totp" : PreviewScreenVariationType.BASE
+    [PreviewScreenType.COMMON]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.EMAIL_OTP]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.EMAIL_TEMPLATE]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.LOGIN]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.MY_ACCOUNT]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.PASSWORD_RECOVERY]: PreviewScreenVariationType.EMAIL_LINK,
+    [PreviewScreenType.PASSWORD_RESET]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.PASSWORD_RESET_SUCCESS]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.SIGN_UP]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.SMS_OTP]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.TOTP]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.EMAIL_LINK_EXPIRY]: PreviewScreenVariationType.BASE
 };

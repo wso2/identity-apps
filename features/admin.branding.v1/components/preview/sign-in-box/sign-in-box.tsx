@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,7 @@ import {
     BrandingPreferenceInterface,
     PreviewScreenType,
     PreviewScreenVariationType
-    } from "@wso2is/common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
@@ -30,11 +30,9 @@ import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import CommonFragment from "./fragments/common-fragment";
 import EmailLinkExpiryFragment from "./fragments/email-link-expiry-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
-import {
-    PasswordRecoveryEmailLinkFragment,
-    PasswordRecoveryMultiOptionFragment,
-    PasswordRecoverySMSFragment
-} from "./fragments/password-recovery";
+import PasswordRecoveryEmailLinkFragment from "./fragments/password-recovery/password-recovery-email-link-fragment";
+import PasswordRecoveryMultiOptionFragment from "./fragments/password-recovery/password-recovery-multi-option-fragment";
+import PasswordRecoverySMSFragment from "./fragments/password-recovery/password-recovery-sms-otp-fragment";
 import PasswordResetFragment from "./fragments/password-reset-fragment";
 import PasswordResetSuccessFragment from "./fragments/password-reset-success-fragment";
 import SignUpFragment from "./fragments/sign-up-fragment";
