@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,8 +31,6 @@ import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
 } from "@wso2is/admin.extensions.v1/configs";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -91,7 +89,6 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const { organizationType } = useGetCurrentOrganizationType();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -221,13 +218,6 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                 authenticator.tags = [ AuthenticatorLabels.API_AUTHENTICATION, AuthenticatorLabels.PASSWORDLESS ];
             }
 
-            // Hide the SMS OTP authenticator for sub organizations.
-            if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                organizationType === OrganizationType.SUBORGANIZATION &&
-                identityProviderConfig?.disableSMSOTPInSubOrgs) {
-                return false;
-            }
-
             const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
                 getAuthenticatorList(),
                 authenticator.id
@@ -289,19 +279,8 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                     return;
                 }
 
-                if (authenticator.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
-                    authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
-                        authenticator.id, authenticator.displayName);
-                }
-
                 if (authenticator.id === AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
                     authenticator.tags = [ AuthenticatorLabels.API_AUTHENTICATION, AuthenticatorLabels.PASSWORDLESS ];
-                }
-
-                if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                    organizationType === OrganizationType.SUBORGANIZATION &&
-                    identityProviderConfig?.disableSMSOTPInSubOrgs) {
-                    return false;
                 }
 
                 const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(

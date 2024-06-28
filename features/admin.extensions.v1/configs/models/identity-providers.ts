@@ -17,7 +17,6 @@
  */
 
 import { ConnectionTabTypes } from "@wso2is/admin.connections.v1/models/connection";
-import { AuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
 
@@ -36,10 +35,6 @@ export interface ExtendedSamlConfigInterface {
 }
 
 export interface IdentityProviderConfig {
-    /**
-     * To extend the Authenticators API response.
-     */
-    authenticatorResponseExtension: AuthenticatorInterface[];
     /**
      * Config for the Authenticators.
      */
@@ -114,8 +109,7 @@ export interface IdentityProviderConfig {
          * @param authenticatorId - Authenticator id.
          * @returns enabled or not.
          */
-        isRoleMappingsEnabled?: (authenticatorId: string) => boolean;
-        hideLogoInputFieldInIdPGeneralSettingsForm?: (authenticatorId: string) => boolean;
+        hideLogoInputFieldInIdPGeneralSettingsForm: (authenticatorId: string) => boolean;
     };
     /**
      * Local authenticators + Federated authenticators will be shown in one grid view as connections.
@@ -140,9 +134,7 @@ export interface IdentityProviderConfig {
     };
     fidoTags: string[];
     filterFidoTags: (tags: string[]) => string[];
-    getOverriddenAuthenticatorDisplayName: (authenticatorId: string, value: string) => string;
     extendedSamlConfig: ExtendedSamlConfigInterface;
-    disableSMSOTPInSubOrgs: boolean;
 }
 
 /**

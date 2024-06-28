@@ -34,16 +34,7 @@ import { getIdPIcons } from "../components/identity-providers/configs/ui";
 import { SIWEAuthenticatorForm } from "../identity-provider-templates/templates/swe/swe-authenticator-form";
 import SIWEIdPTemplate from "../identity-provider-templates/templates/swe/swe.json";
 
-/**
- * A class to hold authenticator constants that get overidden.
- */
-export class IdentityProviderExtensionConstants {
-
-    public static readonly FIDO_AUTHENTICATOR_DISPLAY_NAME: string = "Passkey";
-}
-
 export const identityProviderConfig: IdentityProviderConfig = {
-    authenticatorResponseExtension: [],
     // TODO: Refactor authenticators out of IdentityProviderConfigs to AuthenticatorConfig
     authenticators: {
         [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: {
@@ -87,7 +78,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
             useAuthenticatorsAPI: true
         }
     },
-    disableSMSOTPInSubOrgs: false,
     editIdentityProvider: {
         attributesSettings: true,
         enableFIDOTrustedAppsConfiguration: false,
@@ -276,13 +266,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
             ...getIdPIcons()
         };
     },
-    getOverriddenAuthenticatorDisplayName: (authenticatorId: string, value: string): string => {
-        if (authenticatorId === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
-            return IdentityProviderExtensionConstants.FIDO_AUTHENTICATOR_DISPLAY_NAME;
-        }
-
-        return value;
-    },
     jitProvisioningSettings: {
         enableAssociateLocalUserField: {
             show: true
@@ -338,22 +321,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
              */
 
             return !excludedAuthenticators.has(authenticatorId);
-        },
-
-        /**
-         * Enable or disable role mappings form elements from the UI.
-         * @param authenticatorId - authenticator ID value
-         * @returns enabled or not
-         */
-        isRoleMappingsEnabled(authenticatorId: string): boolean {
-            return IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID !== authenticatorId;
         }
-        /**
-         * This method will either show or hide logo edit field. Provide true
-         * to render the form input field for it.
-         *
-         * @see IdentityProviderConfig
-         * - @param authenticatorId - authenticator ID value
-         */
     }
 };
