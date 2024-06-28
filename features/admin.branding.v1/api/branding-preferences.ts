@@ -55,14 +55,11 @@ export const updateBrandingPreference = (
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): Promise<BrandingPreferenceAPIResponseInterface> => {
-    const tenantDomain: string = store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION
-        ? store.getState()?.organization?.organization?.id
-        : name;
 
     const requestConfig: AxiosRequestConfig = {
         data: {
             locale,
-            name: tenantDomain,
+            name,
             preference,
             type
         },
