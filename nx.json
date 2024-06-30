@@ -67,5 +67,24 @@
     },
     "cli": {
         "defaultCollection": "@nrwl/react"
+    },
+    "namedInputs": {
+        "default": ["{projectRoot}/**/*", "sharedGlobals"],
+        "sharedGlobals": ["{workspaceRoot}/babel.config.json"],
+        "production": [
+            "default",
+            "!{projectRoot}/.eslintrc.js",
+            "!{projectRoot}/.storybook/**/*",
+            "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)"
+        ]
+    },
+    "targetDefaults": {
+        "build": {
+            "dependsOn": ["^build"],
+            "inputs": ["production", "^production"]
+        },
+        "build-storybook": {
+            "inputs": ["default", "^production"]
+        }
     }
 }

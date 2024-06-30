@@ -1,6 +1,5 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "apps/myaccount",
     "sourceRoot": "apps/myaccount/src",
     "projectType": "application",
     "generators": {},

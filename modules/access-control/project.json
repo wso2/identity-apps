@@ -1,6 +1,5 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/access-control",
     "sourceRoot": "modules/access-control/src",
     "projectType": "library",
     "generators": {},
