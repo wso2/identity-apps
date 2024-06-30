@@ -1,6 +1,5 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/i18n",
     "sourceRoot": "modules/i18n/src",
     "projectType": "library",
     "generators": {},

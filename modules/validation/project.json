@@ -1,6 +1,5 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/validation",
     "sourceRoot": "modules/validation/src",
     "projectType": "library",
     "generators": {},

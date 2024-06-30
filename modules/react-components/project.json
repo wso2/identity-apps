@@ -1,6 +1,5 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/react-components",
     "sourceRoot": "modules/react-components/src",
     "projectType": "library",
     "generators": {},
@@ -12,7 +11,7 @@
     ],
     "targets": {
         "build": {
-            "executor": "@nrwl/web:rollup",
+            "executor": "@nrwl/rollup:rollup",
             "outputs": [
                 "{options.outputPath}"
             ],
