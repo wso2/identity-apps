@@ -32,5 +32,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "features"
 }

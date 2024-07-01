@@ -51,5 +51,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "form"
 }

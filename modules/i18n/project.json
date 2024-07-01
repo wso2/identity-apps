@@ -37,5 +37,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "i18n"
 }

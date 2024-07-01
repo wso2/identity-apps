@@ -34,5 +34,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "theme"
 }

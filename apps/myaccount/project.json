@@ -109,7 +109,6 @@
                 "parallel": false
             }
         },
-
         "clean": {
             "executor": "nx:run-commands",
             "options": {
@@ -184,5 +183,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "myaccount"
 }

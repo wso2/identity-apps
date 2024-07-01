@@ -47,5 +47,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "forms"
 }
