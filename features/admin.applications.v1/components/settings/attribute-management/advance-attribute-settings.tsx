@@ -17,7 +17,6 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -96,7 +95,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     } = props;
 
     const { t } = useTranslation();
-    const { UIConfig } = useUIConfig();
 
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state.config.ui.features?.applications?.disabledFeatures);
@@ -318,11 +316,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
      * @returns The hidden status.
      */
     const resolveSubjectAttributeHiddenStatus = (): boolean => {
-        return (
-            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
-            (onlyOIDCConfigured && !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) ||
-            (onlyOIDCConfigured && !showSubjectAttribute)
-        );
+        return !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
+                onlyOIDCConfigured ||
+                (onlyOIDCConfigured && !showSubjectAttribute)
+        ;
     };
 
     const validateLinkedAccountCheckboxHandler = (value: boolean) => {
@@ -669,11 +666,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         </div>): null }
                     <Divider
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
+                            .showRoleAttribute }
                     />
                     {
                         applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&
-                        UIConfig?.legacyMode?.roleMapping && (
+                        (
                             <>
                                 <Heading as="h4">
                                     { t("applications:forms.advancedAttributeSettings" +
@@ -695,7 +692,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-role-attribute-dropdown` }
                         hidden={  !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
+                            .showRoleAttribute }
                         hint={
                             t("applications:forms.advancedAttributeSettings." +
                                 "sections.role.fields.roleAttribute.hint")
@@ -713,8 +710,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-role-checkbox` }
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showIncludeUserstoreDomainRole ||
-                            !UIConfig?.legacyMode?.roleMapping }
+                            .showIncludeUserstoreDomainRole }
                         hint={
                             t("applications:forms.advancedAttributeSettings." +
                                 "sections.role.fields.role.hint")

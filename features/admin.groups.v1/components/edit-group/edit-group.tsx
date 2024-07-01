@@ -16,18 +16,16 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getUsersList } from "@wso2is/admin.users.v1/api";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, FeatureAccessConfigInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +33,6 @@ import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { EditGroupRoles } from "./edit-group-roles";
-import { GroupRolesV1List } from "./edit-group-roles-v1";
 import { GroupUsersList } from "./edit-group-users";
 import { GroupConstants } from "../../constants";
 import useGroupManagement from "../../hooks/use-group-management";
@@ -85,26 +82,15 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { UIConfig } = useUIConfig();
 
     const { activeTab, updateActiveTab } = useGroupManagement();
 
-    const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.users);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
 
     const [ isUsersFetchRequestLoading, setIsUsersFetchRequestLoading ] = useState<boolean>(true);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsersList, setSelectedUsersList ] = useState<UserBasicInterface[]>([]);
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
-
-    const isUserReadOnly: boolean = useMemo(() => {
-        return !isFeatureEnabled(usersFeatureConfig,
-            UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE")) ||
-            !hasRequiredScopes(usersFeatureConfig,
-                usersFeatureConfig?.scopes?.update, allowedScopes);
-    }, [ usersFeatureConfig, allowedScopes ]);
 
     useEffect(() => {
 
@@ -234,27 +220,14 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     </ResourceTab.Pane>
                 )
             },
-            roleV1Enabled ? {
-                menuItem: t("roles:edit.menuItems.roles"),
-                render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <GroupRolesV1List
-                            data-testid="group-mgt-edit-group-roles-v1"
-                            group={ group }
-                            onGroupUpdate={ onGroupUpdate }
-                            isReadOnly={ isReadOnly || isUserReadOnly }
-                        />
-                    </ResourceTab.Pane>
-                )
-            } : null,
-            !roleV1Enabled ? {
+            {
                 menuItem: t("roles:edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <EditGroupRoles group={ group } />
                     </ResourceTab.Pane>
                 )
-            } : null
+            }
         ];
 
         return panes;

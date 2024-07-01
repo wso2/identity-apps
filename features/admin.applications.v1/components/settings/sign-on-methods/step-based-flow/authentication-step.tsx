@@ -29,7 +29,6 @@ import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup, Tooltip } from "@wso2is/react-components";
@@ -150,8 +149,6 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const classes: string = classNames("authentication-step-container timeline-body", className);
@@ -184,13 +181,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
                 ].includes(option.authenticator)
             ) {
-                // Disabling backup codes option for suborganization users until the IS7 migration is completed.
-                if (
-                    !isSubOrganization()
-                    || (isSubOrganization() && UIConfig?.legacyMode?.backupCodesForSubOrganizations)
-                ) {
-                    isBackupCodeSupportedAuthenticator = true;
-                }
+                isBackupCodeSupportedAuthenticator = true;
             }
         });
         setShowBackupCodesEnableCheckBox(isBackupCodeSupportedAuthenticator);

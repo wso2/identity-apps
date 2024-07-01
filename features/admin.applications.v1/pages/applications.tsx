@@ -28,7 +28,6 @@ import {
     getGeneralIcons,
     history
 } from "@wso2is/admin.core.v1";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -124,8 +123,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const { getLink } = useDocumentation();
 
     const dispatch: Dispatch = useDispatch();
-
-    const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) => {
@@ -313,14 +310,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         if (applicationList?.applications) {
             const appList: ApplicationListInterface = cloneDeep(applicationList);
 
-            // Remove the system apps from the application list.
-            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
-                appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
-                    !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
-                    && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
-                );
-            }
-
             appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
             appList.totalResults = appList.totalResults -
                 (applicationList.applications.length - appList.applications.length);
@@ -443,7 +432,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const renderTenantedMyAccountLink = (): ReactElement => {
         if (
             !applicationConfig.advancedConfigurations.showMyAccount
-            || UIConfig?.legacyMode?.applicationListSystemApps
         ) {
             return null;
         }
