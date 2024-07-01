@@ -45,6 +45,7 @@ export interface StrictIdentityProviderInterface {
     image?: string;
     self?: string;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
+    groups?: IdentityProviderGroupInterface[];
     templateId?: string;
     tags?: string[];
 }
