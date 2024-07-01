@@ -65,7 +65,8 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
         onSelectedGroupsListChange,
         isExpanded,
         onExpansionChange,
-        isUpdating
+        isUpdating,
+        ["data-componentid"]: componentId
     } = props;
 
     const initialSelectedGroupsOptions: IdentityProviderGroupInterface[] = initialSelectedGroups?.map(
@@ -225,6 +226,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
 
     return (
         <EmphasizedSegment
+            data-componentid={ componentId }
             className="mt-2"
             basic
         >
@@ -450,5 +452,6 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
  * Default props for the component.
  */
 EditRoleFederatedGroupsAccordion.defaultProps = {
+    "data-componentid": "edit-role-federated-group-configure-item",
     isReadOnly: false
 };
