@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.20.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.7
+  - @wso2is/admin.extensions.v1@2.21.7
+  - @wso2is/admin.organizations.v1@2.20.37
+  - @wso2is/admin.authentication.v1@2.20.37
+
 ## 2.20.5
 
 ### Patch Changes
