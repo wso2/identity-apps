@@ -1,5 +1,24 @@
 # @wso2is/admin.roles.v2
 
+## 2.20.37
+
+### Patch Changes
+
+- [#6501](https://github.com/wso2/identity-apps/pull/6501) [`14c6c8a32fd3743db494423cc0535f84dfc8e023`](https://github.com/wso2/identity-apps/commit/14c6c8a32fd3743db494423cc0535f84dfc8e023) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide identity providers with no groups in the group assignment tab in role edit view
+
+- Updated dependencies [[`14c6c8a32fd3743db494423cc0535f84dfc8e023`](https://github.com/wso2/identity-apps/commit/14c6c8a32fd3743db494423cc0535f84dfc8e023)]:
+  - @wso2is/admin.identity-providers.v1@2.20.37
+  - @wso2is/admin.applications.v1@2.21.7
+  - @wso2is/admin.connections.v1@2.20.37
+  - @wso2is/admin.core.v1@2.21.7
+  - @wso2is/admin.extensions.v1@2.21.7
+  - @wso2is/admin.organizations.v1@2.20.37
+  - @wso2is/admin.server-configurations.v1@2.20.37
+  - @wso2is/admin.users.v1@2.20.37
+  - @wso2is/admin.groups.v1@2.20.37
+  - @wso2is/admin.api-resources.v2@2.20.37
+  - @wso2is/admin.userstores.v1@2.20.37
+
 ## 2.20.36
 
 ### Patch Changes
