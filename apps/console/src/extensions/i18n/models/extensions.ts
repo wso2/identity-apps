@@ -2930,6 +2930,7 @@ export interface Extensions {
                                     message: string;
                                 };
                                 description: string;
+                                docsDescription: string;
                                 title: string;
                             };
                             downloadAgent: {

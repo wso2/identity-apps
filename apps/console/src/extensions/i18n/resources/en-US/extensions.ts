@@ -3391,10 +3391,12 @@ export const extensions: Extensions = {
                                     message: "See the Asgardeo documentation for the complete list of user store " +
                                         "configuration properties."
                                 },
-                                description: "Configure the properties of the local user store in the " +
-                                    "deployment.toml file that is found in the user store agent " +
-                                    "distribution depending on your requirements.",
-                                title: "Configure user store properties"
+                                description: "Update the properties in the deployment.toml file located in the " +
+                                    "root directory of the user store agent to match the remote user store settings. " +
+                                    "Add additional properties according to your requirements.",
+                                docsDescription: "See the <1>Asgardeo documentation</1> for more details on " +
+                                    "configuring the user store agent. ",
+                                title: "Configure the agent"
                             },
                             downloadAgent: {
                                 content: {
