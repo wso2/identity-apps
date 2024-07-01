@@ -127,30 +127,30 @@ export class ClaimManagementConstants {
     public static readonly SCIM_TABS: {
         name: string;
         uri: string;
-        isButtonEnabled: boolean;
-        buttonText: string;
+        isAttributeButtonEnabled: boolean;
+        attributeButtonText: string;
     }[] = [
         {
-            buttonText: "",
-            isButtonEnabled: false,
+            attributeButtonText: "",
+            isAttributeButtonEnabled: false,
             name: "Core Schema",
             uri: "urn:ietf:params:scim:schemas:core:2.0"
         },
         {
-            buttonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
-            isButtonEnabled: true,
+            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
+            isAttributeButtonEnabled: true,
             name: "User Schema",
             uri: "urn:ietf:params:scim:schemas:core:2.0:User"
         },
         {
-            buttonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
-            isButtonEnabled: true,
+            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
+            isAttributeButtonEnabled: true,
             name: "Enterprise Schema",
             uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
         },
         {
-            buttonText: "",
-            isButtonEnabled: true,
+            attributeButtonText: "",
+            isAttributeButtonEnabled: true,
             name: "Core 1.0 Schema",
             uri: "urn:scim:schemas:core:1.0"
         }

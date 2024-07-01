@@ -76,13 +76,13 @@ interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
      */
     mappedLocalClaims: string[];
     /**
-     * Is the button enabled.
+     * Is the attribute button enabled.
      */
-    isButtonEnabled: boolean;
+    isAttributeButtonEnabled: boolean;
     /**
-     * Button Text.
+     * Attribute button Text.
      */
-    buttonText: string;
+    attributeButtonText: string;
     /**
      * Update mapped claims on delete or edit
      */
@@ -113,8 +113,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         attributeType,
         attributeUri,
         mappedLocalClaims,
-        isButtonEnabled,
-        buttonText,
+        isAttributeButtonEnabled,
+        attributeButtonText,
         updateMappedClaims,
         [ "data-testid" ]: testId
     } = props;
@@ -365,7 +365,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                             featureConfig?.attributeDialects,
                             featureConfig?.attributeDialects?.scopes?.create,
                             allowedScopes
-                        ) && isButtonEnabled
+                        ) && isAttributeButtonEnabled
                         && (
                             /**
                              * `loading` property is used to check whether the current selected
@@ -391,7 +391,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                             >
                                 <Icon name="add" />
                                 {
-                                    buttonText
+                                    attributeButtonText
                                 }
                             </PrimaryButton>
                         )
