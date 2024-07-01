@@ -202,5 +202,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "console"
 }

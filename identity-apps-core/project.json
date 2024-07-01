@@ -35,5 +35,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "identity-apps-core"
 }

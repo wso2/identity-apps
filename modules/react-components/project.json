@@ -92,5 +92,6 @@
                 }
             }
         }
-    }
+    },
+    "name": "react-components"
 }
