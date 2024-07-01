@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.20.5
+
+### Patch Changes
+
+- [#6494](https://github.com/wso2/identity-apps/pull/6494) [`a7895afe82eee243a283629b3a8d34b44a7df00f`](https://github.com/wso2/identity-apps/commit/a7895afe82eee243a283629b3a8d34b44a7df00f) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update setup guide content for configuring the user store agent
+
 ## 2.20.4
 
 ### Patch Changes
