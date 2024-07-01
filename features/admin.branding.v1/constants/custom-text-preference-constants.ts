@@ -121,6 +121,7 @@ export class CustomTextPreferenceConstants {
             BODY: string;
             IDENTIFIER: {
                 INPUT: {
+                    LABEL: string;
                     PLACEHOLDER: string;
                 }
             };
@@ -180,12 +181,13 @@ export class CustomTextPreferenceConstants {
             BODY: "password.recovery.body",
             BUTTON: {
                 EMAIL_LINK: "password.recovery.button.email.link",
-                MULTI: "password.recovery.button.email.multi",
+                MULTI: "password.recovery.button.multi",
                 SMS_OTP: "password.recovery.button.smsotp"
             },
             HEADING: "password.recovery.heading",
             IDENTIFIER: {
                 INPUT: {
+                    LABEL: "Username",
                     PLACEHOLDER: "password.recovery.identifier.input.placeholder"
                 }
             },

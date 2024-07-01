@@ -54,6 +54,10 @@ const PasswordRecoveryMultiOptionFragment: FunctionComponent<PasswordRecoveryMul
                     <div className="ui divider hidden"></div>
                     <div className="ui large form">
                         <div className="field">
+                            <label>
+                                { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS
+                                    .PASSWORD_RECOVERY.IDENTIFIER.INPUT.LABEL, "Username") }
+                            </label>
                             <div className="ui fluid left icon input">
                                 <input
                                     type="text"
@@ -64,7 +68,7 @@ const PasswordRecoveryMultiOptionFragment: FunctionComponent<PasswordRecoveryMul
                                             .TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY
                                             .IDENTIFIER.INPUT.PLACEHOLDER, "Username")
                                     }
-                                    data-testid="login-page-username-input"
+                                    data-componentid="login-page-username-input"
                                 />
                                 <i aria-hidden="true" className="user outline icon"></i>
                                 <input id="username" name="username" type="hidden" />

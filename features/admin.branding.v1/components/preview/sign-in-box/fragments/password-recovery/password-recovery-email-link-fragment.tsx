@@ -63,7 +63,7 @@ const PasswordRecoveryEmailLinkFragment: FunctionComponent<PasswordRecoveryEmail
                                             .TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY
                                             .IDENTIFIER.INPUT.PLACEHOLDER, "Username")
                                     }
-                                    data-testid="login-page-username-input"
+                                    data-componentid="login-page-username-input"
                                 />
                                 <i aria-hidden="true" className="user outline icon"></i>
                                 <input id="username" name="username" type="hidden" />
