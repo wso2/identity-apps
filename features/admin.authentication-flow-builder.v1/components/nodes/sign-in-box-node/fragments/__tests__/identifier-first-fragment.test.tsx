@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../../../test-configs/utils";
 import IdentifierFirstFragment, { IdentifierFirstFragmentPropsInterface } from "../identifier-first-fragment";
 
 describe("IdentifierFirstFragment", () => {

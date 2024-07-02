@@ -20,7 +20,6 @@ module.exports = {
     displayName: "myaccount",
     moduleDirectories: [
         "node_modules",
-        "test-configs",
         __dirname
     ],
     moduleFileExtensions: [
@@ -64,7 +63,7 @@ module.exports = {
         "src"
     ],
     setupFilesAfterEnv: [
-        "<rootDir>/test-configs/setup-test.ts"
+        "<rootDir>/../../modules/unit-testing/setup-test.ts"
     ],
     testEnvironment: "jest-environment-jsdom-global",
     testMatch: [
