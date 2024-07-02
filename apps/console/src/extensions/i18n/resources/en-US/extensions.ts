@@ -601,7 +601,7 @@ export const extensions: Extensions = {
             },
             organizationAPI: {
                 header: "Organization APIs",
-                description: "APIs to manage resources in your other organizations"
+                description: "APIs to manage resources in your B2B organizations"
             },
             table: {
                 name: {
