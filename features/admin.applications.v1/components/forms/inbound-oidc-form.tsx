@@ -1952,14 +1952,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             children={ [
                                                 {
                                                     label: t("applications:forms.inboundOIDC.sections" +
-                                                        ".clientAuthentication.fields.reusePvtKeyJWT.label"),
+                                                        ".clientAuthentication.fields.reusePvtKeyJwt.label"),
                                                     value: "tokenEndpointAllowReusePvtKeyJwt"
                                                 }
                                             ] }
                                         />
                                         <Hint>
                                             { t("applications:forms.inboundOIDC.sections" +
-                                                ".clientAuthentication.fields.reusePvtKeyJWT.hint") }
+                                                ".clientAuthentication.fields.reusePvtKeyJwt.hint") }
                                         </Hint>
                                     </Grid.Column>
                                 </Grid.Row>

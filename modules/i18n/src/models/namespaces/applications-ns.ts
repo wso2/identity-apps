@@ -1362,7 +1362,7 @@ export interface ApplicationsNS {
                             label: string;
                             placeholder: string;
                         };
-                        reusePvtKeyJWT: {
+                        reusePvtKeyJwt: {
                             hint: string;
                             label: string;
                         };
