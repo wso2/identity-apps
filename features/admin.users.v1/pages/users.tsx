@@ -150,12 +150,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>([]);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
-    const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isUsersNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
     const [ selectedAddUserType ] = useState<UserAccountTypes>(UserAccountTypes.USER);
     const [ userType, setUserType ] = useState<string>();
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig.primaryUserstoreName);
     const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.PENDING);
-    const [ isUsersNextPageAvailable ] = useState<boolean>(undefined);
     const [ isSelectedUserStoreReadOnly ] = useState<boolean>(false);
     const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
     const [ filterGuestList, setFilterGuestList ] = useState<UserInviteInterface[]>();
@@ -164,6 +163,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ showMultipleInviteConfirmationModal, setShowMultipleInviteConfirmationModal ] = useState<boolean>(false);
     const [ connectorConfigLoading, setConnecterConfigLoading ] = useState<boolean>(false);
     const [ showInviteParentUserWizard, setShowInviteParentUserWizard ] = useState<boolean>(false);
+
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -694,7 +695,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 totalPages={ resolveTotalPages() }
                 totalListSize={ usersList?.totalResults }
                 paginationOptions={ {
-                    disableNextButton: !isNextPageAvailable
+                    showItemsPerPageDropdown:
+                        (
+                            selectedUserStore === userstoresConfig.primaryUserstoreName
+                            && isSAASDeployment
+                        )
                 } }
                 isLoading={ isUserListFetchRequestLoading }
             >
