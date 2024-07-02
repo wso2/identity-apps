@@ -121,10 +121,19 @@ export class CustomTextPreferenceConstants {
             BODY: string;
             IDENTIFIER: {
                 INPUT: {
+                    LABEL: string;
                     PLACEHOLDER: string;
                 }
+            };
+            RADIO_BUTTON: {
+                SMS_OTP: string,
+                EMAIL_LINK: string
             }
-            BUTTON: string;
+            BUTTON: {
+                SMS_OTP: string,
+                EMAIL_LINK: string,
+                MULTI: string
+            };
         },
         PASSWORD_RESET: {
             HEADING: string;
@@ -170,12 +179,21 @@ export class CustomTextPreferenceConstants {
         },
         PASSWORD_RECOVERY: {
             BODY: "password.recovery.body",
-            BUTTON: "password.recovery.button.email.link",
+            BUTTON: {
+                EMAIL_LINK: "password.recovery.button.email.link",
+                MULTI: "password.recovery.button.multi",
+                SMS_OTP: "password.recovery.button.smsotp"
+            },
             HEADING: "password.recovery.heading",
             IDENTIFIER: {
                 INPUT: {
+                    LABEL: "Username",
                     PLACEHOLDER: "password.recovery.identifier.input.placeholder"
                 }
+            },
+            RADIO_BUTTON: {
+                EMAIL_LINK: "send.email.link",
+                SMS_OTP: "send.code.via.sms"
             }
         },
         PASSWORD_RESET: {

@@ -350,8 +350,7 @@
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="recoveryOption" value="<%=EMAIL%>"
                                         <%=EMAIL.equals(selectedOption)?"checked":""%>/>
-                                    <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "send.email.link")%>
+                                    <label><%=i18n(recoveryResourceBundle, customText, "send.email.link")%>
                                     </label>
                                 </div>
                             </div>
@@ -363,8 +362,7 @@
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="recoveryOption" value="<%=SMSOTP%>"
                                         <%=SMSOTP.equals(selectedOption)?"checked":""%>/>
-                                    <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "send.code.via.sms")%>
+                                    <label><%=i18n(recoveryResourceBundle, customText, "send.code.via.sms")%>
                                 </div>
                             </div>
                             <%
@@ -439,7 +437,8 @@
                         %>
                         <div class="mt-4">
                             <%
-                                String submitButtoni18nText = multipleRecoveryOptionsAvailable? "Submit" :
+                                String submitButtoni18nText =
+                                    multipleRecoveryOptionsAvailable? "password.recovery.button.multi" :
                                     ( isEmailRecoveryAvailable? "password.recovery.button.email.link" :
                                     ( isQuestionBasedPasswordRecoveryEnabledByTenant? "Recover.with.question" :
                                     ( isSMSRecoveryAvailable ? "password.recovery.button.smsotp" :
@@ -448,8 +447,7 @@
                             <button id="recoverySubmit"
                                     class="ui primary button large fluid"
                                     type="submit">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        submitButtoni18nText)%>
+                                    <%=i18n(recoveryResourceBundle, customText, submitButtoni18nText)%>
                             </button>
                         </div>
                         <div class="mt-1 align-center">

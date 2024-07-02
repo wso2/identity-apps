@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,8 @@ import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingSubFeatures,
-    PreviewScreenType
+    PreviewScreenType,
+    PreviewScreenVariationType
 } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
@@ -50,6 +51,7 @@ import { BrandingPreferencesConstants } from "../constants/branding-preferences-
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
 import {
+    BASE_DISPLAY_VARIATION,
     CustomTextConfigurationModes,
     CustomTextInterface,
     CustomTextPreferenceAPIResponseInterface,
@@ -95,6 +97,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ selectedScreen, setSelectedPreviewScreen ] = useState<PreviewScreenType>(PreviewScreenType.COMMON);
+    const [ selectedScreenVariation, setSelectedPreviewScreenVariation ]
+        = useState<PreviewScreenVariationType>(PreviewScreenVariationType.BASE);
     const [ selectedLocale, setSelectedCustomTextLocale ] = useState<string>(
         CustomTextPreferenceConstants.DEFAULT_LOCALE
     );
@@ -431,17 +435,31 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
                     return null;
                 },
-                getScreens: (requestingView: BrandingSubFeatures): PreviewScreenType[] => {
-                    if (!Array.isArray(customTextMeta?.screens)) {
+                getScreenVariations: (selectedScreen: PreviewScreenType): PreviewScreenVariationType[] => {
+                    if (!customTextMeta?.screens) {
                         return [];
                     }
+                    const result: PreviewScreenVariationType[] = customTextMeta?.screens[selectedScreen];
+
+                    // Base variation is added by default
+                    if (result.indexOf(BASE_DISPLAY_VARIATION[selectedScreen]) < 0) {
+                        result.push(BASE_DISPLAY_VARIATION[selectedScreen]);
+                    }
+
+                    return result;
+                },
+                getScreens: (requestingView: BrandingSubFeatures): PreviewScreenType[] => {
+                    if (!customTextMeta?.screens) {
+                        return [];
+                    }
+                    const screens:PreviewScreenType[] = Object.keys(customTextMeta?.screens) as PreviewScreenType[];
 
                     let meta: PreviewScreenType[] = [];
 
                     if (requestingView === BrandingSubFeatures.CUSTOM_TEXT) {
-                        meta = customTextMeta?.screens;
+                        meta = screens;
                     } else {
-                        meta = customTextMeta?.screens.filter((screen: string) => {
+                        meta = screens.filter((screen: string) => {
                             return screen !== PreviewScreenType.COMMON;
                         });
 
@@ -462,11 +480,18 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     setCustomTextFormSubscription(null);
                     setSelectedPreviewScreen(screen);
                 },
+                onSelectedPreviewScreenVariationChange: (screenVariation: PreviewScreenVariationType): void => {
+                    setSelectedPreviewScreenVariation(screenVariation);
+                },
                 preference: brandingPreference,
                 resetAllCustomTextPreference: _deleteCustomTextPreference,
                 resetCustomTextField,
+                resetSelectedPreviewScreenVariations: () : void => {
+                    setSelectedPreviewScreenVariation(PreviewScreenVariationType.BASE);
+                },
                 selectedLocale,
                 selectedScreen,
+                selectedScreenVariation,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
                 updateActiveTab: (tab: string) => {
                     // If the tab is the text tab, set the preview screen to common before changing the tab.

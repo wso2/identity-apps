@@ -18,13 +18,13 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { CustomTextPreferenceConstants } from "../../../../constants/custom-text-preference-constants";
-import useBrandingPreference from "../../../../hooks/use-branding-preference";
+import { CustomTextPreferenceConstants } from "../../../../../constants/custom-text-preference-constants";
+import useBrandingPreference from "../../../../../hooks/use-branding-preference";
 
 /**
  * Proptypes for the password-recovery fragment of login screen skeleton.
  */
-export type PasswordRecoveryFragmentInterface = IdentifiableComponentInterface;
+export type PasswordRecoveryMultiOptionFragmentInterface = IdentifiableComponentInterface;
 
 /**
  * Password recovery fragment component for the branding preview of Password Recovery box.
@@ -32,8 +32,8 @@ export type PasswordRecoveryFragmentInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Password recovery fragment component.
  */
-const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterface> = (
-    props: PasswordRecoveryFragmentInterface
+const PasswordRecoveryMultiOptionFragment: FunctionComponent<PasswordRecoveryMultiOptionFragmentInterface> = (
+    props: PasswordRecoveryMultiOptionFragmentInterface
 ): ReactElement => {
     const { ["data-componentid"]: componentId } = props;
 
@@ -44,8 +44,9 @@ const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterf
             <h2>
                 { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.HEADING, "Forgot Password?") }
             </h2>
+            <div className="ui divider hidden"></div>
             <div className="segment-form">
-                <form method="post" id="totpForm" className="ui large form otp-form">
+                <form className="ui large form" method="post" action="#" id="recoverDetailsForm">
                     <p className="line-break text-center" id="instruction" >
                         { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.BODY,
                             "Don't worry, it happens. We will send you an email to reset your password.") }
@@ -53,6 +54,10 @@ const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterf
                     <div className="ui divider hidden"></div>
                     <div className="ui large form">
                         <div className="field">
+                            <label>
+                                { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS
+                                    .PASSWORD_RECOVERY.IDENTIFIER.INPUT.LABEL, "Username") }
+                            </label>
                             <div className="ui fluid left icon input">
                                 <input
                                     type="text"
@@ -63,7 +68,7 @@ const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterf
                                             .TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY
                                             .IDENTIFIER.INPUT.PLACEHOLDER, "Username")
                                     }
-                                    data-testid="login-page-username-input"
+                                    data-componentid="login-page-username-input"
                                 />
                                 <i aria-hidden="true" className="user outline icon"></i>
                                 <input id="username" name="username" type="hidden" />
@@ -71,22 +76,40 @@ const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterf
                         </div>
                     </div>
                     <div className="ui divider hidden"></div>
-                    <div>
+                    <div className="segment" style={ { "textAlign": "left" } }>
+                        <div className="field">
+                            <div className="ui radio checkbox">
+                                <input type="radio" name="recoveryOption" value="EMAIL" checked />
+                                <label>{ i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY
+                                    .RADIO_BUTTON.EMAIL_LINK,
+                                "Send reset link via email.") }
+                                </label>
+                            </div>
+                        </div>
+                        <div className="field">
+                            <div className="ui radio checkbox">
+                                <input type="radio" name="recoveryOption" value="SMSOTP" />
+                                <label>{ i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY
+                                    .RADIO_BUTTON.SMS_OTP,
+                                "Send code via SMS.") }
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-4">
                         <button
-                            type="submit"
-                            id="subButton"
-                            className="ui primary fluid large button mb-2"
-                        >
-                            { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.BUTTON,
-                                "Send Reset Link") }
+                            id="recoverySubmit"
+                            className="ui primary button large fluid"
+                            type="submit">
+                            { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY
+                                .BUTTON.MULTI,
+                            "Submit") }
                         </button>
-                        <button
-                            type="submit"
-                            id="subButton"
-                            className="ui secondary fluid large button"
-                        >
+                    </div>
+                    <div className="mt-1 align-center">
+                        <a href="javascript:goBack()" className="ui button secondary large fluid">
                             Cancel
-                        </button>
+                        </a>
                     </div>
                 </form>
             </div>
@@ -97,8 +120,8 @@ const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterf
 /**
  * Default props for the component.
  */
-PasswordRecoveryFragment.defaultProps = {
+PasswordRecoveryMultiOptionFragment.defaultProps = {
     "data-componentid": "branding-preview-password-recovery-fragment"
 };
 
-export default PasswordRecoveryFragment;
+export default PasswordRecoveryMultiOptionFragment;
