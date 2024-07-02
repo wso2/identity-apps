@@ -1,0 +1,111 @@
+.profile-form {
+    .multi-input-box {
+        width: 100%;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .oxygen-accordion {
+        
+        .oxygen-accordion-summary {
+            display: flex;
+            padding: 0px 8px;
+            background-color: white;
+            flex-wrap: nowrap;
+            align-items: center; 
+            gap: 4px;
+
+            .accordion-label {
+                margin: 0 0 0 8px;
+                flex-shrink: 0;
+                padding-right: 12px;
+            }
+
+            .verified-icon, .primary-icon {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .oxygen-accordion-details {
+            .multi-value-table {
+                .multi-value-table-data-row {
+                    &:last-child td, &:last-child th {
+                        border: none;
+                    }
+                }
+
+                .table-c1 {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    align-items: center;
+
+                    .c1-value{
+                        margin-bottom: 0;
+                        flex-shrink: 0;
+                        padding-right: 12px;
+                    }
+
+                    .verified-icon, .primary-icon {
+                        align-items: center;
+                    }
+                }
+
+                .table-c2 {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 4px;
+                }
+            }
+        }
+
+        .MuiAccordionDetails-root {
+            padding: 0px;
+        }
+
+        .MuiAccordionSummary-root {
+            min-height: 48px;
+        }
+    }
+
+    .multi-attribute-dropdown {
+        width: 100%;
+    }
+}
+
+.MuiMenuItem-root:hover {
+    background-color: transparent !important;
+}
+
+.MuiMenuItem-root.Mui-selected, .MuiMenuItem-root.Mui-selected:hover {
+    background-color: transparent !important; 
+}
+
+.dropdown-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 4px;
+
+    .dropdown-label {
+        display: flex;
+        align-items: center;
+        padding-right: 8px;
+        margin: 0 !important;
+    }
+
+    .verified-icon, .primary-icon {
+        align-items: center;
+    }
+}
+
+.vertical-align-center {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 100%;
+}
