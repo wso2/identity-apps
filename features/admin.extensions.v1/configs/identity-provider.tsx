@@ -308,8 +308,14 @@ export const identityProviderConfig: IdentityProviderConfig = {
 
             return identityClaimsHiddenAuthenticators.has(authenticatorId);
         },
-        hideLogoInputFieldInIdPGeneralSettingsForm(): boolean {
-            return true;
+        hideLogoInputFieldInIdPGeneralSettingsForm(templateId: string): boolean {
+            // show if the idp is enterprise idp, otherwise don't
+            const allowedTemplates: string[] = [
+                ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC,
+                ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML
+            ];
+
+            return !allowedTemplates.includes(templateId);
         },
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {
             const excludedAuthenticators: Set<string> = new Set([
