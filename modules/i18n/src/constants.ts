@@ -97,11 +97,6 @@ export class I18nModuleConstants {
     public static readonly VALIDATION_NAMESPACE: string = "validation";
 
     /**
-     * JWT private key configuration namespace.
-     */
-    public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = "jwtPrivateKeyConfiguration";
-
-    /**
      * transferList namespace.
      */
     public static readonly TRANSFER_LIST_NAMESPACE: string = "transferList";

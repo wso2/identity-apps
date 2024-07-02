@@ -40,7 +40,6 @@
         "@wso2is/admin.org-insights.v1": "^2.20.38",
         "@wso2is/admin.organization-discovery.v1": "^2.20.38",
         "@wso2is/admin.organizations.v1": "^2.20.38",
-        "@wso2is/admin.private-key-jwt.v1": "^2.20.38",
         "@wso2is/admin.remote-repository-configuration.v1": "^2.20.38",
         "@wso2is/admin.roles.v1": "^2.20.38",
         "@wso2is/admin.roles.v2": "^2.20.38",

@@ -7805,39 +7805,6 @@ export interface ConsoleNS {
                 goBackToApplication: string;
                 goBackToValidationConfig: string;
             };
-            jwtPrivateKeyConfiguration: {
-                fetchValidationConfigData: {
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                    genericError: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                notifications: {
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                    genericError: {
-                        description: string;
-                        message: string;
-                    };
-                    success: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                pageTitle: string;
-                description: string;
-                goBackToApplication: string;
-                goBackToAccountSecurityConfig: string;
-                messageInfo: string;
-                tokenReuseEnabled: string;
-                tokenReuseDisabled: string;
-            };
             insights: {
                 pageTitle: string;
                 title: string;

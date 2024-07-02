@@ -412,7 +412,6 @@ export class ServerConfigurationsConstants {
      * Account Management Catergory Constants.
      */
     public static readonly ADMIN_FORCED_PASSWORD_RESET: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
-    public static readonly PRIVATE_KEY_JWT_CLIENT_AUTH: string = "private-key-jwt-configuration";
 
     public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
 
