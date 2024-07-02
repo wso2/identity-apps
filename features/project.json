@@ -1,5 +1,4 @@
 {
-    "root": "features/",
     "prefix": "@wso2is",
     "implicitDependencies": [
         "access-control",
@@ -33,5 +32,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "features"
 }

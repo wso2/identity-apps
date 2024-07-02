@@ -1,6 +1,5 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/core",
     "sourceRoot": "modules/core/src",
     "projectType": "library",
     "generators": {},
@@ -35,5 +34,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "core"
 }

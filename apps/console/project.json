@@ -1,6 +1,5 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "apps/console",
     "sourceRoot": "apps/console/src",
     "projectType": "application",
     "generators": {},
@@ -203,5 +202,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "console"
 }

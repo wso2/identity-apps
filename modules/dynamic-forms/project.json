@@ -1,6 +1,5 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/dynamic-forms",
     "sourceRoot": "modules/dynamic-forms/src",
     "projectType": "library",
     "generators": {},
@@ -13,7 +12,7 @@
     ],
     "targets": {
         "build": {
-            "executor": "@nrwl/web:rollup",
+            "executor": "@nrwl/rollup:rollup",
             "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "modules/dynamic-forms/dist",
@@ -52,5 +51,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "dynamic-forms"
 }
