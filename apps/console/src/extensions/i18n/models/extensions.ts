@@ -3399,9 +3399,18 @@ export interface Extensions {
             }
         }
         invite: {
+            assignAdminUser: {
+                confirmationModal: {
+                    assertionHint: string;
+                    header: string;
+                    message: string;
+                };
+            };
             notifications: {
                 sendInvite: {
+                    inviteAlreadyExistsError: NotificationItem;
                     limitReachError: NotificationItem;
+                    userAlreadyExistsError: NotificationItem;
                 };
             };
         };

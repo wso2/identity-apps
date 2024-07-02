@@ -22,7 +22,6 @@ import {
     SharedUserStoreUtils,
     UIConstants,
     UserBasicInterface,
-    UserRoleInterface,
     getUsersList
 } from "@wso2is/admin.core.v1";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
@@ -54,6 +53,7 @@ import { administratorConfig } from "../../../../configs/administrator";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { AdminAccountTypes } from "../../constants";
 import { InternalAdminFormDataInterface } from "../../models";
+import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
 
 /**
  * Proptypes for the add admin user basic component.
@@ -216,10 +216,12 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
 
         getUsersList(limit, offset, filter, attribute, userStore)
             .then((response: UserListInterface) => {
-                // Exclude JIT users and internal admin users.
+                // Exclude JIT users, internal admin users and collaborators.
                 const responseUsers: UserBasicInterface[] = response?.Resources?.filter(
                     (user: UserBasicInterface) =>
-                        !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId && !isAdminUser(user));
+                        !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId &&
+                    !isAdminUser(user) &&
+                    !isCollaboratorUser(user));
 
                 if (responseUsers) {
                     responseUsers.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
@@ -234,11 +236,6 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             .finally(() => {
                 setUserListRequestLoading(false);
             });
-    };
-
-    // Checks whether administrator role is present in the user.
-    const isAdminUser = (user: UserBasicInterface): boolean => {
-        return user.roles.some((role: UserRoleInterface) => role.display === administratorConfig.adminRoleName);
     };
 
     const getFormValues = (values: Map<string, FormValue>): void => {
@@ -405,7 +402,10 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             submitState={ triggerSubmit }
         >
             {
-                isUserRoleOptionsRequestLoading ? (
+                (isUserRoleOptionsRequestLoading ||
+                    !userRoleOptions ||
+                    userRoleOptions?.length <= 0
+                ) ? (
                     <ContentLoader/>
                 ) : (
                     <Grid>
