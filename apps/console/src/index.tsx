@@ -17,6 +17,7 @@
  */
 
 import { AuthProvider } from "@asgardeo/auth-react";
+import { loader } from "@monaco-editor/react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
 import { AuthenticateUtils } from "@wso2is/admin.authentication.v1";
 import { Config, PreLoader, store } from "@wso2is/admin.core.v1";
@@ -36,6 +37,37 @@ import Theme from "./theme";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
+/**
+ * TODO: Use Monaco with the webpack plugin.
+ * {@link https://github.com/wso2-enterprise/asgardeo-product/issues/23937}
+ *
+ * Function to check the status of the Monaco CDN.
+ * If the CDN is not available, the default CDN will be used.
+ */
+const checkCDNStatus = async () => {
+    try {
+        const response: Response = await fetch("https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs/loader.js");
+
+        if (response.ok) {
+            loader.config({
+                paths: {
+                    vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs"
+                }
+            });
+        } else {
+            loader.config({
+                paths: {
+                    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs"
+                }
+            });
+        }
+    } catch (error) {
+        // Use default CDN.
+    }
+};
+
+checkCDNStatus();
 
 /**
  * Render root component with configs.
