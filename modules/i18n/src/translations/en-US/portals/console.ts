@@ -8113,39 +8113,6 @@ export const console: ConsoleNS = {
                 goBackToApplication: "Go back to application",
                 goBackToValidationConfig: "Go back to Account Security"
             },
-            jwtPrivateKeyConfiguration: {
-                fetchValidationConfigData: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Retrieval error"
-                    },
-                    genericError: {
-                        description: "Impossible de récupérer les données de configuration de l'authentificateur de clé privée jwt.",
-                        message: "Something went wrong"
-                    }
-                },
-                notifications: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Update error"
-                    },
-                    genericError: {
-                        description: "Failed to update jwt private-key authenticator configuration.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully updated jwt private-key authenticator configuration.",
-                        message: "Update successful"
-                    }
-                },
-                pageTitle: "Private Key JWT Client Authentication for OIDC",
-                description: "Authenticate confidential clients to the authorization server when using the token endpoint.",
-                goBackToApplication: "Go back to application",
-                goBackToAccountSecurityConfig: "Go back to Account Security",
-                messageInfo: "If enabled, the JWT can be reused again within its expiration period. JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
-                tokenReuseEnabled: "Token Reuse Enabled",
-                tokenReuseDisabled: "Token Reuse Disabled"
-            },
             insights: {
                 pageTitle: "Insights",
                 title: "Insights",

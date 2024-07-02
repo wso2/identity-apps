@@ -135,7 +135,6 @@ export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
     return {
         accountLock: WarningWithNumberIcon,
         accountRecovery: LockRecoverIcon,
-        jwtPrivateKeyValidation: JWTKeyIcon,
         passwordValidation: PasswordValidationIcon,
         selfRegistration: UserAddIcon,
         usernameValidation: UsernameValidationIcon

@@ -67,7 +67,6 @@ module.exports = [
             "./admin.organization-discovery.v1/public-api.ts",
             "./admin.organizations.v1/public-api.ts",
             "./admin.parent-roles.v1/public-api.ts",
-            "./admin.private-key-jwt.v1/public-api.ts",
             "./admin.provisioning.v1/public-api.ts",
             "./admin.remote-repository-configuration.v1/public-api.ts",
             "./admin.roles.v2/public-api.ts",
@@ -137,7 +136,6 @@ module.exports = [
                         "./admin.organization-discovery.v1": "./admin.organization-discovery.v1/public-api.js",
                         "./admin.organizations.v1": "./admin.organizations.v1/public-api.js",
                         "./admin.parent-roles.v1": "./admin.parent-roles.v1/public-api.js",
-                        "./admin.private-key-jwt.v1": "./admin.private-key-jwt.v1/public-api.js",
                         "./admin.provisioning.v1": "./admin.provisioning.v1/public-api.js",
                         "./admin.remote-repository-configuration.v1":
                             "./admin.remote-repository-configuration.v1/public-api.js",
