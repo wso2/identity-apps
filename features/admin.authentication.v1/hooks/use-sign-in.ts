@@ -505,6 +505,8 @@ const useSignIn = (): UseSignInInterface => {
                             const config: any = JSON.parse(value);
 
                             config.enableOIDCSessionManagement = true;
+                            config.disableTrySignInSilently = false;
+
                             sessionStorage.setItem(key,JSON.stringify(config));
                         }
                     });
