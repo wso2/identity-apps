@@ -16,12 +16,9 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api";
 import { ApplicationList } from "@wso2is/admin.applications.v1/components/application-list";
-import {
-    ConnectionInterface,
-    ConnectionTemplateInterface
-} from "@wso2is/admin.connections.v1/models/connection";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
@@ -31,7 +28,6 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, Link, LinkButton, ListLayout, PageHeader, Text } from "@wso2is/react-components";
@@ -47,16 +43,7 @@ import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
 /**
  * Prop types of the component.
  */
-interface SIWEAuthenticationProviderQuickStartPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * IdP Object.
-     */
-    identityProvider: ConnectionInterface;
-    /**
-     * IdP Template.
-     */
-    template: ConnectionTemplateInterface;
-}
+type SIWEAuthenticationProviderQuickStartPropsInterface = IdentifiableComponentInterface;
 
 const ITEMS_PER_PAGE: number = 6;
 
@@ -85,12 +72,8 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
-        hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    const isApplicationReadAccessAllowed: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
     const {
         data: applicationList,
@@ -192,7 +175,11 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
                             }
                         >
                             Choose the { isApplicationReadAccessAllowed ? (
-                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                                <Link
+                                    external={ false }
+                                    data-componentid="siwe-quick-start-select-application-link"
+                                    onClick={ () => setShowApplicationModal(true) }
+                                >
                                 application </Link>) : "application" }
                             for which you want to set up Sign In With Ethereum.
                         </Trans>
