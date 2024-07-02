@@ -19,8 +19,8 @@
 /* eslint-disable sort-keys */
 
 import UIConfigProvider from "@wso2is/admin.core.v1/providers/ui-config-provider";
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
-import { render, screen } from "../../../../test-configs/utils";
 import { RoleGroupsList } from "../edit-role-groups";
 
 jest.mock("@wso2is/admin.identity-providers.v1/api/identity-provider", () => (

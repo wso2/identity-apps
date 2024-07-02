@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { fireEvent, render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen } from "../../../test-configs/utils";
 import { PasswordRecoveryConfigurationForm } from "../../forms";
 import { PasswordRecoveryConfigurationFormPropsInterface } from "../../models";
 
