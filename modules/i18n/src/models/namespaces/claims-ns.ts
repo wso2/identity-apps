@@ -306,7 +306,8 @@ export interface ClaimsNS {
         pageLayout: {
             edit: {
                 header: string;
-                primaryAction: string;
+                attributeMappingPrimaryAction: string;
+                attributePrimaryAction: string;
             };
         };
         placeholders: {

@@ -127,11 +127,33 @@ export class ClaimManagementConstants {
     public static readonly SCIM_TABS: {
         name: string;
         uri: string;
+        isAttributeButtonEnabled: boolean;
+        attributeButtonText: string;
     }[] = [
-        { name: "Core Schema", uri: "urn:ietf:params:scim:schemas:core:2.0" },
-        { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
-        { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
-        { name: "Core 1.0 Schema", uri: "urn:scim:schemas:core:1.0" }
+        {
+            attributeButtonText: "",
+            isAttributeButtonEnabled: false,
+            name: "Core Schema",
+            uri: "urn:ietf:params:scim:schemas:core:2.0"
+        },
+        {
+            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
+            isAttributeButtonEnabled: true,
+            name: "User Schema",
+            uri: "urn:ietf:params:scim:schemas:core:2.0:User"
+        },
+        {
+            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
+            isAttributeButtonEnabled: true,
+            name: "Enterprise Schema",
+            uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+        },
+        {
+            attributeButtonText: "",
+            isAttributeButtonEnabled: true,
+            name: "Core 1.0 Schema",
+            uri: "urn:scim:schemas:core:1.0"
+        }
     ];
 
     public static readonly EIDAS_TABS: {
