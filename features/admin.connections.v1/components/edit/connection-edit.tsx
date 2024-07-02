@@ -256,9 +256,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     ))
                 }
                 isRoleMappingsEnabled={
-                    isSaml || identityProviderConfig.utils.isRoleMappingsEnabled(
-                        identityProvider.federatedAuthenticators.defaultAuthenticatorId
-                    )
+                    isSaml || ConnectionManagementConstants
+                        .SAML_AUTHENTICATOR_ID !== identityProvider.federatedAuthenticators.defaultAuthenticatorId
                 }
                 data-testid={ `${ testId }-attribute-settings` }
                 provisioningAttributesEnabled={

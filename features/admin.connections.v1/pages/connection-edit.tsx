@@ -664,11 +664,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             );
         }
 
-        if (connector.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
-            connector.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
-                connector.id, connector.displayName);
-        }
-
         return connector.friendlyName || connector.displayName || connector.name;
     };
 

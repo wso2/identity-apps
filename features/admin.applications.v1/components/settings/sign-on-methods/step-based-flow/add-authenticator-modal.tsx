@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,8 +23,6 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authenticator";
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import {
     IdentityProviderManagementConstants
@@ -42,7 +40,6 @@ import {
 import {
     IdentityProviderTemplateManagementUtils
 } from "@wso2is/admin.identity-providers.v1/utils/identity-provider-template-management-utils";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     EmptyPlaceholder,
@@ -189,9 +186,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider?.groupedTemplates
     );
-    const orgType: OrganizationType = useSelector((state: AppState) => {
-        return state?.organization?.organizationType;
-    });
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -251,18 +245,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 AuthenticatorCategories.RECOVERY,
                 t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.RECOVERY)))
         ];
-
-        // Remove SMS OTP authenticator from the list for sub orgs, if the SMS OTP for sub orgs is disabled.
-        if (orgType === OrganizationType.SUBORGANIZATION && identityProviderConfig?.disableSMSOTPInSubOrgs) {
-            _filteredAuthenticators = _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-                return (
-                    authenticator.name !==
-                          IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                    authenticator.name !==authenticatorConfig?.overriddenAuthenticatorNames
-                        ?.SMS_OTP_AUTHENTICATOR
-                );
-            });
-        }
 
         // Remove organization SSO authenticator from the list, as organization SSO authenticator
         // should be handled automatically in the login flow, based on whether the app is shared or not.

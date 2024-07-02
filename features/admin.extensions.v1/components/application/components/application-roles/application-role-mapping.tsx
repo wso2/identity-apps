@@ -23,7 +23,7 @@ import {
     IdpRoleMappingInterface
 } from "@wso2is/admin.applications.v1/models";
 import { getAuthenticators } from "@wso2is/admin.connections.v1/api/authenticators";
-import { AuthenticatorInterface, AuthenticatorTypes } from "@wso2is/admin.identity-providers.v1/models";
+import { AuthenticatorInterface, AuthenticatorTypes } from "@wso2is/admin.connections.v1/models/authenticators";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

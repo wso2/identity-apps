@@ -24,7 +24,6 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
@@ -128,8 +127,7 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
 
             // Extend the API response with the locally defined array from config.
             const authenticators: AuthenticatorInterface[] = [
-                ...response.data,
-                ...identityProviderConfig.authenticatorResponseExtension
+                ...response.data
             ];
 
             // If `type` is defined, only return authenticators of that type.
