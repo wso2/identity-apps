@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.5
+
+### Patch Changes
+
+- [#6027](https://github.com/wso2/identity-apps/pull/6027) [`2a0f4df1570a146aaf079cfc50b2fb52ff3c9465`](https://github.com/wso2/identity-apps/commit/2a0f4df1570a146aaf079cfc50b2fb52ff3c9465) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add multi screen support for branding
+
 ## 2.4.4
 
 ### Patch Changes
