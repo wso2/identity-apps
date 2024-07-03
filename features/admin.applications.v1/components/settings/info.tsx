@@ -134,7 +134,12 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     return (
         !isLoading
             ? (
-                <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ componentId }>
+                <EmphasizedSegment
+                    loading={ isLoading }
+                    padded="very"
+                    data-componentid={ componentId }
+                    data-testid={ componentId }
+                >
                     <Grid className="form-container with-max-width">
                         <Grid.Row>
                             <Grid.Column>
