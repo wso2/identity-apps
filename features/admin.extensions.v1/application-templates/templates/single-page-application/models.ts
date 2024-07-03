@@ -40,8 +40,8 @@ export interface SDKMetaInterface {
 
 export interface SDKMetaReactInterface {
     links: {
-        authClientConfig: string;
-        secureRoute: string;
+        reactClientConfig: string;
+        routingOptions: string;
         useContextDocumentation: string;
     };
     npmInstallCommand: string;
