@@ -1,5 +1,14 @@
 # @wso2is/admin.views.v1
 
+## 2.20.40
+
+### Patch Changes
+
+- Updated dependencies [[`dea861307c887c802107a741662d0413399aba03`](https://github.com/wso2/identity-apps/commit/dea861307c887c802107a741662d0413399aba03)]:
+  - @wso2is/admin.extensions.v1@2.21.10
+  - @wso2is/admin.authentication.v1@2.20.40
+  - @wso2is/admin.core.v1@2.21.10
+
 ## 2.20.39
 
 ### Patch Changes
