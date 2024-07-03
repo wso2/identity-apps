@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 2.20.8
+
+### Patch Changes
+
+- [#6507](https://github.com/wso2/identity-apps/pull/6507) [`17e73bcbb36f03a5759b446b54f7e9010715666a`](https://github.com/wso2/identity-apps/commit/17e73bcbb36f03a5759b446b54f7e9010715666a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve org mgt api introduction text
+
+* [#6027](https://github.com/wso2/identity-apps/pull/6027) [`2a0f4df1570a146aaf079cfc50b2fb52ff3c9465`](https://github.com/wso2/identity-apps/commit/2a0f4df1570a146aaf079cfc50b2fb52ff3c9465) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add multi screen support for branding
+
+* Updated dependencies [[`2a0f4df1570a146aaf079cfc50b2fb52ff3c9465`](https://github.com/wso2/identity-apps/commit/2a0f4df1570a146aaf079cfc50b2fb52ff3c9465)]:
+  - @wso2is/i18n@2.4.4
+  - @wso2is/admin.core.v1@2.21.9
+  - @wso2is/admin.authentication.v1@2.20.39
+  - @wso2is/admin.authorization.v1@2.20.14
+  - @wso2is/admin.extensions.v1@2.21.9
+  - @wso2is/admin.organizations.v1@2.20.39
+
 ## 2.20.7
 
 ### Patch Changes
