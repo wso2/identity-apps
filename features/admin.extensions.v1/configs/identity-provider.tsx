@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import { ConnectionTabTypes } from "@wso2is/admin.connections.v1";
+import { ConnectionManagementConstants, ConnectionTabTypes } from "@wso2is/admin.connections.v1";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import {
     AuthenticatorLabels,
-    GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTabTypes
 } from "@wso2is/admin.identity-providers.v1/models";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { ElementType, FunctionComponent, ReactElement, SVGProps, lazy } from "react";
@@ -35,18 +33,8 @@ import QuickStartTab from "../components/component-extensions/application/quick-
 import { getIdPIcons } from "../components/identity-providers/configs/ui";
 import { SIWEAuthenticatorForm } from "../identity-provider-templates/templates/swe/swe-authenticator-form";
 import SIWEIdPTemplate from "../identity-provider-templates/templates/swe/swe.json";
-import { SIWEAuthenticationProviderCreateWizard } from "../identity-provider-templates/templates/swe/wizards";
-
-/**
- * A class to hold authenticator constants that get overidden.
- */
-export class IdentityProviderExtensionConstants {
-
-    public static readonly FIDO_AUTHENTICATOR_DISPLAY_NAME: string = "Passkey";
-}
 
 export const identityProviderConfig: IdentityProviderConfig = {
-    authenticatorResponseExtension: [],
     // TODO: Refactor authenticators out of IdentityProviderConfigs to AuthenticatorConfig
     authenticators: {
         [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: {
@@ -90,38 +78,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
             useAuthenticatorsAPI: true
         }
     },
-    createIdentityProvider: {
-        getOverriddenCreateWizard: (
-            templateId: string,
-            props: GenericIdentityProviderCreateWizardPropsInterface & IdentifiableComponentInterface
-        ): ReactElement => {
-
-            const {
-                "data-componentid": componentId,
-                title,
-                subTitle,
-                onWizardClose,
-                template,
-                ...rest
-            } = props;
-
-            if (templateId === SIWEIdPTemplate.templateId) {
-                return (
-                    <SIWEAuthenticationProviderCreateWizard
-                        title={ title }
-                        subTitle={ subTitle }
-                        onWizardClose={ onWizardClose }
-                        template={ template }
-                        data-componentid={ componentId }
-                        { ...rest }
-                    />
-                );
-            }
-
-            return null;
-        }
-    },
-    disableSMSOTPInSubOrgs: false,
     editIdentityProvider: {
         attributesSettings: true,
         enableFIDOTrustedAppsConfiguration: false,
@@ -310,13 +266,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
             ...getIdPIcons()
         };
     },
-    getOverriddenAuthenticatorDisplayName: (authenticatorId: string, value: string): string => {
-        if (authenticatorId === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
-            return IdentityProviderExtensionConstants.FIDO_AUTHENTICATOR_DISPLAY_NAME;
-        }
-
-        return value;
-    },
     jitProvisioningSettings: {
         enableAssociateLocalUserField: {
             show: true
@@ -354,7 +303,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     utils: {
         hideIdentityClaimAttributes(authenticatorId: string): boolean {
             const identityClaimsHiddenAuthenticators: Set<string> = new Set([
-                IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID
+                ConnectionManagementConstants.SAML_AUTHENTICATOR_ID
             ]);
 
             return identityClaimsHiddenAuthenticators.has(authenticatorId);
@@ -364,7 +313,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         },
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {
             const excludedAuthenticators: Set<string> = new Set([
-                IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID
+                ConnectionManagementConstants.SAML_AUTHENTICATOR_ID
             ]);
             /**
              * If the authenticatorId is not in the excluded set we
@@ -372,22 +321,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
              */
 
             return !excludedAuthenticators.has(authenticatorId);
-        },
-
-        /**
-         * Enable or disable role mappings form elements from the UI.
-         * @param authenticatorId - authenticator ID value
-         * @returns enabled or not
-         */
-        isRoleMappingsEnabled(authenticatorId: string): boolean {
-            return IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID !== authenticatorId;
         }
-        /**
-         * This method will either show or hide logo edit field. Provide true
-         * to render the form input field for it.
-         *
-         * @see IdentityProviderConfig
-         * - @param authenticatorId - authenticator ID value
-         */
     }
 };

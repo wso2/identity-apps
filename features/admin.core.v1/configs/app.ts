@@ -18,7 +18,6 @@
 
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
-import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
@@ -29,7 +28,6 @@ import { getFeatureGateResourceEndpoints } from "@wso2is/admin.extensions.v1/com
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
 import { getExtendedFeatureResourceEndpointsV2 } from "@wso2is/admin.extensions.v2/config/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1";
-import { getIDPResourceEndpoints } from "@wso2is/admin.identity-providers.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1";
 import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
@@ -71,17 +69,6 @@ export class Config {
      * @returns Server host.
      */
     public static resolveServerHost(enforceOrgPath?: boolean, skipAuthzRuntimePath?: boolean): string {
-        if (isLegacyAuthzRuntime()) {
-            if ((OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
-                || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
-                return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
-            } else {
-                return `${
-                    window[ "AppUtils" ]?.getConfig()?.serverOrigin }/o/${ store.getState().organization.organization.id
-                }`;
-            }
-        }
-
         const serverOriginWithTenant: string = window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
 
         if (skipAuthzRuntimePath && serverOriginWithTenant?.slice(-2) === "/o") {
@@ -272,7 +259,6 @@ export class Config {
             ...getBrandingResourceEndpoints(this.resolveServerHost()),
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getIDPResourceEndpoints(this.resolveServerHost()),
             ...getIDVPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.resolveServerHost()),
             ...getConnectionResourceEndpoints(this.resolveServerHost()),
@@ -371,6 +357,8 @@ export class Config {
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
+            showSmsOtpPwdRecoveryFeatureStatusChip:
+                window[ "AppUtils" ]?.getConfig()?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip,
             showStatusLabelForNewAuthzRuntimeFeatures:
                 window[ "AppUtils" ]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,

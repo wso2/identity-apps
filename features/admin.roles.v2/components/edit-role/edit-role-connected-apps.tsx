@@ -173,10 +173,14 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
      * @param appId - Application id.
      * @param access - Access level of the application.
      */
-    const handleApplicationEdit = (appId: string, tabName: string): void => {
+    const navigateToApplicationRolesTab = (appId: string): void => {
         history.push({
-            pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
-                .replace(":id", appId).replace(":tabName", tabName),
+            pathname: AppConstants.getPaths()
+                .get("APPLICATION_EDIT")
+                .replace(":id", appId),
+            search: "?" +
+                ApplicationManagementConstants.IS_ROLES +
+                "=true",
             state: {
                 id: role.id,
                 name: role.displayName,
@@ -240,8 +244,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                     return "caret right";
                 },
                 onClick: (e: SyntheticEvent, app: RoleConnectedApplicationInterface): void =>
-                    handleApplicationEdit(app.value, "#tab=" +
-                        ApplicationManagementConstants.ROLES_TAB_URL_FRAG),
+                    navigateToApplicationRolesTab(app.value),
                 popupText: (): string => {
                     return t("idp:connectedApps.action");
                 },
@@ -308,8 +311,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                 columns={ resolveTableColumns() }
                 data={ filterSelectedApps }
                 onRowClick={ (e: SyntheticEvent, app: RoleConnectedApplicationInterface): void => {
-                    handleApplicationEdit(app.value, "#tab=" +
-                        ApplicationManagementConstants.ROLES_TAB_URL_FRAG);
+                    navigateToApplicationRolesTab(app.value);
                 } }
                 placeholders={ showPlaceholders() }
                 showHeader={ applicationListConfig.enableTableHeaders }

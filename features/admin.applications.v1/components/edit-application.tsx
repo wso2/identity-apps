@@ -17,7 +17,6 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -211,7 +210,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
     const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -220,7 +218,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const isMyAccount: boolean =
         ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId;
     const applicationsUpdateScopes: string[] = featureConfig?.applications?.scopes?.update;
-  
+
     const [ isDisableInProgress, setIsDisableInProgress ] = useState<boolean>(false);
     const [ enableStatus, setEnableStatus ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
@@ -742,7 +740,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         if (featureConfig) {
-            if (!legacyAuthzRuntime && isMyAccount) {
+            if (isMyAccount) {
                 panes.push({
                     componentId: "overview",
                     menuItem: t("applications:myaccount.overview.tabName"),
@@ -752,7 +750,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
                 && !isSubOrganization()
-                && (legacyAuthzRuntime || !isMyAccount)) {
+                && !isMyAccount
+            ) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -782,7 +781,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
                 && !isFragmentApp
-                && (legacyAuthzRuntime || !isMyAccount)
+                && !isMyAccount
             ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -907,7 +906,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
                  && !isFragmentApp
-                 && (legacyAuthzRuntime || !isMyAccount)) {
+                 && !isMyAccount) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -1103,6 +1102,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.SIGN_IN_METHODS;
             } else if (urlSearchParams.get(ApplicationManagementConstants.IS_PROTOCOL) === "true") {
                 window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.PROTOCOL;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_ROLES) === "true") {
+                window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.APPLICATION_ROLES;
             }
         }
     },[ urlSearchParams ]);

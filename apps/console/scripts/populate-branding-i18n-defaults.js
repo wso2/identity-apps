@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileOverview This file contains a script to prepare for Azure static deployment.
+ * This file contains a script to prepare for Azure static deployment.
  * It copies the static-deploy-config.json file to the build directory.
  */
 
@@ -42,7 +42,8 @@ const DEFAULT_LANGUAGE = "en-US";
 
 const META_FLAGS = Object.freeze({
     EDITABLE: "EDITABLE",
-    SCREEN: "SCREEN"
+    SCREEN: "SCREEN",
+    VARIATIONS: "VARIATIONS"
 });
 
 const RESOURCE_FILE_CONTAINING_META = "Resources.properties";
@@ -73,9 +74,9 @@ const RESOURCE_FILE_CONTAINING_META = "Resources.properties";
  * }
  * ```
  *
- * @param {string} defaultPropertiesPath - Path to the default `Resource.properties` file.
- * @returns {Promise<object>} A JSON object with the metadata.
- * @throws {Error} Throws an error if there is an issue reading or processing the file.
+ * @param defaultPropertiesPath - Path to the default `Resource.properties` file.
+ * @returns A promise of a JSON object with the metadata.
+ * @throws Throws an error if there is an issue reading or processing the file.
  */
 async function processDefaultProperties(defaultPropertiesPath) {
     try {
@@ -134,10 +135,10 @@ async function processDefaultProperties(defaultPropertiesPath) {
  * This function reads the content of a .properties file and converts it to a JSON object. It only includes properties
  * marked as `EDITABLE` in the provided metadata object.
  *
- * @param {string} propertiesPath - Path to the .properties file to process.
- * @param {object} metadata - Metadata object that contains property metadata.
- * @returns {Promise<object>} A Promise that resolves to a JSON object containing the processed properties.
- * @throws {Error} Throws an error if there is an issue reading or processing the file.
+ * @param propertiesPath - Path to the .properties file to process.
+ * @param metadata - Metadata object that contains property metadata.
+ * @returns A Promise that resolves to a JSON object containing the processed properties.
+ * @throws Throws an error if there is an issue reading or processing the file.
  */
 async function propertiesToJson(propertiesPath, metadata) {
     try {
@@ -189,7 +190,7 @@ async function propertiesToJson(propertiesPath, metadata) {
  *
  * @param directoryPath - Path to the directory containing .properties files.
  * @returns A JSON object with translatable content organized by language and metadata.
- * @throws {Error} If there is an error reading or processing the .properties files.
+ * @throws Throws errors generated while reading or processing the .properties files.
  */
 async function processPropertiesFiles(directoryPath) {
     try {
@@ -272,20 +273,30 @@ async function processPropertiesFiles(directoryPath) {
  *
  * @param data - JSON object containing translated content organized by screens and languages.
  * @param outputDirectory - The directory where the JSON files will be saved.
- * @throws {Error} If there is an error creating directories or writing JSON files.
+ * @throws Throws errors generated while creating directories or writing JSON files.
  */
 async function saveJsonFiles(data, outputDirectory) {
     try {
         await fs.ensureDir(outputDirectory);
         const universalMeta = {
             locales: [],
-            screens: []
+            screens: {}
         };
 
         for (const [ screen, bundles ] of Object.entries(data.translations)) {
-            const screenDirectory = path.join(outputDirectory, "screens", screen);
+            const uniqueScreenVariations = new Set();
 
-            universalMeta["screens"] = [ ...universalMeta["screens"], screen ];
+            Object.values(bundles["meta"]).forEach(metaValue => {
+                if (metaValue["VARIATIONS"]) {
+                    metaValue["VARIATIONS"].split(" ").forEach(val => {
+                        uniqueScreenVariations.add(val);
+                    });
+                }
+            });
+
+            universalMeta.screens[screen] = Array.from(uniqueScreenVariations);
+
+            const screenDirectory = path.join(outputDirectory, "screens", screen);
 
             await fs.ensureDir(screenDirectory);
 
@@ -336,7 +347,7 @@ async function saveJsonFiles(data, outputDirectory) {
  *
  * The function also specifies the output directory where the JSON files will be saved.
  *
- * @throws {Error} If there is an error processing the `.properties` files or saving the JSON files.
+ * @throws Throws errors generated while processing the `.properties` files or saving the JSON files.
  */
 async function extractPropertiesToJson() {
     try {

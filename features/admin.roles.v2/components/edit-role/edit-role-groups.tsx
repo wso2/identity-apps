@@ -77,7 +77,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         data: idpList,
         isLoading: isIdPListRequestLoading,
         error: idpListError
-    } = useIdentityProviderList(null, null, null, "federatedAuthenticators", true);
+    } = useIdentityProviderList(null, null, null, "federatedAuthenticators,groups", true);
 
     const {
         data: applicationData,
@@ -119,7 +119,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                     const idp: StrictIdentityProviderInterface = filteredList?.find(
                         (idp: StrictIdentityProviderInterface) => idp.name === option.idp);
 
-                    if (idp) {
+                    if (idp?.groups?.length > 0) {
                         applicationIDPList.push(idp);
                     }
                 });
@@ -285,26 +285,27 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                         <Heading as="h5">
                             { t("roles:edit.groups.externalGroupsHeading") }
                         </Heading>
+
+                        { filteredIdpList?.map((idp: IdentityProviderInterface) => {
+                            const initialSelectedGroupsOptions: RoleGroupsInterface[] = assignedGroups[idp.id];
+
+                            return (
+                                <EditRoleFederatedGroupsAccordion
+                                    key={ `role-group-accordion-${idp.id}` }
+                                    isReadOnly={ isReadOnly }
+                                    onUpdate={ onGroupsUpdate }
+                                    initialSelectedGroups={ initialSelectedGroupsOptions }
+                                    identityProvider={ idp }
+                                    onSelectedGroupsListChange={ onSelectedGroupsChange }
+                                    isExpanded={ expandedGroupIndex === idp.id }
+                                    onExpansionChange={ onGroupAccordionExpanded }
+                                    isUpdating={ isSubmitting }
+                                />
+                            );
+                        }) }
                     </>
                 )
             }
-            { filteredIdpList?.map((idp: IdentityProviderInterface) => {
-                const initialSelectedGroupsOptions: RoleGroupsInterface[] = assignedGroups[idp.id];
-
-                return (
-                    <EditRoleFederatedGroupsAccordion
-                        key={ `role-group-accordion-${idp.id}` }
-                        isReadOnly={ isReadOnly }
-                        onUpdate={ onGroupsUpdate }
-                        initialSelectedGroups={ initialSelectedGroupsOptions }
-                        identityProvider={ idp }
-                        onSelectedGroupsListChange={ onSelectedGroupsChange }
-                        isExpanded={ expandedGroupIndex === idp.id }
-                        onExpansionChange={ onGroupAccordionExpanded }
-                        isUpdating={ isSubmitting }
-                    />
-                );
-            }) }
         </EmphasizedSegment>
     );
 };

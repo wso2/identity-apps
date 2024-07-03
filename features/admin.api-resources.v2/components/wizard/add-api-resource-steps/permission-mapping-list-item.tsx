@@ -192,13 +192,15 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                 <Grid.Row columns={ 1 } className="pt-0 pb-0">
                     <Grid.Column width={ 16 }>
                         <Field
-                            type="text"
+                            type="textarea"
                             name="description"
                             label={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
                                 "fields.description.label") }
                             placeholder={ t("apiResources:wizard.addApiResource.steps.scopes." +
                                 "form.fields.description.placeholder") }
                             tabIndex={ 3 }
+                            maxLength={ 300 }
+                            minLength={ 3 }
                             data-testid={ `${componentId}-description` }
                         />
                         <Hint>

@@ -18,7 +18,6 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
 import CommonFeatureProviders from "@wso2is/admin.core.v1/components/common-feature-provider";
@@ -79,8 +78,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
-
-    const { legacyAuthzRuntime }  = useAuthorization();
 
     const { setResourceEndpoints } = useResourceEndpoints();
 
@@ -323,7 +320,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                             <AccessControlProvider
                                 allowedScopes={ allowedScopes }
                                 features={ featureGateConfigData }
-                                isLegacyRuntimeEnabled={ legacyAuthzRuntime }
                                 organizationType={ organizationType }
                             >
                                 <SessionManagementProvider

@@ -145,7 +145,7 @@
           </script>
         <%
     }
-    
+
     String errorMessage = "authentication.failed.please.retry";
     String errorCode = "";
     if(request.getParameter(Constants.ERROR_CODE)!=null){
@@ -277,8 +277,8 @@
         loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
     }
 
-    String t = request.getParameter("t");
-    String ut = request.getParameter("ut");
+    String t = Encode.forUriComponent(request.getParameter("t"));
+    String ut = Encode.forUriComponent(request.getParameter("ut"));
     if (StringUtils.isNotBlank(t)) {
         loginContextRequestUrl += "&t=" + t;
     }

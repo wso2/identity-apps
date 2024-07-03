@@ -1517,31 +1517,23 @@
             %>
 
             // Dynamically render the configured authenticators.
-            var hasLocal = false;
             var hasFederated = false;
             var isBasicForm = true;
             var isSSOLoginTheOnlyAuthenticatorConfigured = <%=isSSOLoginTheOnlyAuthenticatorConfigured%>;
             try {
-                var hasLocal=JSON.parse(<%=isLocal%>);
                 var hasFederated = JSON.parse(<%=isFederated%>);
                 var isBasicForm = JSON.parse(<%=isBasic%>);
             } catch(error) {
                 // Do nothing.
             }
 
-            if (hasLocal & hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
+            if (hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
                 $("#continue-with-email").show();
-                $("#federated-authenticators").show();
-            } else if (hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
                 $("#federated-authenticators").show();
             } else {
                 $("#continue-with-email").hide();
                 $("#federated-authenticators").hide();
-                if (hasLocal || isBasicForm) {
-                    $("#basic-form").show();
-                } else {
-                    $("#basic-form").hide();
-                }
+                $("#basic-form").show();
             }
 
             var container;

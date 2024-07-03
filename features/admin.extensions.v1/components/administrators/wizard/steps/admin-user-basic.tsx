@@ -18,7 +18,6 @@
 
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     SharedUserStoreUtils,
     UIConstants,
@@ -82,8 +81,6 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         [ "data-componentid"]: componentId
     } = props;
 
-    const { legacyAuthzRuntime } = useAuthorization();
-
     const [ userRoleOptions, setUserRoleList ] = useState([]);
     const [ rolesList, setRolesList ] = useState<RolesInterface[]>([]);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
@@ -105,18 +102,13 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         null,
         null,
         null,
-        `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`,
-        !legacyAuthzRuntime
+        `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`
     );
 
     /**
      * Build the roles filter to search for roles specific to the console application.
      */
     const roleSearchFilter: string = useMemo(() => {
-        if (legacyAuthzRuntime) {
-            return null;
-        }
-
         if (applicationListData?.applications && applicationListData?.applications?.length > 0) {
             return `audience.value eq ${applicationListData?.applications[0]?.id}`;
         }
@@ -131,7 +123,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
-        if (!legacyAuthzRuntime && !roleSearchFilter) {
+        if (!roleSearchFilter) {
             return;
         }
 
@@ -158,7 +150,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 .then((response: AxiosResponse) => {
                     setRolesList(response.data.Resources);
                     response.data.Resources.map((role: RolesInterface, index: number) => {
-                        if ((!legacyAuthzRuntime || role.meta?.systemRole) &&
+                        if ((role.meta?.systemRole) &&
                             role.displayName !== "system" &&
                             role.displayName !== "everyone" &&
                             role.displayName !== "selfsignup" &&

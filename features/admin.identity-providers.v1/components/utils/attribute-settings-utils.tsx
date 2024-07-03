@@ -22,20 +22,15 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch, SetStateAction } from "react";
-import { handleUpdateIDPRoleMappingsError } from "./common-utils";
-import { updateClaimsConfigs, updateIDPRoleMappings } from "../../api";
 import {
     IdentityProviderClaimInterface,
     IdentityProviderClaimMappingInterface,
     IdentityProviderClaimsInterface,
     IdentityProviderCommonClaimMappingInterface,
-    IdentityProviderProvisioningClaimInterface,
-    IdentityProviderRoleMappingInterface,
-    IdentityProviderRolesInterface
+    IdentityProviderProvisioningClaimInterface
 } from "../../models";
 
 export interface DropdownOptionsInterface {
@@ -182,56 +177,6 @@ export const initSubjectAndRoleURIs = (
 ): void => {
     setSubjectClaimUri(initialClaims?.userIdClaim?.uri);
     setRoleClaimUri(initialClaims?.roleClaim?.uri);
-};
-
-export const handleAttributeSettingsFormSubmit = (idpId: string, values: IdentityProviderClaimsInterface,
-    roleMapping: IdentityProviderRoleMappingInterface[],
-    onUpdate: (idpId: string) => void): Promise<void> => {
-
-    return updateClaimsConfigs(idpId, values)
-        .then(() => {
-            onUpdate(idpId);
-            // Update IDP Role Mappings on Successful Claim Config Update.
-            updateIDPRoleMappings(idpId, {
-                mappings: roleMapping,
-                outboundProvisioningRoles: [ "" ]
-            } as IdentityProviderRolesInterface
-            ).then(() => {
-                onUpdate(idpId);
-                // Show single alert message when both requests are successfully completed.
-                store.dispatch(addAlert({
-                    description: I18n.instance.t("authenticationProvider:" +
-                            "notifications.updateAttributes.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: I18n.instance.t("authenticationProvider:" +
-                            "notifications.updateAttributes." +
-                            "success.message")
-                }));
-            }).catch((error: AxiosError) => {
-                handleUpdateIDPRoleMappingsError(error);
-            });
-        })
-        .catch((error: IdentityAppsApiException) => {
-            if (error.response && error.response.data && error.response.data.description) {
-                store.dispatch(addAlert({
-                    description: I18n.instance.t("authenticationProvider:notifications." +
-                        "updateClaimsConfigs.error.description",
-                    { description: error.response.data.description }),
-                    level: AlertLevels.ERROR,
-                    message: I18n.instance.t("authenticationProvider:" +
-                        "notifications.updateClaimsConfigs." +
-                        "error.message")
-                }));
-            }
-
-            store.dispatch(addAlert({
-                description: I18n.instance.t("authenticationProvider:notifications." +
-                    "updateClaimsConfigs.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: I18n.instance.t("authenticationProvider:notifications." +
-                    "updateClaimsConfigs.genericError.message")
-            }));
-        });
 };
 
 export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): void => {

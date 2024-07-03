@@ -225,7 +225,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             if (shareType) {
                 addedOrganizations = checkedUnassignedListItems.map((org: OrganizationInterface) => org.id);
 
-                await unshareApplication(applicationId, currentOrganization.id);
+                await unshareApplication(applicationId);
 
             } else {
                 addedOrganizations = differenceBy(
@@ -370,7 +370,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     });
             });
         } else if (shareType === ShareType.UNSHARE) {
-            unshareApplication(applicationId, currentOrganization.id)
+            unshareApplication(applicationId)
                 .then(() => {
                     onClose(null, null);
                     dispatch(

@@ -83,6 +83,13 @@ echo -e "\n=============================================================\n"
 
 echo -e "\n 🥬 Starting analyzing the changed files with ESLint.. \n"
 
+if [[ ${#supported_files[@]} -gt MAX_FILE_THRESHOLD_FOR_LINTER ]]; then
+    echo -e "\n 🔥 Linting the changed files as batches... \n"
+fi
+
+# Variable to track if any linting errors occur
+lint_errors=false
+
 for ((i=0; i < ${#supported_files[@]}; i+=MAX_FILE_THRESHOLD_FOR_LINTER))
 do
     chunk=( "${supported_files[@]:i:MAX_FILE_THRESHOLD_FOR_LINTER}" )
@@ -97,8 +104,21 @@ do
     fi
 
     if [[ ${#supported_files[@]} -gt MAX_FILE_THRESHOLD_FOR_LINTER ]]; then
-        echo -e "\n 🔥 Linting the changed files as batches..Here are the results... \n"
+        echo -e "\n 🔥 Linting batch $((i/MAX_FILE_THRESHOLD_FOR_LINTER + 1))... \n"
     fi
 
     pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "$filter_pattern"
+
+    # Capture the exit status of ESLint
+    if [ $? -ne 0 ]; then
+        lint_errors=true
+    fi
 done
+
+# Exit with status 1 if any linting errors were found
+if [ "$lint_errors" = true ]; then
+    echo -e "\n❌ Linting failed. Please fix the errors above.\n"
+    exit 1
+else
+    echo -e "\n✅ Linting passed. No errors found.\n"
+fi

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,15 +22,17 @@ import { ConnectionResourceEndpointsInterface } from "../models/endpoints";
 /**
  * Get the resource endpoints for the connection management feature.
  *
- * @param {string} serverHost - Server Host.
- * 
- * @return {ConnectionResourceEndpointsInterface}
+ * @param serverHost - Server Host.
+ *
+ * @returns Connection resource endpoints.
  */
 export const getConnectionResourceEndpoints = (serverHost: string): ConnectionResourceEndpointsInterface => {
     return {
         authenticatorTags: `${ serverHost }/api/server/v1/authenticators/meta/tags`,
         authenticators: `${ serverHost }/api/server/v1/authenticators`,
         extensions: `${ serverHost }/api/server/v1/extensions`,
+        fidoConfigs: `${ serverHost }/api/identity/config-mgt/v1.0/resource/fido-config`,
+        fidoTrustedApps: `${ serverHost }/fido/trusted-apps-mgt`,
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,
         localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`,
         multiFactorAuthenticators: `${ serverHost }/api/server/v1/identity-governance/${

@@ -17,7 +17,7 @@
  */
 
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
-import { AuthenticatorSettings } from "@wso2is/admin.identity-providers.v1/components/wizards/steps";
+import { AuthenticatorSettings } from "@wso2is/admin.identity-providers.v1/components/wizards/steps/shared-steps";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

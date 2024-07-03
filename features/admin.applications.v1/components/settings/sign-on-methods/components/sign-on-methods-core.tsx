@@ -20,13 +20,11 @@ import AuthenticationFlowBuilder
     from "@wso2is/admin.authentication-flow-builder.v1/components/authentication-flow-builder";
 import AuthenticationFlowProvider
     from "@wso2is/admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
+import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import {
-    AuthenticatorCreateWizardFactory
-} from "@wso2is/admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -861,7 +859,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
         return (
             <AuthenticatorCreateWizardFactory
-                open={ showIDPCreateWizard }
+                isModalOpen={ showIDPCreateWizard }
+                handleModalVisibility={ (isOpen: boolean) => setShowIDPCreateWizard(isOpen) }
                 type={ idpTemplateTypeToTrigger }
                 selectedTemplate={ selectedIDPTemplate }
                 onIDPCreate={ () => {

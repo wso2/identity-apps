@@ -73,6 +73,7 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_NATIVE_AUTHENTICATION", "applications.native.authentication")
         .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
         .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
+        .set("APPLICATIONS_SETTINGS", "applications.settings")
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
@@ -111,6 +112,11 @@ export class ApplicationManagementConstants {
     public static readonly IS_PROTOCOL: string = "isProtocol";
 
     /**
+     * Value for protocol tab navigation.
+     */
+    public static readonly IS_ROLES: string = "isRoles";
+
+    /**
      * Key for the URL search param for application readonly state.
      */
     public static readonly APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY: string = "readOnly";
@@ -129,11 +135,6 @@ export class ApplicationManagementConstants {
      * Value for sign on authentication param for application state.
      */
     public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE: string = "true";
-
-    /**
-     * Value for application roles tab url.
-     */
-    public static readonly ROLES_TAB_URL_FRAG: string = "5";
 
     /**
      * Role callback redirect type
@@ -193,6 +194,11 @@ export class ApplicationManagementConstants {
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
+    public static readonly CODE_TOKEN: string = "code token";
+    public static readonly CODE_IDTOKEN: string = "code id_token";
+    public static readonly CODE_IDTOKEN_TOKEN: string = "code id_token token"
+    public static readonly  HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
+    public static readonly HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
 
     /**
      * List of available grant types.

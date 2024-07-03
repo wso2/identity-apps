@@ -1007,6 +1007,34 @@ export interface ApplicationsNS {
                 };
             };
         };
+        applicationsSettings: {
+            fields :{
+                dcrEndpoint: {
+                    label: string,
+                    hint: string
+                };
+                ssaJwks: {
+                    label: string,
+                    placeholder: string,
+                    hint: string,
+                    validations: {
+                        empty: string
+                    }
+                };
+                mandateSSA: {
+                    label: string,
+                    hint: string
+                };
+                authenticationRequired: {
+                    label: string,
+                    hint: string
+                };
+                enforceFapi: {
+                    label: string,
+                    hint: string
+                };
+            }
+        };
         generalDetails: {
             fields: {
                 name: {
@@ -1158,6 +1186,18 @@ export interface ApplicationsNS {
                         empty: string;
                     };
                 };
+                hybridFlow: {
+                    hybridFlowResponseType: {
+                        children: {
+                            code_token: {
+                                hint: string;
+                            };
+                            code_idtoken_token: {
+                                hint: string;
+                            }
+                        }
+                    }
+                }
             };
             mobileApp: {
                 discoverableHint: string;
@@ -1418,6 +1458,29 @@ export interface ApplicationsNS {
                 };
                 certificates: {
                     disabledPopup: string;
+                };
+                hybridFlow: {
+                    heading: string;
+                    enable: {
+                        label: string;
+                    };
+                    hybridFlowResponseType: {
+                        label: string;
+                        fields: {
+                            children: {
+                                code_token: {
+                                    label: string;
+                                };
+                                code_idtoken: {
+                                    label: string;
+                                };
+                                code_idtoken_token: {
+                                    label: string;
+                                };
+                            };
+                            hint: string;
+                        };
+                    }
                 };
             };
             messages: {

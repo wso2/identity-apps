@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
 import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
 import { OrganizationRoleManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
@@ -111,7 +110,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
     const [ isEnded, setEnded ] = useState<boolean>(false);
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
 
@@ -142,7 +140,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     useEffect(() => {
         if (roleList.length < 1) {
-            if (isSuperOrganization() || isFirstLevelOrganization() || !legacyAuthzRuntime) {
+            if (isSuperOrganization() || isFirstLevelOrganization()) {
                 getRolesList(null)
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
                         setRoleList(response?.data?.Resources);

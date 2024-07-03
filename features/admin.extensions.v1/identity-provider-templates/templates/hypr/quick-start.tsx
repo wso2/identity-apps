@@ -17,7 +17,6 @@
  */
 
 import {
-    IdentityProviderInterface,
     IdentityProviderTemplateInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -32,10 +31,6 @@ import { VerticalStepper, VerticalStepperStepInterface } from "../../../componen
 import ApplicationSelectionModal from "../../../components/shared/application-selection-modal";
 
 interface HyprAuthenticatorQuickStartPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * Identity provider object.
-     */
-    identityProvider: IdentityProviderInterface;
     /**
      * Identity provider template object.
      */

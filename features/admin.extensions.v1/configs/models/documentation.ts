@@ -68,6 +68,14 @@ interface ApplicationsDocumentationLinksInterface {
         }
     }
     learnMore: string;
+    applicationsSettings: {
+        dcr: {
+            learnMore: string;
+            authenticationRequired: {
+                learnMore: string;
+            },
+        }
+    },
     editApplication: {
         asgardeoTryitApplication: {
             general: {
@@ -188,6 +196,12 @@ interface ApplicationsDocumentationLinksInterface {
         }
         mobileApplication: {
             learnMore: string;
+        },
+        m2mApplication: {
+            learnMore: string
+        },
+        customApplication: {
+            learnMore: string
         }
     }
     managementApplication: {

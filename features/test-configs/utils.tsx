@@ -73,7 +73,6 @@ const render = (
                         <AccessControlProvider
                             allowedScopes={ allowedScopes }
                             features={ featureConfig }
-                            isLegacyRuntimeEnabled={ false }
                             organizationType="FIRST_LEVEL_ORGANIZATION"
                         >
                             { children }

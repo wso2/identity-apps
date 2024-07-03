@@ -1208,6 +1208,35 @@ export const applications: ApplicationsNS = {
                 }
             }
         },
+
+        applicationsSettings: {
+            fields: {
+                dcrEndpoint: {
+                    label: "DCR Endpoint",
+                    hint: "The DCR endpoint allows OAuth clients to be registered as applications in an authorization server."
+                },
+                ssaJwks: {
+                    label: "JWKS endpoint to validate SSA",
+                    placeholder: "https://example.com/samplejwks.jwks",
+                    hint: "The JWKS url will be used to validate the software statement assertion (SSA) coming in DCR create request.",
+                    validations: {
+                        empty: "JWKS URL is required to validate SSA"
+                    }
+                },
+                mandateSSA: {
+                    label: "Mandate SSA Validation",
+                    hint: "When checked, SSA validation is mandated, and software_statement parameter is required for the DCR create request."
+                },
+                authenticationRequired: {
+                    label: "Require Authentication",
+                    hint: "When checked, authentication will be required for DCR create endpoint. If unchecked authentication is not needed to invoke DCR create endpoint."
+                },
+                enforceFapi: {
+                    label: "Enforce FAPI Conformance",
+                    hint: "When checked, an application which is created through DCR endpoint will be a FAPI compliant application."
+                }
+            }
+        },
         generalDetails: {
             fields: {
                 accessUrl: {
@@ -1382,6 +1411,18 @@ export const applications: ApplicationsNS = {
                     label: "Public client",
                     validations: {
                         empty: "This is a required field."
+                    }
+                },
+                hybridFlow: {
+                    hybridFlowResponseType: {
+                        children: {
+                            code_token: {
+                                hint: "This response type is not recommended."
+                            },
+                            code_idtoken_token: {
+                                hint: "This response type is not recommended."
+                            }
+                        }
                     }
                 }
             },
@@ -1693,6 +1734,29 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     heading: "Scope validators"
+                },
+                hybridFlow: {
+                    heading: "Hybrid Flow",
+                    enable: {
+                        label: "Enable Hybrid Flow"
+                    },
+                    hybridFlowResponseType: {
+                        label: "Allowed response types",
+                        fields: {
+                            children: {
+                                code_token: {
+                                    label: "code token"
+                                },
+                                code_idtoken: {
+                                    label: "code id_token"
+                                },
+                                code_idtoken_token: {
+                                    label: "code id_token token"
+                                }
+                            },
+                            hint: "Select the allowed hybrid flow response type."
+                        }
+                    }
                 }
             }
         },

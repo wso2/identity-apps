@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
+            SMSRecovery: {
+                descriptions: {
+                    add: "Adicione ou atualize o número do celular de recuperação.",
+                    emptyMobile: "Você precisa configurar seu número de celular para prosseguir com a recuperação via SMS-OTP.",
+                    update: "Atualize o número do celular de recuperação ({{mobile}})",
+                    view: "Visualize o número do celular de recuperação ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "Número de celular",
+                                placeholder: "Digite o número do celular de recuperação.",
+                                validations: {
+                                    empty: "Digite um número de celular.",
+                                    invalidFormat: "O número do celular não está no formato correto."
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "Recuperação via SMS",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erro ao atualizar o número do celular de recuperação."
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao atualizar o número do celular de recuperação",
+                            message: "Algo deu errado"
+                        },
+                        success: {
+                            description: "O número do celular no perfil do usuário foi atualizado com sucesso",
+                            message: "Número do celular atualizado com sucesso"
+                        }
+                    }
+                }
+            },
             codeRecovery: {
                 descriptions: {
                     add: "Adicionar ou atualizar opções do código de recuperação"
@@ -1639,7 +1678,7 @@ export const myAccount: MyAccountNS = {
             heading: "Criar Senha"
         },
         federatedAssociations: {
-            description: "Veja suas contas de outros provedores de identidade que estão vinculadas a esta conta",
+            description: "Visualize suas contas de outras conexões vinculadas a esta conta",
             heading: "Contas de Login Social Vinculadas"
         },
         linkedAccounts: {

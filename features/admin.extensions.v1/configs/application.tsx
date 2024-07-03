@@ -120,9 +120,10 @@ export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
         showFapiFeatureStatusChip: false,
+        showHybridFlowFeatureStatusChip: false,
         showMtlsAliases: false,
         showMyAccount: true,
-        showMyAccountStatus: false,
+        showMyAccountStatus: true,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },

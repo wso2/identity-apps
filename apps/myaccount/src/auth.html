@@ -162,16 +162,6 @@
             var applicationDomain = window.location.origin;
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
 
-            if (isSignOutSuccess && userTenant) {
-                if (startupConfig.legacyAuthzRuntime) {
-                    if (startupConfig.subdomainApplication) {
-                        window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
-                    } else {
-                        window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/<%= htmlWebpackPlugin.options.basename %>";
-                    }
-                }
-            }
-
             var urlParams = new URLSearchParams(window.location.search);
 
             var serverOrigin = startupConfig.serverUrl;
@@ -202,14 +192,6 @@
                     };
 
                     function getApiPath(path) {
-                        if (startupConfig.legacyAuthzRuntime) {
-                            if (path) {
-                                return serverOrigin + path;
-                            }
-
-                            return serverOrigin;
-                        }
-
                         var tenantDomain = getTenantName();
 
                         if (!tenantDomain) {
@@ -293,10 +275,6 @@
                      * @returns {string} Contructed auth params.
                      */
                     function getAuthParams(originalParams) {
-                        if (startupConfig.legacyAuthzRuntime) {
-                            return originalParams;
-                        }
-
                         var authParams = Object.assign({}, originalParams);
                         var fidp = new URL(location.href).searchParams.get("fidp");
 
@@ -357,29 +335,6 @@
                             tokenRevocationEndpointURL: undefined,
                         },
                         enablePKCE: true
-                    }
-
-                    if (startupConfig.legacyAuthzRuntime) {
-                        var basePath = applicationDomain.replace(/\/+$/, '');
-                        var baseRedirectURL = "<%= htmlWebpackPlugin.options.basename%>" ? basePath + '/' + "<%= htmlWebpackPlugin.options.basename%>" : basePath;
-
-                        authConfig.signInRedirectURL = baseRedirectURL;
-                        authConfig.signOutRedirectURL = baseRedirectURL;
-                        authConfig.endpoints.authorizationEndpoint = getApiPath(
-                            userTenant
-                                ? "/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize"
-                                : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oauth2/authorize"
-                        );
-                        authConfig.logoutEndpointURL = getApiPath(
-                            userTenant
-                                ? "/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout"
-                                : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/logout",
-                        );
-                        authConfig.oidcSessionIFrameEndpointURL = getApiPath(
-                            userTenant
-                                ? "/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession"
-                                : "/" + startupConfig.tenantPrefix + "/" + getSuperTenant() + startupConfig.pathExtension + "/oidc/checksession"
-                        );
                     }
 
                     auth.initialize(authConfig);

@@ -145,7 +145,6 @@
         "storage": "webWorker"
     },
     "isSaas": false,
-    "legacyAuthzRuntime": false,
     "legacyMode": false,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
@@ -1182,6 +1181,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
             "Console",
