@@ -693,8 +693,8 @@ export const applicationConfig: ApplicationConfig = {
             },
             react: {
                 links: {
-                    authClientConfig: "",
-                    secureRoute: "",
+                    reactClientConfig: "",
+                    routingOptions: "",
                     useContextDocumentation: ""
                 },
                 npmInstallCommand: "",
