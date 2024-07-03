@@ -1785,7 +1785,7 @@ export const applications: ApplicationsNS = {
                             }
                         }
                     },
-                    heading: "Refresh Token"
+                    heading: "Subject Token"
                 },
                 requestObjectSignature: {
                     description: "{{productName}} supports receiving an OIDC authentication request as " +

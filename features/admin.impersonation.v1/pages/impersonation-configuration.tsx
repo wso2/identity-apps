@@ -101,10 +101,10 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("console:impersonationConfig.notifications." +
+                description: t("impersonation:notifications." +
                 "getConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:impersonationConfig.notifications." +
+                message: t("impersonation:notifications." +
                 "getConfiguration.error.message")
             })
         );
@@ -116,10 +116,10 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({
-                description: t("console:impersonationConfig.notifications." +
+                description: t("impersonation:notifications." +
                 "updateConfiguration.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:impersonationConfig.notifications." +
+                message: t("impersonation:notifications." +
                 "updateConfiguration.success.message")
             })
         );
@@ -131,10 +131,10 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
     const handleUpdateError = () => {
         dispatch(
             addAlert({
-                description: t("console:impersonationConfig.notifications." +
+                description: t("impersonation:notifications." +
                 "updateConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:impersonationConfig.notifications." +
+                message: t("impersonation:notifications." +
                 "updateConfiguration.error.message")
             })
         );
@@ -208,7 +208,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
             description={ t("console:impersonationConfig.description") }
             backButton={ {
                 onClick: () => onBackButtonClick(),
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ false }
@@ -240,7 +240,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                                                             <Field.Checkbox
                                                                 ariaLabel="Enable Email Notification"
                                                                 name="enableEmailNotification"
-                                                                label={ t("console:impersonationConfig.form." +
+                                                                label={ t("impersonation:form." +
                                                                     "enableEmailNotification.label") }
                                                                 readOnly={ isReadOnly }
                                                                 width={ 16 }
