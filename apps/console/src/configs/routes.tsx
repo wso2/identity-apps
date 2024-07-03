@@ -122,6 +122,15 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
+                    component: lazy(() => import("wso2is/admin.impersonation.v1/pages/impersonation-configuration")),
+                    exact: true,
+                    id: "impersonationConfiguration",
+                    name: "console:impersonationConfig.title",
+                    path: AppConstants.getPaths().get("IMPERSONATION"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
                     component: lazy(() =>
                         import(
                             "@wso2is/admin.server-configurations.v1/" +

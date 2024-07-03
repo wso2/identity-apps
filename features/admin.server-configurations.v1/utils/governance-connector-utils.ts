@@ -386,6 +386,13 @@ export class GovernanceConnectorUtils {
                 title: "Organization Settings"
             },
             {
+                description: I18n.instance.t("console:impersonationConfig.description"),
+                header: I18n.instance.t("console:impersonationConfig.title"),
+                id: ServerConfigurationsConstants.IMPERSONATION,
+                route: AppConstants.getPaths().get("IMPERSONATION"),
+                testId: "impersonation-card"
+            },
+            {
                 connectors: [
                     {
                         description: I18n.instance.t(
