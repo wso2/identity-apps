@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
+import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
