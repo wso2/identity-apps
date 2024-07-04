@@ -30,6 +30,11 @@ export const getDomainQueryParam = (): string => {
     return `?domain=${ tenantDomain }`;
 };
 
+export const getLimitQueryParam = (): string => {
+
+    return "&limit=30";
+};
+
 const isPrivilegedUser = (): boolean => {
     const isPrivileged: boolean = store.getState()?.auth?.isPrivilegedUser ?? false;
 
@@ -137,7 +142,7 @@ export const getAssociatedTenants = (): Promise<TenantRequestResponse> => {
 
     const requestConfig: AxiosRequestConfig = {
         method: HttpMethods.GET,
-        url: getTenantResourceEndpoints().tenantAssociationApi + getDomainQueryParam()
+        url: getTenantResourceEndpoints().tenantAssociationApi + getDomainQueryParam() + getLimitQueryParam()
     };
 
     return httpClient(requestConfig)
