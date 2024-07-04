@@ -59,6 +59,7 @@ import {
     ConnectionTemplateInterface,
     ImplicitAssociaionConfigInterface
 } from "../../models/connection";
+import { isProvisioningAttributesEnabled } from "../../utils/attribute-utils";
 
 /**
  * Proptypes for the connection edit component.
@@ -264,7 +265,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     !disabledFeatures?.includes("identityProviders.attributes.provisioningAttributes")
                     && (
                         isSaml
-                        || identityProviderConfig.utils.isProvisioningAttributesEnabled(
+                        || isProvisioningAttributesEnabled(
                             identityProvider.federatedAuthenticators.defaultAuthenticatorId)
                     )
                 }
@@ -444,8 +445,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
          * {@link apps/console/src/extensions#} configs folder and
          * models folder for types. identity-provider.ts
          */
-        const attributesForSamlEnabled: boolean = isSaml &&
-            identityProviderConfig.editIdentityProvider.attributesSettings;
+        const attributesForSamlEnabled: boolean = isSaml;
 
         const isAttributesEnabledForOIDC: boolean = isOidc;
 
