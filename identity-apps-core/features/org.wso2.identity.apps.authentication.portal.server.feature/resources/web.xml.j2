@@ -249,6 +249,40 @@
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
+    <!-- *************** Custom Filter Configurations ********************** -->
+    {% for custom_filter in authenticationendpoint.filter %}
+    <filter>
+        <filter-name>{{custom_filter.name}}</filter-name>
+        <filter-class>
+           {{custom_filter.class}}
+        </filter-class>
+        {% for init_param in custom_filter.init_param %}
+        <init-param>
+           <param-name>{{init_param.name}}</param-name>
+           <param-value>{{init_param.value}}</param-value>
+        </init-param>
+        {% endfor %}
+    </filter>
+    <filter-mapping>
+        <filter-name>{{custom_filter.name}}</filter-name>
+        <url-pattern>{{custom_filter.url_pattern}}</url-pattern>
+        {% for dispatcher in custom_filter.dispatchers %}
+        <dispatcher>{{dispatcher}}</dispatcher>
+        {% endfor %}
+    </filter-mapping>
+    {% endfor %}
+    <!-- *************** End of Custom Filter Configurations ********************** -->
+
+    <!-- *************** Custom Listener Configurations ********************** -->
+    {% for custom_listener in authenticationendpoint.listener %}
+    <listener>
+        <listener-class>
+            {{custom_listener.class}}
+        </listener-class>
+    </listener>
+    {% endfor %}
+    <!-- *************** End of Custom Listener Configurations ********************** -->
+
     <listener>
         <listener-class>
             org.wso2.carbon.identity.application.authentication.endpoint.util.listener.AuthenticationEndpointContextListener
