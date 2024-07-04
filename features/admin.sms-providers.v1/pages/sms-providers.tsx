@@ -129,18 +129,22 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     const [ existingSMSProviders, setExistingSMSProviders ] = useState<string[]>([]);
 
     useEffect(() => {
-        if (!isSMSProviderConfigFetchRequestLoading && originalSMSProviderConfig?.length > 0) {
+        if (!isSMSProviderConfigFetchRequestLoading) {
             const existingSMSProviderNames: string[] = [];
+
+            let isAlternateSMSOTPProvidersEnabled: boolean = false;
 
             originalSMSProviderConfig?.forEach((smsProvider: SMSProviderAPIResponseInterface) => {
                 existingSMSProviderNames.push(smsProvider.provider + "SMSProvider");
 
                 smsProvider.properties?.forEach((prop: { key: string, value: string }) => {
                     if (prop.key === "channel.type" && prop.value === "choreo") {
-                        setChoreoSMSOTPProvider(true);
+                        isAlternateSMSOTPProvidersEnabled = true;
                     }
                 });
             });
+
+            setChoreoSMSOTPProvider(isAlternateSMSOTPProvidersEnabled);
 
             setExistingSMSProviders(existingSMSProviderNames);
         }
