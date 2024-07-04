@@ -77,6 +77,12 @@ export class I18nConstants {
     I18nModuleConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE;
 
     /**
+     * JWT private key configuration namespace.
+     */
+    public static readonly IMPERSONATION_CONFIGURATION_NAMESPACE: string =
+    I18nModuleConstants.IMPERSONATION_NAMESPACE;
+
+    /**
      * transferList namespace.
      */
     public static readonly TRANSFER_LIST_NAMESPACE: string = I18nModuleConstants.TRANSFER_LIST_NAMESPACE;
@@ -290,7 +296,8 @@ export class I18nConstants {
         [ I18nConstants.APPLICATIONS_NAMESPACE, "portals" ],
         [ I18nConstants.IDP_NAMESPACE, "portals" ],
         [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ],
-        [ I18nConstants.AI_NAMESPACE, "portals" ]
+        [ I18nConstants.AI_NAMESPACE, "portals" ],
+        [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ]
     ]);
 
     /**

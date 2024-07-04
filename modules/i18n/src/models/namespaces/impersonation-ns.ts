@@ -17,32 +17,33 @@
  */
 export interface ImpersonationNS {
     title: string;
-        description: string;
-        form: {
-            enableEmailNotification: {
-                label: string;
+    description: string;
+    form: {
+        enableEmailNotification: {
+            hint: string;
+            label: string;
+        };
+    };
+    notifications: {
+        getConfiguration: {
+            error: {
+                description: string;
+                message: string;
+            };
+            success: {
+                description: string;
+                message: string;
             };
         };
-        notifications: {
-            getConfiguration: {
-                error: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
+        updateConfiguration: {
+            error: {
+                description: string;
+                message: string;
             };
-            updateConfiguration: {
-                error: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
+            success: {
+                description: string;
+                message: string;
             };
         };
+    };
 }

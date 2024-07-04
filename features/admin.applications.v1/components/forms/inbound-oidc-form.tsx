@@ -21,7 +21,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants";
+import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants/impersonation-configuration";
 import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
@@ -589,12 +589,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     useEffect(() => {
         setIsSubjectTokenEnabled(initialValues?.subjectToken ? initialValues?.subjectToken?.enable : false);
-    }, [ initialValues ]);
-
-    /**
-     * Sets if subject token feature is available.
-     */
-    useEffect(() => {
         setIsSubjectTokenFeatureAvailable(initialValues?.subjectToken ? true : false);
     }, [ initialValues ]);
 
@@ -603,9 +597,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     useEffect(() => {
         if (isGrantChanged) {
-            if (!selectedGrantTypes?.includes("urn:ietf:params:oauth:grant-type:token-exchange")) {
+            if (!selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)) {
                 setIsSubjectTokenEnabled(false);
             }
+            
             if (initialValues?.subjectToken) {
                 setIsSubjectTokenEnabled(initialValues?.subjectToken?.enable);
             }
@@ -2983,7 +2978,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
             { /* Subject Token */ }
-            { selectedGrantTypes?.includes("urn:ietf:params:oauth:grant-type:token-exchange")
+            { selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
                 && !isSystemApplication
                 && !isDefaultApplication
                 && isSubjectTokenFeatureAvailable

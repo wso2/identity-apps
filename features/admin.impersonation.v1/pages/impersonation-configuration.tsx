@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -56,13 +56,10 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const isReadOnly: boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.server,
+    const isReadOnly: boolean = useRequiredScopes(
         featureConfig?.server?.scopes?.update,
-        allowedScopes
-    ), [ featureConfig, allowedScopes ]);
+    );
 
     const dispatch: Dispatch<any> = useDispatch();
 
@@ -79,10 +76,19 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
     } = useImpersonationConfig();
 
     useEffect(() => {
-        if (originalImpersonationConfig instanceof IdentityAppsApiException
-            || impersonationConfigFetchRequestError) {
-            handleRetrieveError();
-
+        if (
+            originalImpersonationConfig instanceof IdentityAppsApiException
+            || impersonationConfigFetchRequestError
+        ) {
+            dispatch(
+                addAlert({
+                    description: t("impersonation:notifications." +
+                    "getConfiguration.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("impersonation:notifications." +
+                    "getConfiguration.error.message")
+                })
+            );
             return;
         }
 
@@ -94,51 +100,6 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
             enableEmailNotification: originalImpersonationConfig.enableEmailNotification
         });
     }, [ originalImpersonationConfig ]);
-
-    /**
-     * Displays the error banner when unable to fetch Impersonation configuration.
-     */
-    const handleRetrieveError = (): void => {
-        dispatch(
-            addAlert({
-                description: t("impersonation:notifications." +
-                "getConfiguration.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("impersonation:notifications." +
-                "getConfiguration.error.message")
-            })
-        );
-    };
-
-    /**
-     * Displays the success banner when Impersonation configurations are updated.
-     */
-    const handleUpdateSuccess = () => {
-        dispatch(
-            addAlert({
-                description: t("impersonation:notifications." +
-                "updateConfiguration.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("impersonation:notifications." +
-                "updateConfiguration.success.message")
-            })
-        );
-    };
-
-    /**
-     * Displays the error banner when unable to update Impersonation configurations.
-     */
-    const handleUpdateError = () => {
-        dispatch(
-            addAlert({
-                description: t("impersonation:notifications." +
-                "updateConfiguration.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("impersonation:notifications." +
-                "updateConfiguration.error.message")
-            })
-        );
-    };
 
     /**
      * Handle Impersonation form submit.
@@ -153,9 +114,25 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
         ];
 
         updateImpersonationConfigurations(data).then(() => {
-            handleUpdateSuccess();
+            dispatch(
+                addAlert({
+                    description: t("impersonation:notifications." +
+                    "updateConfiguration.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("impersonation:notifications." +
+                    "updateConfiguration.success.message")
+                })
+            );
         }).catch(() => {
-            handleUpdateError();
+            dispatch(
+                addAlert({
+                    description: t("impersonation:notifications." +
+                    "updateConfiguration.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("impersonation:notifications." +
+                    "updateConfiguration.error.message")
+                })
+            );
         }).finally(() => {
             mutateImpersonationConfig();
         });
@@ -203,9 +180,9 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
 
     return (
         <PageLayout
-            title={ t("console:impersonationConfig.title") }
-            pageTitle={ t("console:impersonationConfig.title") }
-            description={ t("console:impersonationConfig.description") }
+            title={ t("impersonation:title") }
+            pageTitle={ t("impersonation:title") }
+            description={ t("impersonation:description") }
             backButton={ {
                 onClick: () => onBackButtonClick(),
                 text: t("governanceConnectors:goBackLoginAndRegistration")
@@ -240,6 +217,8 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                                                             <Field.Checkbox
                                                                 ariaLabel="Enable Email Notification"
                                                                 name="enableEmailNotification"
+                                                                hint={ t("impersonation:form.enableEmailNotification" +
+                                                                    ".label.hint") }
                                                                 label={ t("impersonation:form." +
                                                                     "enableEmailNotification.label") }
                                                                 readOnly={ isReadOnly }

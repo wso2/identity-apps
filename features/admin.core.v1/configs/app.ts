@@ -187,6 +187,7 @@ export class Config {
                 I18nConstants.USERSTORES_NAMESPACE,
                 I18nConstants.VALIDATION_NAMESPACE,
                 I18nConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE,
+                I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE,
                 I18nConstants.TRANSFER_LIST_NAMESPACE,
                 I18nConstants.USER_NAMESPACE,
                 I18nConstants.USERS_NAMESPACE,
