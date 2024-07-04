@@ -38,10 +38,10 @@ export const SCIMConfigs: SCIMConfigInterface = {
         accountDisabled: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountDisabled",
         accountLocked: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked",
         askPassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.askPassword",
+        forcePasswordReset: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.forcePasswordReset",
         isReadOnlyUser: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser",
         oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
-        profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl",
-        forcePasswordReset: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.forcePasswordReset"
+        profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
     },
     serverSupportedClaimsAvailable: [
         "urn:scim:schemas:core:1.0",

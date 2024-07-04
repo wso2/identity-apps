@@ -16,12 +16,12 @@
  * under the License.
  */
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
 import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES
