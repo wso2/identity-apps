@@ -132,19 +132,19 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         if (!isSMSProviderConfigFetchRequestLoading) {
             const existingSMSProviderNames: string[] = [];
 
-            let isChoreoSMSOTPProviderEnabled: boolean = false;
+            let isAlternateSMSOTPProvidersEnabled: boolean = false;
 
             originalSMSProviderConfig?.forEach((smsProvider: SMSProviderAPIResponseInterface) => {
                 existingSMSProviderNames.push(smsProvider.provider + "SMSProvider");
 
                 smsProvider.properties?.forEach((prop: { key: string, value: string }) => {
                     if (prop.key === "channel.type" && prop.value === "choreo") {
-                        isChoreoSMSOTPProviderEnabled = true;
+                        isAlternateSMSOTPProvidersEnabled = true;
                     }
                 });
             });
 
-            setChoreoSMSOTPProvider(isChoreoSMSOTPProviderEnabled);
+            setChoreoSMSOTPProvider(isAlternateSMSOTPProvidersEnabled);
 
             setExistingSMSProviders(existingSMSProviderNames);
         }
