@@ -11,11 +11,12 @@
         
         .oxygen-accordion-summary {
             display: flex;
-            padding: 0px 8px;
+            padding: 0px 24px 0px 8px;
             background-color: white;
             flex-wrap: nowrap;
             align-items: center; 
             gap: 4px;
+            border-radius: 8px;
 
             .accordion-label {
                 margin: 0 0 0 8px;
@@ -30,6 +31,8 @@
         }
 
         .oxygen-accordion-details {
+            border-radius: 8px;
+
             .multi-value-table {
                 .multi-value-table-data-row {
                     &:last-child td, &:last-child th {
@@ -108,4 +111,9 @@
     flex-wrap: nowrap;
     align-items: center;
     height: 100%;
+}
+
+.resend-button {
+    color: #ff7300;
+    cursor: pointer;
 }

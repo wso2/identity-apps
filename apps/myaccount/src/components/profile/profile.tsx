@@ -105,6 +105,7 @@ const EMAIL_ADDRESSES_ATTRIBUTE: string = "emailAddresses";
 const MOBILE_NUMBERS_ATTRIBUTE: string = "mobileNumbers";
 const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string = "verifiedMobileNumbers";
 const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string = "verifiedEmailAddresses";
+const EMAIL_MAX_LENGTH: number = 50;
 
 /**
  * Prop types for the basic details component.
@@ -166,6 +167,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     });
     const [ tempEmail, setTempEmail ] = useState<string>("");
     const [ tempMobile, setTempMobile ] = useState<string>("");
+    const [ selectedMobileNumber, setSelectedMobileNumber ] = useState<string>("");
 
     /**
      * The following method gets the preference for verification on mobile and email update.
@@ -758,6 +760,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             };
         } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
 
+            setSelectedMobileNumber(value);
             const verifiedMobileList: string[] = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
 
             verifiedMobileList.push(value);
@@ -765,6 +768,76 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 [schema.schemaId]: {
                     [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: verifiedMobileList.join(",")
                 }
+            };
+        }
+        updateProfileInfo(data).then((response: AxiosResponse) => {
+            if (response.status === 200) {
+                onAlertFired({
+                    description: t(
+                        "myAccount:components.profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "myAccount:components.profile.notifications.updateProfileInfo.success.message"
+                    )
+                });
+
+                // Re-fetch the profile information
+                dispatch(getProfileInformation(true));
+                checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE) && setShowMobileUpdateWizard(true);
+            }
+        }).catch((error: any) => {
+            onAlertFired({
+                description: error?.detail ?? t(
+                    "myAccount:components.profile.notifications.updateProfileInfo.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: error?.message ?? t(
+                    "myAccount:components.profile.notifications.updateProfileInfo.genericError.message"
+                )
+            });
+        });
+    };
+
+    /**
+     * Verify an email address or mobile number.
+     *
+     * @param schema - Schema of the attribute
+     * @param value - Value of the attribute
+     */
+    const handleMakePrimary = (schema: ProfileSchema, value: string) => {
+
+        const data: {
+            Operations: Array<{
+                op: string,
+                value: Record<string, string | Record<string, string> | Array<string> | Array<Record<string, string>>
+                >
+            }>,
+            schemas: Array<string>
+        } = {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {}
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+
+        if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
+
+            data.Operations[0].value = {
+                [EMAIL_ATTRIBUTE]: [ value ]
+            };
+        } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+
+            data.Operations[0].value = {
+                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                    {
+                        type: MOBILE_ATTRIBUTE,
+                        value
+                    }
+                ]
             };
         }
         updateProfileInfo(data).then((response: AxiosResponse) => {
@@ -1147,7 +1220,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const generateMultiValuedField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
 
-        let primaryAttributeSchemaName: string = EMAIL_ATTRIBUTE;
         let primaryAttributeSchema: ProfileSchema;
         let attributeValueList: string[] = [];
         let verifiedAttributeValueList: string[] = [];
@@ -1155,28 +1227,32 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let verificationEnabled: boolean = false;
         let deletePopupHeader: string = "";
         let verifyPopupHeader: string = "";
+        let pendingEmailAddress: string = "";
 
         if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
             deletePopupHeader = "Delete Email Address";
             verifyPopupHeader = "Verify Email Address";
-            attributeValueList = profileInfo.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
-            verifiedAttributeValueList = profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeSchemaName = EMAIL_ATTRIBUTE;
-            primaryAttributeValue = profileInfo.get(primaryAttributeSchemaName);
+            attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
+            verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
+            pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
+                ? profileDetails?.profileInfo?.pendingEmails[0]
+                : null;
+            primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
+                ? profileDetails?.profileInfo?.emails[0]
+                : null;
+            primaryAttributeValue = profileDetails?.profileInfo?.emails[0];
             verificationEnabled = isEmailVerificationEnabled;
-            primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
             verifiedAttributeValueList.push(primaryAttributeValue);
 
         } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
             deletePopupHeader = "Delete Mobile Number";
             verifyPopupHeader = "Verify Mobile Number";
-            attributeValueList = profileInfo.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            verifiedAttributeValueList = profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeSchemaName = MOBILE_ATTRIBUTE;
-            primaryAttributeValue = profileInfo.get(primaryAttributeSchemaName);
+            attributeValueList = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
+            verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
+            primaryAttributeValue = profileInfo?.get(
+                `${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")}.${MOBILE_ATTRIBUTE}`);
             verificationEnabled = isMobileVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(MOBILE_ATTRIBUTE);
-            verifiedAttributeValueList.push("0777453588");
         }
 
         // Move the primary attribute value to the top of the list.
@@ -1184,9 +1260,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             attributeValueList = attributeValueList.filter((value: string) => value !== primaryAttributeValue);
             attributeValueList.unshift(primaryAttributeValue);
         }
-
         const showAccordion: boolean = attributeValueList.length >= 1;
         const accordionLabelValue: string = primaryAttributeValue ?? attributeValueList[0];
+
+        const showPendingEmailPopup = (value: string): boolean => {
+            return verificationEnabled
+                && checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
+                && pendingEmailAddress
+                && value === pendingEmailAddress;
+        };
+
+        const showVerifiedPopup = (value: string): boolean => {
+            return verifiedAttributeValueList.includes(value);
+        };
+
+        const showPrimaryPopup = (value: string): boolean => {
+            return value === primaryAttributeValue;
+        };
 
         return (
             <>
@@ -1214,9 +1304,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             validateField(value, validation, schema, fieldName) }
                     value={ checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE) ? tempEmail : tempMobile }
                     maxLength={
-                        // TODO: Remove the hard-coded value and get it from the schema.
                         checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
-                            ? 50
+                            ? EMAIL_MAX_LENGTH
                             : primaryAttributeSchema.maxLength ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                     }
                 />
@@ -1241,48 +1330,30 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             <Typography className="accordion-label">
                                 { accordionLabelValue }
                             </Typography>
-                            <div
-                                className={ `${!verifiedAttributeValueList.includes(accordionLabelValue)
-                                    ? "hidden"
-                                    : "verified-icon"
-                                }` }
-                                hidden={ !verifiedAttributeValueList.includes(accordionLabelValue) }
-                            >
-                                <Popup
-                                    size="tiny"
-                                    trigger={
-                                        (
-                                            <Icon
-                                                name="check circle"
-                                                color="blue"
-                                            />
-                                        )
-                                    }
-                                    header="Verified"
-                                    inverted
-                                />
-                            </div>
-                            <div
-                                className={ `${accordionLabelValue !== primaryAttributeValue
-                                    ? "hidden"
-                                    : "primary-icon"
-                                }` }
-                                hidden={ accordionLabelValue !== primaryAttributeValue }
-                            >
-                                <Popup
-                                    size="tiny"
-                                    trigger={
-                                        (
-                                            <Icon
-                                                name="star"
-                                                color="yellow"
-                                            />
-                                        )
-                                    }
-                                    header="Primary"
-                                    inverted
-                                />
-                            </div>
+                            {
+                                showPendingEmailPopup(accordionLabelValue)
+                                && (
+                                    <div className="verified-icon" >
+                                        { generatePendingEmailPopup() }
+                                    </div>
+                                )
+                            }
+                            {
+                                showVerifiedPopup(accordionLabelValue)
+                                && (
+                                    <div className="verified-icon" >
+                                        { generateVerifiedPopup() }
+                                    </div>
+                                )
+                            }
+                            {
+                                showPrimaryPopup(accordionLabelValue)
+                                && (
+                                    <div className="primary-icon" >
+                                        { generatePrimaryPopup() }
+                                    </div>
+                                )
+                            }
                         </AccordionSummary>
                         <AccordionDetails className="accordion-details">
                             <TableContainer component={ Paper } elevation={ 0 }>
@@ -1295,73 +1366,39 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                         { attributeValueList?.map(
                                             (value: string, index: number) => (
                                                 <TableRow key={ index } className="multi-value-table-data-row">
-                                                    <TableCell>
+                                                    <TableCell align="left">
                                                         <div className="table-c1">
                                                             <Typography className="c1-value">
                                                                 { value }
                                                             </Typography>
-                                                            <div
-                                                                className={
-                                                                    `${ !verifiedAttributeValueList
-                                                                        .includes(value)
-                                                                        ? "hidden"
-                                                                        : "verified-icon" }`
-                                                                }
-                                                            >
-                                                                <Popup
-                                                                    size="tiny"
-                                                                    trigger={
-                                                                        (
-                                                                            <Icon
-                                                                                name="check circle"
-                                                                                color="blue"
-                                                                            />
-                                                                        )
-                                                                    }
-                                                                    header="Verified"
-                                                                    inverted
-                                                                />
-                                                            </div>
-                                                            <div
-                                                                className={
-                                                                    `${value !== primaryAttributeValue
-                                                                        ? "hidden"
-                                                                        : "verified-icon"
-                                                                    }` }
-                                                                hidden={ value !== primaryAttributeValue }
-                                                            >
-                                                                <Popup
-                                                                    size="tiny"
-                                                                    trigger={
-                                                                        (
-                                                                            <Icon
-                                                                                name="star"
-                                                                                color="yellow"
-                                                                            />
-                                                                        )
-                                                                    }
-                                                                    header="Primary"
-                                                                    inverted
-                                                                />
-                                                            </div>
+                                                            {
+                                                                showPendingEmailPopup(value)
+                                                                && (
+                                                                    <div className="verified-icon" >
+                                                                        { generatePendingEmailPopup() }
+                                                                    </div>
+                                                                )
+                                                            }
+                                                            {
+                                                                showVerifiedPopup(value)
+                                                                && (
+                                                                    <div className="verified-icon" >
+                                                                        { generateVerifiedPopup() }
+                                                                    </div>
+                                                                )
+                                                            }
+                                                            {
+                                                                showPrimaryPopup(value)
+                                                                && (
+                                                                    <div className="verified-icon" >
+                                                                        { generatePrimaryPopup() }
+                                                                    </div>
+                                                                )
+                                                            }
                                                         </div>
                                                     </TableCell>
                                                     <TableCell align="right">
                                                         <div className="table-c2">
-                                                            { /* <Button
-                                                                className="table-button"
-                                                                variant="text"
-                                                                size="small"
-                                                                hidden={ !verificationEnabled
-                                                                    || value === primaryAttributeValue }
-                                                                onClick={ () => handleVerify(schema, value) }
-                                                            >
-                                                                {
-                                                                    verifiedAttributeValueList.includes(value)
-                                                                        ? t("common:Make Primary").toString()
-                                                                        : t("common:verify").toString()
-                                                                }
-                                                            </Button> */ }
                                                             <IconButton
                                                                 size="small"
                                                                 hidden={ !verificationEnabled
@@ -1386,7 +1423,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 hidden={ !verifiedAttributeValueList.includes(value)
                                                                     || value === primaryAttributeValue
                                                                 }
-                                                                onClick={ () => handleVerify(schema, value) }
+                                                                onClick={ () => handleMakePrimary(schema, value) }
                                                             >
                                                                 <Popup
                                                                     size="tiny"
@@ -1491,7 +1528,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const generateTextField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
 
-        // TODO: Remove the hard-coded value and get it from the schema - check 50
         return (
             <>
                 <Field
@@ -1507,7 +1543,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         (value: string, validation: Validation) => validateField(value, validation, schema, fieldName) }
                     value={ resolveProfileInfoSchemaValue(schema) }
                     maxLength={
-                        schema.name === "emails" ? 50 : (fieldName.toLowerCase().includes("uri")
+                        schema.name === EMAIL_ATTRIBUTE ? EMAIL_MAX_LENGTH : (fieldName.toLowerCase().includes("uri")
                         || fieldName.toLowerCase().includes("url")) ? 1024 : (schema.maxLength
                                 ? schema.maxLength
                                 : ProfileConstants.CLAIM_VALUE_MAX_LENGTH)
@@ -1559,7 +1595,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             && checkSchemaType(schema.name, EMAIL_ATTRIBUTE)
             && isEmailPending
             && isEmailVerificationEnabled) {
-            return generatePendingEmail(schema);
+            return (
+                <>
+                    { profileInfo.get(schema.name) }
+                    { generatePendingEmailPopup() }
+                </>
+            );
         } else if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
             || checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
             return generateReadOnlyMultiValuedField(schema, fieldName);
@@ -1572,25 +1613,30 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const generateReadOnlyMultiValuedField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
 
-        let primaryAttributeSchemaName: string = EMAIL_ATTRIBUTE;
         let attributeValueList: string[] = [];
         let verifiedAttributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
+        let pendingEmailAddress: string = "";
+        let verificationEnabled: boolean = false;
 
         if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
+            verificationEnabled = isEmailVerificationEnabled;
             attributeValueList = profileInfo.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeSchemaName = EMAIL_ATTRIBUTE;
-            primaryAttributeValue = profileInfo.get(primaryAttributeSchemaName);
+            pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
+                ? profileDetails?.profileInfo?.pendingEmails[0]
+                : null;
+            primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
+                ? profileDetails?.profileInfo?.emails[0]
+                : null;
             verifiedAttributeValueList.push(primaryAttributeValue);
 
         } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+            verificationEnabled = isMobileVerificationEnabled;
             attributeValueList = profileInfo.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeSchemaName = MOBILE_ATTRIBUTE;
-            // primaryAttributeValue = profileInfo.get(primaryAttributeSchemaName);
-            primaryAttributeValue = "0777453588";
-            verifiedAttributeValueList.push(primaryAttributeValue);
+            primaryAttributeValue = profileInfo.get(
+                `${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")}.${MOBILE_ATTRIBUTE}`);
         }
 
         // Ensure primaryAttributeValue is defined and attributeValueList is an array.
@@ -1600,6 +1646,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
             attributeValueList = [ primaryAttributeValue, ...filteredList ];
         }
+
+        const showPendingEmailPopup = (value: string): boolean => {
+            return verificationEnabled
+                && checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
+                && pendingEmailAddress
+                && value === pendingEmailAddress;
+        };
+
+        const showVerifiedPopup = (value: string): boolean => {
+            return verifiedAttributeValueList.includes(value);
+        };
+
+        const showPrimaryPopup = (value: string): boolean => {
+            return value === primaryAttributeValue;
+        };
         // TODO: use translation to popups.
 
         return (
@@ -1620,30 +1681,30 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                 <Typography className="dropdown-label">
                                                     { value }
                                                 </Typography>
-                                                <div
-                                                    className={ `${!verifiedAttributeValueList.includes(value)
-                                                        ? "hidden"
-                                                        : "verified-icon"
-                                                    }` }
-                                                    hidden={ !verifiedAttributeValueList.includes(value) }
-                                                >
-                                                    <Icon
-                                                        name="check circle"
-                                                        color="blue"
-                                                    />
-                                                </div>
-                                                <div
-                                                    className={ `${!verifiedAttributeValueList.includes(value)
-                                                        ? "hidden"
-                                                        : "primary-icon"
-                                                    }` }
-                                                    hidden={ value !== primaryAttributeValue }
-                                                >
-                                                    <Icon
-                                                        name="star"
-                                                        color="yellow"
-                                                    />
-                                                </div>
+                                                {
+                                                    showPendingEmailPopup(value)
+                                                    && (
+                                                        <div className="verified-icon" >
+                                                            { generatePendingEmailPopup() }
+                                                        </div>
+                                                    )
+                                                }
+                                                {
+                                                    showVerifiedPopup(value)
+                                                    && (
+                                                        <div className="verified-icon" >
+                                                            { generateVerifiedPopup() }
+                                                        </div>
+                                                    )
+                                                }
+                                                {
+                                                    showPrimaryPopup(value)
+                                                    && (
+                                                        <div className="verified-icon" >
+                                                            { generatePrimaryPopup() }
+                                                        </div>
+                                                    )
+                                                }
                                             </div>
                                         </MenuItem>
                                     )
@@ -1652,35 +1713,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         )
                 }
             </>
-        );
-    };
-
-    const generatePendingEmail= (schema: ProfileSchema): JSX.Element => {
-
-        return (
-            <p>
-                {
-                    profileInfo.get(schema.name)
-                }
-                <Popup
-                    size="tiny"
-                    trigger={
-                        (<Icon
-                            name="info circle"
-                            color="yellow"
-                        />)
-                    }
-                    content={
-                        t("myAccount:components.profile.messages." +
-                            "emailConfirmation.content")
-                    }
-                    header={
-                        t("myAccount:components.profile.messages." +
-                            "emailConfirmation.header")
-                    }
-                    inverted
-                />
-            </p>
         );
     };
 
@@ -1820,6 +1852,65 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 }
             }
         }
+    };
+
+    const generatePendingEmailPopup= (): JSX.Element => {
+        return (
+            <Popup
+                size="tiny"
+                trigger={
+                    (<Icon
+                        name="info circle"
+                        color="yellow"
+                    />)
+                }
+                content={
+                    t("myAccount:components.profile.messages." +
+                            "emailConfirmation.content")
+                }
+                header={
+                    t("myAccount:components.profile.messages." +
+                            "emailConfirmation.header")
+                }
+                inverted
+            />
+        );
+    };
+
+    const generateVerifiedPopup= (): JSX.Element => {
+        return (
+            <Popup
+                size="tiny"
+                trigger={
+                    (
+                        <Icon
+                            name="check circle"
+                            color="blue"
+                        />
+                    )
+                }
+                header="Verified"
+                inverted
+            />
+        );
+    };
+
+    const generatePrimaryPopup= (): JSX.Element => {
+        return (
+            <Popup
+                size="tiny"
+                trigger={
+                    (
+                        <Icon
+                            name="star"
+                            color="yellow"
+                        />
+                    )
+                }
+                header="Primary"
+                inverted
+            />
+        );
     };
 
     /**
@@ -2052,6 +2143,22 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         dispatch(setActiveForm(null));
     };
 
+    /**
+     * Whether to show the mobile verification wizard or not.
+     * @param schema - Profile schema
+     * @returns boolean - Whether to show the mobile verification wizard or not
+     */
+    const showMobileVerification = (schema: ProfileSchema): boolean => {
+
+        if (!showMobileUpdateWizard) {
+            return false;
+        }
+        const attributeToCheck: string = isMultipleEmailAndMobileNumberEnabled
+            ? MOBILE_NUMBERS_ATTRIBUTE : MOBILE_ATTRIBUTE;
+
+        return checkSchemaType(schema.name, attributeToCheck);
+    };
+
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
@@ -2097,7 +2204,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                         return (
                                             <>
                                                 {
-                                                    showMobileUpdateWizard && checkSchemaType(schema.name, "mobile")
+                                                    showMobileVerification(schema)
                                                         ? (
                                                             < MobileUpdateWizard
                                                                 data-testid={ `${testId}-mobile-update-wizard` }
@@ -2106,8 +2213,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                     handleCloseMobileUpdateWizard()
                                                                 }
                                                                 wizardOpen={ true }
-                                                                currentMobileNumber={ profileInfo.get(schema.name) }
+                                                                currentMobileNumber={
+                                                                    checkSchemaType(schema.name,
+                                                                        MOBILE_NUMBERS_ATTRIBUTE)
+                                                                        ? selectedMobileNumber
+                                                                        : profileInfo.get(schema.name)
+                                                                }
                                                                 isMobileRequired={ schema.required }
+                                                                isMultipleEmailAndMobileNumberEnabled
                                                             />
                                                         )
                                                         : null
