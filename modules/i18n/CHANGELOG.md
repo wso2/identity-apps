@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.4.5
+
+### Patch Changes
+
+- [#6492](https://github.com/wso2/identity-apps/pull/6492) [`fb99538a3379188e56c3a537281a2ba880c34804`](https://github.com/wso2/identity-apps/commit/fb99538a3379188e56c3a537281a2ba880c34804) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Dynamically change the button text for scim attribute tabs
+
 ## 2.4.4
 
 ### Patch Changes
