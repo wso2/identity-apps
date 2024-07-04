@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.6
+
+### Patch Changes
+
+- [#6514](https://github.com/wso2/identity-apps/pull/6514) [`efc9b41a20348811672b3877b1ba51880708b8ed`](https://github.com/wso2/identity-apps/commit/efc9b41a20348811672b3877b1ba51880708b8ed) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Provide the capability to add custom filter and listener configurations through deployment.toml for authentication endpoint
+
 ## 2.4.5
 
 ### Patch Changes
