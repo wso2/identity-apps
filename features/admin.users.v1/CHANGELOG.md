@@ -1,5 +1,25 @@
 # @wso2is/admin.users.v1
 
+## 2.20.44
+
+### Patch Changes
+
+- [#6523](https://github.com/wso2/identity-apps/pull/6523) [`2ba92ddb826fded335a6264d598a5183dc5d79d0`](https://github.com/wso2/identity-apps/commit/2ba92ddb826fded335a6264d598a5183dc5d79d0) Thanks [@Malith-19](https://github.com/Malith-19)! - Add conditional dilect selection to fix the claim dilect issue in the force password reset.
+
+- Updated dependencies [[`2ba92ddb826fded335a6264d598a5183dc5d79d0`](https://github.com/wso2/identity-apps/commit/2ba92ddb826fded335a6264d598a5183dc5d79d0)]:
+  - @wso2is/admin.extensions.v1@2.21.14
+  - @wso2is/admin.users.v1@2.20.44
+  - @wso2is/admin.authentication.v1@2.20.44
+  - @wso2is/admin.claims.v1@2.20.44
+  - @wso2is/admin.core.v1@2.21.14
+  - @wso2is/admin.groups.v1@2.20.44
+  - @wso2is/admin.identity-providers.v1@2.20.44
+  - @wso2is/admin.organizations.v1@2.20.44
+  - @wso2is/admin.roles.v2@2.20.44
+  - @wso2is/admin.server-configurations.v1@2.20.44
+  - @wso2is/admin.userstores.v1@2.20.44
+  - @wso2is/admin.validation.v1@2.20.44
+
 ## 2.20.43
 
 ### Patch Changes

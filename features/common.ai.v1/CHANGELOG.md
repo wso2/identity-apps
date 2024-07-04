@@ -1,5 +1,12 @@
 # @wso2is/common.ai.v1
 
+## 2.20.44
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.14
+
 ## 2.20.43
 
 ### Patch Changes
