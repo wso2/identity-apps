@@ -1,5 +1,16 @@
 # @wso2is/admin.sms-providers.v1
 
+## 2.20.42
+
+### Patch Changes
+
+- [#6504](https://github.com/wso2/identity-apps/pull/6504) [`904c8a2e32e6ee43374c031659ee3e3f6fd67de4`](https://github.com/wso2/identity-apps/commit/904c8a2e32e6ee43374c031659ee3e3f6fd67de4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix SMS provider delete request being sent on SMS provider config update, even when there are no SMS providers configured.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.12
+  - @wso2is/admin.extensions.v1@2.21.12
+  - @wso2is/admin.connections.v1@2.20.42
+
 ## 2.20.41
 
 ### Patch Changes
