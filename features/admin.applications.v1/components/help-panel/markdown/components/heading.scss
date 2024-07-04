@@ -1,0 +1,56 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+ .markdown-heading-container {
+    display: flex;
+    align-items: center;
+
+    .markdown-heading-number {
+        background-color: #969696;
+        border-radius: 100%;
+        color: #fff;
+        margin: 0 15px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.markdown-heading1-number {
+            height: 40px;
+            width: 40px;
+            font-size: 20px;
+        }
+
+        &.markdown-heading2-number {
+            height: 35px;
+            width: 35px;
+            font-size: 17.5px;
+        }
+
+        &.markdown-heading3-number {
+            height: 30px;
+            width: 30px;
+            font-size: 15px;
+        }
+
+        &.markdown-heading4-number {
+            height: 25px;
+            width: 25px;
+            font-size: 12.5px;
+        }
+    }
+}

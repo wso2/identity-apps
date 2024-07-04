@@ -16,36 +16,18 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
-import {
-    ContentLoader,
-    EmphasizedSegment,
-    PrimaryButton
-} from "@wso2is/react-components";
-import { AxiosError } from "axios";
-import cloneDeep from "lodash-es/cloneDeep";
-import get from "lodash-es/get";
-import has from "lodash-es/has";
-import pick from "lodash-es/pick";
-import set from "lodash-es/set";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
-import { updateApplicationDetails } from "../../api";
-import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
+import { ApplicationEditForm as ApplicationInboundProtocolEditForm } from "./application-inbound-protocol-edit-form";
+import { ApplicationEditForm as ApplicationMainEditForm } from "./application-main-edit-form";
 import {
     ApplicationInterface
 } from "../../models";
 import { ApplicationEditTabMetadataInterface } from "../../models/application-templates";
-import { DynamicFieldAutoSubmitPropertyInterface, DynamicFieldInterface } from "../../models/dynamic-fields";
+import { DynamicFormInterface, SupportedAPIList } from "../../models/dynamic-fields";
 import "./application-edit-form.scss";
 
 /**
@@ -91,187 +73,74 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
         ["data-componentid"]: componentId
     } = props;
 
-    const { validate } = useDynamicFieldValidations();
+    const formSubmissions: Partial<{ [api in SupportedAPIList]: ((e: MouseEvent<HTMLButtonElement>) => void) }> = {};
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
-    const { UIConfig } = useUIConfig();
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
-    /**
-     * Callback function triggered when clicking the form submit button.
-     *
-     * @param values - Submission values from the form fields.
-     */
-    const onSubmit = (values: ApplicationInterface): void => {
-        setIsSubmitting(true);
-        const formValues: ApplicationInterface = cloneDeep(values);
-
-        /**
-         * Make sure that cleared text fields are set to an empty string.
-         * Additionally, include the auto-submit properties in the form submission.
-         */
-        tab?.form?.fields?.forEach((field: DynamicFieldInterface) => {
-            if (!has(formValues, field?.name)) {
-                const initialValue: any = get(application, field?.name);
-
-                if (initialValue && typeof initialValue === "string") {
-                    set(formValues, field?.name, "");
-                }
-            }
-
-            if (field?.meta?.autoSubmitProperties
-                && Array.isArray(field?.meta?.autoSubmitProperties)
-                && field?.meta?.autoSubmitProperties?.length > 0) {
-                field.meta.autoSubmitProperties.forEach(
-                    (property: DynamicFieldAutoSubmitPropertyInterface) =>
-                        set(formValues, property?.path, property?.value)
-                );
+    const renderForms = () => {
+        return tab?.forms?.map((form: DynamicFormInterface) => {
+            switch(form?.api) {
+                case SupportedAPIList.APPLICATION_PATCH:
+                    return (
+                        <ApplicationMainEditForm
+                            formMetadata={ form }
+                            application={ application }
+                            isLoading={ isLoading }
+                            onUpdate={ onUpdate }
+                            readOnly={ readOnly }
+                            data-componentid={ componentId }
+                            hideSubmitBtn={ tab?.singleForm }
+                            formSubmission={
+                                (submissionFunction: (e: MouseEvent<HTMLButtonElement>) => void) =>
+                                    formSubmissions[form?.api] = submissionFunction
+                            }
+                        />
+                    );
+                case SupportedAPIList.APPLICATION_SAML_INBOUND_PROTOCOL_PUT:
+                    return (
+                        <ApplicationInboundProtocolEditForm
+                            formMetadata={ form }
+                            application={ application }
+                            isLoading={ isLoading }
+                            onUpdate={ onUpdate }
+                            readOnly={ readOnly }
+                            data-componentid={ componentId }
+                            hideSubmitBtn={ tab?.singleForm }
+                            formSubmission={
+                                (submissionFunction: (e: MouseEvent<HTMLButtonElement>) => void) =>
+                                    formSubmissions[form?.api] = submissionFunction
+                            }
+                        />
+                    );
             }
         });
-
-        updateApplicationDetails(formValues)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t("applications:notifications.updateApplication.success" +
-                        ".description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("applications:notifications.updateApplication.success.message")
-                }));
-
-                onUpdate(application?.id);
-            })
-            .catch((error: AxiosError) => {
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("applications:notifications.updateApplication.error" +
-                            ".message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("applications:notifications.updateApplication" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:notifications.updateApplication.genericError" +
-                        ".message")
-                }));
-            })
-            .finally(() => setIsSubmitting(false));
-    };
-
-    /**
-     * Prepare the initial values before assigning them to the form fields.
-     *
-     * @param application - application data.
-     * @returns Moderated initial values.
-     */
-    const moderateInitialValues = (application: ApplicationInterface): Partial<ApplicationInterface> => {
-        if (!tab?.form?.submitDefinedFieldsOnly) {
-            return application;
-        }
-
-        const paths: string[] = tab?.form?.fields?.map((field: DynamicFieldInterface) => field?.name);
-
-        // The ID needs to be submitted to perform the update operation.
-        paths.push("id");
-
-        return pick(application, paths);
     };
 
     return (
         <EmphasizedSegment
             className="application-dynamic-edit-form"
-            data-componentid={ `${componentId}-tab-${tab?.id}` }
+            data-componentid={ `${componentId}-forms` }
             padded="very"
         >
+            { renderForms() }
             {
-                isLoading
-                    ? <ContentLoader inline="centered" active/>
-                    : (
-                        <>
-                            <FinalForm
-                                initialValues={ moderateInitialValues(application) }
-                                keepDirtyOnReinitialize
-                                onSubmit={ onSubmit }
-                                mutators={ {
-                                    setFormAttribute: (
-                                        [ fieldName, fieldVal ]: [ fieldName: string, fieldVal: any ],
-                                        state: MutableState<
-                                            Partial<ApplicationInterface>,
-                                            Partial<ApplicationInterface>
-                                        >,
-                                        { changeValue }: Tools<
-                                            Partial<ApplicationInterface>,
-                                            Partial<ApplicationInterface>
-                                        >
-                                    ) => {
-                                        changeValue(state, fieldName, () => fieldVal);
-                                    }
-                                } }
-                                validate={
-                                    (formValues: ApplicationInterface) =>
-                                        validate(formValues, tab?.form?.fields)
-                                }
-                                render={ ({ form, handleSubmit }: FormRenderProps) => {
-                                    return (
-                                        <form id={ `${tab?.id}-form` } onSubmit={ handleSubmit }>
-                                            <Grid>
-                                                { tab?.form?.fields?.map(
-                                                    (field: DynamicFieldInterface) => {
-                                                        return (
-                                                            <Grid.Row
-                                                                key={ field?.id }
-                                                                columns={ 1 }
-                                                                className=
-                                                                    "application-edit-form-dynamic-fields"
-                                                            >
-                                                                <Grid.Column
-                                                                    mobile={ 16 }
-                                                                    tablet={ 16 }
-                                                                    computer={ 14 }
-                                                                >
-                                                                    <ApplicationFormDynamicField
-                                                                        field={ field }
-                                                                        form={ form }
-                                                                        readOnly={ readOnly
-                                                                            || !hasRequiredScopes(
-                                                                                UIConfig?.features?.applications,
-                                                                                UIConfig?.features
-                                                                                    ?.applications?.scopes?.update,
-                                                                                allowedScopes
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </Grid.Column>
-                                                            </Grid.Row>
-                                                        );
-                                                    })
-                                                }
-                                                <Grid.Row column={ 1 }>
-                                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                                        <PrimaryButton
-                                                            type="submit"
-                                                            data-componentid={ `${componentId}-update-button` }
-                                                            loading={ isSubmitting }
-                                                            disabled={ isSubmitting }
-                                                        >
-                                                            { t("common:update") }
-                                                        </PrimaryButton>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </form>
-                                    );
-                                } }
-                            />
-                        </>
-                    )
+                tab?.singleForm && (
+                    <Grid>
+                        <Grid.Row column={ 1 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <PrimaryButton
+                                    type="submit"
+                                    data-componentid={ `${componentId}-update-button` }
+                                    onClick={ (e: MouseEvent<HTMLButtonElement>) => Object.values(
+                                        formSubmissions).forEach(
+                                        (func: (e: MouseEvent<HTMLButtonElement>) => void) => func(e)) }
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                )
             }
         </EmphasizedSegment>
     );

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -54,6 +54,10 @@ interface LinkPropsInterface extends IdentifiableComponentInterface {
      * Documentation URL target property. Opens in a new window by default.
      */
     target?: string;
+    /**
+     * Title attribute for the anchor element.
+     */
+    title?: string;
 }
 
 /**
@@ -75,6 +79,7 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
         link,
         onClick,
         target,
+        title,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -106,6 +111,7 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
                 onClick(e);
             } }
             data-componentid={ componentId }
+            title={ title }
         >
             { external && icon && iconPosition === "left" && <Icon className="mr-1" name={ icon } /> }
             { children }

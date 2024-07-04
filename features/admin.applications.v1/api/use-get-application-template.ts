@@ -32,7 +32,8 @@ import { ApplicationTemplateInterface } from "../models/application-templates";
  * @returns A promise containing the response.
  */
 const useGetApplicationTemplate = <Data = ApplicationTemplateInterface, Error = RequestErrorInterface>(
-    id: string
+    id: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -43,7 +44,7 @@ const useGetApplicationTemplate = <Data = ApplicationTemplateInterface, Error = 
         url: store?.getState()?.config?.endpoints?.applicationTemplate?.replace("{{id}}", id)
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,

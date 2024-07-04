@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,15 +19,25 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
-import { ReactMarkdownProps } from "react-markdown";
-import ReactMarkdown from "react-markdown/with-html";
+import ReactMarkdown, { ExtraProps, Options } from "react-markdown";
+import rehypeAttrs from "rehype-attr";
+
+/**
+ * Props interface for the Markdown custom component.
+ */
+export type MarkdownCustomComponentPropsInterface<
+    TagName extends keyof JSX.IntrinsicElements
+> = JSX.IntrinsicElements[TagName] & ExtraProps & IdentifiableComponentInterface;
 
 /**
  * Proptypes for the placeholder component.
  */
-export interface MarkdownPropsInterface extends ReactMarkdownProps, IdentifiableComponentInterface,
+export interface MarkdownPropsInterface extends Options, IdentifiableComponentInterface,
     TestableComponentInterface {
-
+    /**
+     * Content written in Markdown format to be displayed.
+     */
+    source: string;
     /**
      * Text alignment.
      */
@@ -44,6 +54,7 @@ export interface MarkdownPropsInterface extends ReactMarkdownProps, Identifiable
 export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: MarkdownPropsInterface): ReactElement => {
 
     const {
+        source,
         className,
         textAlign,
         [ "data-componentid" ]: componentId,
@@ -62,11 +73,14 @@ export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: Markd
     return (
         <ReactMarkdown
             className={ classes }
-            escapeHtml={ false }
+            skipHtml={ true }
             data-componentid={ componentId }
             data-testid={ testId }
+            rehypePlugins={ [ rehypeAttrs ] }
             { ...rest }
-        />
+        >
+            { source }
+        </ReactMarkdown>
     );
 };
 

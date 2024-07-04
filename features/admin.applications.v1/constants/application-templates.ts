@@ -22,7 +22,7 @@ import { ApplicationTemplateCategoryInterface } from "../models/application-temp
  * Class containing application templates management constants.
  */
 export class ApplicationTemplateConstants {
-    public static readonly CONSOLE_BASE_URL_PLACEHOLDER: string = "{{CONSOLE_BASE_URL}}";
+    public static readonly CONSOLE_BASE_URL_PLACEHOLDER: string = "${CONSOLE_BASE_URL}";
 
     public static readonly COMING_SOON_ATTRIBUTE_KEY: string = "comingSoon";
 

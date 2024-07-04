@@ -174,6 +174,7 @@ export const common: CommonNS = {
     "strong": "強い",
     "submit": "提出する",
     "switch": "スイッチ",
+    "sync": "同期",
     "technologies": "テクノロジー",
     "terminate": "終了します",
     "terminateAll": "すべてを終了します",

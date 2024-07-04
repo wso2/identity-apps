@@ -174,6 +174,7 @@ export const common: CommonNS = {
     strong: "Forte",
     submit: "Enviar",
     switch: "Interruptor",
+    sync: "Sincronizar",
     technologies: "Tecnologias",
     terminate: "Terminar",
     terminateAll: "Terminar tudo",

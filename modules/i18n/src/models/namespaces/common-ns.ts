@@ -151,6 +151,7 @@ export interface CommonNS {
     showMore: string;
     showPassword: string;
     skip: string;
+    sync: string;
     generatePassword: string;
     startsWith: string;
     step: string;

@@ -28,6 +28,10 @@ export interface DynamicFormInterface {
      * Should the form only submit the fields defined above.
      */
     submitDefinedFieldsOnly?: boolean;
+    /**
+     * API to which the form values should be submitted.
+     */
+    api?: SupportedAPIList;
 }
 
 /**
@@ -63,9 +67,25 @@ export interface DynamicFieldInterface {
      */
     placeholder: string;
     /**
+     * Helper text for the input field.
+     */
+    helperText: string;
+    /**
      * The data component id for the input field.
      */
     dataComponentId: string;
+    /**
+     * Indicates if the field is disabled (Value will not be submitted).
+     */
+    disable?: boolean;
+    /**
+     * Indicates whether the field is read only.
+     */
+    readOnly?: boolean;
+    /**
+     * Indicates whether the field is hidden.
+     */
+    hidden?: boolean;
     /**
      * Array of validation rules for the field's input.
      */
@@ -81,23 +101,25 @@ export interface DynamicFieldInterface {
  */
 export interface DynamicFieldMetadataInterface {
     /**
-     * Properties that should automatically submit along with the current property.
+     * Names of the properties that should be templated using the current field value.
      */
-    autoSubmitProperties?: DynamicFieldAutoSubmitPropertyInterface[];
-}
-
-/**
- * Interface for defining an auto-submitting property.
- */
-export interface DynamicFieldAutoSubmitPropertyInterface {
+    dependentProperties?: string[];
     /**
-     * The path for the property that should be included in the final form submit payload.
+     * Names of placeholder strings included as templated strings in the current field.
      */
-    path: string;
+    templatedPlaceholders?: string[];
     /**
-     * The value to be assigned to the specified path.
+     * Names of the properties that should be templated using the current field value.
      */
-    value: any;
+    dependent?: string[];
+    /**
+     * Whether the current field value should be a generated value.
+     */
+    generator: "uuid"
+    /**
+     * Custom props need to be provided into the field component.
+     */
+    customFieldProps: Record<string, any>
 }
 
 /**
@@ -115,7 +137,11 @@ export enum DynamicInputFieldTypes {
     /**
      * Text Area.
      */
-    TEXTAREA = "textarea"
+    TEXTAREA = "textarea",
+    /**
+     * Application certificate field.
+     */
+    APPLICATION_CERTIFICATE = "application-certificate"
 }
 
 /**
@@ -139,4 +165,19 @@ export enum ValidationRuleTypes {
     DOMAIN_NAME = "domainName",
     APPLICATION_NAME = "applicationName",
     REQUIRED = "required"
+}
+
+/**
+ * List of supported APIs to which the form values can be submitted.
+ */
+export enum SupportedAPIList {
+    APPLICATION_PATCH = "PATCH:/api/server/v1/applications",
+    APPLICATION_SAML_INBOUND_PROTOCOL_PUT = "PUT:/api/server/v1/applications/{application-id}/inbound-protocols/saml"
+}
+
+/**
+ * List of field value generators.
+ */
+export enum FieldValueGenerators {
+    UUID = "uuid"
 }

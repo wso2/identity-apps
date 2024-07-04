@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Schema } from "ajv";
 import { MainApplicationInterface } from "./application";
 import { DynamicFormInterface } from "./dynamic-fields";
 
@@ -76,6 +77,10 @@ export interface ApplicationTemplateInterface extends ApplicationTemplateCommonI
      * Create form payload parameters.
      */
     payload: MainApplicationInterface;
+    /**
+     * Data validation schema for application API.
+     */
+    schema?: Schema
 }
 
 /**
@@ -139,9 +144,13 @@ export interface ApplicationEditTabMetadataInterface {
      */
     contentType?: ApplicationEditTabContentTypes;
     /**
-     * Dynamic input fields should be rendered in the current tab.
+     * Dynamic input fields which should be rendered in the current tab.
      */
-    form?: DynamicFormInterface;
+    forms?: DynamicFormInterface[];
+    /**
+     * Flag to determine if a single update button is sufficient when multiple forms are present.
+     */
+    singleForm?: boolean;
     /**
      * Guide content for application editing section.
      */

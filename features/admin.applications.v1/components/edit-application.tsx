@@ -52,7 +52,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { ApplicationEditForm } from "./dynamic-forms/application-edit-form";
-import { MarkdownGuide } from "./help-panel/markdown-guide";
+import { MarkdownGuide } from "./help-panel/markdown/markdown-guide";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -714,6 +714,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const MarkdownGuideTabPane = (guideContent: string): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <MarkdownGuide
+                applicationId={ application?.id }
                 content={ guideContent }
             />
         </ResourceTab.Pane>
@@ -1033,7 +1034,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                     break;
                 case ApplicationEditTabContentTypes.FORM:
-                    if (tab?.form?.fields && Array.isArray(tab?.form?.fields) && tab?.form?.fields?.length > 0) {
+                    if (tab?.forms && Array.isArray(tab?.forms) && tab?.forms.length > 0) {
                         filteredTabs.push({
                             componentId: tab?.id,
                             "data-tabid": tab?.id,

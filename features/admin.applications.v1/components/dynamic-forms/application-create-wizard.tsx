@@ -44,11 +44,13 @@ import get from "lodash-es/get";
 import has from "lodash-es/has";
 import pick from "lodash-es/pick";
 import set from "lodash-es/set";
+import unset from "lodash-es/unset";
 import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, ModalProps } from "semantic-ui-react";
+import { v4 as uuidv4 } from "uuid";
 import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
 import { createApplication, useApplicationList } from "../../api";
 import useGetApplicationTemplate from "../../api/use-get-application-template";
@@ -58,7 +60,7 @@ import useApplicationSharingEligibility from "../../hooks/use-application-sharin
 import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
 import { ApplicationListItemInterface, MainApplicationInterface, URLFragmentTypes } from "../../models";
 import { ApplicationTemplateListInterface } from "../../models/application-templates";
-import { DynamicFieldAutoSubmitPropertyInterface, DynamicFieldInterface } from "../../models/dynamic-fields";
+import { DynamicFieldInterface, FieldValueGenerators } from "../../models/dynamic-fields";
 import buildCallBackUrlsWithRegExp from "../../utils/build-callback-urls-with-regexp";
 import { ApplicationShareModal } from "../modals/application-share-modal";
 import "./application-create-wizard.scss";
@@ -118,6 +120,11 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isClientSecretHashEnabled);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const clientOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.clientOrigin);
+    const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.idpConfigs?.serverOrigin);
+    const appBaseNameWithoutTenant: string = useSelector((state: AppState) =>
+        state?.config?.deployment?.appBaseNameWithoutTenant);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -280,7 +287,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const handleAppCreationComplete = (createdAppId: string): void => {
         // The created resource's id is sent as a location header.
         // If that's available, navigate to the edit page.
-        if (!createdAppId) {
+        if (createdAppId) {
             let searchParams: string = "?";
             const defaultTabIndex: number = 0;
 
@@ -309,6 +316,21 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         document.getElementById("notification-div")?.scrollIntoView({ behavior: "smooth" });
     };
 
+    const getTemplatedValues = (property: string): string => {
+        switch(property) {
+            case "tenantDomain":
+                return tenantDomain;
+            case "clientOrigin":
+                return clientOrigin;
+            case "serverOrigin":
+                return serverOrigin;
+            case "appBaseNameWithoutTenant":
+                return appBaseNameWithoutTenant;
+            default:
+                return "";
+        }
+    };
+
     /**
      * Callback function triggered when clicking the form submit button.
      *
@@ -331,13 +353,56 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 }
             }
 
-            if (field?.meta?.autoSubmitProperties
-                && Array.isArray(field?.meta?.autoSubmitProperties)
-                && field?.meta?.autoSubmitProperties?.length > 0) {
-                field.meta.autoSubmitProperties.forEach(
-                    (property: DynamicFieldAutoSubmitPropertyInterface) =>
-                        set(formValues, property?.path, property?.value)
-                );
+            if (field?.meta?.generator === FieldValueGenerators.UUID) {
+                set(formValues, field?.name, uuidv4());
+            }
+
+            if (field?.meta?.dependentProperties
+                && Array.isArray(field?.meta?.dependentProperties)
+                && field?.meta?.dependentProperties?.length > 0) {
+                const fieldValue: string = get(formValues, field?.name);
+
+                if (typeof fieldValue === "string") {
+                    field.meta.dependentProperties.forEach(
+                        (property: string) => {
+                            const propertyValue: string = get(formValues, property);
+
+                            if (propertyValue && typeof propertyValue === "string") {
+                                set(formValues, property, propertyValue.replace(`\${${field?.name}}`, fieldValue));
+                            }
+                        }
+                    );
+                }
+            }
+
+            if (field?.meta?.templatedPlaceholders
+                && Array.isArray(field?.meta?.templatedPlaceholders)
+                && field?.meta?.templatedPlaceholders?.length > 0) {
+                let fieldValue: string = get(formValues, field?.name);
+
+                if (typeof fieldValue === "string") {
+                    field.meta.templatedPlaceholders.forEach(
+                        (property: string) => {
+                            let propertyValue: string = get(formValues, property);
+
+                            if (!propertyValue) {
+                                propertyValue = getTemplatedValues(property);
+                            }
+
+                            if (propertyValue && typeof propertyValue === "string") {
+                                fieldValue = fieldValue.replace(`\${${property}}`, propertyValue);
+                            }
+                        }
+                    );
+
+                    set(formValues, field?.name, fieldValue);
+                }
+            }
+        });
+
+        templateMetadata?.create?.form?.fields?.forEach((field: DynamicFieldInterface) => {
+            if (field?.disable) {
+                unset(formValues, field?.name);
             }
         });
 
@@ -528,6 +593,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                                     <Grid>
                                                         { templateMetadata?.create?.form?.fields.map(
                                                             (field: DynamicFieldInterface) => {
+                                                                if (field?.hidden) {
+                                                                    return null;
+                                                                }
+
                                                                 return (
                                                                     <Grid.Row
                                                                         key={ field?.id }

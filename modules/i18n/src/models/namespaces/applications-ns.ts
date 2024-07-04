@@ -2438,6 +2438,20 @@ export interface ApplicationsNS {
                 description: string;
             };
         };
+        syncApplication: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
         disableApplication: {
             error: {
                 message: string;

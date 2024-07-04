@@ -31,6 +31,7 @@ import {
     AnimatedAvatar,
     AppAvatar,
     LabelWithPopup,
+    Link,
     Popup,
     TabPageLayout
 } from "@wso2is/react-components";
@@ -40,8 +41,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Label } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import { useGetApplication } from "../api/use-get-application";
+import { ApplicationSyncWizard } from "../components/dynamic-forms/application-sync-wizard";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
 import { ApplicationManagementConstants } from "../constants";
@@ -56,7 +58,7 @@ import {
     SupportedAuthProtocolTypes,
     idpInfoTypeInterface
 } from "../models";
-import { ApplicationTemplateListInterface } from "../models/application-templates";
+import { ApplicationTemplateCategories, ApplicationTemplateListInterface } from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
@@ -115,6 +117,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ callBackIdpID, setcallBackIdpID ] = useState<string>();
     const [ callBackIdpName, setcallBackIdpName ] = useState<string>();
     const [ callBackRedirect, setcallBackRedirect ] = useState<string>();
+
+    const [ showSyncStatus, setShowSyncStatus ] = useState<boolean>(false);
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     const {
         data: application,
@@ -488,7 +493,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         if (extensionApplicationTemplate?.name) {
-            return <Label size="small">{ extensionApplicationTemplate?.name }</Label>;
+            return <Label size="small" className="">{ extensionApplicationTemplate?.name }</Label>;
         }
 
         if (applicationTemplate?.name) {
@@ -504,6 +509,55 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             title={ (
                 <>
                     <span>{ moderatedApplicationData?.name }</span>
+                    {
+                        extensionApplicationTemplate &&
+                            extensionApplicationTemplate?.category ===
+                                ApplicationTemplateCategories.SSO_INTEGRATION &&
+                            showSyncStatus
+                            ? (
+                                <LabelWithPopup
+                                    popupHeader={ `${extensionApplicationTemplate?.name} Outdated` }
+                                    popupSubHeader={
+                                        (<>
+                                            {
+                                                "Your application's essential configurations "
+                                                    + "may be outdated due to recent changes "
+                                                    + `by ${extensionApplicationTemplate?.name} or `
+                                                    + "updates via the API. Click "
+                                            }
+                                            <Link
+                                                external
+                                                iconPosition="right"
+                                                icon="sync"
+                                                onClick={ () => setShowWizard(true) }
+                                            >
+                                                here
+                                            </Link>
+                                            {
+                                                " to sync the configurations."
+                                            }
+                                        </>)
+                                    }
+                                    labelColor="orange"
+                                    popupOptions={
+                                        {
+                                            hoverable: true
+                                        }
+                                    }
+                                    trigger={ (
+                                        <Label
+                                            circular
+                                            size="mini"
+                                            className="spaced-right status-label-with-popup"
+                                            color="orange"
+                                        >
+                                            <Icon name="warning" fitted />
+                                        </Label>
+                                    ) }
+                                />
+                            )
+                            : null
+                    }
                     { /*TODO - Application status is not shown until the backend support for disabling is given
                         @link https://github.com/wso2/product-is/issues/11453
                         { resolveApplicationStatusLabel() }*/ }
@@ -603,6 +657,21 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 } }
                 readOnly={ resolveReadOnlyState() }
             />
+            {
+                extensionApplicationTemplate &&
+                    extensionApplicationTemplate?.category === ApplicationTemplateCategories.SSO_INTEGRATION &&
+                    (
+                        <ApplicationSyncWizard
+                            applicationId={ applicationId }
+                            applicationTemplateId={ extensionApplicationTemplate?.id }
+                            onApplicationOutdateStatusChange={
+                                (isApplicationOutdated: boolean) => setShowSyncStatus(isApplicationOutdated)
+                            }
+                            showWizard={ showWizard }
+                            onClose={ () => setShowWizard(false) }
+                        />
+                    )
+            }
         </TabPageLayout>
     );
 };

@@ -41,6 +41,7 @@
         "@wso2is/admin.userstores.v1": "^2.20.39",
         "@wso2is/admin.wsfed-configuration.v1": "^2.20.39",
         "classnames": "^2.2.6",
+        "ajv": "^8.16.0",
         "axios": "^0.19.2",
         "codemirror": "^5.52.0",
         "file-saver": "^2.0.5",

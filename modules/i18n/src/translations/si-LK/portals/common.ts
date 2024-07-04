@@ -174,6 +174,7 @@ export const common: CommonNS = {
     strong: "ශක්තිමත්",
     submit: "ඉදිරිපත් කරන්න",
     switch: "මාරු කරන්න",
+    sync: "සමමුහුර්ත කරන්න",
     technologies: "තාක්ෂණයන්",
     terminate: "අවසන් කරන්න",
     terminateAll: "සියල්ල අවසන් කරන්න",

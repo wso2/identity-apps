@@ -2807,6 +2807,20 @@ export const applications: ApplicationsNS = {
                 message: "Update successful"
             }
         },
+        syncApplication: {
+            error: {
+                description: "{{description}}",
+                message: "Sync error"
+            },
+            genericError: {
+                description: "Failed to sync the application.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully synced the application.",
+                message: "Sync successful"
+            }
+        },
         disableApplication: {
             error: {
                 description: "{{description}}",
