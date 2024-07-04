@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.png";
 import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import SMSOTPIcon from "../../themes/default/assets/images/authenticators/sms-otp.svg";
@@ -37,6 +36,7 @@ import {
 import {
     ReactComponent as EnterpriseModeIdPIcon
 } from "../../themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+import EthereumIdPIcon from "../../themes/default/assets/images/identity-providers/ethereum.svg";
 import {
     ReactComponent as ExpertModeIdPIcon
 } from "../../themes/default/assets/images/identity-providers/expert.svg";
@@ -111,6 +111,7 @@ export const getIdPIcons = (): any => {
         default: ConnectionIcon,
         emailOTP: EmailOTPIcon,
         enterprise: EnterpriseModeIdPIcon,
+        ethereum: EthereumIdPIcon,
         expert: ExpertModeIdPIcon,
         facebook: FacebookLogo,
         github: GithubIdPIcon,
@@ -128,8 +129,7 @@ export const getIdPIcons = (): any => {
         trustedTokenIssuer: TrustedTokenIssuerIcon,
         twitter: TwitterLogo,
         wsFed: WSFedLogo,
-        yahoo: YahooLogo,
-        ...identityProviderConfig.getIconExtensions()
+        yahoo: YahooLogo
     };
 };
 

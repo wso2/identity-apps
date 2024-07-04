@@ -24,13 +24,12 @@ import {
 } from "@wso2is/admin.identity-providers.v1/models";
 import { I18n } from "@wso2is/i18n";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
-import React, { ElementType, FunctionComponent, ReactElement, SVGProps, lazy } from "react";
+import React, { ElementType, ReactElement, lazy } from "react";
 import { IdentityProviderConfig } from "./models";
 import {
     SmsOTPAuthenticator
 } from "../components/authenticators/sms-otp/sms-otp-authenticator";
 import QuickStartTab from "../components/component-extensions/application/quick-start-tab";
-import { getIdPIcons } from "../components/identity-providers/configs/ui";
 import { SIWEAuthenticatorForm } from "../identity-provider-templates/templates/swe/swe-authenticator-form";
 import SIWEIdPTemplate from "../identity-provider-templates/templates/swe/swe.json";
 
@@ -79,18 +78,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         }
     },
     editIdentityProvider: {
-        attributesSettings: true,
         enableFIDOTrustedAppsConfiguration: false,
-        getCertificateOptionsForTemplate: (templateId: string): { JWKS: boolean; PEM: boolean } | undefined => {
-            if (templateId === SIWEIdPTemplate.templateId) {
-                return {
-                    JWKS: false,
-                    PEM: false
-                };
-            }
-
-            return undefined;
-        },
         getOverriddenAuthenticatorForm: (
             type: string,
             templateId: string,
@@ -258,14 +246,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         return tags.filter((tag: string) =>
             tag === AuthenticatorLabels.PASSWORDLESS || tag === AuthenticatorLabels.PASSKEY);
     },
-    generalDetailsForm: {
-        showCertificate: true
-    },
-    getIconExtensions: (): Record<string, string | FunctionComponent<SVGProps<SVGSVGElement>>>  => {
-        return {
-            ...getIdPIcons()
-        };
-    },
     jitProvisioningSettings: {
         enableAssociateLocalUserField: {
             show: true
@@ -297,9 +277,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         trustedTokenIssuer: false,
         useTemplateExtensions: false
     },
-    // Handles backward compatibility with the legacy IDP view & new connections view.
-    // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.
-    useNewConnectionsView: true,
     utils: {
         hideIdentityClaimAttributes(authenticatorId: string): boolean {
             const identityClaimsHiddenAuthenticators: Set<string> = new Set([
@@ -310,17 +287,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         },
         hideLogoInputFieldInIdPGeneralSettingsForm(): boolean {
             return true;
-        },
-        isProvisioningAttributesEnabled(authenticatorId: string): boolean {
-            const excludedAuthenticators: Set<string> = new Set([
-                ConnectionManagementConstants.SAML_AUTHENTICATOR_ID
-            ]);
-            /**
-             * If the authenticatorId is not in the excluded set we
-             * can say the provisioning attributes is enabled for authenticator.
-             */
-
-            return !excludedAuthenticators.has(authenticatorId);
         }
     }
 };

@@ -18,7 +18,7 @@
 
 import { ConnectionTabTypes } from "@wso2is/admin.connections.v1/models/connection";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
-import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
+import { ReactElement, ReactNode } from "react";
 
 export interface ExtendedSamlConfigInterface {
     isArtifactBindingEnabled: boolean;
@@ -48,12 +48,6 @@ export interface IdentityProviderConfig {
         showJitProvisioning: boolean;
         showOutboundProvisioning: boolean;
         /**
-         * {@link enabled} means the entire feature tab is enabled
-         * or not. If this value is set to false the rest of the
-         * variable values is pointless.
-         */
-        attributesSettings: boolean;
-        /**
          * Get the list of passible tab extensions.
          * @param props - Props for the component.
          * @returns Array of tab extensions.
@@ -76,12 +70,7 @@ export interface IdentityProviderConfig {
             templateId: string,
             props: Record<string, any>
         ) => ReactElement | null;
-        /**
-         * Certain IDP templates can have different settings for Certificate options.
-         */
-        getCertificateOptionsForTemplate: (templateId: string) => { JWKS: boolean; PEM: boolean } | undefined;
     };
-    getIconExtensions: () => Record<string, string | FunctionComponent<SVGProps<SVGSVGElement>>>;
     jitProvisioningSettings: {
         menuItemName: string;
         enableAssociateLocalUserField: {
@@ -97,13 +86,11 @@ export interface IdentityProviderConfig {
             show: boolean;
         };
     };
-    generalDetailsForm: {
-        showCertificate: boolean;
-    };
     utils: {
-        isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
         /**
+         * This config will be cleaned up via https://github.com/wso2/identity-apps/pull/6440.
+         *
          * If returned `false` it will hide both uri mapping for role and
          * external mappings component entirely.
          * @param authenticatorId - Authenticator id.
@@ -111,11 +98,6 @@ export interface IdentityProviderConfig {
          */
         hideLogoInputFieldInIdPGeneralSettingsForm: (authenticatorId: string) => boolean;
     };
-    /**
-     * Local authenticators + Federated authenticators will be shown in one grid view as connections.
-     * If set to falls, the generic list view with only IDPs will be displayed.
-     */
-    useNewConnectionsView: boolean;
     templates: {
         apple: boolean;
         expertMode: boolean;

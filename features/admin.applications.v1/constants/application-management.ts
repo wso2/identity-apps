@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -406,7 +407,7 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR,
         IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID,
+        ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.SAML_AUTHENTICATOR_NAME
     ];
 
