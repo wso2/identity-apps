@@ -40,7 +40,8 @@ export const SCIMConfigs: SCIMConfigInterface = {
         askPassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.askPassword",
         isReadOnlyUser: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser",
         oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
-        profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
+        profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl",
+        forcePasswordReset: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.forcePasswordReset"
     },
     serverSupportedClaimsAvailable: [
         "urn:scim:schemas:core:1.0",

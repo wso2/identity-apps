@@ -21,6 +21,7 @@ import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
 import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES
@@ -219,7 +220,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 {
                     "op": "add",
                     "value": {
-                        [ProfileConstants.SCIM2_WSO2_USER_SCHEMA]: {
+                        [ SCIMConfigs?.scimEnterpriseUserClaimUri?.forcePasswordReset?.
+                            startsWith(ProfileConstants.SCIM2_ENT_USER_SCHEMA)
+                            ? ProfileConstants.SCIM2_ENT_USER_SCHEMA
+                            : ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]: {
                             "forcePasswordReset": true
                         }
                     }

@@ -32,7 +32,8 @@ export interface SCIMConfigInterface {
         askPassword: string,
         isReadOnlyUser: string,
         oneTimePassword: string,
-        profileUrl: string
+        profileUrl: string,
+        forcePasswordReset: string,
     };
     scimDialectID: {
         customEnterpriseSchema: string,
