@@ -47,12 +47,12 @@ export const CreatePassword: FunctionComponent<CreatePasswordPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const config: any = useSelector((state: AppState) => state.config);
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={ t("myAccount:sections.createPassword.description", { productName: config.ui.productName }) }
+            description={ t("myAccount:sections.createPassword.description", { productName }) }
             header={ t("myAccount:sections.createPassword.heading") }
             primaryAction={ t("myAccount:sections.createPassword.actionTitles.create") }
             primaryActionIcon="key"
