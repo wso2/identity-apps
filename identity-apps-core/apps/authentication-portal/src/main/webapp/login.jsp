@@ -44,6 +44,7 @@
 <%@ page import="org.apache.commons.collections.MapUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
@@ -200,7 +201,18 @@
 
         // Build the query string using the parameter map since the query string can contain fewer parameters
         // due to parameter filtering.
-        String queryParamString = AuthenticationEndpointUtil.resolveQueryString(request.getParameterMap());
+        Map<String, String[]> queryParamMap = request.getParameterMap();
+        Map<String, Object> authParamMap = ((AuthenticationRequestWrapper) request).getAuthParams();
+
+        // Remove auth params from the query map since auth params doesn't need to add to the multi-option uri.
+        if (authParamMap != null && !authParamMap.isEmpty() && queryParamMap != null && !queryParamMap.isEmpty()) {
+            for (Map.Entry<String, Object> entry : authParamMap.entrySet()) {
+                if (StringUtils.isNotEmpty(entry.getKey()) && queryParamMap.containsKey(entry.getKey())) {
+                    queryParamMap.remove(entry.getKey());
+                }
+            }
+        }
+        String queryParamString = AuthenticationEndpointUtil.resolveQueryString(queryParamMap);
         multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
     }
 
