@@ -221,6 +221,13 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
+                hideIdPLogoEditField={
+                    identityProviderConfig
+                        .utils
+                        ?.hideLogoInputFieldInIdPGeneralSettingsForm(
+                            identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
+                        )
+                }
                 templateType={ type }
                 isSaml={ isSaml }
                 isOidc={ isOidc }
@@ -231,7 +238,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 data-testid={ `${ testId }-general-settings` }
                 isReadOnly = { isReadOnly }
                 loader={ Loader }
-                hideIdPLogoEditField
             />
         </ResourceTab.Pane>
     );
