@@ -1,5 +1,13 @@
 # @wso2is/admin.email-and-sms.v1
 
+## 2.20.45
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.15
+  - @wso2is/admin.organizations.v1@2.20.45
+
 ## 2.20.44
 
 ### Patch Changes

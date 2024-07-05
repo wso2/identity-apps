@@ -1,5 +1,16 @@
 # @wso2is/admin.tenants.v1
 
+## 2.20.45
+
+### Patch Changes
+
+- [#6530](https://github.com/wso2/identity-apps/pull/6530) [`abca9e6b61f7eb29f1e9e920b6de8e6e47345bd1`](https://github.com/wso2/identity-apps/commit/abca9e6b61f7eb29f1e9e920b6de8e6e47345bd1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent associated tenant call being invoked for super tenant
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.15
+  - @wso2is/admin.extensions.v1@2.21.15
+  - @wso2is/admin.organizations.v1@2.20.45
+
 ## 2.20.44
 
 ### Patch Changes
