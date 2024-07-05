@@ -18,7 +18,6 @@
 
 import { useApplicationList } from "@wso2is/admin.applications.v1/api";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { UserBasicInterface } from "@wso2is/admin.core.v1";
 import { updateRoleDetails, useRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
@@ -120,8 +119,6 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const { legacyAuthzRuntime } = useAuthorization();
-
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
 
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -166,17 +163,13 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         null,
         null,
         `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`,
-        !legacyAuthzRuntime && !!searchQuery
+        !!searchQuery
     );
 
     /**
      * Build the roles filter to search for roles specific to the console application.
      */
     const roleSearchFilter: string = useMemo(() => {
-        if (legacyAuthzRuntime) {
-            return null;
-        }
-
         if (applicationListData?.applications && applicationListData?.applications?.length > 0) {
             return `audience.value eq ${applicationListData?.applications[0]?.id}`;
         }

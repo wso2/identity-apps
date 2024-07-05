@@ -406,70 +406,70 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                     !userRoleOptions ||
                     userRoleOptions?.length <= 0
                 ) ? (
-                    <ContentLoader/>
-                ) : (
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                <Field
-                                    data-componentid={ `${ componentId }-external-form-email-input` }
-                                    label={ t(
-                                        "user:forms.addUserForm.inputs.email.label"
-                                    ) }
-                                    name="email"
-                                    placeholder={ t(
-                                        "user:forms.addUserForm.inputs." +
-                                        "email.placeholder"
-                                    ) }
-                                    required={ true }
-                                    requiredErrorMessage={ t(
-                                        "user:forms.addUserForm.inputs.email.validations.empty"
-                                    ) }
-                                    validation={ (value: string, validation: Validation) => {
-                                        // Check whether username is a valid email.
-                                        // check username validity against userstore regex
-                                        if (value && (!FormValidation.email(value) || !SharedUserStoreUtils
-                                            .validateInputAgainstRegEx(value, window["AppUtils"].getConfig().extensions
-                                                .collaboratorUsernameRegex))) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                                        }
-                                    } }
-                                    type="email"
-                                    tabIndex={ 5 }
-                                    maxLength={ 50 }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                <Field
-                                    data-componentid={ `${ componentId }-external-form-role-dropdown` }
-                                    type="dropdown"
-                                    label={ "Role" }
-                                    name="role"
-                                    children={ userRoleOptions }
-                                    requiredErrorMessage={ t(
-                                        "user:forms.addUserForm.inputs.domain.validations.empty"
-                                    ) }
-                                    required={ true }
-                                    value={ userRoleOptions[0]?.value }
-                                    tabIndex={ 1 }
-                                />
-                                <Hint>
-                                    { "Select a role to assign to the user." +
-                                        " The access level of the user is determined by the role." }
-                                    <DocumentationLink
-                                        link={ getLink("manage.users.newCollaboratorUser.learnMore") }
-                                    >
-                                        { t("extensions:common.learnMore") }
-                                    </DocumentationLink>
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Divider hidden/>
-                    </Grid>
-                )
+                        <ContentLoader/>
+                    ) : (
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                    <Field
+                                        data-componentid={ `${ componentId }-external-form-email-input` }
+                                        label={ t(
+                                            "user:forms.addUserForm.inputs.email.label"
+                                        ) }
+                                        name="email"
+                                        placeholder={ t(
+                                            "user:forms.addUserForm.inputs." +
+                                            "email.placeholder"
+                                        ) }
+                                        required={ true }
+                                        requiredErrorMessage={ t(
+                                            "user:forms.addUserForm.inputs.email.validations.empty"
+                                        ) }
+                                        validation={ (value: string, validation: Validation) => {
+                                            // Check whether username is a valid email.
+                                            // check username validity against userstore regex
+                                            if (value && (!FormValidation.email(value) || !SharedUserStoreUtils
+                                                .validateInputAgainstRegEx(value, window["AppUtils"].getConfig().extensions
+                                                    .collaboratorUsernameRegex))) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
+                                            }
+                                        } }
+                                        type="email"
+                                        tabIndex={ 5 }
+                                        maxLength={ 50 }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                    <Field
+                                        data-componentid={ `${ componentId }-external-form-role-dropdown` }
+                                        type="dropdown"
+                                        label={ "Role" }
+                                        name="role"
+                                        children={ userRoleOptions }
+                                        requiredErrorMessage={ t(
+                                            "user:forms.addUserForm.inputs.domain.validations.empty"
+                                        ) }
+                                        required={ true }
+                                        value={ userRoleOptions[0]?.value }
+                                        tabIndex={ 1 }
+                                    />
+                                    <Hint>
+                                        { "Select a role to assign to the user." +
+                                            " The access level of the user is determined by the role." }
+                                        <DocumentationLink
+                                            link={ getLink("manage.users.newCollaboratorUser.learnMore") }
+                                        >
+                                            { t("extensions:common.learnMore") }
+                                        </DocumentationLink>
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Divider hidden/>
+                        </Grid>
+                    )
             }
         </Forms>
     );
