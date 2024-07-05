@@ -204,7 +204,7 @@
         Map<String, String[]> queryParamMap = request.getParameterMap();
         Map<String, Object> authParamMap = ((AuthenticationRequestWrapper) request).getAuthParams();
 
-        // Remove auth params from the query map since auth params doesn't need to add to the multi-option uri.
+        // Remove auth params from the query map since auth params doesn't need to be added to the multi-option uri.
         if (authParamMap != null && !authParamMap.isEmpty() && queryParamMap != null && !queryParamMap.isEmpty()) {
             for (Map.Entry<String, Object> entry : authParamMap.entrySet()) {
                 if (StringUtils.isNotEmpty(entry.getKey()) && queryParamMap.containsKey(entry.getKey())) {
