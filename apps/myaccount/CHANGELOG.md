@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.7.42
+
+### Patch Changes
+
+- [#6408](https://github.com/wso2/identity-apps/pull/6408) [`e29c3cacc9167856f14334c8b30655578a472222`](https://github.com/wso2/identity-apps/commit/e29c3cacc9167856f14334c8b30655578a472222) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Prevent showing email when username and email are same
+
 ## 2.7.41
 
 ### Patch Changes
