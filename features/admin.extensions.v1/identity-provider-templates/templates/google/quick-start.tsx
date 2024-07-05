@@ -23,7 +23,6 @@ import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import {
-    IdentityProviderInterface,
     IdentityProviderTemplateInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -43,7 +42,6 @@ import { VerticalStepper, VerticalStepperStepInterface } from "../../../componen
  * Prop types of the component.
  */
 interface GoogleQuickStartPropsInterface extends TestableComponentInterface {
-    identityProvider: IdentityProviderInterface;
     template: IdentityProviderTemplateInterface;
 }
 

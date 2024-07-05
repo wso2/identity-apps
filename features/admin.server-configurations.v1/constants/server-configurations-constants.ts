@@ -238,6 +238,31 @@ export class ServerConfigurationsConstants {
 	public static readonly PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE: string =
 		"Recovery.Question.Password.Forced.Enable";
 
+	public static readonly RECOVERY_EMAIL_LINK_ENABLE: string = "Recovery.Notification.Password.emailLink.Enable";
+	public static readonly RECOVERY_SMS_OTP_ENABLE: string = "Recovery.Notification.Password.smsOtp.Enable";
+	public static readonly RECOVERY_OTP_USE_UPPERCASE: string =
+		"Recovery.Notification.Password.OTP.UseUppercaseCharactersInOTP";
+
+	public static readonly RECOVERY_OTP_USE_LOWERCASE: string =
+		"Recovery.Notification.Password.OTP.UseLowercaseCharactersInOTP";
+
+	public static readonly RECOVERY_OTP_USE_NUMERIC: string = "Recovery.Notification.Password.OTP.UseNumbersInOTP";
+	public static readonly RECOVERY_OTP_LENGTH: string = "Recovery.Notification.Password.OTP.OTPLength";
+	public static readonly RECOVERY_MAX_RESEND_COUNT: string = "Recovery.Notification.Password.MaxResendAttempts";
+	public static readonly RECOVERY_MAX_FAILED_ATTEMPTS_COUNT: string =
+		"Recovery.Notification.Password.MaxFailedAttempts";
+
+	/**
+	 * Connector toggle constants.
+	 */
+	public static readonly ACCOUNT_RECOVERY: string = "account-recovery";
+	public static readonly ACCOUNT_RECOVERY_BY_USERNAME: string = "account-recovery-username";
+	public static readonly ACCOUNT_LOCK_HANDLER: string = "account.lock.handler";
+	public static readonly MULTI_ATTRIBUTE_LOGIN_HANDLER: string = "multiattribute.login.handler";
+	public static readonly ORGANIZATION_SELF_SERVICE: string = "organization-self-service";
+	public static readonly SELF_SIGNUP: string = "self-sign-up";
+	public static readonly SSO_LOGIN_RECAPTCHA: string = "sso.login.recaptcha";
+
 	/**
 	 * Login policies - account locking API Keyword constants.
 	 */

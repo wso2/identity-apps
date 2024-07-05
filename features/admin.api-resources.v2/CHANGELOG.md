@@ -1,5 +1,152 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.20.44
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.14
+
+## 2.20.43
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.13
+
+## 2.20.42
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.12
+
+## 2.20.41
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.11
+
+## 2.20.40
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.10
+
+## 2.20.39
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.9
+
+## 2.20.38
+
+### Patch Changes
+
+- Updated dependencies [[`6cbe0406657561063905c5c35e6981f16ef87387`](https://github.com/wso2/identity-apps/commit/6cbe0406657561063905c5c35e6981f16ef87387)]:
+  - @wso2is/admin.core.v1@2.21.8
+
+## 2.20.37
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.7
+
+## 2.20.36
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.6
+
+## 2.20.35
+
+### Patch Changes
+
+- Updated dependencies [[`b1e9c3064894e54fce5dcaa9c5afcf3be68cde49`](https://github.com/wso2/identity-apps/commit/b1e9c3064894e54fce5dcaa9c5afcf3be68cde49)]:
+  - @wso2is/admin.core.v1@2.21.5
+  - @wso2is/react-components@2.2.10
+  - @wso2is/form@2.0.69
+
+## 2.20.34
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.4
+
+## 2.20.33
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.3
+
+## 2.20.32
+
+### Patch Changes
+
+- Updated dependencies [[`d6a846aec10597470a11ecce90c27cdf0c6b240d`](https://github.com/wso2/identity-apps/commit/d6a846aec10597470a11ecce90c27cdf0c6b240d), [`1e59bc54a206b22f49ddeae4ef3645e5ca351188`](https://github.com/wso2/identity-apps/commit/1e59bc54a206b22f49ddeae4ef3645e5ca351188)]:
+  - @wso2is/admin.core.v1@2.21.2
+  - @wso2is/access-control@3.0.10
+  - @wso2is/core@2.0.50
+  - @wso2is/form@2.0.68
+  - @wso2is/forms@2.0.40
+  - @wso2is/react-components@2.2.9
+
+## 2.20.31
+
+### Patch Changes
+
+- [#6444](https://github.com/wso2/identity-apps/pull/6444) [`96825bedeec223ce201800cdef1c9bf736770e52`](https://github.com/wso2/identity-apps/commit/96825bedeec223ce201800cdef1c9bf736770e52) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add length validation for the script description in new scope creation form in API resource create form.
+
+- Updated dependencies [[`0215c1a74a2f8940d7049e54ec2425b996e50d78`](https://github.com/wso2/identity-apps/commit/0215c1a74a2f8940d7049e54ec2425b996e50d78)]:
+  - @wso2is/core@2.0.49
+  - @wso2is/admin.core.v1@2.21.1
+  - @wso2is/access-control@3.0.9
+  - @wso2is/form@2.0.67
+  - @wso2is/forms@2.0.39
+  - @wso2is/react-components@2.2.8
+
+## 2.20.30
+
+### Patch Changes
+
+- Updated dependencies [[`b339d3a607f060015b115a90219989d663ec02bf`](https://github.com/wso2/identity-apps/commit/b339d3a607f060015b115a90219989d663ec02bf)]:
+  - @wso2is/admin.core.v1@2.21.0
+
+## 2.20.29
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.29
+
+## 2.20.28
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.28
+
+## 2.20.27
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.27
+
+## 2.20.26
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.20.26
+
 ## 2.20.25
 
 ### Patch Changes

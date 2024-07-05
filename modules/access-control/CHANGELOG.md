@@ -1,5 +1,21 @@
 # @wso2is/access-control
 
+## 3.0.10
+
+### Patch Changes
+
+- [#6478](https://github.com/wso2/identity-apps/pull/6478) [`d6a846aec10597470a11ecce90c27cdf0c6b240d`](https://github.com/wso2/identity-apps/commit/d6a846aec10597470a11ecce90c27cdf0c6b240d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove legacyAuthzRuntime config from the codebase
+
+- Updated dependencies [[`d6a846aec10597470a11ecce90c27cdf0c6b240d`](https://github.com/wso2/identity-apps/commit/d6a846aec10597470a11ecce90c27cdf0c6b240d)]:
+  - @wso2is/core@2.0.50
+
+## 3.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`0215c1a74a2f8940d7049e54ec2425b996e50d78`](https://github.com/wso2/identity-apps/commit/0215c1a74a2f8940d7049e54ec2425b996e50d78)]:
+  - @wso2is/core@2.0.49
+
 ## 3.0.8
 
 ### Patch Changes

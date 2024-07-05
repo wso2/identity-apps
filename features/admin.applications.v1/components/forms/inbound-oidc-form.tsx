@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
@@ -32,6 +34,7 @@ import {
     ConfirmationModal,
     ContentLoader,
     CopyInputField,
+    DocumentationLink,
     GenericIcon,
     Heading,
     Hint,
@@ -142,6 +145,7 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface, Iden
      * ex: Console
      */
     isSystemApplication?: boolean;
+    documentationLink?: string;
 }
 
 /**
@@ -169,6 +173,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         onUpdate,
         application,
         certificate,
+        documentationLink,
         metadata,
         initialValues,
         onSubmit,
@@ -210,6 +215,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showAudienceError, setShowAudienceError ] = useState(false);
     const [ showOriginError, setShowOriginError ] = useState(false);
     const [ showPKCEField, setPKCEField ] = useState<boolean>(undefined);
+    const [ showHybridFlowEnableConfig, setHybridFlowEnableConfig ] = useState<boolean>(false);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
@@ -243,6 +249,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const allowedOrigin: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const supportPublicClients: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const pkce: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const hybridFlowEnableConfig: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const hybridFlow: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const bindingType: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const type: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const validateTokenBinding: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -283,6 +291,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const [ isAppShared, setIsAppShared ] = useState<boolean>(false);
     const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
+    const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
@@ -356,9 +365,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    const hybridFlowConfigValuesChangeListener = (tempForm: Map<string, FormValue>): void => {
+        if (tempForm.has(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG)) {
+            const values: string[] = tempForm.get(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG) as string[];
+
+            if (values.find((val: string): boolean =>
+                val === ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG )) {
+                setEnableHybridFlowResponseTypeField(true);
+            } else {
+                setEnableHybridFlowResponseTypeField(false);
+            }
+        }
+    };
+
     const PRIVATE_KEY_JWT: string = "private_key_jwt";
     const TLS_CLIENT_AUTH: string = "tls_client_auth";
-
 
     useEffect(() => {
         if (sharedOrganizationsList) {
@@ -501,6 +522,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             setPKCEField(true);
         }
 
+    }, [ selectedGrantTypes, isGrantChanged ]);
+
+    useEffect(() => {
+        setHybridFlowEnableConfig(false);
+        if (selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)) {
+            setHybridFlowEnableConfig(true);
+        }
     }, [ selectedGrantTypes, isGrantChanged ]);
 
     /**
@@ -855,6 +883,106 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    const hybridFlowResponseTypeMap: Map<string, string> = new Map([
+        [
+            t("applications:forms.inboundOIDC.sections.hybridFlow.hybridFlowResponseType." +
+            "fields.children.code_token.label"),
+            ApplicationManagementConstants.CODE_TOKEN
+        ],
+        [
+            t("applications:forms.inboundOIDC.sections.hybridFlow.hybridFlowResponseType.fields." +
+            "children.code_idtoken.label"),
+            ApplicationManagementConstants.CODE_IDTOKEN
+        ],
+        [
+            t("applications:forms.inboundOIDC.sections.hybridFlow.hybridFlowResponseType.fields." +
+            "children.code_idtoken_token.label"),
+            ApplicationManagementConstants.CODE_IDTOKEN_TOKEN
+        ]
+    ]);
+
+    /**
+    * Retrieves the list of hybrid flow response types.
+    *
+    * @returns List of response types with labels and values.
+    */
+    const getHybridFlowResponseTypes = (): CheckboxChild[] => {
+        type CheckboxChildWithIndex = CheckboxChild & { index?: number; };
+        const allowedList: CheckboxChildWithIndex[] = [];
+
+        hybridFlowResponseTypeMap.forEach((responseType: string, label: string) => {
+            const responseTypeList: CheckboxChildWithIndex = {
+                label: modifyResponseTypeLabel(responseType, label),
+                value: responseType
+            };
+
+            const description: string = getHybridFlowResponseTypesHintDescription(responseType);
+
+            if (description && !isM2MApplication) {
+                responseTypeList.hint = {
+                    content: description,
+                    header: ""
+                };
+            }
+
+            allowedList.push(responseTypeList);
+        });
+
+        return allowedList;
+    };
+
+    /**
+     * Modifies the response type label. For `code token` and `code id_token token` fields,
+     * a warning icon is concatenated with the label.
+     *
+     * @param value - checkbox key
+     * @param label - mapping label for value
+     */
+    const modifyResponseTypeLabel = (value: string, label: string) => {
+        if (value === ApplicationManagementConstants.CODE_TOKEN ||
+            value === ApplicationManagementConstants.CODE_IDTOKEN_TOKEN
+        ) {
+            return (
+                <>
+                    <label>
+                        { label }
+                        { !isM2MApplication && (
+                            <GenericIcon
+                                icon={ getGeneralIcons().warning }
+                                defaultIcon
+                                colored
+                                transparent
+                                spaced="left"
+                                floated="right"
+                            />)
+                        }
+                    </label>
+                </>
+            );
+        }
+
+        return label;
+    };
+
+    /**
+     * Retrieves the hint description for a given hybrid flow response type value.
+     *
+     * @param value - The hybrid flow response type value.
+     * @returns The hint description corresponding to the response type.
+     */
+    const getHybridFlowResponseTypesHintDescription = (value: string): string => {
+        switch (value) {
+            case ApplicationManagementConstants.CODE_TOKEN:
+                return t("applications:forms.inboundOIDC.fields.hybridFlow.hybridFlowResponseType.children." +
+                    "code_token.hint");
+            case ApplicationManagementConstants.CODE_IDTOKEN_TOKEN:
+                return t("applications:forms.inboundOIDC.fields.hybridFlow.hybridFlowResponseType.children." +
+                    "code_idtoken_token.hint");
+            default:
+                return null;
+        }
+    };
+
     /**
      * Creates options for Radio GrantTypeMetaDataInterface options.
      *
@@ -1111,6 +1239,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 };
             }
 
+            if(showHybridFlowEnableConfig) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    hybridFlow: {
+                        enable: values.get("enable-hybrid-flow")?.length > 0,
+                        responseType: values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE)
+                    }
+                };
+            } else {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    hybridFlow: {
+                        enable: false,
+                        responseType: null
+                    }
+                };
+            }
+
             // Remove fields not applicable for M2M applications.
             if (isM2MApplication) {
                 inboundConfigFormValues = {
@@ -1268,6 +1414,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 pkce: {
                     mandatory: false,
                     supportPlainTransformAlgorithm: false
+                }
+            };
+        }
+
+        if(showHybridFlowEnableConfig) {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                hybridFlow: {
+                    enable: values.get("enable-hybrid-flow")?.length > 0,
+                    responseType: values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE)
+                }
+            };
+        } else {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                hybridFlow: {
+                    enable: false,
+                    responseType: null
                 }
             };
         }
@@ -1434,6 +1598,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 break;
             case "scopeValidator":
                 scopeValidator.current.scrollIntoView(options);
+
+                break;
+            case "hybridFlow":
+                hybridFlow.current.scrollIntoView(options);
 
                 break;
         }
@@ -1829,6 +1997,102 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                     </>
+                )
+            }
+
+            { /* hybrid flow */ }
+            {
+                showHybridFlowEnableConfig
+                && !isSystemApplication
+                && !isDefaultApplication
+                && !isM2MApplication
+                && (
+                    <>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Box display="flex" alignItems="self-start">
+                                    <Heading as="h4" className="hybrid-flow-heading">
+                                        { t("applications:forms.inboundOIDC.sections" +
+                                        ".hybridFlow.heading") }
+                                    </Heading>
+
+                                    { applicationConfig.advancedConfigurations.showHybridFlowFeatureStatusChip && (
+                                        <div className="oxygen-chip-div" >
+                                            <Chip
+                                                label={ t("common:new").toUpperCase() }
+                                                className="oxygen-menu-item-chip oxygen-chip-new" />
+                                        </div>
+                                    ) }
+                                </Box>
+                                <Field
+                                    ref={ hybridFlowEnableConfig }
+                                    name={ ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG }
+                                    required={ false }
+                                    children={
+                                        [
+                                            {
+                                                label: t("applications:forms.inboundOIDC.sections.hybridFlow.enable." +
+                                                "label"),
+                                                value: ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG
+                                            }
+                                        ]
+                                    }
+                                    type="checkbox"
+                                    value = { initialValues?.hybridFlow?.enable? [
+                                        ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG ] : [] }
+                                    listen={ hybridFlowConfigValuesChangeListener }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }--hybridFlow-enable-checkbox` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+                )
+            }
+            {
+                showHybridFlowEnableConfig
+                && ( enableHybridFlowResponseTypeField || initialValues?.hybridFlow?.enable )
+                && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Field
+                                ref={ hybridFlow }
+                                label={
+                                    t("applications:forms.inboundOIDC.sections" +
+                                        ".hybridFlow.hybridFlowResponseType.label")
+                                }
+                                name = { ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE }
+                                type="radio"
+                                required={ true }
+                                children={ getHybridFlowResponseTypes() }
+                                readOnly={ readOnly }
+                                default= { initialValues?.hybridFlow?.responseType?
+                                    initialValues.hybridFlow.responseType :ApplicationManagementConstants.CODE_IDTOKEN }
+                                enableReinitialize={ true }
+                                data-testid={ `${ testId }--hybridflow-responsetype-checkbox` }
+                            />
+                            <Hint>
+                                <Trans
+                                    i18nKey={
+                                        "applications:forms.inboundOIDC.sections.hybridFlow" +
+                                        "hybridFlowResponseType.fields.hint"
+                                    }
+                                >
+                                    Select the allowed { " " }
+                                    <DocumentationLink
+                                        link={ documentationLink }
+                                        showEmptyLinkText
+                                    > hybrid flow </DocumentationLink> response type.
+                                </Trans>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
                 )
             }
 
@@ -3870,6 +4134,10 @@ InboundOIDCForm.defaultProps = {
         clientId: "",
         clientSecret: "",
         grantTypes: [],
+        hybridFlow: {
+            enable: false,
+            responseType: undefined
+        },
         idToken: undefined,
         logout: undefined,
         pkce: {

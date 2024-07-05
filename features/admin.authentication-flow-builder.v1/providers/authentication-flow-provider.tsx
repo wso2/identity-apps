@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,6 @@ import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -196,13 +195,6 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         const moderatedLocalAuthenticators: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-            if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
-                authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
-                    authenticator.id,
-                    authenticator.displayName
-                );
-            }
-
             if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
                 recoveryAuthenticators.push(authenticator);
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {

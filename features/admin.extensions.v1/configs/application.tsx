@@ -107,9 +107,10 @@ export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
         showFapiFeatureStatusChip: false,
+        showHybridFlowFeatureStatusChip: false,
         showMtlsAliases: false,
         showMyAccount: true,
-        showMyAccountStatus: false,
+        showMyAccountStatus: true,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
@@ -692,8 +693,8 @@ export const applicationConfig: ApplicationConfig = {
             },
             react: {
                 links: {
-                    authClientConfig: "",
-                    secureRoute: "",
+                    reactClientConfig: "",
+                    routingOptions: "",
                     useContextDocumentation: ""
                 },
                 npmInstallCommand: "",

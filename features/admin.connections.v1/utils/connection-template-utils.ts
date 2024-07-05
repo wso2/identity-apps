@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import SIWEIdPTemplate from "@wso2is/admin.extensions.v1/identity-provider-templates/templates/swe/swe.json";
 import { I18n } from "@wso2is/i18n";
 import groupBy from "lodash-es/groupBy";
+import { getConnectionTemplatesConfig } from "../configs/templates";
 import { getConnectionCapabilityIcons } from "../configs/ui";
 import {
     ConnectionTemplateCategoryInterface,
@@ -25,9 +27,8 @@ import {
     ConnectionTemplateInterface,
     SupportedServices,
     SupportedServicesInterface,
-    TemplateConfigInterface,
+    TemplateConfigInterface
 } from "../models/connection";
-import { getConnectionTemplatesConfig } from "../configs/templates";
 
 /**
  * Utility class for IDP Templates related operations.
@@ -37,21 +38,19 @@ export class ConnectionTemplateManagementUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     private constructor() { }
 
     /**
      * Retrieve IDP template list from local files or API and sets it in redux state.
      *
-     * @param {boolean} skipGrouping - Skip grouping of templates.
-     * @param {boolean} useAPI - Flag to determine whether to use API or local files.
-     * @param {boolean} sort - Should the returning templates be sorted.
-     * @return {Promise<void>}
+     * @param skipGrouping - Skip grouping of templates.
+     * @param useAPI - Flag to determine whether to use API or local files.
+     * @param sort - Should the returning templates be sorted.
+     * @returns Reordered connection templates.
      */
     public static reorderConnectionTemplates = (
-        templates: any
+        templates: ConnectionTemplateInterface[]
     ): Promise<ConnectionTemplateInterface[]> => {
 
         return ConnectionTemplateManagementUtils.groupConnectionTemplates(templates)
@@ -66,7 +65,7 @@ export class ConnectionTemplateManagementUtils {
     /**
      * Build supported services from the given service identifiers.
      *
-     * @param serviceIdentifiers Set of service identifiers.
+     * @param serviceIdentifiers - Set of service identifiers.
      */
     public static buildSupportedServices = (serviceIdentifiers: string[]): SupportedServicesInterface[] => {
         return serviceIdentifiers?.map((serviceIdentifier: string): SupportedServicesInterface => {
@@ -94,41 +93,18 @@ export class ConnectionTemplateManagementUtils {
     };
 
     /**
-     * Interpret available templates from the response templates.
-     *
-     * @param templates List of response templates.
-     * @return List of templates.
-     */
-    public static interpretAvailableTemplates = (templates: any):
-        ConnectionTemplateInterface[] => {
-        return templates?.map(eachTemplate => {
-            if (eachTemplate?.services[ 0 ] === "") {
-                return {
-                    ...eachTemplate,
-                    services: []
-                };
-            } else {
-                return {
-                    ...eachTemplate,
-                    services: ConnectionTemplateManagementUtils.buildSupportedServices(eachTemplate?.services)
-                };
-            }
-        });
-    };
-
-    /**
      * Sort the IDP templates based on display order.
      *
-     * @param {ConnectionTemplateInterface[]} templates - App templates.
-     * @return {ConnectionTemplateInterface[]}
+     * @param templates - App templates.
+     * @returns Sorted connection templates.
      */
     public static sortConnectionTemplates(
         templates: ConnectionTemplateInterface[]): ConnectionTemplateInterface[] {
 
-        const identityProviderTemplates = [ ...templates ];
+        const identityProviderTemplates: ConnectionTemplateInterface[] = [ ...templates ];
 
         // Sort templates based on displayOrder.
-        identityProviderTemplates.sort((a, b) =>
+        identityProviderTemplates.sort((a: ConnectionTemplateInterface, b: ConnectionTemplateInterface) =>
             (a.displayOrder !== -1 ? a.displayOrder : Infinity) - (b.displayOrder !== -1 ? b.displayOrder : Infinity));
 
         return identityProviderTemplates;
@@ -137,8 +113,8 @@ export class ConnectionTemplateManagementUtils {
     /**
      * Categorize the IDP templates.
      *
-     * @param {ConnectionTemplateInterface[]} templates - Templates list.
-     * @return {Promise<void | ConnectionTemplateCategoryInterface[]>}
+     * @param templates - Templates list.
+     * @returns Categorized templates.
      */
     public static categorizeTemplates(
         templates: ConnectionTemplateInterface[]): Promise<void | ConnectionTemplateCategoryInterface[]> {
@@ -167,8 +143,7 @@ export class ConnectionTemplateManagementUtils {
 
     /**
      * Group the identity provider templates.
-     * @param templates
-     * @private
+     * @param templates - Templates list to be grouped.
      */
     private static async groupConnectionTemplates(
         templates: ConnectionTemplateInterface[]
@@ -182,29 +157,33 @@ export class ConnectionTemplateManagementUtils {
                 templates.forEach((template: ConnectionTemplateInterface) => {
                     if (!template?.templateGroup) {
                         groupedTemplates.push(template);
+
                         return;
                     }
 
-                    const group = response
+                    const group: ConnectionTemplateGroupInterface = response
                         .find((group: ConnectionTemplateGroupInterface) => {
                             return group.id === template?.templateGroup;
                         });
-                        
+
                     if (!group) {
                         groupedTemplates.push(template);
+
                         return;
                     }
-                    if (groupedTemplates.some((groupedTemplate) =>
+                    if (groupedTemplates.some((groupedTemplate: ConnectionTemplateInterface) =>
                         groupedTemplate?.id === template.templateGroup)) {
-                        groupedTemplates.forEach((editingTemplate: ConnectionTemplateInterface, index) => {
+                        groupedTemplates.forEach((editingTemplate: ConnectionTemplateInterface, index: number) => {
                             if (editingTemplate?.id === template?.templateGroup) {
                                 groupedTemplates[ index ] = {
                                     ...group,
                                     subTemplates: [ ...editingTemplate.subTemplates, template ]
                                 };
+
                                 return;
                             }
                         });
+
                         return;
                     }
                     groupedTemplates.push({
@@ -221,7 +200,6 @@ export class ConnectionTemplateManagementUtils {
     /**
      * Once called it will return the available groups from the
      * {@link getConnectionTemplatesConfig}
-     * @private
      */
     private static async loadLocalFileBasedIdentityProviderTemplateGroups():
         Promise<(ConnectionTemplateGroupInterface |
@@ -230,7 +208,7 @@ export class ConnectionTemplateManagementUtils {
         const groups: (ConnectionTemplateGroupInterface
             | Promise<ConnectionTemplateGroupInterface>)[] = [];
 
-            getConnectionTemplatesConfig().groups.forEach(
+        getConnectionTemplatesConfig().groups.forEach(
             async (config: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
                 if (!config.enabled) return;
                 groups.push(
@@ -246,29 +224,37 @@ export class ConnectionTemplateManagementUtils {
 
     /**
      * Loads local file based IDP template categories.
-     *
-     * @return {Promise<(ConnectionTemplateCategoryInterface
-     * | Promise<ConnectionTemplateCategoryInterface>)[]>}
      */
     private static async loadLocalFileBasedTemplateCategories(): Promise<(ConnectionTemplateCategoryInterface
         | Promise<ConnectionTemplateCategoryInterface>)[]> {
 
-            const categories: (ConnectionTemplateCategoryInterface
+        const categories: (ConnectionTemplateCategoryInterface
                 | Promise<ConnectionTemplateCategoryInterface>)[] = [];
-    
-            getConnectionTemplatesConfig().categories
-                .forEach(async (config: TemplateConfigInterface<ConnectionTemplateCategoryInterface>) => {
-                    if (!config.enabled) {
-                        return;
-                    }
-    
-                    categories.push(
+
+        getConnectionTemplatesConfig().categories
+            .forEach(async (config: TemplateConfigInterface<ConnectionTemplateCategoryInterface>) => {
+                if (!config.enabled) {
+                    return;
+                }
+
+                categories.push(
                         config.resource as (
                             ConnectionTemplateCategoryInterface
                             | Promise<ConnectionTemplateCategoryInterface>)
-                    );
-                });
+                );
+            });
 
         return Promise.all([ ...categories ]);
     }
 }
+
+export const getCertificateOptionsForTemplate = (templateId: string): { JWKS: boolean; PEM: boolean } | undefined => {
+    if (templateId === SIWEIdPTemplate.templateId) {
+        return {
+            JWKS: false,
+            PEM: false
+        };
+    }
+
+    return undefined;
+};

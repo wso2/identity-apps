@@ -103,8 +103,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientCertificates: "",
             createSecret: "",
             createSecretType: "",
+            dcrConfiguration:"",
             deleteSecret: "",
             deleteSecretType: "",
+            extensions: "",
             externalClaims: "",
             fidoConfigs: "",
             fidoTrustedApps: "",
@@ -267,6 +269,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             productVersionConfig: null,
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
+            showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
             theme: {

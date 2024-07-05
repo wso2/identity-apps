@@ -17,7 +17,6 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -193,7 +192,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -239,17 +237,19 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         if (featureConfig) {
-            if (!legacyAuthzRuntime && isMyAccount) {
+            if (isMyAccount) {
                 panes.push({
                     componentId: "overview",
                     menuItem: t("applications:myaccount.overview.tabName"),
                     render: MyAccountOverviewTabPane
                 });
             }
-            if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
+            if (
+                isFeatureEnabled(featureConfig?.applications,
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
                 && !isSubOrganization()
-                && (legacyAuthzRuntime || !isMyAccount)) {
+                && !isMyAccount
+            ) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -278,7 +278,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
                 && !isFragmentApp
-                && (legacyAuthzRuntime || !isMyAccount)
+                && !isMyAccount
             ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -397,7 +397,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
                  && !isFragmentApp
-                 && (legacyAuthzRuntime || !isMyAccount)) {
+                 && !isMyAccount) {
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -494,7 +494,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         setDefaultActiveIndex(defaultTabIndex);
 
         if(isEmpty(window.location.hash)){
-
             if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ===
                 ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
                 // When application selection is done through the strong authentication flow.
@@ -516,6 +515,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                 if(protocolTabIndex !== -1) {
                     handleActiveTabIndexChange(protocolTabIndex);
+                }
+
+                return;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_ROLES) === "true") {
+                const rolesTabIndex: number = renderedTabPanes?.findIndex(
+                    (element: {"componentId": string}) =>
+                        element.componentId === ApplicationManagementConstants.ROLES_TAB_URL_FRAG
+                );
+
+                if (rolesTabIndex !== -1) {
+                    handleActiveTabIndexChange(rolesTabIndex);
                 }
 
                 return;

@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ConnectionTemplateCategoryInterface, ConnectionTemplateGroupInterface } from "@wso2is/admin.connections.v1";
 import { store } from "@wso2is/admin.core.v1";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
@@ -25,8 +26,6 @@ import { getIdPCapabilityIcons } from "../configs/ui";
 import { TemplateConfigInterface, getIdentityProviderTemplatesConfig } from "../data/identity-provider-templates";
 import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
 import {
-    IdentityProviderTemplateCategoryInterface,
-    IdentityProviderTemplateGroupInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListResponseInterface,
@@ -240,18 +239,18 @@ export class IdentityProviderTemplateManagementUtils {
      * @returns Categorized templates.
      */
     public static categorizeTemplates(
-        templates: IdentityProviderTemplateInterface[]): Promise<void | IdentityProviderTemplateCategoryInterface[]> {
+        templates: IdentityProviderTemplateInterface[]): Promise<void | ConnectionTemplateCategoryInterface[]> {
 
-        let categorizedTemplates: IdentityProviderTemplateCategoryInterface[] = [];
+        let categorizedTemplates: ConnectionTemplateCategoryInterface[] = [];
 
         const groupedByCategory: Record<string, IdentityProviderTemplateInterface[]> = groupBy(templates, "category");
 
         return this.loadLocalFileBasedTemplateCategories()
-            .then((categories: IdentityProviderTemplateCategoryInterface[]) => {
+            .then((categories: ConnectionTemplateCategoryInterface[]) => {
 
                 categorizedTemplates = [ ...categories ];
 
-                categorizedTemplates.forEach((category: IdentityProviderTemplateCategoryInterface) => {
+                categorizedTemplates.forEach((category: ConnectionTemplateCategoryInterface) => {
                     if (Object.prototype.hasOwnProperty.call(groupedByCategory, category.id)) {
                         category.templates = groupedByCategory[ category.id ];
                     }
@@ -276,15 +275,15 @@ export class IdentityProviderTemplateManagementUtils {
 
         return IdentityProviderTemplateManagementUtils
             .loadLocalFileBasedIdentityProviderTemplateGroups()
-            .then((response: IdentityProviderTemplateGroupInterface[]) => {
+            .then((response: ConnectionTemplateGroupInterface[]) => {
                 templates.forEach((template: IdentityProviderTemplateInterface) => {
                     if (!template.templateGroup) {
                         groupedTemplates.push(template);
 
                         return;
                     }
-                    const group: IdentityProviderTemplateGroupInterface = response
-                        .find((group: IdentityProviderTemplateGroupInterface) => {
+                    const group: ConnectionTemplateGroupInterface = response
+                        .find((group: ConnectionTemplateGroupInterface) => {
                             return group.id === template.templateGroup;
                         });
 
@@ -325,18 +324,18 @@ export class IdentityProviderTemplateManagementUtils {
      * {@link getIdentityProviderTemplatesConfig}
      */
     private static async loadLocalFileBasedIdentityProviderTemplateGroups():
-        Promise<(IdentityProviderTemplateGroupInterface |
-            Promise<IdentityProviderTemplateGroupInterface>)[]> {
+        Promise<(ConnectionTemplateGroupInterface |
+            Promise<ConnectionTemplateGroupInterface>)[]> {
 
-        const groups: (IdentityProviderTemplateGroupInterface
-            | Promise<IdentityProviderTemplateGroupInterface>)[] = [];
+        const groups: (ConnectionTemplateGroupInterface
+            | Promise<ConnectionTemplateGroupInterface>)[] = [];
 
         getIdentityProviderTemplatesConfig().groups.forEach(
-            async (config: TemplateConfigInterface<IdentityProviderTemplateGroupInterface>) => {
+            async (config: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
                 if (!config.enabled) return;
                 groups.push(
-                    config.resource as (IdentityProviderTemplateGroupInterface |
-                        Promise<IdentityProviderTemplateGroupInterface>)
+                    config.resource as (ConnectionTemplateGroupInterface |
+                        Promise<ConnectionTemplateGroupInterface>)
                 );
             }
         );
@@ -376,22 +375,22 @@ export class IdentityProviderTemplateManagementUtils {
      *
      * @returns Local file based IDP template categories.
      */
-    private static async loadLocalFileBasedTemplateCategories(): Promise<(IdentityProviderTemplateCategoryInterface
-        | Promise<IdentityProviderTemplateCategoryInterface>)[]> {
+    private static async loadLocalFileBasedTemplateCategories(): Promise<(ConnectionTemplateCategoryInterface
+        | Promise<ConnectionTemplateCategoryInterface>)[]> {
 
-        const categories: (IdentityProviderTemplateCategoryInterface
-            | Promise<IdentityProviderTemplateCategoryInterface>)[] = [];
+        const categories: (ConnectionTemplateCategoryInterface
+            | Promise<ConnectionTemplateCategoryInterface>)[] = [];
 
         getIdentityProviderTemplatesConfig().categories
-            .forEach(async (config: TemplateConfigInterface<IdentityProviderTemplateCategoryInterface>) => {
+            .forEach(async (config: TemplateConfigInterface<ConnectionTemplateCategoryInterface>) => {
                 if (!config.enabled) {
                     return;
                 }
 
                 categories.push(
                     config.resource as (
-                        IdentityProviderTemplateCategoryInterface
-                        | Promise<IdentityProviderTemplateCategoryInterface>)
+                        ConnectionTemplateCategoryInterface
+                        | Promise<ConnectionTemplateCategoryInterface>)
                 );
             });
 

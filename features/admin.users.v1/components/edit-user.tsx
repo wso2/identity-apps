@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
@@ -91,7 +90,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const { t } = useTranslation();
     const { activeTab, updateActiveTab } = useUserManagement();
-    const { legacyAuthzRuntime }  = useAuthorization();
     const dispatch: Dispatch = useDispatch();
     const { isSuperOrganization, isSubOrganization } = useGetCurrentOrganizationType();
     const { UIConfig } = useUIConfig();
@@ -240,7 +238,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         },
         !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
         && !isSubOrganization()
-        && !legacyAuthzRuntime
         && roleV1Enabled
             ? {
                 menuItem: t("users:editUser.tab.menuItems.2"),
@@ -259,7 +256,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
         !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
         && !isSubOrganization()
-        && !legacyAuthzRuntime
         && !roleV1Enabled
             ? {
                 menuItem: t("users:editUser.tab.menuItems.2"),

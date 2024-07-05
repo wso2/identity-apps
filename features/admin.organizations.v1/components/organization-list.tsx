@@ -19,7 +19,6 @@
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import { Show } from "@wso2is/access-control";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AppConstants,
     AppState,
@@ -50,12 +49,12 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
+import { deleteOrganization } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
@@ -161,35 +160,15 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const { onSignIn } = useSignIn();
 
-    const { switchOrganization, switchOrganizationInLegacyMode } = useOrganizationSwitch();
-
-    const { legacyAuthzRuntime }  = useAuthorization();
+    const { switchOrganization } = useOrganizationSwitch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isFirstLevelOrg: boolean = useSelector(
-        (state: AppState) => state?.organization?.isFirstLevelOrganization
-    );
-    const tenantDomain: string = useSelector(
-        (state: AppState) => state?.auth?.tenantDomain
-    );
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    const shouldSendRequest: boolean = useMemo(() => {
-        return (
-            isFirstLevelOrg ||
-            window[ "AppUtils" ].getConfig().organizationName ||
-            tenantDomain === AppConstants.getSuperTenant()
-        );
-    }, [ isFirstLevelOrg, tenantDomain ]);
-
-    const { data: breadcrumbList, mutate: mutateOrganizationBreadCrumbFetchRequest } = useGetOrganizationBreadCrumb(
-        shouldSendRequest
-    );
 
     /**
      * Redirects to the organizations edit page when the edit button is clicked.
@@ -288,11 +267,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const handleOrganizationSwitch = async (
         organization: GenericOrganization
     ): Promise<void> => {
-        if (legacyAuthzRuntime) {
-            switchOrganizationInLegacyMode(breadcrumbList, organization);
-
-            return;
-        }
 
         let response: BasicUserInfo = null;
 
@@ -301,7 +275,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             await onSignIn(response, () => null, () => null, () => null);
 
             onListMutate();
-            mutateOrganizationBreadCrumbFetchRequest();
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {
             // TODO: Handle error

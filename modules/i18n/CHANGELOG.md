@@ -1,5 +1,53 @@
 # @wso2is/i18n
 
+## 2.4.5
+
+### Patch Changes
+
+- [#6492](https://github.com/wso2/identity-apps/pull/6492) [`fb99538a3379188e56c3a537281a2ba880c34804`](https://github.com/wso2/identity-apps/commit/fb99538a3379188e56c3a537281a2ba880c34804) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Dynamically change the button text for scim attribute tabs
+
+## 2.4.4
+
+### Patch Changes
+
+- [#6027](https://github.com/wso2/identity-apps/pull/6027) [`2a0f4df1570a146aaf079cfc50b2fb52ff3c9465`](https://github.com/wso2/identity-apps/commit/2a0f4df1570a146aaf079cfc50b2fb52ff3c9465) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add multi screen support for branding
+
+## 2.4.3
+
+### Patch Changes
+
+- [#6271](https://github.com/wso2/identity-apps/pull/6271) [`e44d40bd90aeb8b04042aa3b4836f9b4883d0e34`](https://github.com/wso2/identity-apps/commit/e44d40bd90aeb8b04042aa3b4836f9b4883d0e34) Thanks [@asha15](https://github.com/asha15)! - Add hybrid flow response types application level configuration
+
+## 2.4.2
+
+### Patch Changes
+
+- [#6418](https://github.com/wso2/identity-apps/pull/6418) [`1e59bc54a206b22f49ddeae4ef3645e5ca351188`](https://github.com/wso2/identity-apps/commit/1e59bc54a206b22f49ddeae4ef3645e5ca351188) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Introduce sms otp for password recovery
+
+- Updated dependencies [[`d6a846aec10597470a11ecce90c27cdf0c6b240d`](https://github.com/wso2/identity-apps/commit/d6a846aec10597470a11ecce90c27cdf0c6b240d)]:
+  - @wso2is/core@2.0.50
+
+## 2.4.1
+
+### Patch Changes
+
+- [#6454](https://github.com/wso2/identity-apps/pull/6454) [`2539cb9a769fdeedb6c44985dd76fee91114ced6`](https://github.com/wso2/identity-apps/commit/2539cb9a769fdeedb6c44985dd76fee91114ced6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - `identity-providers` -> `connections` in linked accounts description in my account
+
+- Updated dependencies [[`0215c1a74a2f8940d7049e54ec2425b996e50d78`](https://github.com/wso2/identity-apps/commit/0215c1a74a2f8940d7049e54ec2425b996e50d78)]:
+  - @wso2is/core@2.0.49
+
+## 2.4.0
+
+### Minor Changes
+
+- [#5964](https://github.com/wso2/identity-apps/pull/5964) [`b339d3a607f060015b115a90219989d663ec02bf`](https://github.com/wso2/identity-apps/commit/b339d3a607f060015b115a90219989d663ec02bf) Thanks [@anjuchamantha](https://github.com/anjuchamantha)! - Adding a new page with tenant-wise DCR configurations
+
+## 2.3.9
+
+### Patch Changes
+
+- [#6450](https://github.com/wso2/identity-apps/pull/6450) [`305f37225bcb656a16ce616e0a48b3c27c7da3ab`](https://github.com/wso2/identity-apps/commit/305f37225bcb656a16ce616e0a48b3c27c7da3ab) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Update the disclaimers of the AI features
+
 ## 2.3.8
 
 ### Patch Changes

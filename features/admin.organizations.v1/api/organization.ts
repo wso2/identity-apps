@@ -23,7 +23,6 @@ import {
     HttpRequestConfig,
     HttpResponse
 } from "@asgardeo/auth-react";
-import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
 import { store } from "@wso2is/admin.core.v1";
 import useRequest, { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -128,7 +127,7 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
         method: HttpMethods.GET,
         params: {
             after,
-            ...(isLegacyAuthzRuntime() ? {} : { authorizedAppName }),
+            authorizedAppName,
             before,
             filter,
             limit,
@@ -337,9 +336,7 @@ export const shareApplication = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: isLegacyAuthzRuntime() ?
-            `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
-            `${applicationId}/share` : `${store.getState().config.endpoints.applications}/${applicationId}/share`
+        url: `${store.getState().config.endpoints.applications}/${applicationId}/share`
     };
 
     return httpClient(requestConfig)
@@ -399,9 +396,7 @@ export const getSharedOrganizations = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: isLegacyAuthzRuntime() ?
-            `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
-            `${applicationId}/share` : `${store.getState().config.endpoints.applications}/${applicationId}/share`
+        url: `${store.getState().config.endpoints.applications}/${applicationId}/share`
     };
 
     return httpClient(requestConfig)
@@ -470,8 +465,7 @@ export const useGetOrganizationBreadCrumb = <data = BreadcrumbList, Error = Requ
  * @returns
  */
 export const unshareApplication = (
-    applicationId: string,
-    currentOrganizationId: string
+    applicationId: string
 ): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -479,10 +473,7 @@ export const unshareApplication = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: isLegacyAuthzRuntime() ?
-            `${store.getState().config.endpoints.organizations
-            }/organizations/${currentOrganizationId}/applications/${applicationId}/shared-apps` :
-            `${store.getState().config.endpoints.applications}/${applicationId}/shared-apps`
+        url: `${store.getState().config.endpoints.applications}/${applicationId}/shared-apps`
     };
 
     return httpClient(requestConfig).catch((error: HttpError) => {

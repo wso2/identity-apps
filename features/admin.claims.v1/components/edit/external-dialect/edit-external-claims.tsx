@@ -76,6 +76,14 @@ interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
      */
     mappedLocalClaims: string[];
     /**
+     * Is the attribute button enabled.
+     */
+    isAttributeButtonEnabled: boolean;
+    /**
+     * Attribute button Text.
+     */
+    attributeButtonText: string;
+    /**
      * Update mapped claims on delete or edit
      */
     updateMappedClaims?: Dispatch<SetStateAction<boolean>>;
@@ -105,6 +113,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         attributeType,
         attributeUri,
         mappedLocalClaims,
+        isAttributeButtonEnabled,
+        attributeButtonText,
         updateMappedClaims,
         [ "data-testid" ]: testId
     } = props;
@@ -349,37 +359,43 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             totalListSize={ filteredClaims?.length }
             rightActionPanel={
                 (<>
-                    { attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID) &&
-                    hasRequiredScopes(
-                        featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.create,
-                        allowedScopes
-                    ) && (
-                        /**
-                         * `loading` property is used to check whether the current selected
-                         * dialect is same as the dialect which the claims are loaded.
-                         * If it's different, this condition will wait until the correct
-                         * dialects are loaded onto the view.
-                         */
-                        <PrimaryButton
-                            loading={ claims && attributeUri !== claims[0]?.claimDialectURI }
-                            onClick={ (): void => {
-                                if (attributeUri !== claims[0]?.claimDialectURI) {
-                                    return;
+                    {
+                        attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID)
+                        && hasRequiredScopes(
+                            featureConfig?.attributeDialects,
+                            featureConfig?.attributeDialects?.scopes?.create,
+                            allowedScopes
+                        ) && isAttributeButtonEnabled
+                        && (
+                            /**
+                             * `loading` property is used to check whether the current selected
+                             * dialect is same as the dialect which the claims are loaded.
+                             * If it's different, this condition will wait until the correct
+                             * dialects are loaded onto the view.
+                             */
+                            <PrimaryButton
+                                loading={ claims && attributeUri !== claims[0]?.claimDialectURI }
+                                onClick={ (): void => {
+                                    if (attributeUri !== claims[0]?.claimDialectURI) {
+                                        return;
+                                    }
+                                    setShowAddExternalClaim(true);
+                                } }
+                                disabled={
+                                    (
+                                        showAddExternalClaim
+                                        || (claims && attributeUri !== claims[0]?.claimDialectURI)
+                                    )
                                 }
-                                setShowAddExternalClaim(true);
-                            } }
-                            disabled={ showAddExternalClaim || (claims && attributeUri !== claims[0]?.claimDialectURI) }
-                            data-testid={ `${testId}-list-layout-add-button` }
-                        >
-                            <Icon name="add" />
-                            {
-                                t("claims:external.pageLayout.edit.primaryAction",
-                                    { type: resolveType(attributeType, true) }
-                                )
-                            }
-                        </PrimaryButton>
-                    ) }
+                                data-testid={ `${testId}-list-layout-add-button` }
+                            >
+                                <Icon name="add" />
+                                {
+                                    attributeButtonText
+                                }
+                            </PrimaryButton>
+                        )
+                    }
                     { attributeType === ClaimManagementConstants.OIDC &&
                     featureConfig?.oidcScopes?.enabled &&
                     hasRequiredScopes(

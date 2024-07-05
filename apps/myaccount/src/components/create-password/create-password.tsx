@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,17 +17,12 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, Suspense, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AlertInterface } from "../../models";
 import { AppState } from "../../store";
-import { EditSection, SettingsSection } from "../shared";
-
-/**
- * Import password strength meter dynamically.
- */
-const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
+import { SettingsSection } from "../shared";
 
 /**
  * Prop types for the change password component.
@@ -40,8 +35,8 @@ interface CreatePasswordPropsInterface extends TestableComponentInterface {
 /**
  * Change password component.
  *
- * @param {CreatePasswordProps} props - Props injected to the change password component.
- * @return {JSX.Element}
+ * @param props - Props injected to the change password component.
+ * @returns create password component
  */
 export const CreatePassword: FunctionComponent<CreatePasswordPropsInterface> = (
     props: CreatePasswordPropsInterface
@@ -52,12 +47,12 @@ export const CreatePassword: FunctionComponent<CreatePasswordPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const config = useSelector((state: AppState) => state.config);
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={ t("myAccount:sections.createPassword.description", { productName: config.ui.productName }) }
+            description={ t("myAccount:sections.createPassword.description", { productName }) }
             header={ t("myAccount:sections.createPassword.heading") }
             primaryAction={ t("myAccount:sections.createPassword.actionTitles.create") }
             primaryActionIcon="key"
