@@ -1,5 +1,29 @@
 # @wso2is/admin.extensions.v1
 
+## 2.21.15
+
+### Patch Changes
+
+- Updated dependencies [[`abca9e6b61f7eb29f1e9e920b6de8e6e47345bd1`](https://github.com/wso2/identity-apps/commit/abca9e6b61f7eb29f1e9e920b6de8e6e47345bd1)]:
+  - @wso2is/admin.tenants.v1@2.20.45
+  - @wso2is/admin.core.v1@2.21.15
+  - @wso2is/admin.organizations.v1@2.20.45
+  - @wso2is/admin.api-resources.v1@2.20.45
+  - @wso2is/admin.applications.v1@2.21.15
+  - @wso2is/admin.authentication.v1@2.20.45
+  - @wso2is/admin.claims.v1@2.20.45
+  - @wso2is/admin.connections.v1@2.20.45
+  - @wso2is/admin.extensions.v2@2.20.45
+  - @wso2is/admin.groups.v1@2.20.45
+  - @wso2is/admin.identity-providers.v1@2.20.45
+  - @wso2is/admin.provisioning.v1@2.20.45
+  - @wso2is/admin.roles.v2@2.20.45
+  - @wso2is/admin.server-configurations.v1@2.20.45
+  - @wso2is/admin.sms-providers.v1@2.20.45
+  - @wso2is/admin.users.v1@2.20.45
+  - @wso2is/admin.userstores.v1@2.20.45
+  - @wso2is/admin.validation.v1@2.20.45
+
 ## 2.21.14
 
 ### Patch Changes
