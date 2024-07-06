@@ -1,5 +1,22 @@
 # @wso2is/admin.email-and-sms.v1
 
+## 2.20.46
+
+### Patch Changes
+
+- Updated dependencies [[`85600f55bcb1db924b28681c903a4e98b9558116`](https://github.com/wso2/identity-apps/commit/85600f55bcb1db924b28681c903a4e98b9558116)]:
+  - @wso2is/react-components@2.2.11
+  - @wso2is/access-control@3.0.11
+  - @wso2is/dynamic-forms@2.0.69
+  - @wso2is/validation@2.0.6
+  - @wso2is/forms@2.0.41
+  - @wso2is/theme@2.0.87
+  - @wso2is/core@2.0.51
+  - @wso2is/form@2.0.70
+  - @wso2is/i18n@2.4.6
+  - @wso2is/admin.core.v1@2.21.16
+  - @wso2is/admin.organizations.v1@2.20.46
+
 ## 2.20.45
 
 ### Patch Changes
