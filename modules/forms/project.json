@@ -1,6 +1,5 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/forms",
     "sourceRoot": "modules/forms/src",
     "projectType": "library",
     "generators": {},
@@ -9,7 +8,7 @@
     "implicitDependencies": [ "core", "react-components" ],
     "targets": {
         "build": {
-            "executor": "@nrwl/web:rollup",
+            "executor": "@nrwl/rollup:rollup",
             "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "modules/forms/dist",
@@ -48,5 +47,6 @@
                 "parallel": false
             }
         }
-    }
+    },
+    "name": "forms"
 }

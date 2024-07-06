@@ -6,6 +6,7 @@
         "console": "apps/console",
         "core": "modules/core",
         "dynamic-forms": "modules/dynamic-forms",
+        "features": "features",
         "form": "modules/form",
         "forms": "modules/forms",
         "i18n": "modules/i18n",
@@ -13,7 +14,6 @@
         "myaccount": "apps/myaccount",
         "react-components": "modules/react-components",
         "theme": "modules/theme",
-        "validation": "modules/validation",
-        "features": "features"
+        "validation": "modules/validation"
     }
 }

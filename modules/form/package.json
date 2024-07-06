@@ -10,7 +10,7 @@
         "WSO2 Identity Apps",
         "form"
     ],
-    "main": "dist/index.esm.js",
+    "main": "dist/index.cjs",
     "types": "dist/index.d.ts",
     "author": "WSO2",
     "license": "Apache-2.0",
