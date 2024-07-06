@@ -84,7 +84,12 @@ export class ProfileConstants {
         .set("IDP_TYPE", "idpType")
         .set("IMS", "ims")
         .set("PHOTOS", "photos")
-        .set("META_VERSION", "meta.version");
+        .set("META_VERSION", "meta.version")
+        .set("MOBILE", "phoneNumbers.mobile")
+        .set("EMAIL_ADDRESSES", "emailAddresses")
+        .set("MOBILE_NUMBERS", "mobileNumbers")
+        .set("VERIFIED_EMAIL_ADDRESSES", "verifiedEmailAddresses")
+        .set("VERIFIED_MOBILE_NUMBERS", "verifiedMobileNumbers");
 
     /**
      * States if the SCIM schema is mutable.

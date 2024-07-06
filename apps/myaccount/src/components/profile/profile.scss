@@ -116,4 +116,29 @@
 .resend-button {
     color: #ff7300;
     cursor: pointer;
+
+    &.disabled {
+        cursor: not-allowed;
+    }
+}
+
+.mobile-verification-content{
+    display: flex;
+    align-items: center;
+    height: 350px;
+
+    .inside-content {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: auto;
+    
+        .modal-input {
+            flex: 1
+        }
+    
+        .modal-button-group {
+            flex: 1;
+        }
+    }
 }

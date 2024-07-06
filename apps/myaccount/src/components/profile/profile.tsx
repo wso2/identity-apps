@@ -21,24 +21,15 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
-import Button from "@oxygen-ui/react/Button";
-import Chip from "@oxygen-ui/react/Chip";
 import IconButton from "@oxygen-ui/react/IconButton";
-import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Paper from "@oxygen-ui/react/Paper";
 import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
-// import ListItem from "@oxygen-ui/react/ListItem";
-// import ListItemButton from "@oxygen-ui/react/ListItemButton";
-// import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
-// import ListItemText from "@oxygen-ui/react/ListItemText";
-import { CheckIcon, ChevronDownIcon } from "@oxygen-ui/react-icons";
+import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -56,6 +47,7 @@ import {
 import { ProfileUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import {
+    ConfirmationModal,
     EditAvatarModal,
     LinkButton,
     Message,
@@ -67,7 +59,7 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useCallback, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -99,12 +91,14 @@ import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 import "./profile.scss";
 
-const EMAIL_ATTRIBUTE: string = "emails";
-const MOBILE_ATTRIBUTE: string = "mobile";
-const EMAIL_ADDRESSES_ATTRIBUTE: string = "emailAddresses";
-const MOBILE_NUMBERS_ATTRIBUTE: string = "mobileNumbers";
-const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string = "verifiedMobileNumbers";
-const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string = "verifiedEmailAddresses";
+const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
+const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
+const EMAIL_ADDRESSES_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES");
+const MOBILE_NUMBERS_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS");
+const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
+const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
 const EMAIL_MAX_LENGTH: number = 50;
 
 /**
@@ -167,7 +161,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     });
     const [ tempEmail, setTempEmail ] = useState<string>("");
     const [ tempMobile, setTempMobile ] = useState<string>("");
-    const [ selectedMobileNumber, setSelectedMobileNumber ] = useState<string>("");
+
+    // Multi-valued attribute delete confirmation modal related states.
+    const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
+        useState<{ value: string; schema?: ProfileSchema }>({ value: "" });
+    const [ showMVDeleteConfirmationModal, setShowMVDeleteConfirmationModal ] = useState<boolean>(false);
+    const handleMVDeleteModalClose: () => void = useCallback(() => {
+        setShowMVDeleteConfirmationModal(false);
+        setSelectedAttributeInfo({ value: "" });
+    }, []);
+    const handleMVDeleteConfirmClick: ()=> void = useCallback(() => {
+        handleMultiValuedItemDelete(selectedAttributeInfo.schema, selectedAttributeInfo.value);
+        handleMVDeleteModalClose();
+    }, [ selectedAttributeInfo, handleMVDeleteModalClose ]);
 
     /**
      * The following method gets the preference for verification on mobile and email update.
@@ -504,6 +510,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         isExtended: boolean,
         schema: ProfileSchema
     ): void => {
+        setIsSubmitting(true);
         const data: { Operations: Array<{ op: string, value: Record<string, string> }>, schemas: Array<string> } = {
             Operations: [
                 {
@@ -528,16 +535,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             isCanonical = true;
         }
 
-        if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
-            || checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             const newValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
 
             newValues.push(values.get(formName) as string);
             values.set(formName, newValues.join(","));
         }
 
-        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
-            schemaNames[0] === "phoneNumbers") {
+        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0])
+            || schemaNames[0] === "phoneNumbers") {
             const attributeValues: string[] = [];
 
             if (schemaNames.length === 1) {
@@ -721,6 +727,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     "myAccount:components.profile.notifications.updateProfileInfo.genericError.message"
                 )
             });
+        }).finally(() => {
+            setIsSubmitting(false);
         });
 
         // Hide corresponding edit view
@@ -735,6 +743,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const handleVerify = (schema: ProfileSchema, value: string) => {
 
+        setIsSubmitting(true);
         const data: {
             Operations: Array<{ op: string, value: Record<string, string | Record<string, string>> }>,
             schemas: Array<string>
@@ -748,7 +757,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
 
             const verifiedEmailList: string[] = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
@@ -758,9 +767,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: verifiedEmailList.join(",")
                 }
             };
-        } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
-            setSelectedMobileNumber(value);
+            setSelectedAttributeInfo({ schema, value });
             const verifiedMobileList: string[] = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
 
             verifiedMobileList.push(value);
@@ -784,7 +793,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 // Re-fetch the profile information
                 dispatch(getProfileInformation(true));
-                checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE) && setShowMobileUpdateWizard(true);
+                schema.name === MOBILE_NUMBERS_ATTRIBUTE && setShowMobileUpdateWizard(true);
             }
         }).catch((error: any) => {
             onAlertFired({
@@ -796,6 +805,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     "myAccount:components.profile.notifications.updateProfileInfo.genericError.message"
                 )
             });
+        }).finally(() => {
+            setIsSubmitting(false);
         });
     };
 
@@ -807,6 +818,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const handleMakePrimary = (schema: ProfileSchema, value: string) => {
 
+        setIsSubmitting(true);
         const data: {
             Operations: Array<{
                 op: string,
@@ -824,17 +836,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
 
             data.Operations[0].value = {
                 [EMAIL_ATTRIBUTE]: [ value ]
             };
-        } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
             data.Operations[0].value = {
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
                     {
-                        type: MOBILE_ATTRIBUTE,
+                        type: "mobile",
                         value
                     }
                 ]
@@ -865,6 +877,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     "myAccount:components.profile.notifications.updateProfileInfo.genericError.message"
                 )
             });
+        }).finally(() => {
+            setIsSubmitting(false);
         });
     };
 
@@ -876,6 +890,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const handleMultiValuedItemDelete = (schema: ProfileSchema, value: string) => {
 
+        setIsSubmitting(true);
         const data: {
             Operations: Array<{ op: string, value: Record<string, string | Record<string, string>> }>,
             schemas: Array<string>
@@ -889,7 +904,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
             const updatedEmailList: string[] = emailList.filter((email: string) => email !== value);
 
@@ -898,7 +913,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     [EMAIL_ADDRESSES_ATTRIBUTE]: updatedEmailList.join(",")
                 }
             };
-        } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             const mobileList: string[] = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
             const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== value);
 
@@ -933,6 +948,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     "myAccount:components.profile.notifications.updateProfileInfo.genericError.message"
                 )
             });
+        }).finally(() => {
+            setIsSubmitting(false);
         });
     };
 
@@ -1064,7 +1081,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (!isFeatureEnabled(
             featureConfig?.personalInfo,
             AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
-        ) || !checkSchemaType(schema.name, MOBILE_ATTRIBUTE) || !isMobileVerificationEnabled) {
+        ) || schema.name !== MOBILE_ATTRIBUTE || !isMobileVerificationEnabled) {
             return null;
         }
 
@@ -1210,8 +1227,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (checkSchemaType(schema.name, "country")) {
             return generateCountryDropdown(schema, fieldName);
-        } else if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
-            || checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+        } else if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+            || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             return generateMultiValuedField(schema, fieldName);
         } else {
             return generateTextField(schema, fieldName);
@@ -1225,13 +1242,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let verifiedAttributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
         let verificationEnabled: boolean = false;
-        let deletePopupHeader: string = "";
         let verifyPopupHeader: string = "";
         let pendingEmailAddress: string = "";
 
-        if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
-            deletePopupHeader = "Delete Email Address";
-            verifyPopupHeader = "Verify Email Address";
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            verifyPopupHeader = t("myAccount:components.profile.actions.verifyEmail");
             attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
@@ -1243,14 +1258,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             primaryAttributeValue = profileDetails?.profileInfo?.emails[0];
             verificationEnabled = isEmailVerificationEnabled;
             verifiedAttributeValueList.push(primaryAttributeValue);
+            primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
 
-        } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
-            deletePopupHeader = "Delete Mobile Number";
-            verifyPopupHeader = "Verify Mobile Number";
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            verifyPopupHeader = t("myAccount:components.profile.actions.verifyMobile");
             attributeValueList = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeValue = profileInfo?.get(
-                `${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")}.${MOBILE_ATTRIBUTE}`);
+            primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
             verificationEnabled = isMobileVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(MOBILE_ATTRIBUTE);
         }
@@ -1265,13 +1279,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const showPendingEmailPopup = (value: string): boolean => {
             return verificationEnabled
-                && checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
+                && schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                 && pendingEmailAddress
                 && value === pendingEmailAddress;
         };
 
         const showVerifiedPopup = (value: string): boolean => {
-            return verifiedAttributeValueList.includes(value);
+            return verificationEnabled && verifiedAttributeValueList.includes(value);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
@@ -1293,7 +1307,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             { fieldName }) }
                     type="text"
                     onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
-                        if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
+                        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
                             setTempEmail(event.target.value);
                         } else {
                             setTempMobile(event.target.value);
@@ -1302,9 +1316,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     validation={
                         (value: string, validation: Validation) =>
                             validateField(value, validation, schema, fieldName) }
-                    value={ checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE) ? tempEmail : tempMobile }
+                    value={ schema.name === EMAIL_ADDRESSES_ATTRIBUTE ? tempEmail : tempMobile }
                     maxLength={
-                        checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
+                        schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                             ? EMAIL_MAX_LENGTH
                             : primaryAttributeSchema.maxLength ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                     }
@@ -1406,6 +1420,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                         && value === primaryAttributeValue)
                                                                     || verifiedAttributeValueList.includes(value) }
                                                                 onClick={ () => handleVerify(schema, value) }
+                                                                disabled={ isSubmitting }
                                                             >
                                                                 <Popup
                                                                     size="tiny"
@@ -1424,6 +1439,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                     || value === primaryAttributeValue
                                                                 }
                                                                 onClick={ () => handleMakePrimary(schema, value) }
+                                                                disabled={ isSubmitting }
                                                             >
                                                                 <Popup
                                                                     size="tiny"
@@ -1432,15 +1448,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                             <Icon name="star" />
                                                                         )
                                                                     }
-                                                                    header="Make Primary"
+                                                                    header={ t("myAccount:components.profile." +
+                                                                        "actions.makePrimary") }
                                                                     inverted
                                                                 />
                                                             </IconButton>
                                                             <IconButton
                                                                 size="small"
                                                                 hidden={ value === primaryAttributeValue }
-                                                                onClick={
-                                                                    () => handleMultiValuedItemDelete(schema, value) }
+                                                                onClick={ () => {
+                                                                    setSelectedAttributeInfo({ schema, value });
+                                                                    setShowMVDeleteConfirmationModal(true);
+                                                                } }
+                                                                disabled={ isSubmitting }
                                                             >
                                                                 <Popup
                                                                     size="tiny"
@@ -1449,7 +1469,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                             <Icon name="trash alternate" />
                                                                         )
                                                                     }
-                                                                    header={ deletePopupHeader }
+                                                                    header={ t("common:delete") }
                                                                     inverted
                                                                 />
                                                             </IconButton>
@@ -1592,7 +1612,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (isProfileInfoLoading || profileSchemaLoader) {
             return <Placeholder><Placeholder.Line /></Placeholder>;
         } else if (profileInfo.get(schema.name)
-            && checkSchemaType(schema.name, EMAIL_ATTRIBUTE)
+            && schema.name === EMAIL_ATTRIBUTE
             && isEmailPending
             && isEmailVerificationEnabled) {
             return (
@@ -1601,8 +1621,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     { generatePendingEmailPopup() }
                 </>
             );
-        } else if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
-            || checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+        } else if ( schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             return generateReadOnlyMultiValuedField(schema, fieldName);
         } else if (profileInfo.get(schema.name)) {
             return <>{ resolveProfileInfoSchemaValue(schema) }</>;
@@ -1619,7 +1638,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let pendingEmailAddress: string = "";
         let verificationEnabled: boolean = false;
 
-        if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             verificationEnabled = isEmailVerificationEnabled;
             attributeValueList = profileInfo.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
@@ -1631,12 +1650,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 : null;
             verifiedAttributeValueList.push(primaryAttributeValue);
 
-        } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verificationEnabled = isMobileVerificationEnabled;
             attributeValueList = profileInfo.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeValue = profileInfo.get(
-                `${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")}.${MOBILE_ATTRIBUTE}`);
+            primaryAttributeValue = profileInfo.get(MOBILE_ATTRIBUTE);
         }
 
         // Ensure primaryAttributeValue is defined and attributeValueList is an array.
@@ -1649,13 +1667,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const showPendingEmailPopup = (value: string): boolean => {
             return verificationEnabled
-                && checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)
+                && schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                 && pendingEmailAddress
                 && value === pendingEmailAddress;
         };
 
         const showVerifiedPopup = (value: string): boolean => {
-            return verifiedAttributeValueList.includes(value);
+            return verificationEnabled && verifiedAttributeValueList.includes(value);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
@@ -1795,9 +1813,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         // Validate multi-valued fields like email addresses and mobile numbers
         // using the schema of the primary attribute for individual value validation.
-        if (checkSchemaType(schema.name, EMAIL_ADDRESSES_ATTRIBUTE)) {
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             return validateField(value, validation, getSchemaFromName(EMAIL_ATTRIBUTE), fieldName);
-        } else if (checkSchemaType(schema.name, MOBILE_NUMBERS_ATTRIBUTE)) {
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             return validateField(value, validation, getSchemaFromName(MOBILE_ATTRIBUTE), fieldName);
         }
 
@@ -1811,11 +1829,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 validation.errorMessages.push(
                     t(profileConfig?.attributes?.getRegExpValidationError(
                         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")
-                    ),
-                    {
-                        fieldName
-                    }
-                    )
+                    ),{ fieldName } )
                 );
             } else if (checkSchemaType(schema.name, ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
                 validation.errorMessages.push(
@@ -1855,6 +1869,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const generatePendingEmailPopup= (): JSX.Element => {
+
         return (
             <Popup
                 size="tiny"
@@ -1878,6 +1893,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const generateVerifiedPopup= (): JSX.Element => {
+
         return (
             <Popup
                 size="tiny"
@@ -1889,13 +1905,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         />
                     )
                 }
-                header="Verified"
+                header= { t("myAccount:components.profile.messages.verified.header") }
                 inverted
             />
         );
     };
 
     const generatePrimaryPopup= (): JSX.Element => {
+
         return (
             <Popup
                 size="tiny"
@@ -1907,7 +1924,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         />
                     )
                 }
-                header="Primary"
+                header= { t("myAccount:components.profile.messages.primary.header") }
                 inverted
             />
         );
@@ -1955,7 +1972,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const getSchemaFromName = (schemaName: string): ProfileSchema => {
 
-        return profileSchema.find((schema: ProfileSchema) => checkSchemaType(schema.name, schemaName));
+        return profileSchema.find((schema: ProfileSchema) => schema.name === schemaName);
     };
 
     /**
@@ -2114,6 +2131,52 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         </>
     );
 
+
+    /**
+     * This methods generates and returns the delete confirmation modal.
+     *
+     * @returns ReactElement Generates the delete confirmation modal.
+     */
+    const generateMVDeleteConfirmationModal = (): JSX.Element => {
+
+        if (isEmpty(selectedAttributeInfo?.value)) {
+            return null;
+        }
+
+        let translationKey: string = "";
+
+        if (selectedAttributeInfo?.schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            translationKey = "myAccount:components.profile.modals.emailAddressDeleteConfirmation.";
+        } else {
+            translationKey = "myAccount:components.profile.modals.mobileNumberDeleteConfirmation.";
+        }
+
+        return (
+            <ConfirmationModal
+                data-testid={ `${ testId }-confirmation-modal` }
+                onClose={ handleMVDeleteModalClose }
+                type="negative"
+                open={ Boolean(selectedAttributeInfo?.value) }
+                assertionHint={ t(`"${translationKey}assertionHint"`) }
+                assertionType="checkbox"
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ handleMVDeleteModalClose }
+                onPrimaryActionClick={ handleMVDeleteConfirmClick }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
+                    { t(`"${translationKey}heading"`) }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message data-testid={ `${ testId }-confirmation-modal-message` } attached negative>
+                    { t(`"${translationKey}description"`) }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                    { t(`"${translationKey}content"`) }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );};
+
     /**
      * Check whether the profile url is readonly.
      *
@@ -2160,30 +2223,32 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     return (
-        <SettingsSection
-            data-testid={ `${testId}-settings-section` }
-            description={ t("myAccount:sections.profile.description") }
-            header={ t("myAccount:sections.profile.heading") }
-            icon={ renderAvatar() }
-            iconMini={ renderAvatar() }
-            placeholder={
-                !isSCIMEnabled
-                    ? t("myAccount:components.profile.placeholders.SCIMDisabled.heading")
-                    : null
-            }
-        >
-            {
-                hasLocalAccount
-                    ? (
-                        <List
-                            divided={ true }
-                            verticalAlign="middle"
-                            className="main-content-inner profile-form"
-                            data-testid={ `${testId}-schema-list` }
-                        >
-                            {
-                                profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
-                                    if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
+        <>
+            <SettingsSection
+                data-testid={ `${testId}-settings-section` }
+                description={ t("myAccount:sections.profile.description") }
+                header={ t("myAccount:sections.profile.heading") }
+                icon={ renderAvatar() }
+                iconMini={ renderAvatar() }
+                placeholder={
+                    !isSCIMEnabled
+                        ? t("myAccount:components.profile.placeholders.SCIMDisabled.heading")
+                        : null
+                }
+            >
+                {
+                    hasLocalAccount
+                        ? (
+                            <List
+                                divided={ true }
+                                verticalAlign="middle"
+                                className="main-content-inner profile-form"
+                                data-testid={ `${testId}-schema-list` }
+                            >
+                                {
+                                    profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
+                                        if (!(schema.name ===
+                                            ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
@@ -2200,58 +2265,62 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
                                     || (!showEmail && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS"))
-                                    )) {
-                                        return (
-                                            <>
-                                                {
-                                                    showMobileVerification(schema)
-                                                        ? (
-                                                            < MobileUpdateWizard
-                                                                data-testid={ `${testId}-mobile-update-wizard` }
-                                                                onAlertFired={ onAlertFired }
-                                                                closeWizard={ () =>
-                                                                    handleCloseMobileUpdateWizard()
-                                                                }
-                                                                wizardOpen={ true }
-                                                                currentMobileNumber={
-                                                                    checkSchemaType(schema.name,
-                                                                        MOBILE_NUMBERS_ATTRIBUTE)
-                                                                        ? selectedMobileNumber
-                                                                        : profileInfo.get(schema.name)
-                                                                }
-                                                                isMobileRequired={ schema.required }
-                                                                isMultipleEmailAndMobileNumberEnabled
-                                                            />
-                                                        )
-                                                        : null
-                                                }
-                                                {
-                                                    !isEmpty(profileInfo.get(schema.name)) ||
+                                        )) {
+                                            return (
+                                                <>
+                                                    {
+                                                        showMobileVerification(schema)
+                                                            ? (
+                                                                < MobileUpdateWizard
+                                                                    data-testid={ `${testId}-mobile-update-wizard` }
+                                                                    onAlertFired={ onAlertFired }
+                                                                    closeWizard={ () =>
+                                                                        handleCloseMobileUpdateWizard()
+                                                                    }
+                                                                    wizardOpen={ true }
+                                                                    currentMobileNumber={
+                                                                        schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                                                                            ? selectedAttributeInfo?.schema?.name
+                                                                            === MOBILE_NUMBERS_ATTRIBUTE
+                                                                                ? selectedAttributeInfo?.value
+                                                                                : null
+                                                                            : profileInfo.get(schema.name)
+                                                                    }
+                                                                    isMobileRequired={ schema.required }
+                                                                    isMultipleEmailAndMobileNumberEnabled
+                                                                />
+                                                            )
+                                                            : null
+                                                    }
+                                                    {
+                                                        !isEmpty(profileInfo.get(schema.name)) ||
                                         (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
                                             && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
                                             && hasRequiredScopes(featureConfig?.personalInfo,
                                                 featureConfig?.personalInfo?.scopes?.update, allowedScopes))
-                                                        ? generateSchemaForm(schema, index)
-                                                        : null
-                                                }
-                                            </>
-                                        );
-                                    }
-                                })
-                            }
-                        </List>
-                    ) : (
-                        <Container className="pl-5 pr-5 pb-4">
-                            <Message
-                                type="info"
-                                content={ "Your profile cannot be managed from this portal." +
+                                                            ? generateSchemaForm(schema, index)
+                                                            : null
+                                                    }
+                                                </>
+                                            );
+                                        }
+                                    })
+                                }
+                            </List>
+                        ) : (
+                            <Container className="pl-5 pr-5 pb-4">
+                                <Message
+                                    type="info"
+                                    content={ "Your profile cannot be managed from this portal." +
                                     " Please contact your administrator for more details." }
-                                data-componentid={ `${testId}-read-only-profile-banner` }
-                            />
-                        </Container>
-                    )
-            }
-        </SettingsSection>
+                                    data-componentid={ `${testId}-read-only-profile-banner` }
+                                />
+                            </Container>
+                        )
+                }
+            </SettingsSection>
+            { showMVDeleteConfirmationModal && generateMVDeleteConfirmationModal() }
+        </>
     );
 };
 
