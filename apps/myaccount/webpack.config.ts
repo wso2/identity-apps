@@ -148,7 +148,7 @@ interface RelativePathsInterface {
 module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInterface) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    nxReactWebpackConfig(config);
+    nxReactWebpackConfig(config, {});
 
     context = rewriteContext(context);
 

@@ -98,7 +98,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    nxReactWebpackConfig(config);
+    nxReactWebpackConfig(config, {});
 
     context = rewriteContext(context);
 

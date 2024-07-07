@@ -44,7 +44,8 @@ module.exports = {
         "@storybook/addon-toolbars",
         "@storybook/addon-measure",
         "@storybook/addon-outline",
-        "@nrwl/react/plugins/storybook"
+        "@nrwl/react/plugins/storybook",
+        "@storybook/addon-essentials"
     ],
     core: {
         builder: "webpack5"

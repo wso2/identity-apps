@@ -1,4 +1,5 @@
 {
+    "name": "react-components",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "modules/react-components/src",
     "projectType": "library",
@@ -59,14 +60,9 @@
             "options": {
                 "uiFramework": "@storybook/react",
                 "port": 6006,
-                "config": {
-                    "configFolder": "modules/react-components/.storybook",
-                    "pluginPath": "modules/react-components/.storybook/plugins.js",
-                    "configPath": "modules/react-components/.storybook/preview.js",
-                    "srcRoot": "modules/react-components/src"
-                },
-                "docsMode": true,
-                "quiet": false
+                "quiet": false,
+                "configDir": "modules/react-components/.storybook",
+                "docs": true
             },
             "configurations": {
                 "ci": {
@@ -76,15 +72,11 @@
         },
         "build-storybook": {
             "executor": "@nrwl/storybook:build",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "outputs": ["{options.outputDir}"],
             "options": {
                 "uiFramework": "@storybook/react",
-                "outputPath": "modules/react-components/dist/storybook",
-                "config": {
-                    "configFolder": "modules/react-components/.storybook"
-                }
+                "configDir": "modules/react-components/.storybook",
+                "outputDir": "modules/react-components/dist/storybook"
             },
             "configurations": {
                 "ci": {
@@ -92,6 +84,5 @@
                 }
             }
         }
-    },
-    "name": "react-components"
+    }
 }

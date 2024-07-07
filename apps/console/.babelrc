@@ -23,13 +23,13 @@
  *
  * Tracked with issue : {@link https://github.com/wso2-enterprise/asgardeo-product/issues/7207}
  */
-module.exports = {
-    env: {
-        test: {
-            plugins: [ "@babel/plugin-transform-modules-commonjs" ]
+{
+    "env": {
+        "test": {
+            "plugins": [ "@babel/plugin-transform-modules-commonjs" ]
         }
     },
-    plugins: [
+    "plugins": [
         "@babel/plugin-proposal-class-properties",
         [
             "babel-plugin-rename-jsx-attribute",
@@ -40,18 +40,18 @@ module.exports = {
             }
         ]
     ],
-    presets: [
+    "presets": [
         [
             "@babel/preset-env",
             {
-                corejs: {
-                    proposals: true,
-                    version: "3.6"
+                "corejs": {
+                    "proposals": true,
+                    "version": "3.6"
                 },
-                useBuiltIns: "entry"
+                "useBuiltIns": "entry"
             }
         ],
         "@babel/preset-typescript",
         "@babel/react"
     ]
-};
+}
