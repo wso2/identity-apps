@@ -5,12 +5,16 @@
             "inputs": ["production", "^production"]
         },
         "build-storybook": {
-            "inputs": ["default", "^production"]
+            "inputs": [
+                "default",
+                "^production",
+                "{projectRoot}/.storybook/**/*",
+                "{projectRoot}/tsconfig.storybook.json"
+            ]
         }
     },
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "extends": "@nx/workspace/presets/npm.json",
-    "npmScope": "wso2is",
     "workspaceLayout": {
         "appsDir": "apps",
         "libsDir": "modules"
@@ -84,7 +88,9 @@
             "default",
             "!{projectRoot}/.eslintrc.js",
             "!{projectRoot}/.storybook/**/*",
-            "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)"
+            "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+            "!{projectRoot}/tsconfig.storybook.json",
+            "!{projectRoot}/src/test-setup.[jt]s"
         ]
     }
 }

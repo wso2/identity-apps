@@ -15,9 +15,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import type { KeyValue } from "./components/dynamic-field";
 
 export * from "./forms";
 export * from "./models";
 export { Field, GroupFields } from "./components";
 export * from "./utils";
-export { DynamicField, KeyValue } from "./components/dynamic-field";
+export * from "./components/dynamic-field";
+export { KeyValue };

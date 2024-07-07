@@ -1,4 +1,5 @@
 {
+    "name": "identity-apps-core",
     "$schema": "../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "identity-apps-core/apps",
     "projectType": "application",
@@ -35,6 +36,5 @@
                 "parallel": false
             }
         }
-    },
-    "name": "identity-apps-core"
+    }
 }
