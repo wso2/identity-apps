@@ -11,6 +11,18 @@
                 "{projectRoot}/.storybook/**/*",
                 "{projectRoot}/tsconfig.storybook.json"
             ]
+        },
+        "test": {
+
+        },
+        "lint": {
+
+        },
+        "package": {
+
+        },
+        "prepare": {
+
         }
     },
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
@@ -18,21 +30,6 @@
     "workspaceLayout": {
         "appsDir": "apps",
         "libsDir": "modules"
-    },
-    "tasksRunnerOptions": {
-        "default": {
-            "runner": "nx/tasks-runners/default",
-            "options": {
-                "cacheableOperations": [
-                    "build",
-                    "test",
-                    "lint",
-                    "package",
-                    "prepare",
-                    "build-storybook"
-                ]
-            }
-        }
     },
     "targetDependencies": {
         "build": [
@@ -77,9 +74,6 @@
                 "linter": "eslint"
             }
         }
-    },
-    "cli": {
-        "defaultCollection": "@nx/react"
     },
     "namedInputs": {
         "default": ["{projectRoot}/**/*", "sharedGlobals"],
