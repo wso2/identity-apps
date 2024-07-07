@@ -12,7 +12,7 @@
     ],
     "targets": {
         "build": {
-            "executor": "@nrwl/rollup:rollup",
+            "executor": "@nx/rollup:rollup",
             "outputs": [
                 "{options.outputPath}"
             ],
@@ -28,7 +28,7 @@
                     "esm",
                     "cjs"
                 ],
-                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "rollupConfig": "@nx/react/plugins/bundle-rollup",
                 "compiler": "babel",
                 "assets": [
                     {
@@ -56,7 +56,7 @@
             }
         },
         "storybook": {
-            "executor": "@nrwl/storybook:storybook",
+            "executor": "@nx/storybook:storybook",
             "options": {
                 "uiFramework": "@storybook/react",
                 "port": 6006,
@@ -71,7 +71,7 @@
             }
         },
         "build-storybook": {
-            "executor": "@nrwl/storybook:build",
+            "executor": "@nx/storybook:build",
             "outputs": ["{options.outputDir}"],
             "options": {
                 "uiFramework": "@storybook/react",

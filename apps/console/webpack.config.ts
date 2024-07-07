@@ -19,7 +19,7 @@
 import fs from "fs";
 import path from "path";
 import zlib, { BrotliOptions } from "zlib";
-import nxReactWebpackConfig from "@nrwl/react/plugins/webpack.js";
+import nxReactWebpackConfig from "@nx/react/plugins/webpack.js";
 import CompressionPlugin from "compression-webpack-plugin";
 import history from "connect-history-api-fallback";
 import CopyWebpackPlugin from "copy-webpack-plugin";
@@ -61,7 +61,6 @@ interface NxWebpackContextInterface {
     };
 }
 
-
 /**
  * Interface for Absolute Paths.
  */
@@ -71,7 +70,7 @@ interface AbsolutePaths {
     appTemplateInDistribution: string;
     authTemplateInSource: string;
     distribution: string;
-    entryPoints: string[],
+    entryPoints: string[];
     eslintCache: string;
     eslintrc: string;
     homeTemplateInDistribution: string;
@@ -83,7 +82,7 @@ interface AbsolutePaths {
 /**
  * Interface for Relative Paths.
  */
- interface RelativePaths {
+interface RelativePaths {
     distribution: string;
     homeTemplate: string;
     indexTemplate: string;
@@ -95,7 +94,6 @@ interface AbsolutePaths {
 }
 
 module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInterface) => {
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     nxReactWebpackConfig(config, {});
@@ -165,7 +163,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
     if (isProduction && !isDeployedOnExternalStaticServer) {
         config.plugins.push(
-            new HtmlWebpackPlugin({
+            (new HtmlWebpackPlugin({
                 authorizationCode: "<%=request.getParameter(\"code\")%>",
                 contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                     "pageEncoding=\"UTF-8\" %>",
@@ -225,11 +223,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     : "",
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
-            }) as unknown as WebpackPluginInstance
+            }) as unknown) as WebpackPluginInstance
         );
 
         config.plugins.push(
-            new HtmlWebpackPlugin({
+            (new HtmlWebpackPlugin({
                 authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
                 authorizationCode: "<%=Encode.forHtml(request.getParameter(\"code\"))%>",
                 basename: DeploymentConfig.appBaseName,
@@ -282,11 +280,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     : "",
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
-            }) as unknown as WebpackPluginInstance
+            }) as unknown) as WebpackPluginInstance
         );
     } else if (isPreAuthCheckEnabled) {
         config.plugins.push(
-            new HtmlWebpackPlugin({
+            (new HtmlWebpackPlugin({
                 basename: DeploymentConfig.appBaseName,
                 clientID: DeploymentConfig.clientID,
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
@@ -294,8 +292,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 inject: !isDeployedOnExternalStaticServer,
                 minify: false,
                 port: devServerPort,
-                publicPath: (isDeployedOnExternalStaticServer && process.env.APP_BASE_PATH)
-                    ? "/"+process.env.APP_BASE_PATH+"/"
+                publicPath: isDeployedOnExternalStaticServer && process.env.APP_BASE_PATH
+                    ? "/" + process.env.APP_BASE_PATH + "/"
                     : baseHref,
                 template:
                     isDeployedOnExternalStaticServer
@@ -303,11 +301,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                         : ABSOLUTE_PATHS.indexTemplateInSource,
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
-            }) as unknown as WebpackPluginInstance
+            }) as unknown) as WebpackPluginInstance
         );
 
         config.plugins.push(
-            new HtmlWebpackPlugin({
+            (new HtmlWebpackPlugin({
                 filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
                 hash: true,
                 inject: isDeployedOnExternalStaticServer,
@@ -316,11 +314,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 template: ABSOLUTE_PATHS.indexTemplateInSource,
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
-            }) as unknown as WebpackPluginInstance
+            }) as unknown) as WebpackPluginInstance
         );
     } else {
         config.plugins.push(
-            new HtmlWebpackPlugin({
+            (new HtmlWebpackPlugin({
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
                 hash: true,
                 minify: false,
@@ -328,15 +326,15 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 template: ABSOLUTE_PATHS.indexTemplateInSource,
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
-            }) as unknown as WebpackPluginInstance
+            }) as unknown) as WebpackPluginInstance
         );
     }
 
     isAnalyzeMode && config.plugins.push(
-        new BundleAnalyzerPlugin({
+        (new BundleAnalyzerPlugin({
             analyzerHost: "localhost",
             analyzerPort: analyzerPort
-        }) as unknown as WebpackPluginInstance
+        }) as unknown) as WebpackPluginInstance
     );
 
     isProfilingMode && config.plugins.push(
@@ -346,32 +344,32 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     );
 
     isProduction && config.plugins.push(
-        new CompressionPlugin({
+        (new CompressionPlugin({
             algorithm: "gzip",
             filename: "[path][base].gz",
             minRatio: 0.8,
             test: /\.js$|\.css$|\.html$|\.png$|\.svg$|\.jpeg$|\.jpg$/,
             threshold: 10240
-        }) as unknown as WebpackPluginInstance
+        }) as unknown) as WebpackPluginInstance
     );
 
     isProduction && config.plugins.push(
-        new CompressionPlugin({
+        (new CompressionPlugin({
             algorithm: "brotliCompress",
             compressionOptions: {
                 params: {
-                    [ zlib.constants.BROTLI_PARAM_QUALITY ]: 11
+                    [zlib.constants.BROTLI_PARAM_QUALITY]: 11
                 }
             } as BrotliOptions,
             filename: "[path][base].br",
             minRatio: 0.8,
             test: /\.(js|css|html|png|svg|jpeg|jpg)$/,
             threshold: 10240
-        }) as unknown as WebpackPluginInstance
+        }) as unknown) as WebpackPluginInstance
     );
 
     !isESLintPluginDisabled && config.plugins.push(
-        new ESLintPlugin({
+        (new ESLintPlugin({
             cache: true,
             cacheLocation: ABSOLUTE_PATHS.eslintCache,
             context: ABSOLUTE_PATHS.appSrc,
@@ -379,13 +377,13 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             extensions: [ "js", "jsx", "ts", "tsx" ],
             lintDirtyModulesOnly: true,
             overrideConfigFile: ABSOLUTE_PATHS.eslintrc
-        }) as unknown as WebpackPluginInstance
+        }) as unknown) as WebpackPluginInstance
     );
 
     config.plugins.push(
-        new webpack.ProvidePlugin({
+        (new webpack.ProvidePlugin({
             process: "process/browser"
-        }) as unknown as WebpackPluginInstance
+        }) as unknown) as WebpackPluginInstance
     );
 
     // Ignore all the locale files in moment.
@@ -528,7 +526,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
     config.optimization.minimizer = [
         ...config.optimization.minimizer,
-        new JsonMinimizerPlugin() as unknown as WebpackPluginInstance
+        (new JsonMinimizerPlugin() as unknown) as WebpackPluginInstance
     ];
 
     config.module.rules.unshift({
@@ -541,7 +539,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         }
     });
 
-    config.module.rules.push( {
+    config.module.rules.push({
         exclude: /node_modules/,
         test: /.*(i18n).*\.*(portals).*\.json$/i,
         type: "asset/resource"
@@ -676,8 +674,16 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 };
 
 const getThemeConfigs = (theme: string) => {
-    const THEME_DIR: string = path.resolve(__dirname,
-        "node_modules", "@wso2is", "theme", "dist", "lib", "themes", theme);
+    const THEME_DIR: string = path.resolve(
+        __dirname,
+        "node_modules",
+        "@wso2is",
+        "theme",
+        "dist",
+        "lib",
+        "themes",
+        theme
+    );
     const files: string[] = fs.readdirSync(THEME_DIR);
     const file: string = files ? files.filter((file: string) => file.endsWith(".min.css"))[ 0 ] : null;
 
@@ -693,7 +699,7 @@ const getI18nConfigs = () => {
 
     try {
         metaFiles = fs.readdirSync(I18N_DIR);
-    } catch(e) {
+    } catch (e) {
         // Log Infastructure Error.
     }
 
@@ -705,7 +711,6 @@ const getI18nConfigs = () => {
 };
 
 const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextInterface): RelativePaths => {
-
     // TODO: Remove supression once `isProduction` is actively used.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isProduction: boolean = env === "production";
@@ -729,7 +734,6 @@ const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextI
 };
 
 const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextInterface): AbsolutePaths => {
-
     const isProduction: boolean = env === "production";
     const RELATIVE_PATHS: RelativePaths = getRelativePaths(env, context);
 
@@ -790,13 +794,13 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
  * @returns A resolved baseHref.
  */
 const getBaseHref = (baseHrefFromProjectConf: string, baseHrefFromDeploymentConf: string): string => {
-
     // Try to check if they are the same value.
     // CONTEXT: `appBaseName` doesn't have leading or trailing slashes.
-    if (baseHrefFromProjectConf.includes(baseHrefFromDeploymentConf)
-        && baseHrefFromProjectConf.length > 2
-        && baseHrefFromProjectConf.length - 2 === baseHrefFromDeploymentConf.length) {
-
+    if (
+        baseHrefFromProjectConf.includes(baseHrefFromDeploymentConf) &&
+        baseHrefFromProjectConf.length > 2 &&
+        baseHrefFromProjectConf.length - 2 === baseHrefFromDeploymentConf.length
+    ) {
         return baseHrefFromProjectConf;
     }
 
@@ -811,7 +815,6 @@ const getBaseHref = (baseHrefFromProjectConf: string, baseHrefFromDeploymentConf
  * @returns Static file serve path.
  */
 const getStaticFileServePath = (baseHref: string) => {
-
     if (baseHref.length === 1) {
         return baseHref;
     }
@@ -826,7 +829,6 @@ const getStaticFileServePath = (baseHref: string) => {
  * @returns Modified Nx Webpack build context.
  */
 const rewriteContext = (context: NxWebpackContextInterface): NxWebpackContextInterface => {
-
     // For DEV environment.
     if (context.buildOptions?.baseHref) {
         context.buildOptions.baseHref = getBaseHref(context.buildOptions.baseHref, DeploymentConfig.appBaseName);

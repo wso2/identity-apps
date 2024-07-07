@@ -1,6 +1,15 @@
 {
+    "targetDefaults": {
+        "build": {
+            "dependsOn": ["^build"],
+            "inputs": ["production", "^production"]
+        },
+        "build-storybook": {
+            "inputs": ["default", "^production"]
+        }
+    },
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
-    "extends": "@nrwl/workspace/presets/npm.json",
+    "extends": "@nx/workspace/presets/npm.json",
     "npmScope": "wso2is",
     "workspaceLayout": {
         "appsDir": "apps",
@@ -45,12 +54,12 @@
         "defaultBase": "master"
     },
     "pluginsConfig": {
-        "@nrwl/js": {
+        "@nx/js": {
             "analyzeSourceFiles": true
         }
     },
     "generators": {
-        "@nrwl/react": {
+        "@nx/react": {
             "application": {
                 "style": "css",
                 "linter": "eslint",
@@ -66,7 +75,7 @@
         }
     },
     "cli": {
-        "defaultCollection": "@nrwl/react"
+        "defaultCollection": "@nx/react"
     },
     "namedInputs": {
         "default": ["{projectRoot}/**/*", "sharedGlobals"],
@@ -77,14 +86,5 @@
             "!{projectRoot}/.storybook/**/*",
             "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)"
         ]
-    },
-    "targetDefaults": {
-        "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"]
-        },
-        "build-storybook": {
-            "inputs": ["default", "^production"]
-        }
     }
 }

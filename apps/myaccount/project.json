@@ -1,4 +1,5 @@
 {
+    "name": "myaccount",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "apps/myaccount/src",
     "projectType": "application",
@@ -29,7 +30,7 @@
             }
         },
         "build-base": {
-            "executor": "@nrwl/webpack:webpack",
+            "executor": "@nx/webpack:webpack",
             "outputs": [
                 "{options.outputPath}"
             ],
@@ -136,7 +137,7 @@
             }
         },
         "serve-base": {
-            "executor": "@nrwl/web:dev-server",
+            "executor": "@nx/web:dev-server",
             "defaultConfiguration": "development",
             "options": {
                 "buildTarget": "myaccount:build-base",
@@ -183,6 +184,5 @@
                 "parallel": false
             }
         }
-    },
-    "name": "myaccount"
+    }
 }

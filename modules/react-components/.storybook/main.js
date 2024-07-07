@@ -44,19 +44,16 @@ module.exports = {
         "@storybook/addon-toolbars",
         "@storybook/addon-measure",
         "@storybook/addon-outline",
-        "@nrwl/react/plugins/storybook",
+        "@nx/react/plugins/storybook",
         "@storybook/addon-essentials"
     ],
-    core: {
-        builder: "webpack5"
-    },
     previewHead: head => `
         ${head}
         <link rel="stylesheet" href="${RELATIVE_PATHS.storybookDefaultTheme}" />
     `,
     staticDirs: [ path.resolve(__dirname, "..", STATIC_DIRECTORY_NAME) ],
     stories: [
-        "../src/**/*.stories.mdx",
+        "../src/**/*.mdx",
         "../src/**/*.stories.@(js|jsx|ts|tsx)"
     ],
     webpackFinal: async config => {
@@ -110,6 +107,19 @@ module.exports = {
         };
 
         return config;
+    },
+
+    framework: {
+        name: "@storybook/react-webpack5",
+        options: {}
+    },
+
+    docs: {
+        autodocs: true
+    },
+
+    typescript: {
+        reactDocgen: "react-docgen-typescript"
     }
 };
 

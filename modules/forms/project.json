@@ -1,4 +1,5 @@
 {
+    "name": "forms",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "modules/forms/src",
     "projectType": "library",
@@ -8,7 +9,7 @@
     "implicitDependencies": [ "core", "react-components" ],
     "targets": {
         "build": {
-            "executor": "@nrwl/rollup:rollup",
+            "executor": "@nx/rollup:rollup",
             "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "modules/forms/dist",
@@ -16,7 +17,7 @@
                 "project": "modules/forms/package.json",
                 "entryFile": "modules/forms/src/index.ts",
                 "external": ["react/jsx-runtime"],
-                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "rollupConfig": "@nx/react/plugins/bundle-rollup",
                 "compiler": "babel",
                 "format": [
                     "esm",
@@ -47,6 +48,5 @@
                 "parallel": false
             }
         }
-    },
-    "name": "forms"
+    }
 }

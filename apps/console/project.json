@@ -1,4 +1,5 @@
 {
+    "name": "console",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "apps/console/src",
     "projectType": "application",
@@ -30,7 +31,7 @@
             }
         },
         "build-base": {
-            "executor": "@nrwl/webpack:webpack",
+            "executor": "@nx/webpack:webpack",
             "outputs": [
                 "{options.outputPath}"
             ],
@@ -155,7 +156,7 @@
             }
         },
         "serve-base": {
-            "executor": "@nrwl/web:dev-server",
+            "executor": "@nx/web:dev-server",
             "defaultConfiguration": "development",
             "options": {
                 "buildTarget": "console:build-base",
@@ -202,6 +203,5 @@
                 "parallel": false
             }
         }
-    },
-    "name": "console"
+    }
 }
