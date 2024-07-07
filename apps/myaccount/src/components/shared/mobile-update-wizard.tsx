@@ -251,6 +251,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
      * @returns Content to display.
      */
     const stepContent = (stepToDisplay: number): JSX.Element => {
+
         if (isMultipleEmailAndMobileNumberEnabled) {
             switch (stepToDisplay) {
                 case 0:
@@ -275,7 +276,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const renderAnimatedMessage = (): JSX.Element => {
         return (
             <motion.div
-                className="vertical-align-center"
+                className="vertical-align-center animated-message"
                 initial={ { opacity: 0, y: 50 } }
                 animate={ { opacity: 1, y: 0 } }
                 exit={ { opacity: 0, y: 50 } }
@@ -480,7 +481,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                     </div>
                     <p>{ t("myAccount:components.mobileUpdateWizard.done") }</p>
                 </div>
-                <div className = "totp-verify-step-btn">
+                <div className = "button-group totp-verify-step-btn">
                     <Button
                         primary
                         className="totp-verify-action-button"

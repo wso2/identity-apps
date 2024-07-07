@@ -125,20 +125,23 @@
 .mobile-verification-content{
     display: flex;
     align-items: center;
-    height: 350px;
+
+    .animated-message {
+        height: 250px;
+    }
 
     .inside-content {
         display: flex;
         flex-direction: column;
         height: 100%;
-        padding: auto;
-    
+
         .modal-input {
-            flex: 1
+            padding: 12px 0;
+        }
+
+        .button-group {
+            padding: 12px 0;
         }
     
-        .modal-button-group {
-            flex: 1;
-        }
     }
 }
