@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -47,6 +47,13 @@ module.exports = {
         "@nx/react/plugins/storybook",
         "@storybook/addon-essentials"
     ],
+    docs: {
+        autodocs: true
+    },
+    framework: {
+        name: "@storybook/react-webpack5",
+        options: {}
+    },
     previewHead: head => `
         ${head}
         <link rel="stylesheet" href="${RELATIVE_PATHS.storybookDefaultTheme}" />
@@ -56,6 +63,9 @@ module.exports = {
         "../src/**/*.mdx",
         "../src/**/*.stories.@(js|jsx|ts|tsx)"
     ],
+    typescript: {
+        reactDocgen: "react-docgen-typescript"
+    },
     webpackFinal: async config => {
         config.plugins.push(
             new CopyWebpackPlugin({
@@ -107,19 +117,6 @@ module.exports = {
         };
 
         return config;
-    },
-
-    framework: {
-        name: "@storybook/react-webpack5",
-        options: {}
-    },
-
-    docs: {
-        autodocs: true
-    },
-
-    typescript: {
-        reactDocgen: "react-docgen-typescript"
     }
 };
 
