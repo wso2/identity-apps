@@ -27,7 +27,7 @@
                     "esm",
                     "cjs"
                 ],
-                "rollupConfig": "modules/react-components/rollup.config.cjs",
+                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
                 "compiler": "babel",
                 "assets": [
                     {
