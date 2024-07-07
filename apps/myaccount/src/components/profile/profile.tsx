@@ -2216,10 +2216,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (!showMobileUpdateWizard) {
             return false;
         }
-        const attributeToCheck: string = isMultipleEmailAndMobileNumberEnabled
-            ? MOBILE_NUMBERS_ATTRIBUTE : MOBILE_ATTRIBUTE;
 
-        return checkSchemaType(schema.name, attributeToCheck);
+        return schema.name === MOBILE_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE;
     };
 
     return (
@@ -2288,6 +2286,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                     }
                                                                     isMobileRequired={ schema.required }
                                                                     isMultipleEmailAndMobileNumberEnabled
+                                                                        = { isMultipleEmailAndMobileNumberEnabled }
                                                                 />
                                                             )
                                                             : null
