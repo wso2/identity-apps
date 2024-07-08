@@ -4139,9 +4139,9 @@ export const extensions: Extensions = {
         invite: {
             assignAdminUser: {
                 confirmationModal: {
-                    assertionHint: "Assign Administator role to the user.",
-                    header: "Assign Administator Role",
-                    message: "The user already exists as a collaborator. Do you want to assign them to Administator role?"
+                    assertionHint: "Assign Administrator role to the user.",
+                    header: "Assign Administrator Role",
+                    message: "The user already exists as a collaborator. Do you want to assign them to Administrator role?"
                 }
             },
             notifications: {
