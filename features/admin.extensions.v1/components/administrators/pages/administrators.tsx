@@ -89,7 +89,6 @@ import {
     TabProps
 } from "semantic-ui-react";
 import { administratorConfig } from "../../../configs/administrator";
-import { SCIMConfigs } from "../../../configs/scim";
 import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
 import { TenantInfo } from "../../tenants/models";
 import { getAssociationType } from "../../tenants/utils/tenants";
@@ -103,6 +102,7 @@ import {
     UserAccountTypes
 } from "../constants";
 import { UseOrganizationConfigType } from "../models/organization";
+import { isAdminUser, isOwner } from "../utils/administrators";
 import { AddAdministratorWizard } from "../wizard";
 
 /**
@@ -595,19 +595,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
 
         const clonedUserList: UserListInterface = cloneDeep(usersList);
         const processedUserList: UserBasicInterface[] = [];
-
-        /**
-         * Checks whether administrator role is present in the user.
-         */
-        const isAdminUser = (user: UserBasicInterface): boolean => {
-            return user?.roles?.some((role: UserRoleInterface) =>
-                role.display === administratorConfig.adminRoleName
-            );
-        };
-
-        const isOwner = (user: UserBasicInterface):boolean => {
-            return (user[ SCIMConfigs.scim.enterpriseSchema ]?.userAccountType === UserAccountTypes.OWNER);
-        };
 
         clonedUserList.Resources = clonedUserList?.Resources?.map((resource: UserBasicInterface) => {
             // Filter out users belong to groups named "Administrator"
