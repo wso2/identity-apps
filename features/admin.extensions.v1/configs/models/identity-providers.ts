@@ -114,8 +114,6 @@ export interface IdentityProviderConfig {
         trustedTokenIssuer: boolean;
         useTemplateExtensions: boolean;
     };
-    fidoTags: string[];
-    filterFidoTags: (tags: string[]) => string[];
     extendedSamlConfig: ExtendedSamlConfigInterface;
 }
 

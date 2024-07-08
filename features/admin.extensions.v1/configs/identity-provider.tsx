@@ -18,10 +18,7 @@
 
 import { ConnectionManagementConstants, ConnectionTabTypes } from "@wso2is/admin.connections.v1";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
-import {
-    AuthenticatorLabels,
-    IdentityProviderTabTypes
-} from "@wso2is/admin.identity-providers.v1/models";
+import { IdentityProviderTabTypes } from "@wso2is/admin.identity-providers.v1/models";
 import { I18n } from "@wso2is/i18n";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { ElementType, ReactElement, lazy } from "react";
@@ -237,14 +234,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         isAssertionEncryptionEnabled: true,
         responseAuthenticationContextClassEnabled: true,
         saml2WebSSOUserIdLocationEnabled: true
-    },
-    fidoTags: [
-        AuthenticatorLabels.PASSWORDLESS,
-        AuthenticatorLabels.PASSKEY
-    ],
-    filterFidoTags: (tags: string[]): string[] => {
-        return tags.filter((tag: string) =>
-            tag === AuthenticatorLabels.PASSWORDLESS || tag === AuthenticatorLabels.PASSKEY);
     },
     jitProvisioningSettings: {
         enableAssociateLocalUserField: {
