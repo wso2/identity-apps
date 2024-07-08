@@ -22,8 +22,8 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
 import {
-    BrandingPreferenceTypes,
     BrandingPreferenceAPIResponseInterface,
+    BrandingPreferenceTypes,
     BrandingSubFeatures,
     PreviewScreenType,
     PreviewScreenVariationType
@@ -499,15 +499,15 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 preference: brandingPreference,
                 resetAllCustomTextPreference: _deleteCustomTextPreference,
                 resetCustomTextField,
-                selectedApplication,
-                selectedLocale,
-                selectedScreen,
-                setBrandingMode,
-                setSelectedApplication,
                 resetSelectedPreviewScreenVariations: () : void => {
                     setSelectedPreviewScreenVariation(PreviewScreenVariationType.BASE);
                 },
+                selectedApplication,
+                selectedLocale,
+                selectedScreen,
                 selectedScreenVariation,
+                setBrandingMode,
+                setSelectedApplication,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
                 updateActiveTab: (tab: string) => {
                     // If the tab is the text tab, set the preview screen to common before changing the tab.
@@ -524,7 +524,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     const updatedValues: FormState<CustomTextInterface, CustomTextInterface> = cloneDeep(subscription);
 
                     if (updatedValues) {
-                        for (const key in resolvedCustomText?.preference?.text) {
+                        for (const key in resolvedCustomText?.preference?.text ?? {}) {
                             // Check if the key is missing in the values object
                             if (!(key in updatedValues?.values)) {
                                 updatedValues.values[key] = "";
