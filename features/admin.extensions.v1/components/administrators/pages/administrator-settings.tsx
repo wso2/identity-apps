@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { history, store } from "@wso2is/admin.core.v1";
 import {
     updateOrganizationConfigV2
@@ -33,7 +32,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Icon, Message } from "semantic-ui-react";
-import { updateOrganizationConfig, useOrganizationConfig } from "../api/organization";
 import { AdministratorConstants } from "../constants";
 import { OrganizationInterface, UseOrganizationConfigType } from "../models/organization";
 
@@ -60,12 +58,10 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
     const { ["data-componentid"]: testId } = props;
 
     const dispatch: Dispatch = useDispatch();
-    const { legacyAuthzRuntime }  = useAuthorization();
 
-    const useOrgConfig: UseOrganizationConfigType = legacyAuthzRuntime
-        ? useOrganizationConfig : useOrganizationConfigV2;
+    const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
     const updateOrgConfig: (isEnterpriseLoginEnabled: OrganizationInterface) =>
-        Promise<any> = legacyAuthzRuntime ? updateOrganizationConfig : updateOrganizationConfigV2;
+        Promise<any> = updateOrganizationConfigV2;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();

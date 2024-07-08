@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 
@@ -31,8 +30,8 @@ type ExpertModeIdPCreateWizardHelpPropsInterface = IdentifiableComponentInterfac
 /**
  * Help content for the custom IdP template creation wizard.
  *
- * @param {ExpertModeIdPCreateWizardHelpPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
+ * @param props - Props injected into the component.
+ * @returns Expert Mode IDP create wizard help content.
  */
 const ExpertModeIdPCreateWizardHelp: FunctionComponent<ExpertModeIdPCreateWizardHelpPropsInterface> = (
     props: ExpertModeIdPCreateWizardHelpPropsInterface
@@ -44,20 +43,6 @@ const ExpertModeIdPCreateWizardHelp: FunctionComponent<ExpertModeIdPCreateWizard
 
     const { t } = useTranslation();
 
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
-
-    /**
-     * Checks if the listing view defined in the config is the new connections view.
-     */
-    useEffect(() => {
-
-        if (useNewConnectionsView !== undefined) {
-            return;
-        }
-
-        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-    }, [ identityProviderConfig ]);
-
     return (
         <div data-componentid={ componentId }>
             <Heading as="h5">
@@ -68,11 +53,8 @@ const ExpertModeIdPCreateWizardHelp: FunctionComponent<ExpertModeIdPCreateWizard
             </Heading>
             <p>
                 {
-                    useNewConnectionsView
-                        ? t("authenticationProvider:templates.expert." +
-                            "wizardHelp.name.connectionDescription")
-                        : t("authenticationProvider:templates.expert." +
-                            "wizardHelp.name.idpDescription")
+                    t("authenticationProvider:templates.expert." +
+                        "wizardHelp.name.connectionDescription")
                 }
             </p>
 
@@ -83,11 +65,8 @@ const ExpertModeIdPCreateWizardHelp: FunctionComponent<ExpertModeIdPCreateWizard
             </Heading>
             <p>
                 {
-                    useNewConnectionsView
-                        ? t("authenticationProvider:templates.expert." +
-                            "wizardHelp.description.connectionDescription")
-                        : t("authenticationProvider:templates.expert." +
-                            "wizardHelp.description.idpDescription")
+                    t("authenticationProvider:templates.expert." +
+                        "wizardHelp.description.connectionDescription")
                 }
             </p>
         </div>

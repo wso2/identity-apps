@@ -66,13 +66,20 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
     ],
     connectorToggleName: {
-        "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
-        "account-recovery-username": ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
-        "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
-        "multiattribute.login.handler": ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
-        "organization-self-service": ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
-        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
+        [ServerConfigurationsConstants.ACCOUNT_RECOVERY]:
+            ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
+        [ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME]:
+            ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
+        [ServerConfigurationsConstants.ACCOUNT_LOCK_HANDLER]:
+            ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
+        [ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_HANDLER]:
+            ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
+        [ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE]:
+            ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
+        [ServerConfigurationsConstants.SELF_SIGNUP]:
+            ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
+        [ServerConfigurationsConstants.SSO_LOGIN_RECAPTCHA]:
+            ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
     },
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,

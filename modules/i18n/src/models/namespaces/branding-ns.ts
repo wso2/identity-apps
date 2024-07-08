@@ -78,7 +78,7 @@ export interface BrandingNS {
                     hint: string;
                     warning?: string;
                 };
-                "password.recovery.button": {
+                "password.recovery.button.email.link": {
                     hint: string;
                 };
                 "password.recovery.heading": {
@@ -139,6 +139,10 @@ export interface BrandingNS {
             label: string;
             placeholder: string;
         };
+        screenSelectVariationDropdown: {
+            label: string;
+            placeholder: string;
+        };
     };
     connectors: {
         multiAttributeLogin: string;
@@ -171,6 +175,12 @@ export interface BrandingNS {
         "password-recovery": string;
         "password-reset": string;
         "password-reset-success": string;
+    };
+    variations: {
+        "sms-otp": string;
+        "email-link": string;
+        "base": string;
+        "multi": string;
     };
     ai: {
         banner: {

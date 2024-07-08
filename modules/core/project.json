@@ -1,6 +1,6 @@
 {
+    "name": "core",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/core",
     "sourceRoot": "modules/core/src",
     "projectType": "library",
     "generators": {},
@@ -9,11 +9,8 @@
     "targets": {
         "build": {
             "executor": "nx:run-commands",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "outputs": ["{workspaceRoot}/modules/core/dist"],
             "options": {
-                "outputPath": "modules/core/dist",
                 "tsconfig": "modules/core/tsconfig.json",
                 "command": "pnpm build",
                 "cwd": "modules/core"

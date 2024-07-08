@@ -65,15 +65,13 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  * @param allowedScopes - `string` Set of allowed scopes.
  * @param organizationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
  * `modules/common/src/constants/organization-constants.ts`.
- * @param isLegacyRuntimeDisabled - `boolean` Is legacy runtime disabled. This is used to ensure backward compatibility.
  *
  * @returns `boolean` True is scopes are enough and false if not.
  */
 export const hasRequiredScopes = (
     scopes: string[],
     allowedScopes: string,
-    organizationType: string,
-    isLegacyRuntimeEnabled: boolean
+    organizationType: string
 ): boolean => {
     const isDefined: boolean = scopes && !isEmpty(scopes);
 
@@ -82,7 +80,7 @@ export const hasRequiredScopes = (
     }
 
     if (scopes instanceof Array) {
-        if (!isLegacyRuntimeEnabled && organizationType === OrganizationType.SUBORGANIZATION) {
+        if (organizationType === OrganizationType.SUBORGANIZATION) {
             /**
              * If the organization type is `SUBORGANIZATION`, the `internal_` scopes should be replaced with
              * `internal_org_` scopes.
@@ -108,7 +106,7 @@ export const hasRequiredScopes = (
             });
         }
 
-        if (isLegacyRuntimeEnabled ||
+        if (
             !organizationType ||
             organizationType === OrganizationType.SUPER_ORGANIZATION ||
             organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
@@ -137,8 +135,7 @@ export const hasRequiredScopes = (
 export const isPortalAccessGranted = <T = unknown>(
     featureConfig: T,
     allowedScopes: string,
-    organzationType?: string,
-    isLegacyRuntimeDisabled?: boolean
+    organzationType?: string
 ): boolean => {
     const isDefined: boolean = featureConfig && !isEmpty(featureConfig);
 
@@ -154,8 +151,7 @@ export const isPortalAccessGranted = <T = unknown>(
         if (hasRequiredScopes(
             feature?.scopes?.read,
             allowedScopes,
-            organzationType,
-            isLegacyRuntimeDisabled
+            organzationType
         )) {
             isAllowed = true;
 

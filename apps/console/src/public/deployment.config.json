@@ -145,7 +145,6 @@
         "storage": "webWorker"
     },
     "isSaas": false,
-    "legacyAuthzRuntime": false,
     "legacyMode": false,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
@@ -307,8 +306,7 @@
                 "disabledFeatures": [
                     "applications.loginFlow.ai",
                     "applications.loginFlow.legacyEditor",
-                    "applications.myaccount.saasMyaccountSettings",
-                    "applications.myaccount.simplifiedSettings"
+                    "applications.myaccount.saasMyaccountSettings"
                 ],
                 "enabled": true,
                 "scopes": {
@@ -1182,6 +1180,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
             "Console",

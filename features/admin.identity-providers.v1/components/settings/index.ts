@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,4 @@
  * under the License.
  */
 
-export * from "./idp-certificates";
-export * from "./general-settings";
-export * from "./authenticator-settings";
-export * from "./outbound-provisioning-settings";
-export * from "./advance-settings";
-export * from "./attribute-settings";
 export * from "./attribute-management";
-export * from "./connected-apps";
-export * from "./identity-provider-groups";

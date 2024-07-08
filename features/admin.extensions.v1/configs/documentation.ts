@@ -53,6 +53,14 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         }
                     }
                 },
+                applicationsSettings: {
+                    dcr: {
+                        authenticationRequired: {
+                            learnMore: undefined
+                        },
+                        learnMore: undefined
+                    }
+                },
                 editApplication: {
                     asgardeoTryitApplication: {
                         general: {
@@ -174,6 +182,12 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     smsOtp: undefined
                 },
                 newApplication: {
+                    customApplication: {
+                        learnMore: undefined
+                    },
+                    m2mApplication: {
+                        learnMore: undefined
+                    },
                     mobileApplication: {
                         learnMore: undefined
                     },

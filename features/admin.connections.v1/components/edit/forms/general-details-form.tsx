@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,6 +36,7 @@ import {
     GeneralDetailsFormValuesInterface,
     StrictConnectionInterface
 } from "../../../models/connection";
+import { getCertificateOptionsForTemplate } from "../../../utils/connection-template-utils";
 import { IdpCertificates } from "../settings";
 
 /**
@@ -131,7 +132,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         PEM: boolean;
         JWKS: boolean;
     } = useMemo(() => {
-        return identityProviderConfig.editIdentityProvider.getCertificateOptionsForTemplate(editingIDP?.templateId);
+        return getCertificateOptionsForTemplate(editingIDP?.templateId);
     }, []);
 
     // const [ modifiedName, setModifiedName ] = useState<string>(name);
@@ -239,7 +240,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const shouldShowCertificates = (): boolean => {
 
-        let showCertificate: boolean = identityProviderConfig.generalDetailsForm.showCertificate;
+        let showCertificate: boolean = true;
 
         if ((certificateOptionsForTemplate !== undefined
             && !certificateOptionsForTemplate.JWKS

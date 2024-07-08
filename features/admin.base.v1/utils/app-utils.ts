@@ -66,7 +66,6 @@ export const AppUtils: any = (function() {
     const tenantPrefixFallback: string = "t";
     const orgPrefixFallback: string = "o";
     const fallbackServerOrigin: string = "https://localhost:9443";
-    const appBaseForHistoryAPIFallback: string = "/";
     const urlPathForSuperTenantOriginsFallback: string = "";
     const isSaasFallback: boolean = false;
     const tenantResolutionStrategyFallback: string = "id_token";
@@ -84,16 +83,6 @@ export const AppUtils: any = (function() {
          * @returns App base name for the History API.
          */
         constructAppBaseNameForHistoryAPI: function() {
-            if (_config.legacyAuthzRuntime) {
-                if (_config.appBaseNameForHistoryAPI !== undefined) {
-                    return _config.appBaseNameForHistoryAPI;
-                }
-
-                return this.isSaas()
-                    ? appBaseForHistoryAPIFallback
-                    : this.getAppBaseWithTenantAndOrganization();
-            }
-
             return "/";
         },
 
@@ -105,14 +94,6 @@ export const AppUtils: any = (function() {
          * @returns App paths.
          */
         constructAppPaths: function(path: string) {
-            if (_config.legacyAuthzRuntime) {
-                if (!this.isSaas()) {
-                    return this.getAppBaseWithOrganization() + path;
-                }
-
-                return this.getAppBaseWithTenantAndOrganization() + path;
-            }
-
             return `${this.getAppBaseWithTenantAndOrganization()}${path}`;
         },
 
@@ -124,15 +105,6 @@ export const AppUtils: any = (function() {
          * @returns Redirect URLs.
          */
         constructRedirectURLs: function(url: string) {
-            if (_config.legacyAuthzRuntime) {
-                if (!this.isSaas()) {
-                    return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
-                }
-
-                return _config.clientOrigin + this.getOrganizationPath()
-                    + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
-            }
-
             let basePath: string = `${_config.clientOrigin}${this.getTenantPath(true)}`;
 
             if (basePath.includes(this.getSuperTenant())) {
@@ -171,12 +143,6 @@ export const AppUtils: any = (function() {
         * @returns App base with organization.
         */
         getAppBaseWithOrganization: function () {
-            if (_config.legacyAuthzRuntime) {
-                return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
-                    ? ("/" + _config.appBaseName)
-                    : "" }`;
-            }
-
             return `${this.getOrganizationPath()}`;
         },
 
@@ -197,12 +163,6 @@ export const AppUtils: any = (function() {
          * @returns App base with tenant and organization.
          */
         getAppBaseWithTenantAndOrganization: function() {
-            if (_config.legacyAuthzRuntime) {
-                return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
-                    ? ("/" + _config.appBaseName)
-                    : "" }`;
-            }
-
             let tenantPath: string = this.getTenantPath(true);
             const appBaseName: string = _config.appBaseName
                 ? `/${_config.appBaseName}`
@@ -216,20 +176,10 @@ export const AppUtils: any = (function() {
         },
 
         getClientId: function() {
-            if (_config.legacyAuthzRuntime) {
-                return (this.isSaas() || this.isSuperTenant())
-                    ? _config.clientID
-                    : _config.clientID + "_" + this.getTenantName();
-            }
-
             return _config.clientID;
         },
 
         getClientOriginWithTenant: function() {
-            if (_config.legacyAuthzRuntime) {
-                return _config.clientOrigin + this.getAppBaseWithTenant();
-            }
-
             return `${_config.clientOrigin}${this.getAppBaseWithTenantAndOrganization()}`;
         },
 
@@ -301,7 +251,6 @@ export const AppUtils: any = (function() {
                 getProfileInfoFromIDToken: _config.getProfileInfoFromIDToken,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
-                legacyAuthzRuntime: _config.legacyAuthzRuntime,
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
                 organizationName: this.getOrganizationName(),
@@ -353,19 +302,6 @@ export const AppUtils: any = (function() {
          * @returns Organization name.
          */
         getOrganizationName: function () {
-            if (_config.legacyAuthzRuntime) {
-                const path: string = window.location.pathname;
-                const pathChunks: string[] = path.split("/");
-
-                const orgPrefixIndex: number = pathChunks.indexOf(this.getOrganizationPrefix());
-
-                if (orgPrefixIndex !== -1) {
-                    return pathChunks[ orgPrefixIndex + 1 ];
-                }
-
-                return "";
-            }
-
             if (_config.organizationName) {
                 return _config.organizationName;
             }
@@ -416,10 +352,6 @@ export const AppUtils: any = (function() {
          * @returns the server base URL with the tenant name appended.
          */
         getServerOriginWithTenant: function(enforceOrgPath: boolean = true) {
-            if (_config.legacyAuthzRuntime) {
-                return _config.serverOrigin + this.getTenantPath(true);
-            }
-
             let tenantPath: string = this.getTenantPath(true);
 
             /**
@@ -490,20 +422,6 @@ export const AppUtils: any = (function() {
 
             const tenantDomain: string = this.getTenantName();
 
-            if (_config.legacyAuthzRuntime) {
-                if (this.getOrganizationName()) {
-                    return "";
-                }
-
-                // For non-SaaS apps, no need to have tenanted paths.
-                if (!this.isSaas()) {
-                    return "/";
-                }
-
-                return (tenantDomain !== "") ?
-                    "/" + this.getTenantPrefix() + "/" + tenantDomain : "";
-            }
-
             return (tenantDomain !== "")
                 ? `/${this.getTenantPrefix()}/${tenantDomain}`
                 : "";
@@ -530,16 +448,6 @@ export const AppUtils: any = (function() {
          */
         getTenantQualifiedAccountAppPath: function(pathname: string) {
             let url: string = "";
-
-            if (_config.legacyAuthzRuntime) {
-                if (this.getTenantPrefix() !== "" && this.getTenantName() !== "") {
-                    url = `${_config.accountAppOrigin}/${this.getTenantPrefix()}/${this.getTenantName()}`;
-                }
-
-                url += pathname;
-
-                return url;
-            }
 
             if (this.getTenantPrefix() !== "" && this.getTenantName() !== "") {
                 const tenantPath: string = this.getTenantPath(true)
@@ -576,7 +484,6 @@ export const AppUtils: any = (function() {
                 "accountAppOrigin": _args.accountAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "clientOrigin": window.location.origin,
                 "contextPath": _args.contextPath,
-                "legacyAuthzRuntime": _args.legacyAuthzRuntime || false,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
@@ -653,10 +560,6 @@ export const AppUtils: any = (function() {
          */
         resolveURLs: function() {
             const getReplaceServerOrigin = () => {
-                if (_config.legacyAuthzRuntime) {
-                    return _config.serverOrigin;
-                }
-
                 return _config.serverOrigin + this.getTenantPath(true);
             };
 

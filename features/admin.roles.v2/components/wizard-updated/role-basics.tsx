@@ -16,9 +16,12 @@
  * under the License.
  */
 
+// TODO: Change this back to Oxygen UI import once the unit test issues are sorted out.
+// Tracked with: https://github.com/wso2/oxygen-ui/issues/218
+import ListItemText from "@mui/material/ListItemText";
 import Alert from "@oxygen-ui/react/Alert";
-import ListItemText from "@oxygen-ui/react/ListItemText";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
 import { history, store } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
@@ -95,11 +98,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const noApplicationsAvailable: MutableRefObject<boolean> = useRef<boolean>(false);
 
-    /**
-     * Index of the roles tab.
-     */
-    const ROLES_TAB_INDEX: number = 5;
-
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
@@ -136,6 +134,10 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     }, [ applicationListFetchRequestError, roleAudience ]);
 
     useEffect(() => {
+        if (isApplicationListFetchRequestLoading) {
+            return;
+        }
+
         const options: DropdownProps[] = [];
 
         applicationList?.applications?.map((application: ApplicationListItemInterface) => {
@@ -176,7 +178,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         noApplicationsAvailable.current = (options.length === 0);
 
         setApplicationListOptions(options);
-    }, [ applicationList ]);
+    }, [ isApplicationListFetchRequestLoading ]);
 
     useEffect(() => {
         if (isFormError || isDisplayNoAppScopeApplicatioError) {
@@ -234,8 +236,12 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      */
     const navigateToApplicationEdit = (appId: string) =>
         history.push({
-            pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
-                .replace(":id", appId).replace(":tabName", `#tab=${ ROLES_TAB_INDEX }`)
+            pathname: AppConstants.getPaths()
+                .get("APPLICATION_EDIT")
+                .replace(":id", appId),
+            search: "?" +
+                ApplicationManagementConstants.IS_ROLES +
+                "=true"
         });
 
     /**

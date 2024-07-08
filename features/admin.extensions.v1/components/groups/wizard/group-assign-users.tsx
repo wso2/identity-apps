@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UIConstants, UserBasicInterface, UserListInterface, getUsersList } from "@wso2is/admin.core.v1";
+import { UserBasicInterface, UserListInterface, getUsersList } from "@wso2is/admin.core.v1";
 import { GroupsMemberInterface } from "@wso2is/admin.groups.v1/models";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
@@ -165,7 +165,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
     };
 
     useEffect(() => {
-        setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+        setListItemLimit(null);
         setUserListMetaContent(new Map<string, string>([
             [ "name", "name" ],
             [ "emails", "emails" ],
