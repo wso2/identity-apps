@@ -303,14 +303,10 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                     className="inside-content"
                 >
                     <div className="modal-input">
-                        <h5 className="text-center">
-                            { t("myAccount:components.mobileUpdateWizard.submitMobile.heading") }
-                        </h5>
                         <Field
                             autoFocus={ true }
                             name="mobileNumber"
-                            placeholder={ t("myAccount:components.profile.forms.generic.inputs." +
-                            "placeholder", { fieldName }) }
+                            label={ t("myAccount:components.mobileUpdateWizard.submitMobile.heading") }
                             required={ isMobileRequired }
                             requiredErrorMessage={ t(
                                 "myAccount:components.profile.forms.generic.inputs.validations.empty",
@@ -396,33 +392,31 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                 >
 
                     <div className="modal-input">
-                        <h5 className="text-center">
-                            { t("myAccount:components.mobileUpdateWizard.verifySmsOtp.label") }
-                        </h5>
                         <Field
                             name="code"
-                            placeholder={ t("myAccount:components.mobileUpdateWizard.verifySmsOtp.placeholder") }
+                            label={ t("myAccount:components.mobileUpdateWizard.verifySmsOtp.label") }
                             type="text"
                             required={ true }
                             requiredErrorMessage={ t("myAccount:components.mobileUpdateWizard.verifySmsOtp." +
-                            "requiredError") }
+                                "requiredError") }
+                            autoFocus={ true }
                         />
                     </div>
-                    <div className="button-group">
-                        <div className = "resend-button">
-                            <Segment textAlign="center" className="" basic>
-                                <p
-                                    className={ `resend-button ${isSubmitting ? "disabled" : ""}` }
-                                    onClick={ () => {
-                                        if (isSubmitting) return;
-                                        resendOTOCode();
-                                    }
-                                    }
-                                    data-testid={ `${ testId }-resend-button` }>
-                                    { t("myAccount:components." +
+                    <div>
+                        <Segment textAlign="center" className="" basic>
+                            <p
+                                className={ `link resend-button ${isSubmitting ? "disabled" : ""}` }
+                                onClick={ () => {
+                                    if (isSubmitting) return;
+                                    resendOTOCode();
+                                }
+                                }
+                                data-testid={ `${ testId }-resend-button` }>
+                                { t("myAccount:components." +
                                 "mobileUpdateWizard.verifySmsOtp.generate") }</p>
-                            </Segment>
-                        </div>
+                        </Segment>
+                    </div>
+                    <div className="button-group">
                         <div className = "totp-verify-step-btn">
                             <Button
                                 primary
@@ -502,7 +496,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
 
         return (
             <Modal
-                data-testid={ `${testId}-modal-${step}` }
+                data-testid={ `${testId}-modal` }
                 dimmer="blurring"
                 size="mini"
                 open={ wizardOpen }
