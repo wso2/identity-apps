@@ -6,6 +6,8 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
+        "@wso2is/admin.applications.v1": "^2.21.11",
+        "@wso2is/admin.core.v1": "^2.21.11",
         "@wso2is/admin.template-core.v1": "^1.0.0"
     },
     "devDependencies": {
