@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.8
+
+### Patch Changes
+
+- [#6539](https://github.com/wso2/identity-apps/pull/6539) [`7cdf956752c138f47a65c2988a0b67add5c27483`](https://github.com/wso2/identity-apps/commit/7cdf956752c138f47a65c2988a0b67add5c27483) Thanks [@Avarjana](https://github.com/Avarjana)! - Add SSO authenticator logo
+
 ## 2.4.7
 
 ### Patch Changes
