@@ -845,4 +845,11 @@ export class BrandingPreferencesConstants {
             }
         }
     };
+
+    public static readonly APP_WISE_BRANDING_FEATURE_TAG: string = "branding.applicationLevelBranding";
+}
+
+export enum BrandingModes {
+    APPLICATION = "application",
+    ORGANIZATION = "organization"
 }

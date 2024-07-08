@@ -1368,12 +1368,14 @@ export const extensions: Extensions = {
                 header: "Danger Zone",
                 revertBranding: {
                     actionTitle: "Revert",
+                    disableHint: "Please select an application from the list above to revert the branding preferences.",
                     header: "Revert to default",
                     subheader: "Once the branding preferences are reverted, they can't be recovered and your " +
                         "users will see {{ productName }}'s default branding."
                 },
                 unpublishBranding: {
                     actionTitle: "Unpublish",
+                    disableHint: "Please select an application from the list above to unpublish the branding preferences.",
                     header: "Unpublish branding preferences",
                     subheader: "You can temporarily switch to {{ productName }}'s default branding by unpublishing. You can always switch back by saving your branding preferences again."
                 }
@@ -1974,7 +1976,15 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
+                application: "Application",
+                applicationBrandingtitle: "Application Branding",
+                applicationBrandingDescription: "Customize consumer-facing user interfaces of applications.",
+                applicationListWarning: "Please select an application from the list above to customize the branding preferences.",
+                backButtonText: "Go back to Application Settings",
                 description: "Customize consumer-facing user interfaces of applications in your organization.",
+                organization: "Organization",
+                organizationBrandingtitle: "Organization Branding",
+                selectApplication: "Select Application",
                 title: "Branding"
             },
             pageResolution: {

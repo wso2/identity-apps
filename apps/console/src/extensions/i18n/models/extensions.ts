@@ -1171,11 +1171,13 @@ export interface Extensions {
                 header: string;
                 revertBranding: {
                     actionTitle: string;
+                    disableHint: string;
                     header: string;
                     subheader: string;
                 };
                 unpublishBranding: {
                     actionTitle: string;
+                    disableHint: string;
                     header: string;
                     subheader: string;
                 };
@@ -1747,7 +1749,15 @@ export interface Extensions {
                 };
             };
             pageHeader: {
+                application: string;
+                applicationBrandingtitle: string;
+                applicationBrandingDescription: string;
+                applicationListWarning: string;
+                backButtonText: string;
                 description: string;
+                organization: string;
+                organizationBrandingtitle: string;
+                selectApplication: string;
                 title: string;
             };
             pageResolution: {

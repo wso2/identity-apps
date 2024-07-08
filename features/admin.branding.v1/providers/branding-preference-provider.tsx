@@ -23,6 +23,7 @@ import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/mo
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
 import {
     BrandingPreferenceAPIResponseInterface,
+    BrandingPreferenceTypes,
     BrandingSubFeatures,
     PreviewScreenType,
     PreviewScreenVariationType
@@ -47,9 +48,9 @@ import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-pref
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
 import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
-import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import AuthenticationFlowContext from "../context/branding-preference-context";
+import BrandingPreferenceContext from "../context/branding-preference-context";
 import {
     BASE_DISPLAY_VARIATION,
     CustomTextConfigurationModes,
@@ -112,10 +113,21 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const [ isCustomTextPreferenceConfigured, setIsCustomTextPreferenceConfigured ] = useState<boolean>(true);
     const [ brandingPreference, setBrandingPreference ] = useState<BrandingPreferenceAPIResponseInterface>(null);
 
+    const [ selectedApplication, setSelectedApplication ] = useState<string>(null);
+    const [ brandingMode, setBrandingMode ] = useState<BrandingModes>(BrandingModes.ORGANIZATION);
+
+    const resolvedName: string = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
+        ? selectedApplication : tenantDomain;
+    const resolvedType: BrandingPreferenceTypes = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
+        ? BrandingPreferenceTypes.APP : BrandingPreferenceTypes.ORG;
+
     const {
         data: originalBrandingPreference,
         error: brandingPreferenceFetchRequestError
-    } = useGetBrandingPreferenceResolve(tenantDomain);
+    } = useGetBrandingPreferenceResolve(
+        resolvedName,
+        resolvedType
+    );
 
     const {
         data: customTextCommons
@@ -418,10 +430,11 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     };
 
     return (
-        <AuthenticationFlowContext.Provider
+        <BrandingPreferenceContext.Provider
             value={ {
                 activeCustomTextConfigurationMode,
                 activeTab,
+                brandingMode,
                 customText: customTextFormSubscription?.values ?? resolvedCustomText?.preference?.text,
                 customTextDefaults: customTextFallbacks?.preference?.text,
                 customTextFormSubscription: customTextFormSubscription ?? {
@@ -489,9 +502,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 resetSelectedPreviewScreenVariations: () : void => {
                     setSelectedPreviewScreenVariation(PreviewScreenVariationType.BASE);
                 },
+                selectedApplication,
                 selectedLocale,
                 selectedScreen,
                 selectedScreenVariation,
+                setBrandingMode,
+                setSelectedApplication,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
                 updateActiveTab: (tab: string) => {
                     // If the tab is the text tab, set the preview screen to common before changing the tab.
@@ -527,7 +543,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
             } }
         >
             { children }
-        </AuthenticationFlowContext.Provider>
+        </BrandingPreferenceContext.Provider>
     );
 };
 

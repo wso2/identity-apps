@@ -19,7 +19,6 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants";
 import { store } from "@wso2is/admin.core.v1/store";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceInterface,
@@ -55,14 +54,11 @@ export const updateBrandingPreference = (
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): Promise<BrandingPreferenceAPIResponseInterface> => {
-    const tenantDomain: string = store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION
-        ? store.getState()?.organization?.organization?.id
-        : name;
 
     const requestConfig: AxiosRequestConfig = {
         data: {
             locale,
-            name: tenantDomain,
+            name,
             preference,
             type
         },
@@ -113,10 +109,6 @@ export const deleteBrandingPreference = (
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): Promise<null | IdentityAppsApiException> => {
-    const tenantDomain: string = store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION
-        ? store.getState()?.organization?.organization?.id
-        : name;
-
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -125,7 +117,7 @@ export const deleteBrandingPreference = (
         method: HttpMethods.DELETE,
         params: {
             locale,
-            name: tenantDomain,
+            name,
             type
         },
         url: store.getState().config.endpoints.brandingPreference
