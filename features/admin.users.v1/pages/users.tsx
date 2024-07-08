@@ -35,6 +35,7 @@ import {
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
@@ -152,7 +153,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>([]);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
-    const [ isUsersNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isUsersNextPageAvailable ] = useState<boolean>(undefined);
     const [ selectedAddUserType ] = useState<UserAccountTypes>(UserAccountTypes.USER);
     const [ userType, setUserType ] = useState<string>();
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig.primaryUserstoreName);
@@ -165,8 +167,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ showMultipleInviteConfirmationModal, setShowMultipleInviteConfirmationModal ] = useState<boolean>(false);
     const [ connectorConfigLoading, setConnecterConfigLoading ] = useState<boolean>(false);
     const [ showInviteParentUserWizard, setShowInviteParentUserWizard ] = useState<boolean>(false);
-
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -703,11 +703,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 totalPages={ resolveTotalPages() }
                 totalListSize={ usersList?.totalResults }
                 paginationOptions={ {
+                    disableNextButton: !isNextPageAvailable,
                     showItemsPerPageDropdown:
-                        (
-                            selectedUserStore === userstoresConfig.primaryUserstoreName
-                            && isSAASDeployment
-                        )
+                        !userConfig?.hiddenItemsPerPageRemoteUserStoreDropdown
+                        || selectedUserStore === userstoresConfig.primaryUserstoreName
                 } }
                 isLoading={ isUserListFetchRequestLoading }
             >

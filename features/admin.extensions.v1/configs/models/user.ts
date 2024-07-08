@@ -33,4 +33,5 @@ export interface User {
     enableAdminPrivilegeRevokeOption: boolean;
     enableUsernameValidation: boolean;
     userProfileSchema: string;
+    hiddenItemsPerPageRemoteUserStoreDropdown: boolean;
 }
