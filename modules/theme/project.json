@@ -1,4 +1,5 @@
 {
+    "name": "theme",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "modules/theme/src",
     "projectType": "library",
@@ -8,11 +9,8 @@
     "targets": {
         "build": {
             "executor": "nx:run-commands",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "outputs": ["{workspaceRoot}/modules/theme/dist"],
             "options": {
-                "outputPath": "modules/theme/dist",
                 "tsconfig": "modules/theme/tsconfig.json",
                 "command": "pnpm build",
                 "cwd": "modules/theme"
@@ -34,6 +32,5 @@
                 "parallel": false
             }
         }
-    },
-    "name": "theme"
+    }
 }

@@ -17,10 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { Popup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Divider, Label, List, Message } from "semantic-ui-react";
+import { Field } from "../components/syntactic-sugars";
+import { Forms } from "../forms";
+import { FormValue } from "../models/forms";
+import { useTrigger } from "../utils/use-trigger";
 
 /**
  * Type of key-value object
