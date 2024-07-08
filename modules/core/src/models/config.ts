@@ -226,6 +226,10 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      */
     productVersionConfig?: ProductVersionConfigInterface;
     /**
+     * Legacy mode
+     */
+    legacyMode?: LegacyModeInterface;
+    /**
      * Theme configs.
      */
     theme: AppThemeConfigInterface;

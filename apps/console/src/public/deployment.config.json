@@ -1143,6 +1143,13 @@
         "isSignatureValidationCertificateAliasEnabled": false,
         "isTrustedAppConsentRequired": false,
         "isXacmlConnectorEnabled": false,
+        "legacyMode": {
+            "applicationListSystemApps": false,
+            "applicationSystemAppsSettings": false,
+            "certificates": false,
+            "roleMapping": false,
+            "secretsManagement": false
+        },
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",

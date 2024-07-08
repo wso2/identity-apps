@@ -69,6 +69,7 @@ import FullScreenLayout from "../layouts/full-screen-layout";
 
 export const getAppViewRoutes = (): RouteInterface[] => {
 
+    const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
@@ -1223,7 +1224,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("CONSOLE_SETTINGS"),
             protected: true,
             // hide console settings from the side panel until it is onboarded.
-            showOnSidePanel: false
+            showOnSidePanel: !legacyMode?.applicationListSystemApps
         },
         // the following routes are not onboarded to the side panel
         {

@@ -32,6 +32,7 @@ import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
+    UIConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
@@ -152,6 +153,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
     const { organizationType } = useGetCurrentOrganizationType();
+
+    const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ connectedApps, setConnectedApps ] = useState<ConnectedAppInterface[]>();
     const [ filterSelectedApps, setFilterSelectedApps ] = useState<ConnectedAppInterface[]>([]);
@@ -372,23 +375,23 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         appName: string
     ): void => {
         if (isSetStrongerAuth) {
-            const isConsoleSettingsEnabled: boolean = false;
+            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
+                if (appName === ApplicationManagementConstants.CONSOLE_APP_NAME) {
+                    history.push({
+                        hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
+                        pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
+                    });
 
-            if (appName === ApplicationManagementConstants.CONSOLE_APP_NAME && isConsoleSettingsEnabled) {
-                history.push({
-                    hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
-                    pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
-                });
+                    return;
+                } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
+                    history.push({
+                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                        search: `#tab=${
+                            ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB }`
+                    });
 
-                return;
-            } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
-                history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
-                    search: `#tab=${
-                        ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB }`
-                });
-
-                return;
+                    return;
+                }
             }
 
 
@@ -402,27 +405,26 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 state: { id: editingIDP.id, name: editingIDP.name }
             });
         } else {
-            const isConsoleSettingsEnabled: boolean = false;
+            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
+                if (appName === ApplicationManagementConstants.CONSOLE_APP_NAME) {
+                    history.push({
+                        hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
+                        pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
+                    });
 
+                    return;
+                } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
+                    history.push({
+                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                        search: `#tab=${
+                            organizationType === OrganizationType.SUBORGANIZATION
+                                ? ApplicationManagementConstants.SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB
+                                : ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB
+                        }`
+                    });
 
-            if (appName === ApplicationManagementConstants.CONSOLE_APP_NAME && isConsoleSettingsEnabled) {
-                history.push({
-                    hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
-                    pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
-                });
-
-                return;
-            } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
-                history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
-                    search: `#tab=${
-                        organizationType === OrganizationType.SUBORGANIZATION
-                            ? ApplicationManagementConstants.SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB
-                            : ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB
-                    }`
-                });
-
-                return;
+                    return;
+                }
             }
 
             history.push({

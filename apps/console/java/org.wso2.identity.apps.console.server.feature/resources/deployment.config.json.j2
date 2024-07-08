@@ -1820,6 +1820,14 @@
         {% if console.ui.administrator_role_display_name is defined %}
         "administratorRoleDisplayName": "{{ console.ui.administrator_role_display_name }}",
         {% endif %}
+        "legacyMode": {
+            "applicationListSystemApps": true,
+            "applicationSystemAppsSettings": true,
+            "approvals": true,
+            "certificates": true,
+            "roleMapping": true,
+            "secretsManagement": true,
+        },
         "theme": {
             "name": "{{ console.theme }}"
         }
