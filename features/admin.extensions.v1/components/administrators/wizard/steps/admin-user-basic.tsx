@@ -429,8 +429,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                                             // Check whether username is a valid email.
                                             // check username validity against userstore regex
                                             if (value && (!FormValidation.email(value) || !SharedUserStoreUtils
-                                                .validateInputAgainstRegEx(value, window["AppUtils"].getConfig().extensions
-                                                    .collaboratorUsernameRegex))) {
+                                                .validateInputAgainstRegEx(value, window["AppUtils"]
+                                                    .getConfig().extensions.collaboratorUsernameRegex))) {
                                                 validation.isValid = false;
                                                 validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
                                             }
