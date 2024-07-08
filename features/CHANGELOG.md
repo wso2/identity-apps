@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.21.21
+
+### Patch Changes
+
+- [#6235](https://github.com/wso2/identity-apps/pull/6235) [`90fb2f6f065d391e2fa4f68b7ea0c466a1ed469e`](https://github.com/wso2/identity-apps/commit/90fb2f6f065d391e2fa4f68b7ea0c466a1ed469e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove App Insights
+
 ## 2.21.20
 
 ### Patch Changes
