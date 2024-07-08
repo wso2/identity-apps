@@ -205,7 +205,7 @@
         Map<String, Object> authParamMap = ((AuthenticationRequestWrapper) request).getAuthParams();
 
         // Remove `waitingConfigs` auth param from the query map since `internalWait` prompt related auth params
-        // doesn't need to add to the multi-option uri.
+        // doesn't need to be added to the multi-option uri.
         if (authParamMap != null && !authParamMap.isEmpty() && queryParamMap != null && !queryParamMap.isEmpty()) {
             if (authParamMap.containsKey("waitingConfigs") && authParamMap.containsKey("waitingType")) {
                 queryParamMap.remove("waitingConfigs");
