@@ -287,7 +287,9 @@
 
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
-    } else if (isMultiAttributeLoginEnabledInTenant) {
+    }
+
+    if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
             usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
             usernamePlaceHolder = "enter.your.identifier";

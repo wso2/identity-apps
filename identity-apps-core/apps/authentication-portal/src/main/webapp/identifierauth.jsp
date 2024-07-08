@@ -362,7 +362,7 @@
 </form>
 <%
 if (!StringUtils.equals("CONSOLE",clientId)
-        && !StringUtils.equals("MY_ACCOUNT",clientId) && isFederatedOptionsAvailable && !isMagicLink &&
+        && !StringUtils.equals("MY_ACCOUNT",clientId) && !isMagicLink &&
         isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
         String urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
 %>

@@ -27,7 +27,6 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { SubscriptionContext } from "@wso2is/admin.extensions.v1/components/subscription/contexts/subscription-context";
@@ -131,8 +130,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const { organizationType } = useGetCurrentOrganizationType();
 
-    const { legacyAuthzRuntime }  = useAuthorization();
-
     const [ anchorHelpMenu, setAnchorHelpMenu ] = useState<null | HTMLElement>(null);
 
     const openHelpMenu: boolean = Boolean(anchorHelpMenu);
@@ -181,24 +178,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         // If the organizations feature is disabled, do not show the org switcher.
         if (!UIConfig?.legacyMode?.organizations) {
             return false;
-        }
-
-        if (legacyAuthzRuntime) {
-            return (
-                isOrganizationManagementEnabled &&
-                // The `tenantDomain` takes the organization id when you log in to a sub-organization.
-                // So, we cannot use `tenantDomain` to check
-                // if the user is logged in to a non-super-tenant account reliably.
-                // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
-                (tenantDomain === AppConstants.getSuperTenant() ||
-                    window[ "AppUtils" ].getConfig().organizationName ||
-                    organizationConfigs.showSwitcherInTenants) &&
-                hasRequiredScopes(
-                    feature?.organizations,
-                    feature?.organizations?.scopes?.read,
-                    scopes
-                )
-            );
         }
 
         return (
@@ -369,14 +348,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             return false;
         }
 
-        // Show the app switch button only if the user is logged in to the
-        // user resident organization.
-        if (!legacyAuthzRuntime) {
-            return (!userOrganizationID
-                || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName);
-        }
-
-        return true;
+        return (
+            !userOrganizationID
+            || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName
+        );
     };
 
     const LOGO_IMAGE = () => {

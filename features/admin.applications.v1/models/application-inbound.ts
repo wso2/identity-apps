@@ -90,6 +90,11 @@ export interface OAuth2PKCEConfigurationInterface {
     supportPlainTransformAlgorithm?: boolean;
 }
 
+export interface HybridFlowConfigurationInterface {
+    enable?: boolean;
+    responseType?: string;
+}
+
 /**
  * OIDC client authentication related properties.
  */
@@ -176,6 +181,7 @@ export interface OIDCDataInterface {
     scopeValidators?: string[];
     subject?: SubjectConfigInterface;
     isFAPIApplication?: boolean;
+    hybridFlow?: HybridFlowConfigurationInterface;
 }
 
 /**

@@ -36,7 +36,7 @@ git fetch upstream
 
 For example, if you are planning to send a hotfix for `@wso2is/console` v2.19.9 version, below is how you get to create the hotfix branch.
 
-![create-hotfix-branch](https://i.imgur.com/YQBtOsm.png)
+![create-hotfix-branch](https://i.imgur.com/NhRRXax.png)
 
 2. Fetch the upstream repo branches to your local workspace, and create a new branch from the hotfix branch. This new branch is referred to as `hotfix_feature` throughout this document.
 

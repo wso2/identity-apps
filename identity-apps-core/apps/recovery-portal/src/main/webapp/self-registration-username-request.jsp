@@ -91,6 +91,7 @@
     String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
     String SSO_AUTHENTICATOR = "OrganizationAuthenticator";
+    String SSO_AUTHENTICATOR_NAME = "SSO";
     String commonauthURL = "../commonauth";
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -549,6 +550,10 @@
                         String EXTERNAL_CONNECTION_PREFIX = "sign in with";
                         if (StringUtils.startsWithIgnoreCase(name, EXTERNAL_CONNECTION_PREFIX)) {
                             displayName = name.substring(EXTERNAL_CONNECTION_PREFIX.length());
+                        }
+                        // If IdP name is "SSO", need to handle as special case.
+                        if (StringUtils.equalsIgnoreCase(name, SSO_AUTHENTICATOR_NAME)) {
+                            imageURL = "libs/themes/default/assets/images/identity-providers/sso.svg";
                         }
 
                         if (StringUtils.equals(type,GOOGLE_AUTHENTICATOR)) {
@@ -1517,31 +1522,23 @@
             %>
 
             // Dynamically render the configured authenticators.
-            var hasLocal = false;
             var hasFederated = false;
             var isBasicForm = true;
             var isSSOLoginTheOnlyAuthenticatorConfigured = <%=isSSOLoginTheOnlyAuthenticatorConfigured%>;
             try {
-                var hasLocal=JSON.parse(<%=isLocal%>);
                 var hasFederated = JSON.parse(<%=isFederated%>);
                 var isBasicForm = JSON.parse(<%=isBasic%>);
             } catch(error) {
                 // Do nothing.
             }
 
-            if (hasLocal & hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
+            if (hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
                 $("#continue-with-email").show();
-                $("#federated-authenticators").show();
-            } else if (hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
                 $("#federated-authenticators").show();
             } else {
                 $("#continue-with-email").hide();
                 $("#federated-authenticators").hide();
-                if (hasLocal || isBasicForm) {
-                    $("#basic-form").show();
-                } else {
-                    $("#basic-form").hide();
-                }
+                $("#basic-form").show();
             }
 
             var container;

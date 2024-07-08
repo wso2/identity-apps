@@ -165,9 +165,6 @@
     {% if console.get_profile_info_from_id_token is defined %}
     "getProfileInfoFromIDToken": {{ console.get_profile_info_from_id_token }},
     {% endif %}
-    {% if legacy_authz_runtime.enable is defined %}
-    "legacyAuthzRuntime": {{ legacy_authz_runtime.enable }},
-    {% endif %}
     {% if legacy_mode.enabled is defined %}
     "legacyMode": {{ legacy_mode.enabled }},
     {% endif %}

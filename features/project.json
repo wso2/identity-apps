@@ -1,5 +1,6 @@
 {
-    "root": "features/",
+    "name": "features",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
     "prefix": "@wso2is",
     "implicitDependencies": [
         "access-control",

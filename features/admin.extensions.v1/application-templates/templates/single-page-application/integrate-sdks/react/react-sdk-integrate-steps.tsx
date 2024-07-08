@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -84,13 +84,7 @@ export const ReactSDKIntegrateSteps: FunctionComponent<ReactSDKIntegrateStepsPro
         return (
             <>
                 <Text>
-                    Run the following command to install <Code>@asgardeo/auth-react</Code> &{ " " }
-                    <Code>react-router-dom</Code> from the npm registry.
-                </Text>
-                <Text>
-                    <strong>Note: </strong>The <Code>react-router-dom</Code> package is a{ " " }
-                    <Code>peer-dependency</Code> of the SDK and it is required to be installed for the SDK to{ " " }
-                    work. We are working on making it optional.
+                    Run the following command to install <Code>@asgardeo/auth-react</Code> from the npm registry.
                 </Text>
                 <div className="code-segment">
                     <CodeEditor
@@ -192,7 +186,7 @@ export const ReactSDKIntegrateSteps: FunctionComponent<ReactSDKIntegrateStepsPro
 
                 <Text spaced="top">
                     Go to our <DocumentationLink
-                        link={ SDKMeta.react.links.authClientConfig }
+                        link={ SDKMeta.react.links.reactClientConfig }
                         showEmptyLinkText
                     >documentation</DocumentationLink> to learn{ " " }
                     more about other configurations supported by the SDK.
@@ -241,7 +235,7 @@ export const ReactSDKIntegrateSteps: FunctionComponent<ReactSDKIntegrateStepsPro
                 </div>
 
                 <Text spaced="top">
-                    And then inside your components, you can access the context as follows. 
+                    And then inside your components, you can access the context as follows.
                 </Text>
 
                 <div className="code-segment">
@@ -320,13 +314,11 @@ export const ReactSDKIntegrateSteps: FunctionComponent<ReactSDKIntegrateStepsPro
         return (
             <>
                 <Text>
-                    If your application needs routing, the SDK provides a component called{ " " }
-                    <Code>SecureRoute</Code> which is implemented with <Code>react-router-dom</Code>.{ " " }
-                    This component allows you to easily secure your routes with Asgardeo.
+                    The Asgardeo React SDK provides several options to secure routes in your application.{ " " }
                 </Text>
                 <Text>
                     For more information, read our <DocumentationLink
-                        link={ SDKMeta.react.links.secureRoute }
+                        link={ SDKMeta.react.links.routingOptions }
                         showEmptyLinkText>documentation</DocumentationLink>. And also checkout the <DocumentationLink
                         link={ SDKMeta.react.samples.routing.repository }
                         showEmptyLinkText>sample</DocumentationLink>{ " " }

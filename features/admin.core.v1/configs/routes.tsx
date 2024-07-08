@@ -31,7 +31,7 @@ import {
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
 import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
-import { commonConfig, identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "@wso2is/admin.layouts.v1";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
@@ -69,7 +69,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
-    const legacyAuthzRuntime: boolean = window["AppUtils"]?.getConfig()?.legacyAuthzRuntime;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -239,6 +238,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("APPLICATION_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("../../admin.applications.v1/pages/applications-settings")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "applicationsSettings",
+                    name: "Applications Settings",
+                    path: AppConstants.getPaths().get("APPLICATIONS_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() => import("@wso2is/admin.applications.v1/pages/applications")),
@@ -349,9 +360,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: <NodesIcon />
             },
             id: "identityProviders",
-            name: identityProviderConfig?.useNewConnectionsView
-                ? "console:develop.features.sidePanel.authenticationProviders"
-                : "console:develop.features.sidePanel.identityProviders",
+            name: "console:develop.features.sidePanel.authenticationProviders",
             order: 3,
             path: AppConstants.getPaths().get("IDP"),
             protected: true,
@@ -1415,71 +1424,37 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         );
     }
 
-    if (legacyAuthzRuntime) {
-        defaultRoutes.push(
+    defaultRoutes.push({
+        category: "extensions:manage.sidePanel.categories.userManagement",
+        children: [
             {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() =>
-                            import("@wso2is/admin.extensions.v1/components/groups/pages/groups-edit")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "groupsEdit",
-                        name: "console:manage.features.sidePanel.editGroups",
-                        path: AppConstants.getPaths().get("GROUP_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("@wso2is/admin.extensions.v1/components/groups/pages/groups")),
+                component: lazy(() =>
+                    import("@wso2is/admin.groups.v1/pages/group-edit")
+                ),
                 exact: true,
                 icon: {
-                    icon: <UserGroupIcon className="icon" fill="black" />
+                    icon: getSidePanelIcons().childIcon
                 },
-                id: "groups",
-                name: "Groups",
-                order: 6,
-                path: AppConstants.getPaths().get("GROUPS"),
+                id: "groupsEdit",
+                name: "console:manage.features.sidePanel.editGroups",
+                path: AppConstants.getPaths().get("GROUP_EDIT"),
                 protected: true,
-                showOnSidePanel: true
+                showOnSidePanel: false
             }
-        );
-    } else {
-        defaultRoutes.push({
-            category: "extensions:manage.sidePanel.categories.userManagement",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.groups.v1/pages/group-edit")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "groupsEdit",
-                    name: "console:manage.features.sidePanel.editGroups",
-                    path: AppConstants.getPaths().get("GROUP_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => import("@wso2is/admin.groups.v1/pages/groups")),
-            exact: true,
-            icon: {
-                icon: <UserGroupIcon className="icon" fill="black" />
-            },
-            id: "groups",
-            name: "Groups",
-            order: 6,
-            path: AppConstants.getPaths().get("GROUPS"),
-            protected: true,
-            showOnSidePanel: true
-        });
-    }
+        ],
+        component: lazy(() => import("@wso2is/admin.groups.v1/pages/groups")),
+        exact: true,
+        icon: {
+            icon: <UserGroupIcon className="icon" fill="black" />
+        },
+        id: "groups",
+        name: "Groups",
+        order: 6,
+        path: AppConstants.getPaths().get("GROUPS"),
+        protected: true,
+        showOnSidePanel: true
+    });
+
 
     const routes: RouteInterface[] = values(
         merge(

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,8 @@
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingSubFeatures,
-    PreviewScreenType
+    PreviewScreenType,
+    PreviewScreenVariationType
 } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { FormState } from "@wso2is/form";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -41,6 +42,15 @@ export interface BrandingPreferenceContextProps {
      */
     onSelectedPreviewScreenChange: (screen: PreviewScreenType) => void;
     /**
+     * Sets the variation of the current screen, requested for preview.
+     * @param variation - Selected screen variation.
+     */
+    onSelectedPreviewScreenVariationChange: (variation: PreviewScreenVariationType) => void;
+    /**
+     * Resets the variations back to default.
+     */
+    resetSelectedPreviewScreenVariations: () => void;
+    /**
      * Sets the language requesting for preview.
      * @param locale - Selected language.
      */
@@ -49,6 +59,10 @@ export interface BrandingPreferenceContextProps {
      * Selected screen requesting text preference.
      */
     selectedScreen: PreviewScreenType;
+    /**
+     * Selected screen variation requesting text preference.
+     */
+    selectedScreenVariation: PreviewScreenVariationType;
     /**
      * Selected language requesting text preference.
      */
@@ -110,6 +124,12 @@ export interface BrandingPreferenceContextProps {
      * @returns Supported screens.
      */
     getScreens: (requestingView: BrandingSubFeatures) => string[];
+    /**
+     * Get the set of supported screen variations for a requested screen.
+     * @param screen - Screen for which the variations list is requested.
+     * @returns Supported screen variations.
+     */
+    getScreenVariations: (screen: PreviewScreenType) => PreviewScreenVariationType[];
     /**
      * Resets the custom text preference for a given screen and locale.
      * @param screen - Screen to be reset.

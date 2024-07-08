@@ -70,6 +70,7 @@
     private static final String GITHUB_AUTHENTICATOR = "GithubAuthenticator";
     private static final String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     private static final String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
+    private static final String SSO_AUTHENTICATOR_NAME = "SSO";
     private static final String MICROSOFT_IDP = "Microsoft";
     private static final String ENTERPRISE_USER_LOGIN_AUTHENTICATOR = "EnterpriseIDPAuthenticator";
     private static final String ENTERPRISE_USER_LOGIN_ORG = "EnterpriseIDP_Org";
@@ -145,7 +146,7 @@
           </script>
         <%
     }
-    
+
     String errorMessage = "authentication.failed.please.retry";
     String errorCode = "";
     if(request.getParameter(Constants.ERROR_CODE)!=null){
@@ -277,8 +278,8 @@
         loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
     }
 
-    String t = request.getParameter("t");
-    String ut = request.getParameter("ut");
+    String t = Encode.forUriComponent(request.getParameter("t"));
+    String ut = Encode.forUriComponent(request.getParameter("ut"));
     if (StringUtils.isNotBlank(t)) {
         loginContextRequestUrl += "&t=" + t;
     }
@@ -653,6 +654,10 @@
                                         String EXTERNAL_CONNECTION_PREFIX = "sign in with";
                                         if (StringUtils.startsWithIgnoreCase(idpDisplayName, EXTERNAL_CONNECTION_PREFIX)) {
                                             idpDisplayName = idpDisplayName.substring(EXTERNAL_CONNECTION_PREFIX.length());
+                                        }
+                                        // If IdP name is "SSO", need to handle as special case.
+                                        if (StringUtils.equalsIgnoreCase(idpName, SSO_AUTHENTICATOR_NAME)) {
+                                            imageURL = "libs/themes/default/assets/images/identity-providers/sso.svg";
                                         }
                             %>
                                 <% if (isHubIdp) { %>

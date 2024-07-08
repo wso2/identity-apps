@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,9 @@
  * under the License.
  */
 
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.png";
 import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import SMSOTPIcon from "../../themes/default/assets/images/authenticators/sms-otp.svg";
-import SalesforceLogo from "../../themes/default/assets/images/connectors/salesforce.png";
-import SCIMLogo from "../../themes/default/assets/images/connectors/scim.png";
-import SPMLLogo from "../../themes/default/assets/images/connectors/spml.png";
 import BackupCodesAuthenticatorLogo from "../../themes/default/assets/images/icons/backup-code-icon.svg";
 import CertificateColoredIcon from "../../themes/default/assets/images/icons/certificate-colored-icon.svg";
 import ClockColoredIcon from "../../themes/default/assets/images/icons/clock-colored-icon.svg";
@@ -31,7 +27,6 @@ import { ReactComponent as DocumentIcon } from "../../themes/default/assets/imag
 import { ReactComponent as GearsIcon } from "../../themes/default/assets/images/icons/gears-icon.svg";
 import MagicLinkLogo from "../../themes/default/assets/images/icons/magic-link-icon.svg";
 import MagnifierColoredIcon from "../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
-import { ReactComponent as OpenBookIcon } from "../../themes/default/assets/images/icons/open-book-icon.svg";
 import TOTPIcon from "../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
 import { ReactComponent as ReportIcon } from "../../themes/default/assets/images/icons/report-icon.svg";
 import EmailOTPIcon from "../../themes/default/assets/images/icons/solid-icons/email-solid.svg";
@@ -41,6 +36,7 @@ import {
 import {
     ReactComponent as EnterpriseModeIdPIcon
 } from "../../themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+import EthereumIdPIcon from "../../themes/default/assets/images/identity-providers/ethereum.svg";
 import {
     ReactComponent as ExpertModeIdPIcon
 } from "../../themes/default/assets/images/identity-providers/expert.svg";
@@ -57,7 +53,6 @@ import TrustedTokenIssuerIcon
 import TwitterLogo from "../../themes/default/assets/images/identity-providers/twitter.svg";
 import YahooLogo from "../../themes/default/assets/images/identity-providers/yahoo.svg";
 import OIDCLogo from "../../themes/default/assets/images/protocols/openid-connect.png";
-import OpenIDLogo from "../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../themes/default/assets/images/protocols/ws-fed.png";
 import JWTLogo from "../../themes/default/assets/images/technologies/jwt-logo.svg";
@@ -71,16 +66,6 @@ export const getAddIDPCertificateWizardStepIcons = (): any => {
 
     return {
         general: DocumentIcon
-    };
-};
-
-export const getIdentityProviderWizardStepIcons = (): any => {
-
-    return {
-        authenticatorSettings: GearsIcon,
-        general: DocumentIcon,
-        outboundProvisioningSettings: GearsIcon,
-        summary: ReportIcon
     };
 };
 
@@ -119,16 +104,6 @@ export const getAuthenticatorIcons = (): any => {
     };
 };
 
-export const getConnectorIcons = (): any => {
-
-    return {
-        google: GoogleLogo,
-        salesforce: SalesforceLogo,
-        scim: SCIMLogo,
-        spml: SPMLLogo
-    };
-};
-
 export const getIdPIcons = (): any => {
 
     return {
@@ -136,6 +111,7 @@ export const getIdPIcons = (): any => {
         default: ConnectionIcon,
         emailOTP: EmailOTPIcon,
         enterprise: EnterpriseModeIdPIcon,
+        ethereum: EthereumIdPIcon,
         expert: ExpertModeIdPIcon,
         facebook: FacebookLogo,
         github: GithubIdPIcon,
@@ -153,20 +129,7 @@ export const getIdPIcons = (): any => {
         trustedTokenIssuer: TrustedTokenIssuerIcon,
         twitter: TwitterLogo,
         wsFed: WSFedLogo,
-        yahoo: YahooLogo,
-        ...identityProviderConfig.getIconExtensions()
-    };
-};
-
-export const getIdPTemplateDocsIcons = (): any => {
-
-    return {
-        apple: AppleLogo,
-        facebook: FacebookLogo,
-        github: GithubIdPIcon,
-        google: GoogleLogo,
-        manualsetup: ExpertModeIdPIcon,
-        openidconnect: OpenIDLogo
+        yahoo: YahooLogo
     };
 };
 
@@ -184,14 +147,5 @@ export const getOutboundProvisioningConnectorWizard = (): any => {
         connectorDetails: DocumentIcon,
         connectorSelection: GearsIcon,
         summary: ReportIcon
-    };
-};
-
-export const getHelpPanelIcons = (): any => {
-
-    return {
-        tabs: {
-            docs: OpenBookIcon
-        }
     };
 };

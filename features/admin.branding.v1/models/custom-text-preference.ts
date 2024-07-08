@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.branding.v1/models";
+import {
+    BrandingPreferenceTypes,
+    PreviewScreenType,
+    PreviewScreenVariationType
+} from "@wso2is/common.branding.v1/models";
 
 /**
  * Interface for the custom text preference API response.
@@ -64,9 +68,9 @@ export type CustomTextInterface = Record<string, string>;
  */
 export interface CustomTextPreferenceMeta {
     /**
-     * Set of supported screens.
+     * Set of supported screens and variations.
      */
-    screens: PreviewScreenType[];
+    screens: Record<PreviewScreenType, PreviewScreenVariationType[]>;
     /**
      * Set of supported locales.
      */
@@ -106,3 +110,21 @@ export interface CustomTextPreferenceScreenMetaInterface {
         MULTI_LINE: boolean;
     };
 }
+
+/**
+ * Base variations for screens. Represents the basic state of the screen.
+ */
+export const BASE_DISPLAY_VARIATION :Record<PreviewScreenType, PreviewScreenVariationType> = {
+    [PreviewScreenType.COMMON]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.EMAIL_OTP]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.EMAIL_TEMPLATE]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.LOGIN]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.MY_ACCOUNT]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.PASSWORD_RECOVERY]: PreviewScreenVariationType.EMAIL_LINK,
+    [PreviewScreenType.PASSWORD_RESET]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.PASSWORD_RESET_SUCCESS]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.SIGN_UP]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.SMS_OTP]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.TOTP]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.EMAIL_LINK_EXPIRY]: PreviewScreenVariationType.BASE
+};

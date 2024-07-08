@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (http://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,8 @@ package org.wso2.identity.apps.common.listner;
 
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
+import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementException;
+import org.wso2.carbon.identity.organization.management.service.util.OrganizationManagementUtil;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
 import org.wso2.carbon.identity.role.v2.mgt.core.listener.AbstractRoleManagementListener;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
@@ -98,6 +100,15 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
 
         if (deletedUserIDList == null || !isAdministratorRole(roleId, tenantDomain)) {
             return;
+        }
+
+        try {
+            if (OrganizationManagementUtil.isOrganization(tenantDomain)) {
+                return;
+            }
+        } catch (OrganizationManagementException e) {
+            throw new IdentityRoleManagementException("Failed to determine if the tenant is a sub-organization for " +
+                "tenant domain: " + tenantDomain, e);
         }
 
         String adminUserId;

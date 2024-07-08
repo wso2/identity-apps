@@ -22,10 +22,13 @@ import {
     ApplicationInterface,
     AuthenticationStepInterface
 } from "@wso2is/admin.applications.v1/models";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import {
+    AuthenticatorInterface,
+    AuthenticatorManagementConstants,
+    AuthenticatorTypes
+} from "@wso2is/admin.connections.v1";
+import { getAuthenticators } from "@wso2is/admin.connections.v1/api/authenticators";
 import { ApplicationRolesConstants } from "@wso2is/admin.extensions.v1/components/application/constants";
-import { getAuthenticators } from "@wso2is/admin.identity-providers.v1/api";
-import { AuthenticatorInterface, AuthenticatorTypes } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

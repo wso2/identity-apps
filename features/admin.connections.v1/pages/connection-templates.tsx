@@ -311,7 +311,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
      * @param query - Search query.
      * @param filterLabels - Array of filter labels.
      *
-     * @returns IdentityProviderTemplateCategoryInterface[]
+     * @returns ConnectionTemplateCategoryInterface[]
      */
     const getSearchResults = (query: string, filterLabels: string[]): ConnectionTemplateCategoryInterface[] => {
 

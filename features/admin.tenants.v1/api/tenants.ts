@@ -123,9 +123,13 @@ export const checkDuplicateTenants = (tenantName: string): Promise<AxiosResponse
 export const getAssociatedTenants = (): Promise<TenantRequestResponse> => {
     const orgType: OrganizationType = store.getState().organization.organizationType;
 
-    // If the user is a privileged user or the function is being called inside a suborganization,
-    // return an empty response.
-    if (isPrivilegedUser() || orgType === OrganizationType.SUBORGANIZATION) {
+    // If the user is a privileged user or the function is being called inside a suborganization
+    // or super organization, return an empty response.
+    if (
+        isPrivilegedUser() ||
+        orgType === OrganizationType.SUBORGANIZATION ||
+        orgType === OrganizationType.SUPER_ORGANIZATION
+    ) {
         return Promise.resolve({
             associatedTenants: [],
             count: 0,

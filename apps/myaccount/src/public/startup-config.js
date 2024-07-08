@@ -19,7 +19,6 @@
 // eslint-disable-next-line no-unused-vars
 var startupConfig = {
     enableDefaultPreLoader: true,
-    legacyAuthzRuntime: false,
     orgPrefix: "o",
     pathExtension: "",
     serverUrl: "https://localhost:9443",
