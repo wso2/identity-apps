@@ -756,9 +756,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             ],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
+        let translationKey: string = "";
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-
+            translationKey = "myAccount:components.profile.notifications.verifyEmail.";
             const verifiedEmailList: string[] = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
             verifiedEmailList.push(value);
@@ -768,7 +769,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 }
             };
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-
+            translationKey = "myAccount:components.profile.notifications.verifyMobile.";
             setSelectedAttributeInfo({ schema, value });
             const verifiedMobileList: string[] = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
 
@@ -783,11 +784,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
-                        "myAccount:components.profile.notifications.updateProfileInfo.success.description"
+                        `${ translationKey }success.description`
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "myAccount:components.profile.notifications.updateProfileInfo.success.message"
+                        `${ translationKey }success.message`
                     )
                 });
 
@@ -798,11 +799,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }).catch((error: any) => {
             onAlertFired({
                 description: error?.detail ?? t(
-                    "myAccount:components.profile.notifications.updateProfileInfo.genericError.description"
+                    `${ translationKey }genericError.description`
                 ),
                 level: AlertLevels.ERROR,
                 message: error?.message ?? t(
-                    "myAccount:components.profile.notifications.updateProfileInfo.genericError.message"
+                    `${ translationKey }genericError.message`
                 )
             });
         }).finally(() => {
@@ -892,7 +893,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         setIsSubmitting(true);
         const data: {
-            Operations: Array<{ op: string, value: Record<string, string | Record<string, string>> }>,
+            Operations: Array<{
+                op: string, value: Record<string, string
+                    | Record<string, string>
+                    | Array<string>
+                    | Array<Record<string, string>>>
+            }>,
             schemas: Array<string>
         } = {
             Operations: [
@@ -907,15 +913,40 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
             const updatedEmailList: string[] = emailList.filter((email: string) => email !== value);
+            const primaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
+                ? profileDetails?.profileInfo?.emails[0]
+                : null;
 
             data.Operations[0].value = {
                 [schema.schemaId] : {
                     [EMAIL_ADDRESSES_ATTRIBUTE]: updatedEmailList.join(",")
                 }
             };
+
+            if (value === primaryEmail) {
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [EMAIL_ATTRIBUTE]: []
+                    }
+                });
+            }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             const mobileList: string[] = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
             const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== value);
+            const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
+
+            if (value === primaryMobile) {
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [ {
+                            type: "mobile",
+                            value: ""
+                        } ]
+                    }
+                });
+            }
 
             data.Operations[0].value = {
                 [schema.schemaId]: {
@@ -1250,7 +1281,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
-                ? profileDetails?.profileInfo?.pendingEmails[0]
+                ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
             primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
                 ? profileDetails?.profileInfo?.emails[0]
@@ -1270,12 +1301,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         // Move the primary attribute value to the top of the list.
-        if (primaryAttributeValue) {
+        if (!isEmpty(primaryAttributeValue)) {
             attributeValueList = attributeValueList.filter((value: string) => value !== primaryAttributeValue);
             attributeValueList.unshift(primaryAttributeValue);
         }
         const showAccordion: boolean = attributeValueList.length >= 1;
-        const accordionLabelValue: string = primaryAttributeValue ?? attributeValueList[0];
+        const accordionLabelValue: string = isEmpty(primaryAttributeValue)
+            ? attributeValueList[0]
+            : primaryAttributeValue;
 
         const showPendingEmailPopup = (value: string): boolean => {
             return verificationEnabled
@@ -1291,6 +1324,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const showPrimaryPopup = (value: string): boolean => {
             return value === primaryAttributeValue;
         };
+
+        const showMakePrimaryButton = (value: string): boolean => {
+            if (verificationEnabled) {
+                return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
+            } else {
+                return value !== primaryAttributeValue;
+            }
+        };
+
+        const showVerifyButton = (value: string): boolean =>
+            verificationEnabled && !verifiedAttributeValueList.includes(value);
 
         return (
             <>
@@ -1341,7 +1385,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             id="multi-attribute-header"
                             className="oxygen-accordion-summary"
                         >
-                            <Typography className="accordion-label">
+                            <Typography
+                                className={ `accordion-label ${
+                                    schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                                        ? "mobile-label"
+                                        : null}`
+                                }
+                            >
                                 { accordionLabelValue }
                             </Typography>
                             {
@@ -1382,7 +1432,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                 <TableRow key={ index } className="multi-value-table-data-row">
                                                     <TableCell align="left">
                                                         <div className="table-c1">
-                                                            <Typography className="c1-value">
+                                                            <Typography
+                                                                className={ `c1-value ${
+                                                                    schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                                                                        ? "mobile-label"
+                                                                        : null}`
+                                                                }
+                                                            >
                                                                 { value }
                                                             </Typography>
                                                             {
@@ -1415,10 +1471,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                         <div className="table-c2">
                                                             <IconButton
                                                                 size="small"
-                                                                hidden={ !verificationEnabled
-                                                                    || (verificationEnabled
-                                                                        && value === primaryAttributeValue)
-                                                                    || verifiedAttributeValueList.includes(value) }
+                                                                hidden={ !showVerifyButton(value) }
                                                                 onClick={ () => handleVerify(schema, value) }
                                                                 disabled={ isSubmitting }
                                                             >
@@ -1435,9 +1488,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             </IconButton>
                                                             <IconButton
                                                                 size="small"
-                                                                hidden={ !verifiedAttributeValueList.includes(value)
-                                                                    || value === primaryAttributeValue
-                                                                }
+                                                                hidden={ !showMakePrimaryButton(value) }
                                                                 onClick={ () => handleMakePrimary(schema, value) }
                                                                 disabled={ isSubmitting }
                                                             >
@@ -1455,7 +1506,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             </IconButton>
                                                             <IconButton
                                                                 size="small"
-                                                                hidden={ value === primaryAttributeValue }
                                                                 onClick={ () => {
                                                                     setSelectedAttributeInfo({ schema, value });
                                                                     setShowMVDeleteConfirmationModal(true);
@@ -1484,6 +1534,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         </AccordionDetails>
                     </Accordion>
                 </div>
+                <Field
+                    className="link-button mv-cancel-btn"
+                    onClick={ () => {
+                        dispatch(setActiveForm(null));
+                    } }
+                    size="small"
+                    type="button"
+                    value={ t("common:cancel").toString() }
+                    data-testid={
+                        `${testId}-schema-mobile-editing-section-${
+                            schema.name.replace(".", "-")
+                        }-cancel-button`
+                    }
+                />
             </>
         );
     };
@@ -1618,7 +1682,24 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return (
                 <>
                     { profileInfo.get(schema.name) }
-                    { generatePendingEmailPopup() }
+                    <Popup
+                        size="tiny"
+                        trigger={
+                            (<Icon
+                                name="info circle"
+                                color="yellow"
+                            />)
+                        }
+                        content={
+                            t("myAccount:components.profile.messages." +
+                                    "emailConfirmation.content")
+                        }
+                        header={
+                            t("myAccount:components.profile.messages." +
+                                    "emailConfirmation.header")
+                        }
+                        inverted
+                    />
                 </>
             );
         } else if ( schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
@@ -1643,7 +1724,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             attributeValueList = profileInfo.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
-                ? profileDetails?.profileInfo?.pendingEmails[0]
+                ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
             primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
                 ? profileDetails?.profileInfo?.emails[0]
@@ -1659,10 +1740,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         // Ensure primaryAttributeValue is defined and attributeValueList is an array.
         if (primaryAttributeValue && Array.isArray(attributeValueList)) {
-            const filteredList: string[] = attributeValueList.filter((value: string) =>
-                value !== primaryAttributeValue);
-
-            attributeValueList = [ primaryAttributeValue, ...filteredList ];
+            attributeValueList = attributeValueList.filter((value: string) => value !== primaryAttributeValue);
+            if (primaryAttributeValue !== "") attributeValueList.unshift(primaryAttributeValue);
         }
 
         const showPendingEmailPopup = (value: string): boolean => {
@@ -1679,7 +1758,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const showPrimaryPopup = (value: string): boolean => {
             return value === primaryAttributeValue;
         };
-        // TODO: use translation to popups.
 
         return (
             <>
@@ -1696,7 +1774,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     (value: string, index: number) => (
                                         <MenuItem key={ index } value={ value }>
                                             <div className="dropdown-row">
-                                                <Typography className="dropdown-label">
+                                                <Typography
+                                                    className={ `dropdown-label ${
+                                                        schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                                                            ? "mobile-label"
+                                                            : null}`
+                                                    }
+                                                >
                                                     { value }
                                                 </Typography>
                                                 {
@@ -1879,10 +1963,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         color="yellow"
                     />)
                 }
-                content={
-                    t("myAccount:components.profile.messages." +
-                            "emailConfirmation.content")
-                }
                 header={
                     t("myAccount:components.profile.messages." +
                             "emailConfirmation.header")
@@ -1920,7 +2000,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     (
                         <Icon
                             name="star"
-                            color="yellow"
+                            color="green"
                         />
                     )
                 }
@@ -2157,7 +2237,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 onClose={ handleMVDeleteModalClose }
                 type="negative"
                 open={ Boolean(selectedAttributeInfo?.value) }
-                assertionHint={ t(`"${translationKey}assertionHint"`) }
+                assertionHint={ t(`${translationKey}assertionHint`) }
                 assertionType="checkbox"
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
@@ -2166,13 +2246,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                    { t(`"${translationKey}heading"`) }
+                    { t(`${translationKey}heading`) }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message data-testid={ `${ testId }-confirmation-modal-message` } attached negative>
-                    { t(`"${translationKey}description"`) }
+                    { t(`${translationKey}description`) }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
-                    { t(`"${translationKey}content"`) }
+                    { t(`${translationKey}content`) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );};
@@ -2211,14 +2291,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @param schema - Profile schema
      * @returns boolean - Whether to show the mobile verification wizard or not
      */
-    const showMobileVerification = (schema: ProfileSchema): boolean => {
-
-        if (!showMobileUpdateWizard) {
-            return false;
-        }
-
-        return schema.name === MOBILE_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE;
-    };
+    const showMobileVerification = (schema: ProfileSchema): boolean =>
+        showMobileUpdateWizard && (
+            isMultipleEmailAndMobileNumberEnabled
+                ? schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                : schema.name === MOBILE_ATTRIBUTE
+        );
 
     return (
         <>
