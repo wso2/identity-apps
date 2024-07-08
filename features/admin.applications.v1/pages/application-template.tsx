@@ -20,13 +20,13 @@ import {
     AppConstants,
     history
 } from "@wso2is/admin.core.v1";
+import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ApplicationCreationAdapter from "../components/application-templates/application-creation-adapter";
 import ApplicationTemplateGrid from "../components/application-templates/application-templates-grid";
-import { ApplicationTemplateListInterface } from "../models/application-templates";
 
 /**
  * Props for the Applications templates page.
@@ -51,7 +51,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     const { t } = useTranslation();
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListInterface>(null);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<ExtensionTemplateListInterface>(null);
 
     /**
      * Handles back button click.
@@ -79,7 +79,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             actionColumnWidth={ 3 }
         >
             <ApplicationTemplateGrid
-                onTemplateSelect={ (template: ApplicationTemplateListInterface) => {
+                onTemplateSelect={ (template: ExtensionTemplateListInterface) => {
                     setSelectedTemplate(template);
                     setShowWizard(true);
                 } }

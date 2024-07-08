@@ -27,6 +27,7 @@ import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/moda
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
@@ -59,7 +60,6 @@ import { ApplicationManagementConstants } from "../../constants";
 import useApplicationSharingEligibility from "../../hooks/use-application-sharing-eligibility";
 import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
 import { ApplicationListItemInterface, MainApplicationInterface, URLFragmentTypes } from "../../models";
-import { ApplicationTemplateListInterface } from "../../models/application-templates";
 import { DynamicFieldInterface, FieldValueGenerators } from "../../models/dynamic-fields";
 import buildCallBackUrlsWithRegExp from "../../utils/build-callback-urls-with-regexp";
 import { ApplicationShareModal } from "../modals/application-share-modal";
@@ -72,7 +72,7 @@ export interface ApplicationCreateWizardPropsInterface extends ModalProps, Ident
     /**
      * The template to be used for the application creation.
      */
-    template: ApplicationTemplateListInterface;
+    template: ExtensionTemplateListInterface;
     /**
      * Callback triggered when closing the application creation wizard.
      */

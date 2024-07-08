@@ -18,6 +18,11 @@
 
 import { Typography } from "@mui/material";
 import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
+import {
+    CategorizedExtensionTemplatesInterface,
+    ExtensionTemplateListInterface
+} from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -34,12 +39,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ApplicationTemplateCard from "./application-template-card";
 import { ApplicationTemplateConstants } from "../../constants/application-templates";
-import useApplicationTemplates from "../../hooks/use-application-templates";
 import { AuthProtocolMetaListItemInterface } from "../../models";
 import {
-    ApplicationTemplateCategories,
-    ApplicationTemplateListInterface,
-    CategorizedApplicationTemplatesInterface
+    ApplicationTemplateCategories
 } from "../../models/application-templates";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { InboundProtocolsMeta } from "../meta";
@@ -53,7 +55,7 @@ export interface ApplicationTemplateGridPropsInterface extends
     /**
      * Callback to be fired when a template is selected.
      */
-    onTemplateSelect: (template: ApplicationTemplateListInterface) => void;
+    onTemplateSelect: (template: ExtensionTemplateListInterface) => void;
 }
 
 /**
@@ -76,7 +78,11 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
     const hiddenApplicationTemplates: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.hiddenApplicationTemplates);
 
-    const { templates, categorizedTemplates, isApplicationTemplatesRequestLoading } = useApplicationTemplates();
+    const {
+        templates,
+        categorizedTemplates,
+        isExtensionTemplatesRequestLoading: isApplicationTemplatesRequestLoading
+    } = useExtensionTemplates();
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ selectedFilters, setSelectedFilters ] = useState<string[]>([]);
@@ -109,7 +115,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
 
         let tags: string[] = [];
 
-        templates.forEach((template: ApplicationTemplateListInterface) => {
+        templates.forEach((template: ExtensionTemplateListInterface) => {
             tags = union(tags, template?.tags);
         });
 
@@ -124,7 +130,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
      *
      * @returns List of filtered application templates for the provided filter tags and search query.
      */
-    const getSearchResults = (query: string, filterLabels: string[]): ApplicationTemplateListInterface[] => {
+    const getSearchResults = (query: string, filterLabels: string[]): ExtensionTemplateListInterface[] => {
 
         /**
          * Checks if any of the filters are matching.
@@ -132,7 +138,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
          * @param template - Application template object.
          * @returns Boolean value indicating whether the filters are matched or not.
          */
-        const isFiltersMatched = (template: ApplicationTemplateListInterface): boolean => {
+        const isFiltersMatched = (template: ExtensionTemplateListInterface): boolean => {
 
             if (!filterLabels || !Array.isArray(filterLabels) || filterLabels?.length <= 0) {
                 return true;
@@ -142,7 +148,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                 ?.some((tagLabel: string) => filterLabels.includes(tagLabel));
         };
 
-        return templates?.filter((template: ApplicationTemplateListInterface) => {
+        return templates?.filter((template: ExtensionTemplateListInterface) => {
             if (!query) {
                 return isFiltersMatched(template);
             }
@@ -165,7 +171,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
      * templates - Application templates list.
      * @returns Filtered application templates list.
      */
-    const removeIrrelevantTemplates = (templates: ApplicationTemplateListInterface[]) => {
+    const removeIrrelevantTemplates = (templates: ExtensionTemplateListInterface[]) => {
         let removingApplicationTemplateIds: string[] = [];
 
         // Remove custom protocol application templates if there are no custom inbound protocols.
@@ -177,13 +183,13 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         removingApplicationTemplateIds = union(removingApplicationTemplateIds, hiddenApplicationTemplates);
 
         return templates?.filter(
-            (template: ApplicationTemplateListInterface) => !removingApplicationTemplateIds.includes(template?.id));
+            (template: ExtensionTemplateListInterface) => !removingApplicationTemplateIds.includes(template?.id));
     };
 
     /**
      * Filter out the application templates based on the selected tags and the search query.
      */
-    const filteredTemplates: ApplicationTemplateListInterface[] = useMemo(() => {
+    const filteredTemplates: ExtensionTemplateListInterface[] = useMemo(() => {
         if (!templates || !Array.isArray(templates) || templates?.length <= 0) {
             return [];
         }
@@ -203,7 +209,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
      */
     const handleTemplateSelection = (
         e: MouseEvent<HTMLDivElement>,
-        template: ApplicationTemplateListInterface
+        template: ExtensionTemplateListInterface
     ): void => {
         if (!template) {
             return;
@@ -334,7 +340,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                                 >
                                     {
                                         filteredTemplates
-                                            .map((template: ApplicationTemplateListInterface) => {
+                                            .map((template: ExtensionTemplateListInterface) => {
                                                 return (
                                                     <ApplicationTemplateCard
                                                         key={ template?.id }
@@ -352,8 +358,8 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                                 (Array.isArray(categorizedTemplates) && categorizedTemplates?.length === 0)
                                     ? showPlaceholders(categorizedTemplates)
                                     : categorizedTemplates
-                                        .map((category: CategorizedApplicationTemplatesInterface) => {
-                                            const refinedTemplates: ApplicationTemplateListInterface[] =
+                                        .map((category: CategorizedExtensionTemplatesInterface) => {
+                                            const refinedTemplates: ExtensionTemplateListInterface[] =
                                                 removeIrrelevantTemplates(category?.templates);
 
                                             if (refinedTemplates?.length <= 0) {
@@ -392,7 +398,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                                                     >
                                                         {
                                                             refinedTemplates.map(
-                                                                (template: ApplicationTemplateListInterface) => {
+                                                                (template: ExtensionTemplateListInterface) => {
                                                                     return (
                                                                         <ApplicationTemplateCard
                                                                             key={ template?.id }

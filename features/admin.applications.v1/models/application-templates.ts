@@ -16,63 +16,15 @@
  * under the License.
  */
 
+import { ExtensionTemplateCommonInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { Schema } from "ajv";
 import { MainApplicationInterface } from "./application";
 import { DynamicFormInterface } from "./dynamic-fields";
 
-export interface ApplicationTemplateCommonInterface {
-    /**
-     * Unique identifier for the template.
-     */
-    id: string;
-    /**
-     * Name of the template.
-     */
-    name: string;
-    /**
-     * Description of the template.
-     */
-    description: string;
-    /**
-     * Image of the template.
-     */
-    image: string;
-    /**
-     * Order in which the template is displayed.
-     */
-    displayOrder: number;
-    /**
-     * Category of the template.
-     */
-    category: ApplicationTemplateCategories;
-    /**
-     * Tags associated with the template.
-     */
-    tags: string[];
-    /**
-     * Type of the template.
-     */
-    type: string;
-}
-
-/**
- * Interface for the application template list specific attributes.
- */
-export interface ApplicationTemplateListInterface extends ApplicationTemplateCommonInterface {
-    /**
-     * URL to the template data.
-     */
-    self?: string;
-    /**
-     * Additional properties of the template.
-     */
-    customAttributes?: CustomAttributeInterface[];
-}
-
 /**
  * Interface for the application template.
  */
-export interface ApplicationTemplateInterface extends ApplicationTemplateCommonInterface {
+export interface ApplicationTemplateInterface extends ExtensionTemplateCommonInterface {
     /**
      * Create form payload parameters.
      */
@@ -158,20 +110,6 @@ export interface ApplicationEditTabMetadataInterface {
 }
 
 /**
- * Interface for the additional properties of the template.
- */
-export interface CustomAttributeInterface {
-    /**
-     * Key of the property.
-     */
-    key: string,
-    /**
-     * Value of the property.
-     */
-    value: any
-}
-
-/**
  * Enum for application template categories.
  *
  * @readonly
@@ -187,64 +125,4 @@ export enum ApplicationTemplateCategories {
      * ex: Zoom, Salesforce etc.
      */
     SSO_INTEGRATION = "SSO-INTEGRATION",
-}
-
-/**
- * Interface for the application template category details.
- */
-export interface ApplicationTemplateCategoryInterface {
-    /**
-     * Unique identifier of the application template category.
-     */
-    id: string,
-    /**
-     * Display name of the application template category.
-     */
-    displayName: string,
-    /**
-     * Description of the application template category.
-     */
-    description?: string,
-    /**
-     * Order in which the application template category is displayed.
-     */
-    displayOrder: number
-}
-
-/**
- * Supported technology metadata interface.
- */
-export interface SupportedTechnologyMetadataInterface {
-    /**
-     * Display name of the technology.
-     */
-    displayName: string;
-    /**
-     * URL of the technology logo.
-     */
-    logo?: string;
-}
-
-/**
- * Interface for the categorized application templates.
- */
-export interface CategorizedApplicationTemplatesInterface extends ApplicationTemplateCategoryInterface {
-    /**
-     * Template associated with a specific category.
-     */
-    templates: ApplicationTemplateListInterface[]
-}
-
-/**
- * Supported technology metadata interface.
- */
-export interface SupportedTechnologyMetadataInterface {
-    /**
-     * Display name of the technology.
-     */
-    displayName: string;
-    /**
-     * URL of the technology logo.
-     */
-    logo?: string;
 }

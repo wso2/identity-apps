@@ -16,15 +16,27 @@
  * under the License.
  */
 
-/**
- * Class containing application templates management constants.
- */
-export class ApplicationTemplateConstants {
-    public static readonly CONSOLE_BASE_URL_PLACEHOLDER: string = "${CONSOLE_BASE_URL}";
-
-    public static readonly COMING_SOON_ATTRIBUTE_KEY: string = "comingSoon";
-
-    public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
-
-    public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
+export interface extensionTemplatesNS {
+    categories: {
+        other: {
+            displayName: string;
+            description: string;
+        };
+    };
+    notifications: {
+        fetchTemplates: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+    }
 }

@@ -17,27 +17,27 @@
  */
 
 import { useContext } from "react";
-import ApplicationTemplatesContext, {
-    ApplicationTemplatesContextProps
-} from "../context/application-templates-context";
+import ExtensionTemplatesContext, {
+    ExtensionTemplatesContextProps
+} from "../context/extension-templates-context";
 
 /**
- * Interface for the return type of the `useApplicationTemplates` hook.
+ * Interface for the return type of the `useExtensionTemplates` hook.
  */
-export type UseApplicationTemplatesInterface = ApplicationTemplatesContextProps;
+export type UseExtensionTemplatesInterface = ExtensionTemplatesContextProps;
 
 /**
- * Hook that provides access to the application templates context.
- * @returns An object containing the set of application templates.
+ * Hook that provides access to the extension templates context.
+ * @returns An object containing the set of extension templates.
  */
-const useApplicationTemplates = (): UseApplicationTemplatesInterface => {
-    const context: ApplicationTemplatesContextProps = useContext(ApplicationTemplatesContext);
+const useExtensionTemplates = (): UseExtensionTemplatesInterface => {
+    const context: ExtensionTemplatesContextProps = useContext(ExtensionTemplatesContext);
 
     if (context === undefined) {
-        throw new Error("useApplicationTemplates hook must be used within a ApplicationTemplatesProvider");
+        throw new Error("useExtensionTemplates hook must be used within a ExtensionTemplatesProvider");
     }
 
     return context;
 };
 
-export default useApplicationTemplates;
+export default useExtensionTemplates;

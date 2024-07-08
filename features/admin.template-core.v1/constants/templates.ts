@@ -16,15 +16,18 @@
  * under the License.
  */
 
+import { ExtensionTemplateCategoryInterface } from "../models/templates";
+
 /**
- * Class containing application templates management constants.
+ * Class containing extension templates management constants.
  */
-export class ApplicationTemplateConstants {
+export class ExtensionTemplateConstants {
     public static readonly CONSOLE_BASE_URL_PLACEHOLDER: string = "${CONSOLE_BASE_URL}";
 
-    public static readonly COMING_SOON_ATTRIBUTE_KEY: string = "comingSoon";
-
-    public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
-
-    public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
+    public static readonly OTHER_CATEGORY_INFO: ExtensionTemplateCategoryInterface = {
+        description: "extensionTemplates:categories.other.description",
+        displayName: "extensionTemplates:categories.other.displayName",
+        displayOrder: Infinity,
+        id: "OTHER"
+    }
 }

@@ -16,15 +16,24 @@
  * under the License.
  */
 
+import { ExtensionTemplateCategoryInterface } from "@wso2is/admin.template-core.v1/models/templates";
+
 /**
  * Class containing application templates management constants.
  */
 export class ApplicationTemplateConstants {
-    public static readonly CONSOLE_BASE_URL_PLACEHOLDER: string = "${CONSOLE_BASE_URL}";
-
-    public static readonly COMING_SOON_ATTRIBUTE_KEY: string = "comingSoon";
-
-    public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
-
-    public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
+    public static readonly SUPPORTED_CATEGORIES_INFO: ExtensionTemplateCategoryInterface[] = [
+        {
+            description: "applicationTemplates:categories.default.description",
+            displayName: "applicationTemplates:categories.default.displayName",
+            displayOrder: 0,
+            id: "DEFAULT"
+        },
+        {
+            description: "applicationTemplates:categories.ssoIntegration.description",
+            displayName: "applicationTemplates:categories.ssoIntegration.displayName",
+            displayOrder: 1,
+            id: "SSO-INTEGRATION"
+        }
+    ];
 }

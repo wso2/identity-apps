@@ -17,14 +17,15 @@
  */
 
 /**
- * Class containing application templates management constants.
+ * Supported technology metadata interface.
  */
-export class ApplicationTemplateConstants {
-    public static readonly CONSOLE_BASE_URL_PLACEHOLDER: string = "${CONSOLE_BASE_URL}";
-
-    public static readonly COMING_SOON_ATTRIBUTE_KEY: string = "comingSoon";
-
-    public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
-
-    public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
+export interface SupportedTechnologyMetadataInterface {
+    /**
+     * Display name of the technology.
+     */
+    displayName: string;
+    /**
+     * URL of the technology logo.
+     */
+    logo?: string;
 }

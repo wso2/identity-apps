@@ -15,16 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { applicationTemplatesNS } from "../../../models";
 
-/**
- * Class containing application templates management constants.
- */
-export class ApplicationTemplateConstants {
-    public static readonly CONSOLE_BASE_URL_PLACEHOLDER: string = "${CONSOLE_BASE_URL}";
-
-    public static readonly COMING_SOON_ATTRIBUTE_KEY: string = "comingSoon";
-
-    public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
-
-    public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
-}
+export const applicationTemplates: applicationTemplatesNS = {
+    categories: {
+        default: {
+            description: "Integrate applications based on technology and platform.",
+            displayName: "Application Types"
+        },
+        ssoIntegration: {
+            description: "Configure single sign-on seamlessly across SaaS services such as"
+                + " Google Workspace, Salesforce, and more.",
+            displayName: "SSO Integrations"
+        }
+    }
+};

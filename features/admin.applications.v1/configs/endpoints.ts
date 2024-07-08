@@ -30,7 +30,6 @@ export const getApplicationsResourceEndpoints = (serverHost: string): Applicatio
     return {
         applicationTemplate: `${serverHost}/api/server/v1/extensions/applications/{{id}}/template`,
         applicationTemplateMetadata: `${serverHost}/api/server/v1/extensions/applications/{{id}}/metadata`,
-        applicationTemplates: `${serverHost}/api/server/v1/extensions/applications`,
         applications: `${ serverHost }/api/server/v1/applications`,
         dcrConfiguration: `${ serverHost }/api/server/v1/configs/dcr`,
         myAccountConfigMgt: `${ serverHostWithoutOPath }/api/identity/config-mgt/v1.0/resource/myaccount`,

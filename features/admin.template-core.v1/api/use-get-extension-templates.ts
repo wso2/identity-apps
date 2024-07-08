@@ -23,31 +23,31 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { ApplicationTemplateListInterface } from "../models/application-templates";
+import { ExtensionTemplateListInterface, ResourceTypes } from "../models/templates";
 
 /**
- * Hook to fetches the application templates from the API.
+ * Hook to fetches the extension templates from the API.
  *
  * @returns A promise containing the response.
  */
-const useGetApplicationTemplates = <
-    Data = ApplicationTemplateListInterface[],
+const useGetExtensionTemplates = <
+    Data = ExtensionTemplateListInterface[],
     Error = RequestErrorInterface
->(): RequestResultInterface<Data, Error> => {
+>(type: ResourceTypes): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store?.getState()?.config?.endpoints?.applicationTemplates
+        url: store?.getState()?.config?.endpoints?.extensionTemplates?.replace("{{type}}", `${type?.toString()}s`)
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 
     if (Array.isArray(data)) {
         data.sort(
-            (template1: ApplicationTemplateListInterface, template2: ApplicationTemplateListInterface) =>
+            (template1: ExtensionTemplateListInterface, template2: ExtensionTemplateListInterface) =>
                 template1?.displayOrder - template2?.displayOrder
         );
     }
@@ -61,4 +61,4 @@ const useGetApplicationTemplates = <
     };
 };
 
-export default useGetApplicationTemplates;
+export default useGetExtensionTemplates;

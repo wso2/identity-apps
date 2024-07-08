@@ -30,6 +30,7 @@ import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/component
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -83,8 +84,7 @@ import {
 } from "../models";
 import {
     ApplicationEditTabContentTypes,
-    ApplicationEditTabMetadataInterface,
-    ApplicationTemplateListInterface
+    ApplicationEditTabMetadataInterface
 } from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
@@ -130,7 +130,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * This will be populated if the current application is created using
      * an application template from the Extension Management API.
      */
-    extensionTemplate?: ApplicationTemplateListInterface;
+    extensionTemplate?: ExtensionTemplateListInterface;
     /**
      * Make the form read only.
      */

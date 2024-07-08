@@ -38,6 +38,7 @@ import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repo
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getSecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "@wso2is/admin.server-configurations.v1";
+import { getExtensionTemplatesEndpoints } from "@wso2is/admin.template-core.v1/configs/endpoints";
 import { getTenantResourceEndpoints } from "@wso2is/admin.tenants.v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
@@ -222,7 +223,9 @@ export class Config {
                 I18nConstants.APPLICATIONS_NAMESPACE,
                 I18nConstants.IDP_NAMESPACE,
                 I18nConstants.API_RESOURCES_NAMESPACE,
-                I18nConstants.AI_NAMESPACE
+                I18nConstants.AI_NAMESPACE,
+                I18nConstants.EXTENSION_TEMPLATES_NAMESPACE,
+                I18nConstants.APPLICATION_TEMPLATES_NAMESPACE
             ],
             preload: []
         };
@@ -279,6 +282,7 @@ export class Config {
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getConsoleSettingsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

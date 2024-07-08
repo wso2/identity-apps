@@ -17,4 +17,4 @@
  */
 
 export * from "./certificate";
-export * from "./markdown";
+export * from "./markdown/markdown";

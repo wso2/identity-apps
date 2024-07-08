@@ -24,6 +24,8 @@ import {
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
 import { IdentityProviderConstants } from "@wso2is/admin.identity-providers.v1/constants";
+import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
+import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -49,7 +51,6 @@ import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbo
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
-import useApplicationTemplates from "../hooks/use-application-templates";
 import {
     ApplicationAccessTypes,
     ApplicationInterface,
@@ -58,7 +59,7 @@ import {
     SupportedAuthProtocolTypes,
     idpInfoTypeInterface
 } from "../models";
-import { ApplicationTemplateCategories, ApplicationTemplateListInterface } from "../models/application-templates";
+import { ApplicationTemplateCategories } from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
@@ -94,7 +95,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const {
         templates: extensionApplicationTemplates
-    } = useApplicationTemplates();
+    } = useExtensionTemplates();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
@@ -107,7 +108,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [
         extensionApplicationTemplate,
         setExtensionApplicationTemplate
-    ] = useState<ApplicationTemplateListInterface>(undefined);
+    ] = useState<ExtensionTemplateListInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);
@@ -198,8 +199,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          * on the extensions management API side.
          */
         if (!template) {
-            const extensionTemplate: ApplicationTemplateListInterface = extensionApplicationTemplates?.find(
-                (template: ApplicationTemplateListInterface) => {
+            const extensionTemplate: ExtensionTemplateListInterface = extensionApplicationTemplates?.find(
+                (template: ExtensionTemplateListInterface) => {
                     return template?.id === applicationData?.templateId;
                 }
             );

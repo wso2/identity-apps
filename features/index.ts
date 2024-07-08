@@ -49,6 +49,7 @@ export * from "./admin.saml2-configuration.v1/public-api";
 export * from "./admin.secrets.v1/public-api";
 export * from "./admin.session-management.v1/public-api";
 export * from "./admin.sms-providers.v1/public-api";
+export * from "./admin.template-core.v1/public-api";
 export * from "./admin.tenants.v1/public-api";
 export * from "./admin.users.v1/public-api";
 export * from "./admin.userstores.v1/public-api";

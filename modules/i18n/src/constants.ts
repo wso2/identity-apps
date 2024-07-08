@@ -296,4 +296,20 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly AI_NAMESPACE: string = "ai";
+
+    /**
+     * Application Templates namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly APPLICATION_TEMPLATES_NAMESPACE: string = "applicationTemplates";
+
+    /**
+     * Extension Templates namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly EXTENSION_TEMPLATES_NAMESPACE: string = "extensionTemplates";
 }

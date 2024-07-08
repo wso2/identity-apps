@@ -32,6 +32,8 @@ import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
+import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -61,7 +63,6 @@ import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
-import useApplicationTemplates from "../hooks/use-application-templates";
 import {
     ApplicationAccessTypes,
     ApplicationInboundTypes,
@@ -69,7 +70,6 @@ import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
 } from "../models";
-import { ApplicationTemplateListInterface } from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
@@ -170,8 +170,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const { organizationType } = useGetCurrentOrganizationType();
     const {
         templates: extensionApplicationTemplates,
-        isApplicationTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
-    } = useApplicationTemplates();
+        isExtensionTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+    } = useExtensionTemplates();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -362,7 +362,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                      */
                     if (!templateDisplayName) {
                         templateDisplayName = extensionApplicationTemplates?.find(
-                            (template: ApplicationTemplateListInterface) => {
+                            (template: ExtensionTemplateListInterface) => {
                                 return template?.id === app?.templateId;
                             }
                         )?.name;

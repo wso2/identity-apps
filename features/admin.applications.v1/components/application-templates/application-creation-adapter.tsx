@@ -17,13 +17,14 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1";
+import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationTemplateListItemInterface } from "../../models";
-import { ApplicationTemplateCategories, ApplicationTemplateListInterface } from "../../models/application-templates";
+import { ApplicationTemplateCategories } from "../../models/application-templates";
 import { ApplicationTemplateManagementUtils } from "../../utils/application-template-management-utils";
 import { ApplicationCreateWizard } from "../dynamic-forms/application-create-wizard";
 import { MinimalAppCreateWizard } from "../wizard/minimal-application-create-wizard";
@@ -35,7 +36,7 @@ export interface ApplicationCreationAdapterPropsInterface extends IdentifiableCo
     /**
      * Template for rendering the application creation wizard.
      */
-    template: ApplicationTemplateListInterface;
+    template: ExtensionTemplateListInterface;
     /**
      * Indicator of whether the application creation wizard should be displayed or not.
      */

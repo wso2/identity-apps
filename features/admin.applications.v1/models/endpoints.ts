@@ -23,10 +23,6 @@ import { ClaimConfigurationInterface } from "./application";
  */
 export interface ApplicationsResourceEndpointsInterface {
     /**
-     * Endpoint to get the application templates list.
-     */
-    applicationTemplates: string;
-    /**
      * Endpoint to get the application template.
      */
     applicationTemplate: string;

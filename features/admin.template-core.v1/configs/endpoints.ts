@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,16 @@
  * under the License.
  */
 
+import { ExtensionTemplatesEndpointsInterface } from "../models/endpoints";
+
 /**
- * Class containing application templates management constants.
+ * Get the resource endpoints for the Template Core Management feature.
+ *
+ * @param serverHost - Server Host.
+ * @returns The resource endpoints for the Template Core Management feature.
  */
-export class ApplicationTemplateConstants {
-    public static readonly CONSOLE_BASE_URL_PLACEHOLDER: string = "${CONSOLE_BASE_URL}";
-
-    public static readonly COMING_SOON_ATTRIBUTE_KEY: string = "comingSoon";
-
-    public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
-
-    public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
-}
+export const getExtensionTemplatesEndpoints = (serverHost: string): ExtensionTemplatesEndpointsInterface => {
+    return {
+        extensionTemplates: `${serverHost}/api/server/v1/extensions/{{type}}`
+    };
+};

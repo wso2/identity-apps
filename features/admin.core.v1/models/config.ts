@@ -35,6 +35,7 @@ import { JWTAuthenticationServiceEndpointsInterface } from "@wso2is/admin.privat
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
+import { ExtensionTemplatesEndpointsInterface } from "@wso2is/admin.template-core.v1/models/endpoints";
 import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/models/endpoints";
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
@@ -537,7 +538,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ValidationServiceEndpointsInterface,
     JWTAuthenticationServiceEndpointsInterface,
     BrandingPreferenceResourceEndpointsInterface,
-    ConsoleSettingsResourceEndpointsInterface {
+    ConsoleSettingsResourceEndpointsInterface,
+    ExtensionTemplatesEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

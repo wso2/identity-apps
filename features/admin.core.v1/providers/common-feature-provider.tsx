@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import ApplicationTemplatesProvider from "@wso2is/admin.applications.v1/provider/application-templates-provider";
+import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
+import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
+import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import React, { PropsWithChildren, ReactElement } from "react";
 
 /**
@@ -35,9 +37,12 @@ const CommonFeatureProviders = (props: CommonFeatureProvidersProps): ReactElemen
     const { children } = props;
 
     return (
-        <ApplicationTemplatesProvider>
+        <ExtensionTemplatesProvider
+            resourceType={ ResourceTypes.APPLICATIONS }
+            categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
+        >
             { children }
-        </ApplicationTemplatesProvider>
+        </ExtensionTemplatesProvider>
     );
 };
 

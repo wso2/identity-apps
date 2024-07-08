@@ -22,16 +22,16 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { SupportedTechnologyMetadataInterface } from "@wso2is/admin.application-templates.v1/models/templates";
+import {
+    CustomAttributeInterface,
+    ExtensionTemplateListInterface
+} from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classnames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ApplicationTemplateConstants } from "../../constants/application-templates";
-import {
-    ApplicationTemplateListInterface,
-    CustomAttributeInterface,
-    SupportedTechnologyMetadataInterface
-} from "../../models/application-templates";
 import "./application-template-card.scss";
 import { ApplicationTemplateManagementUtils } from "../../utils/application-template-management-utils";
 
@@ -48,7 +48,7 @@ export interface ApplicationTemplateCardPropsInterface extends IdentifiableCompo
     /**
      * Details needed to render the application template card.
      */
-    template: ApplicationTemplateListInterface;
+    template: ExtensionTemplateListInterface;
 }
 
 /**

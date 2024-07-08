@@ -50,6 +50,8 @@ export * from "./console-settings-ns";
 export * from "./secrets-ns";
 export * from "./branding-ns";
 export * from "./email-templates-ns";
+export * from "./extension-templates-ns";
+export * from "./application-templates-ns";
 export * from "./certificates-ns";
 export * from "./authentication-provider-ns";
 export * from "./governance-connectors-ns";
