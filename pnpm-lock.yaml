@@ -482,15 +482,6 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.0
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
-      '@microsoft/applicationinsights-core-js':
-        specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-react-js':
-        specifier: ^3.4.2
-        version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
-      '@microsoft/applicationinsights-web':
-        specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -831,15 +822,6 @@ importers:
       '@babel/polyfill':
         specifier: ^7.0.0
         version: 7.12.1
-      '@microsoft/applicationinsights-core-js':
-        specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-react-js':
-        specifier: ^3.4.2
-        version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
-      '@microsoft/applicationinsights-web':
-        specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
       '@mui/material':
         specifier: 5.13.0
         version: 5.13.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -1084,15 +1066,6 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.0
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
-      '@microsoft/applicationinsights-core-js':
-        specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-react-js':
-        specifier: ^3.4.2
-        version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
-      '@microsoft/applicationinsights-web':
-        specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -2350,13 +2323,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -2784,13 +2757,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -3175,13 +3148,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -3572,13 +3545,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -3954,13 +3927,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -4351,13 +4324,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -4757,13 +4730,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -5614,13 +5587,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -5996,13 +5969,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -6381,13 +6354,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -6760,13 +6733,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -7142,13 +7115,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -7575,13 +7548,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -7957,13 +7930,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -8354,13 +8327,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -8760,13 +8733,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -9142,13 +9115,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -9521,13 +9494,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -9915,13 +9888,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -10300,13 +10273,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -10679,13 +10652,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -11061,13 +11034,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -11473,13 +11446,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -11855,13 +11828,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -12237,13 +12210,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -12625,13 +12598,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -13004,13 +12977,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -13398,13 +13371,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -13810,13 +13783,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -14189,13 +14162,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -14568,13 +14541,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -14962,13 +14935,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -15344,13 +15317,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -15723,13 +15696,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -16108,13 +16081,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -16493,13 +16466,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -16908,13 +16881,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -17290,13 +17263,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -17681,13 +17654,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -18066,13 +18039,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -18445,13 +18418,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -18824,13 +18797,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
       '@microsoft/applicationinsights-core-js':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-react-js':
         specifier: ^3.4.2
         version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
       '@microsoft/applicationinsights-web':
         specifier: ^3.0.0
-        version: 3.2.2(tslib@2.6.3)
+        version: 3.2.1(tslib@2.6.3)
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
@@ -23820,26 +23793,26 @@ packages:
   /@mdx-js/util@1.6.22:
     resolution: {integrity: sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==}
 
-  /@microsoft/applicationinsights-analytics-js@3.2.2(tslib@2.6.3):
-    resolution: {integrity: sha512-i6/7hYO7lFPE1rMARG6c4bGTuUJUiPb9GRfwMhzArpG39fqduCWpH6y2PdlwZzjyDQAxIOgBiSfLddgsAVoYOA==}
+  /@microsoft/applicationinsights-analytics-js@3.2.1(tslib@2.6.3):
+    resolution: {integrity: sha512-BDFnV0WwLcUIqgPmC3Sl8Z35ybf4898WSbrfCC80BNbxi2zztyJSLlxWXKSw9j+DCkKZMYIJIsWnpKQfEtqA7g==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-common': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-core-js': 3.2.2(tslib@2.6.3)
+      '@microsoft/applicationinsights-common': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-utils': 0.11.2
       tslib: 2.6.3
     dev: false
 
-  /@microsoft/applicationinsights-cfgsync-js@3.2.2(tslib@2.6.3):
-    resolution: {integrity: sha512-W4sQmQC9ZXN8ETYHcXQZl7kMACDkiC/a26OYx9IW8CzgZUI0U3hfDRonaj/1AMkM6zZbC2Zuto4vqpex7abJEg==}
+  /@microsoft/applicationinsights-cfgsync-js@3.2.1(tslib@2.6.3):
+    resolution: {integrity: sha512-a0gf3czbRycOXwIRO/dYqmTThYkGRS26TVETRpSnW12IcAuLE82FJfWHlHRmSNX9xY/F+wWc0N7BqHcWjFIbeQ==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-common': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-core-js': 3.2.2(tslib@2.6.3)
+      '@microsoft/applicationinsights-common': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-async': 0.5.1
@@ -23847,13 +23820,13 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@microsoft/applicationinsights-channel-js@3.2.2(tslib@2.6.3):
-    resolution: {integrity: sha512-4ruoKxgZYYa+K8JJu8RMY0egKazS8xClbx70NQHa/rJ7JYFgN3OIEIBZtFoMcHR8Vg7MEsNE5/wV6o7WWJkVIA==}
+  /@microsoft/applicationinsights-channel-js@3.2.1(tslib@2.6.3):
+    resolution: {integrity: sha512-+aWBBbIW4/Tf4sLGZmWhd5chktBpKQpnCbkuoTHGe+AWO8Q8fsDa4w2Y89OGuEg9OJ3kr2VKTUU7LgILKFz/cg==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-common': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-core-js': 3.2.2(tslib@2.6.3)
+      '@microsoft/applicationinsights-common': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-async': 0.5.1
@@ -23872,12 +23845,12 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@microsoft/applicationinsights-common@3.2.2(tslib@2.6.3):
-    resolution: {integrity: sha512-e1C35gdkFSzWyUUR1S8FvisXW3nT3p6wWsLNs+vUKLOTQzsvW3XpNMVtNCq4MfHWiYDuz1lPSzo2eENaij1fVA==}
+  /@microsoft/applicationinsights-common@3.2.1(tslib@2.6.3):
+    resolution: {integrity: sha512-vRYQ1SIZJEz1eFbs2AQiLtev5L+zmjZ1Jkj3BWfIxJLd6n0cVR4NZETBSyMuk11KH7MIOrDLvh1CzjBIJIpDAg==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-core-js': 3.2.2(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-utils': 0.11.2
@@ -23894,8 +23867,8 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@microsoft/applicationinsights-core-js@3.2.2(tslib@2.6.3):
-    resolution: {integrity: sha512-dF6LZ4ahdhoHufw+N7OXRDzWT8QN193Dvpd8GLqEZdR/KtCTofPSI63yumu+ZkzKYadf1S3w2xg0OmbdyXexoQ==}
+  /@microsoft/applicationinsights-core-js@3.2.1(tslib@2.6.3):
+    resolution: {integrity: sha512-euxkDrF5BroAY7wgviaTVZdMvRAENQtUW4pDTsIjJK26shi1m5fPCc5l+vMn7kO2wQEaEgAOVw+/kSQgXDHN+Q==}
     peerDependencies:
       tslib: '*'
     dependencies:
@@ -23906,13 +23879,13 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@microsoft/applicationinsights-dependencies-js@3.2.2(tslib@2.6.3):
-    resolution: {integrity: sha512-15EUVU6Kh0B400i/2YNy+V9xMhOwnpzAMTAiyFo90Q1SC5rJIsmzqjAWQnFmxAeq5YQoZ2FuQQpD2qsUajVEQQ==}
+  /@microsoft/applicationinsights-dependencies-js@3.2.1(tslib@2.6.3):
+    resolution: {integrity: sha512-NZ7OY/7KYmJ6/TFsDZojsr9mA4uNv4ZTrNNXfWqtPxx0ClYalSm6Xyjna0N1d1wktrfecHe8K/ZrWJgxI2bfRw==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-common': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-core-js': 3.2.2(tslib@2.6.3)
+      '@microsoft/applicationinsights-common': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-async': 0.5.1
@@ -23920,13 +23893,13 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@microsoft/applicationinsights-properties-js@3.2.2(tslib@2.6.3):
-    resolution: {integrity: sha512-ovT123foF4WquHdk6f51YpRacx7ZgST7iwqRA/jshy/7NVqlu05JbrVB8IlrxNausdaRwX5CvSCca+SQbOW0ZA==}
+  /@microsoft/applicationinsights-properties-js@3.2.1(tslib@2.6.3):
+    resolution: {integrity: sha512-GO96t7tQ1eEHPENVXjOlf91h/Iz8p4I0XayALTSshHMc+eDfsi1a/b2JYrfNDC4fanPU44Kmx3QZkXrBb1ri5A==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-common': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-core-js': 3.2.2(tslib@2.6.3)
+      '@microsoft/applicationinsights-common': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-utils': 0.11.2
@@ -23959,18 +23932,18 @@ packages:
       '@nevware21/ts-utils': 0.11.2
     dev: false
 
-  /@microsoft/applicationinsights-web@3.2.2(tslib@2.6.3):
-    resolution: {integrity: sha512-DBJ83Fe7nHzH7QgMKFQrBN/Gbhoo5JgMQkBzJeTb5hMfNZUFOBEHWjytBdU9MEZVpa+Vk+RPQ72IOc0txbnJYw==}
+  /@microsoft/applicationinsights-web@3.2.1(tslib@2.6.3):
+    resolution: {integrity: sha512-+U0wsifFEmvdT2hckmsoNcMx/SQrAA8qBBM7y0zefT03wHbFh0jCL/kd2MFOyKZ39v9C4uIO5L8Ftu4hBpnYWA==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-analytics-js': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-cfgsync-js': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-channel-js': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-common': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-core-js': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-dependencies-js': 3.2.2(tslib@2.6.3)
-      '@microsoft/applicationinsights-properties-js': 3.2.2(tslib@2.6.3)
+      '@microsoft/applicationinsights-analytics-js': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-cfgsync-js': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-channel-js': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-common': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-dependencies-js': 3.2.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-properties-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-async': 0.5.1

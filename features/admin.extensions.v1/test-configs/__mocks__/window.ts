@@ -76,11 +76,6 @@ interface CustomExtendedWindow extends Window {
                 structureFileURL: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
             },
             extensions: {
-                applicationInsightsEnabled: false,
-                applicationInsightsCookieDomain: "",
-                applicationInsightsCookiePostfix: "",
-                applicationInsightsInstrumentationKey: "",
-                applicationInsightsProxyEndpoint: "",
                 collaboratorUsernameRegex: "^[\\u00C0-\\u00FFa-zA-Z0-9.+\\-_]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,10}$",
                 community: "https://wso2iem-en-community.insided.com/ssoproxy/login?ssoType=openidconnect&returnUrl=https://wso2iem-en-community.insided.com/asgardeo-1",
                 feedbackEndPoint: "https://dev.portal.asgardeo.io/api/cloud/v1/feedback/",
