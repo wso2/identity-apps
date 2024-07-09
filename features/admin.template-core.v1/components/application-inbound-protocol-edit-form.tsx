@@ -17,6 +17,14 @@
  */
 
 import useApplicationTemplate from "@wso2is/admin.application-templates.v1/hooks/use-application-template";
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
+import useGetApplicationInboundConfigs from "@wso2is/admin.applications.v1/api/use-get-application-inbound-configs";
+import {
+    ApplicationInterface,
+    SAML2ConfigurationInterface,
+    SAML2ServiceProviderInterface,
+    SupportedAuthProtocolTypes
+} from "@wso2is/admin.applications.v1/models";
 import { AppState } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -39,15 +47,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
-import { updateAuthProtocolConfig } from "../../api";
-import useGetApplicationInboundConfigs from "../../api/use-get-application-inbound-configs";
-import {
-    ApplicationInterface,
-    SAML2ConfigurationInterface,
-    SAML2ServiceProviderInterface,
-    SupportedAuthProtocolTypes
-} from "../../models";
-import { DynamicFieldInterface, DynamicFormInterface } from "../../models/dynamic-fields";
+import { DynamicFieldInterface, DynamicFormInterface } from "../models/dynamic-fields";
 
 /**
  * Prop types of the `ApplicationEditForm` component.

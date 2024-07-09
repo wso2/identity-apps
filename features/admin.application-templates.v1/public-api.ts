@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export const test: string = "dhja";
+export { default as ApplicationTemplateProvider } from "./provider/application-template-provider";
+export { default as ApplicationTemplateMetadataProvider } from "./provider/application-template-metadata-provider";

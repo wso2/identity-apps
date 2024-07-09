@@ -36,4 +36,10 @@ export class ApplicationTemplateConstants {
             id: "SSO-INTEGRATION"
         }
     ];
+
+    public static readonly COMING_SOON_ATTRIBUTE_KEY: string = "comingSoon";
+
+    public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
+
+    public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
 }

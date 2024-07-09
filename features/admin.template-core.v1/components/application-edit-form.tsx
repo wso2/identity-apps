@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ApplicationEditTabMetadataInterface } from "@wso2is/admin.application-templates.v1/models/templates";
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
@@ -23,11 +25,7 @@ import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { ApplicationEditForm as ApplicationInboundProtocolEditForm } from "./application-inbound-protocol-edit-form";
 import { ApplicationEditForm as ApplicationMainEditForm } from "./application-main-edit-form";
-import {
-    ApplicationInterface
-} from "../../models";
-import { ApplicationEditTabMetadataInterface } from "../../models/application-templates";
-import { DynamicFormInterface, SupportedAPIList } from "../../models/dynamic-fields";
+import { DynamicFormInterface, SupportedAPIList } from "../models/dynamic-fields";
 import "./application-edit-form.scss";
 
 /**

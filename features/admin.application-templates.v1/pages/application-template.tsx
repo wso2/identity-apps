@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import ApplicationTemplateMetadataProvider from
-    "@wso2is/admin.application-templates.v1/provider/application-template-metadata-provider";
-import ApplicationTemplateProvider from "@wso2is/admin.application-templates.v1/provider/application-template-provider";
 import {
     AppConstants,
     history
@@ -28,8 +25,11 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ApplicationCreationAdapter from "../components/application-templates/application-creation-adapter";
-import ApplicationTemplateGrid from "../components/application-templates/application-templates-grid";
+import ApplicationCreationAdapter from "../components/application-creation-adapter";
+import ApplicationTemplateGrid from "../components/application-templates-grid";
+import ApplicationTemplateMetadataProvider from
+    "../provider/application-template-metadata-provider";
+import ApplicationTemplateProvider from "../provider/application-template-provider";
 
 /**
  * Props for the Applications templates page.

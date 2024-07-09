@@ -216,7 +216,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {
-                    component: lazy(() => import("@wso2is/admin.applications.v1/pages/application-template")),
+                    component: lazy(() => import("@wso2is/admin.application-templates.v1/pages/application-template")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon

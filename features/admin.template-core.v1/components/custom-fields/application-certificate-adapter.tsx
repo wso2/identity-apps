@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { Code } from "@wso2is/react-components";
-import React, { Fragment, FunctionComponent, ReactElement } from "react";
-import { FieldRenderProps, useFormState } from "react-final-form";
-import { Trans, useTranslation } from "react-i18next";
+import { ApplicationCertificateWrapper } from "@wso2is/admin.applications.v1/components/settings/certificate";
 import {
     ApplicationInterface,
     CertificateInterface,
     CertificateTypeInterface,
     SupportedAuthProtocolTypes
-} from "../../../models";
-import { ApplicationCertificateWrapper } from "../../settings/certificate";
+} from "@wso2is/admin.applications.v1/models";
+import { Code } from "@wso2is/react-components";
+import React, { Fragment, FunctionComponent, ReactElement } from "react";
+import { FieldRenderProps, useFormState } from "react-final-form";
+import { Trans, useTranslation } from "react-i18next";
 
 /**
  * Props for the ApplicationCertificateAdapter component.

@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CheckboxFieldAdapter, FinalFormField, FormApi, TextFieldAdapter } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import ApplicationCertificateAdapter from "./custom-fields/application-certificate-adapter";
-import { ApplicationInterface } from "../../models";
-import { DynamicFieldInterface, DynamicInputFieldTypes } from "../../models/dynamic-fields";
+import { DynamicFieldInterface, DynamicInputFieldTypes } from "../models/dynamic-fields";
 
 /**
  * Prop types for the dynamic input fields of the application form.

@@ -22,18 +22,19 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { SupportedTechnologyMetadataInterface } from "@wso2is/admin.application-templates.v1/models/templates";
 import {
     CustomAttributeInterface,
-    ExtensionTemplateListInterface
+    ExtensionTemplateListInterface,
+    ResourceTypes
 } from "@wso2is/admin.template-core.v1/models/templates";
+import { ExtensionTemplateManagementUtils } from "@wso2is/admin.template-core.v1/utils/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classnames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { ApplicationTemplateConstants } from "../../constants/application-templates";
+import { ApplicationTemplateConstants } from "../constants/templates";
 import "./application-template-card.scss";
-import { ApplicationTemplateManagementUtils } from "../../utils/application-template-management-utils";
+import { SupportedTechnologyMetadataInterface } from "../models/templates";
 
 /**
  * Props for the application template card component.
@@ -137,7 +138,12 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                 <div className="application-template-image-container">
                     <img
                         className="application-template-image"
-                        src={ ApplicationTemplateManagementUtils.resolveApplicationResourcePath(template?.image) }
+                        src={
+                            ExtensionTemplateManagementUtils.resolveExtensionTemplateResourcePath(
+                                template?.image,
+                                ResourceTypes.APPLICATIONS
+                            )
+                        }
                         loading="lazy"
                     />
                 </div>
@@ -165,8 +171,10 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                                     className="application-template-supported-technology"
                                     alt={ technology?.displayName }
                                     src={
-                                        ApplicationTemplateManagementUtils
-                                            .resolveApplicationResourcePath(technology?.logo)
+                                        ExtensionTemplateManagementUtils.resolveExtensionTemplateResourcePath(
+                                            technology?.logo,
+                                            ResourceTypes.APPLICATIONS
+                                        )
                                     }
                                 />
                             )

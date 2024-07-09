@@ -117,3 +117,21 @@ export interface ApplicationEditTabMetadataInterface {
      */
     guide?: string;
 }
+
+/**
+ * Enum for application template categories.
+ *
+ * @readonly
+ */
+export enum ApplicationTemplateCategories {
+    /**
+     * Templates supported by default.
+     * ex: Web Application, SPA etc.
+     */
+    DEFAULT = "DEFAULT",
+    /**
+     * SSO Integration templates.
+     * ex: Zoom, Salesforce etc.
+     */
+    SSO_INTEGRATION = "SSO-INTEGRATION",
+}

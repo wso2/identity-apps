@@ -17,6 +17,9 @@
  */
 
 import { Typography } from "@mui/material";
+import { InboundProtocolsMeta } from "@wso2is/admin.applications.v1/components/meta";
+import { AuthProtocolMetaListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
 import {
@@ -38,13 +41,8 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo,
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ApplicationTemplateCard from "./application-template-card";
-import { ApplicationTemplateConstants } from "../../constants/application-templates";
-import { AuthProtocolMetaListItemInterface } from "../../models";
-import {
-    ApplicationTemplateCategories
-} from "../../models/application-templates";
-import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { InboundProtocolsMeta } from "../meta";
+import { ApplicationTemplateConstants } from "../constants/templates";
+import { ApplicationTemplateCategories } from "../models/templates";
 import "./application-templates-grid.scss";
 
 /**

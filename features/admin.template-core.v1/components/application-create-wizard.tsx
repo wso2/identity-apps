@@ -25,6 +25,16 @@ import Typography from "@oxygen-ui/react/Typography";
 import useApplicationTemplate from "@wso2is/admin.application-templates.v1/hooks/use-application-template";
 import useApplicationTemplateMetadata from
     "@wso2is/admin.application-templates.v1/hooks/use-application-template-metadata";
+import buildCallBackUrlsWithRegExp from "@wso2is/admin.application-templates.v1/utils/build-callback-urls-with-regexp";
+import { createApplication, useApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationShareModal } from "@wso2is/admin.applications.v1/components/modals/application-share-modal";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import useApplicationSharingEligibility from "@wso2is/admin.applications.v1/hooks/use-application-sharing-eligibility";
+import {
+    ApplicationListItemInterface,
+    MainApplicationInterface,
+    URLFragmentTypes
+} from "@wso2is/admin.applications.v1/models";
 import { AppState, TierLimitReachErrorModal } from "@wso2is/admin.core.v1";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -55,14 +65,8 @@ import { Dispatch } from "redux";
 import { Grid, ModalProps } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
-import { createApplication, useApplicationList } from "../../api";
-import { ApplicationManagementConstants } from "../../constants";
-import useApplicationSharingEligibility from "../../hooks/use-application-sharing-eligibility";
-import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
-import { ApplicationListItemInterface, MainApplicationInterface, URLFragmentTypes } from "../../models";
-import { DynamicFieldInterface, FieldValueGenerators } from "../../models/dynamic-fields";
-import buildCallBackUrlsWithRegExp from "../../utils/build-callback-urls-with-regexp";
-import { ApplicationShareModal } from "../modals/application-share-modal";
+import useDynamicFieldValidations from "../hooks/use-dynamic-field-validation";
+import { DynamicFieldInterface, FieldValueGenerators } from "../models/dynamic-fields";
 import "./application-create-wizard.scss";
 
 /**

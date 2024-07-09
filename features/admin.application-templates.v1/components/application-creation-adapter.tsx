@@ -16,18 +16,20 @@
  * under the License.
  */
 
+import { MinimalAppCreateWizard } from
+    "@wso2is/admin.applications.v1/components/wizard/minimal-application-create-wizard";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationTemplateListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { ApplicationTemplateManagementUtils } from
+    "@wso2is/admin.applications.v1/utils/application-template-management-utils";
 import { AppState } from "@wso2is/admin.core.v1";
+import { ApplicationCreateWizard } from "@wso2is/admin.template-core.v1/components/application-create-wizard";
 import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { ApplicationManagementConstants } from "../../constants";
-import { ApplicationTemplateListItemInterface } from "../../models";
-import { ApplicationTemplateCategories } from "../../models/application-templates";
-import { ApplicationTemplateManagementUtils } from "../../utils/application-template-management-utils";
-import { ApplicationCreateWizard } from "../dynamic-forms/application-create-wizard";
-import { MinimalAppCreateWizard } from "../wizard/minimal-application-create-wizard";
+import { ApplicationTemplateCategories } from "../models/templates";
 
 /**
  * Props for the Application creation adapter component.

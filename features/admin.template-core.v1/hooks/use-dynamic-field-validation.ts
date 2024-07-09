@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationListInterface, MainApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { AppState } from "@wso2is/admin.core.v1";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,9 +30,6 @@ import { MutableRefObject, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { getApplicationList } from "../api/application";
-import { ApplicationManagementConstants } from "../constants";
-import { ApplicationListInterface, MainApplicationInterface } from "../models";
 import {
     DynamicFieldInterface,
     ValidationRule,
