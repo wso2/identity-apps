@@ -1,8 +1,8 @@
 # @wso2is/identity-apps-core
 
-## 3.0.0
+## 2.4.9
 
-### Major Changes
+### Patch Changes
 
 - [#6528](https://github.com/wso2/identity-apps/pull/6528) [`6e3537150aa175a4c25b1d59693add6b0cd0a0f7`](https://github.com/wso2/identity-apps/commit/6e3537150aa175a4c25b1d59693add6b0cd0a0f7) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Remove auth param waitingConfigs from multioption uri and improve internalWait.jsp
 
