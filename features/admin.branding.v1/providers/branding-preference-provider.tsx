@@ -527,8 +527,11 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                         return;
                     }
 
-                    if (updatedValues) {
-                        for (const key in resolvedCustomText?.preference?.text) {
+                    const preferenceText = resolvedCustomText.preference?.text;
+
+
+                    if (preferenceText) {
+                        for (const key in preferenceText) {
                             // Check if the key is missing in the values object
                             if (!(key in updatedValues?.values)) {
                                 updatedValues.values[key] = "";
