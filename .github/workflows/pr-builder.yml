@@ -67,6 +67,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: ☕ Set up JDK 11
+        id: jdk-setup
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: "adopt"
+          cache: maven
+
+      - name: 🦩 Set up Maven
+        uses: stCarolas/setup-maven@v4
+        id: mvn-setup
+        with:
+          maven-version: ${{ matrix.maven-version }}
+
       - name: 🧩 Install Dependencies
         id: install-dependencies
         run: pnpm install
@@ -102,20 +116,6 @@ jobs:
           pnpm test:unit:coverage:aggregate
           pnpm nyc:text-summary-report
           pnpm nyc:text-report
-
-      - name: ☕ Set up JDK 11
-        id: jdk-setup
-        uses: actions/setup-java@v3
-        with:
-          java-version: ${{ matrix.java-version }}
-          distribution: "adopt"
-          cache: maven
-
-      - name: 🦩 Set up Maven
-        uses: stCarolas/setup-maven@v4
-        id: mvn-setup
-        with:
-          maven-version: ${{ matrix.maven-version }}
 
       - name: 👷 PNPM Build
         id: build-with-pnpm
