@@ -165,11 +165,11 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             ? `type eq ${ APIResourceCategories.TENANT }`
             : `type eq ${ APIResourceCategories.ORGANIZATION }`;
 
-        if (searchQuery) {
-            setFilter(`${ searchQuery } and ${ typeFilter }`);
-        } else {
-            setFilter(typeFilter);
-        }
+        const apiResourceFilter: string = searchQuery ? `${ searchQuery } and ${ typeFilter }` : typeFilter;
+
+        setBefore(undefined);
+        setAfter(undefined);
+        setFilter(apiResourceFilter);
     }, [ searchQuery ]);
 
     /**
