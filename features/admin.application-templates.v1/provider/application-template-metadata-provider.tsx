@@ -61,7 +61,8 @@ const ApplicationTemplateMetadataProvider: FunctionComponent<
      * Handle errors that occur during the application template meta data fetch request.
      */
     useEffect(() => {
-        if (!applicationTemplateMetadataFetchRequestError) {
+        if (!applicationTemplateMetadataFetchRequestError
+            || applicationTemplateMetadataFetchRequestError?.response?.status === 404) {
             return;
         }
 

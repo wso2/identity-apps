@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import ApplicationTemplateMetadataProvider from
+    "@wso2is/admin.application-templates.v1/provider/application-template-metadata-provider";
+import ApplicationTemplateProvider from "@wso2is/admin.application-templates.v1/provider/application-template-provider";
 import {
     AppConstants,
     history
@@ -84,11 +87,19 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     setShowWizard(true);
                 } }
             />
-            <ApplicationCreationAdapter
+            <ApplicationTemplateProvider
                 template={ selectedTemplate }
-                showWizard={ showWizard }
-                onClose={ () => setShowWizard(false) }
-            />
+            >
+                <ApplicationTemplateMetadataProvider
+                    template={ selectedTemplate }
+                >
+                    <ApplicationCreationAdapter
+                        template={ selectedTemplate }
+                        showWizard={ showWizard }
+                        onClose={ () => setShowWizard(false) }
+                    />
+                </ApplicationTemplateMetadataProvider>
+            </ApplicationTemplateProvider>
         </PageLayout>
     );
 };

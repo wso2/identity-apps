@@ -50,7 +50,7 @@ const useGetApplicationTemplateMetadata = <Data = ApplicationTemplateMetadataInt
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading: shouldFetch && !error && !data,
         isValidating,
         mutate
     };

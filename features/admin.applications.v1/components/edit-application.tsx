@@ -17,6 +17,8 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import useApplicationTemplateMetadata from
+    "@wso2is/admin.application-templates.v1/hooks/use-application-template-metadata";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -30,7 +32,6 @@ import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/component
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -66,7 +67,6 @@ import {
 } from "./settings";
 import { Info } from "./settings/info";
 import { disableApplication, getInboundProtocolConfig } from "../api";
-import useGetApplicationTemplateMetadata from "../api/use-get-application-template-metadata";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -125,13 +125,6 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      */
     template?: ApplicationTemplateInterface;
     /**
-     * Template that exists in the Extension Management API.
-     *
-     * This will be populated if the current application is created using
-     * an application template from the Extension Management API.
-     */
-    extensionTemplate?: ExtensionTemplateListInterface;
-    /**
      * Make the form read only.
      */
     readOnly?: boolean;
@@ -162,7 +155,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         onDelete,
         onUpdate,
         template,
-        extensionTemplate,
         readOnly,
         urlSearchParams,
         [ "data-componentid" ]: componentId
@@ -173,10 +165,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const dispatch: Dispatch = useDispatch();
     const { UIConfig } = useUIConfig();
     const {
-        data: extensionTemplateMetadata,
-        isLoading: isExtensionTemplateMetadataFetchRequestLoading,
-        error: extensionTemplateMetadataFetchRequestError
-    } = useGetApplicationTemplateMetadata(extensionTemplate?.id, !!extensionTemplate);
+        templateMetadata: extensionTemplateMetadata,
+        isTemplateMetadataRequestLoading: isExtensionTemplateMetadataFetchRequestLoading
+    } = useApplicationTemplateMetadata();
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
@@ -222,33 +213,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ isDisableInProgress, setIsDisableInProgress ] = useState<boolean>(false);
     const [ enableStatus, setEnableStatus ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
-
-    /**
-     * Handle errors that occur during the application template meta data fetch request.
-     */
-    useEffect(() => {
-        if (!extensionTemplateMetadataFetchRequestError) {
-            return;
-        }
-
-        if (extensionTemplateMetadataFetchRequestError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: extensionTemplateMetadataFetchRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications.fetchTemplateMetadata.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("applications:notifications.fetchTemplateMetadata" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:notifications." +
-                "fetchTemplateMetadata.genericError.message")
-        }));
-    }, [ extensionTemplateMetadataFetchRequestError ]);
 
     /**
      * Called when an application updates.
@@ -1392,7 +1356,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             ? (
                 <>
                     <ResourceTab
-                        isLoading={ isLoading || (extensionTemplate && isExtensionTemplateMetadataFetchRequestLoading) }
+                        isLoading={ isLoading || isExtensionTemplateMetadataFetchRequestLoading }
                         data-componentid={ `${ componentId }-resource-tabs` }
                         controlTabRedirectionInternally
                         defaultActiveTab={ getDefaultActiveTab() }

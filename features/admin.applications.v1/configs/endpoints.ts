@@ -28,8 +28,6 @@ export const getApplicationsResourceEndpoints = (serverHost: string): Applicatio
     const serverHostWithoutOPath: string = serverHost.replace("/o/", "/");
 
     return {
-        applicationTemplate: `${serverHost}/api/server/v1/extensions/applications/{{id}}/template`,
-        applicationTemplateMetadata: `${serverHost}/api/server/v1/extensions/applications/{{id}}/metadata`,
         applications: `${ serverHost }/api/server/v1/applications`,
         dcrConfiguration: `${ serverHost }/api/server/v1/configs/dcr`,
         myAccountConfigMgt: `${ serverHostWithoutOPath }/api/identity/config-mgt/v1.0/resource/myaccount`,

@@ -21,7 +21,6 @@ import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
-    ConfigReducerStateInterface,
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
@@ -72,10 +71,7 @@ import {
 import { useApplicationList, useMyAccountApplicationData } from "../api";
 import { useGetApplication } from "../api/use-get-application";
 import { ApplicationList } from "../components/application-list";
-import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "../constants";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
 import { ApplicationAccessTypes, ApplicationListInterface, ApplicationListItemInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -139,8 +135,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
@@ -764,22 +758,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     data-componentid="application"
                 />
             </ListLayout>
-            { showWizard && (
-                <MinimalAppCreateWizard
-                    title={ CustomApplicationTemplate?.name }
-                    subTitle={ CustomApplicationTemplate?.description }
-                    closeWizard={ (): void => setShowWizard(false) }
-                    template={ CustomApplicationTemplate }
-                    showHelpPanel={ true }
-                    subTemplates={ CustomApplicationTemplate?.subTemplates }
-                    subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
-                    addProtocol={ false }
-                    templateLoadingStrategy={
-                        config.ui.applicationTemplateLoadingStrategy
-                        ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
-                    }
-                />
-            ) }
         </PageLayout>
     );
 };

@@ -26,5 +26,27 @@ export interface applicationTemplatesNS {
             displayName: string;
             description: string;
         };
+    },
+    notifications: {
+        fetchTemplateMetadata: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+        };
+        fetchTemplate: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+        };
     }
 }

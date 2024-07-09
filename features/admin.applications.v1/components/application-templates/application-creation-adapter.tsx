@@ -118,7 +118,6 @@ const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPr
             default:
                 return (
                     <ApplicationCreateWizard
-                        template={ template }
                         onClose={ onClose }
                     />
                 );

@@ -49,7 +49,7 @@ const useGetApplicationTemplate = <Data = ApplicationTemplateInterface, Error = 
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading: shouldFetch && !error && !data,
         isValidating,
         mutate
     };

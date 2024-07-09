@@ -62,7 +62,7 @@ const ApplicationTemplateProvider: FunctionComponent<
      * Handle errors that occur during the application template data fetch request.
      */
     useEffect(() => {
-        if (!applicationTemplateFetchRequestError) {
+        if (!applicationTemplateFetchRequestError || applicationTemplateFetchRequestError?.response?.status === 404) {
             return;
         }
 

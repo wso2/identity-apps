@@ -17,6 +17,7 @@
  */
 
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
+import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
@@ -283,6 +284,7 @@ export class Config {
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getConsoleSettingsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
+            ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

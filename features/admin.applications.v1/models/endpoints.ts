@@ -22,14 +22,6 @@ import { ClaimConfigurationInterface } from "./application";
  * Interface for the Application Management feature resource endpoints.
  */
 export interface ApplicationsResourceEndpointsInterface {
-    /**
-     * Endpoint to get the application template.
-     */
-    applicationTemplate: string;
-    /**
-     * Endpoint to get the application template metadata.
-     */
-    applicationTemplateMetadata: string;
     applications: string;
     myAccountConfigMgt: string;
     requestPathAuthenticators: string;

@@ -22,12 +22,14 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Typography from "@oxygen-ui/react/Typography";
+import useApplicationTemplate from "@wso2is/admin.application-templates.v1/hooks/use-application-template";
+import useApplicationTemplateMetadata from
+    "@wso2is/admin.application-templates.v1/hooks/use-application-template-metadata";
 import { AppState, TierLimitReachErrorModal } from "@wso2is/admin.core.v1";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
@@ -54,8 +56,6 @@ import { Grid, ModalProps } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
 import { createApplication, useApplicationList } from "../../api";
-import useGetApplicationTemplate from "../../api/use-get-application-template";
-import useGetApplicationTemplateMetadata from "../../api/use-get-application-template-metadata";
 import { ApplicationManagementConstants } from "../../constants";
 import useApplicationSharingEligibility from "../../hooks/use-application-sharing-eligibility";
 import useDynamicFieldValidations from "../../hooks/use-dynamic-field-validation";
@@ -70,10 +70,6 @@ import "./application-create-wizard.scss";
  */
 export interface ApplicationCreateWizardPropsInterface extends ModalProps, IdentifiableComponentInterface {
     /**
-     * The template to be used for the application creation.
-     */
-    template: ExtensionTemplateListInterface;
-    /**
      * Callback triggered when closing the application creation wizard.
      */
     onClose: () => void;
@@ -87,18 +83,16 @@ export interface ApplicationCreateWizardPropsInterface extends ModalProps, Ident
 export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardPropsInterface> = (
     props: ApplicationCreateWizardPropsInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId, template, onClose, ...rest } = props;
+    const { ["data-componentid"]: componentId, onClose, ...rest } = props;
 
     const {
-        data: templateData,
-        isLoading: isTemplateDataFetchRequestLoading,
-        error: templateDataFetchRequestError
-    } = useGetApplicationTemplate(template?.id);
+        template: templateData,
+        isTemplateRequestLoading: isTemplateDataFetchRequestLoading
+    } = useApplicationTemplate();
     const {
-        data: templateMetadata,
-        isLoading: isTemplateMetadataFetchRequestLoading,
-        error: templateMetadataFetchRequestError
-    } = useGetApplicationTemplateMetadata(template?.id);
+        templateMetadata,
+        isTemplateMetadataRequestLoading: isTemplateMetadataFetchRequestLoading
+    } = useApplicationTemplateMetadata();
     const isApplicationSharable: boolean = useApplicationSharingEligibility();
     const { validate } = useDynamicFieldValidations();
     const [ alert, setAlert, notification ] = useWizardAlert();
@@ -223,60 +217,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 "fetchApplications.genericError.message")
         }));
     }, [ applicationsFetchRequestError ]);
-
-    /**
-     * Handle errors that occur during the application template data fetch request.
-     */
-    useEffect(() => {
-        if (!templateDataFetchRequestError) {
-            return;
-        }
-
-        if (templateDataFetchRequestError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: templateDataFetchRequestError?.response?.data?.description,
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications.fetchTemplate.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("applications:notifications.fetchTemplate" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:notifications." +
-                "fetchTemplate.genericError.message")
-        }));
-    }, [ templateDataFetchRequestError ]);
-
-    /**
-     * Handle errors that occur during the application template meta data fetch request.
-     */
-    useEffect(() => {
-        if (!templateMetadataFetchRequestError) {
-            return;
-        }
-
-        if (templateMetadataFetchRequestError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: templateMetadataFetchRequestError?.response?.data?.description,
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications.fetchTemplateMetadata.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("applications:notifications.fetchTemplateMetadata" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:notifications." +
-                "fetchTemplateMetadata.genericError.message")
-        }));
-    }, [ templateMetadataFetchRequestError ]);
 
     /**
      * After the application is created, the user will be redirected to the
@@ -543,8 +483,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         >
             <ModalWithSidePanel.MainPanel>
                 <ModalWithSidePanel.Header className="wizard-header">
-                    { template?.name }
-                    <Heading as="h6">{ template?.description }</Heading>
+                    { templateData?.name }
+                    <Heading as="h6">{ templateData?.description }</Heading>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     {

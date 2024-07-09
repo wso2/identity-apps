@@ -28,5 +28,27 @@ export const applicationTemplates: applicationTemplatesNS = {
                 + " Google Workspace, Salesforce, and more.",
             displayName: "SSO Integrations"
         }
+    },
+    notifications: {
+        fetchTemplate: {
+            error: {
+                description: "{{description}}",
+                message: "Retrieval error"
+            },
+            genericError: {
+                description: "An error occurred while retrieving application template data.",
+                message: "Something went wrong"
+            }
+        },
+        fetchTemplateMetadata: {
+            error: {
+                description: "{{description}}",
+                message: "Retrieval error"
+            },
+            genericError: {
+                description: "An error occurred while retrieving application template meta data.",
+                message: "Something went wrong"
+            }
+        }
     }
 };

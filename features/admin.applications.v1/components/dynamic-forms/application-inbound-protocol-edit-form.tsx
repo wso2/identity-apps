@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useApplicationTemplate from "@wso2is/admin.application-templates.v1/hooks/use-application-template";
 import { AppState } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -40,7 +41,6 @@ import { Grid } from "semantic-ui-react";
 import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
 import { updateAuthProtocolConfig } from "../../api";
 import useGetApplicationInboundConfigs from "../../api/use-get-application-inbound-configs";
-import useGetApplicationTemplate from "../../api/use-get-application-template";
 import {
     ApplicationInterface,
     SAML2ConfigurationInterface,
@@ -103,10 +103,9 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
     } = props;
 
     const {
-        data: templateData,
-        isLoading: isTemplateDataFetchRequestLoading,
-        error: templateDataFetchRequestError
-    } = useGetApplicationTemplate("salesforce");
+        template: templateData,
+        isTemplateRequestLoading: isTemplateDataFetchRequestLoading
+    } = useApplicationTemplate();
     const {
         data: SAML2Configurations,
         error: SAML2ConfigurationFetchError,
@@ -186,33 +185,6 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
         },
         [ SAML2Configurations, templateData ]
     );
-
-    /**
-     * Handle errors that occur during the application template data fetch request.
-     */
-    useEffect(() => {
-        if (!templateDataFetchRequestError) {
-            return;
-        }
-
-        if (templateDataFetchRequestError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: templateDataFetchRequestError?.response?.data?.description,
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications.fetchTemplate.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("applications:notifications.fetchTemplate" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:notifications." +
-                "fetchTemplate.genericError.message")
-        }));
-    }, [ templateDataFetchRequestError ]);
 
     /**
      * Handle errors that occur during the application template meta data fetch request.
