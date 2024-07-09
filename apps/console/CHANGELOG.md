@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.20.17
+
+### Patch Changes
+
+- [#6439](https://github.com/wso2/identity-apps/pull/6439) [`c58df1f13afd6ccc28cc129518ac86bab6419744`](https://github.com/wso2/identity-apps/commit/c58df1f13afd6ccc28cc129518ac86bab6419744) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Implement assignment of Admin roles to user in the primary userstore
+
+- Updated dependencies [[`c58df1f13afd6ccc28cc129518ac86bab6419744`](https://github.com/wso2/identity-apps/commit/c58df1f13afd6ccc28cc129518ac86bab6419744)]:
+  - @wso2is/admin.extensions.v1@2.21.17
+  - @wso2is/admin.authentication.v1@2.20.47
+  - @wso2is/admin.core.v1@2.21.17
+  - @wso2is/admin.organizations.v1@2.20.47
+
 ## 2.20.16
 
 ### Patch Changes
