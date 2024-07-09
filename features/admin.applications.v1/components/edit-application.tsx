@@ -20,6 +20,10 @@ import { Show } from "@wso2is/access-control";
 import useApplicationTemplateMetadata from
     "@wso2is/admin.application-templates.v1/hooks/use-application-template-metadata";
 import {
+    ApplicationEditTabContentTypes,
+    ApplicationEditTabMetadataInterface
+} from "@wso2is/admin.application-templates.v1/models/templates";
+import {
     AppState,
     CORSOriginsListInterface,
     EventPublisher,
@@ -82,10 +86,6 @@ import {
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
 } from "../models";
-import {
-    ApplicationEditTabContentTypes,
-    ApplicationEditTabMetadataInterface
-} from "../models/application-templates";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**
