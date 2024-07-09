@@ -525,7 +525,9 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
                     if (updatedValues) {
                         for (const key in resolvedCustomText?.preference?.text) {
-                            // Check if the key is missing in the values object
+                            // Check if the key is missing in the values object.
+                            // Disable ESLint check for the next line until the cause of getting this error is fixed.
+                            // eslint-disable-next-line no-unsafe-optional-chaining
                             if (!(key in updatedValues?.values)) {
                                 updatedValues.values[key] = "";
                             }

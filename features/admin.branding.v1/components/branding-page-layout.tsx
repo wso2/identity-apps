@@ -320,7 +320,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                             application?.name) &&
                                                         !ApplicationManagementConstants.DEFAULT_APPS.includes(
                                                             application?.name) &&
-                                                        !(application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID)
+                                                        !(application?.templateId === ApplicationManagementConstants.
+                                                            M2M_APP_TEMPLATE_ID)
                                                     )
                                                 }
                                                 loading={ isApplicationListFetchRequestLoading }

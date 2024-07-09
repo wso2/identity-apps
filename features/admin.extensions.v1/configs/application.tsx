@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import Button from "@oxygen-ui/react/Button";
-import { PaletteIcon } from "@oxygen-ui/react-icons";
 import { APIAuthorization } from "@wso2is/admin.applications.v1/components/api-authorization/api-authorization";
 import {
     ExtendedClaimInterface,
@@ -32,7 +30,7 @@ import {
     additionalSpProperty
 } from "@wso2is/admin.applications.v1/models";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import { EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
 import { LegacyModeInterface } from "@wso2is/core/models";

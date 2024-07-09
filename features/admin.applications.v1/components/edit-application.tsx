@@ -249,7 +249,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (
                 isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
-                && (isSubOrganization() ? !brandingDisabledFeatures.includes("branding.applicationLevelBranding") : true)
+                && (isSubOrganization() ?
+                    !brandingDisabledFeatures.includes("branding.applicationLevelBranding"): true)
                 && !isMyAccount
             ) {
                 if (applicationConfig.editApplication.

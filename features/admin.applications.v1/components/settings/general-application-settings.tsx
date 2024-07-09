@@ -128,7 +128,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         description,
         discoverability,
         featureConfig,
-        hiddenFields,
         imageUrl,
         accessUrl,
         isLoading,
