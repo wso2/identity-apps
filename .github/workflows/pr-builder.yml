@@ -77,3 +77,13 @@ jobs:
         run: |
             bash ./scripts/lint-changed.sh ${{ github.event.pull_request.number }}
 
+      # Temporarily disable linting all files as it is failing intermittently.
+      # - name: ⏳ Lint All Files
+      #   run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --plain --target=lint --parallel=3
+
+      - name: 👷 Build Re-usable Modules
+        id: build-reusable-modules
+        run: pnpm build:modules
+
+      - name: ☄️ Check Type Errors
+        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --target=typecheck --parallel=3
