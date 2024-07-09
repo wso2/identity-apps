@@ -138,12 +138,7 @@ module.exports = {
             rules: {
                 "@typescript-eslint/ban-types": 1,
                 "@typescript-eslint/explicit-function-return-type": 0,
-                "@typescript-eslint/no-empty-function": [
-                    "error",
-                    {
-                        allow: [ "constructors" ]
-                    }
-                ],
+                "@typescript-eslint/no-empty-function": "off",
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
                 "@typescript-eslint/no-unused-vars": [
