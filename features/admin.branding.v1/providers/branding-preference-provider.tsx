@@ -523,7 +523,11 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 ): void => {
                     const updatedValues: FormState<CustomTextInterface, CustomTextInterface> = cloneDeep(subscription);
 
-                    if (updatedValues && updatedValues?.values) {
+                    if (!resolvedCustomText || !updatedValues) {
+                        return;
+                    }
+
+                    if (updatedValues) {
                         for (const key in resolvedCustomText?.preference?.text) {
                             // Check if the key is missing in the values object
                             if (!(key in updatedValues?.values)) {
