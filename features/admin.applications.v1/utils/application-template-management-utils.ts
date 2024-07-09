@@ -31,7 +31,6 @@ import startCase  from "lodash-es/startCase";
 import {
     getApplicationTemplateList
 } from "../api";
-import { ApplicationTemplateConstants } from "../constants/application-templates";
 import { TemplateConfigInterface, getApplicationTemplatesConfig } from "../data/application-templates";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -457,13 +456,6 @@ export class ApplicationTemplateManagementUtils {
 
         const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
         const clientOrigin: string = AppConstants.getClientOrigin();
-
-        if (path?.includes(ApplicationTemplateConstants.CONSOLE_BASE_URL_PLACEHOLDER)) {
-            return path.replace(
-                ApplicationTemplateConstants.CONSOLE_BASE_URL_PLACEHOLDER,
-                `${clientOrigin}${basename}`
-            );
-        }
 
         if (URLUtils.isHttpsOrHttpUrl(path) && ImageUtils.isValidImageExtension(path)) {
             return path;
