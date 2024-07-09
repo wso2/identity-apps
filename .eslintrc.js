@@ -138,6 +138,8 @@ module.exports = {
             rules: {
                 "@typescript-eslint/ban-types": 1,
                 "@typescript-eslint/explicit-function-return-type": 0,
+                // Temporary disable the no-empty-function rule.
+                // Refer: https://github.com/wso2/product-is/issues/20659
                 "@typescript-eslint/no-empty-function": "off",
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
