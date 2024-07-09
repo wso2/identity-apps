@@ -23,6 +23,10 @@ import {
     SupportedAuthProtocolTypes
 } from "@wso2is/admin.applications.v1/models";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { Config, getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -38,10 +42,6 @@ import { Button, Divider, Form, Icon, InputOnChangeData } from "semantic-ui-reac
 import { dotNetSDKInstallerConfigCode, tomcatOIDCSamplePropertiesFileCode } from "./code-blocks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalOIDCAppTechnologyTypes } from "./models";
-import {
-    VerticalStepper,
-    VerticalStepperStepInterface
-} from "../../../components/component-extensions/application/vertical-stepper";
 import { AddUserStepContent } from "../../shared/components";
 
 interface TryoutSamplesPropsInterface extends TestableComponentInterface {

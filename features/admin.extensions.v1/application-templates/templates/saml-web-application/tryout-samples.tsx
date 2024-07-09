@@ -24,6 +24,10 @@ import {
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
 } from "@wso2is/admin.applications.v1/models";
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
@@ -39,10 +43,6 @@ import { Button, Divider, Form, Icon, InputOnChangeData } from "semantic-ui-reac
 import { tomcatSAMLAgentDockerEnvCode } from "./code-blocks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalSAMLAppTechnologyTypes } from "./models";
-import {
-    VerticalStepper,
-    VerticalStepperStepInterface
-} from "../../../components/component-extensions/application/vertical-stepper";
 import { AddUserStepContent } from "../../shared/components";
 
 interface TryoutSamplesPropsInterface extends TestableComponentInterface {

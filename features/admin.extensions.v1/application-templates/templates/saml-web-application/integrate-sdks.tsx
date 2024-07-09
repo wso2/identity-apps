@@ -22,6 +22,10 @@ import {
     SAMLApplicationConfigurationInterface
 } from "@wso2is/admin.applications.v1/models";
 import { AppState } from "@wso2is/admin.core.v1";
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { Config } from "@wso2is/admin.core.v1/configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -53,10 +57,6 @@ import {
 } from "./models";
 import MavenLogo from "../../../assets/images/icons/maven-logo.svg";
 import TomcatLogo from "../../../assets/images/icons/tomcat-icon.svg";
-import {
-    VerticalStepper,
-    VerticalStepperStepInterface
-} from "../../../components/component-extensions/application/vertical-stepper";
 import { AddUserStepContent } from "../../shared/components";
 
 interface IntegrateSDKsPropsInterface extends TestableComponentInterface {

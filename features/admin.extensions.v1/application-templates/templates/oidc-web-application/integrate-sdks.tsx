@@ -23,6 +23,10 @@ import {
     SupportedAuthProtocolTypes
 } from "@wso2is/admin.applications.v1/models";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { Config } from "@wso2is/admin.core.v1/configs";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -67,10 +71,6 @@ import { SDKMeta } from "./meta";
 import { SupportedTraditionalOIDCAppTechnologyTypes } from "./models";
 import MavenLogo from "../../../assets/images/icons/maven-logo.svg";
 import TomcatLogo from "../../../assets/images/icons/tomcat-icon.svg";
-import {
-    VerticalStepper,
-    VerticalStepperStepInterface
-} from "../../../components/component-extensions/application/vertical-stepper";
 import { AddUserStepContent } from "../../shared/components";
 
 /**

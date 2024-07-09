@@ -22,6 +22,9 @@ import {
     SupportedAuthProtocolTypes
 } from "@wso2is/admin.applications.v1/models";
 import { AppState, store, toggleHelpPanelVisibility } from "@wso2is/admin.core.v1";
+import {
+    VerticalStepper
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
@@ -30,7 +33,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Divider, Form, Icon } from "semantic-ui-react";
-import { VerticalStepper } from "./vertical-stepper";
 import { ReactComponent as AngularIcon } from "../../../assets/images/icons/angular-icon.svg";
 import { ReactComponent as ReactIcon } from "../../../assets/images/icons/react-icon.svg";
 
