@@ -167,6 +167,9 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
 
         const apiResourceFilter: string = searchQuery ? `${ searchQuery } and ${ typeFilter }` : typeFilter;
 
+        // Setting `before` and `after` cursors to undefined before initiating a fresh
+        // search query, otherwise text search doesn't work when it is initiated from a
+        // page greater than one.
         setBefore(undefined);
         setAfter(undefined);
         setFilter(apiResourceFilter);
