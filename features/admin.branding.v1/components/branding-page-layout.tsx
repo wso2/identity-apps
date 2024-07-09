@@ -77,7 +77,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError
-    } = useApplicationList(null, null, null, null, brandingMode === BrandingModes.APPLICATION);
+    } = useApplicationList("templateId", null, null, null, brandingMode === BrandingModes.APPLICATION);
 
     const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.branding?.disabledFeatures);
@@ -319,7 +319,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                         !ApplicationManagementConstants.SYSTEM_APPS.includes(
                                                             application?.name) &&
                                                         !ApplicationManagementConstants.DEFAULT_APPS.includes(
-                                                            application?.name)
+                                                            application?.name) &&
+                                                        !(application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID)
                                                     )
                                                 }
                                                 loading={ isApplicationListFetchRequestLoading }

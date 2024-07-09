@@ -212,8 +212,6 @@ export const applicationConfig: ApplicationConfig = {
         getActions: (applicationId: string, clientId: string, tenant: string, testId: string) => {
 
             const asgardeoLoginPlaygroundURL: string = window[ "AppUtils" ]?.getConfig()?.extensions?.asgardeoTryItURL;
-            const brandingDisabledFeatures: string[] = window[ "AppUtils" ]?.getConfig().ui?.features?.branding?.
-                disabledFeatures;
 
             if (clientId === getTryItClientId(tenant)) {
                 return (
@@ -230,32 +228,6 @@ export const applicationConfig: ApplicationConfig = {
                         Try Login
                         <Icon name="arrow right"/>
                     </PrimaryButton>
-                );
-            }
-
-            if (!brandingDisabledFeatures.includes("branding.applicationLevelBranding")) {
-                return (
-                    <Button
-                        className="application-branding-button"
-                        color="secondary"
-                        data-componentid={ `${ testId }-application-branding-button` }
-                        onClick={ () => {
-                            history.push({
-                                pathname: AppConstants.getPaths().get("BRANDING"),
-                                state: applicationId
-                            });
-                        } }
-                        startIcon={ <PaletteIcon /> }
-                        variant="outlined"
-                    >
-                        <>
-                            {
-                                I18n.instance.t(
-                                    "extensions:develop.branding.pageHeader.applicationBrandingtitle"
-                                )
-                            }
-                        </>
-                    </Button>
                 );
             }
 

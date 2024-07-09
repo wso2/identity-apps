@@ -470,7 +470,6 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                             size="small"
                             sx={ { marginLeft: 1 } }
                             label={ t("common:comingSoon") }
-                            className="oxygen-chip-beta"
                         />
                     ) }
                 </Menu.Item>

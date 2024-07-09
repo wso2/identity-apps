@@ -1238,6 +1238,15 @@ export const applications: ApplicationsNS = {
             }
         },
         generalDetails: {
+            sections: {
+                branding: {
+                    title: "Branding"
+                }
+            },
+            brandingLink: {
+                hint: "This will take you to the Branding page where you can customize consumer-facing user interfaces of the application such as the logo, colors, fonts.",
+                label: "Go to Application Branding"
+            },
             fields: {
                 accessUrl: {
                     hint: "The landing page URL for this application. It will be used in the application" +

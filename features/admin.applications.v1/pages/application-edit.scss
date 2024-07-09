@@ -16,9 +16,6 @@
  * under the License.
  */
 
-// Added temporarily to fix the issue with the application branding button.
-// Needs to properly fix this issue from Oxygen side as the secondary button.
-.application-branding-button {
-    border-color: #757576;
-    color: #757576;
+.application-branding-link {
+    cursor: pointer;
 }
