@@ -234,7 +234,7 @@ export class AuthenticatorMeta {
         return {
             [ AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/email-otp/quick-start"))
+                    quickStart: lazy(() => import("@wso2is/admin.extensions.v1/components/authenticators/email-otp/quick-start"))
                 },
                 isComingSoon: false,
                 isEnabled: true,
@@ -242,7 +242,7 @@ export class AuthenticatorMeta {
             },
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/sms-otp/quick-start"))
+                    quickStart: lazy(() => import("@wso2is/admin.extensions.v1/components/authenticators/sms-otp/quick-start"))
                 },
                 isComingSoon: false,
                 isEnabled: true,
@@ -250,7 +250,7 @@ export class AuthenticatorMeta {
             },
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/totp/quick-start"))
+                    quickStart: lazy(() => import("@wso2is/admin.extensions.v1/components/authenticators/totp/quick-start"))
                 },
                 isComingSoon: false,
                 isEnabled: true,
@@ -258,15 +258,15 @@ export class AuthenticatorMeta {
             },
             [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/fido/quick-start"))
+                    quickStart: lazy(() => import("@wso2is/admin.extensions.v1/components/authenticators/fido/quick-start"))
                 },
                 isComingSoon: false,
                 isEnabled: true,
-                useAuthenticatorsAPI: true
+                useAuthenticatorsAPI: false
             },
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/magic-link/quick-start"))
+                    quickStart: lazy(() => import("@wso2is/admin.extensions.v1/components/authenticators/magic-link/quick-start"))
                 },
                 isComingSoon: false,
                 isEnabled: true,

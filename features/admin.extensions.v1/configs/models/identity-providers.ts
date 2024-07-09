@@ -35,12 +35,6 @@ export interface ExtendedSamlConfigInterface {
 }
 
 export interface IdentityProviderConfig {
-    /**
-     * Config for the Authenticators.
-     */
-    authenticators: {
-        [key: string]: AuthenticatorExtensionsConfigInterface;
-    };
     editIdentityProvider: {
         enableFIDOTrustedAppsConfiguration: boolean;
         showAdvancedSettings: boolean;

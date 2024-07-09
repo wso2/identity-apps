@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,10 +18,6 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Typography from "@oxygen-ui/react/Typography";
-import BuildLoginFlowIllustration from
-    "@wso2is/admin.connections.v1/components/authenticators/fido/assets/build-login-flow.png";
-import ConfigureParametersIllustration from
-    "@wso2is/admin.connections.v1/components/authenticators/fido/assets/configure-parameters.png";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -37,6 +33,8 @@ import React, { FunctionComponent, ReactElement, useMemo, useState } from "react
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
+import ConfigureParametersIllustration from "./assets/configure-parameters.png";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
 
