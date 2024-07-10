@@ -41,24 +41,14 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    ReactNode,
-    useContext,
-    useEffect,
-    useMemo,
-    useState
-} from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
 import { ReactComponent as CommunityIcon } from "../../themes/wso2is/assets/images/icons/community-icon.svg";
-import {
-    ReactComponent as ContactSupportIcon
-} from "../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
+import { ReactComponent as ContactSupportIcon } from "../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { AppConstants, OrganizationType } from "../constants";
@@ -68,10 +58,11 @@ import useUIConfig from "../hooks/use-ui-configs";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
+import "./header.scss";
+
 /**
  * Dashboard layout Prop types.
  */
-
 interface HeaderPropsInterface extends IdentifiableComponentInterface {
     handleSidePanelToggleClick?: () => void;
 }
@@ -82,50 +73,28 @@ interface HeaderPropsInterface extends IdentifiableComponentInterface {
  * @param props - Props injected to the component.
  * @returns react element containing the Reusable Header component.
  */
-export const Header: FunctionComponent<HeaderPropsInterface> = (
-    props: HeaderPropsInterface
-): ReactElement => {
+export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPropsInterface): ReactElement => {
     const { handleSidePanelToggleClick } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const profileInfo: ProfileInfoInterface = useSelector(
-        (state: AppState) => state.profile.profileInfo
-    );
-    const config: ConfigReducerStateInterface = useSelector(
-        (state: AppState) => state.config
-    );
-    const showAppSwitchButton: boolean = useSelector(
-        (state: AppState) => state.config.ui.showAppSwitchButton
-    );
-    const accountAppURL: string = useSelector(
-        (state: AppState) => state.config.deployment.accountApp.path
-    );
-    const tenantDomain: string = useSelector(
-        (state: AppState) => state?.auth?.tenantDomain
-    );
-    const associatedTenants: any[] = useSelector(
-        (state: AppState) => state?.auth?.tenants
-    );
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
+    const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const associatedTenants: any[] = useSelector((state: AppState) => state?.auth?.tenants);
     const privilegedUserAccountURL: string = useSelector(
-        (state: AppState) =>
-            state.config.deployment.accountApp.tenantQualifiedPath
+        (state: AppState) => state.config.deployment.accountApp.tenantQualifiedPath
     );
-    const isPrivilegedUser: boolean = useSelector(
-        (state: AppState) => state.auth.isPrivilegedUser
-    );
-    const feature: FeatureConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features
-    );
-    const scopes: string = useSelector(
-        (state: AppState) => state.auth.allowedScopes
-    );
-    const userOrganizationID: string = useSelector((state: AppState) =>
-        state?.organization?.userOrganizationId);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
+    const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
 
     const { UIConfig } = useUIConfig();
-    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
 
     const { organizationType } = useGetCurrentOrganizationType();
@@ -134,7 +103,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const openHelpMenu: boolean = Boolean(anchorHelpMenu);
 
-    const handleHelpMenuClick = (event: { currentTarget: React.SetStateAction<HTMLElement>; }) => {
+    const handleHelpMenuClick = (event: { currentTarget: React.SetStateAction<HTMLElement> }) => {
         setAnchorHelpMenu(event.currentTarget);
     };
 
@@ -153,13 +122,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         }
 
         CommonUtils.buildBillingURLs(tenantDomain, associatedTenants).then(
-            ({
-                billingPortalURL,
-                upgradeButtonURL
-            }: {
-                billingPortalURL: string;
-                upgradeButtonURL: string;
-            }) => {
+            ({ billingPortalURL, upgradeButtonURL }: { billingPortalURL: string; upgradeButtonURL: string }) => {
                 setBillingPortalURL(billingPortalURL);
                 setUpgradeButtonURL(upgradeButtonURL);
             }
@@ -186,19 +149,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
                 organizationType === OrganizationType.SUBORGANIZATION ||
                 organizationConfigs.showSwitcherInTenants) &&
-            hasRequiredScopes(
-                feature?.organizations,
-                feature?.organizations?.scopes?.read,
-                scopes,
-                organizationType
-            )
+            hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes, organizationType)
         );
-    }, [
-        tenantDomain,
-        feature.organizations,
-        organizationType,
-        scopes
-    ]);
+    }, [ tenantDomain, feature.organizations, organizationType, scopes ]);
 
     const resolveUsername = (): string => {
         if (profileInfo?.name?.givenName) {
@@ -216,164 +169,129 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         return "";
     };
 
-    const generateHeaderButtons = (): ReactElement[] => {
-        return [
-            window[ "AppUtils" ].getConfig().docSiteUrl && (
+    // TODO: Need to add a diamond icon to the upgrade button.
+    const generateHeaderButtons = (): ReactElement[] => [
+        window["AppUtils"].getConfig().docSiteUrl && (
+            <Button
+                color="inherit"
+                onClick={() => {
+                    window.open(window["AppUtils"].getConfig().docSiteUrl, "_blank", "noopener");
+                }}
+                startIcon={<DocsIcon />}
+                data-testid="dev-doc-site-link"
+            >
+                {I18n.instance.t("extensions:common.help.docSiteLink") as ReactNode}
+            </Button>
+        ),
+        (window["AppUtils"].getConfig().extensions.community ||
+            window["AppUtils"].getConfig().extensions.helpCenterUrl) && (
+            <>
                 <Button
                     color="inherit"
-                    onClick={ () => {
-                        window.open(
-                            window[ "AppUtils" ].getConfig().docSiteUrl,
-                            "_blank",
-                            "noopener"
-                        );
-                    } }
-                    startIcon={ <DocsIcon /> }
-                    data-testid="dev-doc-site-link"
+                    startIcon={<AskHelpIcon />}
+                    data-testid="get-help-dropdown-link"
+                    className="oxygen-user-dropdown-button"
+                    onClick={handleHelpMenuClick}
                 >
-                    {
-                        I18n.instance.t(
-                            "extensions:common.help.docSiteLink"
-                        ) as ReactNode
-                    }
+                    {I18n.instance.t("extensions:common.help.helpDropdownLink") as ReactNode}
                 </Button>
-            ),
-            (window[ "AppUtils" ].getConfig().extensions.community ||
-                window[ "AppUtils" ].getConfig().extensions.helpCenterUrl) && (
-                <>
-                    <Button
-                        color="inherit"
-                        startIcon={ <AskHelpIcon /> }
-                        data-testid="get-help-dropdown-link"
-                        className="oxygen-user-dropdown-button"
-                        onClick={ handleHelpMenuClick }
-                    >
-                        { I18n.instance.t("extensions:common.help.helpDropdownLink") as ReactNode }
-                    </Button>
-                    <Menu
-                        open={ openHelpMenu }
-                        anchorEl={ anchorHelpMenu }
-                        className="oxygen-user-dropdown-menu header-help-menu"
-                        id="header-help-menu"
-                        anchorOrigin={ { horizontal: "right", vertical: "bottom" } }
-                        transformOrigin={ { horizontal: "right", vertical: "top" } }
-                        onClose={ onCloseHelpMenu }
-                    >
-                        { window[ "AppUtils" ].getConfig().extensions.community && (
-                            <MenuItem
-                                className="get-help-dropdown-item"
-                                onClick={ () => {
-                                    window.open(
-                                        window[ "AppUtils" ].getConfig()
-                                            .extensions.community,
-                                        "_blank",
-                                        "noopener"
-                                    );
-                                } }
-                            >
-                                <>
-                                    <ListItemIcon>
-                                        <GenericIcon
-                                            className="spaced-right"
-                                            transparent
-                                            fill="white"
-                                            size="x22"
-                                            icon={ CommunityIcon }
-                                        />
-                                    </ListItemIcon>
-                                    { I18n.instance.t("extensions:common.help.communityLink") }
-                                </>
-                            </MenuItem>
-                        ) }
-                        { window[ "AppUtils" ].getConfig().extensions.helpCenterUrl && (
-                            <MenuItem
-                                className="get-help-dropdown-item"
-                                onClick={ () => {
-                                    window.open(
-                                        window[ "AppUtils" ].getConfig()
-                                            .extensions.helpCenterUrl,
-                                        "_blank",
-                                        "noopener"
-                                    );
-                                } }
-                            >
-                                <>
-                                    <ListItemIcon>
-                                        <GenericIcon
-                                            className="spaced-right"
-                                            transparent
-                                            fill="white"
-                                            size="x22"
-                                            icon={ ContactSupportIcon }
-                                        />
-                                    </ListItemIcon>
-                                    { I18n.instance.t("extensions:common.help.helpCenterLink") }
-                                    <Chip
-                                        label="PREMIUM"
-                                        className="oxygen-menu-item-chip oxygen-chip-premium" />
-                                </>
-                            </MenuItem>
-                        ) }
-                    </Menu>
-                </>
-            ),
-            tierName === TenantTier.FREE && billingPortalURL && !isPrivilegedUser &&
-            window[ "AppUtils" ].getConfig().extensions
-                .upgradeButtonEnabled && (
-                <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                    <a
-                        href={ upgradeButtonURL }
-                        target="_blank"
-                        rel="noreferrer"
-                        data-componentid="upgrade-button-link"
-                    >
-                        <Button
-                            color="secondary"
-                            variant="outlined"
+                <Menu
+                    open={openHelpMenu}
+                    anchorEl={anchorHelpMenu}
+                    className="oxygen-user-dropdown-menu header-help-menu"
+                    id="header-help-menu"
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    onClose={onCloseHelpMenu}
+                >
+                    {window["AppUtils"].getConfig().extensions.community && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={() => {
+                                window.open(window["AppUtils"].getConfig().extensions.community, "_blank", "noopener");
+                            }}
                         >
-                            {
-                                I18n.instance.t(
-                                    "extensions:common.upgrade"
-                                ) as ReactNode
-                            }
+                            <>
+                                <ListItemIcon>
+                                    <GenericIcon
+                                        className="spaced-right"
+                                        transparent
+                                        fill="white"
+                                        size="x22"
+                                        icon={CommunityIcon}
+                                    />
+                                </ListItemIcon>
+                                {I18n.instance.t("extensions:common.help.communityLink")}
+                            </>
+                        </MenuItem>
+                    )}
+                    {window["AppUtils"].getConfig().extensions.helpCenterUrl && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={() => {
+                                window.open(
+                                    window["AppUtils"].getConfig().extensions.helpCenterUrl,
+                                    "_blank",
+                                    "noopener"
+                                );
+                            }}
+                        >
+                            <>
+                                <ListItemIcon>
+                                    <GenericIcon
+                                        className="spaced-right"
+                                        transparent
+                                        fill="white"
+                                        size="x22"
+                                        icon={ContactSupportIcon}
+                                    />
+                                </ListItemIcon>
+                                {I18n.instance.t("extensions:common.help.helpCenterLink")}
+                                <Chip label="PREMIUM" className="oxygen-menu-item-chip oxygen-chip-premium" />
+                            </>
+                        </MenuItem>
+                    )}
+                </Menu>
+            </>
+        ),
+        tierName === TenantTier.FREE &&
+            billingPortalURL &&
+            !isPrivilegedUser &&
+            window["AppUtils"].getConfig().extensions.upgradeButtonEnabled && (
+                <Show when={[]} featureId={FeatureGateConstants.SAAS_FEATURES_IDENTIFIER}>
+                    <a href={upgradeButtonURL} target="_blank" rel="noreferrer" data-componentid="upgrade-button-link">
+                        <Button className="header-upgrade-btn" color="secondary" variant="outlined">
+                            <span className="header-upgrade-btn-text">
+                                {I18n.instance.t("extensions:common.upgrade") as ReactNode}
+                            </span>
                         </Button>
                     </a>
                 </Show>
             )
-        ];
-    };
+    ];
 
     const isShowAppSwitchButton = (): boolean => {
         if (!showAppSwitchButton) {
             return false;
         }
 
-        return (
-            !userOrganizationID
-            || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName
-        );
+        return !userOrganizationID || userOrganizationID === window["AppUtils"].getConfig().organizationName;
     };
 
     const LOGO_IMAGE = () => {
         return (
             <Image
-                src={ resolveAppLogoFilePath(
-                    window[ "AppUtils" ].getConfig().ui.appLogo?.defaultLogoPath
-                        ?? window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                    `${ window[ "AppUtils" ].getConfig().clientOrigin
-                    }/` +
-                    `${ StringUtils.removeSlashesFromPath(
-                        window[ "AppUtils" ].getConfig()
-                            .appBase
-                    ) !== ""
-                        ? StringUtils.removeSlashesFromPath(
-                            window[ "AppUtils" ].getConfig()
-                                .appBase
-                        ) + "/"
-                        : ""
-                    }libs/themes/` +
-                    config.ui.theme.name
-                ) }
+                src={resolveAppLogoFilePath(
+                    window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
+                        window["AppUtils"].getConfig().ui.appLogoPath,
+                    `${window["AppUtils"].getConfig().clientOrigin}/` +
+                        `${
+                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) !== ""
+                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) + "/"
+                                : ""
+                        }libs/themes/` +
+                        config.ui.theme.name
+                )}
                 alt="logo"
             />
         );
@@ -382,121 +300,92 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     return (
         <OxygenHeader
             className="is-header"
-            brand={ {
+            brand={{
                 logo: {
-                    desktop: (<LOGO_IMAGE />),
-                    mobile: (<LOGO_IMAGE />)
+                    desktop: <LOGO_IMAGE />,
+                    mobile: <LOGO_IMAGE />
                 },
-                onClick: () => hasRequiredScopes(feature?.gettingStarted,
-                    feature?.gettingStarted?.scopes?.feature, scopes)
-                    && history.push(config.deployment.appHomePath),
+                onClick: () =>
+                    hasRequiredScopes(feature?.gettingStarted, feature?.gettingStarted?.scopes?.feature, scopes) &&
+                    history.push(config.deployment.appHomePath),
                 title: config.ui.appName
-            } }
-            user={ {
+            }}
+            user={{
                 email:
-                    profileInfo?.email ??
-                        typeof profileInfo?.emails[ 0 ] === "string"
-                        ? (profileInfo?.emails[ 0 ] as string)
-                        : profileInfo?.emails[ 0 ]?.value,
+                    profileInfo?.email ?? typeof profileInfo?.emails[0] === "string"
+                        ? (profileInfo?.emails[0] as string)
+                        : profileInfo?.emails[0]?.value,
                 image: profileInfo?.profileUrl,
                 name: resolveUsername()
-            } }
+            }}
             showCollapsibleHamburger
-            onCollapsibleHamburgerClick={ handleSidePanelToggleClick }
+            onCollapsibleHamburgerClick={handleSidePanelToggleClick}
             position="fixed"
-            leftAlignedElements={ [
-                isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null
-            ] }
-            rightAlignedElements={ generateHeaderButtons() }
-            userDropdownMenu={ {
+            leftAlignedElements={[isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null]}
+            rightAlignedElements={generateHeaderButtons()}
+            userDropdownMenu={{
                 actionIcon: <LogoutIcon />,
                 actionText: t("common:logout"),
                 footerContent: [
                     <Box key="footer" className="user-dropdown-footer">
-                        <Link
-                            variant="body3"
-                            href={ getLink("common.privacyPolicy") }
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            { I18n.instance.t("extensions:common.dropdown.footer.privacyPolicy") as string }
+                        <Link variant="body3" href={getLink("common.privacyPolicy")} target="_blank" rel="noreferrer">
+                            {I18n.instance.t("extensions:common.dropdown.footer.privacyPolicy") as string}
                         </Link>
-                        <Link
-                            variant="body3"
-                            href={ getLink("common.cookiePolicy") }
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            { I18n.instance.t("extensions:common.dropdown.footer.cookiePolicy") as string }
+                        <Link variant="body3" href={getLink("common.cookiePolicy")} target="_blank" rel="noreferrer">
+                            {I18n.instance.t("extensions:common.dropdown.footer.cookiePolicy") as string}
                         </Link>
-                        <Link
-                            variant="body3"
-                            href={ getLink("common.termsOfService") }
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            { I18n.instance.t("extensions:common.dropdown.footer.termsOfService") as string }
+                        <Link variant="body3" href={getLink("common.termsOfService")} target="_blank" rel="noreferrer">
+                            {I18n.instance.t("extensions:common.dropdown.footer.termsOfService") as string}
                         </Link>
                     </Box>
                 ],
                 menuItems: [
-                    billingPortalURL && window[ "AppUtils" ].getConfig().extensions.billingPortalUrl &&
-                    !isPrivilegedUser && (
-                        <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                            <MenuItem
-                                color="inherit"
-                                onClick={ () => {
-                                    window.open(billingPortalURL, "_blank", "noopener");
-                                } }
-                                data-testid="app-switch-billingPortal"
-                            >
-                                <ListItemIcon>
-                                    <BillingPortalIcon />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    { t(
-                                        "extensions:manage.features.header.links.billingPortalNav"
-                                    ) }
-                                </ListItemText>
-                            </MenuItem>
-                        </Show>
-                    ),
-                    isShowAppSwitchButton()
-                        ? (
-                            <MenuItem
-                                color="inherit"
-                                key={ t(
-                                    "myAccount:components.header.appSwitch.console.name"
-                                ) }
-                                onClick={ () => {
-                                    eventPublisher.publish(
-                                        "console-click-visit-my-account"
-                                    );
-                                    window.open(
-                                        isPrivilegedUser
-                                            ? privilegedUserAccountURL
-                                            : accountAppURL,
-                                        "_blank",
-                                        "noopener"
-                                    );
-                                } }
-                            >
-                                <ListItemIcon>
-                                    <MyAccountIcon />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    { t("console:common.header.appSwitch.myAccount.name") }
-                                </ListItemText>
-                            </MenuItem>
-                        ) : null
+                    billingPortalURL &&
+                        window["AppUtils"].getConfig().extensions.billingPortalUrl &&
+                        !isPrivilegedUser && (
+                            <Show when={[]} featureId={FeatureGateConstants.SAAS_FEATURES_IDENTIFIER}>
+                                <MenuItem
+                                    color="inherit"
+                                    onClick={() => {
+                                        window.open(billingPortalURL, "_blank", "noopener");
+                                    }}
+                                    data-testid="app-switch-billingPortal"
+                                >
+                                    <ListItemIcon>
+                                        <BillingPortalIcon />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        {t("extensions:manage.features.header.links.billingPortalNav")}
+                                    </ListItemText>
+                                </MenuItem>
+                            </Show>
+                        ),
+                    isShowAppSwitchButton() ? (
+                        <MenuItem
+                            color="inherit"
+                            key={t("myAccount:components.header.appSwitch.console.name")}
+                            onClick={() => {
+                                eventPublisher.publish("console-click-visit-my-account");
+                                window.open(
+                                    isPrivilegedUser ? privilegedUserAccountURL : accountAppURL,
+                                    "_blank",
+                                    "noopener"
+                                );
+                            }}
+                        >
+                            <ListItemIcon>
+                                <MyAccountIcon />
+                            </ListItemIcon>
+                            <ListItemText>{t("console:common.header.appSwitch.myAccount.name")}</ListItemText>
+                        </MenuItem>
+                    ) : null
                 ],
-                onActionClick: () =>
-                    history.push(AppConstants.getAppLogoutPath()),
+                onActionClick: () => history.push(AppConstants.getAppLogoutPath()),
                 triggerOptions: {
                     "data-componentid": "app-header-user-avatar",
                     "data-testid": "app-header-user-avatar"
                 }
-            } }
+            }}
         />
     );
 };
