@@ -50,6 +50,7 @@
         "@wso2is/theme": "^2.0.87",
         "@wso2is/validation": "^2.0.6",
         "axios": "^0.19.2",
+        "framer-motion": "^11.1.9",
         "history": "^4.9.0",
         "i18next": "^21.9.1",
         "i18next-browser-languagedetector": "^6.1.5",
