@@ -211,12 +211,9 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * Fetches IdP templates if not available.
      */
     useEffect(() => {
-        console.log("Checking for IdP templates");
-
         if (groupedIDPTemplates) {
             return;
         }
-        console.log("Fetching IdP templates");
 
         IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates();
     }, [ groupedIDPTemplates ]);

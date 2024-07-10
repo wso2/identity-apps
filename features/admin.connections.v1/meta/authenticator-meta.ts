@@ -20,9 +20,9 @@ import get from "lodash-es/get";
 import { ReactNode, lazy } from "react";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
+import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models/authenticators";
 import { FederatedAuthenticatorInterface } from "../models/connection";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
 
 export class AuthenticatorMeta {
 

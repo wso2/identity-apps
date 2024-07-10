@@ -15,25 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { ConnectionTemplateCategoryInterface, ConnectionTemplateGroupInterface } from "@wso2is/admin.connections.v1";
+import { ConnectionTemplateManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-template-utils";
 import { store } from "@wso2is/admin.core.v1";
-import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
-import groupBy from "lodash-es/groupBy";
 import { getIdentityProviderTemplateList } from "../api";
 import { handleGetIDPTemplateListError } from "../components/utils/common-utils";
-import { getIdPCapabilityIcons } from "../configs/ui";
 import { TemplateConfigInterface, getIdentityProviderTemplatesConfig } from "../data/identity-provider-templates";
 import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
 import {
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateListItemInterface,
-    IdentityProviderTemplateListResponseInterface,
-    SupportedServices,
-    SupportedServicesInterface
-} from "../models";
+    IdentityProviderTemplateListResponseInterface} from "../models";
 import { setIdentityProviderTemplates } from "../store";
-import { ConnectionTemplateManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-template-utils";
 
 /**
  * Utility class for IDP Templates related operations.

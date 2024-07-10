@@ -148,8 +148,6 @@ export class ConnectionTemplateManagementUtils {
     public static async groupConnectionTemplates(
         templates: ConnectionTemplateInterface[]
     ): Promise<ConnectionTemplateInterface[]> {
-        console.log("Grouping templates: connection templates");
-
 
         const groupedTemplates: ConnectionTemplateInterface[] = [];
 

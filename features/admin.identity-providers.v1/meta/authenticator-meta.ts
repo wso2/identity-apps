@@ -21,7 +21,7 @@ import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
 import { IdentityProviderManagementConstants } from "../constants";
-import { AuthenticatorCategories, FederatedAuthenticatorInterface } from "../models";
+import { AuthenticatorCategories } from "../models";
 
 export class AuthenticatorMeta {
 
