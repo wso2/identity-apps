@@ -1,5 +1,31 @@
 # @wso2is/admin.extensions.v1
 
+## 2.21.20
+
+### Patch Changes
+
+- [#6551](https://github.com/wso2/identity-apps/pull/6551) [`d376f489cceae4ab415dcf6ae1ffd536baa47f9a`](https://github.com/wso2/identity-apps/commit/d376f489cceae4ab415dcf6ae1ffd536baa47f9a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add validations for time selection in logs component
+
+- Updated dependencies [[`55402e8eeb65021310621f0f8c643effbdc805a5`](https://github.com/wso2/identity-apps/commit/55402e8eeb65021310621f0f8c643effbdc805a5)]:
+  - @wso2is/admin.applications.v1@2.21.20
+  - @wso2is/admin.api-resources.v1@2.20.50
+  - @wso2is/admin.authentication.v1@2.20.50
+  - @wso2is/admin.claims.v1@2.20.50
+  - @wso2is/admin.connections.v1@2.20.50
+  - @wso2is/admin.core.v1@2.21.20
+  - @wso2is/admin.extensions.v2@2.20.50
+  - @wso2is/admin.groups.v1@2.20.50
+  - @wso2is/admin.identity-providers.v1@2.20.50
+  - @wso2is/admin.organizations.v1@2.20.50
+  - @wso2is/admin.roles.v2@2.20.50
+  - @wso2is/admin.server-configurations.v1@2.20.50
+  - @wso2is/admin.sms-providers.v1@2.20.50
+  - @wso2is/admin.tenants.v1@2.20.50
+  - @wso2is/admin.users.v1@2.20.50
+  - @wso2is/admin.userstores.v1@2.20.50
+  - @wso2is/admin.validation.v1@2.20.50
+  - @wso2is/admin.provisioning.v1@2.20.50
+
 ## 2.21.19
 
 ### Patch Changes
