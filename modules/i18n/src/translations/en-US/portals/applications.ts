@@ -1113,7 +1113,7 @@ export const applications: ApplicationsNS = {
                         enableAPIBasedAuthentication: {
                             hint: "Select to authorize application to perform browserless, in-app authentication via app-native authentication API.",
                             label: "Enable app-native authentication API"
-                        },
+                        }
                     }
                 },
                 clientAttestation: {
@@ -1183,7 +1183,7 @@ export const applications: ApplicationsNS = {
                                     },
                                     tooltip: "Add Thumbprint"
 
-                                },
+                                }
                             }
                         },
                         apple: {
