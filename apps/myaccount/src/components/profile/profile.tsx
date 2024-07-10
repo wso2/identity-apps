@@ -159,8 +159,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         [EMAIL_ADDRESSES_ATTRIBUTE]: false,
         [MOBILE_NUMBERS_ATTRIBUTE]: false
     });
-    const [ tempEmail, setTempEmail ] = useState<string>("");
-    const [ tempMobile, setTempMobile ] = useState<string>("");
 
     // Multi-valued attribute delete confirmation modal related states.
     const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
@@ -536,10 +534,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            const newValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
+            const currentValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
 
-            newValues.push(values.get(formName) as string);
-            values.set(formName, newValues.join(","));
+            currentValues.push(values.get(formName) as string);
+            values.set(formName, currentValues.join(","));
         }
 
         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0])
@@ -1071,7 +1069,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         // Makes the email field read-only for users without local credentials
         if (isNonLocalCredentialUser) {
-            if (name?.toLowerCase() === EMAIL_ADDRESSES_ATTRIBUTE) {
+            if (name?.toLowerCase() === EMAIL_ATTRIBUTE) {
                 schema.mutability = ProfileConstants.READONLY_SCHEMA;
             }
         }
@@ -1349,17 +1347,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         t("myAccount:components.profile.forms.generic.inputs.validations.empty",
                             { fieldName }) }
                     type="text"
-                    onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
-                        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-                            setTempEmail(event.target.value);
-                        } else {
-                            setTempMobile(event.target.value);
-                        }
-                    } }
                     validation={
                         (value: string, validation: Validation) =>
                             validateField(value, validation, schema, fieldName) }
-                    value={ schema.name === EMAIL_ADDRESSES_ATTRIBUTE ? tempEmail : tempMobile }
                     maxLength={
                         schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                             ? EMAIL_MAX_LENGTH
