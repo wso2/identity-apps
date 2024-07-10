@@ -336,6 +336,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                                 endAdornment: renderInputAdornment(fieldName)
                                             } }
                                             readOnly={ readOnly }
+                                            disabled={ readOnly }
                                         />
                                     );
                                 }) }

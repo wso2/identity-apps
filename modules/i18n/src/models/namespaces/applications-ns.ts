@@ -1036,6 +1036,15 @@ export interface ApplicationsNS {
             }
         };
         generalDetails: {
+            sections: {
+                branding: {
+                    title: string;
+                }
+            };
+            brandingLink: {
+                hint: string;
+                label: string;
+            };
             fields: {
                 name: {
                     label: string;
