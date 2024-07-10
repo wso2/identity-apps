@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
 import { store } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -441,38 +439,5 @@ export class ApplicationTemplateManagementUtils {
         });
 
         return templates;
-    }
-
-    /**
-     * Util to resolve application resource path.
-     *
-     * @param path - Resource path.
-     * @returns The absolute path to the resource location.
-     */
-    public static resolveApplicationResourcePath(path: string): string {
-        if (typeof path !== "string") {
-            return path;
-        }
-
-        const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
-        const clientOrigin: string = AppConstants.getClientOrigin();
-
-        if (URLUtils.isHttpsOrHttpUrl(path) && ImageUtils.isValidImageExtension(path)) {
-            return path;
-        }
-
-        if (URLUtils.isDataUrl(path)) {
-            return path;
-        }
-
-        if (AppConstants.getClientOrigin()) {
-
-            if (path?.includes(clientOrigin)) {
-
-                return path;
-            }
-
-            return AppConstants.getClientOrigin() + basename + "/resources/applications/" + path;
-        }
     }
 }
