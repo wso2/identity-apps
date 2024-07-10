@@ -2507,6 +2507,20 @@ export interface Extensions {
                     };
                     title: string;
                 };
+                startTimeGreaterThanCurrentError: {
+                    subtitle: {
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
+                endTimeGreaterThanStartTimeError: {
+                    subtitle: {
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
             };
             pageHeader: {
                 description: string;

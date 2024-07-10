@@ -1,5 +1,29 @@
 # @wso2is/admin.applications.v1
 
+## 2.21.20
+
+### Patch Changes
+
+- [#6554](https://github.com/wso2/identity-apps/pull/6554) [`55402e8eeb65021310621f0f8c643effbdc805a5`](https://github.com/wso2/identity-apps/commit/55402e8eeb65021310621f0f8c643effbdc805a5) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with API resource authorization wizard in application edit
+
+- Updated dependencies [[`d376f489cceae4ab415dcf6ae1ffd536baa47f9a`](https://github.com/wso2/identity-apps/commit/d376f489cceae4ab415dcf6ae1ffd536baa47f9a)]:
+  - @wso2is/admin.extensions.v1@2.21.20
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.50
+  - @wso2is/admin.claims.v1@2.20.50
+  - @wso2is/admin.connections.v1@2.20.50
+  - @wso2is/admin.console-settings.v1@2.20.50
+  - @wso2is/admin.core.v1@2.21.20
+  - @wso2is/admin.identity-providers.v1@2.20.50
+  - @wso2is/admin.organizations.v1@2.20.50
+  - @wso2is/admin.roles.v2@2.20.50
+  - @wso2is/admin.server-configurations.v1@2.20.50
+  - @wso2is/admin.userstores.v1@2.20.50
+  - @wso2is/admin.login-flow.ai.v1@2.20.50
+  - @wso2is/admin.oidc-scopes.v1@2.20.50
+  - @wso2is/admin.api-resources.v2@2.20.50
+  - @wso2is/admin.secrets.v1@2.20.50
+  - @wso2is/admin.wsfed-configuration.v1@2.20.50
+
 ## 2.21.19
 
 ### Patch Changes

@@ -2796,6 +2796,20 @@ export const extensions: Extensions = {
                         1: "Please try a different time range."
                     },
                     title: "No logs available"
+                },
+                startTimeGreaterThanCurrentError: {
+                    subtitle: {
+                        0: "Couldn't fetch logs.",
+                        1: "Selected start time should be before the current time."
+                    },
+                    title: "Invalid time range"
+                },
+                endTimeGreaterThanStartTimeError: {
+                    subtitle: {
+                        0: "Couldn't fetch logs.",
+                        1: "Selected start time should be before the end time."
+                    },
+                    title: "Invalid time range"
                 }
             },
             pageHeader: {
