@@ -37,6 +37,7 @@ import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-log
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { ApplicationEditForm } from "@wso2is/admin.template-core.v1/components/application-edit-form";
+import { MarkdownGuide } from "@wso2is/admin.template-core.v1/components/markdown-guide";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -58,7 +59,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
-import { MarkdownGuide } from "./help-panel/markdown/markdown-guide";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,

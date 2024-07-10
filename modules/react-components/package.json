@@ -49,6 +49,7 @@
         "@wso2is/theme": "^2.0.86",
         "classnames": "^2.2.6",
         "codemirror": "^5.52.0",
+        "file-saver": "^2.0.5",
         "i18next": "^21.9.1",
         "js-beautify": "^1.13.0",
         "jshint": "^2.11.0",

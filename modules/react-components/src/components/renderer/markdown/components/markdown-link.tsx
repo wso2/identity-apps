@@ -16,20 +16,14 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import {
     Link,
     MarkdownCustomComponentPropsInterface
 } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { useGetBlobResource } from "../../../../api/use-get-blob-resource";
-import useGlobalMarkdown from "../use-global-markdown";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import useGlobalMarkdown from "../../../../hooks/use-global-markdown";
 
 const DEFAULT_DOWNLOAD_FILE_NAME: string = "download";
 
@@ -80,65 +74,12 @@ const MarkdownLink: FunctionComponent<MarkdownLinkProps> = (props: MarkdownLinkP
         "data-componentid": componentId
     } = props;
 
-    const dispatch: Dispatch = useDispatch();
-    const { t } = useTranslation();
-
     const { onHandleInternalUrl } = useGlobalMarkdown();
-
-    const [ downloadLink, setDownloadLink ] = useState("");
-
-    const {
-        data: blobData,
-        isLoading: blobFetchRequestIsLoading,
-        error: blobFetchRequestError
-    } = useGetBlobResource(downloadLink, !!downloadLink);
-
-    /**
-     * Initiate the download when the blob resource becomes available.
-     */
-    useEffect(() => {
-        if (blobData) {
-            if (dataConfig?.fileName) {
-                saveAs(blobData, dataConfig?.fileName);
-            } else {
-                saveAs(blobData, DEFAULT_DOWNLOAD_FILE_NAME);
-            }
-
-            setDownloadLink("");
-        }
-    }, [ blobData ]);
-
-    /**
-     * Handles the blob resource fetch request error.
-     */
-    useEffect(() => {
-        if (!blobFetchRequestError) {
-            return;
-        }
-
-        if (blobFetchRequestError.response?.data?.description) {
-            dispatch(addAlert({
-                description: blobFetchRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications.fetchApplication.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("applications:notifications.fetchApplication" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:notifications.fetchApplication.genericError." +
-                "message")
-        }));
-    }, [ blobFetchRequestError ]);
 
     /**
      * Initiate the download process.
      */
-    const initDownload = (): void => {
+    const initDownload = async (): Promise<void> => {
         if (dataConfig?.content && dataConfig?.type) {
             const blob: Blob = new Blob([ atob(dataConfig?.content) ], {
                 type: dataConfig?.type
@@ -153,11 +94,21 @@ const MarkdownLink: FunctionComponent<MarkdownLinkProps> = (props: MarkdownLinkP
             return;
         }
 
-        if (blobFetchRequestIsLoading) {
-            return;
-        }
+        const response = await fetch(href);
 
-        setDownloadLink(href);
+        // Check if the response is ok (status is in the range 200-299).
+        if (response.ok) {
+            // Convert the response to a Blob.
+            const blob = await response.blob();
+
+            if (blob) {
+                if (dataConfig?.fileName) {
+                    saveAs(blob, dataConfig?.fileName);
+                } else {
+                    saveAs(blob, DEFAULT_DOWNLOAD_FILE_NAME);
+                }
+            }
+        }
     };
 
     /**

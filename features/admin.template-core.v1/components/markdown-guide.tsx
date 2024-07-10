@@ -16,6 +16,14 @@
  * under the License.
  */
 
+import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
+import useGetApplicationInboundConfigs from "@wso2is/admin.applications.v1/api/use-get-application-inbound-configs";
+import {
+    ApplicationInterface,
+    SAML2ServiceProviderInterface,
+    SAMLApplicationConfigurationInterface,
+    SupportedAuthProtocolTypes
+} from "@wso2is/admin.applications.v1/models";
 import { AppState, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,16 +38,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import * as CustomMarkdownComponents from "./components";
-import GlobalMarkdownProvider from "./global-markdown-provider";
-import { useGetApplication } from "../../../api/use-get-application";
-import useGetApplicationInboundConfigs from "../../../api/use-get-application-inbound-configs";
-import {
-    ApplicationInterface,
-    SAML2ServiceProviderInterface,
-    SAMLApplicationConfigurationInterface,
-    SupportedAuthProtocolTypes
-} from "../../../models";
 import "./markdown-guide.scss";
 
 /**
@@ -286,15 +284,12 @@ export const MarkdownGuide: FunctionComponent<MarkdownGuidePropsInterface> = (
                         isLoading || applicationLoading || applicationInboundProtocolLoading || !moderatedContent
                             ? <ContentLoader inline="centered" active/>
                             : (
-                                <GlobalMarkdownProvider
-                                    onHandleInternalUrl={ handleInternalUrl }
-                                >
-                                    <Markdown
-                                        allowedElements={ Object.keys(CustomMarkdownComponents) }
-                                        components={ CustomMarkdownComponents }
-                                        source={ moderatedContent }
-                                    />
-                                </GlobalMarkdownProvider>
+                                <Markdown
+                                    properties={ {
+                                        onHandleInternalUrl: handleInternalUrl
+                                    } }
+                                    source={ moderatedContent }
+                                />
                             )
                     }
                 </Grid.Column>

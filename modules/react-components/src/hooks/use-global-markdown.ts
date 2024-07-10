@@ -17,7 +17,7 @@
  */
 
 import { useContext } from "react";
-import GlobalMarkdownContext, { GlobalMarkdownContextProps } from "./global-markdown-context";
+import GlobalMarkdownContext, { GlobalMarkdownContextProps } from "../context/global-markdown-context";
 
 /**
  * Interface for the return type of the `useGlobalMarkdown` hook.

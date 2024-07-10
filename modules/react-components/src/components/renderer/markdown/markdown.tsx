@@ -21,6 +21,9 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import ReactMarkdown, { ExtraProps, Options } from "react-markdown";
 import rehypeAttrs from "rehype-attr";
+import * as CustomMarkdownComponents from "./components";
+import { GlobalMarkdownContextProps } from "../../../context/global-markdown-context";
+import GlobalMarkdownProvider from "../../../providers/global-markdown-provider";
 
 /**
  * Props interface for the Markdown custom component.
@@ -42,6 +45,10 @@ export interface MarkdownPropsInterface extends Options, IdentifiableComponentIn
      * Text alignment.
      */
     textAlign?: "left" | "center" | "right";
+    /**
+     * Properties that can be provided to custom markdown components externally.
+     */
+    properties?: GlobalMarkdownContextProps;
 }
 
 /**
@@ -57,6 +64,7 @@ export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: Markd
         source,
         className,
         textAlign,
+        properties,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
@@ -71,16 +79,24 @@ export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: Markd
     );
 
     return (
-        <ReactMarkdown
-            className={ classes }
-            skipHtml={ true }
-            data-componentid={ componentId }
-            data-testid={ testId }
-            rehypePlugins={ [ rehypeAttrs ] }
-            { ...rest }
+        <GlobalMarkdownProvider
+            {
+                ...properties
+            }
         >
-            { source }
-        </ReactMarkdown>
+            <ReactMarkdown
+                className={ classes }
+                skipHtml={ true }
+                data-componentid={ componentId }
+                data-testid={ testId }
+                rehypePlugins={ [ rehypeAttrs ] }
+                allowedElements={ Object.keys(CustomMarkdownComponents) }
+                components={ CustomMarkdownComponents }
+                { ...rest }
+            >
+                { source }
+            </ReactMarkdown>
+        </GlobalMarkdownProvider>
     );
 };
 

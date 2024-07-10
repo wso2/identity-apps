@@ -17,7 +17,7 @@
  */
 
 import React, { PropsWithChildren, ReactElement } from "react";
-import GlobalMarkdownContext, { GlobalMarkdownContextProps } from "./global-markdown-context";
+import GlobalMarkdownContext, { GlobalMarkdownContextProps } from "../context/global-markdown-context";
 
 /**
  * Props interface for the global markdown provider.

@@ -19939,6 +19939,9 @@ importers:
       codemirror:
         specifier: ^5.52.0
         version: 5.65.16
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
