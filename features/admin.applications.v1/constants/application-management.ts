@@ -75,6 +75,7 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
         .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
         .set("APPLICATIONS_SETTINGS", "applications.settings")
+        .set("TRUSTED_APPS", "applications.trustedApps")
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
