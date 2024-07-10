@@ -7,41 +7,20 @@ Make sure to write unit tests when you are working on new or existing features.
 
 Tests should be properly structured. Checkout the following examples.
 
-### Example 01
+### Example
 
-Let's say that you have a component called `applications-page.tsx` at the root of `features/applications` that needs to be tested.
-
-#### Steps
-
-1. Create a `__tests__`(underscore-underscore-tests-underscore-underscore 😉) under `features/applications`.
-2. Create a file with the pattern `<FILE_NAME>.test.<FILE_EXTENSION>` inside the `__tests__` folder. (In this case `applications-page.test.tsx`).
-
->> Naming the test container folders `__tests__` This pattern seems to be the best when there)
-
-#### Folder Structure
-
-```
-features
-└── applications
-    ├── __tests__
-    |       └── applications-page.test.tsx
-    └── applications-page.tsx
-```
-
-### Example 02
-
-Let's say that you have a component called `applications-list.tsx` at the root of `features/applications/components` that needs to be tested.
+Let's say that you have a component called `applications-list.tsx` at the root of `features/admin.applications.v1/components` that needs to be tested.
 
 #### Steps
 
-1. Create a `__tests__` under `features/applications/components`.
+1. Create a `__tests__` under `features/admin.applications.v1/components`.
 2. Create a file with the pattern `<FILE_NAME>.test.<FILE_EXTENSION>` inside the `__tests__` folder. (In this case `applications-list.test.tsx`).
 
 #### Folder Structure
 
 ```bash
 features
-└── applications
+└── admin.applications.v1
     ├── __tests__
     ├── components
     |       └── __tests__
@@ -170,15 +149,15 @@ pnpm test:watch
 ### Run Tests for a specific test file
 
 ```bash
-# From console root
-pnpm test ./src/features/applications/__tests__/applications-page.test.tsx
+# From features root
+npx jest features/admin.applications.v1/__tests__/applications-page.test.tsx
 ```
 
 ### Run Tests for a specific test file in watch mode
 
 ```bash
-# From console root
-pnpm test -- --watch ./src/features/applications/__tests__/applications-page.test.tsx
+# From features root
+npx jest --watch features/admin.applications.v1/__tests__/applications-page.test.tsx
 ```
 
 ### Run Tests for an individual module
