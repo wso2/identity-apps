@@ -133,11 +133,7 @@ export class AuthenticatorMeta {
         }, authenticatorId, []);
 
         if (authenticator?.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION)) {
-            if (authenticatorLabels) {
-                return [ ...authenticatorLabels, AuthenticatorLabels.API_AUTHENTICATION ];
-            } else {
-                return [ AuthenticatorLabels.API_AUTHENTICATION ];
-            }
+            return [ ...authenticatorLabels, AuthenticatorLabels.API_AUTHENTICATION ];
         }
 
         return authenticatorLabels;
