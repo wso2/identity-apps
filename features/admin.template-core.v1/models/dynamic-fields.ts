@@ -28,10 +28,6 @@ export interface DynamicFormInterface {
      * Should the form only submit the fields defined above.
      */
     submitDefinedFieldsOnly?: boolean;
-    /**
-     * API to which the form values should be submitted.
-     */
-    api?: SupportedAPIList;
 }
 
 /**
@@ -87,39 +83,27 @@ export interface DynamicFieldInterface {
      */
     hidden?: boolean;
     /**
-     * Array of validation rules for the field's input.
+     * Array of handlers to manage this field at various phases of the form life cycle.
      */
-    validations?: ValidationRule[];
-    /**
-     * Additional meta data need to decorate the dynamic input field.
-     */
-    meta?: DynamicFieldMetadataInterface;
+    handlers?: DynamicFieldHandlerInterface[];
 }
 
 /**
- * Interface for the metadata of dynamic fields.
+ * Interface for the handlers of dynamic fields.
  */
-export interface DynamicFieldMetadataInterface {
+export interface DynamicFieldHandlerInterface {
     /**
-     * Names of the properties that should be templated using the current field value.
+     * Name of the handler.
      */
-    dependentProperties?: string[];
+    name: string;
     /**
-     * Names of placeholder strings included as templated strings in the current field.
+     * Type of handler based on the form life cycle.
      */
-    templatedPlaceholders?: string[];
+    type: FieldHandlerTypes;
     /**
-     * Names of the properties that should be templated using the current field value.
+     * Props that need to be passed into the handler method.
      */
-    dependent?: string[];
-    /**
-     * Whether the current field value should be a generated value.
-     */
-    generator: "uuid"
-    /**
-     * Custom props need to be provided into the field component.
-     */
-    customFieldProps: Record<string, any>
+    props?: Record<string, any>;
 }
 
 /**
@@ -145,39 +129,34 @@ export enum DynamicInputFieldTypes {
 }
 
 /**
- * Representation of the validation rules for dynamic input field.
+ * Supported field handler types for dynamic input fields.
  */
-export interface ValidationRule {
-    /**
-     * The validation rule type.
-     */
-    type: ValidationRuleTypes;
-    /**
-     * Error message to be displayed when validation fails.
-     */
-    errorMessage?: string;
+export enum FieldHandlerTypes {
+    INITIALIZE = "initialize",
+    VALIDATION = "validation",
+    SUBMISSION = "submission"
 }
 
 /**
- * Supported validation rule types for dynamic input fields.
+ * Supported common validation handlers.
  */
-export enum ValidationRuleTypes {
-    DOMAIN_NAME = "domainName",
-    APPLICATION_NAME = "applicationName",
+export enum CommonValidationHandlers {
+    URL = "url",
     REQUIRED = "required"
 }
 
 /**
- * List of supported APIs to which the form values can be submitted.
+ * Supported common initialize handlers.
  */
-export enum SupportedAPIList {
-    APPLICATION_PATCH = "PATCH:/api/server/v1/applications",
-    APPLICATION_SAML_INBOUND_PROTOCOL_PUT = "PUT:/api/server/v1/applications/{application-id}/inbound-protocols/saml"
+export enum CommonInitializeHandlers {
+    EXTRACT_TEMPLATED_FIELDS = "extractTemplatedFields"
 }
 
 /**
- * List of field value generators.
+ * Supported common submission handlers.
  */
-export enum FieldValueGenerators {
-    UUID = "uuid"
+export enum CommonSubmissionHandlers {
+    UNIQUE_ID_GENERATOR = "uniqueIDGenerator",
+    DISABLE_PROPERTY = "disableProperty",
+    DEPENDENT_PROPERTY = "dependentProperty"
 }

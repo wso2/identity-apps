@@ -68,6 +68,7 @@ import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
 import useDynamicFieldValidations from "../hooks/use-dynamic-field-validation";
 import { DynamicFieldInterface, FieldValueGenerators } from "../models/dynamic-fields";
 import "./application-create-wizard.scss";
+import useValidationHandlers, { CustomValidationsFunction } from "./forms/handlers/validation/use-validation-handlers";
 
 /**
  * Prop types of the `ApplicationCreateWizard` component.
@@ -77,6 +78,10 @@ export interface ApplicationCreateWizardPropsInterface extends ModalProps, Ident
      * Callback triggered when closing the application creation wizard.
      */
     onClose: () => void;
+    /**
+     * Custom validation functions for form validations.
+     */
+    customValidations?: CustomValidationsFunction;
 }
 
 /**
@@ -87,7 +92,12 @@ export interface ApplicationCreateWizardPropsInterface extends ModalProps, Ident
 export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardPropsInterface> = (
     props: ApplicationCreateWizardPropsInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId, onClose, ...rest } = props;
+    const {
+        ["data-componentid"]: componentId,
+        customValidations,
+        onClose,
+        ...rest
+    } = props;
 
     const {
         template: templateData,
@@ -98,7 +108,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         isTemplateMetadataRequestLoading: isTemplateMetadataFetchRequestLoading
     } = useApplicationTemplateMetadata();
     const isApplicationSharable: boolean = useApplicationSharingEligibility();
-    const { validate } = useDynamicFieldValidations();
+    const { validate } = useValidationHandlers(customValidations);
     const [ alert, setAlert, notification ] = useWizardAlert();
     const {
         data: possibleListOfDuplicateApplications,
