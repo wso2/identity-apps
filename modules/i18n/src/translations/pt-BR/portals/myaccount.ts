@@ -1425,7 +1425,7 @@ export const myAccount: MyAccountNS = {
                 verifyEmail: {
                     error: {
                         description: "{{description}}",
-                        message: "Ocorreu um erro ao enviar o email de verificação",
+                        message: "Ocorreu um erro ao enviar o email de verificação"
                     },
                     genericError: {
                         description: "Ocorreu um erro ao enviar o email de verificação",

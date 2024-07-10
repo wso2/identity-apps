@@ -951,7 +951,7 @@ export const myAccount: MyAccountNS = {
                 "heading": "新しい携帯電話番号を入力します"
             },
             verificationSent: {
-                heading: "あなたはまもなく検証のためにあなたの携帯電話番号にOTPを受け取ります",
+                heading: "あなたはまもなく検証のためにあなたの携帯電話番号にOTPを受け取ります"
             },
             "verifySmsOtp": {
                 "error": "検証に失敗しました。もう一度やり直してください。",
