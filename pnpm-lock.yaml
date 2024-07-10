@@ -48221,15 +48221,7 @@ snapshots:
       - bluebird
       - supports-color
 
-  /license-webpack-plugin@4.0.2(webpack@5.84.1):
-    resolution: {integrity: sha512-771TFWFD70G1wLTC4oU2Cw4qvtmNrIw+wRvBtn+okgHl7slJVi7zfNcdmqDL72BojM30VNJ2UHylr1o77U37Jw==}
-    peerDependencies:
-      webpack: '*'
-    peerDependenciesMeta:
-      webpack:
-        optional: true
-      webpack-sources:
-        optional: true
+  license-webpack-plugin@4.0.2(webpack@5.84.1(@swc/core@1.3.99(@swc/helpers@0.5.9))(esbuild@0.18.20)(webpack-cli@4.10.0)):
     dependencies:
       webpack-sources: 3.2.3
     optionalDependencies:
