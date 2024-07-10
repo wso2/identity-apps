@@ -12,7 +12,7 @@ End-user apps in WSO2 Identity Server
 ## Table of Content
 
 <!-- Execute: `node scripts/generate-markdown-toc.js README.md` -->
-<!-- TOS:START - Do not remove or modify this section -->
+<!-- TOC:START - Do not remove or modify this section -->
 
 - [Prerequisite](#prerequisite)
   * [Setup Development Environment](#setup-development-environment)
@@ -40,7 +40,7 @@ End-user apps in WSO2 Identity Server
 - [Reporting Issues](#reporting-issues)
 - [License](#license)
 
-<!-- TOS:END -->
+<!-- TOC:END -->
 
 ## Prerequisite
 

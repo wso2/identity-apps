@@ -28,9 +28,9 @@
  *
  * Usage:
  * Add the following placeholders in the markdown file where the TOC should be placed.
- * <!-- TOS:START - Do not remove or modify this section -->
+ * <!-- TOC:START - Do not remove or modify this section -->
  *
- * <!-- TOS:END -->
+ * <!-- TOC:END -->
  */
 
 const fs = require("fs");
@@ -51,8 +51,8 @@ fs.readFile(fileName, "utf8", function (err, data) {
         return logger.error("An error occurred in reading the file.", err);
     }
 
-    const startPlaceholder = "<!-- TOS:START - Do not remove or modify this section -->";
-    const endPlaceholder = "<!-- TOS:END -->";
+    const startPlaceholder = "<!-- TOC:START - Do not remove or modify this section -->";
+    const endPlaceholder = "<!-- TOC:END -->";
 
     // Remove existing TOC
     const tocStartIndex = data.indexOf(startPlaceholder) + startPlaceholder.length;
