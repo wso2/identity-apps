@@ -1,5 +1,14 @@
 # @wso2is/admin.views.v1
 
+## 2.20.49
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.authentication.v1@2.20.49
+  - @wso2is/admin.core.v1@2.21.19
+  - @wso2is/admin.extensions.v1@2.21.19
+
 ## 2.20.48
 
 ### Patch Changes
