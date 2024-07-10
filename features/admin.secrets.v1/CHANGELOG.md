@@ -1,5 +1,13 @@
 # @wso2is/admin.secrets.v1
 
+## 2.20.53
+
+### Patch Changes
+
+- Updated dependencies [[`a533e58d21d759f0a27d804f17b042a2819a8955`](https://github.com/wso2/identity-apps/commit/a533e58d21d759f0a27d804f17b042a2819a8955)]:
+  - @wso2is/i18n@2.4.7
+  - @wso2is/admin.core.v1@2.21.23
+
 ## 2.20.52
 
 ### Patch Changes

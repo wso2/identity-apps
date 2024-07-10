@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.4.7
+
+### Patch Changes
+
+- [#6553](https://github.com/wso2/identity-apps/pull/6553) [`a533e58d21d759f0a27d804f17b042a2819a8955`](https://github.com/wso2/identity-apps/commit/a533e58d21d759f0a27d804f17b042a2819a8955) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Add Trusted Apps UI to application configurations
+
 ## 2.4.6
 
 ### Patch Changes
