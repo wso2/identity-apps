@@ -1,6 +1,6 @@
 # This workflow will build PRs submitted to the master branch.
 
-name: PR Builder
+name: 👷 PR Builder
 
 on:
   pull_request:
