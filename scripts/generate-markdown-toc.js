@@ -36,7 +36,6 @@
 const fs = require("fs");
 const toc = require("markdown-toc");
 
-// eslint-disable-next-line no-console
 const logger = console;
 
 const args = process.argv.slice(2);
