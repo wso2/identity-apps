@@ -75,6 +75,7 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
         .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
         .set("APPLICATIONS_SETTINGS", "applications.settings")
+        .set("TRUSTED_APPS", "applications.trustedApps");
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
@@ -212,7 +213,7 @@ export class ApplicationManagementConstants {
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
     public static readonly CODE_TOKEN: string = "code token";
     public static readonly CODE_IDTOKEN: string = "code id_token";
-    public static readonly CODE_IDTOKEN_TOKEN: string = "code id_token token"
+    public static readonly CODE_IDTOKEN_TOKEN: string = "code id_token token";
     public static readonly  HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
     public static readonly HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
 
@@ -456,16 +457,16 @@ export class ApplicationManagementConstants {
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
-        ACCESS_URL_ALLOWED_PLACEHOLDERS: [
-            "\\${UserTenantHint}",
-            "\\${organizationIdHint}"
-        ],
-        ACCESS_URL_MAX_LENGTH: 200,
-        ACCESS_URL_MIN_LENGTH: 3,
-        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
-        APP_NAME_MAX_LENGTH: 50,
-        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
-    };
+            ACCESS_URL_ALLOWED_PLACEHOLDERS: [
+                "\\${UserTenantHint}",
+                "\\${organizationIdHint}"
+            ],
+            ACCESS_URL_MAX_LENGTH: 200,
+            ACCESS_URL_MIN_LENGTH: 3,
+            APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
+            APP_NAME_MAX_LENGTH: 50,
+            APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
+        };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
 
