@@ -1,5 +1,36 @@
 # @wso2is/admin.extensions.v1
 
+## 2.21.22
+
+### Patch Changes
+
+- [#6409](https://github.com/wso2/identity-apps/pull/6409) [`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add app-wise branding feature UI
+
+- Updated dependencies [[`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394)]:
+  - @wso2is/admin.applications.v1@2.21.22
+  - @wso2is/theme@2.0.88
+  - @wso2is/admin.connections.v1@2.20.52
+  - @wso2is/admin.core.v1@2.21.22
+  - @wso2is/admin.identity-providers.v1@2.20.52
+  - @wso2is/admin.organizations.v1@2.20.52
+  - @wso2is/admin.provisioning.v1@2.20.52
+  - @wso2is/admin.roles.v2@2.20.52
+  - @wso2is/admin.api-resources.v1@2.20.52
+  - @wso2is/admin.authentication.v1@2.20.52
+  - @wso2is/admin.claims.v1@2.20.52
+  - @wso2is/admin.extensions.v2@2.20.52
+  - @wso2is/admin.groups.v1@2.20.52
+  - @wso2is/admin.server-configurations.v1@2.20.52
+  - @wso2is/admin.sms-providers.v1@2.20.52
+  - @wso2is/admin.tenants.v1@2.20.52
+  - @wso2is/admin.users.v1@2.20.52
+  - @wso2is/admin.userstores.v1@2.20.52
+  - @wso2is/admin.validation.v1@2.20.52
+  - @wso2is/admin.authorization.v1@2.20.17
+  - @wso2is/react-components@2.2.12
+  - @wso2is/dynamic-forms@2.0.70
+  - @wso2is/form@2.0.71
+
 ## 2.21.21
 
 ### Patch Changes
