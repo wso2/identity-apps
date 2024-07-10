@@ -1860,7 +1860,7 @@ importers:
         specifier: ^2.20.16
         version: link:../admin.authorization.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.20.50
+        specifier: ^2.20.51
         version: link:../admin.branding.v1
       '@wso2is/admin.claims.v1':
         specifier: ^2.20.51
