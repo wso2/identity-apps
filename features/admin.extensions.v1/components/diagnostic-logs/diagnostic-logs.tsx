@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -397,6 +397,36 @@ export const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactE
 
     const resolveDiagnosticLogs = (): ReactElement => {
         if (error) {
+            if (error?.response?.data?.code === LogsConstants.END_TIME_GREATER_THAN_START_TIME_ERROR_CODE) {
+                return (
+                    <EmptyPlaceholder
+                        subtitle={ [
+                            t("extensions:develop.monitor.notifications.endTimeGreaterThanStartTimeError.subtitle.0"),
+                            t("extensions:develop.monitor.notifications.endTimeGreaterThanStartTimeError.subtitle.1")
+                        ] }
+                        title={ t("extensions:develop.monitor.notifications.endTimeGreaterThanStartTimeError.title") }
+                        image={ getEmptyPlaceholderIllustrations().genericError }
+                        imageSize="tiny"
+                        data-componentid={ `${ componentId }-end-time-greater-than-start-time-error-placeholder` }
+                    />
+                );
+            }
+
+            if (error?.response?.data?.code === LogsConstants.START_TIME_GREATER_THAN_CURRENT_TIME_ERROR_CODE) {
+                return (
+                    <EmptyPlaceholder
+                        subtitle={ [
+                            t("extensions:develop.monitor.notifications.startTimeGreaterThanCurrentError.subtitle.0"),
+                            t("extensions:develop.monitor.notifications.startTimeGreaterThanCurrentError.subtitle.1")
+                        ] }
+                        title={ t("extensions:develop.monitor.notifications.startTimeGreaterThanCurrentError.title") }
+                        image={ getEmptyPlaceholderIllustrations().genericError }
+                        imageSize="tiny"
+                        data-componentid={ `${ componentId }-start-time-greater-than-current-time-error-placeholder` }
+                    />
+                );
+            }
+
             return (
                 <EmptyPlaceholder
                     subtitle={ [
