@@ -18,6 +18,8 @@
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { ConnectionManagementConstants, ConnectionTemplateCategoryInterface } from "@wso2is/admin.connections.v1";
+import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
+import { ConnectionTemplateManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-template-utils";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
@@ -27,16 +29,12 @@ import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { AuthenticatorMeta } from "@wso2is/admin.identity-providers.v1/meta/authenticator-meta";
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import {
-    IdentityProviderManagementUtils
-} from "@wso2is/admin.identity-providers.v1/utils/identity-provider-management-utils";
 import {
     IdentityProviderTemplateManagementUtils
 } from "@wso2is/admin.identity-providers.v1/utils/identity-provider-template-management-utils";
@@ -213,9 +211,12 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * Fetches IdP templates if not available.
      */
     useEffect(() => {
+        console.log("Checking for IdP templates");
+
         if (groupedIDPTemplates) {
             return;
         }
+        console.log("Fetching IdP templates");
 
         IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates();
     }, [ groupedIDPTemplates ]);
@@ -270,7 +271,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         templates: IdentityProviderTemplateInterface[]
     ): Promise<void | ConnectionTemplateCategoryInterface[]> => {
 
-        return IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
+        return ConnectionTemplateManagementUtils.categorizeTemplates(templates)
             .then((response: ConnectionTemplateCategoryInterface[]) => {
 
                 let tags: string[] = [];
@@ -343,7 +344,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         const labels: string[] = [];
 
         authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-            IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator).filter((label: string) => {
+            AuthenticatorMeta.getAuthenticatorLabels(authenticator).filter((label: string) => {
                 if (!labels.includes(label)) {
                     labels.push(label);
                 }
@@ -433,7 +434,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 return true;
             }
 
-            return IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
+            return AuthenticatorMeta.getAuthenticatorLabels(authenticator)
                 .some((selectedLabel: string) => filterLabels.includes(selectedLabel));
         };
 
@@ -446,7 +447,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
             const name: string = authenticator?.displayName?.toLocaleLowerCase();
 
             if (name.includes(query)
-                || IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
+                || AuthenticatorMeta.getAuthenticatorLabels(authenticator)
                     .some((tag: string) => tag?.toLocaleLowerCase()?.includes(query)
                         || startCase(tag)?.toLocaleLowerCase()?.includes(query))
                 || authenticator.category?.toLocaleLowerCase()?.includes(query)
@@ -582,7 +583,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                     comingSoonRibbonLabel={ t("common:comingSoon") }
                                                     resourceDescription={ template.description }
                                                     resourceImage={
-                                                        IdentityProviderManagementUtils
+                                                        ConnectionsManagementUtils
                                                             .resolveTemplateImage(template.image, getIdPIcons())
                                                     }
                                                     tags={ template.tags }
@@ -641,7 +642,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             className={ `filter-label ${ isSelected ? "active" : "" }` }
                                             onClick={ () => handleAuthenticatorFilter(label) }
                                         >
-                                            { IdentityProviderManagementUtils.getAuthenticatorLabelDisplayName(label) }
+                                            { label }
                                             { isSelected && <Icon name="check"/> }
                                         </Label>
                                     );

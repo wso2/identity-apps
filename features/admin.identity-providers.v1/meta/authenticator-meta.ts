@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
+import { AuthenticatorLabels, ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
 import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
 import { IdentityProviderManagementConstants } from "../constants";
-import { AuthenticatorCategories, AuthenticatorLabels, FederatedAuthenticatorInterface } from "../models";
+import { AuthenticatorCategories, FederatedAuthenticatorInterface } from "../models";
 
 export class AuthenticatorMeta {
 
@@ -79,77 +79,6 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: "Authenticate clients using " +
                 "client certificates."
         }, authenticatorId);
-    }
-
-    /**
-     * Get Authenticator Labels.
-     *
-     * @param authenticatorId - Authenticator ID.
-     *
-     * @returns Authenticator labels.
-     */
-    public static getAuthenticatorLabels(authenticator: FederatedAuthenticatorInterface): string[] {
-
-        const authenticatorId: string = authenticator?.authenticatorId;
-
-        const authenticatorLabels: string[] = get({
-            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.PASSKEY
-            ],
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
-            ],
-            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.OIDC
-            ],
-            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SAML
-            ],
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
-            ],
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.MULTI_FACTOR
-            ],
-            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS
-            ],
-            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS
-            ],
-            [ IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS
-            ],
-            [ IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.HANDLERS
-            ]
-        }, authenticatorId);
-
-        if (authenticator?.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION)) {
-            if (authenticatorLabels) {
-                return [ ...authenticatorLabels, AuthenticatorLabels.API_AUTHENTICATION ];
-            } else {
-                return [ AuthenticatorLabels.API_AUTHENTICATION ];
-            }
-        }
-
-        return authenticatorLabels;
     }
 
     /**

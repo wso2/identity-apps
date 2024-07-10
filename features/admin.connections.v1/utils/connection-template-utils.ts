@@ -145,9 +145,11 @@ export class ConnectionTemplateManagementUtils {
      * Group the identity provider templates.
      * @param templates - Templates list to be grouped.
      */
-    private static async groupConnectionTemplates(
+    public static async groupConnectionTemplates(
         templates: ConnectionTemplateInterface[]
     ): Promise<ConnectionTemplateInterface[]> {
+        console.log("Grouping templates: connection templates");
+
 
         const groupedTemplates: ConnectionTemplateInterface[] = [];
 
@@ -201,7 +203,7 @@ export class ConnectionTemplateManagementUtils {
      * Once called it will return the available groups from the
      * {@link getConnectionTemplatesConfig}
      */
-    private static async loadLocalFileBasedIdentityProviderTemplateGroups():
+    public static async loadLocalFileBasedIdentityProviderTemplateGroups():
         Promise<(ConnectionTemplateGroupInterface |
             Promise<ConnectionTemplateGroupInterface>)[]> {
 

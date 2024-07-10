@@ -21,6 +21,8 @@ import { ReactNode, lazy } from "react";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models/authenticators";
+import { FederatedAuthenticatorInterface } from "../models/connection";
+import { ConnectionManagementConstants } from "../constants/connection-constants";
 
 export class AuthenticatorMeta {
 
@@ -77,33 +79,68 @@ export class AuthenticatorMeta {
      *
      * @returns Authenticator labels.
      */
-    public static getAuthenticatorLabels(authenticatorId: string): string[] {
+    public static getAuthenticatorLabels(authenticator: FederatedAuthenticatorInterface): string[] {
 
-        return get({
+        const authenticatorId: string = authenticator?.authenticatorId;
+
+        const authenticatorLabels: string[] = get({
             [ AuthenticatorManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
             [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS,
-                AuthenticatorLabels.PASSKEY
+                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.PASSKEY
             ],
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
             ],
+            [ ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ ConnectionManagementConstants.TWITTER_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
             [ AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.OIDC
             ],
-            [ AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID ]: [
+            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SAML
             ],
             [ AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.MULTI_FACTOR
+                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
             ],
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.MULTI_FACTOR
             ],
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
+            ],
+            [ ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ ConnectionManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
+            ],
+            [ AuthenticatorManagementConstants.IPROOV_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
+            ],
+            [ AuthenticatorManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.HANDLERS
             ]
-        }, authenticatorId);
+        }, authenticatorId, []);
+
+        if (authenticator?.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION)) {
+            if (authenticatorLabels) {
+                return [ ...authenticatorLabels, AuthenticatorLabels.API_AUTHENTICATION ];
+            } else {
+                return [ AuthenticatorLabels.API_AUTHENTICATION ];
+            }
+        }
+
+        return authenticatorLabels;
     }
 
     /**
