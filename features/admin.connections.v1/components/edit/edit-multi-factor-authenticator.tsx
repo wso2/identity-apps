@@ -34,6 +34,7 @@ import { Dispatch } from "redux";
 import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { updateMultiFactorAuthenticatorDetails } from "../../api/authenticators";
 import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
+import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
     AuthenticatorInterface,
     AuthenticatorSettingsFormModes,
@@ -108,7 +109,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             return;
         }
 
-        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig.authenticators,
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(AuthenticatorMeta.getAuthenticators(),
             authenticator.id);
 
         if (!authenticatorConfig?.content?.quickStart) {

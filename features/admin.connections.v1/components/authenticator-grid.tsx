@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -51,7 +51,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { getAuthenticatorList } from "./common";
 import {
     deleteConnection,
     getConnectedApps
@@ -367,7 +366,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         | AuthenticatorInterface, index: number) => {
 
                         const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
-                            getAuthenticatorList(), authenticator.id);
+                            AuthenticatorMeta.getAuthenticators(), authenticator.id);
 
                         const isIdP: boolean = ConnectionsManagementUtils
                             .isConnectorIdentityProvider(authenticator);

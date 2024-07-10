@@ -17,7 +17,6 @@
  */
 
 import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
@@ -95,7 +94,9 @@ export class AuthenticatorMeta {
 
         const authenticatorLabels: string[] = get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: identityProviderConfig.fidoTags,
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.PASSKEY
+            ],
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
             ],
