@@ -1036,7 +1036,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 VERIFIED_MOBILE_NUMBERS_ATTRIBUTE, VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE ];
 
         // Hide the field if any of the relevant attributes match the schema name.
-        if (attributesToHide.some((name: string) => checkSchemaType(schema.name, name))) {
+        if (attributesToHide.some((name: string) => schema.name === name)) {
             return;
         }
 
@@ -1288,7 +1288,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 : null;
             primaryAttributeValue = profileDetails?.profileInfo?.emails[0];
             verificationEnabled = isEmailVerificationEnabled;
-            verifiedAttributeValueList.push(primaryAttributeValue);
             primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
@@ -1306,9 +1305,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             attributeValueList.unshift(primaryAttributeValue);
         }
         const showAccordion: boolean = attributeValueList.length >= 1;
-        const accordionLabelValue: string = isEmpty(primaryAttributeValue)
+        const accordionLabelValue: string = attributeValueList.length >= 1
             ? attributeValueList[0]
-            : primaryAttributeValue;
+            : "";
 
         const showPendingEmailPopup = (value: string): boolean => {
             return verificationEnabled
@@ -1729,7 +1728,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
                 ? profileDetails?.profileInfo?.emails[0]
                 : null;
-            verifiedAttributeValueList.push(primaryAttributeValue);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verificationEnabled = isMobileVerificationEnabled;
@@ -1739,9 +1737,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         // Ensure primaryAttributeValue is defined and attributeValueList is an array.
-        if (primaryAttributeValue && Array.isArray(attributeValueList)) {
+        if (!isEmpty(primaryAttributeValue) && Array.isArray(attributeValueList)) {
             attributeValueList = attributeValueList.filter((value: string) => value !== primaryAttributeValue);
-            if (primaryAttributeValue !== "") attributeValueList.unshift(primaryAttributeValue);
+            attributeValueList.unshift(primaryAttributeValue);
         }
 
         const showPendingEmailPopup = (value: string): boolean => {
