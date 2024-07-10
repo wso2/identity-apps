@@ -24,10 +24,12 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
+    IdentifiableComponentInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { ConfirmationModal, GenericIcon, Heading, URLInput  } from "@wso2is/react-components";
+import { ConfirmationModal, DocumentationLink, GenericIcon, Heading, URLInput, useDocumentation  }
+    from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     Fragment,
@@ -52,7 +54,7 @@ import "./advanced-configurations-form.scss";
 /**
  *  Advanced Configurations for the Application.
  */
-interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInterface {
+interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInterface, IdentifiableComponentInterface {
     config: AdvancedConfigurationsInterface;
     onSubmit: (values: any) => void;
     /**
@@ -92,11 +94,13 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         template,
         isSubmitting,
         onAlertFired,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
+    const { getLink } = useDocumentation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const isApplicationNativeAuthenticationEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
@@ -115,9 +119,11 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     const [ isUserClickedClientAttestationWhenDisabled, setIsUserClickedClientAttestationWhenDisabled ] =
         useState<boolean>(false);
     const [ isFIDOTrustedAppsEnabled, setIsFIDOTrustedAppsEnabled ] = useState<boolean>(
-        config?.trustedAppConfiguration?.isFIDOTrustedApp);
+        config?.trustedAppConfiguration?.isFIDOTrustedApp
+    );
     const [ isConsentGranted, setIsConsentGranted ] = useState<boolean>(
-        config?.trustedAppConfiguration?.isConsentGranted);
+        config?.trustedAppConfiguration?.isConsentGranted
+    );
     const [ showFIDOConfirmationModal, setShowFIDOConfirmationModal ] = useState<boolean>(false);
     const [ showThumbprintsError, setShowThumbprinstError ] = useState(false);
     const [ thumbprints, setThumbprints ] = useState(config?.trustedAppConfiguration?.androidThumbprints?.join(","));
@@ -257,7 +263,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             "advancedConfig.sections.clientAttestation.fields." +
                             "androidAttestationServiceCredentials.validations.empty");
                 }
-            } catch (ex: any) {
+            } catch (error) {
                 errors.androidAttestationServiceCredentials = t("applications:forms." +
                 "advancedConfig.sections.clientAttestation.fields." +
                 "androidAttestationServiceCredentials.validations.invalid");
@@ -551,19 +557,27 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         checked={ isFIDOTrustedAppsEnabled }
                                         value={
                                             isFIDOTrustedAppsEnabled ? [ "isFIDOTrustedApp" ] : []
-
                                         }
                                         listen={ handleFIDOActivation }
-                                        data-testid={ `${ testId }-enable-fido-trusted-apps` }
-                                        data-componentid={ `${ testId }-enable-fido-trusted-apps` }
+                                        data-componentid={ `${ componentId }-enable-fido-trusted-apps` }
                                         hint={ t("applications:forms.advancedConfig.sections." +
                                             "trustedApps.fields.enableFIDOTrustedApps.hint") }
                                     />
                                     {
-                                        <Alert severity="warning" className="fido-enabled-warn-alert">
-                                            { t("applications:forms.advancedConfig." +
-                                                "sections.trustedApps.alerts.trustedAppSettingsAlert") }
-                                        </Alert>
+                                        (applicationConfig.advancedConfigurations.showTrustedAppConsentWarning) && (
+                                            <Alert severity="warning" className="fido-enabled-warn-alert">
+                                                <>
+                                                    { t("applications:forms.advancedConfig." +
+                                                    "sections.trustedApps.alerts.trustedAppSettingsAlert") }
+                                                    <DocumentationLink
+                                                        link={ getLink("develop.applications.editApplication." +
+                                                    "common.advanced.trustedApps.learnMore") }
+                                                    >
+                                                        { t("extensions:common.learnMore") }
+                                                    </DocumentationLink>
+                                                </>
+                                            </Alert>
+                                        )
                                     }
                                 </Grid.Column>
                             </Grid.Row>
@@ -624,11 +638,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         maxLength={ 200 }
                                         minLength={ 3 }
                                         width={ 16 }
-                                        data-testid={
-                                            `${ testId }-platform-settings-android-package-name`
-                                        }
                                         data-componentid={
-                                            `${ testId }-platform-settings-android-package-name`
+                                            `${ componentId }-platform-settings-android-package-name`
                                         }
                                         disabled={ isPlatformSettingsUiDisabled }
                                     />
@@ -709,8 +720,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         maxLength={ 200 }
                                         minLength={ 3 }
                                         width={ 16 }
-                                        data-testid={ `${ testId }-platform-settings-apple-app-id` }
-                                        data-componentid={ `${ testId }-platform-settings-apple-app-id` }
+                                        data-componentid={ `${ componentId }-platform-settings-apple-app-id` }
                                         disabled={ isPlatformSettingsUiDisabled }
                                         readOnly={ readOnly }
                                     />
@@ -752,7 +762,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     setShowFIDOConfirmationModal(false);
                 } }
                 closeOnDimmerClick={ false }
-                data-testid={ `${ testId }-trusted-apps-confirmation-modal` }
+                data-componentid={ `${ componentId }-trusted-apps-confirmation-modal` }
             >
                 <ConfirmationModal.Header data-testid={ `${ testId }-trusted-apps-confirmation-modal-header` }>
                     { t("applications:forms.advancedConfig.sections.trustedApps.modal.header") }
@@ -760,11 +770,13 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 <ConfirmationModal.Message
                     attached
                     warning
-                    data-testid={ `${ testId }-trusted-apps-confirmation-modal-message` }
+                    data-componentid={ `${ componentId }-trusted-apps-confirmation-modal-message` }
                 >
                     { t("applications:forms.advancedConfig.sections.trustedApps.modal.message") }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-testid={ `${ testId }-trusted-apps-confirmation-modal-content` }>
+                <ConfirmationModal.Content
+                    data-componentid={ `${ componentId }-trusted-apps-confirmation-modal-content` }
+                >
                     { t("applications:forms.advancedConfig.sections.trustedApps.modal.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
@@ -776,5 +788,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
  * Default props for the application advanced configurations form component.
  */
 AdvancedConfigurationsForm.defaultProps = {
+    "data-componentid": "application-advanced-configurations-form",
     "data-testid": "application-advanced-configurations-form"
 };

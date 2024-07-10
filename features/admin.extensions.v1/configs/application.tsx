@@ -112,7 +112,8 @@ export const applicationConfig: ApplicationConfig = {
         showMyAccount: true,
         showMyAccountStatus: true,
         showReturnAuthenticatedIdPs: true,
-        showSaaS: true
+        showSaaS: true,
+        showTrustedAppConsentWarning: false
     },
     allowedGrantTypes: {
         // single page app template
