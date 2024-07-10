@@ -592,9 +592,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         setIsSubjectTokenFeatureAvailable(initialValues?.subjectToken ? true : false);
     }, [ initialValues ]);
 
-    /**
-     * Sets if subject token is enable button should be visible.
-     */
     useEffect(() => {
         if (isGrantChanged) {
             if (!selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)) {

@@ -57,9 +57,10 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const isReadOnly: boolean = useRequiredScopes(
+    const isReadOnly: boolean = !useRequiredScopes(
         featureConfig?.server?.scopes?.update,
     );
+    console.log("readonly" + isReadOnly);
 
     const dispatch: Dispatch<any> = useDispatch();
 
@@ -218,7 +219,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                                                                 ariaLabel="Enable Email Notification"
                                                                 name="enableEmailNotification"
                                                                 hint={ t("impersonation:form.enableEmailNotification" +
-                                                                    ".label.hint") }
+                                                                    ".hint") }
                                                                 label={ t("impersonation:form." +
                                                                     "enableEmailNotification.label") }
                                                                 readOnly={ isReadOnly }

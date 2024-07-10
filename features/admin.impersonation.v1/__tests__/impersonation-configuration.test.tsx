@@ -21,17 +21,18 @@ import { render, screen } from "../../test-configs/utils";
 import { ImpersonationConfigurationPage }  from "../pages/impersonation-configuration";
 import "@testing-library/jest-dom";
 
-jest.mock("@wso2is/admin.impersonation.v1/api/impersonation-configuration", () => ({
-    useImpersonationConfig: () => ({
-        data: {
-            "enableEmailNotification":true
-        },
-        error: undefined,
-        isLoading: false
-    })
-}));
 
 describe.skip("Impersonation Configuration", () => {
+
+    jest.mock("@wso2is/admin.impersonation.v1/api/impersonation-configuration", () => ({
+        useImpersonationConfig: () => ({
+            data: {
+                "enableEmailNotification":true
+            },
+            error: undefined,
+            isLoading: false
+        })
+    }));
 
     it("<ImpersonationConfigurationPage /> matches snapshot", () => {
         const { container } = render(
