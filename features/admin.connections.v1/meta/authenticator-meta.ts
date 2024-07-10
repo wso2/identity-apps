@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -235,7 +235,7 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: {
                 content: {
                     quickStart: lazy(() => import(
-                        "@wso2is/admin.extensions.v1/components/authenticators/email-otp/quick-start"
+                        "../components/authenticators/email-otp/quick-start"
                     ))
                 },
                 isComingSoon: false,
@@ -245,7 +245,7 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: {
                 content: {
                     quickStart: lazy(() => import(
-                        "@wso2is/admin.extensions.v1/components/authenticators/sms-otp/quick-start"
+                        "../components/authenticators/sms-otp/quick-start"
                     ))
                 },
                 isComingSoon: false,
@@ -255,7 +255,7 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: {
                 content: {
                     quickStart: lazy(() => import(
-                        "@wso2is/admin.extensions.v1/components/authenticators/totp/quick-start"
+                        "../components/authenticators/totp/quick-start"
                     ))
                 },
                 isComingSoon: false,
@@ -265,7 +265,7 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: {
                 content: {
                     quickStart: lazy(() => import(
-                        "@wso2is/admin.extensions.v1/components/authenticators/fido/quick-start"
+                        "../components/authenticators/fido/quick-start"
                     ))
                 },
                 isComingSoon: false,
@@ -275,7 +275,7 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: {
                 content: {
                     quickStart: lazy(() => import(
-                        "@wso2is/admin.extensions.v1/components/authenticators/magic-link/quick-start"
+                        "../components/authenticators/magic-link/quick-start"
                     ))
                 },
                 isComingSoon: false,

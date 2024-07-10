@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,37 +16,40 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import ApplicationSelectionModal from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
-import ApplicationSelectionModal from "../../shared/application-selection-modal";
 
 /**
  * Prop types of the component.
  */
-type SMSOTPQuickStartPropsInterface = IdentifiableComponentInterface;
+type EmailOTPQuickStartPropsInterface = TestableComponentInterface;
 
 /**
- * Quick start content for the SMS OTP authenticator.
+ * Quick start content for the Email OTP authenticator.
  *
  * @param props - Props injected into the component.
  *
- * @returns SMS OTP Quick start component.
+ * @returns email OTP authenticator quick start component.
  */
-const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
-    props: SMSOTPQuickStartPropsInterface
+const EmailOTPQuickStart: FunctionComponent<EmailOTPQuickStartPropsInterface> = (
+    props: EmailOTPQuickStartPropsInterface
 ): ReactElement => {
 
     const {
-        [ "data-componentid" ]: componentId
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -63,7 +66,7 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
 
     /**
      * Vertical Stepper steps.
-     * @returns An array of Vertical Stepper steps.
+     * @returns List of steps.
      */
     const steps: VerticalStepperStepInterface[] = [
         {
@@ -72,37 +75,39 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
                     <Text>
                         <Trans
                             i18nKey={
-                                "extensions:develop.identityProviders.smsOTP.quickStart.steps.selectApplication.content"
+                                "extensions:develop.identityProviders.emailOTP.quickStart.steps.selectApplication" +
+                                ".content"
                             }
                         >
                             Choose the { isApplicationReadAccessAllowed ? (
                                 <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
                                 application </Link>) : "application" }
-                            for which you want to set up SMS OTP login.
+                            for which you want to set up Email OTP login.
                         </Trans>
                     </Text>
                 </>
             ),
-            stepTitle: t("extensions:develop.identityProviders.smsOTP.quickStart.steps.selectApplication.heading")
+            stepTitle: t("extensions:develop.identityProviders.emailOTP.quickStart.steps.selectApplication.heading")
         },
         {
             stepContent: (
                 <>
                     <Text>
                         <Trans
-                            i18nKey={ "extensions:develop.identityProviders.smsOTP.quickStart.steps.selectSMSOTP" +
-                                ".content" }
+                            i18nKey={ "extensions:develop.identityProviders.emailOTP.quickStart.steps.selectEmailOTP" +
+                            ".content" }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on the <strong>Username & Password + SMS OTP
-                            </strong> option from the Multi-factor login section to configure a basic SMS OTP flow.
+                            Go to <strong>Login Flow</strong> tab and click on the <strong>Username & Password +
+                                Email OTP </strong> option from the Multi-factor login section to configure a
+                                basic Email OTP flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
                 </>
             ),
             stepTitle: (
-                <Trans i18nKey="extensions:develop.identityProviders.smsOTP.quickStart.steps.selectSMSOTP.heading">
-                    Select <strong>SMS OTP</strong> option
+                <Trans i18nKey="extensions:develop.identityProviders.emailOTP.quickStart.steps.selectEmailOTP.heading">
+                    Select <strong>Email OTP</strong> option
                 </Trans>
             )
         }
@@ -110,17 +115,17 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
 
     return (
         <>
-            <Grid data-testid={ componentId } className="authenticator-quickstart-content">
+            <Grid data-testid={ testId } className="authenticator-quickstart-content">
                 <Grid.Row textAlign="left">
                     <Grid.Column width={ 16 }>
                         <PageHeader
                             className="mb-2"
-                            title={ t("extensions:develop.identityProviders.smsOTP.quickStart.heading") }
+                            title={ t("extensions:develop.identityProviders.emailOTP.quickStart.heading") }
                             imageSpaced={ false }
                             bottomMargin={ false }
                         />
                         <Heading subHeading as="h6">
-                            { t("extensions:develop.identityProviders.smsOTP.quickStart.subHeading") }
+                            { t("extensions:develop.identityProviders.emailOTP.quickStart.subHeading") }
                         </Heading>
                     </Grid.Column>
                 </Grid.Row>
@@ -138,14 +143,14 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
             {
                 showApplicationModal && (
                     <ApplicationSelectionModal
-                        data-testid={ `${ componentId }-application-selection-modal` }
+                        data-testid={ `${ testId }-application-selection-modal` }
                         open={ showApplicationModal }
                         onClose={ () => setShowApplicationModal(false) }
                         heading={
-                            t("extensions:develop.identityProviders.smsOTP.quickStart.addLoginModal.heading")
+                            t("extensions:develop.identityProviders.emailOTP.quickStart.addLoginModal.heading")
                         }
                         subHeading={
-                            t("extensions:develop.identityProviders.smsOTP.quickStart.addLoginModal.subHeading")
+                            t("extensions:develop.identityProviders.emailOTP.quickStart.addLoginModal.subHeading")
                         }
                         data-componentid="connections"
                     />
@@ -158,8 +163,8 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
 /**
  * Default props for the component
  */
-SMSOTPQuickStart.defaultProps = {
-    "data-componentid": "sms-otp-authenticator-quick-start"
+EmailOTPQuickStart.defaultProps = {
+    "data-testid": "email-otp-authenticator-quick-start"
 };
 
 /**
@@ -167,4 +172,4 @@ SMSOTPQuickStart.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default SMSOTPQuickStart;
+export default EmailOTPQuickStart;

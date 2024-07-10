@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, CodeEditor, DocumentationLink, Heading, Message, Text } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement, ReactNode } from "react";
@@ -28,10 +32,6 @@ import {
     reactSDKLoginButtonCode,
     reactSDKProviderImportCode
 } from "./code-blocks";
-import {
-    VerticalStepper,
-    VerticalStepperStepInterface
-} from "../../../../../components/component-extensions";
 import { SDKInitConfig } from "../../../../shared";
 import { SDKMeta } from "../../meta";
 import { SupportedSPATechnologyTypes } from "../../models";

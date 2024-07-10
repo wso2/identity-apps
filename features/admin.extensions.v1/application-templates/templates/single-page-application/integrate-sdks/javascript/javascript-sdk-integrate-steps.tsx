@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, CodeEditor, Heading, Text } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement, ReactNode } from "react";
 import { Divider } from "semantic-ui-react";
 import { javascriptSDKInitialisationCode, javascriptSDKIntegrationCode, loginButtonCode } from "./code-blocks";
-import {
-    VerticalStepper,
-    VerticalStepperStepInterface
-} from "../../../../../components/component-extensions";
 import { SDKInitConfig } from "../../../../shared";
 import { SDKMeta } from "../../meta";
 
@@ -34,7 +34,7 @@ import { SDKMeta } from "../../meta";
 interface JavaScriptSDKIntegrateStepsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Component for callback URL selection when there's multiple configured.
-     * @param {ReactNode} heading Heading for the config options section.
+     * @param heading - Heading for the config options section.
      */
     configurationOptions: (heading: ReactNode) => ReactElement;
     /**
@@ -52,8 +52,8 @@ interface JavaScriptSDKIntegrateStepsPropsInterface extends IdentifiableComponen
  *
  * TODO: Add Localization. https://github.com/wso2-enterprise/asgardeo-product/issues/7033
  *
- * @param {JavaScriptSDKIntegrateStepsPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
+ * @param props - Props injected into the component.
+ * @returns JavaScript SDK Integrate steps.
  */
 export const JavaScriptSDKIntegrateSteps: FunctionComponent<JavaScriptSDKIntegrateStepsPropsInterface> = (
     props: JavaScriptSDKIntegrateStepsPropsInterface
@@ -67,7 +67,7 @@ export const JavaScriptSDKIntegrateSteps: FunctionComponent<JavaScriptSDKIntegra
 
     /**
      * Render SDK Installation instruction steps.
-     * @return {ReactNode}
+     * @returns SDK Installation instruction steps.
      */
     const renderSDKInstallInstructions = (): ReactNode => {
 
@@ -117,7 +117,7 @@ export const JavaScriptSDKIntegrateSteps: FunctionComponent<JavaScriptSDKIntegra
 
     /**
      * Render Auth Client configuration instructions.
-     * @return {ReactNode}
+     * @returns Auth Client configuration instructions.
      */
     const renderAuthClientConfigurationInstructions = (): ReactNode => {
 
@@ -127,7 +127,7 @@ export const JavaScriptSDKIntegrateSteps: FunctionComponent<JavaScriptSDKIntegra
 
         const renderConfigurationOptions = () => {
 
-            const heading = (
+            const heading: ReactElement = (
                 <Text>
                     To initialize the SDK, use the <Code>getInstance()</Code> function in the SDK and pass in{ " " }
                     the required configurations to the <Code>auth.initialize()</Code> function.
@@ -157,9 +157,9 @@ export const JavaScriptSDKIntegrateSteps: FunctionComponent<JavaScriptSDKIntegra
                         language="javascript"
                         sourceCode={
                             javascriptSDKInitialisationCode({
+                                baseUrl: sdkConfig?.baseUrl,
                                 clientID: sdkConfig.clientID,
                                 scope: sdkConfig.scope,
-                                baseUrl: sdkConfig?.baseUrl,
                                 signInRedirectURL: sdkConfig.signInRedirectURL,
                                 signOutRedirectURL: sdkConfig.signOutRedirectURL
                             })
@@ -177,7 +177,7 @@ export const JavaScriptSDKIntegrateSteps: FunctionComponent<JavaScriptSDKIntegra
 
     /**
      * Render adding Login instructions.
-     * @return {ReactNode}
+     * @returns Adding Login instructions.
      */
     const renderLoginInstructions = (): ReactNode => {
 
@@ -238,7 +238,7 @@ export const JavaScriptSDKIntegrateSteps: FunctionComponent<JavaScriptSDKIntegra
 
     /**
      * Steps.
-     * @return {VerticalStepperStepInterface[]}
+     * @returns Steps.
      */
     const steps: VerticalStepperStepInterface[] = [
         {
