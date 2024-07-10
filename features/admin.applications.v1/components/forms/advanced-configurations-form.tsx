@@ -28,7 +28,6 @@ import {
 } from "@wso2is/core/models";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { ConfirmationModal, GenericIcon, Heading, URLInput  } from "@wso2is/react-components";
-
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     Fragment,
@@ -120,7 +119,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     const [ isConsentGranted, setIsConsentGranted ] = useState<boolean>(
         config?.trustedAppConfiguration?.isConsentGranted);
     const [ showFIDOConfirmationModal, setShowFIDOConfirmationModal ] = useState<boolean>(false);
-
     const [ showThumbprintsError, setShowThumbprinstError ] = useState(false);
     const [ thumbprints, setThumbprints ] = useState(config?.trustedAppConfiguration?.androidThumbprints?.join(","));
 
@@ -243,7 +241,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 if(!isEmpty(values.androidAttestationServiceCredentials)) {
                     androidAttestationServiceCredentialsObject =
                     JSON.parse(values.androidAttestationServiceCredentials);
-
                 }
                 // Validate the android package name and android attestation service credentials for client attestation.
                 // If one of them is empty throw an error.
@@ -451,7 +448,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             </Alert>
                                         )
                                     }
-
                                     <Field.CheckboxLegacy
                                         ariaLabel="Enable attestation"
                                         name="enableClientAttestation"
@@ -483,10 +479,21 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         ariaLabel="Android service account credentials"
                                         inputType="description"
                                         name="androidAttestationServiceCredentials"
-                                        label={ t("applications:forms." +
-                                            "advancedConfig." +
-                                            "sections.clientAttestation.fields." +
-                                            "androidAttestationServiceCredentials.label") }
+                                        label={ (
+                                            <>
+                                                <GenericIcon
+                                                    size="micro"
+                                                    icon={ getTechnologyLogos().android }
+                                                    floated="left"
+                                                    verticalAlign="middle"
+                                                    spaced="right"
+                                                />
+                                                { t("applications:forms." +
+                                                "advancedConfig." +
+                                                "sections.clientAttestation.fields." +
+                                                "androidAttestationServiceCredentials.label") }
+                                            </>
+                                        ) }
                                         placeholder={ t("applications:forms." +
                                             "advancedConfig.sections." +
                                             "clientAttestation.fields." +

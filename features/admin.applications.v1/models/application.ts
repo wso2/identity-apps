@@ -277,7 +277,6 @@ export interface AdvancedConfigurationsInterface {
     androidPackageName?: string;
     androidAttestationServiceCredentials?: string;
     trustedAppConfiguration?: TrustedAppConfigurationsInterface
-    // Check if these configs are needed here
     enableFIDOTrustedApps?: boolean;
     isConsentGranted?: boolean;
     androidThumbprints?: string[];
