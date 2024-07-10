@@ -42,8 +42,8 @@ import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
-import { getSidePanelIcons } from "./ui";
-import { AppConstants } from "../constants";
+import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
 
 /**
  * Get App View Routes.
@@ -240,7 +240,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => import("../../admin.applications.v1/pages/applications-settings")),
+                    component: lazy(() => import("../../../features/admin.applications.v1/pages/applications-settings")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -1513,7 +1513,7 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
     const routes: RouteInterface[] = [];
 
     routes.push({
-        component: lazy(() => import("../pages/privacy")),
+        component: lazy(() => import("@wso2is/admin.core.v1/pages/privacy")),
         icon: null,
         id: "privacy",
         name: "console:common.sidePanel.privacy",
@@ -1533,7 +1533,7 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 export const getErrorLayoutRoutes = (): RouteInterface[] => {
     return [
         {
-            component: lazy(() => import("../pages/errors/unauthorized")),
+            component: lazy(() => import("@wso2is/admin.core.v1/pages/errors/unauthorized")),
             exact: true,
             icon: null,
             id: "unauthorized",
@@ -1543,7 +1543,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: lazy(() => import("../pages/errors/404")),
+            component: lazy(() => import("@wso2is/admin.core.v1/pages/errors/404")),
             exact: true,
             icon: null,
             id: "pageNotFound",
@@ -1553,7 +1553,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: lazy(() => import("../pages/errors/storage-disabled")),
+            component: lazy(() => import("@wso2is/admin.core.v1/pages/errors/storage-disabled")),
             exact: true,
             icon: null,
             id: "storingDataDisabled",

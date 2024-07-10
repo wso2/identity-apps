@@ -17,19 +17,24 @@
  */
 
 import { AccessControlUtils } from "@wso2is/access-control";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import {
+    AppState,
+    setDeveloperVisibility,
+    setFilteredDevelopRoutes,
+    setSanitizedDevelopRoutes
+} from "@wso2is/admin.core.v1/store";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { getAppViewRoutes } from "../configs/routes";
-import { AppConstants } from "../constants/app-constants";
-import { history } from "../helpers/history";
-import useGlobalVariables from "../hooks/use-global-variables";
-import { FeatureConfigInterface } from "../models/config";
-import { AppState, setDeveloperVisibility, setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "../store";
-import { AppUtils } from "../utils/app-utils";
+import { getAppViewRoutes } from "./routes";
 
 /**
  * Props interface of {@link useOrganizations}

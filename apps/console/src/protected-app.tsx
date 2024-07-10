@@ -40,7 +40,6 @@ import {
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenant-constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
-import useRoutes from "@wso2is/admin.core.v1/hooks/use-routes";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { CONSUMER_USERSTORE } from "@wso2is/admin.extensions.v1/components/administrators/constants/users";
@@ -82,6 +81,7 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import useRoutes from "./use-routes";
 
 const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 
