@@ -225,7 +225,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                                                                 label={ t("impersonation:form." +
                                                                     "enableEmailNotification.label") }
                                                                 readOnly={
-                                                                    isReadOnly || (!isReadOnly && isSubmitting )
+                                                                    isReadOnly || (!isReadOnly && isSubmitting)
                                                                 }
                                                                 width={ 16 }
                                                                 data-componentid={
