@@ -22,7 +22,7 @@ export const impersonation: ImpersonationNS = {
     description: "Configure impersonation settings for organization.",
     form: {
         enableEmailNotification: {
-            hint: "If enabled, an email notification will send to the impersonated user after impersonation occurred.",
+            hint: "If enabled, the impersonated user will receive an email notification after impersonation starts.",
             label: "Enable Email Notification"
         }
     },

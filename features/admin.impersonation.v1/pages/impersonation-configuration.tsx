@@ -68,6 +68,8 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
     const [ impersonationConfig, setImpersonationConfig ] =
         useState<ImpersonationConfigFormValuesInterface>(undefined);
 
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
     const {
         data: originalImpersonationConfig,
         isLoading: isImpersonationFetchRequestLoading,
@@ -112,7 +114,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                 value: value
             }
         ];
-
+        setIsSubmitting(true);
         updateImpersonationConfigurations(data).then(() => {
             dispatch(
                 addAlert({
@@ -124,6 +126,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                 })
             );
         }).catch(() => {
+            setIsSubmitting(true);
             dispatch(
                 addAlert({
                     description: t("impersonation:notifications." +
@@ -134,6 +137,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                 })
             );
         }).finally(() => {
+            setIsSubmitting(false)
             mutateImpersonationConfig();
         });
     };
@@ -209,7 +213,6 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                                                 enableReinitialize={ true }
                                                 ref={ formRef }
                                                 noValidate={ true }
-                                                autoComplete="new-password"
                                             >
                                                 <Grid>
                                                     <Grid.Row columns={ 1 } key={ 1 }>
@@ -221,10 +224,12 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                                                                     ".hint") }
                                                                 label={ t("impersonation:form." +
                                                                     "enableEmailNotification.label") }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={
+                                                                    isReadOnly || (!isReadOnly && isSubmitting )
+                                                                }
                                                                 width={ 16 }
                                                                 data-componentid={
-                                                                    `${componentId}-enable-email-notification` 
+                                                                    `${componentId}-enable-email-notification`
                                                                 }
                                                                 toggle
                                                                 listen={ (value: boolean) => {
