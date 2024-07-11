@@ -16,18 +16,16 @@
  * under the License.
  */
 
-import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CheckboxFieldAdapter, FinalFormField, FormApi, TextFieldAdapter } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import ApplicationCertificateAdapter from "./custom-fields/application-certificate-adapter";
 import { DynamicFieldInterface, DynamicInputFieldTypes } from "../models/dynamic-fields";
 
 /**
- * Prop types for the dynamic input fields of the application form.
+ * Prop types for the dynamic input fields.
  */
-export interface ApplicationFormDynamicFieldPropsInterface extends IdentifiableComponentInterface {
+export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInterface {
     /**
      * Field configs.
      */
@@ -40,30 +38,20 @@ export interface ApplicationFormDynamicFieldPropsInterface extends IdentifiableC
      * Whether the form field is read only or not.
      */
     readOnly?: boolean;
-    /**
-     * Data of the current application.
-     */
-    application?: ApplicationInterface;
-    /**
-     * Callback to trigger when the application update occurs.
-     */
-    onApplicationUpdate?: (id: string) => void;
 }
 
 /**
  * Component responsible for generating the field based on the provided field configs.
  *
- * @param props - Props injected to the `ApplicationFormDynamicField` component.
+ * @param props - Props injected to the `FormDynamicField` component.
  */
-export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
-    ApplicationFormDynamicFieldPropsInterface
->> = (props: PropsWithChildren<ApplicationFormDynamicFieldPropsInterface>): ReactElement => {
+export const FormDynamicField: FunctionComponent<PropsWithChildren<
+    FormDynamicFieldPropsInterface
+>> = (props: PropsWithChildren<FormDynamicFieldPropsInterface>): ReactElement => {
     const {
         field,
         form: _form,
         readOnly,
-        application,
-        onApplicationUpdate,
         ["data-componentid"]: componentId, ...rest
     } = props;
 
@@ -145,23 +133,6 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
                         }
                     />
                 );
-            case DynamicInputFieldTypes.APPLICATION_CERTIFICATE:
-                if (!application || !onApplicationUpdate) {
-                    return null;
-                }
-
-                return (
-                    <FinalFormField
-                        name={ field?.name }
-                        component={ ApplicationCertificateAdapter }
-                        protocol={ field?.meta?.customFieldProps?.protocol }
-                        application={ application }
-                        onApplicationUpdate={ onApplicationUpdate }
-                        hideJWKS={ field?.meta?.customFieldProps?.hideJWKS }
-                        required={ field?.required }
-                        readOnly={ readOnly || field?.readOnly }
-                    />
-                );
             default:
                 return (
                     <FinalFormField
@@ -198,8 +169,8 @@ export const ApplicationFormDynamicField: FunctionComponent<PropsWithChildren<
 };
 
 /**
- * Default props injected to the `ApplicationFormDynamicField` component.
+ * Default props injected to the `FormDynamicField` component.
  */
-ApplicationFormDynamicField.defaultProps = {
-    "data-componentid": "application-form-dynamic-field"
+FormDynamicField.defaultProps = {
+    "data-componentid": "form-dynamic-field"
 };

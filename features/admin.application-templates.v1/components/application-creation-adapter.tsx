@@ -23,12 +23,12 @@ import { ApplicationTemplateListItemInterface } from "@wso2is/admin.applications
 import { ApplicationTemplateManagementUtils } from
     "@wso2is/admin.applications.v1/utils/application-template-management-utils";
 import { AppState } from "@wso2is/admin.core.v1";
-import { ApplicationCreateWizard } from "@wso2is/admin.template-core.v1/components/application-create-wizard";
 import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { ApplicationCreateWizard } from "./application-create-wizard";
 import { ApplicationTemplateCategories } from "../models/templates";
 
 /**

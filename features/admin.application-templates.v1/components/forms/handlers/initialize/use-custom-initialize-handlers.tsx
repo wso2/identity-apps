@@ -24,7 +24,7 @@ import {
 } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
 import get from "lodash-es/get";
 import useUniqueApplicationName from "./use-unique-application-name";
-import { ApplicationTemplateValidationHandlers } from "../../../../models/dynamic-fields";
+import { ApplicationTemplateInitializeHandlers } from "../../../../models/dynamic-fields";
 
 /**
  * Hook for custom initialize handlers.
@@ -50,7 +50,7 @@ const useInitializeHandlers = (): { customInitializers: CustomInitializeFunction
         templatePayload: Record<string, any>
     ): Promise<void> => {
         switch (handler?.name) {
-            case ApplicationTemplateValidationHandlers.APPLICATION_NAME:
+            case ApplicationTemplateInitializeHandlers.UNIQUE_APPLICATION_NAME:
                 await generateUniqueApplicationName(
                     get(templatePayload, field?.name)?.toString()?.trim(),
                     formValues,

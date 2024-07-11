@@ -22,3 +22,17 @@
 export enum ApplicationTemplateValidationHandlers {
     APPLICATION_NAME = "applicationName",
 }
+
+/**
+ * Supported custom initialize handlers for application templates.
+ */
+export enum ApplicationTemplateInitializeHandlers {
+    UNIQUE_APPLICATION_NAME = "uniqueApplicationName",
+}
+
+/**
+ * Supported custom submission handlers for application templates.
+ */
+export enum ApplicationTemplateSubmissionHandlers {
+    BUILD_CALLBACK_URLS_WITH_REGEXP = "buildCallbackURLsWithRegexp",
+}

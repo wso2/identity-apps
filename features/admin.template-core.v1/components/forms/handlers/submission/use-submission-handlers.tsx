@@ -115,8 +115,15 @@ const useSubmissionHandlers = (
         templateData: Record<string, any>
     ): Promise<void> => {
         for (const field of fields) {
-            const submissionHandlers: DynamicFieldHandlerInterface[] = field?.handlers?.filter(
+            let submissionHandlers: DynamicFieldHandlerInterface[] = field?.handlers?.filter(
                 (handler: DynamicFieldHandlerInterface) => handler?.type === FieldHandlerTypes.SUBMISSION) || [];
+
+            if (field?.disable) {
+                submissionHandlers = [
+                    ...submissionHandlers,
+                    { name: CommonSubmissionHandlers.DISABLE_PROPERTY, type: FieldHandlerTypes.SUBMISSION }
+                ];
+            }
 
             if (submissionHandlers?.length > 0) {
                 await submitField(formValues, field, submissionHandlers, templateData);

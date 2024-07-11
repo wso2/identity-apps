@@ -19,13 +19,8 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import Pagination from "@mui/material/Pagination";
 import Typography from "@oxygen-ui/react/Typography";
-import buildCallBackUrlsWithRegExp from "@wso2is/admin.application-templates.v1/utils/build-callback-urls-with-regexp";
-import { createApplication } from "@wso2is/admin.applications.v1/api";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import { MainApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
 import {
     ContentLoader,
@@ -35,21 +30,17 @@ import {
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import has from "lodash-es/has";
 import pick from "lodash-es/pick";
 import set from "lodash-es/set";
-import unset from "lodash-es/unset";
-import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useMemo, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { Grid, ModalProps } from "semantic-ui-react";
-import { v4 as uuidv4 } from "uuid";
-import { ApplicationFormDynamicField } from "./application-form-dynamic-field";
+import { FormDynamicField } from "./form-dynamic-field";
 import useInitializeHandlers, { CustomInitializeFunction } from "./forms/handlers/initialize/use-initialize-handlers";
+import useSubmissionHandlers, { CustomSubmissionFunction } from "./forms/handlers/submission/use-submission-handlers";
 import useValidationHandlers, { CustomValidationsFunction } from "./forms/handlers/validation/use-validation-handlers";
 import { DynamicFieldInterface, DynamicFormInterface } from "../models/dynamic-fields";
 import "./resource-create-wizard.scss";
@@ -74,6 +65,10 @@ export interface ResourceCreateWizardPropsInterface extends ModalProps, Identifi
      * Custom initialize functions.
      */
     customInitializers?: CustomInitializeFunction;
+    /**
+     * Custom submission handler functions.
+     */
+    customSubmissionHandlers?: CustomSubmissionFunction;
     /**
      * Definition of the form for the resource creation wizard.
      */
@@ -109,7 +104,11 @@ export interface ResourceCreateWizardPropsInterface extends ModalProps, Identifi
     /**
      * Function to handle form submission.
      */
-    onFormSubmit: (values: Record<string, any>, callback: () => void) => void;
+    onFormSubmit: (values: Record<string, any>, callback: (errorMsg: string, errorDescription: string) => void) => void;
+    /**
+     * Loading status for the wizard.
+     */
+    isLoading: boolean;
 }
 
 /**
@@ -133,49 +132,57 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
         buttonText,
         customValidations,
         customInitializers,
+        customSubmissionHandlers,
         onClose,
+        onFormSubmit,
+        isLoading,
         ...rest
     } = props;
 
     const { validate } = useValidationHandlers(customValidations);
     const { initialize } = useInitializeHandlers(customInitializers);
+    const { submission } = useSubmissionHandlers(customSubmissionHandlers);
     const [ alert, setAlert, notification ] = useWizardAlert();
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
 
     const [ installGuideActivePage, setInstallGuideActivePage ] = useState<number>(1);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ formInitialValues, setFormInitialValues ] = useState<{ [key: string]: any }>(null);
 
     /**
      * Moderate the initially provided data for the form.
      */
-    const formInitialValues: Record<string, any> = useMemo(async () => {
-        if (!initialFormValues) {
-            return null;
+    useEffect(() => {
+        const prepareInitialValues = async (): Promise<void> => {
+            let initialValues: Record<string, any>;
+
+            if (form?.submitDefinedFieldsOnly) {
+                const paths: string[] = form?.fields?.map((field: DynamicFieldInterface) => field?.name);
+
+                initialValues = pick(initialFormValues, paths);
+            } else {
+                initialValues = cloneDeep(initialFormValues);
+            }
+
+            await initialize(initialValues, form?.fields, templatePayload);
+
+            /**
+             * Template ID must be submitted when creating the application.
+             */
+            if (!initialValues?.templateId) {
+                initialValues.templateId = initialFormValues?.templateId;
+            }
+
+            setFormInitialValues(initialValues);
+        };
+
+        if (!initialFormValues || !form || !templatePayload) {
+            return;
         }
 
-        let initialValues: Record<string, any>;
-
-        if (form?.submitDefinedFieldsOnly) {
-            const paths: string[] = form?.fields?.map((field: DynamicFieldInterface) => field?.name);
-
-            initialValues = pick(initialFormValues, paths);
-        } else {
-            initialValues = cloneDeep(initialFormValues);
-        }
-
-        await initialize(initialValues, form?.fields, templatePayload);
-
-        /**
-         * Template ID must be submitted when creating the application.
-         */
-        if (!initialValues?.templateId) {
-            initialValues.templateId = initialFormValues?.templateId;
-        }
-
-        return initialValues;
-    }, [ initialFormValues ]);
+        prepareInitialValues();
+    }, [ initialFormValues, form, templatePayload ]);
 
     /**
      * This function will navigate the user to the notification message if there are any errors.
@@ -189,7 +196,7 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
      *
      * @param values - Submission values from the form fields.
      */
-    const onSubmit = (values: Record<string, any>): void => {
+    const onSubmit = async (values: Record<string, any>): Promise<void> => {
         setIsSubmitting(true);
         const formValues: Record<string, any> = cloneDeep(values);
 
@@ -206,82 +213,20 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
             }
         });
 
-        // Moderate Values to match API restrictions.
-        if (formValues?.inboundProtocolConfiguration?.oidc?.callbackURLs) {
-            formValues.inboundProtocolConfiguration.oidc.callbackURLs = buildCallBackUrlsWithRegExp(
-                formValues.inboundProtocolConfiguration.oidc.callbackURLs
-            );
-        }
+        await submission(formValues, form?.fields, templatePayload);
 
-        createApplication(formValues)
-            .then((response: AxiosResponse) => {
-                eventPublisher.compute(() => {
-                    eventPublisher.publish("application-register-new-application", {
-                        type: templateData?.id
-                    });
-                });
+        onFormSubmit(formValues, (errorMsg: string, errorDescription: string) => {
+            setIsSubmitting(false);
 
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "applications:notifications." +
-                            "addApplication.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "applications:notifications." +
-                            "addApplication.success.message"
-                        )
-                    })
-                );
-
-                const location: string = response.headers.location;
-                const createdAppID: string = location.substring(location.lastIndexOf("/") + 1);
-
-                if (isApplicationSharingEnabled) {
-                    setLastCreatedApplicationId(createdAppID);
-                    setShowApplicationShareModal(true);
-                } else {
-                    handleAppCreationComplete(createdAppID);
-                }
-            })
-            .catch((error: AxiosError) => {
-                if (error?.response?.status === 403
-                    && error?.response?.data?.code === ApplicationManagementConstants
-                        .ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
-                    setOpenLimitReachedModal(true);
-
-                    return;
-                }
-
-                if (error?.response?.data?.description) {
-                    setAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "applications:notifications." +
-                            "addApplication.error.message"
-                        )
-                    });
-                    scrollToNotification();
-
-                    return;
-                }
-
+            if (errorMsg) {
                 setAlert({
-                    description: t(
-                        "applications:notifications." +
-                        "addApplication.genericError.description"
-                    ),
+                    description: errorDescription,
                     level: AlertLevels.ERROR,
-                    message: t(
-                        "applications:notifications." +
-                        "addApplication.genericError.message"
-                    )
+                    message: errorMsg
                 });
                 scrollToNotification();
-            })
-            .finally(() => setIsSubmitting(false));
+            }
+        });
     };
 
     let formSubmit: (e: MouseEvent<HTMLButtonElement>) => void;
@@ -304,7 +249,7 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     {
-                        !formInitialValues
+                        !formInitialValues || isLoading
                             ? <ContentLoader />
                             : (
                                 <>
@@ -362,7 +307,7 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
                                                                             tablet={ 16 }
                                                                             computer={ 14 }
                                                                         >
-                                                                            <ApplicationFormDynamicField
+                                                                            <FormDynamicField
                                                                                 field={ field }
                                                                                 form={ formState }
                                                                             />
@@ -396,7 +341,7 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
-                                    { t(buttonText) }
+                                    { buttonText }
                                 </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>

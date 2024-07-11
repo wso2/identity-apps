@@ -23,9 +23,7 @@ import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { ApplicationEditForm as ApplicationInboundProtocolEditForm } from "./application-inbound-protocol-edit-form";
-import { ApplicationEditForm as ApplicationMainEditForm } from "./application-main-edit-form";
-import { DynamicFormInterface, SupportedAPIList } from "../models/dynamic-fields";
+import { DynamicFormInterface } from "../models/dynamic-fields";
 import "./application-edit-form.scss";
 
 /**
@@ -71,46 +69,47 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
         ["data-componentid"]: componentId
     } = props;
 
-    const formSubmissions: Partial<{ [api in SupportedAPIList]: ((e: MouseEvent<HTMLButtonElement>) => void) }> = {};
+    const formSubmissions: any = {};
 
     const { t } = useTranslation();
 
     const renderForms = () => {
         return tab?.forms?.map((form: DynamicFormInterface) => {
-            switch(form?.api) {
-                case SupportedAPIList.APPLICATION_PATCH:
-                    return (
-                        <ApplicationMainEditForm
-                            formMetadata={ form }
-                            application={ application }
-                            isLoading={ isLoading }
-                            onUpdate={ onUpdate }
-                            readOnly={ readOnly }
-                            data-componentid={ componentId }
-                            hideSubmitBtn={ tab?.singleForm }
-                            formSubmission={
-                                (submissionFunction: (e: MouseEvent<HTMLButtonElement>) => void) =>
-                                    formSubmissions[form?.api] = submissionFunction
-                            }
-                        />
-                    );
-                case SupportedAPIList.APPLICATION_SAML_INBOUND_PROTOCOL_PUT:
-                    return (
-                        <ApplicationInboundProtocolEditForm
-                            formMetadata={ form }
-                            application={ application }
-                            isLoading={ isLoading }
-                            onUpdate={ onUpdate }
-                            readOnly={ readOnly }
-                            data-componentid={ componentId }
-                            hideSubmitBtn={ tab?.singleForm }
-                            formSubmission={
-                                (submissionFunction: (e: MouseEvent<HTMLButtonElement>) => void) =>
-                                    formSubmissions[form?.api] = submissionFunction
-                            }
-                        />
-                    );
-            }
+            // switch(form?.api) {
+            //     case SupportedAPIList.APPLICATION_PATCH:
+            //         return (
+            //             <ApplicationMainEditForm
+            //                 formMetadata={ form }
+            //                 application={ application }
+            //                 isLoading={ isLoading }
+            //                 onUpdate={ onUpdate }
+            //                 readOnly={ readOnly }
+            //                 data-componentid={ componentId }
+            //                 hideSubmitBtn={ tab?.singleForm }
+            //                 formSubmission={
+            //                     (submissionFunction: (e: MouseEvent<HTMLButtonElement>) => void) =>
+            //                         formSubmissions[form?.api] = submissionFunction
+            //                 }
+            //             />
+            //         );
+            //     case SupportedAPIList.APPLICATION_SAML_INBOUND_PROTOCOL_PUT:
+            //         return (
+            //             <ApplicationInboundProtocolEditForm
+            //                 formMetadata={ form }
+            //                 application={ application }
+            //                 isLoading={ isLoading }
+            //                 onUpdate={ onUpdate }
+            //                 readOnly={ readOnly }
+            //                 data-componentid={ componentId }
+            //                 hideSubmitBtn={ tab?.singleForm }
+            //                 formSubmission={
+            //                     (submissionFunction: (e: MouseEvent<HTMLButtonElement>) => void) =>
+            //                         formSubmissions[form?.api] = submissionFunction
+            //                 }
+            //             />
+            //         );
+            // }
+            return null;
         });
     };
 

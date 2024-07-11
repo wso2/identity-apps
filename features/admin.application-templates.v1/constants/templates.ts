@@ -42,4 +42,6 @@ export class ApplicationTemplateConstants {
     public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
 
     public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
+
+    public static readonly APPLICATION_CREATE_WIZARD_SHARING_FIELD_NAME: string = "isApplicationSharable";
 }

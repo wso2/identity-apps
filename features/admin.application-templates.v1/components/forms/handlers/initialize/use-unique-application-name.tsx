@@ -19,6 +19,21 @@
 import { getApplicationList } from "@wso2is/admin.applications.v1/api";
 import { ApplicationListInterface, ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
 import set from "lodash-es/set";
+import { MutableRefObject, useRef } from "react";
+
+/**
+ * Interface for duplicate application list cache.
+ */
+interface DuplicateApplicationListCache {
+    /**
+     * Application list response for recently searched application name.
+     */
+    appList: ApplicationListInterface;
+    /**
+     * Recently searched application name.
+     */
+    appName: string;
+}
 
 /**
  * Hook to generate a unique application name.
@@ -28,10 +43,12 @@ import set from "lodash-es/set";
 const useUniqueApplicationName = (): {
     generateUniqueApplicationName: (
         initialApplicationName: string,
-        formValues: Record<string, string>,
+        formValues: Record<string, any>,
         fieldName: string
     ) => Promise<void>
 } => {
+    const duplicateApplicationListCache: MutableRefObject<DuplicateApplicationListCache> =
+        useRef<DuplicateApplicationListCache>(null);
 
     /**
      * Generate the next unique name by appending 1-based index number to the provided initial value.
@@ -41,14 +58,21 @@ const useUniqueApplicationName = (): {
      */
     const generateUniqueApplicationName = async (
         initialApplicationName: string,
-        formValues: Record<string, string>,
+        formValues: Record<string, any>,
         fieldName: string
     ): Promise<void> => {
 
-        let appName: string = initialApplicationName;
+        let appName: string = initialApplicationName?.trim();
+        let possibleListOfDuplicateApplications: ApplicationListInterface =
+            duplicateApplicationListCache?.current?.appList;
 
-        const possibleListOfDuplicateApplications: ApplicationListInterface = await getApplicationList(
-            null, null, "name sw " + appName?.trim());
+        if (duplicateApplicationListCache?.current?.appName !== appName) {
+            possibleListOfDuplicateApplications = await getApplicationList(null, null, "name sw " + appName);
+            duplicateApplicationListCache.current = {
+                appList: possibleListOfDuplicateApplications,
+                appName
+            };
+        }
 
         if (possibleListOfDuplicateApplications?.totalResults > 0) {
             const applicationNameList: string[] = possibleListOfDuplicateApplications?.applications?.map(

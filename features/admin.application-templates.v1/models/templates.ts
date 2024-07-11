@@ -57,10 +57,6 @@ export interface ApplicationTemplateMetadataInterface {
          */
         form?: DynamicFormInterface;
         /**
-         * Indicates whether the application is sharable with sub orgs.
-         */
-        isApplicationSharable?: boolean;
-        /**
          * Application creation guide metadata.
          */
         guide?: string[];
