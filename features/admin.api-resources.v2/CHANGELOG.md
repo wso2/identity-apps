@@ -1,5 +1,14 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.20.56
+
+### Patch Changes
+
+- [#6545](https://github.com/wso2/identity-apps/pull/6545) [`a0886211dba54c1c0266c24c5626f61657e6c209`](https://github.com/wso2/identity-apps/commit/a0886211dba54c1c0266c24c5626f61657e6c209) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix management api search not working when the current page is greater than 1
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.26
+
 ## 2.20.55
 
 ### Patch Changes
