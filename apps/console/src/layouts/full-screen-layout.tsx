@@ -107,7 +107,7 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
      * @param key - Index of the route.
      * @returns Resolved route to be rendered.
      */
-    const renderRoute = (route, key): ReactNode => (
+    const renderRoute = (route: RouteInterface, key: number): ReactNode => (
         route.redirectTo
             ? <Redirect key={ key } to={ route.redirectTo }/>
             : route.protected
@@ -122,7 +122,7 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
                 : (
                     <Route
                         path={ route.path }
-                        render={ (renderProps): ReactNode =>
+                        render={ (renderProps: RouteComponentProps): ReactNode =>
                             route.component
                                 ? <route.component { ...renderProps } />
                                 : null
@@ -140,11 +140,11 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
      *
      * @returns Set of resolved routes.
      */
-    const resolveRoutes = (): RouteInterface[] | ReactNode[]=> {
-        const resolvedRoutes = [];
+    const resolveRoutes = (): ReactNode[] => {
+        const resolvedRoutes: ReactNode[] = [];
 
-        const recurse = (routesArr): void => {
-            routesArr.forEach((route, key) => {
+        const recurse = (routesArr: RouteInterface[]): void => {
+            routesArr.forEach((route: RouteInterface, key: number) => {
                 if (route.path) {
                     resolvedRoutes.push(renderRoute(route, key));
                 }
