@@ -20,7 +20,7 @@ import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
 import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
-import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/admin.core.v1/configs";
+import { Config, DocumentationLinks } from "@wso2is/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
@@ -63,6 +63,7 @@ import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-rout
 import { Dispatch } from "redux";
 import "moment/locale/si";
 import "moment/locale/fr";
+import { getBaseRoutes } from "./configs/routes";
 
 /**
  * Main App component.

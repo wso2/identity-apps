@@ -34,7 +34,7 @@ import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { getAppViewRoutes } from "./routes";
+import { getAppViewRoutes } from "../configs/routes";
 
 /**
  * Props interface of {@link useOrganizations}

@@ -23,8 +23,7 @@ import {
     FeatureConfigInterface,
     ProtectedRoute,
     RouteUtils,
-    getEmptyPlaceholderIllustrations,
-    getFullScreenViewRoutes
+    getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1";
 import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
@@ -47,11 +46,12 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { getFullScreenViewRoutes } from "../configs/routes";
 
 /**
  * Full Screen View Prop types.
  */
-interface FullScreenViewPropsInterface {
+interface FullScreenLayoutPropsInterface {
     /**
      * Is layout fluid.
      */
@@ -62,10 +62,10 @@ interface FullScreenViewPropsInterface {
  * Parent component for Ful Screen features inherited from App layout skeleton.
  *
  * @param props - Props injected to the component.
- * @returns Full screen view layout component.
+ * @returns Full screen layout component.
  */
-export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
-    props: FullScreenViewPropsInterface & RouteComponentProps
+const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
+    props: FullScreenLayoutPropsInterface & RouteComponentProps
 ): ReactElement => {
 
     const {
@@ -194,6 +194,8 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
 /**
  * Default props for the Full Screen View.
  */
-FullScreenView.defaultProps = {
+FullScreenLayout.defaultProps = {
     fluid: true
 };
+
+export default FullScreenLayout;

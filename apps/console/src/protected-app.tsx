@@ -32,7 +32,6 @@ import {
     HttpUtils,
     PreLoader,
     UIConfigInterface,
-    getAppViewRoutes,
     setFilteredDevelopRoutes,
     setSanitizedDevelopRoutes,
     store
@@ -81,7 +80,8 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useRoutes from "./use-routes";
+import { getAppViewRoutes } from "./configs/routes";
+import useRoutes from "./hooks/use-routes";
 
 const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 

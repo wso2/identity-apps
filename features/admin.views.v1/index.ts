@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./app";
-export * from "./full-screen-view";
+export * from "../../apps/console/src/views/dashboard-layout";
+export * from "../../apps/console/src/views/full-screen-layout";

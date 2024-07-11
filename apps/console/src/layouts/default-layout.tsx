@@ -22,8 +22,7 @@ import {
     Footer,
     Header,
     ProtectedRoute,
-    UIConstants,
-    getDefaultLayoutRoutes
+    UIConstants
 } from "@wso2is/admin.core.v1";
 import { AlertInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
@@ -46,6 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
+import { getDefaultLayoutRoutes } from "../configs/routes";
 
 /**
  * Default page layout component Prop types.
@@ -171,3 +171,5 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 DefaultLayout.defaultProps = {
     fluid: true
 };
+
+export default DefaultLayout;
