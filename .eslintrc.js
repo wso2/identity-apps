@@ -143,6 +143,7 @@ module.exports = {
                 "@typescript-eslint/no-empty-function": "off",
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
+                "@typescript-eslint/no-unsafe-optional-chaining": "off",
                 "@typescript-eslint/no-unused-vars": [
                     "warn",
                     {
