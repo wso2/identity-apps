@@ -1145,21 +1145,20 @@ export const applications: ApplicationsNS = {
                     },
                     fields: {
                         enableFIDOTrustedApps: {
-                            hint: "Select to trust the app for user login with passkey. Provide the details of the application under ",
-                            backLink: "Platform Settings.",
+                            hint: "Select to trust the app for user login with passkey. Provide the details of the application under Platform Settings.",
                             label: "Add as a FIDO trusted app"
                         }
                     },
                     modal: {
                         assertionHint : "I understand and wish to proceed.",
                         header: "Are you sure?",
-                        message: "For validation purposes, Asgardeo requires that the details available under Platform Settings be listed on a public endpoint shared across all Asgardeo organizations.",
+                        message: "For validation purposes, the details available under Platform Settings will be listed on a public endpoint shared across all organizations.",
                         content: ""
                     }
                 },
                 platformSettings: {
                     heading: "Platform Settings",
-                    subTitle: "The following platform specific configurations are needed when enabling client-attestation or trusted app related features",
+                    subTitle: "The following platform specific configurations are needed when enabling client-attestation or trusted app related features.",
                     fields: {
                         android: {
                             heading: "Android",
@@ -1174,7 +1173,7 @@ export const applications: ApplicationsNS = {
                                     }
                                 },
                                 keyHashes: {
-                                    hint: "The SHA256 fingerprints related to the signing certificate of your application",
+                                    hint: "The SHA256 fingerprints related to the signing certificate of your application.",
                                     label: "Key Hashes",
                                     placeholder: "D4:B9:A3",
                                     validations: {
