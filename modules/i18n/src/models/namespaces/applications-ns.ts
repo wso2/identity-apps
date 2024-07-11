@@ -950,7 +950,6 @@ export interface ApplicationsNS {
                     fields: {
                         enableFIDOTrustedApps: {
                             hint: string;
-                            backLink: string;
                             label: string;
                         };
                     };

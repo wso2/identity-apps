@@ -1154,6 +1154,7 @@
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,
         "isSignatureValidationCertificateAliasEnabled": false,
+        "isTrustedAppConsentRequired": false,
         "isXacmlConnectorEnabled": false,
         "legacyMode": {
             "apiResourcesV1": false,
