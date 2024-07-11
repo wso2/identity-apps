@@ -1,5 +1,12 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.20.55
+
+### Patch Changes
+
+- Updated dependencies [[`82bbbf2303853076342ef80ef7d987bed16df01f`](https://github.com/wso2/identity-apps/commit/82bbbf2303853076342ef80ef7d987bed16df01f)]:
+  - @wso2is/admin.core.v1@2.21.25
+
 ## 2.20.54
 
 ### Patch Changes
