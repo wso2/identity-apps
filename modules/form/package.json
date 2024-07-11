@@ -30,9 +30,9 @@
         "typecheck": "pnpm compile"
     },
     "dependencies": {
-        "@wso2is/core": "^2.0.51",
-        "@wso2is/react-components": "^2.2.12",
-        "@wso2is/validation": "^2.0.6",
+        "@wso2is/core": "workspace:*",
+        "@wso2is/react-components": "workspace:*",
+        "@wso2is/validation": "workspace:*",
         "final-form": "^4.20.2",
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",
