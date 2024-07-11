@@ -101,6 +101,11 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         return state?.config?.ui?.isMarketingConsentBannerEnabled;
     });
 
+    const __experimental__platformIdP: {
+        enabled: boolean;
+        homeRealmId: string;
+    } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
     const [ announcement, setAnnouncement ] = useState<
         AnnouncementBannerInterface
     >();
@@ -188,7 +193,9 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
             RouteUtils.gracefullyHandleRouting(
                 filteredRoutes,
                 AppConstants.getAdminViewBasePath(),
-                location.pathname
+                location.pathname,
+                __experimental__platformIdP.enabled &&
+                new URLSearchParams(window.location.search).get("fidp") !== __experimental__platformIdP.homeRealmId
             );
             initLoad.current = false;
         }
