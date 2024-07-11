@@ -60,7 +60,6 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
     const isReadOnly: boolean = !useRequiredScopes(
         featureConfig?.server?.scopes?.update,
     );
-    console.log("readonly" + isReadOnly);
 
     const dispatch: Dispatch<any> = useDispatch();
 
@@ -225,7 +224,8 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                                                                 readOnly={ isReadOnly }
                                                                 width={ 16 }
                                                                 data-componentid={
-                                                                    `${componentId}-enable-email-notification` }
+                                                                    `${componentId}-enable-email-notification` 
+                                                                }
                                                                 toggle
                                                                 listen={ (value: boolean) => {
                                                                     handleSubmit(value);

@@ -21,7 +21,6 @@ import { render, screen } from "../../test-configs/utils";
 import { ImpersonationConfigurationPage }  from "../pages/impersonation-configuration";
 import "@testing-library/jest-dom";
 
-
 describe.skip("Impersonation Configuration", () => {
 
     jest.mock("@wso2is/admin.impersonation.v1/api/impersonation-configuration", () => ({
@@ -38,7 +37,8 @@ describe.skip("Impersonation Configuration", () => {
         const { container } = render(
             <ImpersonationConfigurationPage
                 data-componentid="impersonation-configuration-page"
-            />);
+            />
+        );
 
         expect(container).toMatchSnapshot();
     });
@@ -47,9 +47,10 @@ describe.skip("Impersonation Configuration", () => {
         render(
             <ImpersonationConfigurationPage
                 data-componentid="impersonation-configuration-page"
-            />);
+            />
+        );
 
-        const impersonationConfiguration: Element = screen.getByTestId("impersonation-configuration-page-form-layout");
+        const impersonationConfiguration: HTMLElement = screen.getByTestId("impersonation-configuration-page-form-layout");
 
         expect(impersonationConfiguration).toBeInTheDocument();
     });

@@ -1767,9 +1767,8 @@ export const applications: ApplicationsNS = {
                 subjectToken: {
                     fields: {
                         enable: {
-                            hint: "Select to enable the subject token response type for " +
-                            "this application to be used in the impersonation flow.",
-                            label: "Enable",
+                            hint: "If enabled, this application can be used in the user impersonation flows.",
+                            label: "Enable subject token response type",
                             validations: {
                                 empty: "This is a required field."
                             }

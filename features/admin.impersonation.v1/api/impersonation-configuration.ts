@@ -29,7 +29,8 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ImpersonationConfigConstants } from "../constants/impersonation-configuration";
 import {
     ImpersonationConfigAPIResponseInterface,
-    ImpersonationConfigPatchInterface } from "../models/impersonation-configuration";
+    ImpersonationConfigPatchInterface 
+} from "../models/impersonation-configuration";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
@@ -98,7 +99,12 @@ export const updateImpersonationConfigurations = (data: ImpersonationConfigPatch
             const errorMessage: string = ImpersonationConfigConstants.ErrorMessages
                 .IMPERSONATION_CONFIG_UPDATE_ERROR_CODE.getErrorMessage();
 
-            throw new IdentityAppsApiException(errorMessage, error.stack, error.response?.data?.code, error.request,
-                error.response, error.config);
+            throw new IdentityAppsApiException(
+                errorMessage, 
+                error.stack, 
+                error.response?.data?.code, 
+                error.request,
+                error.response, 
+                error.config);
         });
 };
