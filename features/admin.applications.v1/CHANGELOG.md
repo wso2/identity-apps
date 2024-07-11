@@ -1,5 +1,28 @@
 # @wso2is/admin.applications.v1
 
+## 2.21.24
+
+### Patch Changes
+
+- Updated dependencies [[`1820d54f7dd5fa826c4747964fd2c1af9b7c3d8c`](https://github.com/wso2/identity-apps/commit/1820d54f7dd5fa826c4747964fd2c1af9b7c3d8c)]:
+  - @wso2is/admin.core.v1@2.21.24
+  - @wso2is/admin.api-resources.v2@2.20.54
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.54
+  - @wso2is/admin.branding.v1@2.20.54
+  - @wso2is/admin.claims.v1@2.20.54
+  - @wso2is/admin.connections.v1@2.20.54
+  - @wso2is/admin.console-settings.v1@2.20.54
+  - @wso2is/admin.extensions.v1@2.21.24
+  - @wso2is/admin.identity-providers.v1@2.20.54
+  - @wso2is/admin.login-flow.ai.v1@2.20.54
+  - @wso2is/admin.oidc-scopes.v1@2.20.54
+  - @wso2is/admin.organizations.v1@2.20.54
+  - @wso2is/admin.roles.v2@2.20.54
+  - @wso2is/admin.secrets.v1@2.20.54
+  - @wso2is/admin.server-configurations.v1@2.20.54
+  - @wso2is/admin.userstores.v1@2.20.54
+  - @wso2is/admin.wsfed-configuration.v1@2.20.54
+
 ## 2.21.23
 
 ### Patch Changes
