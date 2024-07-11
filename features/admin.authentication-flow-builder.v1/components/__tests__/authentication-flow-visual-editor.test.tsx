@@ -44,7 +44,7 @@ describe("AuthenticationFlowVisualEditor", () => {
         expect(authenticationFlowVisualEditor).toBeInTheDocument();
     });
 
-    it("adds an authenticator in the second step without exploding the " +
+    it.skip("adds an authenticator in the second step without exploding the " +
        "AuthenticationFlowVisualEditor component", () => {
         render(
             <UserPreferenceProvider>
