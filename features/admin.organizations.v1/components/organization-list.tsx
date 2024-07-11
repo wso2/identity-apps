@@ -164,6 +164,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const hasOrganizationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.organizations?.scopes?.update);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
 
