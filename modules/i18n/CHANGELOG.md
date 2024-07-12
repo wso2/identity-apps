@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.0
+
+### Minor Changes
+
+- [#6543](https://github.com/wso2/identity-apps/pull/6543) [`a7d0c020b04ba382733280407fc202910f4fc8f4`](https://github.com/wso2/identity-apps/commit/a7d0c020b04ba382733280407fc202910f4fc8f4) Thanks [@Thumimku](https://github.com/Thumimku)! - Add Impersonation support
+
 ## 2.4.8
 
 ### Patch Changes
