@@ -1,5 +1,19 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.20.57
+
+### Patch Changes
+
+- Updated dependencies [[`f1d9b7ccbe14f1a42b6d3360da664acf39ba6909`](https://github.com/wso2/identity-apps/commit/f1d9b7ccbe14f1a42b6d3360da664acf39ba6909)]:
+  - @wso2is/theme@2.0.89
+  - @wso2is/admin.connections.v1@2.20.57
+  - @wso2is/admin.identity-providers.v1@2.20.57
+  - @wso2is/react-components@2.2.13
+  - @wso2is/admin.applications.v1@2.21.27
+  - @wso2is/admin.core.v1@2.21.27
+  - @wso2is/dynamic-forms@2.0.71
+  - @wso2is/form@2.0.72
+
 ## 2.20.56
 
 ### Patch Changes

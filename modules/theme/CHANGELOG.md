@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.89
+
+### Patch Changes
+
+- [#6575](https://github.com/wso2/identity-apps/pull/6575) [`f1d9b7ccbe14f1a42b6d3360da664acf39ba6909`](https://github.com/wso2/identity-apps/commit/f1d9b7ccbe14f1a42b6d3360da664acf39ba6909) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix alignment issues in powered by logo in login page footer
+
 ## 2.0.88
 
 ### Patch Changes
