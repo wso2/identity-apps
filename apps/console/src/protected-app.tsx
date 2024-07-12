@@ -151,19 +151,20 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 homeRealmId: string;
             } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
 
-            if (__experimental__platformIdP?.enabled) {
-                if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
-                    const redirectUrl: URL = new URL(
-                        window["AppUtils"].getConfig().clientOriginWithTenant.replace(
-                            window["AppUtils"].getConfig().tenant,
-                            idToken.default_tenant
-                        )
-                    );
+            if (__experimental__platformIdP?.enabled &&
+                idToken?.default_tenant &&
+                idToken.default_tenant !== "carbon.super"
+            ) {
+                const redirectUrl: URL = new URL(
+                    window["AppUtils"].getConfig().clientOriginWithTenant.replace(
+                        window["AppUtils"].getConfig().tenant,
+                        idToken.default_tenant
+                    )
+                );
 
-                    redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+                redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
 
-                    window.location.href = redirectUrl.href;
-                }
+                window.location.href = redirectUrl.href;
             }
 
             const getOrganizationName = () => {
