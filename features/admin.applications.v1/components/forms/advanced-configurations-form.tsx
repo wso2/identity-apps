@@ -127,7 +127,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     );
     const [ showFIDOConfirmationModal, setShowFIDOConfirmationModal ] = useState<boolean>(false);
     const [ showThumbprintsError, setShowThumbprinstError ] = useState(false);
-    const [ clearThumbprintsError, setClearThumbprinstError ] = useState(false);
+    const [ clearThumbprintsError, setClearThumbprintsError ] = useState(false);
     const [ thumbprints, setThumbprints ] = useState(config?.trustedAppConfiguration?.androidThumbprints?.join(","));
 
     /**
@@ -281,7 +281,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
 
                 setShowThumbprinstError(true);
             } else {
-                setClearThumbprinstError(true);
+                setClearThumbprintsError(true);
             }
         }
 
@@ -694,7 +694,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             showError={ showThumbprintsError }
                                             setShowError={ setShowThumbprinstError }
                                             clearError={ clearThumbprintsError }
-                                            setClearError={ setClearThumbprinstError }
+                                            setClearError={ setClearThumbprintsError }
                                             hint={ t("applications:forms." +
                                                 "advancedConfig.sections.platformSettings.fields." +
                                                 "android.fields.keyHashes.hint") }
