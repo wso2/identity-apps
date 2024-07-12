@@ -17,12 +17,6 @@
  */
 
 .resource-create-wizard {
-    .resource-create-wizard-dynamic-fields {
-        &:not(:first-child) {
-            padding-top: 0;
-        }
-    }
-
     .installation-guide-content {
         display: flex;
         flex-direction: column;

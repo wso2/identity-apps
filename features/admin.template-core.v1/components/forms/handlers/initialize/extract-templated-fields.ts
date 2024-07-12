@@ -16,15 +16,50 @@
  * under the License.
  */
 
+import get from "lodash-es/get";
+import set from "lodash-es/set";
+
+/**
+ * Convert templated property values into regex patterns.
+ *
+ * @param template - Templated property value.
+ * @returns The regex pattern identifies the templated strings.
+ */
+const templateToRegex = (template: string): RegExp => {
+    // Escape special regex characters in the template
+    const escapedTemplate: string = template.replace(/[-\\^$*+?.,()|[\]{}]/g, "\\$&");
+
+    // Replace ${variable} with a named capturing group pattern
+    const regexString: string = escapedTemplate.replace(/\\\$\\\{([^}]+)\\\}/g, "(?<$1>.+)");
+
+    // Create and return the regular expression object
+    return new RegExp("^" + regexString + "$");
+};
+
 /**
  * Extract template strings from the current value.
  *
- * @param currentValue - Current field value.
  * @param templateValue - Value defined in the template.
  * @param formValues - Object containing initial values for the form.
+ * @param fieldName - Path of the field value within the object.
+ * @param propertyPath - Path of the templated property.
  */
-const extractTemplatedFields = (currentValue: string, templateValue: string, formValues:Record<string, any>): void => {
-    // TODO: Implement the actual logic.
+const extractTemplatedFields = (
+    templateValue: string,
+    formValues:Record<string, any>,
+    fieldName: string,
+    propertyPath: string
+): void => {
+    const currentValue: string = get(formValues, propertyPath);
+
+    if (currentValue && typeof currentValue === "string"
+        && templateValue && typeof templateValue === "string") {
+        const regex: RegExp = templateToRegex(templateValue);
+
+        const match: RegExpMatchArray = currentValue.match(regex);
+
+        set(formValues, fieldName, match?.groups?.[fieldName] ?? "");
+    }
 };
 
 export default extractTemplatedFields;

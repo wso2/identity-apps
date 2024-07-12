@@ -65,14 +65,15 @@ const useInitializeHandlers = (
         templatePayload: Record<string, any>
     ): Promise<void> => {
         for (const initializer of initializers) {
-            const { name } = initializer;
+            const { name, props } = initializer;
 
             switch (name) {
                 case CommonInitializeHandlers.EXTRACT_TEMPLATED_FIELDS:
                     extractTemplatedFields(
-                        get(values, field?.name),
-                        get(templatePayload, field?.name),
-                        values
+                        get(templatePayload, props?.propertyPath),
+                        values,
+                        field?.name,
+                        props?.propertyPath
                     );
 
                     break;

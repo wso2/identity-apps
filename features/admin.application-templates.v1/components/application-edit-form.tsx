@@ -21,6 +21,7 @@ import useGetApplicationInboundConfigs from "@wso2is/admin.applications.v1/api/u
 import {
     ApplicationInterface,
     MainApplicationInterface,
+    SAML2ServiceProviderInterface,
     SupportedAuthProtocolTypes
 } from "@wso2is/admin.applications.v1/models";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
@@ -162,11 +163,17 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
             protocolKeyName = "wsTrust";
         }
 
-        formInitialValues.inboundProtocolConfiguration = {
-            [ protocolKeyName ]: {
-                manualConfiguration: inboundProtocolConfigurations
-            }
-        };
+        if (SupportedAuthProtocolTypes.SAML === protocolKeyName) {
+            formInitialValues.inboundProtocolConfiguration = {
+                [ protocolKeyName ]: {
+                    manualConfiguration: inboundProtocolConfigurations as SAML2ServiceProviderInterface
+                }
+            };
+        } else {
+            formInitialValues.inboundProtocolConfiguration = {
+                [ protocolKeyName ]: inboundProtocolConfigurations
+            };
+        }
 
         return formInitialValues;
     }, [ inboundProtocolConfigurations, application ]);
@@ -178,30 +185,46 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
      * @param callback - Callback function to execute after form submission is complete.
      */
     const handleFormSubmission = (values: Record<string, any>, callback: () => void): void => {
+        let protocolKeyName: string = protocolType;
+
+        if (SupportedAuthProtocolTypes.WS_FEDERATION === protocolKeyName) {
+            protocolKeyName = "passiveSts";
+        } else if (SupportedAuthProtocolTypes.WS_TRUST === protocolKeyName) {
+            protocolKeyName = "wsTrust";
+        }
+
         const editPaths: string[] = tab?.form?.fields?.map((field: DynamicFieldInterface) => field?.name);
         let protocolConfigurations: Record<string, any>;
+        let applicationConfigurations: Record<string, any>;
 
-        if (values?.inboundProtocolConfiguration) {
-            if (!isEqual(values?.inboundProtocolConfiguration, inboundProtocolConfigurations)) {
-                protocolConfigurations = values?.inboundProtocolConfiguration;
+        if (values?.inboundProtocolConfiguration?.[protocolKeyName]) {
+            if (SupportedAuthProtocolTypes.SAML === protocolKeyName) {
+                if (values?.inboundProtocolConfiguration?.[protocolKeyName]?.manualConfiguration) {
+                    if (!isEqual(values?.inboundProtocolConfiguration?.[protocolKeyName]?.manualConfiguration,
+                        inboundProtocolConfigurations)) {
+                        protocolConfigurations = values?.inboundProtocolConfiguration?.[protocolKeyName];
+                    }
+                } else {
+                    protocolConfigurations = values?.inboundProtocolConfiguration?.[protocolKeyName];
+                }
+            } else {
+                if (!isEqual(values?.inboundProtocolConfiguration?.[protocolKeyName], inboundProtocolConfigurations)) {
+                    protocolConfigurations = values?.inboundProtocolConfiguration?.[protocolKeyName];
+                }
             }
             unset(values, "inboundProtocolConfiguration");
         }
 
-        const applicationConfigurations: Record<string, any> = pick(values, editPaths);
+        values.id = application?.id;
+        if (!isEqual(values, application)) {
+            editPaths.push("id");
+            applicationConfigurations = pick(values, editPaths);
+        }
 
         const updateProtocolConfigurations = () => {
-            let protocolKeyName: string = protocolType;
-
-            if (SupportedAuthProtocolTypes.WS_FEDERATION === protocolKeyName) {
-                protocolKeyName = "passiveSts";
-            } else if (SupportedAuthProtocolTypes.WS_TRUST === protocolKeyName) {
-                protocolKeyName = "wsTrust";
-            }
-
             updateAuthProtocolConfig(
                 application?.id,
-                protocolConfigurations?.[protocolKeyName],
+                protocolConfigurations,
                 protocolType
             ).then(() => {
                 mutateProtocolConfigurations();
@@ -231,7 +254,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                     message: t("applications:notifications.updateInboundProtocolConfig" +
                         ".genericError.message")
                 }));
-            });
+            }).finally(() => callback());
         };
 
         if (applicationConfigurations && Object.keys(applicationConfigurations)?.length > 0) {
@@ -248,6 +271,8 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                             level: AlertLevels.SUCCESS,
                             message: t("applications:notifications.updateApplication.success.message")
                         }));
+
+                        callback();
                     }
                 })
                 .catch((error: AxiosError) => {
@@ -269,7 +294,9 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                         message: t("applications:notifications.updateApplication.genericError" +
                             ".message")
                     }));
-                }).finally(() => callback());
+
+                    callback();
+                });
         } else if (protocolConfigurations) {
             updateProtocolConfigurations();
         }

@@ -293,8 +293,6 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
                                                                     <Grid.Row
                                                                         key={ field?.id }
                                                                         columns={ 1 }
-                                                                        className=
-                                                                            "resource-create-wizard-dynamic-fields"
                                                                     >
                                                                         <Grid.Column
                                                                             mobile={ 16 }

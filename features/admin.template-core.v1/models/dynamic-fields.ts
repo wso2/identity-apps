@@ -158,5 +158,6 @@ export enum CommonInitializeHandlers {
 export enum CommonSubmissionHandlers {
     UNIQUE_ID_GENERATOR = "uniqueIDGenerator",
     DISABLE_PROPERTY = "disableProperty",
-    DEPENDENT_PROPERTY = "dependentProperty"
+    DEPENDENT_PROPERTY = "dependentProperty",
+    TEMPLATED_PROPERTY = "templatedProperty"
 }

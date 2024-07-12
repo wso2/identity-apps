@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { ApplicationEditForm } from "@wso2is/admin.application-templates.v1/components/application-edit-form";
 import useApplicationTemplateMetadata from
     "@wso2is/admin.application-templates.v1/hooks/use-application-template-metadata";
 import {
@@ -36,7 +37,6 @@ import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/component
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { ApplicationEditForm } from "@wso2is/admin.template-core.v1/components/application-edit-form";
 import { MarkdownGuide } from "@wso2is/admin.template-core.v1/components/markdown-guide";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
@@ -998,7 +998,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                     break;
                 case ApplicationEditTabContentTypes.FORM:
-                    if (tab?.forms && Array.isArray(tab?.forms) && tab?.forms.length > 0) {
+                    if (tab?.form) {
                         filteredTabs.push({
                             componentId: tab?.id,
                             "data-tabid": tab?.id,

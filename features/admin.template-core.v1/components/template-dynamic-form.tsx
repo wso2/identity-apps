@@ -40,7 +40,6 @@ import useInitializeHandlers, { CustomInitializeFunction } from "./forms/handler
 import useSubmissionHandlers, { CustomSubmissionFunction } from "./forms/handlers/submission/use-submission-handlers";
 import useValidationHandlers, { CustomValidationsFunction } from "./forms/handlers/validation/use-validation-handlers";
 import { DynamicFieldInterface, DynamicFormInterface } from "../models/dynamic-fields";
-import "dynamic-form.scss";
 
 /**
  * Prop types of the `TemplateDynamicForm` component.
@@ -175,7 +174,6 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
 
     return (
         <EmphasizedSegment
-            className="template-dynamic-form"
             data-componentid={ `${componentId}-form` }
             padded="very"
         >
@@ -202,12 +200,14 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
                                         <Grid>
                                             { form?.fields?.map(
                                                 (field: DynamicFieldInterface) => {
+                                                    if (field?.hidden) {
+                                                        return null;
+                                                    }
+
                                                     return (
                                                         <Grid.Row
                                                             key={ field?.id }
                                                             columns={ 1 }
-                                                            className=
-                                                                "template-dynamic-form-dynamic-fields"
                                                         >
                                                             <Grid.Column
                                                                 mobile={ 16 }

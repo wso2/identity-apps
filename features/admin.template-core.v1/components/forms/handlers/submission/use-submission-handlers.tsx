@@ -18,6 +18,7 @@
 
 import get from "lodash-es/get";
 import disableProperty from "./disable-property";
+import templatedProperty from "./templated-property";
 import uniqueIDGenerator from "./unique-id-generator";
 import useDependentProperty from "./use-dependent-property";
 import {
@@ -92,6 +93,15 @@ const useSubmissionHandlers = (
                     break;
                 case CommonSubmissionHandlers.DISABLE_PROPERTY:
                     disableProperty(values, field?.name);
+
+                    break;
+                case CommonSubmissionHandlers.TEMPLATED_PROPERTY:
+                    templatedProperty(
+                        get(templatePayload, props?.propertyPath),
+                        values,
+                        field?.name,
+                        props?.propertyPath
+                    );
 
                     break;
                 default:
