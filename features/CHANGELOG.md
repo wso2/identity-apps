@@ -1,5 +1,15 @@
 # @wso2is/features
 
+## 2.21.25
+
+### Patch Changes
+
+- Updated dependencies [[`f1d9b7ccbe14f1a42b6d3360da664acf39ba6909`](https://github.com/wso2/identity-apps/commit/f1d9b7ccbe14f1a42b6d3360da664acf39ba6909)]:
+  - @wso2is/theme@2.0.89
+  - @wso2is/react-components@2.2.13
+  - @wso2is/dynamic-forms@2.0.71
+  - @wso2is/form@2.0.72
+
 ## 2.21.24
 
 ### Patch Changes
