@@ -1,5 +1,35 @@
 # @wso2is/admin.applications.v1
 
+## 2.21.29
+
+### Patch Changes
+
+- [#6581](https://github.com/wso2/identity-apps/pull/6581) [`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Improve android thumbprint error handling
+
+- Updated dependencies [[`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146)]:
+  - @wso2is/react-components@2.2.14
+  - @wso2is/i18n@2.5.1
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.59
+  - @wso2is/admin.connections.v1@2.20.59
+  - @wso2is/admin.console-settings.v1@2.20.59
+  - @wso2is/admin.core.v1@2.22.1
+  - @wso2is/admin.extensions.v1@2.21.29
+  - @wso2is/admin.identity-providers.v1@2.20.59
+  - @wso2is/admin.login-flow.ai.v1@2.20.59
+  - @wso2is/admin.oidc-scopes.v1@2.20.59
+  - @wso2is/admin.organizations.v1@2.20.59
+  - @wso2is/admin.roles.v2@2.20.59
+  - @wso2is/admin.api-resources.v2@2.20.59
+  - @wso2is/admin.authorization.v1@2.20.22
+  - @wso2is/admin.branding.v1@2.20.59
+  - @wso2is/admin.claims.v1@2.20.59
+  - @wso2is/admin.impersonation.v1@1.1.1
+  - @wso2is/admin.secrets.v1@2.20.59
+  - @wso2is/admin.server-configurations.v1@2.21.1
+  - @wso2is/admin.userstores.v1@2.20.59
+  - @wso2is/admin.wsfed-configuration.v1@2.20.59
+  - @wso2is/form@2.0.73
+
 ## 2.21.28
 
 ### Patch Changes
