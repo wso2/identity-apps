@@ -268,14 +268,8 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
                                         mutators={ {
                                             setFormAttribute: (
                                                 [ fieldName, fieldVal ]: [ fieldName: string, fieldVal: any ],
-                                                state: MutableState<
-                                                    Record<string, any>,
-                                                    Record<string, any>
-                                                >,
-                                                { changeValue }: Tools<
-                                                    Record<string, any>,
-                                                    Record<string, any>
-                                                >
+                                                state: MutableState<Record<string, any>, Record<string, any>>,
+                                                { changeValue }: Tools<Record<string, any>, Record<string, any>>
                                             ) => {
                                                 changeValue(state, fieldName, () => fieldVal);
                                             }

@@ -1,0 +1,262 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
+import { AppState } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
+import {
+    ContentLoader,
+    EmphasizedSegment,
+    PrimaryButton
+} from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
+import get from "lodash-es/get";
+import has from "lodash-es/has";
+import pick from "lodash-es/pick";
+import set from "lodash-es/set";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Grid } from "semantic-ui-react";
+import { FormDynamicField } from "./form-dynamic-field";
+import useInitializeHandlers, { CustomInitializeFunction } from "./forms/handlers/initialize/use-initialize-handlers";
+import useSubmissionHandlers, { CustomSubmissionFunction } from "./forms/handlers/submission/use-submission-handlers";
+import useValidationHandlers, { CustomValidationsFunction } from "./forms/handlers/validation/use-validation-handlers";
+import { DynamicFieldInterface, DynamicFormInterface } from "../models/dynamic-fields";
+import "dynamic-form.scss";
+
+/**
+ * Prop types of the `TemplateDynamicForm` component.
+ */
+export interface TemplateDynamicFormPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Custom validation functions for form validations.
+     */
+    customValidations?: CustomValidationsFunction;
+    /**
+     * Custom initialize functions.
+     */
+    customInitializers?: CustomInitializeFunction;
+    /**
+     * Custom submission handler functions.
+     */
+    customSubmissionHandlers?: CustomSubmissionFunction;
+    /**
+     * Definition of the dynamic form.
+     */
+    form: DynamicFormInterface;
+    /**
+     * Initial values for the form fields.
+     */
+    initialFormValues: Record<string, any>;
+    /**
+     * Template payload values.
+     */
+    templatePayload: Record<string, any>;
+    /**
+     * i18n key of the form main button text.
+     */
+    buttonText: string;
+    /**
+     * Function to handle form submission.
+     */
+    onFormSubmit: (values: Record<string, any>, callback: () => void) => void;
+    /**
+     * Loading status for the wizard.
+     */
+    isLoading: boolean;
+    /**
+     * Prop to indicate whether the form is read-only.
+     */
+    readOnly: boolean;
+}
+
+/**
+ * Template Dynamic form component.
+ *
+ * @param Props - Props to be injected into the component.
+ */
+export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInterface> = (
+    props: TemplateDynamicFormPropsInterface
+): ReactElement => {
+    const {
+        customInitializers,
+        customSubmissionHandlers,
+        customValidations,
+        form,
+        initialFormValues,
+        templatePayload,
+        buttonText,
+        onFormSubmit,
+        isLoading,
+        readOnly,
+        ["data-componentid"]: componentId
+    } = props;
+
+    const { validate } = useValidationHandlers(customValidations);
+    const { initialize } = useInitializeHandlers(customInitializers);
+    const { submission } = useSubmissionHandlers(customSubmissionHandlers);
+
+    const { UIConfig } = useUIConfig();
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
+    const [ formInitialValues, setFormInitialValues ] = useState<{ [key: string]: any }>(null);
+
+    /**
+     * Moderate the initially provided data for the form.
+     */
+    useEffect(() => {
+        const prepareInitialValues = async (): Promise<void> => {
+            let initialValues: Record<string, any>;
+
+            if (form?.submitDefinedFieldsOnly) {
+                const paths: string[] = form?.fields?.map((field: DynamicFieldInterface) => field?.name);
+
+                initialValues = pick(initialFormValues, paths);
+            } else {
+                initialValues = cloneDeep(initialFormValues);
+            }
+
+            await initialize(initialValues, form?.fields, templatePayload);
+
+            setFormInitialValues(initialValues);
+        };
+
+        if (!initialFormValues || !form || !templatePayload) {
+            return;
+        }
+
+        prepareInitialValues();
+    }, [ initialFormValues, form, templatePayload ]);
+
+    /**
+     * Callback function triggered when clicking the form submit button.
+     *
+     * @param values - Submission values from the form fields.
+     */
+    const onSubmit = async (values: ApplicationInterface): Promise<void> => {
+        setIsSubmitting(true);
+        const formValues: ApplicationInterface = cloneDeep(values);
+
+        /**
+         * Make sure that cleared text fields are set to an empty string.
+         */
+        form?.fields?.forEach((field: DynamicFieldInterface) => {
+            if (!has(formValues, field?.name)) {
+                const initialValue: any = get(formInitialValues, field?.name);
+
+                if (initialValue && typeof initialValue === "string") {
+                    set(formValues, field?.name, "");
+                }
+            }
+        });
+
+        await submission(formValues, form?.fields, templatePayload);
+
+        onFormSubmit(formValues, () => setIsSubmitting(false));
+    };
+
+    return (
+        <EmphasizedSegment
+            className="template-dynamic-form"
+            data-componentid={ `${componentId}-form` }
+            padded="very"
+        >
+            {
+                !formInitialValues || isLoading
+                    ? <ContentLoader inline="centered" active/>
+                    : (
+                        <FinalForm
+                            initialValues={ formInitialValues }
+                            onSubmit={ onSubmit }
+                            mutators={ {
+                                setFormAttribute: (
+                                    [ fieldName, fieldVal ]: [ fieldName: string, fieldVal: any ],
+                                    state: MutableState<Record<string, any>, Record<string, any>>,
+                                    { changeValue }: Tools<Record<string, any>, Record<string, any>>
+                                ) => {
+                                    changeValue(state, fieldName, () => fieldVal);
+                                }
+                            } }
+                            validate={ (formValues: Record<string, any>) => validate(formValues, form?.fields) }
+                            render={ ({ form: formState, handleSubmit }: FormRenderProps) => {
+                                return (
+                                    <form id={ `${componentId}-form` } onSubmit={ handleSubmit }>
+                                        <Grid>
+                                            { form?.fields?.map(
+                                                (field: DynamicFieldInterface) => {
+                                                    return (
+                                                        <Grid.Row
+                                                            key={ field?.id }
+                                                            columns={ 1 }
+                                                            className=
+                                                                "template-dynamic-form-dynamic-fields"
+                                                        >
+                                                            <Grid.Column
+                                                                mobile={ 16 }
+                                                                tablet={ 14 }
+                                                                computer={ 12 }
+                                                            >
+                                                                <FormDynamicField
+                                                                    field={ field }
+                                                                    form={ formState }
+                                                                    readOnly={ readOnly
+                                                                        || !hasRequiredScopes(
+                                                                            UIConfig?.features?.applications,
+                                                                            UIConfig?.features
+                                                                                ?.applications?.scopes?.update,
+                                                                            allowedScopes
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Grid.Column>
+                                                        </Grid.Row>
+                                                    );
+                                                })
+                                            }
+                                            <Grid.Row column={ 1 }>
+                                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                                    <PrimaryButton
+                                                        type="submit"
+                                                        data-componentid={ `${componentId}-form-update-button` }
+                                                        loading={ isSubmitting }
+                                                        disabled={ isSubmitting }
+                                                    >
+                                                        { buttonText }
+                                                    </PrimaryButton>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    </form>
+                                );
+                            } }
+                        />
+                    )
+            }
+        </EmphasizedSegment>
+    );
+};
+
+/**
+ * Default props for the template dynamic form component.
+ */
+TemplateDynamicForm.defaultProps = {
+    "data-componentid": "template-dynamic-form"
+};

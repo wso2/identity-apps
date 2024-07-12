@@ -103,11 +103,7 @@ export interface ApplicationEditTabMetadataInterface {
     /**
      * Dynamic input fields which should be rendered in the current tab.
      */
-    forms?: DynamicFormInterface[];
-    /**
-     * Flag to determine if a single update button is sufficient when multiple forms are present.
-     */
-    singleForm?: boolean;
+    form?: DynamicFormInterface;
     /**
      * Guide content for application editing section.
      */
