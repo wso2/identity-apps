@@ -100,11 +100,11 @@ export const updateImpersonationConfigurations = (data: ImpersonationConfigPatch
                 .IMPERSONATION_CONFIG_UPDATE_ERROR_CODE.getErrorMessage();
 
             throw new IdentityAppsApiException(
-                errorMessage, 
-                error.stack, 
-                error.response?.data?.code, 
+                errorMessage,
+                error.stack,
+                error.response?.data?.code,
                 error.request,
-                error.response, 
+                error.response,
                 error.config);
         });
 };

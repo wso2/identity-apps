@@ -23,7 +23,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -58,7 +58,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const isReadOnly: boolean = !useRequiredScopes(
-        featureConfig?.server?.scopes?.update,
+        featureConfig?.server?.scopes?.update
     );
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -91,6 +91,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                     "getConfiguration.error.message")
                 })
             );
+
             return;
         }
 
@@ -114,6 +115,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                 value: value
             }
         ];
+
         setIsSubmitting(true);
         updateImpersonationConfigurations(data).then(() => {
             dispatch(
@@ -137,7 +139,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                 })
             );
         }).finally(() => {
-            setIsSubmitting(false)
+            setIsSubmitting(false);
             mutateImpersonationConfig();
         });
     };
