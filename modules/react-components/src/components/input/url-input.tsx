@@ -43,7 +43,7 @@ export interface URLInputPropsInterface extends IdentifiableComponentInterface, 
     showError?: boolean;
     setShowError?: any;
     clearError?: boolean;
-    setClearError?: any;
+    setClearError?: (clearError: boolean) => void;
     required?: boolean;
     disabled?: boolean;
     hideComponent?: boolean;
