@@ -24,20 +24,21 @@ import AdaptiveAuthTemplateChangeConfirmationModal, {
     AdaptiveAuthTemplateChangeConfirmationModalPropsInterface
 } from "../adaptive-auth-template-change-confimation-modal";
 
-describe.skip("AdaptiveAuthTemplateChangeConfirmationModal", () => {
-    /* eslint-disable max-len, sort-keys */
-    const defaultProps: AdaptiveAuthTemplateChangeConfirmationModalPropsInterface = {
+describe("AdaptiveAuthTemplateChangeConfirmationModal", () => {
+
+    const defaultProps: AdaptiveAuthTemplateChangeConfirmationModalPropsInterface & {
+        open: boolean
+    } = {
+        onELKConfigureClick: jest.fn(),
+        onTemplateChange: jest.fn(),
+        open: true,
         selectedTemplate: {
-            summary:
-                "Allows to log in to application if the user's age is over the configured value. User's age is calculated using the user's date of birth attribute.",
-            preRequisites: [
-                "Change the parameters at the top of the script as needed to match the requirements.",
-                "Modify the authentication option(s) from defaults as required.",
-                "Birth Date of the user trying to login needs to be updated using the Asgardeo myaccount portal."
-            ],
+            authenticationSteps: 1,
+            category: "access_control",
             code: [
                 "// This script will only allow login to application if the user's age is over configured value",
-                "// The user will be redirected to an error page if the date of birth is not present or user is below configured value",
+                "// The user will be redirected to an error page if the date of birth is not " +
+                "present or user is below configured value",
                 "",
                 "var ageLimit = 18;",
                 "",
@@ -75,7 +76,8 @@ describe.skip("AdaptiveAuthTemplateChangeConfirmationModal", () => {
                 " }",
                 " }",
                 " if (underAge === true) {",
-                " Log.debug('User ' + context.currentKnownSubject.uniqueId + ' is under aged. Hence denied to login.');",
+                " Log.debug('User ' + context.currentKnownSubject.uniqueId + ' is under aged." +
+                " Hence denied to login.');",
                 " sendError(errorPage, errorPageParameters);",
                 " }",
                 " }",
@@ -92,33 +94,32 @@ describe.skip("AdaptiveAuthTemplateChangeConfirmationModal", () => {
                 " return age;",
                 "};"
             ],
-            defaultStepsDescription: {
-                "Step 1": "Username & Password"
-            },
-            parametersDescription: {
-                ageLimit: "Minimum age required for the user to log in to the application",
-                errorPage: "Error page to redirect the user if the age limit is below ageLimit",
-                errorPageParameters: "Parameters to be passed to the error page"
-            },
-            name: "User-Age-Based",
             defaultAuthenticators: {
                 "1": {
                     federated: [],
                     local: [ "BasicAuthenticator" ]
                 }
             },
-            category: "access_control",
-            title: "Control access based on user age",
-            authenticationSteps: 1,
-            helpLink: ""
-        },
-        onTemplateChange: jest.fn(),
-        onELKConfigureClick: jest.fn()
-        // Need to pass `open` prop to keep the modal open during test, but for some reason
-        // TypeScript doesn't allow adding this prop here.
-        // open: true
+            defaultStepsDescription: {
+                "Step 1": "Username & Password"
+            },
+            helpLink: "",
+            name: "User-Age-Based",
+            parametersDescription: {
+                ageLimit: "Minimum age required for the user to log in to the application",
+                errorPage: "Error page to redirect the user if the age limit is below ageLimit",
+                errorPageParameters: "Parameters to be passed to the error page"
+            },
+            preRequisites: [
+                "Change the parameters at the top of the script as needed to match the requirements.",
+                "Modify the authentication option(s) from defaults as required.",
+                "Birth Date of the user trying to login needs to be updated using the Asgardeo myaccount portal."
+            ],
+            summary: "Allows to log in to application if the user's age is over the configured " +
+                "value. User's age is calculated using the user's date of birth attribute.",
+            title: "Control access based on user age"
+        }
     };
-    /* eslint-enable max-len */
 
     it("renders the AdaptiveAuthTemplateChangeConfirmationModal component", () => {
         render(<AdaptiveAuthTemplateChangeConfirmationModal { ...defaultProps } />, { allowedScopes: fullPermissions });

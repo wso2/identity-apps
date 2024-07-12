@@ -490,5 +490,4 @@ interface CustomWindow extends Window {
     getOrganizationType: function () {
         return "FIRST_LEVEL_ORGANIZATION";
     }
-    /* eslint-disable sort-keys, max-len */
 };

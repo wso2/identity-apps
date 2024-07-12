@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AddAuthenticatorModal,
     AddAuthenticatorModalPropsInterface
@@ -23,7 +24,6 @@ import {
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModalPropsInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -49,18 +49,18 @@ const AuthenticationFlowOptionAddModal: FunctionComponent<AuthenticationFlowOpti
 ): ReactElement => {
     const { open, onClose, ["data-componentid"]: componentId, currentStep, onIDPCreateWizardTrigger, ...rest } = props;
 
-    const { authenticators, authenticationSequence, addSignInOption } = useAuthenticationFlow();
-
-    const { t } = useTranslation();
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
+    const { authenticators, authenticationSequence, addSignInOption } = useAuthenticationFlow();
+    const hasIdentityProviderCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.identityProviders?.scopes?.create
+    );
+    const { t } = useTranslation();
 
     return (
         <AddAuthenticatorModal
             authenticationSteps={ authenticationSequence?.steps }
-            allowSocialLoginAddition={ hasRequiredScopes(featureConfig?.identityProviders,
-                featureConfig?.identityProviders?.scopes?.create, allowedScopes) }
+            allowSocialLoginAddition={ hasIdentityProviderCreatePermissions }
             currentStep={ currentStep }
             open={ open }
             onModalSubmit={ (authenticators: GenericAuthenticatorInterface[]) => {

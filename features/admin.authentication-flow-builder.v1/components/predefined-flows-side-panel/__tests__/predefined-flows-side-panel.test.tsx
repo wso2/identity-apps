@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import DeploymentConfigProvider from "@wso2is/admin.core.v1/providers/deployment-config-provider";
 import ResourceEndpointsProvider from "@wso2is/admin.core.v1/providers/resource-enpoints-provider";
+import UserPreferencesProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
 import { render, screen } from "../../../../test-configs/utils";
+import AuthenticationFlowProvider from "../../../providers/authentication-flow-provider";
 import PredefinedFlowsSidePanel, {
     PredefinedFlowsSidePanelPropsInterface
 } from "../predefined-flows-side-panel";
@@ -35,7 +38,25 @@ describe.skip("PredefinedFlowsSidePanel", () => {
     it("renders the PredefinedFlowsSidePanel component", () => {
         render(
             <ResourceEndpointsProvider>
-                <PredefinedFlowsSidePanel { ...defaultProps } />
+                <DeploymentConfigProvider>
+                    <UserPreferencesProvider>
+                        <AuthenticationFlowProvider
+                            application={ {
+                                name: "Sample App"
+                            } }
+                            isSystemApplication={ false }
+                            authenticators={ [] }
+                            hiddenAuthenticators={ [] }
+                            onAuthenticatorsRefetch={ jest.fn() }
+                            onUpdate={ jest.fn() }
+                            isLoading={ false }
+                            readOnly={ false }
+                            authenticationSequence={ {} }
+                        >
+                            <PredefinedFlowsSidePanel { ...defaultProps } />
+                        </AuthenticationFlowProvider>
+                    </UserPreferencesProvider>
+                </DeploymentConfigProvider>
             </ResourceEndpointsProvider>
             , { allowedScopes: fullPermissions });
 
