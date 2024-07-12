@@ -1171,11 +1171,13 @@ export interface Extensions {
                 header: string;
                 revertBranding: {
                     actionTitle: string;
+                    disableHint: string;
                     header: string;
                     subheader: string;
                 };
                 unpublishBranding: {
                     actionTitle: string;
+                    disableHint: string;
                     header: string;
                     subheader: string;
                 };
@@ -1747,7 +1749,15 @@ export interface Extensions {
                 };
             };
             pageHeader: {
+                application: string;
+                applicationBrandingtitle: string;
+                applicationBrandingDescription: string;
+                applicationListWarning: string;
+                backButtonText: string;
                 description: string;
+                organization: string;
+                organizationBrandingtitle: string;
+                selectApplication: string;
                 title: string;
             };
             pageResolution: {
@@ -2491,6 +2501,20 @@ export interface Extensions {
                     title: string;
                 };
                 emptyResponse: {
+                    subtitle: {
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
+                startTimeGreaterThanCurrentError: {
+                    subtitle: {
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
+                endTimeGreaterThanStartTimeError: {
                     subtitle: {
                         0: string;
                         1: string;
@@ -3399,9 +3423,18 @@ export interface Extensions {
             }
         }
         invite: {
+            assignAdminUser: {
+                confirmationModal: {
+                    assertionHint: string;
+                    header: string;
+                    message: string;
+                };
+            };
             notifications: {
                 sendInvite: {
+                    inviteAlreadyExistsError: NotificationItem;
                     limitReachError: NotificationItem;
+                    userAlreadyExistsError: NotificationItem;
                 };
             };
         };

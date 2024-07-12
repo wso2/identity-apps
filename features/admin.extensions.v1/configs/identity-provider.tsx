@@ -17,66 +17,20 @@
  */
 
 import { ConnectionManagementConstants, ConnectionTabTypes } from "@wso2is/admin.connections.v1";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
-import {
-    AuthenticatorLabels,
-    IdentityProviderTabTypes
-} from "@wso2is/admin.identity-providers.v1/models";
-import { I18n } from "@wso2is/i18n";
-import { ResourceTabPaneInterface } from "@wso2is/react-components";
-import React, { ElementType, ReactElement, lazy } from "react";
-import { IdentityProviderConfig } from "./models";
 import {
     SmsOTPAuthenticator
-} from "../components/authenticators/sms-otp/sms-otp-authenticator";
+} from "@wso2is/admin.connections.v1/components/authenticators/sms-otp/sms-otp-authenticator";
+import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
+import { IdentityProviderTabTypes } from "@wso2is/admin.identity-providers.v1/models";
+import { I18n } from "@wso2is/i18n";
+import { ResourceTabPaneInterface } from "@wso2is/react-components";
+import React, { ElementType, ReactElement } from "react";
+import { IdentityProviderConfig } from "./models";
 import QuickStartTab from "../components/component-extensions/application/quick-start-tab";
 import { SIWEAuthenticatorForm } from "../identity-provider-templates/templates/swe/swe-authenticator-form";
 import SIWEIdPTemplate from "../identity-provider-templates/templates/swe/swe.json";
 
 export const identityProviderConfig: IdentityProviderConfig = {
-    // TODO: Refactor authenticators out of IdentityProviderConfigs to AuthenticatorConfig
-    authenticators: {
-        [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/email-otp/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: false
-        },
-        [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/sms-otp/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: false
-        },
-        [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/totp/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: true
-        },
-        [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/fido/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: false
-        },
-        [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/magic-link/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: true
-        }
-    },
     editIdentityProvider: {
         enableFIDOTrustedAppsConfiguration: false,
         getOverriddenAuthenticatorForm: (
@@ -237,14 +191,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         isAssertionEncryptionEnabled: true,
         responseAuthenticationContextClassEnabled: true,
         saml2WebSSOUserIdLocationEnabled: true
-    },
-    fidoTags: [
-        AuthenticatorLabels.PASSWORDLESS,
-        AuthenticatorLabels.PASSKEY
-    ],
-    filterFidoTags: (tags: string[]): string[] => {
-        return tags.filter((tag: string) =>
-            tag === AuthenticatorLabels.PASSWORDLESS || tag === AuthenticatorLabels.PASSKEY);
     },
     jitProvisioningSettings: {
         enableAssociateLocalUserField: {

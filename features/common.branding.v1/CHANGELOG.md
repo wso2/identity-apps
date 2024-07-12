@@ -1,5 +1,111 @@
 # @wso2is/common.branding.v1
 
+## 2.20.59
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.22.1
+  - @wso2is/admin.organizations.v1@2.20.59
+
+## 2.20.58
+
+### Patch Changes
+
+- Updated dependencies [[`a7d0c020b04ba382733280407fc202910f4fc8f4`](https://github.com/wso2/identity-apps/commit/a7d0c020b04ba382733280407fc202910f4fc8f4)]:
+  - @wso2is/admin.core.v1@2.22.0
+  - @wso2is/admin.organizations.v1@2.20.58
+
+## 2.20.57
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.20.57
+  - @wso2is/admin.core.v1@2.21.27
+
+## 2.20.56
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.26
+  - @wso2is/admin.organizations.v1@2.20.56
+
+## 2.20.55
+
+### Patch Changes
+
+- Updated dependencies [[`82bbbf2303853076342ef80ef7d987bed16df01f`](https://github.com/wso2/identity-apps/commit/82bbbf2303853076342ef80ef7d987bed16df01f)]:
+  - @wso2is/admin.core.v1@2.21.25
+  - @wso2is/admin.organizations.v1@2.20.55
+
+## 2.20.54
+
+### Patch Changes
+
+- Updated dependencies [[`1820d54f7dd5fa826c4747964fd2c1af9b7c3d8c`](https://github.com/wso2/identity-apps/commit/1820d54f7dd5fa826c4747964fd2c1af9b7c3d8c)]:
+  - @wso2is/admin.core.v1@2.21.24
+  - @wso2is/admin.organizations.v1@2.20.54
+
+## 2.20.53
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.23
+  - @wso2is/admin.organizations.v1@2.20.53
+
+## 2.20.52
+
+### Patch Changes
+
+- [#6409](https://github.com/wso2/identity-apps/pull/6409) [`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add app-wise branding feature UI
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.22
+  - @wso2is/admin.organizations.v1@2.20.52
+
+## 2.20.51
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.21
+  - @wso2is/admin.organizations.v1@2.20.51
+
+## 2.20.50
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.20
+  - @wso2is/admin.organizations.v1@2.20.50
+
+## 2.20.49
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.19
+  - @wso2is/admin.organizations.v1@2.20.49
+
+## 2.20.48
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.18
+  - @wso2is/admin.organizations.v1@2.20.48
+
+## 2.20.47
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.17
+  - @wso2is/admin.organizations.v1@2.20.47
+
 ## 2.20.46
 
 ### Patch Changes

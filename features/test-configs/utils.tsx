@@ -23,6 +23,7 @@ import React, { PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { mockStore } from "./__mocks__/redux/redux-store";
 import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
+import UIConfigProvider from "../admin.core.v1/providers/ui-config-provider";
 // import { AuthenticateUtils } from "../src/features/authentication/utils/authenticate-utils";
 // import { PreLoader } from "../src/features/core/components/pre-loader/pre-loader";
 
@@ -66,7 +67,9 @@ const render = (
                     features={ featureConfig }
                     organizationType="FIRST_LEVEL_ORGANIZATION"
                 >
-                    { children }
+                    <UIConfigProvider>
+                        { children }
+                    </UIConfigProvider>
                 </AccessControlProvider>
             </Provider>
             // </AuthProvider>
@@ -78,5 +81,6 @@ const render = (
 
 // re-export everything
 export * from "@testing-library/react";
+
 // override render method
 export { render };

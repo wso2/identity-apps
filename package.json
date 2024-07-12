@@ -13,10 +13,10 @@
     "license": "Apache-2.0",
     "repository": "https://github.com/wso2/identity-apps.git",
     "scripts": {
-        "build": "pnpm nx run-many --target=build --all --exclude=tests,classes",
+        "build": "pnpm nx run-many --target=build --all",
         "build:apps": "pnpm nx run-many --target=build --projects=console,myaccount",
         "build:modules": "pnpm nx run-many --target=build --projects=access-control,dynamic-forms,core,forms,form,i18n,react-components,theme,validation",
-        "clean": "pnpm nx run-many --target=clean --all --parallel=false --exclude=tests,classes && pnpm clean:root",
+        "clean": "pnpm nx run-many --target=clean --all --parallel=false && pnpm clean:root",
         "clean:root": "pnpm clean:root:cache && pnpm clean:root:lock-files && pnpm clean:root:maven-folders & pnpm clean:root:node-modules",
         "clean:root:cache": "pnpm rimraf npm",
         "clean:root:lock-files": "pnpm rimraf yarn.lock",
@@ -30,14 +30,14 @@
         "version:packages": "changeset version && pnpm install --lockfile-only",
         "test": "pnpm run test:unit",
         "test:watch": "pnpm run test -- --watch",
-        "test:unit": "pnpm nx run-many --target=test --all --exclude=form,forms,tests,classes",
+        "test:unit": "pnpm nx run-many --target=test --all --exclude=form,forms",
         "test:unit:coverage": "pnpm run test:unit --coverage --collect-coverage",
         "test:unit:coverage:aggregate": "node scripts/aggregate-unit-test-coverage.js",
         "test:unit:coverage:aggregated": "pnpm run test:unit:coverage && pnpm run test:unit:coverage:aggregate",
         "update-version": "node scripts/update-version.js",
-        "lint": "pnpm nx run-many --target=lint --all --parallel --exclude=tests,classes",
-        "lint:autofix": "pnpm nx run-many --target=lint:autofix --all --parallel --exclude=tests,classes",
-        "typecheck": "pnpm nx run-many --target=typecheck --all --parallel --exclude=tests,classes"
+        "lint": "pnpm nx run-many --target=lint --all --parallel",
+        "lint:autofix": "pnpm nx run-many --target=lint:autofix --all --parallel",
+        "typecheck": "pnpm nx run-many --target=typecheck --all --parallel"
     },
     "dependencies": {
         "@svgr/webpack": "^6.1.2",
@@ -87,6 +87,7 @@
         "@changesets/cli": "^2.26.1",
         "@nx/cypress": "17.0.0",
         "@nx/devkit": "17.0.0",
+        "@nx/eslint": "17.0.0",
         "@nx/eslint-plugin": "17.0.0",
         "@nx/jest": "17.0.0",
         "@nx/js": "17.0.0",
@@ -163,6 +164,7 @@
         "less-plugin-rewrite-import": "^0.1.1",
         "less-vars-to-js": "^1.3.0",
         "lodash": "^4.17.21",
+        "markdown-toc": "^1.2.0",
         "mini-css-extract-plugin": "^0.4.3",
         "nx": "17.0.0",
         "nyc": "^15.1.0",
@@ -195,8 +197,7 @@
         "webpack-dev-server": "^3.11.2",
         "webpack-merge": "^5.8.0",
         "worker-loader": "^2.0.0",
-        "write-file-webpack-plugin": "^4.5.1",
-        "@nx/eslint": "17.0.0"
+        "write-file-webpack-plugin": "^4.5.1"
     },
     "pnpm": {
         "overrides": {

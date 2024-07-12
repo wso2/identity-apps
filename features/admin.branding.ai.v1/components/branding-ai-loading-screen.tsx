@@ -27,6 +27,7 @@ import {
     useGetFacts,
     useGetStatusLabels } from "../constants/ai-branding-constants";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
+import "./branding-ai-loading-screen.scss";
 
 /**
  * AI branding loading screen component.
@@ -116,12 +117,14 @@ const BrandingAILoadingScreen: FunctionComponent = (): ReactElement => {
     };
 
     return (
-        <AILoadingScreen
-            currentLoadingState={ getCurrentStatus() }
-            currentProgress={ currentProgress }
-            fact={ facts[factIndex] }
-            handleGenerateCancel={ handleGenerateCancel }
-        />
+        <div className="ai-branding-loading-screen-container">
+            <AILoadingScreen
+                currentLoadingState={ getCurrentStatus() }
+                currentProgress={ currentProgress }
+                fact={ facts[factIndex] }
+                handleGenerateCancel={ handleGenerateCancel }
+            />
+        </div>
     );
 };
 

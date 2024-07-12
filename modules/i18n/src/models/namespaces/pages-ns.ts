@@ -62,6 +62,10 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
+    impersonation: {
+        title: string;
+        subTitle: string;
+    };
     organizations: {
         title: string;
         subTitle: string;
