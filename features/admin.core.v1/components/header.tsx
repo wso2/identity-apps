@@ -44,7 +44,6 @@ import { GenericIcon, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { ReactComponent as DiamondIcon } from "../../themes/default/assets/images/icons/diamond.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
@@ -52,6 +51,7 @@ import { ReactComponent as CommunityIcon } from "../../themes/wso2is/assets/imag
 import { ReactComponent as ContactSupportIcon } from "../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
+import { ReactComponent as DiamondIcon } from "../assets/icons/diamond.svg";
 import { AppConstants, OrganizationType } from "../constants";
 import { history } from "../helpers";
 import useGlobalVariables from "../hooks/use-global-variables";
@@ -265,7 +265,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                         className="header-upgrade-btn"
                         color="secondary"
                         variant="outlined"
-                        startIcon={<DiamondIcon />}
+                        startIcon={ <DiamondIcon /> }
                     >
                         <span className="header-upgrade-btn-text">
                             { I18n.instance.t("extensions:common.upgrade") as ReactNode }

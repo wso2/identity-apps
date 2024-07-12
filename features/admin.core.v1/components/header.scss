@@ -19,16 +19,12 @@
 // Header upgrade button styles
 // TODO: These values need to be changed to get from oxygen once the new version is released.
 
-$header-upgrade-btn-background: linear-gradient(
-    93deg,
-    rgba(224, 184, 52, 0.04) 50%,
-    rgba(181, 138, 0, 0.04) 112.88%
-);
+$header-upgrade-btn-background: linear-gradient(93deg, #ddb7380a 50%, #cba8370a 88.67%, #bd9b2c0a 112.88%);
 $header-upgrade-btn-font-weight: 700;
 $header-upgrade-btn-line-height: 20px;
 $header-upgrade-btn-border-color: #e0b834;
 $header-upgrade-btn-border: 1px solid $header-upgrade-btn-border-color;
-$header-upgrade-btn-text-color: linear-gradient(93deg, #e0b834 50%, #b58a00 112.88%);
+$header-upgrade-btn-text-color: linear-gradient(93deg, #DDB638 50%, #CBA837 88.67%, #BD9B2C 112.88%);
 $header-upgrade-btn-text-fill-color: transparent;
 
 .header-upgrade-btn {
@@ -63,7 +59,8 @@ $header-upgrade-btn-text-fill-color: transparent;
 
 .header-upgrade-btn:hover {
     background-image: $header-upgrade-btn-text-color;
-    border: 0;
+    border: 1px solid #FBCB30;
+    box-shadow: 0px 1px 5px 0px #c9a63633, 0px 4px 20px 0px #deb83bcc;
 
     .oxygen-icon {
         fill: var(--oxygen-palette-primary-contrastText);
