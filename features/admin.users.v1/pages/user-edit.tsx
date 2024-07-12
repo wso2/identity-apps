@@ -163,7 +163,7 @@ const UserEditPage = (): ReactElement => {
             });
         }
         setConnectorProperties(properties);
-    }, [ originalAccountManagementConnectorData, originalUserOnboardingConnectorData ]);
+    }, [ originalAccountManagementConnectorData, originalUserOnboardingConnectorData, otherSettingsConnectorData ]);
 
     useEffect(() => {
         setReadOnlyUserStoresLoading(true);

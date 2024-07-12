@@ -297,6 +297,10 @@ export interface AccountConfigSettingsInterface {
     accountDisable: string;
     accountLock: string;
     forcePasswordReset: string;
+    isMultipleEmailAndMobileNumberEnabled: string;
+    isEmailVerificationEnabled?: string;
+    isMobileVerificationEnabled?: string;
+    isMobileVerificationByPrivilegeUserEnabled?: string;
 }
 
 /**

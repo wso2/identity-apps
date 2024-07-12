@@ -6940,6 +6940,20 @@ export interface ConsoleNS {
                     };
                 };
                 profile: {
+                    confirmationModals: {
+                        emailAddressDeleteConfirmation: {
+                            assertionHint: string;
+                            content: string;
+                            description: string;
+                            heading: string;
+                        },
+                        mobileNumberDeleteConfirmation: {
+                            assertionHint: string;
+                            content: string;
+                            description: string;
+                            heading: string;
+                        }
+                    },
                     fields: {
                         createdDate: string;
                         generic: {
@@ -7142,6 +7156,34 @@ export interface ConsoleNS {
                         };
                         noPasswordResetOptions: {
                             error: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        verifyEmail: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                        };
+                        verifyMobile: {
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
                                 message: string;
                                 description: string;
                             };

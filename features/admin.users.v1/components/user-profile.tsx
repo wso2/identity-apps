@@ -25,7 +25,6 @@ import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
-// import Tooltip from "@oxygen-ui/react/Tooltip";
 import { CheckIcon,  ChevronDownIcon, StarIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { Show } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
@@ -63,8 +62,8 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
-    useConfirmationModalAlert,
-    Tooltip
+    Tooltip,
+    useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -191,7 +190,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ configSettings, setConfigSettings ] = useState<AccountConfigSettingsInterface>({
         accountDisable: "false",
         accountLock: "false",
-        forcePasswordReset: "false"
+        forcePasswordReset: "false",
+        isEmailVerificationEnabled: "false",
+        isMobileVerificationByPrivilegeUserEnabled: "false",
+        isMobileVerificationEnabled: "false",
+        isMultipleEmailAndMobileNumberEnabled: "false"
+
     });
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
@@ -215,7 +219,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     // Multi-valued attribute delete confirmation modal related states.
     const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
         useState<{ value: string; schema?: ProfileSchemaInterface }>({ value: "" });
-    const [showMultiValuedItemDeleteConfirmationModal, setShowMultiValuedItemDeleteConfirmationModal] =
+    const [ showMultiValuedItemDeleteConfirmationModal, setShowMultiValuedItemDeleteConfirmationModal ] =
         useState<boolean>(false);
     const handleMultiValuedItemDeleteModalClose: () => void = useCallback(() => {
         setShowMultiValuedItemDeleteConfirmationModal(false);
@@ -225,24 +229,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         handleMultiValuedItemDelete(selectedAttributeInfo.schema, selectedAttributeInfo.value);
         handleMultiValuedItemDeleteModalClose();
     }, [ selectedAttributeInfo, handleMultiValuedItemDeleteModalClose ]);
-
-    const isEmailVerificationEnabled: boolean = useMemo(() => {
-        return connectorProperties?.find((property: ConnectorPropertyInterface) =>
-            property.name === ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION
-        )?.value === "true";
-    }, [ connectorProperties ]);
-
-    const isMultiValuedEmailMobileEnabled: boolean = useMemo(() => {
-        return connectorProperties?.find((property: ConnectorPropertyInterface) =>
-            property.name === ServerConfigurationsConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS
-        )?.value === "true";
-    }, [ connectorProperties ]);
-
-    const isMobileVerificationByPrivilegeUserEnabled: boolean = useMemo(() => {
-        return connectorProperties?.find((property: ConnectorPropertyInterface) =>
-            property.name === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER
-        )?.value === "true";
-    }, [ connectorProperties ]);
 
     useEffect(() => {
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
@@ -259,7 +245,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     || property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
                     || property.name === ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET) {
 
-                    if(property.value === "true") {
+                    if (property.value === "true") {
                         configurationStatuses = {
                             ...configurationStatuses,
                             forcePasswordReset: property.value
@@ -270,9 +256,29 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         ...configurationStatuses,
                         accountLock: property.value
                     };
+                } else if (property.name === ServerConfigurationsConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS) {
+                    configurationStatuses = {
+                        ...configurationStatuses,
+                        isMultipleEmailAndMobileNumberEnabled: property.value
+                    };
+                } else if (property.name === ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION) {
+                    configurationStatuses = {
+                        ...configurationStatuses,
+                        isEmailVerificationEnabled: property.value
+                    };
+                } else if (property.name === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION) {
+                    configurationStatuses = {
+                        ...configurationStatuses,
+                        isMobileVerificationEnabled: property.value
+                    };
+                } else if (property.name
+                    === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER) {
+                    configurationStatuses = {
+                        ...configurationStatuses,
+                        isMobileVerificationByPrivilegeUserEnabled: property.value
+                    };
                 }
             }
-
             setConfigSettings(configurationStatuses);
         }
     }, [ connectorProperties ]);
@@ -791,6 +797,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         ? schema.schemaId
                                         : userConfig.userProfileSchema;
 
+                                    if (schema.name ===
+                                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+                                        || schema.name ===
+                                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+                                    ) {
+                                        const currentValues: string[] = profileInfo.get(schema.name)?.split(",") || [];
+
+                                        currentValues.push(values.get(schema.name) as string);
+                                        values.set(schema.name, currentValues.join(","));
+                                    }
+
                                     if (schema.name === "externalId") {
                                         opValue = {
                                             [schemaNames[0]]: values.get(schemaNames[0])
@@ -933,6 +950,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
                                         : userConfig.userProfileSchema;
+
+                                    if (schema.name ===
+                                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+                                        || schema.name ===
+                                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+                                    ) {
+                                        const currentValues: string[] = profileInfo.get(schema.name)?.split(",") || [];
+
+                                        currentValues.push(values.get(schema.name) as string);
+                                        values.set(schema.name, currentValues.join(","));
+                                    }
 
                                     opValue = {
                                         [schemaId]: {
@@ -1331,7 +1359,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
-     * Delete a multi-valued attribute value.
+     * Delete a multi-valued item.
      *
      * @param schema - schema of the attribute
      * @param value - value of the attribute
@@ -1443,6 +1471,94 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Verify an email address or mobile number.
+     *
+     * @param schema - Schema of the attribute
+     * @param value - Value of the attribute
+     */
+    const handleVerify = (schema: ProfileSchemaInterface, value: string) => {
+
+        setIsSubmitting(true);
+        const data: {
+            Operations: Array<{ op: string, value: Record<string, string | Record<string, string>> }>,
+            schemas: Array<string>
+        } = {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {}
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+        let translationKey: string = "";
+
+        if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+            translationKey = "user:profile.notifications.verifyEmail.";
+            const verifiedEmailList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") || [];
+
+            verifiedEmailList.push(value);
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")]:
+                        verifiedEmailList.join(",")
+                }
+            };
+        } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
+            translationKey = "user:profile.notifications.verifyMobile.";
+            setSelectedAttributeInfo({ schema, value });
+            const verifiedMobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("VERIFIED_MOBILE_NUMBERS"))?.split(",") || [];
+
+            verifiedMobileList.push(value);
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")]:
+                        verifiedMobileList.join(",")
+                }
+            };
+        }
+
+        setIsSubmitting(true);
+        updateUserInfo(user.id, data)
+            .then(() => {
+                onAlertFired({
+                    description: t(
+                        `${translationKey}success.description`
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        `${translationKey}success.message`
+                    )
+                });
+
+                handleUserUpdate(user.id);
+            })
+            .catch((error: AxiosError) => {
+
+                if (error?.response?.data?.detail || error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.detail || error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: `${translationKey}error.message`
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t(`${translationKey}genericError.description`),
+                    level: AlertLevels.ERROR,
+                    message: t(`${translationKey}genericError.message`)
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
      * Assign primary email address or mobile number the multi-valued attribute.
      *
      * @param schema - Schema of the attribute
@@ -1524,18 +1640,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             });
     };
 
-
-    /**
-     * This function returns the schema for a given schema name.
-     *
-     * @param schemaName - Schema name
-     * @returns Profile schema
-     */
-    const getSchemaFromName = (schemaName: string): ProfileSchemaInterface => {
-
-        return profileSchema.find((schema: ProfileSchemaInterface) => schema?.name === schemaName);
-    };
-
     const resolveMultiValuedAttributesFormField = (
         schema: ProfileSchemaInterface,
         fieldName: string,
@@ -1553,7 +1657,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             verifiedAttributeValueList = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                 get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") ?? [];
             primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
-            verificationEnabled = isEmailVerificationEnabled;
+            verificationEnabled = configSettings?.isEmailVerificationEnabled === "true";
 
         } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
             attributeValueList = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
@@ -1561,11 +1665,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             verifiedAttributeValueList = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                 get("VERIFIED_MOBILE_NUMBERS"))?.split(",") ?? [];
             primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
-            verificationEnabled = connectorProperties.find(
-                (connectorProperty: ConnectorPropertyInterface) =>
-                    connectorProperty.name
-                    === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER
-            )?.value === "true";
+            verificationEnabled = configSettings?.isMobileVerificationEnabled === "true"
+                || configSettings?.isMobileVerificationByPrivilegeUserEnabled === "true";
         }
 
         // Move the primary attribute value to the top of the list.
@@ -1591,6 +1692,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 return value !== primaryAttributeValue;
             }
         };
+
+        const showVerifyButton = (value: string): boolean =>
+            verificationEnabled && !verifiedAttributeValueList.includes(value);
 
         return (
             <>
@@ -1662,13 +1766,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 showVerifiedPopup(accordionLabelValue)
                                 && (
                                     <div className="verified-icon" >
-                                        { /* <Tooltip
-                                            title={ t("myAccount:components.profile.messages.verified.header") }
-                                        > */ }
-                                        <div>
-                                            <CheckIcon />
-                                        </div>
-                                        { /* </Tooltip> */ }
+                                        <Tooltip
+                                            trigger={ (
+                                                <span> <CheckIcon fill="blue" /></span>
+                                            ) }
+                                            content={ t("common:verified") }
+                                            size="mini"
+                                        />
                                     </div>
                                 )
                             }
@@ -1676,20 +1780,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 showPrimaryPopup(accordionLabelValue)
                                 && (
                                     <div className="primary-icon">
-                                        { /* <Tooltip title={ t("myAccount:components.profile.messages.primary.header") }> */ }
-                                        {/* <div>
-                                            <span> Check </span>
-                                            
-                                        </div> */}
-                                        {/* <StarIcon /> */}
-                                        { /* </Tooltip> */}
                                         <Tooltip
-                                            className="test1"
-                                            trigger={
-                                                (<StarIcon />)
-                                            }
-                                            content="New one"
-                                            basic
+                                            trigger={ (
+                                                <span> <StarIcon fill="green" /></span>
+                                            ) }
+                                            content={ t("common:primary") }
+                                            size="mini"
                                         />
                                     </div>
                                 )
@@ -1723,17 +1819,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 showVerifiedPopup(value)
                                                                 && (
                                                                     <div className="verified-icon" >
-                                                                        {/* <Tooltip
-                                                                            title={
-                                                                                t("myAccount:components.profile." +
-                                                                                    "messages.verified.header")
-                                                                            }
-
-                                                                        > */}
-                                                                        <div>
-                                                                            <CheckIcon />
-                                                                        </div>
-                                                                        {/* </Tooltip> */}
+                                                                        <Tooltip
+                                                                            trigger={ (
+                                                                                <span> <CheckIcon fill="blue"/></span>
+                                                                            ) }
+                                                                            content={ t("common:verified") }
+                                                                            size="mini"
+                                                                        />
                                                                     </div>
                                                                 )
                                                             }
@@ -1741,13 +1833,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 showPrimaryPopup(value)
                                                                 && (
                                                                     <div className="primary-icon" >
-                                                                        { /* <Tooltip
-                                                                            title={ t("myAccount:components.profile.messages.primary.header") }
-                                                                        > */ }
-                                                                        <div>
-                                                                            <StarIcon />
-                                                                        </div>
-                                                                        { /* </Tooltip> */ }
+                                                                        <Tooltip
+                                                                            trigger={ (
+                                                                                <span> <StarIcon fill="green"/></span>
+                                                                            ) }
+                                                                            content={ t("common:primary") }
+                                                                            size="mini"
+                                                                        />
                                                                     </div>
                                                                 )
                                                             }
@@ -1757,18 +1849,31 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         <div className="table-c2">
                                                             <IconButton
                                                                 size="small"
+                                                                hidden={ !showVerifyButton(value) }
+                                                                onClick={ () => handleVerify(schema, value) }
+                                                                disabled={ isSubmitting || isReadOnly }
+                                                            >
+                                                                <Tooltip
+                                                                    trigger={ (
+                                                                        <span> <CheckIcon /></span>
+                                                                    ) }
+                                                                    content={ t("common:verify") }
+                                                                    size="mini"
+                                                                />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                size="small"
                                                                 hidden={ !showMakePrimaryButton(value) }
                                                                 onClick={ () => handleMakePrimary(schema, value) }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
-                                                                { /* <Tooltip
-                                                                    title={ t("myAccount:components.profile." +
-                                                                        "actions.makePrimary") }
-                                                                > */ }
-                                                                <div>
-                                                                    <StarIcon />
-                                                                </div>
-                                                                { /* </Tooltip> */ }
+                                                                <Tooltip
+                                                                    trigger={ (
+                                                                        <span> <StarIcon /></span>
+                                                                    ) }
+                                                                    content={ t("common:makePrimary") }
+                                                                    size="mini"
+                                                                />
                                                             </IconButton>
                                                             <IconButton
                                                                 size="small"
@@ -1778,13 +1883,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 } }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
-                                                                { /* <Tooltip
-                                                                    title={ t("common:delete") }
-                                                                > */ }
-                                                                <div>
-                                                                    <TrashIcon />
-                                                                </div>
-                                                                { /* </Tooltip> */ }
+                                                                <Tooltip
+                                                                    trigger={ (
+                                                                        <span> <TrashIcon /></span>
+                                                                    ) }
+                                                                    content={ t("common:delete") }
+                                                                    size="mini"
+                                                                />
                                                             </IconButton>
                                                         </div>
                                                     </TableCell>
@@ -1980,10 +2085,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         // Hide the email and mobile number fields when the multi-valued email and mobile config is enabled.
         const fieldsToHide: string[] = [
-            isMultiValuedEmailMobileEnabled
+            configSettings?.isMultipleEmailAndMobileNumberEnabled === "true"
                 ? ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")
                 : ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
-            isMultiValuedEmailMobileEnabled
+            configSettings?.isMultipleEmailAndMobileNumberEnabled === "true"
                 ? ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE")
                 : ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
             ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"),
@@ -2085,9 +2190,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let translationKey: string = "";
 
         if (selectedAttributeInfo?.schema?.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
-            translationKey = "myAccount:components.profile.modals.emailAddressDeleteConfirmation.";
+            translationKey = "user:profile.confirmationModals.emailAddressDeleteConfirmation.";
         } else {
-            translationKey = "myAccount:components.profile.modals.mobileNumberDeleteConfirmation.";
+            translationKey = "user:profile.confirmationModals.mobileNumberDeleteConfirmation.";
         }
 
         return (
