@@ -1177,7 +1177,7 @@ export const applications: ApplicationsNS = {
                                     label: "Key Hashes",
                                     placeholder: "D4:B9:A3",
                                     validations: {
-                                        invalidOrEmpty: "Enter a valid key hash.",
+                                        invalidOrEmpty: "A valid key hash is required for FIDO trusted apps.",
                                         duplicate: "Same key hashes added."
                                     },
                                     tooltip: "Add Thumbprint"
