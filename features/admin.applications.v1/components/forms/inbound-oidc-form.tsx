@@ -597,7 +597,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             if (!selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)) {
                 setIsSubjectTokenEnabled(false);
             }
-            
+
             if (initialValues?.subjectToken) {
                 setIsSubjectTokenEnabled(initialValues?.subjectToken?.enable);
             }
