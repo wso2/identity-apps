@@ -224,6 +224,7 @@ module.exports = {
     ],
     root: true,
     rules: {
+        "@typescript-eslint/no-unsafe-optional-chaining": "off",
         "array-bracket-spacing": [ 1, "always" ],
         "comma-dangle": [ "warn", "never" ],
         "eol-last": "error",

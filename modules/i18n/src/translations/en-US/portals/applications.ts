@@ -1764,6 +1764,28 @@ export const applications: ApplicationsNS = {
                     },
                     heading: "Refresh Token"
                 },
+                subjectToken: {
+                    fields: {
+                        enable: {
+                            hint: "If enabled, this application can be used in the user impersonation flows.",
+                            label: "Enable subject token response type",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        expiry: {
+                            hint: "Specify the validity period of the <1>subject_token</1> in seconds.",
+                            label: "Subject token expiry time",
+                            placeholder: "Enter the subject token expiry time",
+                            validations: {
+                                empty: "Please fill the subject token expiry time",
+                                invalid: "Subject token expiry time should be in seconds. " +
+                                    "Decimal points and negative numbers are not allowed."
+                            }
+                        }
+                    },
+                    heading: "Subject Token"
+                },
                 requestObjectSignature: {
                     description: "{{productName}} supports receiving an OIDC authentication request as " +
                         "a request object that is passed in a single, self-contained <1>request</1> " +

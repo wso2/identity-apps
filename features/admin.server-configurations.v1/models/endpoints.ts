@@ -26,6 +26,7 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     accountRecovery: string;
     captchaForSSOLogin: string;
     governanceConnectorCategories: string;
+    impersonationConfigurations: string;
     loginPolicies: string;
     multiFactorAuthenticators: string;
     passiveStsConfigurations: string;

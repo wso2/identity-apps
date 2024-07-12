@@ -67,6 +67,7 @@ module.exports = [
             "./admin.organizations.v1/public-api.ts",
             "./admin.parent-roles.v1/public-api.ts",
             "./admin.private-key-jwt.v1/public-api.ts",
+            "./admin.impersonation.v1/public-api.ts",
             "./admin.provisioning.v1/public-api.ts",
             "./admin.remote-repository-configuration.v1/public-api.ts",
             "./admin.roles.v2/public-api.ts",
@@ -129,6 +130,7 @@ module.exports = [
                         "./admin.identity-providers.v1": "./admin.identity-providers.v1/public-api.js",
                         "./admin.identity-verification-providers.v1":
                             "./admin.identity-verification-providers.v1/public-api.js",
+                        "./admin.impersonation.v1":  "./admin.impersonation.v1/public-api.js",
                         "./admin.oidc-scopes.v1": "./admin.oidc-scopes.v1/public-api.js",
                         "./admin.org-insights.v1": "./admin.org-insights.v1/public-api.js",
                         "./admin.organization-discovery.v1": "./admin.organization-discovery.v1/public-api.js",

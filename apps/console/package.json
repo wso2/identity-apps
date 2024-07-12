@@ -69,6 +69,7 @@
         "@wso2is/admin.organizations.v1": "^2.20.57",
         "@wso2is/admin.private-key-jwt.v1": "^2.20.57",
         "@wso2is/admin.remote-repository-configuration.v1": "^2.20.57",
+        "@wso2is/admin.impersonation.v1": "^1.0.0",
         "@wso2is/admin.roles.v1": "^2.20.57",
         "@wso2is/admin.roles.v2": "^2.20.57",
         "@wso2is/admin.saml2-configuration.v1": "^2.20.57",

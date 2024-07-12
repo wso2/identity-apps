@@ -1487,6 +1487,27 @@ export interface ApplicationsNS {
                         };
                     };
                 };
+                subjectToken: {
+                    fields: {
+                        enable: {
+                            hint: string;
+                            label: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        expiry: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                            };
+                        };
+                    };
+                    heading: string;
+                };
                 requestObjectSignature: {
                     heading: string;
                     description: string;
