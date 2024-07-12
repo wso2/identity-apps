@@ -97,7 +97,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const {
         on,
         signIn,
-        state
+        state,
+        getDecodedIDToken
     } = useAuthContext();
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -142,6 +143,28 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         on(Hooks.SignIn, async (signInResponse: BasicUserInfo) => {
             let response: BasicUserInfo = null;
+
+            const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
+
+            const __experimental__platformIdP: {
+                enabled: boolean;
+                homeRealmId: string;
+            } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
+            if (__experimental__platformIdP?.enabled) {
+                if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
+                    const redirectUrl: URL = new URL(
+                        window["AppUtils"].getConfig().clientOriginWithTenant.replace(
+                            window["AppUtils"].getConfig().tenant,
+                            idToken.default_tenant
+                        )
+                    );
+
+                    redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                    window.location.href = redirectUrl.href;
+                }
+            }
 
             const getOrganizationName = () => {
                 const path: string = SessionStorageUtils.getItemFromSessionStorage("auth_callback_url_console")
