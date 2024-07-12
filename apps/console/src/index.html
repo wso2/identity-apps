@@ -39,9 +39,13 @@
         <!-- End of custom stylesheets -->
 
         <!-- Start of custom scripts added to the head -->
-
-        <script defer type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
-        
+        <script
+            defer
+            type="text/javascript" 
+            data-public-path="<%= htmlWebpackPlugin.options.publicPath %>" 
+            data-name="head-extensions"
+            src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
+        ></script>
         <!-- End of custom scripts added to the head -->
     </head>
     <body>
