@@ -20,22 +20,15 @@
 // TODO: These values need to be changed to get from oxygen once the new version is released.
 
 $header-upgrade-btn-background: linear-gradient(
-    88deg,
-    rgba(236, 81, 97, 0.04) -3.25%,
-    rgba(248, 118, 67, 0.04) 102.62%
+    93deg,
+    rgba(224, 184, 52, 0.04) 50%,
+    rgba(181, 138, 0, 0.04) 112.88%
 );
 $header-upgrade-btn-font-weight: 700;
 $header-upgrade-btn-line-height: 20px;
-$header-upgrade-btn-border-color: rgba(255, 169, 106, 0.9);
+$header-upgrade-btn-border-color: #e0b834;
 $header-upgrade-btn-border: 1px solid $header-upgrade-btn-border-color;
-$header-upgrade-btn-text-color: radial-gradient(
-        238.39% 44.19% at 96.59% 31.25%,
-        rgba(255, 255, 255, 0.3) 0%,
-        rgba(255, 255, 255, 0) 100%
-    ),
-    radial-gradient(182.56% 75.34% at 15.68% 100%, rgba(246, 251, 34, 0.51) 0%, rgba(255, 158, 69, 0) 100%),
-    radial-gradient(137.51% 118.3% at 32.95% 0%, rgba(255, 137, 137, 0.92) 21.25%, rgba(255, 169, 106, 0.57) 88.62%),
-    radial-gradient(178.09% 220.16% at 94.89% -132.81%, #ff7a00 67.59%, rgba(255, 199, 0, 0.38) 100%);
+$header-upgrade-btn-text-color: linear-gradient(93deg, #e0b834 50%, #b58a00 112.88%);
 $header-upgrade-btn-text-fill-color: transparent;
 
 .header-upgrade-btn {
@@ -47,10 +40,15 @@ $header-upgrade-btn-text-fill-color: transparent;
     transition-delay: 0s;
 
     .oxygen-icon {
-        fill: $header-upgrade-btn-border;
-        opacity: 0.8;
-        transition: all 0.3s ease-in-out;
-        transition-delay: 0s;
+        fill: $header-upgrade-btn-border-color;
+        height: 20px;
+        width: 20px;
+        path {
+            stroke: $header-upgrade-btn-border-color;
+            stroke-width: 0.5;
+            transition: all 0.3s ease-in-out;
+            transition-delay: 0s;
+        }
     }
 
     .header-upgrade-btn-text {
@@ -69,6 +67,10 @@ $header-upgrade-btn-text-fill-color: transparent;
 
     .oxygen-icon {
         fill: var(--oxygen-palette-primary-contrastText);
+        path {
+            stroke: var(--oxygen-palette-primary-contrastText);
+            stroke-width: 0.75;
+        }
     }
 
     .header-upgrade-btn-text {

@@ -44,6 +44,7 @@ import { GenericIcon, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { ReactComponent as DiamondIcon } from "../../themes/default/assets/images/icons/diamond.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
@@ -260,7 +261,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
             window["AppUtils"].getConfig().extensions.upgradeButtonEnabled && (
             <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                 <a href={ upgradeButtonURL } target="_blank" rel="noreferrer" data-componentid="upgrade-button-link">
-                    <Button className="header-upgrade-btn" color="secondary" variant="outlined">
+                    <Button
+                        className="header-upgrade-btn"
+                        color="secondary"
+                        variant="outlined"
+                        startIcon={<DiamondIcon />}
+                    >
                         <span className="header-upgrade-btn-text">
                             { I18n.instance.t("extensions:common.upgrade") as ReactNode }
                         </span>

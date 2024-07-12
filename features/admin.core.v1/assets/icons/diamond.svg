@@ -1,0 +1,27 @@
+<!--
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<!-- TODO: Need to remove this -->
+
+<svg aria-hidden="true" focusable="false" role="img" class="oxygen-icon oxygen-icon-diamond" viewBox="0 0 16 16"
+    width="16" height="16" fill="currentColor"
+    style="display: inline-block; overflow: visible; user-select: none; vertical-align: text-bottom;">
+    <path
+        d="M7.9995 13.1673C7.85967 13.1673 7.72515 13.1383 7.59596 13.0803C7.46687 13.0224 7.35053 12.9361 7.24693 12.8216L2.27673 7.20947C2.19108 7.11651 2.12355 7.01186 2.07413 6.89551C2.02471 6.77928 2 6.659 2 6.53468C2 6.47141 2.01213 6.4169 2.0364 6.37114C2.06078 6.32537 2.07806 6.26582 2.08825 6.19247L3.08864 3.64571C3.15557 3.45435 3.27756 3.29889 3.45463 3.17934C3.63169 3.05978 3.82504 3 4.03468 3H11.9685C12.176 3 12.3683 3.05978 12.5454 3.17934C12.7224 3.29889 12.8444 3.45435 12.9114 3.64571L13.9149 6.19247C13.923 6.26582 13.9392 6.32537 13.9636 6.37114C13.9879 6.4169 14 6.47141 14 6.53468C14 6.659 13.9753 6.77928 13.9259 6.89551C13.8765 7.01186 13.8089 7.11651 13.7233 7.20947L8.75623 12.8216C8.65053 12.9361 8.53296 13.0224 8.40355 13.0803C8.27402 13.1383 8.13934 13.1673 7.9995 13.1673ZM6.24837 6.39058H9.75163L8.45573 3.79712H7.54676L6.24837 6.39058ZM7.6031 12.0487V7.1877H3.32133L7.6031 12.0487ZM8.40022 12.0487L12.6818 7.1877H8.40022V12.0487ZM10.6382 6.39058H13.1755L12.1704 3.9123C12.1535 3.87817 12.1279 3.85047 12.0938 3.8292C12.0597 3.80781 12.0234 3.79712 11.9851 3.79712H9.33978L10.6382 6.39058ZM2.82454 6.39058H5.36499L6.66022 3.79712H4.03468C3.99424 3.79712 3.95695 3.80781 3.92283 3.8292C3.8887 3.85047 3.86421 3.87817 3.84936 3.9123L2.82454 6.39058Z"
+        fill=""></path>
+</svg>
