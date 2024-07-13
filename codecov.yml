@@ -28,23 +28,33 @@ coverage:
   status:
     project:
       default:
-        target: 50%
+        enabled: yes
+        threshold: null
+        target: auto
       core:
-        target: 50%
+        target: auto
         flags:
           - '@wso2is/core'
       features:
-        target: 50%
+        target: auto
         flags:
           - '@wso2is/features'
       i18n:
-        target: 50%
+        target: auto
         flags:
           - '@wso2is/i18n'
     patch:
       default:
         target: 80%
         threshold: 40%
+
+comment:
+  layout:  "diff, flags, files"
+  behavior: default
+  require_changes: false  
+  require_base: yes
+  require_head: yes       
+  branches: null
 
 flags:
   '@wso2is/core':
@@ -54,6 +64,7 @@ flags:
   '@wso2is/features':
     paths:
       - features/**/src/**/*.ts
+      - features/**/src/**/*.tsx
     carryforward: false
   '@wso2is/i18n':
     paths:
