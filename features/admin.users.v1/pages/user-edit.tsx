@@ -31,7 +31,10 @@ import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
-import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "@wso2is/admin.server-configurations.v1/models";
 import {
     getUserNameWithoutDomain,
     hasRequiredScopes,

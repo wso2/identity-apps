@@ -68,7 +68,7 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -1671,7 +1671,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         // Move the primary attribute value to the top of the list.
         if (!isEmpty(primaryAttributeValue)) {
-            attributeValueList = attributeValueList.filter((value: string) => value !== primaryAttributeValue);
+            attributeValueList = attributeValueList.filter((value: string) =>
+                !isEmpty(value)
+                && value !== primaryAttributeValue);
             attributeValueList.unshift(primaryAttributeValue);
         }
         const showAccordion: boolean = attributeValueList.length >= 1;
@@ -2107,7 +2109,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         return (
             <Grid.Row columns={ 1 } key={ key }>
-                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
+                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                     {
                         schema.name === "userName" && domainName.length > 1 ? (
                             <>
@@ -2239,7 +2241,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         user.id && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.userId") }
@@ -2285,7 +2287,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         oneTimePassword && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Field
                                                         data-testid={ `${ testId }-profile-form-one-time-pw }
                                                         -input` }
@@ -2306,7 +2308,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         createdDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields." +
@@ -2327,11 +2329,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         modifiedDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Form.Field>
                                                         <label>
-                                                            { t("user:profile.fields." +
-                                                                    "modifiedDate") }
+                                                            { t("user:profile.fields.modifiedDate") }
                                                         </label>
                                                         <Input
                                                             name="modifiedDate"

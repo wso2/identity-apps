@@ -6999,20 +6999,6 @@ export const console: ConsoleNS = {
                     }
                 },
                 profile: {
-                    confirmationModals: {
-                        emailAddressDeleteConfirmation: {
-                            assertionHint: "Please confirm your action.",
-                            content: "This action is irreversible and will permanently delete the email address.",
-                            description: "If you delete this email address, it will be permanently removed from the user profile.",
-                            heading: "Are you sure?"
-                        },
-                        mobileNumberDeleteConfirmation: {
-                            assertionHint: "Please confirm your action.",
-                            content: "This action is irreversible and will permanently delete the mobile number.",
-                            description: "If you delete this mobile number, it will be permanently removed from the user profile.",
-                            heading: "Are you sure?"
-                        }
-                    },
                     fields: {
                         createdDate: "Created Date",
                         emails: "Email",
@@ -7217,34 +7203,6 @@ export const console: ConsoleNS = {
                             success: {
                                 description: "The required user profile details were successfully updated.",
                                 message: "User profile updated successfully"
-                            }
-                        },
-                        verifyEmail: {
-                            error: {
-                                description: "{{description}}",
-                                message: "An error occurred while sending the verification email"
-                            },
-                            genericError: {
-                                description: "An error occurred while sending the verification email",
-                                message: "Something went wrong"
-                            },
-                            success: {
-                                description: "The verification email was sent successfully.",
-                                message: "Verification email sent successfully"
-                            }
-                        },
-                        verifyMobile: {
-                            error: {
-                                description: "{{description}}",
-                                message: "An error occurred while sending the verification code"
-                            },
-                            genericError: {
-                                description: "An error occurred while sending the verification code",
-                                message: "Something went wrong"
-                            },
-                            success: {
-                                description: "The verification code was sent successfully.",
-                                message: "Verification code sent successfully"
                             }
                         }
                     },
