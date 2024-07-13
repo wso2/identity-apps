@@ -80,8 +80,6 @@ class ErrorBoundary extends Component<
             onChunkLoadError && onChunkLoadError();
         }
 
-        sessionStorage.setItem("auth_callback_url_console", window["AppUtils"].getConfig().routes.home);
-
         // Catch errors in any components below and re-render with error message
         this.setState({
             error,

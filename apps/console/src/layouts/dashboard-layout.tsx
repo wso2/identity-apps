@@ -422,6 +422,9 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
             >
                 <ErrorBoundary
                     onChunkLoadError={ AppUtils.onChunkLoadError }
+                    handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
+                        sessionStorage.setItem("auth_callback_url_console", window["AppUtils"].getConfig().routes.home);
+                    } }
                     fallback={
                         (<EmptyPlaceholder
                             action={
