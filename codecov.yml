@@ -45,3 +45,17 @@ coverage:
       default:
         target: 80%
         threshold: 40%
+
+flags:
+  '@wso2is/core':
+    paths:
+      - modules/core/src/**/*.ts
+    carryforward: false
+  '@wso2is/features':
+    paths:
+      - features/**/src/**/*.ts
+    carryforward: false
+  '@wso2is/i18n':
+    paths:
+      - modules/i18n/src/**/*.ts
+    carryforward: false
