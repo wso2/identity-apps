@@ -18,3 +18,4 @@
 
 export { default as ApplicationTemplateProvider } from "./provider/application-template-provider";
 export { default as ApplicationTemplateMetadataProvider } from "./provider/application-template-metadata-provider";
+export { default as ApplicationTemplatePage } from "./pages/application-template";

@@ -18,6 +18,7 @@
 
 import { Show } from "@wso2is/access-control";
 import { ApplicationEditForm } from "@wso2is/admin.application-templates.v1/components/application-edit-form";
+import { ApplicationMarkdownGuide } from "@wso2is/admin.application-templates.v1/components/application-markdown-guide";
 import useApplicationTemplateMetadata from
     "@wso2is/admin.application-templates.v1/hooks/use-application-template-metadata";
 import {
@@ -37,7 +38,6 @@ import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/component
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { MarkdownGuide } from "@wso2is/admin.template-core.v1/components/markdown-guide";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -675,14 +675,21 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * @param guideContent - Content to display in Markdown format.
      * @returns The rendered tab pane.
      */
-    const MarkdownGuideTabPane = (guideContent: string): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <MarkdownGuide
-                applicationId={ application?.id }
-                content={ guideContent }
-            />
-        </ResourceTab.Pane>
-    );
+    const MarkdownGuideTabPane = (guideContent: string): ReactElement => {
+        const firstProtocolName: string = mapProtocolTypeToName(application?.inboundProtocols?.[0]?.type);
+
+        return (
+            <ResourceTab.Pane controlledSegmentation>
+                <ApplicationMarkdownGuide
+                    application={ application }
+                    inboundProtocolConfigurations={ inboundProtocolConfig?.[firstProtocolName] }
+                    content={ guideContent }
+                    isLoading={ isLoading }
+                    protocolName={ firstProtocolName }
+                />
+            </ResourceTab.Pane>
+        );
+    };
 
     /**
      * Resolves the tab panes based on the application config.
