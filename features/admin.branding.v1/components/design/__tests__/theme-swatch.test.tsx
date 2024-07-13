@@ -17,8 +17,8 @@
  */
 
 import { PredefinedThemes } from "@wso2is/common.branding.v1/models";
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
-import { render, screen } from "../../../../test-configs/utils";
 import "@testing-library/jest-dom";
 import { BrandingPreferenceMeta } from "../../../meta";
 import { ThemeSwatch } from "../theme-swatch";

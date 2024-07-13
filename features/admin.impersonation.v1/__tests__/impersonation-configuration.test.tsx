@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
-import { render, screen } from "../../test-configs/utils";
 import { ImpersonationConfigurationPage }  from "../pages/impersonation-configuration";
 import "@testing-library/jest-dom";
 
@@ -50,7 +50,8 @@ describe.skip("Impersonation Configuration", () => {
             />
         );
 
-        const impersonationConfiguration: HTMLElement = screen.getByTestId("impersonation-configuration-page-form-layout");
+        const impersonationConfiguration: HTMLElement =
+            screen.getByTestId("impersonation-configuration-page-form-layout");
 
         expect(impersonationConfiguration).toBeInTheDocument();
     });
