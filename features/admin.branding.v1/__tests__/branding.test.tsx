@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { render, screen, waitFor } from "@wso2is/unit-test-configs/utils";
+import { render, screen, waitFor } from "@wso2is/unit-testing/utils";
 import { MotionGlobalConfig } from "framer-motion";
 import React from "react";
 import "@testing-library/jest-dom";

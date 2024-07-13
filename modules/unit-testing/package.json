@@ -2,13 +2,13 @@
   "name": "@wso2is/unit-testing",
   "version": "0.1.0",
   "description": "Reusable module to be used for Unit Testing the Identity Server front-ends.",
-  "main": "utils.tsx",
+  "main": "index.ts",
   "homepage": "https://github.com/wso2/identity-apps#README",
   "bugs": {
     "url": "https://github.com/wso2/product-is/issues"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "keywords": [
     "wso2",

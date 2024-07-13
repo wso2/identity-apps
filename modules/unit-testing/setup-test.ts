@@ -22,6 +22,7 @@ import "./__mocks__/module";
 import "./__mocks__/window";
 import "./__mocks__/server/hooks";
 import "babel-polyfill";
+import  "./__mocks__/@asgardeo/auth-react";
 
 // Needed for React 18.
 // The purpose of the flag is to tell React that it’s running in a unit test-like environment.

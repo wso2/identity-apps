@@ -89,8 +89,8 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0(react-dom@16.14.0)(react@16.14.0)
       react-redux:
-        specifier: 8.0.5
-        version: 8.0.5(redux@4.2.1)
+        specifier: ^7.2.9
+        version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
@@ -1351,7 +1351,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -1619,7 +1619,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -1755,7 +1755,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -1873,7 +1873,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -2099,7 +2099,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -2268,7 +2268,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -2380,7 +2380,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -2624,7 +2624,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -2817,7 +2817,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -3073,7 +3073,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -3470,7 +3470,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -3852,7 +3852,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -4249,7 +4249,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -4655,7 +4655,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -5064,7 +5064,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -5509,7 +5509,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -5891,7 +5891,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -6276,7 +6276,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -6655,7 +6655,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -7037,7 +7037,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -7470,7 +7470,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -7852,7 +7852,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -8249,7 +8249,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -8655,7 +8655,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -9037,7 +9037,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -9407,7 +9407,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -9801,7 +9801,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -10186,7 +10186,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -10565,7 +10565,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -10947,7 +10947,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -11359,7 +11359,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -11741,7 +11741,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -12123,7 +12123,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -12511,7 +12511,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -12890,7 +12890,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -13284,7 +13284,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -13696,7 +13696,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -14075,7 +14075,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -14454,7 +14454,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -14848,7 +14848,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -15230,7 +15230,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -15609,7 +15609,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -15994,7 +15994,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -16379,7 +16379,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -16794,7 +16794,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -17176,7 +17176,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -17567,7 +17567,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -17717,392 +17717,7 @@ importers:
         version: 4.0.0
       rollup-plugin-styles:
         specifier: ^4.0.0
-        version: 4.0.0(rollup@4.18.0)
-      rollup-plugin-svg:
-        specifier: ^2.0.0
-        version: 2.0.0
-      style-loader:
-        specifier: ^0.23.1
-        version: 0.23.1
-      thread-loader:
-        specifier: ^2.1.3
-        version: 2.1.3(webpack@5.84.1)
-      ts-jest:
-        specifier: ^26.4.0
-        version: 26.5.6(jest@26.6.3)(typescript@4.9.5)
-      typescript:
-        specifier: ^4.6.4
-        version: 4.9.5
-
-  features/admin.views.v1:
-    dependencies:
-      '@asgardeo/auth-react':
-        specifier: ^4.0.4
-        version: 4.0.4(@babel/runtime-corejs3@7.24.7)(react-dom@18.3.1)(react-router-dom@4.3.1)(react@18.3.1)
-      '@emotion/react':
-        specifier: ^11.11.0
-        version: 11.11.4(@types/react@18.0.18)(react@18.3.1)
-      '@emotion/styled':
-        specifier: ^11.11.0
-        version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
-      '@microsoft/applicationinsights-core-js':
-        specifier: ^3.0.0
-        version: 3.2.1(tslib@2.6.3)
-      '@microsoft/applicationinsights-react-js':
-        specifier: ^3.4.2
-        version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.6.3)
-      '@microsoft/applicationinsights-web':
-        specifier: ^3.0.0
-        version: 3.2.1(tslib@2.6.3)
-      '@monaco-editor/react':
-        specifier: ^4.5.1
-        version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/icons-material':
-        specifier: ^5.11.16
-        version: 5.15.20(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/lab':
-        specifier: 5.0.0-alpha.129
-        version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/material':
-        specifier: 5.13.0
-        version: 5.13.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/system':
-        specifier: ^5.12.3
-        version: 5.15.20(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/utils':
-        specifier: ^5.12.3
-        version: 5.15.20(@types/react@18.0.18)(react@18.3.1)
-      '@oxygen-ui/react':
-        specifier: ^1.11.0
-        version: 1.11.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.20)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.15.20)(@mui/utils@5.15.20)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
-      '@oxygen-ui/react-icons':
-        specifier: ^1.11.0
-        version: 1.11.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
-      '@wso2is/access-control':
-        specifier: ^3.0.11
-        version: link:../../modules/access-control
-      '@wso2is/admin.authentication.v1':
-        specifier: ^2.20.48
-        version: link:../admin.authentication.v1
-      '@wso2is/admin.core.v1':
-        specifier: ^2.21.18
-        version: link:../admin.core.v1
-      '@wso2is/admin.extensions.v1':
-        specifier: ^2.21.18
-        version: link:../admin.extensions.v1
-      '@wso2is/core':
-        specifier: ^2.0.51
-        version: link:../../modules/core
-      '@wso2is/dynamic-forms':
-        specifier: ^2.0.69
-        version: link:../../modules/dynamic-forms
-      '@wso2is/form':
-        specifier: ^2.0.70
-        version: link:../../modules/form
-      '@wso2is/forms':
-        specifier: ^2.0.41
-        version: link:../../modules/forms
-      '@wso2is/i18n':
-        specifier: ^2.4.6
-        version: link:../../modules/i18n
-      '@wso2is/react-components':
-        specifier: ^2.2.11
-        version: link:../../modules/react-components
-      '@wso2is/theme':
-        specifier: ^2.0.87
-        version: link:../../modules/theme
-      '@wso2is/validation':
-        specifier: ^2.0.6
-        version: link:../../modules/validation
-      axios:
-        specifier: ^0.19.2
-        version: 0.19.2
-      codemirror:
-        specifier: ^5.52.0
-        version: 5.65.16
-      country-language:
-        specifier: ^0.1.7
-        version: 0.1.7
-      deep-equal:
-        specifier: ^2.2.2
-        version: 2.2.3
-      file-saver:
-        specifier: ^2.0.5
-        version: 2.0.5
-      framer-motion:
-        specifier: ^11.1.9
-        version: 11.2.11(react-dom@18.3.1)(react@18.3.1)
-      history:
-        specifier: ^4.9.0
-        version: 4.10.1
-      html-react-parser:
-        specifier: ^2.0.0
-        version: 2.0.0(react@18.3.1)
-      i18next:
-        specifier: ^21.9.1
-        version: 21.10.0
-      i18next-browser-languagedetector:
-        specifier: ^6.1.5
-        version: 6.1.8
-      i18next-xhr-backend:
-        specifier: ^3.2.2
-        version: 3.2.2
-      js-beautify:
-        specifier: ^1.13.0
-        version: 1.15.1
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
-      mustache:
-        specifier: ^4.2.0
-        version: 4.2.0
-      node-forge:
-        specifier: ^0.10.0
-        version: 0.10.0
-      rc-tree:
-        specifier: ^4.0.0-beta.2
-        version: 4.2.2(react-dom@18.3.1)(react@18.3.1)
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.3.1(react@18.3.1)
-      react-draggable:
-        specifier: ^4.2.0
-        version: 4.4.6(react-dom@18.3.1)(react@18.3.1)
-      react-helmet:
-        specifier: ^5.2.1
-        version: 5.2.1(react@18.3.1)
-      react-i18next:
-        specifier: ^11.18.5
-        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1)(react@18.3.1)
-      react-joyride:
-        specifier: ^2.3.0
-        version: 2.8.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      react-notification-system:
-        specifier: ^0.4.0
-        version: 0.4.0(react-dom@18.3.1)(react@18.3.1)
-      react-redux:
-        specifier: ^7.2.9
-        version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
-      react-router-dom:
-        specifier: ^4.3.1
-        version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      recharts:
-        specifier: ^2.6.2
-        version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
-      reduce-reducers:
-        specifier: ^1.0.4
-        version: 1.0.4
-      redux:
-        specifier: ^4.0.4
-        version: 4.2.1
-      redux-form:
-        specifier: ^8.3.7
-        version: 8.3.10(react-redux@7.2.9)(react@18.3.1)(redux@4.2.1)
-      redux-mock-store:
-        specifier: ^1.5.4
-        version: 1.5.4
-      redux-thunk:
-        specifier: ^2.3.0
-        version: 2.4.2(redux@4.2.1)
-      regenerator-runtime:
-        specifier: ^0.13.9
-        version: 0.13.11
-      semantic-ui-react:
-        specifier: ^2.1.3
-        version: 2.1.5(react-dom@18.3.1)(react@18.3.1)
-      slashes:
-        specifier: ^2.0.2
-        version: 2.0.2
-      styled-components:
-        specifier: ^4.4.1
-        version: 4.4.1(@babel/core@7.24.7)(react-dom@18.3.1)(react@18.3.1)
-      swr:
-        specifier: ^2.0.0
-        version: 2.2.5(react@18.3.1)
-      uuid:
-        specifier: ^8.3.0
-        version: 8.3.2
-    devDependencies:
-      '@pmmmwh/react-refresh-webpack-plugin':
-        specifier: ^0.4.3
-        version: 0.4.3(react-refresh@0.9.0)(webpack-dev-server@3.11.3)(webpack@5.84.1)
-      '@rollup/plugin-commonjs':
-        specifier: ^25.0.7
-        version: 25.0.8(rollup@4.18.0)
-      '@rollup/plugin-dynamic-import-vars':
-        specifier: ^2.1.2
-        version: 2.1.2(rollup@4.18.0)
-      '@rollup/plugin-image':
-        specifier: ^3.0.3
-        version: 3.0.3(rollup@4.18.0)
-      '@rollup/plugin-json':
-        specifier: ^6.1.0
-        version: 6.1.0(rollup@4.18.0)
-      '@rollup/plugin-node-resolve':
-        specifier: ^15.2.3
-        version: 15.2.3(rollup@4.18.0)
-      '@rollup/plugin-typescript':
-        specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
-      '@svgr/rollup':
-        specifier: ^6.2.1
-        version: 6.5.1
-      '@svgr/webpack':
-        specifier: 4.3.2
-        version: 4.3.2
-      '@testing-library/dom':
-        specifier: ^7.24.3
-        version: 7.31.2
-      '@testing-library/jest-dom':
-        specifier: ^5.11.9
-        version: 5.17.0
-      '@testing-library/user-event':
-        specifier: ^12.7.3
-        version: 12.8.3(@testing-library/dom@7.31.2)
-      '@types/file-saver':
-        specifier: ^2.0.1
-        version: 2.0.7
-      '@types/history':
-        specifier: ^4.7.3
-        version: 4.7.11
-      '@types/jest':
-        specifier: ^26.0.14
-        version: 26.0.24
-      '@types/lodash-es':
-        specifier: ^4.17.4
-        version: 4.17.12
-      '@types/node':
-        specifier: ^13.9.2
-        version: 13.13.52
-      '@types/node-forge':
-        specifier: ^0.9.3
-        version: 0.9.10
-      '@types/react':
-        specifier: 18.0.18
-        version: 18.0.18
-      '@types/react-dom':
-        specifier: ^18.0.6
-        version: 18.3.0
-      '@types/react-notification-system':
-        specifier: 0.2.39
-        version: 0.2.39
-      '@types/react-redux':
-        specifier: ^7.1.25
-        version: 7.1.33
-      '@types/react-router':
-        specifier: ^5.1.18
-        version: 5.1.20
-      '@types/react-router-dom':
-        specifier: ^5.1.3
-        version: 5.3.3
-      '@types/reactour':
-        specifier: ^1.18.1
-        version: 1.18.5
-      '@types/redux-mock-store':
-        specifier: ^1.0.2
-        version: 1.0.6
-      '@types/testing-library__jest-dom':
-        specifier: ^5.14.3
-        version: 5.14.9
-      '@types/uuid':
-        specifier: ^9.0.1
-        version: 9.0.8
-      '@types/webpack-env':
-        specifier: ^1.16.0
-        version: 1.18.5
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^4.32.0
-        version: 4.33.0(@typescript-eslint/parser@4.33.0)(eslint@7.32.0)(typescript@4.9.5)
-      '@typescript-eslint/parser':
-        specifier: ^4.32.0
-        version: 4.33.0(eslint@7.32.0)(typescript@4.9.5)
-      connect-history-api-fallback:
-        specifier: ^2.0.0
-        version: 2.0.0
-      copy-webpack-plugin:
-        specifier: ^12.0.2
-        version: 12.0.2(webpack@5.84.1)
-      css-loader:
-        specifier: ^1.0.0
-        version: 1.0.1(webpack@5.84.1)
-      eslint:
-        specifier: ^7.20.0
-        version: 7.32.0
-      eslint-plugin-import:
-        specifier: ^2.20.2
-        version: 2.29.1(@typescript-eslint/parser@4.33.0)(eslint@7.32.0)
-      eslint-plugin-jest-dom:
-        specifier: ^4.0.1
-        version: 4.0.3(eslint@7.32.0)
-      eslint-plugin-react:
-        specifier: ^7.18.3
-        version: 7.34.3(eslint@7.32.0)
-      eslint-plugin-react-hooks:
-        specifier: ^4.0.0
-        version: 4.6.2(eslint@7.32.0)
-      eslint-plugin-testing-library:
-        specifier: ^5.0.5
-        version: 5.11.1(eslint@7.32.0)(typescript@4.9.5)
-      eslint-webpack-plugin:
-        specifier: ^2.5.3
-        version: 2.7.0(eslint@7.32.0)(webpack@5.84.1)
-      fork-ts-checker-webpack-plugin:
-        specifier: ^6.1.0
-        version: 6.5.3(eslint@7.32.0)(typescript@4.9.5)(webpack@5.84.1)
-      jest:
-        specifier: ^26.4.2
-        version: 26.6.3
-      jest-environment-jsdom:
-        specifier: ^26.3.0
-        version: 26.6.2
-      jest-environment-jsdom-global:
-        specifier: ^2.0.4
-        version: 2.0.4(jest-environment-jsdom@26.6.2)
-      json-minimizer-webpack-plugin:
-        specifier: ^4.0.0
-        version: 4.0.0(webpack@5.84.1)
-      msw:
-        specifier: ^0.36.8
-        version: 0.36.8
-      process:
-        specifier: ^0.11.10
-        version: 0.11.10
-      react-refresh:
-        specifier: ^0.9.0
-        version: 0.9.0
-      redux-devtools-extension:
-        specifier: ^2.13.8
-        version: 2.13.9(redux@4.2.1)
-      rimraf:
-        specifier: ^3.0.2
-        version: 3.0.2
-      rollup:
-        specifier: ^4.17.2
-        version: 4.18.0
-      rollup-plugin-dts:
-        specifier: ^6.1.1
-        version: 6.1.1(rollup@4.18.0)(typescript@4.9.5)
-      rollup-plugin-generate-package-json:
-        specifier: ^3.2.0
-        version: 3.2.0(rollup@4.18.0)
-      rollup-plugin-polyfill-node:
-        specifier: ^0.13.0
-        version: 0.13.0(rollup@4.18.0)
-      rollup-plugin-scss:
-        specifier: ^4.0.0
-        version: 4.0.0
-      rollup-plugin-styles:
-        specifier: ^4.0.0
-        version: 4.0.0(rollup@4.18.0)
+        version: 4.0.0(rollup@4.18.1)
       rollup-plugin-svg:
         specifier: ^2.0.0
         version: 2.0.0
@@ -18331,7 +17946,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -18710,7 +18325,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -19089,7 +18704,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -19321,7 +18936,7 @@ importers:
         version: 15.2.3(rollup@4.18.1)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -19418,7 +19033,7 @@ importers:
     dependencies:
       '@asgardeo/auth-react':
         specifier: ^4.0.4
-        version: 4.0.4(@babel/runtime-corejs3@7.24.7)(react-dom@16.14.0)(react-router-dom@6.11.2)(react@16.14.0)
+        version: 4.0.4(@babel/runtime-corejs3@7.24.7)(react-dom@16.14.0)(react-router-dom@6.24.1)(react@16.14.0)
       '@braintree/sanitize-url':
         specifier: ^5.0.0
         version: 5.0.2
@@ -20120,7 +19735,7 @@ importers:
     devDependencies:
       '@asgardeo/auth-react':
         specifier: ^4.0.4
-        version: 4.0.4(@babel/runtime-corejs3@7.24.7)(react-dom@18.3.1)(react-router-dom@6.11.2)(react@18.3.1)
+        version: 4.0.4(@babel/runtime-corejs3@7.24.7)(react-dom@18.3.1)(react-router-dom@6.24.1)(react@18.3.1)
       '@wso2is/access-control':
         specifier: workspace:*
         version: link:../access-control
@@ -20214,7 +19829,7 @@ packages:
   /@asgardeo/auth-js@5.0.1:
     resolution: {integrity: sha512-XTb/+jPPBAnNGlZYeHVz2Ut5hI8DeJiMmX5YcAijiAvtW4Ove82lT4aLXm+FL8XmCYc+61hFNG1QLf8q2nMfSQ==}
 
-  /@asgardeo/auth-react@4.0.4(@babel/runtime-corejs3@7.24.7)(react-dom@16.14.0)(react-router-dom@6.11.2)(react@16.14.0):
+  /@asgardeo/auth-react@4.0.4(@babel/runtime-corejs3@7.24.7)(react-dom@16.14.0)(react-router-dom@6.24.1)(react@16.14.0):
     resolution: {integrity: sha512-PltiGPAUVyekEOun9BMte3H2AmFsihiLisobjax5NxdkpDurvrgUR9xCUh7qKkoQQHq4N1Y5crc8UpCg+hkLmQ==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
@@ -20248,7 +19863,7 @@ packages:
       - debug
     dev: false
 
-  /@asgardeo/auth-react@4.0.4(@babel/runtime-corejs3@7.24.7)(react-dom@18.3.1)(react-router-dom@6.11.2)(react@18.3.1):
+  /@asgardeo/auth-react@4.0.4(@babel/runtime-corejs3@7.24.7)(react-dom@18.3.1)(react-router-dom@6.24.1)(react@18.3.1):
     resolution: {integrity: sha512-PltiGPAUVyekEOun9BMte3H2AmFsihiLisobjax5NxdkpDurvrgUR9xCUh7qKkoQQHq4N1Y5crc8UpCg+hkLmQ==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
@@ -20260,7 +19875,7 @@ packages:
       '@babel/runtime-corejs3': 7.24.7
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-router-dom: 6.11.2(react-dom@18.3.1)(react@18.3.1)
+      react-router-dom: 6.24.1(react-dom@18.3.1)(react@18.3.1)
     transitivePeerDependencies:
       - debug
     dev: true
@@ -21967,6 +21582,7 @@ packages:
       external-editor: 3.1.0
       fs-extra: 7.0.1
       human-id: 1.0.2
+      meow: 6.1.1
       mri: 1.2.0
       outdent: 0.5.0
       p-limit: 2.3.0
@@ -21975,6 +21591,7 @@ packages:
       semver: 7.6.2
       spawndamnit: 2.0.0
       term-size: 2.2.1
+      tty-table: 4.2.3
     dev: true
 
   /@changesets/config@3.0.1:
@@ -23657,7 +23274,7 @@ packages:
       npmlog: 6.0.2
     dev: true
 
-  /@lerna/publish@5.6.2(nx@15.9.7):
+  /@lerna/publish@5.6.2(nx@15.9.3):
     resolution: {integrity: sha512-QaW0GjMJMuWlRNjeDCjmY/vjriGSWgkLS23yu8VKNtV5U3dt5yIKA3DNGV3HgZACuu45kQxzMDsfLzgzbGNtYA==}
     engines: {node: ^14.15.0 || >=16.0.0}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
@@ -23680,7 +23297,7 @@ packages:
       '@lerna/run-lifecycle': 5.6.2
       '@lerna/run-topologically': 5.6.2
       '@lerna/validation-error': 5.6.2
-      '@lerna/version': 5.6.2(nx@15.9.7)
+      '@lerna/version': 5.6.2(nx@15.9.3)
       fs-extra: 9.1.0
       libnpmaccess: 6.0.4
       npm-package-arg: 8.1.1
@@ -23823,7 +23440,7 @@ packages:
       npmlog: 6.0.2
     dev: true
 
-  /@lerna/version@5.6.2(nx@15.9.7):
+  /@lerna/version@5.6.2(nx@15.9.3):
     resolution: {integrity: sha512-odNSR2rTbHW++xMZSQKu/F6Syrd/sUvwDLPaMKktoOSPKmycHt/eWcuQQyACdtc43Iqeu4uQd7PCLsniqOVFrw==}
     engines: {node: ^14.15.0 || >=16.0.0}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
@@ -23842,7 +23459,7 @@ packages:
       '@lerna/run-topologically': 5.6.2
       '@lerna/temp-write': 5.6.2
       '@lerna/validation-error': 5.6.2
-      '@nrwl/devkit': 15.9.7(nx@15.9.7)
+      '@nrwl/devkit': 15.9.7(nx@15.9.3)
       chalk: 4.1.2
       dedent: 0.7.0
       load-json-file: 6.2.0
@@ -23936,7 +23553,7 @@ packages:
       '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
-      '@nevware21/ts-utils': 0.11.2
+      '@nevware21/ts-utils': 0.11.3
       tslib: 2.6.3
     dev: false
 
@@ -23949,8 +23566,8 @@ packages:
       '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
-      '@nevware21/ts-async': 0.5.1
-      '@nevware21/ts-utils': 0.11.2
+      '@nevware21/ts-async': 0.5.2
+      '@nevware21/ts-utils': 0.11.3
       tslib: 2.6.3
     dev: false
 
@@ -23963,8 +23580,8 @@ packages:
       '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
-      '@nevware21/ts-async': 0.5.1
-      '@nevware21/ts-utils': 0.11.2
+      '@nevware21/ts-async': 0.5.2
+      '@nevware21/ts-utils': 0.11.3
       tslib: 2.6.3
     dev: false
 
@@ -23987,7 +23604,7 @@ packages:
       '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
-      '@nevware21/ts-utils': 0.11.2
+      '@nevware21/ts-utils': 0.11.3
       tslib: 2.6.3
     dev: false
 
@@ -24008,8 +23625,8 @@ packages:
     dependencies:
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
-      '@nevware21/ts-async': 0.5.1
-      '@nevware21/ts-utils': 0.11.2
+      '@nevware21/ts-async': 0.5.2
+      '@nevware21/ts-utils': 0.11.3
       tslib: 2.6.3
     dev: false
 
@@ -24022,8 +23639,8 @@ packages:
       '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
-      '@nevware21/ts-async': 0.5.1
-      '@nevware21/ts-utils': 0.11.2
+      '@nevware21/ts-async': 0.5.2
+      '@nevware21/ts-utils': 0.11.3
       tslib: 2.6.3
     dev: false
 
@@ -24036,7 +23653,7 @@ packages:
       '@microsoft/applicationinsights-core-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
-      '@nevware21/ts-utils': 0.11.2
+      '@nevware21/ts-utils': 0.11.3
       tslib: 2.6.3
     dev: false
 
@@ -24080,8 +23697,8 @@ packages:
       '@microsoft/applicationinsights-properties-js': 3.2.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
-      '@nevware21/ts-async': 0.5.1
-      '@nevware21/ts-utils': 0.11.2
+      '@nevware21/ts-async': 0.5.2
+      '@nevware21/ts-utils': 0.11.3
       tslib: 2.6.3
     dev: false
 
@@ -24166,7 +23783,7 @@ packages:
       '@xmldom/xmldom': 0.7.13
       debug: 4.3.5(supports-color@6.1.0)
       headers-utils: 3.0.2
-      outvariant: 1.4.3
+      outvariant: 1.4.2
       strict-event-emitter: 0.2.8
     transitivePeerDependencies:
       - supports-color
@@ -24728,7 +24345,7 @@ packages:
       - verdaccio
     dev: true
 
-  /@nrwl/devkit@15.9.7(nx@15.9.7):
+  /@nrwl/devkit@15.9.7(nx@15.9.3):
     resolution: {integrity: sha512-Sb7Am2TMT8AVq8e+vxOlk3AtOA2M0qCmhBzoM1OJbdHaPKc0g0UgSnWRml1kPGg5qfPk72tWclLoZJ5/ut0vTg==}
     peerDependencies:
       nx: '>= 14.1 <= 16'
@@ -24736,7 +24353,7 @@ packages:
       ejs: 3.1.10
       ignore: 5.3.1
       nx: 15.9.3(@swc-node/register@1.6.8)(@swc/core@1.3.99)
-      semver: 7.3.4
+      semver: 7.5.4
       tmp: 0.2.3
       tslib: 2.6.3
     dev: true
@@ -25496,7 +25113,7 @@ packages:
       '@nrwl/webpack': 17.0.0(@swc-node/register@1.6.8)(@swc/core@1.3.99)(@types/node@18.11.9)(esbuild@0.18.20)(html-webpack-plugin@5.6.0)(nx@17.0.0)(typescript@5.1.6)(webpack-cli@4.10.0)
       '@nx/devkit': 17.0.0(nx@17.0.0)
       '@nx/js': 17.0.0(@swc-node/register@1.6.8)(@swc/core@1.3.99)(@types/node@18.11.9)(nx@17.0.0)(typescript@5.1.6)
-      autoprefixer: 10.4.13(postcss@8.4.38)
+      autoprefixer: 10.4.13(postcss@8.4.39)
       babel-loader: 9.1.3(@babel/core@7.24.7)(webpack@5.84.1)
       browserslist: 4.23.1
       chalk: 4.1.2
@@ -25510,9 +25127,9 @@ packages:
       loader-utils: 2.0.4
       mini-css-extract-plugin: 2.4.7(webpack@5.84.1)
       parse5: 4.0.0
-      postcss: 8.4.38
-      postcss-import: 14.1.0(postcss@8.4.38)
-      postcss-loader: 6.2.1(postcss@8.4.38)(webpack@5.84.1)
+      postcss: 8.4.39
+      postcss-import: 14.1.0(postcss@8.4.39)
+      postcss-loader: 6.2.1(postcss@8.4.39)(webpack@5.84.1)
       rxjs: 7.8.1
       sass: 1.77.6
       sass-loader: 12.6.0(sass@1.77.6)(webpack@5.84.1)
@@ -26088,9 +25705,9 @@ packages:
       - immer
     dev: false
 
-  /@remix-run/router@1.6.2:
-    resolution: {integrity: sha512-LzqpSrMK/3JBAVBI9u3NWtOhWNw5AMQfrUFYB0+bDHTSw17z++WJLsPsxAuK+oSddsxk4d7F/JcdDPM1M5YAhA==}
-    engines: {node: '>=14'}
+  /@remix-run/router@1.17.1:
+    resolution: {integrity: sha512-mCOMec4BKd6BRGBZeSnGiIgwsbLGp3yhVqAD8H+PxiRNEHgDpZb8J1TnrSDlg97t0ySKMQJTHCWBCmBpSmkF6Q==}
+    engines: {node: '>=14.0.0'}
 
   /@rollup/plugin-babel@5.3.1(@babel/core@7.24.7)(rollup@2.79.1):
     resolution: {integrity: sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q==}
@@ -26257,7 +25874,7 @@ packages:
       rollup: 4.18.1
     dev: true
 
-  /@rollup/plugin-typescript@11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@4.9.5):
+  /@rollup/plugin-typescript@11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5):
     resolution: {integrity: sha512-R92yOmIACgYdJ7dJ97p4K69I8gg6IEHt8M7dUBxN3W6nrO8uUxX5ixl0yU/N3aZTi8WhPuICvOHXQvF6FaykAA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -26272,7 +25889,7 @@ packages:
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.18.1)
       resolve: 1.22.8
-      rollup: 4.18.0
+      rollup: 4.18.1
       tslib: 2.6.3
       typescript: 4.9.5
     dev: true
@@ -27090,7 +26707,7 @@ packages:
       '@storybook/client-logger': 7.6.9
       '@storybook/core-events': 7.6.9
       '@storybook/global': 5.0.0
-      qs: 6.12.1
+      qs: 6.12.3
       telejson: 7.2.0
       tiny-invariant: 1.3.3
     dev: true
@@ -27431,7 +27048,7 @@ packages:
       find-cache-dir: 3.3.2
       find-up: 5.0.0
       fs-extra: 11.2.0
-      glob: 10.4.5
+      glob: 10.4.2
       handlebars: 4.7.8
       lazy-universal-dotenv: 4.0.0
       node-fetch: 2.7.0
@@ -30024,10 +29641,6 @@ packages:
   /@types/unist@2.0.10:
     resolution: {integrity: sha512-IfYcSBWE3hLpBg8+X2SEa8LVkJdJEkT2Ese2aaLs3ptGdVtABxndrMaxuFlQ1qdFf9Q5rDvDpxI3WwgvKFAsQA==}
 
-  /@types/use-sync-external-store@0.0.3:
-    resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
-    dev: false
-
   /@types/uuid@9.0.8:
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
     dev: true
@@ -30546,14 +30159,6 @@ packages:
       tslib: 2.6.3
     dev: true
 
-  /@yarnpkg/parsers@3.0.2:
-    resolution: {integrity: sha512-/HcYgtUSiJiot/XWGLOlGxPYUG65+/31V8oqk17vZLW1xlCoR4PampyePljOxY2n8/3jz9+tIFzICsyGujJZoA==}
-    engines: {node: '>=18.12.0'}
-    dependencies:
-      js-yaml: 3.13.1
-      tslib: 2.6.3
-    dev: true
-
   /@zkochan/js-yaml@0.0.6:
     resolution: {integrity: sha512-nzvgl3VfhcELQ8LyVrYOru+UtAy1nrygk2+AGbTm8a5YcO6o8lSjAT+pfg3vJWxIoZKOUhrK6UU7xW/+00kQrg==}
     hasBin: true
@@ -30787,6 +30392,13 @@ packages:
     engines: {'0': node >= 0.8.0}
     hasBin: true
 
+  /ansi-red@0.1.1:
+    resolution: {integrity: sha512-ewaIr5y+9CUTGFwZfpECUbFlGcC0GCw1oqR9RI6h1gQCd9Aj2GxSckCnPsVJnmfMZbwFYE+leZGASgkWl06Jow==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      ansi-wrap: 0.1.0
+    dev: true
+
   /ansi-regex@2.1.1:
     resolution: {integrity: sha512-TIGnTpdo+E3+pCyAluZvtED5p5wCqLdezCyhPZzKPcxvFplEt4i+W7OONCKgeZFT3+y5NZZfOOS/Bdcanm1MYA==}
     engines: {node: '>=0.10.0'}
@@ -31004,6 +30616,18 @@ packages:
   /array-unique@0.3.2:
     resolution: {integrity: sha512-SleRWjh9JUud2wH1hPs9rZBZ33H6T9HOiL0uwGnGx9FpE6wKGyfWugmbkEOIs6qWrZhg0LWeLziLrEwQJhs5mQ==}
     engines: {node: '>=0.10.0'}
+
+  /array.prototype.findlast@1.2.5:
+    resolution: {integrity: sha512-CVvd6FHg1Z3POpBLxO6E6zr+rSKEQ9L6rZHAaY7lLfhKsWYUBBOuMs0e9o24oopj6H+geRCX0YJ+TJLBK2eHyQ==}
+    engines: {node: '>= 0.4'}
+    dependencies:
+      call-bind: 1.0.7
+      define-properties: 1.2.1
+      es-abstract: 1.23.3
+      es-errors: 1.3.0
+      es-object-atoms: 1.0.0
+      es-shim-unscopables: 1.0.2
+    dev: true
 
   /array.prototype.findlastindex@1.2.5:
     resolution: {integrity: sha512-zfETvRFA8o7EiNn++N5f/kaCw221hrpGsDmcpndVupkPzEc1Wuf3VgC0qby1BbHs7f5DVYjgtEU2LLh5bqeGfQ==}
@@ -31957,6 +31581,12 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.1.1
+
+  /breakword@1.0.6:
+    resolution: {integrity: sha512-yjxDAYyK/pBvws9H4xKYpLDpYKEH6CzrBPAuXq3x18I+c/2MkVtT3qAr7Oloi6Dss9qNhPVueAAVU1CSeNDIXw==}
+    dependencies:
+      wcwidth: 1.0.1
+    dev: true
 
   /browser-assert@1.2.1:
     resolution: {integrity: sha512-nfulgvOR6S4gt9UKCeGJOuSGBPGiFT6oQ/2UBnvTY/5aQ1PnksW72fhZkM30DzoRRv2WpwZf1vHHEr3mtuXIWQ==}
@@ -33455,7 +33085,7 @@ packages:
     peerDependencies:
       postcss: ^8.4.31
     dependencies:
-      browserslist: 4.23.2
+      browserslist: 4.23.1
       css-declaration-sorter: 7.2.0(postcss@8.4.39)
       cssnano-utils: 4.0.2(postcss@8.4.39)
       postcss: 8.4.39
@@ -33562,6 +33192,28 @@ packages:
 
   /csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
+
+  /csv-generate@3.4.3:
+    resolution: {integrity: sha512-w/T+rqR0vwvHqWs/1ZyMDWtHHSJaN06klRqJXBEpDJaM/+dZkso0OKh1VcuuYvK3XM53KysVNq8Ko/epCK8wOw==}
+    dev: true
+
+  /csv-parse@4.16.3:
+    resolution: {integrity: sha512-cO1I/zmz4w2dcKHVvpCr7JVRu8/FymG5OEpmvsZYlccYolPBLoVGKUHgNoc4ZGkFeFlWGEDmMyBM+TTqRdW/wg==}
+    dev: true
+
+  /csv-stringify@5.6.5:
+    resolution: {integrity: sha512-PjiQ659aQ+fUTQqSrd1XEDnOr52jh30RBurfzkscaE2tPaFsDH5wOAHJiw8XAHphRknCwMUE9KRayc4K/NbO8A==}
+    dev: true
+
+  /csv@5.5.3:
+    resolution: {integrity: sha512-QTaY0XjjhTQOdguARF0lGKm5/mEq9PD9/VhZZegHDIBq2tQwgNpHc3dneD4mGo2iJs+fTKv5Bp0fZ+BRuY3Z0g==}
+    engines: {node: '>= 0.1.90'}
+    dependencies:
+      csv-generate: 3.4.3
+      csv-parse: 4.16.3
+      csv-stringify: 5.6.5
+      stream-transform: 2.1.3
+    dev: true
 
   /currently-unhandled@0.4.1:
     resolution: {integrity: sha512-/fITjgjGU50vjQ4FH6eUoYu+iUoUKIXws2hL15JJpIR+BbTxaXQsMuuyjtNh2WqsSBS5nsaZHFsFecyw5CCAng==}
@@ -35132,11 +34784,13 @@ packages:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
     dependencies:
       array-includes: 3.1.8
+      array.prototype.findlast: 1.2.5
       array.prototype.flatmap: 1.3.2
       array.prototype.toreversed: 1.1.2
       array.prototype.tosorted: 1.1.4
       doctrine: 2.1.0
-      eslint: 8.46.0
+      es-iterator-helpers: 1.0.19
+      eslint: 7.32.0
       estraverse: 5.3.0
       jsx-ast-utils: 3.3.5
       minimatch: 3.1.2
@@ -36731,7 +36385,7 @@ packages:
     dependencies:
       foreground-child: 3.2.1
       jackspeak: 3.4.0
-      minimatch: 9.0.4
+      minimatch: 9.0.5
       minipass: 7.1.2
       package-json-from-dist: 1.0.0
       path-scurry: 1.11.1
@@ -36923,6 +36577,10 @@ packages:
 
   /graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+
+  /grapheme-splitter@1.0.4:
+    resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
+    dev: true
 
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
@@ -37898,6 +37556,13 @@ packages:
   /is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
 
+  /is-async-function@2.0.0:
+    resolution: {integrity: sha512-Y1JXKrfykRJGdlDwdKlLpLyMIiWqWvuSd17TvZk68PLAOGOoF4Xyav1z0Xhoi+gCYjZVeC5SI+hYFOfvXmGRCA==}
+    engines: {node: '>= 0.4'}
+    dependencies:
+      has-tostringtag: 1.0.2
+    dev: true
+
   /is-bigint@1.0.4:
     resolution: {integrity: sha512-zB9CruMamjym81i2JZ3UMn54PKGsQzsJeo6xvN3HJJ4CAsQNB6iRutp2To77OfCNuoxspsIhzaPoO1zyCEhFOg==}
     dependencies:
@@ -38027,6 +37692,12 @@ packages:
   /is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
     engines: {node: '>=0.10.0'}
+
+  /is-finalizationregistry@1.0.2:
+    resolution: {integrity: sha512-0by5vtUJs8iFQb5TYUHHPudOR+qXYIMKtiUzvLIZITZUjknFmziyBJuLhVRc+Ds0dREFlskDNJKYIdIzu/9pfw==}
+    dependencies:
+      call-bind: 1.0.7
+    dev: true
 
   /is-finite@1.1.0:
     resolution: {integrity: sha512-cdyMtqX/BOqqNBBiKlIVkytNHm49MtMlYyn1zxzvJKWmFMlGzm+ry5BBfYyeY9YmNKbRSo/o7OX9w9ale0wg3w==}
@@ -39634,7 +39305,7 @@ packages:
       '@babel/register': 7.24.6(@babel/core@7.24.7)
       babel-core: 7.0.0-bridge.0(@babel/core@7.24.7)
       chalk: 4.1.2
-      flow-parser: 0.239.1
+      flow-parser: 0.238.0
       graceful-fs: 4.2.11
       micromatch: 4.0.7
       neo-async: 2.6.2
@@ -39940,6 +39611,11 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
+  /kleur@4.1.5:
+    resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
+    engines: {node: '>=6'}
+    dev: true
+
   /klona@2.0.6:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
@@ -40029,10 +39705,10 @@ packages:
       '@lerna/init': 5.6.2
       '@lerna/link': 5.6.2
       '@lerna/list': 5.6.2
-      '@lerna/publish': 5.6.2(nx@15.9.7)
+      '@lerna/publish': 5.6.2(nx@15.9.3)
       '@lerna/run': 5.6.2
-      '@lerna/version': 5.6.2(nx@15.9.7)
-      '@nrwl/devkit': 15.9.7(nx@15.9.7)
+      '@lerna/version': 5.6.2(nx@15.9.3)
+      '@nrwl/devkit': 15.9.7(nx@15.9.3)
       import-local: 3.1.0
       inquirer: 8.2.6
       npmlog: 6.0.2
@@ -40765,6 +40441,23 @@ packages:
     dev: false
     optional: true
 
+  /meow@6.1.1:
+    resolution: {integrity: sha512-3YffViIt2QWgTy6Pale5QpopX/IvU3LPL03jOTqp6pGj3VjesdO/U8CuHMKpnQr4shCNCM5fd5XFFvIIl6JBHg==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@types/minimist': 1.2.5
+      camelcase-keys: 6.2.2
+      decamelize-keys: 1.1.1
+      hard-rejection: 2.1.0
+      minimist-options: 4.1.0
+      normalize-package-data: 2.5.0
+      read-pkg-up: 7.0.1
+      redent: 3.0.0
+      trim-newlines: 3.0.1
+      type-fest: 0.13.1
+      yargs-parser: 18.1.3
+    dev: true
+
   /meow@8.1.2:
     resolution: {integrity: sha512-r85E3NdZ+mpYk1C6RjPFEMSE+s1iZMuHtsHAqY0DT3jZczl0diWUZ8g6oU7h0M9cD2EL+PzaYghhCLzR0ZNn5Q==}
     engines: {node: '>=10'}
@@ -41062,6 +40755,11 @@ packages:
       is-extendable: 0.1.1
     dev: true
 
+  /mixme@0.5.10:
+    resolution: {integrity: sha512-5H76ANWinB1H3twpJ6JY8uvAtpmFvHNArpilJAjXRKXSDDLPIMoZArw5SH0q9z+lLs8IrMw7Q2VWpWimFKFT1Q==}
+    engines: {node: '>= 8.0.0'}
+    dev: true
+
   /mkdirp-classic@0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
     dev: true
@@ -41089,7 +40787,7 @@ packages:
   /mlly@1.7.1:
     resolution: {integrity: sha512-rrVRZRELyQzrIUAVMHxP97kv+G786pHmOKzuFII8zDYahFBS7qnHh2AlYSl1GAHhaMPCz6/oHjVMcfFYgFYHgA==}
     dependencies:
-      acorn: 8.12.1
+      acorn: 8.12.0
       pathe: 1.1.2
       pkg-types: 1.1.3
       ufo: 1.5.3
@@ -41649,7 +41347,7 @@ packages:
       minimatch: 3.0.5
       npm-run-path: 4.0.1
       open: 8.4.2
-      semver: 7.5.4
+      semver: 7.3.4
       string-width: 4.2.3
       strong-log-transformer: 2.1.0
       tar-stream: 2.2.0
@@ -41660,15 +41358,15 @@ packages:
       yargs: 17.7.2
       yargs-parser: 21.1.1
     optionalDependencies:
-      '@nrwl/nx-darwin-arm64': 15.9.7
-      '@nrwl/nx-darwin-x64': 15.9.7
-      '@nrwl/nx-linux-arm-gnueabihf': 15.9.7
-      '@nrwl/nx-linux-arm64-gnu': 15.9.7
-      '@nrwl/nx-linux-arm64-musl': 15.9.7
-      '@nrwl/nx-linux-x64-gnu': 15.9.7
-      '@nrwl/nx-linux-x64-musl': 15.9.7
-      '@nrwl/nx-win32-arm64-msvc': 15.9.7
-      '@nrwl/nx-win32-x64-msvc': 15.9.7
+      '@nrwl/nx-darwin-arm64': 15.9.3
+      '@nrwl/nx-darwin-x64': 15.9.3
+      '@nrwl/nx-linux-arm-gnueabihf': 15.9.3
+      '@nrwl/nx-linux-arm64-gnu': 15.9.3
+      '@nrwl/nx-linux-arm64-musl': 15.9.3
+      '@nrwl/nx-linux-x64-gnu': 15.9.3
+      '@nrwl/nx-linux-x64-musl': 15.9.3
+      '@nrwl/nx-win32-arm64-msvc': 15.9.3
+      '@nrwl/nx-win32-x64-msvc': 15.9.3
     transitivePeerDependencies:
       - debug
     dev: true
@@ -42649,7 +42347,7 @@ packages:
     peerDependencies:
       postcss: ^8.4.31
     dependencies:
-      browserslist: 4.23.2
+      browserslist: 4.23.1
       caniuse-api: 3.0.0
       colord: 2.9.3
       postcss: 8.4.39
@@ -42663,7 +42361,7 @@ packages:
       postcss: ^8.2.15
     dependencies:
       browserslist: 4.23.1
-      postcss: 8.4.38
+      postcss: 8.4.39
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -42673,7 +42371,7 @@ packages:
     peerDependencies:
       postcss: ^8.4.31
     dependencies:
-      browserslist: 4.23.2
+      browserslist: 4.23.1
       postcss: 8.4.39
       postcss-value-parser: 4.2.0
     dev: true
@@ -42799,7 +42497,7 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.1.0
-      postcss: 8.4.38
+      postcss: 8.4.39
       yaml: 1.10.2
     dev: true
 
@@ -42883,7 +42581,7 @@ packages:
     peerDependencies:
       postcss: ^8.4.31
     dependencies:
-      browserslist: 4.23.2
+      browserslist: 4.23.1
       caniuse-api: 3.0.0
       cssnano-utils: 4.0.2(postcss@8.4.39)
       postcss: 8.4.39
@@ -42941,8 +42639,8 @@ packages:
       postcss: ^8.2.15
     dependencies:
       browserslist: 4.23.1
-      cssnano-utils: 3.1.0(postcss@8.4.38)
-      postcss: 8.4.38
+      cssnano-utils: 3.1.0(postcss@8.4.39)
+      postcss: 8.4.39
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -42952,7 +42650,7 @@ packages:
     peerDependencies:
       postcss: ^8.4.31
     dependencies:
-      browserslist: 4.23.2
+      browserslist: 4.23.1
       cssnano-utils: 4.0.2(postcss@8.4.39)
       postcss: 8.4.39
       postcss-value-parser: 4.2.0
@@ -43215,7 +42913,7 @@ packages:
       postcss: ^8.2.15
     dependencies:
       browserslist: 4.23.1
-      postcss: 8.4.38
+      postcss: 8.4.39
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -43225,7 +42923,7 @@ packages:
     peerDependencies:
       postcss: ^8.4.31
     dependencies:
-      browserslist: 4.23.2
+      browserslist: 4.23.1
       postcss: 8.4.39
       postcss-value-parser: 4.2.0
     dev: true
@@ -43310,7 +43008,7 @@ packages:
     peerDependencies:
       postcss: ^8.4.31
     dependencies:
-      browserslist: 4.23.2
+      browserslist: 4.23.1
       caniuse-api: 3.0.0
       postcss: 8.4.39
     dev: true
@@ -44315,36 +44013,6 @@ packages:
       react-is: 17.0.2
     dev: false
 
-  /react-redux@8.0.5(redux@4.2.1):
-    resolution: {integrity: sha512-Q2f6fCKxPFpkXt1qNRZdEDLlScsDWyrgSj0mliK59qU6W5gvBiKkdMEG2lJzhd1rCctf0hb6EtePPLZ2e0m1uw==}
-    peerDependencies:
-      '@types/react': 18.0.18
-      '@types/react-dom': ^16.8 || ^17.0 || ^18.0
-      react: ^16.8 || ^17.0 || ^18.0
-      react-dom: ^16.8 || ^17.0 || ^18.0
-      react-native: '>=0.59'
-      redux: ^4
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      '@types/react-dom':
-        optional: true
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-      redux:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.24.7
-      '@types/hoist-non-react-statics': 3.3.5
-      '@types/use-sync-external-store': 0.0.3
-      hoist-non-react-statics: 3.3.2
-      react-is: 18.3.1
-      redux: 4.2.1
-      use-sync-external-store: 1.2.2(react@18.3.1)
-    dev: false
-
   /react-refresh@0.10.0:
     resolution: {integrity: sha512-PgidR3wST3dDYKr6b4pJoqQFpPGNKDSCDx4cZoshjXipw3LzO7mG1My2pwEzz2JVkF+inx3xRpDeQLFQGH/hsQ==}
     engines: {node: '>=0.10.0'}
@@ -44389,20 +44057,20 @@ packages:
       '@remix-run/router': 1.17.1
       react: 16.14.0
       react-dom: 16.14.0(react@16.14.0)
-      react-router: 6.11.2(react@16.14.0)
+      react-router: 6.24.1(react@16.14.0)
     dev: false
 
-  /react-router-dom@6.11.2(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-JNbKtAeh1VSJQnH6RvBDNhxNwemRj7KxCzc5jb7zvDSKRnPWIFj9pO+eXqjM69gQJ0r46hSz1x4l9y0651DKWw==}
-    engines: {node: '>=14'}
+  /react-router-dom@6.24.1(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-U19KtXqooqw967Vw0Qcn5cOvrX5Ejo9ORmOtJMzYWtCT4/WOfFLIZGGsVLxcd9UkBO0mSTZtXqhZBsWlHr7+Sg==}
+    engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
     dependencies:
-      '@remix-run/router': 1.6.2
+      '@remix-run/router': 1.17.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-router: 6.11.2(react@18.3.1)
+      react-router: 6.24.1(react@18.3.1)
     dev: true
 
   /react-router@4.3.1(react@18.3.1):
@@ -44430,13 +44098,13 @@ packages:
       react: 16.14.0
     dev: false
 
-  /react-router@6.11.2(react@18.3.1):
-    resolution: {integrity: sha512-74z9xUSaSX07t3LM+pS6Un0T55ibUE/79CzfZpy5wsPDZaea1F8QkrsiyRnA2YQ7LwE/umaydzXZV80iDCPkMg==}
-    engines: {node: '>=14'}
+  /react-router@6.24.1(react@18.3.1):
+    resolution: {integrity: sha512-PTXFXGK2pyXpHzVo3rR9H7ip4lSPZZc0bHG5CARmj65fTT6qG7sTngmb6lcYu1gf3y/8KxORoy9yn59pGpCnpg==}
+    engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      '@remix-run/router': 1.6.2
+      '@remix-run/router': 1.17.1
       react: 18.3.1
     dev: true
 
@@ -44848,6 +44516,19 @@ packages:
     resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
     dependencies:
       '@babel/runtime': 7.24.7
+
+  /reflect.getprototypeof@1.0.6:
+    resolution: {integrity: sha512-fmfw4XgoDke3kdI6h4xcUz1dG8uaiv5q9gcEwLS4Pnth2kxT+GZ7YehS1JTMGBQmtV7Y4GFGbs2re2NqhdozUg==}
+    engines: {node: '>= 0.4'}
+    dependencies:
+      call-bind: 1.0.7
+      define-properties: 1.2.1
+      es-abstract: 1.23.3
+      es-errors: 1.3.0
+      get-intrinsic: 1.2.4
+      globalthis: 1.0.4
+      which-builtin-type: 1.1.3
+    dev: true
 
   /regenerate-unicode-properties@10.1.1:
     resolution: {integrity: sha512-X007RyZLsCJVVrjgEFVpLUTZwyOZk3oiL75ZcuYjlIWd6rNJtOjkBwQc5AsRrpbKVkxN6sklw/k/9m2jJYOf8Q==}
@@ -45709,6 +45390,14 @@ packages:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
 
+  /semver@7.3.4:
+    resolution: {integrity: sha512-tCfb2WLjqFAtXn4KEdxIhalnRtoKFN7nAwj0B3ZXCbQloV2tq5eDbcTmT68JJD3nRJq24/XgxtQKFIpQdtvmVw==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      lru-cache: 6.0.0
+    dev: true
+
   /semver@7.5.3:
     resolution: {integrity: sha512-QBlUtyVk/5EeHbi7X0fw6liDZc7BBmEaSYn01fMU1OUYbf6GPsbTtd8WmnqbI20SeycoHSeiybkE/q1Q+qlThQ==}
     engines: {node: '>=10'}
@@ -45986,6 +45675,19 @@ packages:
   /smart-buffer@4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
+    dev: true
+
+  /smartwrap@2.0.2:
+    resolution: {integrity: sha512-vCsKNQxb7PnCNd2wY1WClWifAc2lwqsG8OaswpJkVJsvMGcnEntdTCDajZCkk93Ay1U3t/9puJmb525Rg5MZBA==}
+    engines: {node: '>=6'}
+    hasBin: true
+    dependencies:
+      array.prototype.flat: 1.3.2
+      breakword: 1.0.6
+      grapheme-splitter: 1.0.4
+      strip-ansi: 6.0.1
+      wcwidth: 1.0.1
+      yargs: 15.4.1
     dev: true
 
   /snake-case@3.0.4:
@@ -46379,6 +46081,12 @@ packages:
     resolution: {integrity: sha512-76ORR0DO1o1hlKwTbi/DM3EXWGf3ZJYO8cXX5RJwnul2DEg2oyoZyjLNoQM8WsvZiFKCRfC1O0J7iCvie3RZmQ==}
     dev: true
 
+  /stream-transform@2.1.3:
+    resolution: {integrity: sha512-9GHUiM5hMiCi6Y03jD2ARC1ettBXkQBoQAe7nJsPknnI0ow10aXjTnew8QtYQmLjzn974BnmWEAJgCY6ZP1DeQ==}
+    dependencies:
+      mixme: 0.5.10
+    dev: true
+
   /streamroller@1.0.6:
     resolution: {integrity: sha512-3QC47Mhv3/aZNFpDDVO44qQb9gwB9QggMEE0sQmkTAwBVYdBRWISdsywlkfm5II1Q5y/pmrHflti/IgmIzdDBg==}
     engines: {node: '>=6.0'}
@@ -46732,7 +46440,7 @@ packages:
       postcss: ^8.2.15
     dependencies:
       browserslist: 4.23.1
-      postcss: 8.4.38
+      postcss: 8.4.39
       postcss-selector-parser: 6.1.0
     dev: true
 
@@ -46742,7 +46450,7 @@ packages:
     peerDependencies:
       postcss: ^8.4.31
     dependencies:
-      browserslist: 4.23.2
+      browserslist: 4.23.1
       postcss: 8.4.39
       postcss-selector-parser: 6.1.0
     dev: true
@@ -47585,6 +47293,20 @@ packages:
       typescript: 5.1.6
     dev: true
 
+  /tty-table@4.2.3:
+    resolution: {integrity: sha512-Fs15mu0vGzCrj8fmJNP7Ynxt5J7praPXqFN0leZeZBXJwkMxv9cb2D454k1ltrtUSJbZ4yH4e0CynsHLxmUfFA==}
+    engines: {node: '>=8.0.0'}
+    hasBin: true
+    dependencies:
+      chalk: 4.1.2
+      csv: 5.5.3
+      kleur: 4.1.5
+      smartwrap: 2.0.2
+      strip-ansi: 6.0.1
+      wcwidth: 1.0.1
+      yargs: 17.7.2
+    dev: true
+
   /tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
     dependencies:
@@ -47604,6 +47326,11 @@ packages:
   /type-detect@4.0.8:
     resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
     engines: {node: '>=4'}
+
+  /type-fest@0.13.1:
+    resolution: {integrity: sha512-34R7HTnG0XIJcBSn5XhDd7nNFPRcXYRZrBB2O2jdKqYODldSzBAqzsWoZYYvduky73toYS/ESqxPvkDf/F0XMg==}
+    engines: {node: '>=10'}
+    dev: true
 
   /type-fest@0.16.0:
     resolution: {integrity: sha512-eaBzG6MxNzEn9kiwvtre90cXaNLkmadMWa1zQMs3XORCXNbsH/OewwbxC5ia9dCxIxnTAsSxXJaa/p5y8DlvJg==}
@@ -48790,6 +48517,24 @@ packages:
       is-number-object: 1.0.7
       is-string: 1.0.7
       is-symbol: 1.0.4
+
+  /which-builtin-type@1.1.3:
+    resolution: {integrity: sha512-YmjsSMDBYsM1CaFiayOVT06+KJeXf0o5M/CAd4o1lTadFAtacTUM49zoYxr/oroopFDfhvN6iEcBxUyc3gvKmw==}
+    engines: {node: '>= 0.4'}
+    dependencies:
+      function.prototype.name: 1.1.6
+      has-tostringtag: 1.0.2
+      is-async-function: 2.0.0
+      is-date-object: 1.0.5
+      is-finalizationregistry: 1.0.2
+      is-generator-function: 1.0.10
+      is-regex: 1.1.4
+      is-weakref: 1.0.2
+      isarray: 2.0.5
+      which-boxed-primitive: 1.0.2
+      which-collection: 1.0.2
+      which-typed-array: 1.1.15
+    dev: true
 
   /which-collection@1.0.2:
     resolution: {integrity: sha512-K4jVyjnBdgvc86Y6BkaLZEN933SwYOuBFkdmBu9ZfkcAbdVbpITnDmjvZ/aQjRXQrv5EPkTnD1s39GiiqbngCw==}
