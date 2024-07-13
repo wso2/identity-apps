@@ -28,9 +28,19 @@ coverage:
   status:
     project:
       default:
-        enabled: yes
-        threshold: null
-        target: auto
+        target: 50%
+      core:
+        target: 50%
+        flags:
+          - '@wso2is/core'
+      features:
+        target: 50%
+        flags:
+          - '@wso2is/features'
+      i18n:
+        target: 50%
+        flags:
+          - '@wso2is/i18n'
     patch:
       default:
         target: 80%

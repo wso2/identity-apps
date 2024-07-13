@@ -200,10 +200,28 @@ jobs:
           pnpm nyc:text-summary-report
           pnpm nyc:text-report
       
-      - name: Upload coverage reports to Codecov
-        id: collect-and-upload-coverage
+      - name: Upload `@wso2is/core` coverage reports to Codecov
+        id: upload-wso2is-core-coverage
         uses: codecov/codecov-action@v4.0.1
         with:
+          files: ./modules/core/coverage/coverage-final.json
+          flags: '@wso2is/core'
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload `@wso2is/features` coverage reports to Codecov
+        id: upload-wso2is-features-coverage
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          files: ./features/coverage/coverage-final.json
+          flags: '@wso2is/features'
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload `@wso2is/i18n` coverage reports to Codecov
+        id: upload-wso2is-i18n-coverage
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          files: ./features/coverage/coverage-final.json
+          flags: '@wso2is/i18n'
           token: ${{ secrets.CODECOV_TOKEN }}
 
   build:
