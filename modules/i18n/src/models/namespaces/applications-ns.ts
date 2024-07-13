@@ -950,7 +950,6 @@ export interface ApplicationsNS {
                     fields: {
                         enableFIDOTrustedApps: {
                             hint: string;
-                            backLink: string;
                             label: string;
                         };
                     };
@@ -1487,6 +1486,27 @@ export interface ApplicationsNS {
                             };
                         };
                     };
+                };
+                subjectToken: {
+                    fields: {
+                        enable: {
+                            hint: string;
+                            label: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        expiry: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                            };
+                        };
+                    };
+                    heading: string;
                 };
                 requestObjectSignature: {
                     heading: string;

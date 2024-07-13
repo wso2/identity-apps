@@ -21,7 +21,7 @@ import { render, screen } from "../../../../../test-configs/utils";
 import M2MApplicationQuickStart, { M2MApplicationQuickStartPropsInterface }  from "../quick-start";
 import "@testing-library/jest-dom";
 
-describe.skip("M2MApplicationQuickStart", () => {
+describe("M2MApplicationQuickStart", () => {
     const defaultProps: M2MApplicationQuickStartPropsInterface = {
         application: {
             name: "Test Application"

@@ -31,19 +31,23 @@ import {
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
 import { APIResourcesConstants } from "@wso2is/admin.api-resources.v1/constants";
+import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "@wso2is/admin.layouts.v1";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
-import { AppView, FullScreenView } from "@wso2is/admin.views.v1";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
-import { getSidePanelIcons } from "./ui";
-import { AppConstants } from "../constants";
+import AppLayout from "../layouts/app-layout";
+import AuthLayout from "../layouts/auth-layout";
+import DashboardLayout from "../layouts/dashboard-layout";
+import DefaultLayout from "../layouts/default-layout";
+import ErrorLayout from "../layouts/error-layout";
+import FullScreenLayout from "../layouts/full-screen-layout";
 
 /**
  * Get App View Routes.
@@ -114,6 +118,15 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     id: "wsFedConfiguration",
                     name: "wsFederationConfig:title",
                     path: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.impersonation.v1/pages/impersonation-configuration")),
+                    exact: true,
+                    id: "impersonationConfiguration",
+                    name: "console:impersonationConfig.title",
+                    path: AppConstants.getPaths().get("IMPERSONATION"),
                     protected: true,
                     showOnSidePanel: false
                 },
@@ -240,7 +253,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => import("../../admin.applications.v1/pages/applications-settings")),
+                    component: lazy(() => import("@wso2is/admin.applications.v1/pages/applications-settings")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -1513,7 +1526,7 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
     const routes: RouteInterface[] = [];
 
     routes.push({
-        component: lazy(() => import("../pages/privacy")),
+        component: lazy(() => import("@wso2is/admin.core.v1/pages/privacy")),
         icon: null,
         id: "privacy",
         name: "console:common.sidePanel.privacy",
@@ -1533,7 +1546,7 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 export const getErrorLayoutRoutes = (): RouteInterface[] => {
     return [
         {
-            component: lazy(() => import("../pages/errors/unauthorized")),
+            component: lazy(() => import("@wso2is/admin.core.v1/pages/errors/unauthorized")),
             exact: true,
             icon: null,
             id: "unauthorized",
@@ -1543,7 +1556,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: lazy(() => import("../pages/errors/404")),
+            component: lazy(() => import("@wso2is/admin.core.v1/pages/errors/404")),
             exact: true,
             icon: null,
             id: "pageNotFound",
@@ -1553,7 +1566,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: lazy(() => import("../pages/errors/storage-disabled")),
+            component: lazy(() => import("@wso2is/admin.core.v1/pages/errors/storage-disabled")),
             exact: true,
             icon: null,
             id: "storingDataDisabled",
@@ -1643,7 +1656,7 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
         ...getLayoutAssignedToRoutes(getDefaultLayoutRoutes(), DefaultLayout),
         ...getLayoutAssignedToRoutes(getErrorLayoutRoutes(), ErrorLayout),
         {
-            component: FullScreenView,
+            component: FullScreenLayout,
             icon: null,
             id: "full-screen-view",
             name: "Full Screen View",
@@ -1652,7 +1665,7 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: AppView,
+            component: DashboardLayout,
             icon: null,
             id: "app",
             name: "App",

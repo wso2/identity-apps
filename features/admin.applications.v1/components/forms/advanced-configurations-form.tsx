@@ -36,6 +36,7 @@ import React, {
     FunctionComponent,
     MutableRefObject,
     ReactElement,
+    useCallback,
     useRef,
     useState
 } from "react";
@@ -126,6 +127,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     );
     const [ showFIDOConfirmationModal, setShowFIDOConfirmationModal ] = useState<boolean>(false);
     const [ showThumbprintsError, setShowThumbprinstError ] = useState(false);
+    const [ clearThumbprintsError, setClearThumbprinstError ] = useState(false);
     const [ thumbprints, setThumbprints ] = useState(config?.trustedAppConfiguration?.androidThumbprints?.join(","));
 
     /**
@@ -200,18 +202,13 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
      */
     const isClientAttestationMethodsUiDisabled: boolean = !isEnableClientAttestation || isClientAttestationUIDisabled;
 
+    const isTrustedAppConsentRequired: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isTrustedAppConsentRequired);
+
     /**
      * To check if the platform settings UIs should be disabled.
      */
     const isPlatformSettingsUiDisabled: boolean = !isEnableClientAttestation && !isFIDOTrustedAppsEnabled;
-
-    /**
-     * To check if the feature is supported in the app template.
-     */
-    const isSupportedInAppTemplate: boolean = template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
-    template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-    template?.id === ApplicationManagementConstants.MOBILE ||
-    template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb");
 
     /**
      * To handle the enableAPIBasedAuthentication checkbox.
@@ -232,7 +229,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     /**
      * Validate the form values.
      */
-    const validateForm = (values: AdvancedConfigurationsInterface): AdvancedConfigurationsInterface => {
+    const validateForm: (values: AdvancedConfigurationsInterface) => AdvancedConfigurationsInterface =
+    useCallback((values: AdvancedConfigurationsInterface): AdvancedConfigurationsInterface => {
 
         const errors: AdvancedConfigurationsInterface = {
             androidAttestationServiceCredentials: undefined,
@@ -268,7 +266,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 "advancedConfig.sections.clientAttestation.fields." +
                 "androidAttestationServiceCredentials.validations.invalid");
             }
-        } else if (values.enableFIDOTrustedApps) {
+        }
+        if (values.enableFIDOTrustedApps) {
             // Validate the android package name and android thumbprints for FIDO trusted apps.
             // If one of them is empty throw an error.
             if (!values.androidPackageName?.toString().trim()
@@ -281,21 +280,20 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 && !thumbprints?.toString().trim()) {
 
                 setShowThumbprinstError(true);
-                errors.androidThumbprints = t("applications:forms." +
-                    "advancedConfig.sections.platformSettings.fields.android.fields." +
-                    "keyHashes.validations.empty");
+            } else {
+                setClearThumbprinstError(true);
             }
         }
 
         return errors;
-    };
+    }, [ thumbprints ]);
 
     /**
      * Handle FIDO activation value with confirmation. Deactivation is not confirmed
      */
     const handleFIDOActivation = (shouldActivate: boolean) => {
         shouldActivate ?
-            setShowFIDOConfirmationModal(true)
+            (isTrustedAppConsentRequired ? setShowFIDOConfirmationModal(true) : setIsFIDOTrustedAppsEnabled(true))
             : setIsFIDOTrustedAppsEnabled(false);
     };
 
@@ -305,7 +303,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 id={ FORM_ID }
                 uncontrolledForm={ true }
                 ref={ formRef }
-                validate={ (anything: AdvancedConfigurationsInterface) => validateForm (anything) }
+                validate={ validateForm }
                 validateOnBlur={ false }
                 onSubmit={ (values: AdvancedConfigurationsInterface) => {
                     updateConfiguration(values);
@@ -398,7 +396,11 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 />
                 {
                     (
-                        isApplicationNativeAuthenticationEnabled && isSupportedInAppTemplate
+                        isApplicationNativeAuthenticationEnabled &&
+                        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                        template?.id === ApplicationManagementConstants.MOBILE ||
+                        template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"))
                     ) && (
                         <Grid>
                             <Grid.Row columns={ 2 }>
@@ -434,6 +436,17 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     />
                                 </Grid.Column>
                             </Grid.Row>
+                        </Grid>
+                    )
+                }
+                {
+                    (
+                        isApplicationNativeAuthenticationEnabled &&
+                        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                        template?.id === ApplicationManagementConstants.MOBILE)
+                    ) && (
+                        <Grid>
                             <Grid.Row
                                 columns={ 1 }
                                 onClick={ handleWhenClientAttestationClickedWhenDisabled }>
@@ -538,7 +551,10 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 }
                 {
                     (
-                        isTrustedAppsFeatureEnabled && isSupportedInAppTemplate
+                        isTrustedAppsFeatureEnabled &&
+                        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                        template?.id === ApplicationManagementConstants.MOBILE)
                     ) && (
                         <Grid>
                             <Grid.Row columns={ 1 }>
@@ -586,7 +602,10 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 }
                 {
                     (
-                        !isPlatformSettingsUiDisabled && isSupportedInAppTemplate
+                        !isPlatformSettingsUiDisabled &&
+                        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                        template?.id === ApplicationManagementConstants.MOBILE)
                     ) && (
                         <Grid>
                             <Grid.Row columns={ 1 }>
@@ -670,10 +689,12 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             validationErrorMsg={
                                                 t("applications:forms." +
                                                     "advancedConfig.sections.platformSettings.fields." +
-                                                    "android.fields.keyHashes.validations.invalid")
+                                                    "android.fields.keyHashes.validations.invalidOrEmpty")
                                             }
                                             showError={ showThumbprintsError }
                                             setShowError={ setShowThumbprinstError }
+                                            clearError={ clearThumbprintsError }
+                                            setClearError={ setClearThumbprinstError }
                                             hint={ t("applications:forms." +
                                                 "advancedConfig.sections.platformSettings.fields." +
                                                 "android.fields.keyHashes.hint") }

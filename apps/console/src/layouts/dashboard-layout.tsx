@@ -33,7 +33,6 @@ import {
     RouteUtils,
     StrictAppViewTypes,
     UIConstants,
-    getAppViewRoutes,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
@@ -81,15 +80,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
+import { getAppViewRoutes } from "../configs/routes";
 
 /**
- * Parent component for Admin features inherited from Dashboard layout skeleton.
+ * Parent component for features inherited from Dashboard layout skeleton.
  *
  * @param props - Props injected to the component.
  *
- * @returns Admin View Wrapper.
+ * @returns Dashboard Layout Wrapper.
  */
-export const AppView: FunctionComponent<RouteComponentProps> = (
+const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     props: RouteComponentProps
 ): ReactElement => {
     const { location } = props;
@@ -463,3 +463,5 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
         </>
     );
 };
+
+export default DashboardLayout;

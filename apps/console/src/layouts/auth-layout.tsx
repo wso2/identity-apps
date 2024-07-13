@@ -18,13 +18,13 @@
 
 import { PreLoader } from "@wso2is/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
-import { getAuthLayoutRoutes } from "@wso2is/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { RouteInterface } from "@wso2is/core/models";
 import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { getAuthLayoutRoutes } from "../configs/routes";
 
 /**
  * Auth layout props interface.
@@ -44,7 +44,7 @@ interface AuthLayoutPropsInterface {
  *
  * @returns a React.ReactElement.
  */
-export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
+const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
     props: AuthLayoutPropsInterface
 ): ReactElement => {
 
@@ -104,3 +104,5 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
 AuthLayout.defaultProps = {
     fluid: true
 };
+
+export default AuthLayout;

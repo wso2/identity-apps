@@ -142,6 +142,9 @@ module.exports = {
                 // Refer: https://github.com/wso2/product-is/issues/20659
                 "@typescript-eslint/no-empty-function": "off",
                 "@typescript-eslint/no-explicit-any": 0,
+                // Temporary disable the `no-extra-semi` rule.
+                // Refer: https://github.com/wso2/product-is/issues/20659
+                "@typescript-eslint/no-extra-semi": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
                 "@typescript-eslint/no-unsafe-optional-chaining": "off",
                 "@typescript-eslint/no-unused-vars": [
@@ -179,6 +182,9 @@ module.exports = {
                 // In development, error level is set to `warn`. This will be overridden
                 // by the production env linting config.
                 "no-debugger": 1,
+                // Temporary disable the `no-extra-semi` rule.
+                // Refer: https://github.com/wso2/product-is/issues/20659
+                "no-extra-semi": 0,
                 // `no-undef` is discouraged in Typescript projects.
                 // https://github.com/typescript-eslint/typescript-eslint/issues/2477#issuecomment-686892459
                 "no-undef": 0,
@@ -218,6 +224,7 @@ module.exports = {
     ],
     root: true,
     rules: {
+        "@typescript-eslint/no-unsafe-optional-chaining": "off",
         "array-bracket-spacing": [ 1, "always" ],
         "comma-dangle": [ "warn", "never" ],
         "eol-last": "error",
@@ -260,6 +267,9 @@ module.exports = {
         "no-alert": 1,
         "no-console": "warn",
         "no-duplicate-imports": "warn",
+        // Temporary disable the `no-extra-semi` rule.
+        // Refer: https://github.com/wso2/product-is/issues/20659
+        "no-extra-semi": 0,
         "no-restricted-imports": [
             "error",
             {
