@@ -60,7 +60,7 @@ class ErrorBoundary extends Component<
         fallback: PropTypes.element,
         handleError: PropTypes.func,
         onChunkLoadError: PropTypes.func
-    }
+    };
 
     constructor(props: ErrorBoundaryProps) {
         super(props);
