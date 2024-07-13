@@ -56,7 +56,7 @@
         "test-coverage": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "pnpm test -- --coverage --collect-coverage",
+                "command": "pnpm test:coverage",
                 "cwd": "modules/dynamic-forms",
                 "parallel": false
             }

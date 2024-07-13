@@ -31,7 +31,7 @@
         "test": "pnpm run test:unit",
         "test:watch": "pnpm run test -- --watch",
         "test:unit": "pnpm nx run-many --target=test --all --exclude=form,forms,unit-testing",
-        "test:unit:coverage": "pnpm run test:unit --coverage --collect-coverage",
+        "test:unit:coverage": "pnpm nx run-many --target=test-coverage  --all --exclude=form,forms,unit-testing",
         "test:unit:coverage:aggregate": "node scripts/aggregate-unit-test-coverage.js",
         "test:unit:coverage:aggregated": "pnpm run test:unit:coverage && pnpm run test:unit:coverage:aggregate",
         "update-version": "node scripts/update-version.js",
