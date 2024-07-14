@@ -17,13 +17,14 @@
 # under the License.
 #
 # --------------------------------------------------------------------------------------
-  
+
 # This workflow will run the codecov action on the repository.
 
 codecov:
   require_ci_to_pass: yes
   notify:
     wait_for_ci: yes
+
 coverage:
   status:
     project:
