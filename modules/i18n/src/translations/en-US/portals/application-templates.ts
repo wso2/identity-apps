@@ -50,5 +50,14 @@ export const applicationTemplates: applicationTemplatesNS = {
                 message: "Something went wrong"
             }
         }
+    },
+    placeholders: {
+        emptyApplicationTypeList: {
+            subtitles: {
+                0: "There are currently no application types available.",
+                1: "for configuration."
+            },
+            title: "No application types found"
+        }
     }
 };

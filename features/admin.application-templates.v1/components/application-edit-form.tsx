@@ -228,7 +228,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
         };
 
         if (applicationConfigurations && Object.keys(applicationConfigurations)?.length > 0) {
-            updateApplicationDetails(applicationConfigurations)
+            updateApplicationDetails(applicationConfigurations as ApplicationInterface)
                 .then(() => {
                     onUpdate(application?.id);
 

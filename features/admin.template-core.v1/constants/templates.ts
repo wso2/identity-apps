@@ -25,8 +25,8 @@ export class ExtensionTemplateConstants {
     public static readonly CONSOLE_BASE_URL_PLACEHOLDER: string = "${CONSOLE_BASE_URL}";
 
     public static readonly OTHER_CATEGORY_INFO: ExtensionTemplateCategoryInterface = {
-        description: "extensionTemplates:categories.other.description",
-        displayName: "extensionTemplates:categories.other.displayName",
+        description: "templateCore:categories.other.description",
+        displayName: "templateCore:categories.other.displayName",
         displayOrder: Infinity,
         id: "OTHER"
     }

@@ -1889,18 +1889,6 @@ export interface ApplicationsNS {
                 };
                 urlDeepLinkError: string;
             };
-        };
-        dynamicApplicationCreateWizard: {
-            common: {
-                validations: {
-                    required: string;
-                }
-            },
-            domainName: {
-                validations: {
-                    invalid: string;
-                }
-            }
         }
     };
     helpPanel: {
@@ -2322,16 +2310,6 @@ export interface ApplicationsNS {
                 description: string;
             };
         };
-        fetchTemplateMetadata: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
         fetchTemplate: {
             error: {
                 message: string;
@@ -2425,20 +2403,6 @@ export interface ApplicationsNS {
             };
         };
         updateApplication: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-            success: {
-                message: string;
-                description: string;
-            };
-        };
-        syncApplication: {
             error: {
                 message: string;
                 description: string;
@@ -2609,13 +2573,6 @@ export interface ApplicationsNS {
         };
     };
     placeholders: {
-        emptyApplicationTypeList: {
-            title: string;
-            subtitles: {
-                0: string;
-                1: string;
-            };
-        };
         emptyAttributesList: {
             action: string;
             title: string;

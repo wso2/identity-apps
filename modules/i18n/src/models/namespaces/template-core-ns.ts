@@ -16,11 +16,25 @@
  * under the License.
  */
 
-export interface extensionTemplatesNS {
+export interface templateCoreNS {
     categories: {
         other: {
             displayName: string;
             description: string;
+        };
+    };
+    forms: {
+        resourceCreateWizard: {
+            common: {
+                validations: {
+                    required: string;
+                }
+            },
+            url: {
+                validations: {
+                    invalid: string;
+                }
+            }
         };
     };
     notifications: {

@@ -172,7 +172,7 @@ export const disableApplication = <T>(id: string, status: boolean): Promise<T> =
  * @returns A promise containing the response.
  */
 export const updateApplicationDetails = (
-    app: Partial<ApplicationInterface>,
+    app: ApplicationInterface,
     skipEmptyPayloads?: boolean
 ): Promise<ApplicationBasicInterface | void> => {
     const { id, ...rest } = app;

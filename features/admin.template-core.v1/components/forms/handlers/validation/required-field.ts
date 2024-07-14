@@ -24,7 +24,7 @@
  */
 const requiredField = (value: unknown): string | null => {
     if (!value) {
-        return "applications:forms.dynamicApplicationCreateWizard.common.validations.required";
+        return "templateCore:forms.resourceCreateWizard.common.validations.required";
     }
 
     return null;

@@ -15,13 +15,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { extensionTemplatesNS } from "../../../models";
+import { templateCoreNS } from "../../../models";
 
-export const extensionTemplates: extensionTemplatesNS = {
+export const templateCore: templateCoreNS = {
     categories: {
         other: {
             description: "Other types of un-categorized integrations.",
             displayName: "Others"
+        }
+    },
+    forms: {
+        resourceCreateWizard: {
+            common: {
+                validations: {
+                    required: "This is a required field."
+                }
+            },
+            url: {
+                validations: {
+                    invalid: "Invalid URL. Please enter a valid URL."
+                }
+            }
         }
     },
     notifications: {

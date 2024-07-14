@@ -225,7 +225,7 @@ export class Config {
                 I18nConstants.IDP_NAMESPACE,
                 I18nConstants.API_RESOURCES_NAMESPACE,
                 I18nConstants.AI_NAMESPACE,
-                I18nConstants.EXTENSION_TEMPLATES_NAMESPACE,
+                I18nConstants.TEMPLATE_CORE_NAMESPACE,
                 I18nConstants.APPLICATION_TEMPLATES_NAMESPACE
             ],
             preload: []

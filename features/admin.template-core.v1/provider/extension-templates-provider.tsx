@@ -128,7 +128,7 @@ const ExtensionTemplatesProvider: FunctionComponent<
             dispatch(addAlert({
                 description: extensionTemplatesFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("extensionTemplates:notifications." +
+                message: t("templateCore:notifications." +
                     "fetchTemplates.error.message")
             }));
 
@@ -136,10 +136,10 @@ const ExtensionTemplatesProvider: FunctionComponent<
         }
 
         dispatch(addAlert({
-            description: t("extensionTemplates:notifications.fetchTemplates" +
+            description: t("templateCore:notifications.fetchTemplates" +
                 ".genericError.description", { type: resourceType }),
             level: AlertLevels.ERROR,
-            message: t("extensionTemplates:notifications." +
+            message: t("templateCore:notifications." +
                 "fetchTemplates.genericError.message")
         }));
     }, [ extensionTemplatesFetchRequestError ]);

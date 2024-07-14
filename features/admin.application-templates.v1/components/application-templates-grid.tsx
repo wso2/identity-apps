@@ -278,12 +278,12 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={
-                        t("applications:placeholders.emptyApplicationTypeList.title")
+                        t("applicationTemplates:placeholders.emptyApplicationTypeList.title")
                     }
                     subtitle={ [
-                        t("applications:placeholders.emptyApplicationTypeList" +
+                        t("applicationTemplates:placeholders.emptyApplicationTypeList" +
                             ".subtitles.0"),
-                        t("applications:placeholders.emptyApplicationTypeList" +
+                        t("applicationTemplates:placeholders.emptyApplicationTypeList" +
                             ".subtitles.1")
                     ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }

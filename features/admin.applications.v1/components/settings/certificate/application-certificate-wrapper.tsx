@@ -79,7 +79,6 @@ interface ApplicationWrapperCertificatesPropsInterface extends TestableComponent
     readOnly: boolean;
     triggerSubmit?: boolean;
     canDiscardCertificate?: () => boolean;
-    hideDivider?: boolean;
 }
 
 /**
@@ -107,7 +106,6 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         updateCertFinalValue,
         updateCertType,
         canDiscardCertificate,
-        hideDivider,
         ["data-testid"]: testId
     } = props;
 
@@ -291,13 +289,9 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                     submitState={ triggerSubmit }
                 >
                     <Grid.Row columns={ 1 }>
-                        {
-                            !hideDivider && (
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Divider/>
-                                </Grid.Column>
-                            )
-                        }
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Divider/>
+                        </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Heading as="h4">
                                 {

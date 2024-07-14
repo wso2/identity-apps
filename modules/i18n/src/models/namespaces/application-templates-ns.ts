@@ -26,7 +26,7 @@ export interface applicationTemplatesNS {
             displayName: string;
             description: string;
         };
-    },
+    };
     notifications: {
         fetchTemplateMetadata: {
             error: {
@@ -48,5 +48,14 @@ export interface applicationTemplatesNS {
                 description: string;
             };
         };
-    }
+    };
+    placeholders: {
+        emptyApplicationTypeList: {
+            title: string;
+            subtitles: {
+                0: string;
+                1: string;
+            };
+        };
+    };
 }

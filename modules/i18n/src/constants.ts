@@ -311,5 +311,5 @@ export class I18nModuleConstants {
      * @type {string}
      * @default
      */
-    public static readonly EXTENSION_TEMPLATES_NAMESPACE: string = "extensionTemplates";
+    public static readonly TEMPLATE_CORE_NAMESPACE: string = "templateCore";
 }

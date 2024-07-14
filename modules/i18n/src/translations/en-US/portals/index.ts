@@ -58,5 +58,5 @@ export * from "./applications";
 export * from "./idp";
 export * from "./api-resources";
 export * from "./ai";
-export * from "./extension-templates";
+export * from "./template-core";
 export * from "./application-templates";

@@ -254,7 +254,7 @@ export class I18nConstants {
     /**
     * Extension Templates namespace.
     */
-    public static readonly EXTENSION_TEMPLATES_NAMESPACE: string = I18nModuleConstants.EXTENSION_TEMPLATES_NAMESPACE;
+    public static readonly TEMPLATE_CORE_NAMESPACE: string = I18nModuleConstants.TEMPLATE_CORE_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -303,7 +303,7 @@ export class I18nConstants {
         [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ],
         [ I18nConstants.AI_NAMESPACE, "portals" ],
         [ I18nConstants.APPLICATION_TEMPLATES_NAMESPACE, "portals" ],
-        [ I18nConstants.EXTENSION_TEMPLATES_NAMESPACE, "portals" ]
+        [ I18nConstants.TEMPLATE_CORE_NAMESPACE, "portals" ]
     ]);
 
     /**

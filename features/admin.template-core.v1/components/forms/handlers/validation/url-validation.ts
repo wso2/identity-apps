@@ -28,7 +28,7 @@ const validateURL = (url: string): string | null => {
     const isValidURL: boolean = URLUtils.isURLValid(url);
 
     if (!isValidURL) {
-        return "applications:forms.dynamicApplicationCreateWizard.domainName.validations.invalid";
+        return "templateCore:forms.resourceCreateWizard.domainName.validations.invalid";
     }
 
     return null;

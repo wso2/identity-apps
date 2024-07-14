@@ -2201,18 +2201,6 @@ export const applications: ApplicationsNS = {
                 },
                 urlDeepLinkError: "The entered URL is not a deep link."
             }
-        },
-        dynamicApplicationCreateWizard: {
-            common: {
-                validations: {
-                    required: "This is a required field."
-                }
-            },
-            domainName: {
-                validations: {
-                    invalid: "Invalid domain name. Please enter a valid domain name."
-                }
-            }
         }
     },
     helpPanel: {
@@ -2676,16 +2664,6 @@ export const applications: ApplicationsNS = {
                 message: "Retrieval successful"
             }
         },
-        fetchTemplateMetadata: {
-            error: {
-                description: "{{description}}",
-                message: "Retrieval error"
-            },
-            genericError: {
-                description: "An error occurred while retrieving application template meta data.",
-                message: "Something went wrong"
-            }
-        },
         fetchTemplate: {
             error: {
                 description: "{{description}}",
@@ -2807,20 +2785,6 @@ export const applications: ApplicationsNS = {
                 message: "Update successful"
             }
         },
-        syncApplication: {
-            error: {
-                description: "{{description}}",
-                message: "Sync error"
-            },
-            genericError: {
-                description: "Failed to sync the application.",
-                message: "Something went wrong"
-            },
-            success: {
-                description: "Successfully synced the application.",
-                message: "Sync successful"
-            }
-        },
         disableApplication: {
             error: {
                 description: "{{description}}",
@@ -2930,13 +2894,6 @@ export const applications: ApplicationsNS = {
         }
     },
     placeholders: {
-        emptyApplicationTypeList: {
-            subtitles: {
-                0: "There are currently no application types available.",
-                1: "for configuration."
-            },
-            title: "No application types found"
-        },
         emptyAttributesList: {
             action: "Add User Attribute",
             subtitles: "There are no user attributes selected for the application at the moment.",
