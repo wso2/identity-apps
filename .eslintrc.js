@@ -220,6 +220,7 @@ module.exports = {
     plugins: [
         "import",
         "eslint-plugin-tsdoc",
+        "eslint-plugin-react-compiler",
         "header"
     ],
     root: true,
@@ -322,6 +323,7 @@ module.exports = {
         "object-curly-spacing": [ "warn", "always" ],
         "padding-line-between-statements": [ ...LINE_PADDING_RULES ],
         quotes: [ "warn", "double" ],
+        "react-compiler/react-compiler": "error",
         "react-hooks/exhaustive-deps": [ "off" ],
         "react/display-name": 0,
         "react/jsx-curly-spacing": [
