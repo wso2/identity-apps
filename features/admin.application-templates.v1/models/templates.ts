@@ -108,6 +108,11 @@ export interface ApplicationEditTabMetadataInterface {
      * Guide content for application editing section.
      */
     guide?: string;
+    /**
+     * Component IDs that need to be hidden from a predefined tab.
+     * This is only effective if the `contentType` is not defined.
+     */
+    hiddenComponents?: string[];
 }
 
 /**
