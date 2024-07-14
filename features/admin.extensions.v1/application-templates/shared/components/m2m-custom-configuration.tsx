@@ -168,10 +168,6 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
         tokenRequest = tokenRequest.concat(` -d 'scope=${copyScopesValue}'`);
     }
 
-    const isScopeAvailable = (value: string) => {
-        return value != null && value.trim() !== "";
-    };
-
     const renderConfigurationFields = (): ReactElement => {
         return (
             <>
@@ -254,7 +250,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                         className="mt-2"
                                     />
                                 </Form.Field>
-                                { isScopeAvailable(copyScopesValue) && (
+                                { !!copyScopesValue && (
                                     <Form.Field>
                                         <label>
                                             {
