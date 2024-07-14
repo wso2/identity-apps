@@ -204,7 +204,6 @@ jobs:
         id: upload-wso2is-core-coverage
         uses: codecov/codecov-action@v3
         with:
-          files: ./core.json
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./modules/core/coverage/coverage-final.json
           flags: '@wso2is/core'
