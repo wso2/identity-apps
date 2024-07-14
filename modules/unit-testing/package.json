@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@wso2is/unit-testing",
   "version": "0.1.0",
   "description": "Reusable module to be used for Unit Testing the Identity Server front-ends.",
