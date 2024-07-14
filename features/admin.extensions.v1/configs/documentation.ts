@@ -71,6 +71,11 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         manageOIDCScopes: undefined
                     },
                     common: {
+                        advanced: {
+                            trustedApps: {
+                                learnMore: undefined
+                            }
+                        },
                         signInMethod: {
                             conditionalAuthenticaion: {
                                 ai: {

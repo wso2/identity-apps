@@ -1,5 +1,79 @@
 # @wso2is/features
 
+## 2.21.27
+
+### Patch Changes
+
+- Updated dependencies [[`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146)]:
+  - @wso2is/react-components@2.2.14
+  - @wso2is/i18n@2.5.1
+  - @wso2is/dynamic-forms@2.0.72
+  - @wso2is/form@2.0.73
+
+## 2.21.26
+
+### Patch Changes
+
+- Updated dependencies [[`a7d0c020b04ba382733280407fc202910f4fc8f4`](https://github.com/wso2/identity-apps/commit/a7d0c020b04ba382733280407fc202910f4fc8f4)]:
+  - @wso2is/i18n@2.5.0
+
+## 2.21.25
+
+### Patch Changes
+
+- Updated dependencies [[`f1d9b7ccbe14f1a42b6d3360da664acf39ba6909`](https://github.com/wso2/identity-apps/commit/f1d9b7ccbe14f1a42b6d3360da664acf39ba6909)]:
+  - @wso2is/theme@2.0.89
+  - @wso2is/react-components@2.2.13
+  - @wso2is/dynamic-forms@2.0.71
+  - @wso2is/form@2.0.72
+
+## 2.21.24
+
+### Patch Changes
+
+- Updated dependencies [[`82bbbf2303853076342ef80ef7d987bed16df01f`](https://github.com/wso2/identity-apps/commit/82bbbf2303853076342ef80ef7d987bed16df01f)]:
+  - @wso2is/i18n@2.4.8
+
+## 2.21.23
+
+### Patch Changes
+
+- Updated dependencies [[`a533e58d21d759f0a27d804f17b042a2819a8955`](https://github.com/wso2/identity-apps/commit/a533e58d21d759f0a27d804f17b042a2819a8955)]:
+  - @wso2is/i18n@2.4.7
+
+## 2.21.22
+
+### Patch Changes
+
+- Updated dependencies [[`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394)]:
+  - @wso2is/theme@2.0.88
+  - @wso2is/react-components@2.2.12
+  - @wso2is/dynamic-forms@2.0.70
+  - @wso2is/form@2.0.71
+
+## 2.21.21
+
+### Patch Changes
+
+- [#6235](https://github.com/wso2/identity-apps/pull/6235) [`90fb2f6f065d391e2fa4f68b7ea0c466a1ed469e`](https://github.com/wso2/identity-apps/commit/90fb2f6f065d391e2fa4f68b7ea0c466a1ed469e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove App Insights
+
+## 2.21.20
+
+### Patch Changes
+
+- [#6499](https://github.com/wso2/identity-apps/pull/6499) [`85600f55bcb1db924b28681c903a4e98b9558116`](https://github.com/wso2/identity-apps/commit/85600f55bcb1db924b28681c903a4e98b9558116) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade workspace to nx v15
+
+- Updated dependencies [[`85600f55bcb1db924b28681c903a4e98b9558116`](https://github.com/wso2/identity-apps/commit/85600f55bcb1db924b28681c903a4e98b9558116)]:
+  - @wso2is/react-components@2.2.11
+  - @wso2is/access-control@3.0.11
+  - @wso2is/dynamic-forms@2.0.69
+  - @wso2is/validation@2.0.6
+  - @wso2is/forms@2.0.41
+  - @wso2is/theme@2.0.87
+  - @wso2is/core@2.0.51
+  - @wso2is/form@2.0.70
+  - @wso2is/i18n@2.4.6
+
 ## 2.21.19
 
 ### Patch Changes

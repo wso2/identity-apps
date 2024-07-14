@@ -9,13 +9,6 @@
         "origin": "https://localhost:9000",
         "path": "/getting-started"
     },
-    "extensions": {
-        "applicationInsightsCookieDomain": "",
-        "applicationInsightsCookiePostfix": "",
-        "applicationInsightsEnabled": "false",
-        "applicationInsightsInstrumentationKey": "",
-        "applicationInsightsProxyEndpoint": ""
-    },
     "idpConfigs": {
         "authorizeEndpointURL": "${serverOrigin}/oauth2/authorize",
         "clockTolerance": 300,

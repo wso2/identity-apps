@@ -16,25 +16,21 @@
  * under the License.
  */
 
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../test-configs/utils";
 import AuthenticationFlowModeSwitchDisclaimerModal, {
     AuthenticationFlowModeSwitchDisclaimerModalPropsInterface
 } from "../authentication-flow-mode-switch-disclaimer-modal";
 
-describe.skip("AuthenticationFlowModeSwitchDisclaimerModal", () => {
+describe("AuthenticationFlowModeSwitchDisclaimerModal", () => {
     const defaultProps: AuthenticationFlowModeSwitchDisclaimerModalPropsInterface = {
         mode: {
             id: 0,
             label: "Visual Editor"
-        }
-        // `open` prop needs to be passed here to make this test work, but for some reason
-        // TypeScript doesn't allow it here.
-        // There are other places where `open` prop has successfully been used though.
-        // Eg: features/admin.authentication-flow-builder.v1/components/authentication-flow-builder.tsx
-        // open: true
+        },
+        open: true
     };
 
     it("renders the AuthenticationFlowModeSwitchDisclaimerModal component", () => {

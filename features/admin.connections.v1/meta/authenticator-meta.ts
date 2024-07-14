@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -234,7 +234,9 @@ export class AuthenticatorMeta {
         return {
             [ AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/email-otp/quick-start"))
+                    quickStart: lazy(() => import(
+                        "../components/authenticators/email-otp/quick-start"
+                    ))
                 },
                 isComingSoon: false,
                 isEnabled: true,
@@ -242,7 +244,9 @@ export class AuthenticatorMeta {
             },
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/sms-otp/quick-start"))
+                    quickStart: lazy(() => import(
+                        "../components/authenticators/sms-otp/quick-start"
+                    ))
                 },
                 isComingSoon: false,
                 isEnabled: true,
@@ -250,7 +254,9 @@ export class AuthenticatorMeta {
             },
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/totp/quick-start"))
+                    quickStart: lazy(() => import(
+                        "../components/authenticators/totp/quick-start"
+                    ))
                 },
                 isComingSoon: false,
                 isEnabled: true,
@@ -258,15 +264,19 @@ export class AuthenticatorMeta {
             },
             [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/fido/quick-start"))
+                    quickStart: lazy(() => import(
+                        "../components/authenticators/fido/quick-start"
+                    ))
                 },
                 isComingSoon: false,
                 isEnabled: true,
-                useAuthenticatorsAPI: true
+                useAuthenticatorsAPI: false
             },
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: {
                 content: {
-                    quickStart: lazy(() => import("../components/authenticators/magic-link/quick-start"))
+                    quickStart: lazy(() => import(
+                        "../components/authenticators/magic-link/quick-start"
+                    ))
                 },
                 isComingSoon: false,
                 isEnabled: true,

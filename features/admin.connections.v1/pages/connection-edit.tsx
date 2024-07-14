@@ -239,8 +239,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         const path: string[] = location.pathname.split("/");
         const id: string = path[ path.length - 1 ];
 
-        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
-            .authenticators, id);
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
+            AuthenticatorMeta.getAuthenticators(), id);
 
         if (authenticatorConfig?.isEnabled) {
             getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
@@ -445,7 +445,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
          * @param cb - Callback.
          * @returns Promise containing authenticator details.
          */
-        const getAuthenticatorDetails = <T extends unknown>(cb: (id: string) => Promise<T>) => {
+        const getAuthenticatorDetails = <T,>(cb: (id: string) => Promise<T>) => {
 
             cb(id)
                 .then((response: T) => {
@@ -525,8 +525,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
-            .authenticators, id);
+
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
+            AuthenticatorMeta.getAuthenticators(), id);
 
         getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
     };

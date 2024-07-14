@@ -1368,12 +1368,14 @@ export const extensions: Extensions = {
                 header: "Danger Zone",
                 revertBranding: {
                     actionTitle: "Revert",
+                    disableHint: "Please select an application from the list above to revert the branding preferences.",
                     header: "Revert to default",
                     subheader: "Once the branding preferences are reverted, they can't be recovered and your " +
                         "users will see {{ productName }}'s default branding."
                 },
                 unpublishBranding: {
                     actionTitle: "Unpublish",
+                    disableHint: "Please select an application from the list above to unpublish the branding preferences.",
                     header: "Unpublish branding preferences",
                     subheader: "You can temporarily switch to {{ productName }}'s default branding by unpublishing. You can always switch back by saving your branding preferences again."
                 }
@@ -1974,7 +1976,15 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
+                application: "Application",
+                applicationBrandingtitle: "Application Branding",
+                applicationBrandingDescription: "Customize consumer-facing user interfaces of applications.",
+                applicationListWarning: "Please select an application from the list above to customize the branding preferences.",
+                backButtonText: "Go back to Application Settings",
                 description: "Customize consumer-facing user interfaces of applications in your organization.",
+                organization: "Organization",
+                organizationBrandingtitle: "Organization Branding",
+                selectApplication: "Select Application",
                 title: "Branding"
             },
             pageResolution: {
@@ -2786,6 +2796,20 @@ export const extensions: Extensions = {
                         1: "Please try a different time range."
                     },
                     title: "No logs available"
+                },
+                startTimeGreaterThanCurrentError: {
+                    subtitle: {
+                        0: "Couldn't fetch logs.",
+                        1: "Selected start time should be before the current time."
+                    },
+                    title: "Invalid time range"
+                },
+                endTimeGreaterThanStartTimeError: {
+                    subtitle: {
+                        0: "Couldn't fetch logs.",
+                        1: "Selected start time should be before the end time."
+                    },
+                    title: "Invalid time range"
                 }
             },
             pageHeader: {
@@ -4137,11 +4161,26 @@ export const extensions: Extensions = {
             }
         },
         invite: {
+            assignAdminUser: {
+                confirmationModal: {
+                    assertionHint: "Assign Administrator role to the user.",
+                    header: "Assign Administrator Role",
+                    message: "The user already exists as a collaborator. Do you want to assign them to Administrator role?"
+                }
+            },
             notifications: {
                 sendInvite: {
+                    inviteAlreadyExistsError: {
+                        description: "The invite for the user {{userName}} already exists.",
+                        message: "Unable to send invite"
+                    },
                     limitReachError: {
                         description: "Maximum number of allowed collaborator users have been reached.",
                         message: "Error while sending the invitation"
+                    },
+                    userAlreadyExistsError: {
+                        description: "The user {{userName}} already exists.",
+                        message: "Unable to send invite"
                     }
                 }
             }

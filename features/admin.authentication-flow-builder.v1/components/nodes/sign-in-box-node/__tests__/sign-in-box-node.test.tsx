@@ -17,12 +17,18 @@
  */
 
 import UserPreferenceProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
+import { ReactFlowProvider } from "reactflow";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../../test-configs/utils";
+import AuthenticationFlowProvider from "../../../../providers/authentication-flow-provider";
 import SignInBoxNode, { SignInBoxNodePropsInterface } from "../sign-in-box-node";
 
+/**
+ * Running this spec throws error `Unable to find an element by:[data-componentid="sign-in-box-node-step-0"]`
+ * Hence skipped until fixed.
+*/
 describe.skip("SignInBoxNode", () => {
     const defaultProps: SignInBoxNodePropsInterface = {
         data: {
@@ -48,11 +54,26 @@ describe.skip("SignInBoxNode", () => {
     it("renders the SignInBoxNode component", () => {
         render(
             <UserPreferenceProvider>
-                <SignInBoxNode { ...defaultProps } />
+                <AuthenticationFlowProvider
+                    application={ {
+                        name: "Sample App"
+                    } }
+                    isSystemApplication={ false }
+                    authenticators={ [] }
+                    hiddenAuthenticators={ [] }
+                    onAuthenticatorsRefetch={ jest.fn() }
+                    onUpdate={ jest.fn() }
+                    isLoading={ false }
+                    readOnly={ false }
+                    authenticationSequence={ {} }>
+                    <ReactFlowProvider>
+                        <SignInBoxNode { ...defaultProps } />
+                    </ReactFlowProvider>
+                </AuthenticationFlowProvider>
             </UserPreferenceProvider>
             , { allowedScopes: fullPermissions });
 
-        const signInBoxNode: Element = screen.getByTestId("sign-in-box-node");
+        const signInBoxNode: Element = screen.getByTestId("sign-in-box-node-step-0");
 
         expect(signInBoxNode).toBeInTheDocument();
     });

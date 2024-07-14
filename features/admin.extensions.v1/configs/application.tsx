@@ -125,7 +125,8 @@ export const applicationConfig: ApplicationConfig = {
         showMyAccount: true,
         showMyAccountStatus: true,
         showReturnAuthenticatedIdPs: true,
-        showSaaS: true
+        showSaaS: true,
+        showTrustedAppConsentWarning: false
     },
     allowedGrantTypes: {
         // single page app template
@@ -220,28 +221,29 @@ export const applicationConfig: ApplicationConfig = {
     },
     editApplication: {
         extendTabs: false,
-        getActions: (clientId: string, tenant: string, testId: string) => {
+        getActions: (applicationId: string, clientId: string, tenant: string, testId: string) => {
 
             const asgardeoLoginPlaygroundURL: string = window[ "AppUtils" ]?.getConfig()?.extensions?.asgardeoTryItURL;
 
-            return (
-                clientId === getTryItClientId(tenant)
-                    ? (
-                        <PrimaryButton
-                            data-tourid="button"
-                            onClick={ (): void => {
-                                EventPublisher.getInstance().publish("tryit-try-login", {
-                                    "client-id": clientId
-                                });
-                                window.open(asgardeoLoginPlaygroundURL+"?client_id="+clientId+"&org="+tenant);
-                            } }
-                            data-testid={ `${ testId }-playground-button` }
-                        >
-                            Try Login
-                            <Icon name="arrow right"/>
-                        </PrimaryButton>
-                    ): null
-            );
+            if (clientId === getTryItClientId(tenant)) {
+                return (
+                    <PrimaryButton
+                        data-tourid="button"
+                        onClick={ (): void => {
+                            EventPublisher.getInstance().publish("tryit-try-login", {
+                                "client-id": clientId
+                            });
+                            window.open(asgardeoLoginPlaygroundURL+"?client_id="+clientId+"&org="+tenant);
+                        } }
+                        data-testid={ `${ testId }-playground-button` }
+                    >
+                        Try Login
+                        <Icon name="arrow right"/>
+                    </PrimaryButton>
+                );
+            }
+
+            return null;
         },
         getOveriddenTab: (clientId: string, tabName: ApplicationTabTypes,
             defaultComponent: ReactElement, appName: string, appId: string, tenantDomain: string) => {

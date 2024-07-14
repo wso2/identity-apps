@@ -102,6 +102,11 @@ export class I18nModuleConstants {
     public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = "jwtPrivateKeyConfiguration";
 
     /**
+     * Impersonation namespace.
+     */
+    public static readonly IMPERSONATION_NAMESPACE: string = "impersonation";
+
+    /**
      * transferList namespace.
      */
     public static readonly TRANSFER_LIST_NAMESPACE: string = "transferList";

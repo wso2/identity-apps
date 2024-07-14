@@ -1,5 +1,37 @@
 # @wso2is/dynamic-forms
 
+## 2.0.72
+
+### Patch Changes
+
+- Updated dependencies [[`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146)]:
+  - @wso2is/react-components@2.2.14
+
+## 2.0.71
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.2.13
+
+## 2.0.70
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.2.12
+
+## 2.0.69
+
+### Patch Changes
+
+- [#6499](https://github.com/wso2/identity-apps/pull/6499) [`85600f55bcb1db924b28681c903a4e98b9558116`](https://github.com/wso2/identity-apps/commit/85600f55bcb1db924b28681c903a4e98b9558116) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade workspace to nx v15
+
+- Updated dependencies [[`85600f55bcb1db924b28681c903a4e98b9558116`](https://github.com/wso2/identity-apps/commit/85600f55bcb1db924b28681c903a4e98b9558116)]:
+  - @wso2is/react-components@2.2.11
+  - @wso2is/validation@2.0.6
+  - @wso2is/core@2.0.51
+
 ## 2.0.68
 
 ### Patch Changes

@@ -132,6 +132,14 @@ interface RefreshTokenConfigurationInterface {
     renewRefreshToken?: boolean;
 }
 
+/**
+ * Interface for Subject Token Configuration.
+ */
+interface SubjectTokenConfigurationInterface {
+    applicationSubjectTokenExpiryInSeconds?: number;
+    enable?: boolean;
+}
+
 interface IdTokenEncryptionConfigurationInterface {
     enabled?: boolean;
     algorithm?: string;
@@ -175,6 +183,7 @@ export interface OIDCDataInterface {
     requestObject?: RequestObjectConfigurationInterface;
     accessToken?: AccessTokenConfigurationInterface;
     refreshToken?: RefreshTokenConfigurationInterface;
+    subjectToken?: SubjectTokenConfigurationInterface;
     idToken?: IdTokenConfigurationInterface;
     logout?: OIDCLogoutConfigurationInterface;
     validateRequestObjectSignature?: boolean;

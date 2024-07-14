@@ -1,5 +1,46 @@
 # @wso2is/identity-apps-core
 
+## 2.4.11
+
+### Patch Changes
+
+- Updated dependencies [[`f1d9b7ccbe14f1a42b6d3360da664acf39ba6909`](https://github.com/wso2/identity-apps/commit/f1d9b7ccbe14f1a42b6d3360da664acf39ba6909)]:
+  - @wso2is/theme@2.0.89
+
+## 2.4.10
+
+### Patch Changes
+
+- Updated dependencies [[`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394)]:
+  - @wso2is/theme@2.0.88
+
+## 2.4.9
+
+### Patch Changes
+
+- [#6528](https://github.com/wso2/identity-apps/pull/6528) [`6e3537150aa175a4c25b1d59693add6b0cd0a0f7`](https://github.com/wso2/identity-apps/commit/6e3537150aa175a4c25b1d59693add6b0cd0a0f7) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Remove auth param waitingConfigs from multioption uri and improve internalWait.jsp
+
+## 2.4.8
+
+### Patch Changes
+
+- [#6539](https://github.com/wso2/identity-apps/pull/6539) [`7cdf956752c138f47a65c2988a0b67add5c27483`](https://github.com/wso2/identity-apps/commit/7cdf956752c138f47a65c2988a0b67add5c27483) Thanks [@Avarjana](https://github.com/Avarjana)! - Add SSO authenticator logo
+
+## 2.4.7
+
+### Patch Changes
+
+- [#6499](https://github.com/wso2/identity-apps/pull/6499) [`85600f55bcb1db924b28681c903a4e98b9558116`](https://github.com/wso2/identity-apps/commit/85600f55bcb1db924b28681c903a4e98b9558116) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade workspace to nx v15
+
+- Updated dependencies [[`85600f55bcb1db924b28681c903a4e98b9558116`](https://github.com/wso2/identity-apps/commit/85600f55bcb1db924b28681c903a4e98b9558116)]:
+  - @wso2is/theme@2.0.87
+
+## 2.4.6
+
+### Patch Changes
+
+- [#6514](https://github.com/wso2/identity-apps/pull/6514) [`efc9b41a20348811672b3877b1ba51880708b8ed`](https://github.com/wso2/identity-apps/commit/efc9b41a20348811672b3877b1ba51880708b8ed) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Provide the capability to add custom filter and listener configurations through deployment.toml for authentication endpoint
+
 ## 2.4.5
 
 ### Patch Changes

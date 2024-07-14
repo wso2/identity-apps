@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/core",
-    "version": "2.0.50",
+    "version": "2.0.51",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
     "keywords": [
         "WSO2",
@@ -78,6 +78,7 @@
         "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "jest --passWithNoTests",
+        "test:coverage": "jest --passWithNoTests --coverage --collect-coverage",
         "test:watch": "pnpm test -- --watch",
         "typecheck": "pnpm compile"
     },

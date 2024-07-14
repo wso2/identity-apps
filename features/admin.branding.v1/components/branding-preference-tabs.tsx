@@ -58,7 +58,7 @@ import { BrandingPreferencePreview } from "./preview";
 import ScreenDropdown from "./screen-dropdown";
 import ScreenVariationDropdown from "./screen-variation-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import { BrandingPreferencesConstants } from "../constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../meta";
@@ -141,6 +141,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const {
         activeCustomTextConfigurationMode,
         resetAllCustomTextPreference,
+        brandingMode,
         resetSelectedPreviewScreenVariations,
         selectedLocale,
         selectedScreen,
@@ -376,7 +377,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
 
     const TextPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="text-tab" attached="bottom" data-componentid="branding-preference-text-tab">
-            <CustomText readOnly={ readOnly } />
+            <CustomText readOnly={ readOnly || brandingMode === BrandingModes.APPLICATION } />
             <StickyTabPaneActionPanel
                 formRef={ formRef }
                 saveButton={ {
@@ -451,14 +452,24 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         panes.push({
             "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
             menuItem: (
-                <Menu.Item key="text">
+                <Menu.Item
+                    key="text"
+                    disabled={ brandingMode === BrandingModes.APPLICATION }
+                >
                     { t("branding:tabs.text.label") }
-                    { isSAASDeployment && (
+                    { isSAASDeployment && brandingMode !== BrandingModes.APPLICATION && (
                         <Chip
                             size="small"
                             sx={ { marginLeft: 1 } }
                             label={ t("common:beta").toUpperCase() }
                             className="oxygen-chip-beta"
+                        />
+                    ) }
+                    { brandingMode === BrandingModes.APPLICATION && (
+                        <Chip
+                            size="small"
+                            sx={ { marginLeft: 1 } }
+                            label={ t("common:comingSoon") }
                         />
                     ) }
                 </Menu.Item>

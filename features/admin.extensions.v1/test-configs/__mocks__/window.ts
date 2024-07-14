@@ -62,8 +62,8 @@ if (commonConfig?.useExtensionTestConfig) {
                 clientOriginWithTenant: "https://console.wso2iam.io/t/testorg",
                 debug: false,
                 developerApp: {
-                    basePath: "/t/testorg/develop",
-                    displayName: "Develop",
+                    basePath: "/t/testorg/app",
+                    displayName: "app",
                     path: "/t/testorg/develop/applications"
                 },
                 docSiteUrl: "https://is.docs.wso2.com/",
@@ -79,11 +79,6 @@ if (commonConfig?.useExtensionTestConfig) {
                     structureFileURL: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
                 },
                 extensions: {
-                    applicationInsightsEnabled: false,
-                    applicationInsightsCookieDomain: "",
-                    applicationInsightsCookiePostfix: "",
-                    applicationInsightsInstrumentationKey: "",
-                    applicationInsightsProxyEndpoint: "",
                     collaboratorUsernameRegex: "^[\\u00C0-\\u00FFa-zA-Z0-9.+\\-_]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,10}$",
                     community: "https://wso2iem-en-community.insided.com/ssoproxy/login?ssoType=openidconnect&returnUrl=https://wso2iem-en-community.insided.com/asgardeo-1",
                     feedbackEndPoint: "https://dev.portal.asgardeo.io/api/cloud/v1/feedback/",
@@ -116,7 +111,7 @@ if (commonConfig?.useExtensionTestConfig) {
                     logout: "/t/testorg/logout"
                 },
                 serverOrigin: "https://dev.api.asgardeo.io",
-                serverOriginWithTenant: "https://dev.api.asgardeo.io/t/testorg",
+                serverOriginWithTenant: "https://api.wso2iam.io/t/testorg",
                 session: {
                     sessionRefreshTimeOut: 300,
                     userIdleWarningTimeOut: 1740,

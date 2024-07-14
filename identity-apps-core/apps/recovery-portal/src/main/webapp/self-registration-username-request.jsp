@@ -91,6 +91,7 @@
     String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
     String SSO_AUTHENTICATOR = "OrganizationAuthenticator";
+    String SSO_AUTHENTICATOR_NAME = "SSO";
     String commonauthURL = "../commonauth";
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -549,6 +550,10 @@
                         String EXTERNAL_CONNECTION_PREFIX = "sign in with";
                         if (StringUtils.startsWithIgnoreCase(name, EXTERNAL_CONNECTION_PREFIX)) {
                             displayName = name.substring(EXTERNAL_CONNECTION_PREFIX.length());
+                        }
+                        // If IdP name is "SSO", need to handle as special case.
+                        if (StringUtils.equalsIgnoreCase(name, SSO_AUTHENTICATOR_NAME)) {
+                            imageURL = "libs/themes/default/assets/images/identity-providers/sso.svg";
                         }
 
                         if (StringUtils.equals(type,GOOGLE_AUTHENTICATOR)) {

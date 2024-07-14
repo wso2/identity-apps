@@ -86,6 +86,11 @@ interface ApplicationsDocumentationLinksInterface {
             manageOIDCScopes: string;
         },
         common: {
+            advanced: {
+                trustedApps: {
+                    learnMore: string
+                }
+            },
             signInMethod: {
                 learnMore: string;
                 conditionalAuthenticaion: {

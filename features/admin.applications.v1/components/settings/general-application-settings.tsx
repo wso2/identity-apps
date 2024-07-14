@@ -104,7 +104,11 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
     /**
      * Application.
      */
-    application?: ApplicationInterface
+    application?: ApplicationInterface;
+    /**
+     * Is branding section hidden.
+     */
+    isBrandingSectionHidden?: boolean;
 }
 
 /**
@@ -124,7 +128,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         description,
         discoverability,
         featureConfig,
-        hiddenFields,
         imageUrl,
         accessUrl,
         isLoading,
@@ -133,6 +136,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         readOnly,
         isManagementApp,
         application,
+        isBrandingSectionHidden,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -375,7 +379,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             onSubmit={ handleFormSubmit }
                             imageUrl={ imageUrl }
                             accessUrl={ accessUrl }
-                            hiddenFields={ hiddenFields }
                             readOnly={
                                 readOnly
                                 || !hasRequiredScopes(
@@ -386,6 +389,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             hasRequiredScope={ hasRequiredScopes(
                                 featureConfig?.applications, featureConfig?.applications?.scopes?.update,
                                 allowedScopes) }
+                            isBrandingSectionHidden={ isBrandingSectionHidden }
                             data-testid={ `${ componentId }-form` }
                             isSubmitting={ isSubmitting }
                             isManagementApp={ isManagementApp }

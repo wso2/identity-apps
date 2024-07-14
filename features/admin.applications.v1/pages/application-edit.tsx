@@ -62,6 +62,7 @@ import {
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
+import "./application-edit.scss";
 
 /**
  * Prop types for the applications edit page component.
@@ -579,6 +580,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <>
                     {
                         applicationConfig.editApplication.getActions(
+                            application?.id,
                             inboundProtocolConfigs?.oidc?.clientId,
                             tenantDomain,
                             componentId

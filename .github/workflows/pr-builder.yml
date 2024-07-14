@@ -1,6 +1,6 @@
 # This workflow will build PRs submitted to the master branch.
 
-name: PR Builder
+name: 👷 PR Builder
 
 on:
   pull_request:
@@ -32,7 +32,6 @@ jobs:
         id: checkout
         uses: actions/checkout@v2.3.3
         with:
-          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
 
       - name: 🟢 Setup node
@@ -85,7 +84,7 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
-    if: ${{github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
+    if: ${{ github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -96,7 +95,6 @@ jobs:
         id: checkout
         uses: actions/checkout@v2.3.3
         with:
-          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
 
       - name: 🟢 Setup node
@@ -140,7 +138,7 @@ jobs:
         run: pnpm build:modules
 
       - name: ☄️ Check Type Errors
-        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --plain --target=typecheck --parallel=3
+        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --target=typecheck --parallel=3
 
   test:
     name: 👾 Unit Test (TESTING)
@@ -187,22 +185,45 @@ jobs:
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
-        run:  pnpm build:modules
+        run: pnpm build:modules
 
       - name: 🃏 Run Jest & Collect Coverage
         id: run-jest-test-and-coverage
-        # TODO: Update the command to "test:unit:coverage" once the coverage command related issues
-        # are sorted out
-        run: pnpm test:unit
+        run: pnpm test:unit:coverage
 
       - name: 🤖 Aggregate Test Coverage
-        # TODO: Enable this step once the coverage command related issues are fixed
-        if: false
         id: aggregate-coverage-reports
         run: |
           pnpm test:unit:coverage:aggregate
           pnpm nyc:text-summary-report
           pnpm nyc:text-report
+
+      - name: Upload `@wso2is/core` coverage reports to Codecov
+        id: upload-wso2is-core-coverage-1
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./modules/core/coverage/coverage-final.json
+          flags: '@wso2is/core'
+          verbose: true
+
+      - name: Upload `@wso2is/features` coverage reports to Codecov
+        id: upload-wso2is-features-coverage-1
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./features/coverage/coverage-final.json
+          flags: '@wso2is/features'
+          verbose: true
+
+      - name: Upload `@wso2is/i18n` coverage reports to Codecov
+        id: upload-wso2is-i18n-coverage-1
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./modules/i18n/coverage/coverage-final.json
+          flags: '@wso2is/i18n'
+          verbose: true
 
   build:
     name: 🚧 Build

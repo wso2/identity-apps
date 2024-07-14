@@ -11,6 +11,9 @@ End-user apps in WSO2 Identity Server
 
 ## Table of Content
 
+<!-- Execute: `node scripts/generate-markdown-toc.js README.md` -->
+<!-- TOC:START - Do not remove or modify this section -->
+
 - [Prerequisite](#prerequisite)
   * [Setup Development Environment](#setup-development-environment)
   * [Download WSO2 Identity Server](#download-wso2-identity-server)
@@ -20,8 +23,7 @@ End-user apps in WSO2 Identity Server
     + [Make Applications Editable](#make-applications-editable)
     + [Configure Callback URLs for System Applications (for WSO2 IS v7.0 and above)](#configure-callback-urls-for-system-applications-for-wso2-is-v70-and-above)
     + [Start the Identity Server](#start-the-identity-server)
-    + [Configure Callback URLs for System Applications (for WSO2 IS below v7.0)
-](#configure-callback-urls-for-system-applications-for-wso2-is-below-v70)
+    + [Configure Callback URLs for System Applications (for WSO2 IS below v7.0)](#configure-callback-urls-for-system-applications-for-wso2-is-below-v70)
 - [Build & Run](#build--run)
   * [Build](#build)
     + [For Console & My Account](#for-console--my-account)
@@ -38,6 +40,8 @@ End-user apps in WSO2 Identity Server
 - [Reporting Issues](#reporting-issues)
 - [License](#license)
 
+<!-- TOC:END -->
+
 ## Prerequisite
 
 ### Setup Development Environment
@@ -45,7 +49,7 @@ End-user apps in WSO2 Identity Server
 1. Install NodeJS LTS(Latest Stable Version) from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
 2. Install [pnpm](https://pnpm.io/).
 
-> Note: Only PNPM v9 and above are supported.
+> Note: Only PNPM v8 is supported at the moment.
 
     ```shell
     corepack prepare pnpm@latest --activate
