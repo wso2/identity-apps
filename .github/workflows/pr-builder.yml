@@ -32,7 +32,6 @@ jobs:
         id: checkout
         uses: actions/checkout@v2.3.3
         with:
-          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
 
       - name: 🟢 Setup node
@@ -85,7 +84,7 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
-    if: ${{github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
+    if: ${{ github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -96,7 +95,6 @@ jobs:
         id: checkout
         uses: actions/checkout@v2.3.3
         with:
-          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
 
       - name: 🟢 Setup node
@@ -187,7 +185,7 @@ jobs:
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
-        run:  pnpm build:modules
+        run: pnpm build:modules
 
       - name: 🃏 Run Jest & Collect Coverage
         id: run-jest-test-and-coverage
@@ -199,10 +197,10 @@ jobs:
           pnpm test:unit:coverage:aggregate
           pnpm nyc:text-summary-report
           pnpm nyc:text-report
-      
+
       - name: Upload `@wso2is/core` coverage reports to Codecov
-        id: upload-wso2is-core-coverage
-        uses: codecov/codecov-action@v3
+        id: upload-wso2is-core-coverage-1
+        uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./modules/core/coverage/coverage-final.json
@@ -210,8 +208,8 @@ jobs:
           verbose: true
 
       - name: Upload `@wso2is/features` coverage reports to Codecov
-        id: upload-wso2is-features-coverage
-        uses: codecov/codecov-action@v3
+        id: upload-wso2is-features-coverage-1
+        uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./features/coverage/coverage-final.json
@@ -219,8 +217,8 @@ jobs:
           verbose: true
 
       - name: Upload `@wso2is/i18n` coverage reports to Codecov
-        id: upload-wso2is-i18n-coverage
-        uses: codecov/codecov-action@v3
+        id: upload-wso2is-i18n-coverage-1
+        uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./modules/i18n/coverage/coverage-final.json
