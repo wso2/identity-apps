@@ -29,5 +29,5 @@ export class ExtensionTemplateConstants {
         displayName: "templateCore:categories.other.displayName",
         displayOrder: Infinity,
         id: "OTHER"
-    }
+    };
 }
