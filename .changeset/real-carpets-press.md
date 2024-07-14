@@ -1,5 +1,5 @@
 ---
-"@wso2is/myaccount": patch
+"@wso2is/myaccount": minor
 "@wso2is/core": patch
 "@wso2is/i18n": patch
 ---
