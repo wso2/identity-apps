@@ -1159,7 +1159,6 @@ export const myAccount: MyAccountNS = {
             actions: {
                 "deleteEmail": "メールアドレスを削除",
                 "deleteMobile": "モバイルを削除",
-                "makePrimary": "プライマリを作る",
                 "verifyEmail": "メールアドレスの確認",
                 "verifyMobile": "モバイルの確認"
             },
@@ -1348,12 +1347,6 @@ export const myAccount: MyAccountNS = {
                 },
                 "mobileVerification": {
                     "content": "この携帯電話番号は、2番目の因子認証が有効になったときにSMS OTPを送信し、ユーザー名/パスワードの回復の場合のリカバリコードを送信するために使用されます。この番号を更新するには、新しい番号に送信された検証コードを入力して、新しい番号を確認する必要があります。続行する場合は、[更新]をクリックします。"
-                },
-                primary: {
-                    header: "主要な"
-                },
-                verified: {
-                    header: "検証"
                 }
             },
             modals: {

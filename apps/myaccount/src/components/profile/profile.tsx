@@ -163,15 +163,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     // Multi-valued attribute delete confirmation modal related states.
     const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
         useState<{ value: string; schema?: ProfileSchema }>({ value: "" });
-    const [ showMVDeleteConfirmationModal, setShowMVDeleteConfirmationModal ] = useState<boolean>(false);
-    const handleMVDeleteModalClose: () => void = useCallback(() => {
-        setShowMVDeleteConfirmationModal(false);
+    const [ showMultiValuedFieldDeleteConfirmationModal, setShowMultiValuedFieldDeleteConfirmationModal ]
+        = useState<boolean>(false);
+    const handleMultiValuedFieldDeleteModalClose: () => void = useCallback(() => {
+        setShowMultiValuedFieldDeleteConfirmationModal(false);
         setSelectedAttributeInfo({ value: "" });
     }, []);
-    const handleMVDeleteConfirmClick: ()=> void = useCallback(() => {
+    const handleMultiValuedFieldDeleteConfirmClick: ()=> void = useCallback(() => {
         handleMultiValuedItemDelete(selectedAttributeInfo.schema, selectedAttributeInfo.value);
-        handleMVDeleteModalClose();
-    }, [ selectedAttributeInfo, handleMVDeleteModalClose ]);
+        handleMultiValuedFieldDeleteModalClose();
+    }, [ selectedAttributeInfo, handleMultiValuedFieldDeleteModalClose ]);
 
     /**
      * The following method gets the preference for verification on mobile and email update.
@@ -778,6 +779,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 }
             };
         }
+
         updateProfileInfo(data).then((response: AxiosResponse) => {
             if (response.status === 200) {
                 onAlertFired({
@@ -810,7 +812,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     /**
-     * Verify an email address or mobile number.
+     * Assign primary email address or mobile number the multi-valued attribute.
      *
      * @param schema - Schema of the attribute
      * @param value - Value of the attribute
@@ -1299,7 +1301,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         // Move the primary attribute value to the top of the list.
         if (!isEmpty(primaryAttributeValue)) {
-            attributeValueList = attributeValueList.filter((value: string) => value !== primaryAttributeValue);
+            attributeValueList = attributeValueList.filter((value: string) =>
+                !isEmpty(value)
+                && value !== primaryAttributeValue);
             attributeValueList.unshift(primaryAttributeValue);
         }
         const showAccordion: boolean = attributeValueList.length >= 1;
@@ -1356,7 +1360,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             : primaryAttributeSchema.maxLength ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                     }
                 />
-                <div className="accordion-container" hidden={ !showAccordion }>
+                <div hidden={ !showAccordion }>
                     <Accordion
                         elevation={ 0 }
                         className="oxygen-accordion"
@@ -1488,8 +1492,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                             <Icon name="star" />
                                                                         )
                                                                     }
-                                                                    header={ t("myAccount:components.profile." +
-                                                                        "actions.makePrimary") }
+                                                                    header={ t("common:makePrimary") }
                                                                     inverted
                                                                 />
                                                             </IconButton>
@@ -1497,7 +1500,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 size="small"
                                                                 onClick={ () => {
                                                                     setSelectedAttributeInfo({ schema, value });
-                                                                    setShowMVDeleteConfirmationModal(true);
+                                                                    setShowMultiValuedFieldDeleteConfirmationModal(
+                                                                        true
+                                                                    );
                                                                 } }
                                                                 disabled={ isSubmitting }
                                                             >
@@ -1973,7 +1978,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         />
                     )
                 }
-                header= { t("myAccount:components.profile.messages.verified.header") }
+                header= { t("common:verified") }
                 inverted
             />
         );
@@ -1992,7 +1997,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         />
                     )
                 }
-                header= { t("myAccount:components.profile.messages.primary.header") }
+                header= { t("common:primary") }
                 inverted
             />
         );
@@ -2205,7 +2210,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      *
      * @returns ReactElement Generates the delete confirmation modal.
      */
-    const generateMVDeleteConfirmationModal = (): JSX.Element => {
+    const generateDeleteConfirmationModal = (): JSX.Element => {
 
         if (isEmpty(selectedAttributeInfo?.value)) {
             return null;
@@ -2222,15 +2227,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         return (
             <ConfirmationModal
                 data-testid={ `${ testId }-confirmation-modal` }
-                onClose={ handleMVDeleteModalClose }
+                onClose={ handleMultiValuedFieldDeleteModalClose }
                 type="negative"
                 open={ Boolean(selectedAttributeInfo?.value) }
                 assertionHint={ t(`${translationKey}assertionHint`) }
                 assertionType="checkbox"
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ handleMVDeleteModalClose }
-                onPrimaryActionClick={ handleMVDeleteConfirmClick }
+                onSecondaryActionClick={ handleMultiValuedFieldDeleteModalClose }
+                onPrimaryActionClick={ handleMultiValuedFieldDeleteConfirmClick }
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
@@ -2243,7 +2248,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     { t(`${translationKey}content`) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-        );};
+        );
+    };
 
     /**
      * Check whether the profile url is readonly.
@@ -2384,7 +2390,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         )
                 }
             </SettingsSection>
-            { showMVDeleteConfirmationModal && generateMVDeleteConfirmationModal() }
+            { showMultiValuedFieldDeleteConfirmationModal && generateDeleteConfirmationModal() }
         </>
     );
 };

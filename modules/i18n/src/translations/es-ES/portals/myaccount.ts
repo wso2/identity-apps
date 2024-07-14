@@ -1160,7 +1160,6 @@ export const myAccount: MyAccountNS = {
             actions: {
                 deleteEmail: "Eliminar la dirección de correo electrónico",
                 deleteMobile: "Eliminar móvil",
-                makePrimary: "Hacer primaria",
                 verifyEmail: "Confirme su dirección de correo electrónico",
                 verifyMobile: "Verificar móvil"
             },
@@ -1349,12 +1348,6 @@ export const myAccount: MyAccountNS = {
                 },
                 "mobileVerification": {
                     "content": "Este número de teléfono móvil se usa para enviar SMS OTP cuando la autenticación de segundo factor está habilitada y para enviar códigos de recuperación en caso de recuperación de nombre de usuario/contraseña. Para actualizar este número, debe verificar el nuevo número ingresando el código de verificación enviado a su nuevo número. Haga clic en actualizar si desea continuar."
-                },
-                "primary": {
-                    "header": "Primary"
-                },
-                "verified": {
-                    "header": "Verified"
                 }
             },
             modals: {

@@ -1305,7 +1305,6 @@ export const myAccount: MyAccountNS = {
             actions: {
                 "deleteEmail": "Supprimer l'adresse e-mail",
                 "deleteMobile": "Supprimer le téléphone portable",
-                "makePrimary": "Faire principalement",
                 "verifyEmail": "Confirmez votre adresse email",
                 "verifyMobile": "Vérifiez le mobile"
             },
@@ -1504,12 +1503,6 @@ export const myAccount: MyAccountNS = {
                         "récupération d'un nom d'utilisateur / mot de passe. Pour mettre à jour ce numéro, " +
                         "vous devez vérifier le nouveau numéro en entrant le code de vérification envoyé à votre " +
                         "nouveau numéro. Cliquez sur mettre à jour si vous souhaitez continuer."
-                },
-                primary: {
-                    header: "Primaire"
-                },
-                verified: {
-                    header: "Vérifié"
                 }
             },
             modals: {

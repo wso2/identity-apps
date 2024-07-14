@@ -1159,7 +1159,6 @@ export const myAccount: MyAccountNS = {
             actions: {
                 "deleteEmail": "删除电子邮件地址",
                 "deleteMobile": "删除手机",
-                "makePrimary": "使主要",
                 "verifyEmail": "确认电子邮件地址",
                 "verifyMobile": "验证手"
             },
@@ -1348,12 +1347,6 @@ export const myAccount: MyAccountNS = {
                 },
                 "mobileVerification": {
                     "content": "当启用第二个因子身份验证并在用户名/密码恢复时发送恢复代码时，该手机号码用于发送SMS OTP。要更新此数字，您必须通过输入发送到您的新号码的验证代码来验证新号码。如果您愿意，请单击更新。"
-                },
-                primary: {
-                    header: "基本的"
-                },
-                verified: {
-                    header: "已验证"
                 }
             },
             modals: {

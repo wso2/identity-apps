@@ -767,7 +767,6 @@ export interface MyAccountNS {
         };
         profile: {
             actions: {
-                makePrimary: string;
                 verifyEmail: string;
                 verifyMobile: string;
                 deleteEmail: string;
@@ -960,12 +959,6 @@ export interface MyAccountNS {
                 mobileVerification: {
                     content: string;
                 };
-                verified: {
-                    header: string;
-                };
-                primary: {
-                    header: string;
-                }
             };
             modals: {
                 emailAddressDeleteConfirmation: {
