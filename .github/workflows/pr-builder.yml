@@ -17,6 +17,7 @@ concurrency:
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 jobs:
   lint:
@@ -202,7 +203,7 @@ jobs:
         id: upload-wso2is-core-coverage-1
         uses: codecov/codecov-action@v4.0.1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
           files: ./modules/core/coverage/coverage-final.json
           flags: '@wso2is/core'
           verbose: true
@@ -211,7 +212,7 @@ jobs:
         id: upload-wso2is-features-coverage-1
         uses: codecov/codecov-action@v4.0.1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
           files: ./features/coverage/coverage-final.json
           flags: '@wso2is/features'
           verbose: true
@@ -220,7 +221,7 @@ jobs:
         id: upload-wso2is-i18n-coverage-1
         uses: codecov/codecov-action@v4.0.1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
           files: ./modules/i18n/coverage/coverage-final.json
           flags: '@wso2is/i18n'
           verbose: true
