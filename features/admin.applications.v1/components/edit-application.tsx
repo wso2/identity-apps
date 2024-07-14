@@ -657,17 +657,24 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * @param tab - The metadata for the tab.
      * @returns The rendered tab pane.
      */
-    const DynamicApplicationEditTabPane = (tab: ApplicationEditTabMetadataInterface): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <ApplicationEditForm
-                tab={ tab }
-                application={ application }
-                isLoading={ isLoading }
-                onUpdate={ handleApplicationUpdate }
-                readOnly={ readOnly }
-            />
-        </ResourceTab.Pane>
-    );
+    const DynamicApplicationEditTabPane = (tab: ApplicationEditTabMetadataInterface): ReactElement => {
+        const firstProtocolName: string = mapProtocolTypeToName(application?.inboundProtocols?.[0]?.type);
+
+        return (
+            <ResourceTab.Pane controlledSegmentation>
+                <ApplicationEditForm
+                    tab={ tab }
+                    application={ application }
+                    protocolName={ firstProtocolName }
+                    inboundProtocolConfigurations={ inboundProtocolConfig?.[firstProtocolName] }
+                    isLoading={ isLoading }
+                    onUpdate={ handleApplicationUpdate }
+                    onProtocolUpdate = { handleProtocolUpdate }
+                    readOnly={ readOnly }
+                />
+            </ResourceTab.Pane>
+        );
+    };
 
     /**
      * Renders a markdown guide tab pane.

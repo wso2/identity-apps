@@ -17,12 +17,15 @@
  */
 
 import { updateApplicationDetails, updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
-import useGetApplicationInboundConfigs from "@wso2is/admin.applications.v1/api/use-get-application-inbound-configs";
 import {
     ApplicationInterface,
     MainApplicationInterface,
+    OIDCDataInterface,
+    PassiveStsConfigurationInterface,
+    SAML2ConfigurationInterface,
     SAML2ServiceProviderInterface,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    WSTrustConfigurationInterface
 } from "@wso2is/admin.applications.v1/models";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import { DynamicFieldInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
@@ -33,7 +36,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEqual from "lodash-es/isEqual";
 import pick from "lodash-es/pick";
 import unset from "lodash-es/unset";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -56,6 +59,15 @@ export interface ApplicationEditFormPropsInterface extends IdentifiableComponent
      */
     application: ApplicationInterface;
     /**
+     * Current application protocol name.
+     */
+    protocolName: string;
+    /**
+     * Current editing application inbound protocol data.
+     */
+    inboundProtocolConfigurations: OIDCDataInterface | SAML2ConfigurationInterface | WSTrustConfigurationInterface
+        | PassiveStsConfigurationInterface;
+    /**
      * Is the application info request loading.
      */
     isLoading?: boolean;
@@ -63,6 +75,10 @@ export interface ApplicationEditFormPropsInterface extends IdentifiableComponent
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Callback to update the application protocol details.
+     */
+    onProtocolUpdate: () => void;
     /**
      * Make the form read only.
      */
@@ -80,8 +96,11 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
     const {
         tab,
         application,
+        protocolName,
+        inboundProtocolConfigurations,
         isLoading,
         onUpdate,
+        onProtocolUpdate,
         readOnly,
         ["data-componentid"]: componentId
     } = props;
@@ -98,64 +117,15 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
     const dispatch: Dispatch = useDispatch();
 
     /**
-     * Determine the protocol type to retrieve the inbound protocol configurations.
-     */
-    const protocolType: string = useMemo(() => {
-        if (application?.inboundProtocols?.[0]?.self) {
-            const urlParts: string[] = application.inboundProtocols[0].self.split("/") ?? [];
-
-            if (urlParts.length > 0) {
-                return urlParts[urlParts.length - 1];
-            }
-        }
-
-        return "";
-    }, [ application ]);
-
-    const {
-        data: inboundProtocolConfigurations,
-        error: inboundProtocolConfigurationFetchError,
-        isLoading: isLoadingInboundConfigurations,
-        mutate: mutateProtocolConfigurations
-    } = useGetApplicationInboundConfigs(application?.id, protocolType, !!application?.id && !!protocolType);
-
-    /**
-     * Handle errors that occur during the application inbound protocol data fetch request.
-     */
-    useEffect(() => {
-        if (!inboundProtocolConfigurationFetchError) {
-            return;
-        }
-
-        if (inboundProtocolConfigurationFetchError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: inboundProtocolConfigurationFetchError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications.getInboundProtocolConfig.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("applications:notifications.getInboundProtocolConfig" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:notifications.getInboundProtocolConfig" +
-                ".genericError.message")
-        }));
-    }, [ inboundProtocolConfigurationFetchError ]);
-
-    /**
      * Prepare the initial value object for the application edit form.
      */
     const initialValues: MainApplicationInterface = useMemo(() => {
-        if (!inboundProtocolConfigurations || !application) {
+        if (!inboundProtocolConfigurations || !application || !protocolName) {
             return null;
         }
 
         const formInitialValues: MainApplicationInterface = cloneDeep(application);
-        let protocolKeyName: string = protocolType;
+        let protocolKeyName: string = protocolName;
 
         if (SupportedAuthProtocolTypes.WS_FEDERATION === protocolKeyName) {
             protocolKeyName = "passiveSts";
@@ -185,7 +155,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
      * @param callback - Callback function to execute after form submission is complete.
      */
     const handleFormSubmission = (values: Record<string, any>, callback: () => void): void => {
-        let protocolKeyName: string = protocolType;
+        let protocolKeyName: string = protocolName;
 
         if (SupportedAuthProtocolTypes.WS_FEDERATION === protocolKeyName) {
             protocolKeyName = "passiveSts";
@@ -225,9 +195,9 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
             updateAuthProtocolConfig(
                 application?.id,
                 protocolConfigurations,
-                protocolType
+                protocolName
             ).then(() => {
-                mutateProtocolConfigurations();
+                onProtocolUpdate();
 
                 dispatch(addAlert({
                     description: t("applications:notifications.updateApplication.success" +
@@ -312,7 +282,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
             templatePayload={ templateData?.payload }
             buttonText={ t("common:update") }
             onFormSubmit={ handleFormSubmission }
-            isLoading={ isLoading || isLoadingInboundConfigurations || isTemplateDataFetchRequestLoading }
+            isLoading={ isLoading || isTemplateDataFetchRequestLoading }
             readOnly={ readOnly }
             data-componentid={ componentId }
         />
