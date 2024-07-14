@@ -12,6 +12,7 @@
         "copy:themes:features": "node scripts/copy-themes-to-features.js",
         "clean:themes:features": "pnpm rimraf ./themes",
         "test": "jest --passWithNoTests",
+        "test:coverage": "jest --passWithNoTests --coverage --collect-coverage",
         "test:watch": "pnpm run test --watchAll"
     },
     "dependencies": {

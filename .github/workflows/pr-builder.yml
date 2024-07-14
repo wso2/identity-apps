@@ -32,6 +32,7 @@ jobs:
         id: checkout
         uses: actions/checkout@v2.3.3
         with:
+          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
 
       - name: 🟢 Setup node
@@ -84,7 +85,7 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
-    if: ${{ github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
+    if: ${{github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -95,6 +96,7 @@ jobs:
         id: checkout
         uses: actions/checkout@v2.3.3
         with:
+          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
 
       - name: 🟢 Setup node
