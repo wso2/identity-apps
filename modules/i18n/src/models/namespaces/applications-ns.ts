@@ -1889,7 +1889,7 @@ export interface ApplicationsNS {
                 };
                 urlDeepLinkError: string;
             };
-        }
+        };
     };
     helpPanel: {
         tabs: {
