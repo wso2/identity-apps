@@ -1337,6 +1337,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const showVerifyButton = (value: string): boolean =>
             verificationEnabled && !verifiedAttributeValueList.includes(value);
 
+        const showDeleteButton = (value: string): boolean => {
+            return !(primaryAttributeSchema?.required && value === primaryAttributeValue);
+        };
+
         return (
             <>
                 <Field
@@ -1498,6 +1502,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             </IconButton>
                                                             <IconButton
                                                                 size="small"
+                                                                hidden={ !showDeleteButton(value) }
                                                                 onClick={ () => {
                                                                     setSelectedAttributeInfo({ schema, value });
                                                                     setShowMultiValuedFieldDeleteConfirmationModal(
