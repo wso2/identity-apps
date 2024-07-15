@@ -13,3 +13,5 @@ cache:
     - $HOME/.m2
 install: true
 script: mvn clean install -q -DskipTests=true
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
