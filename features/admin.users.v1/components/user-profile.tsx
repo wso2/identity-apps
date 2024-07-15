@@ -1654,6 +1654,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let verifiedAttributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
         let verificationEnabled: boolean = false;
+        let primaryAttributeSchema: ProfileSchemaInterface;
 
         if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
             attributeValueList = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
@@ -1662,6 +1663,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") ?? [];
             primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
             verificationEnabled = configSettings?.isEmailVerificationEnabled === "true";
+            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
+                schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
 
         } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
             attributeValueList = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
@@ -1671,6 +1674,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
             verificationEnabled = configSettings?.isMobileVerificationEnabled === "true"
                 || configSettings?.isMobileVerificationByPrivilegeUserEnabled === "true";
+            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
+                schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"));
         }
 
         // Move the primary attribute value to the top of the list.
@@ -1697,6 +1702,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             } else {
                 return value !== primaryAttributeValue;
             }
+        };
+
+        const showDeleteButton = (value: string): boolean => {
+            return !(primaryAttributeSchema?.required && value === primaryAttributeValue);
         };
 
         const showVerifyButton = (value: string): boolean =>
@@ -1885,6 +1894,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                             </IconButton>
                                                             <IconButton
                                                                 size="small"
+                                                                hidden={ !showDeleteButton(value) }
                                                                 onClick={ () => {
                                                                     setSelectedAttributeInfo({ schema, value });
                                                                     setShowMultiValuedItemDeleteConfirmationModal(true);
