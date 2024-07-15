@@ -371,9 +371,9 @@ export class ApplicationManagementConstants {
      * Form element constraints.
      */
     public static readonly FORM_FIELD_CONSTRAINTS: {
-        APP_DESCRIPTION_PATTERN: RegExp,
-        APP_NAME_MAX_LENGTH: number,
-        APP_NAME_PATTERN: RegExp
+        APP_DESCRIPTION_PATTERN: RegExp;
+        APP_NAME_MAX_LENGTH: number;
+        APP_NAME_PATTERN: RegExp;
     } = {
         APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
         APP_NAME_MAX_LENGTH: 50,

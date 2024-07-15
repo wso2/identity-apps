@@ -529,11 +529,11 @@ export class IdentityProviderManagementConstants {
 
     // Authenticator Endpoints
     public static readonly MICROSOFT_AUTHENTICATION_ENDPOINT_URL: string =
-    "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+        "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
 
     // Token Endpoints
     public static readonly MICROSOFT_TOKEN_ENDPOINT_URL: string =
-    "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+        "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
     // Keys for the initial values of SMS OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
@@ -546,19 +546,19 @@ export class IdentityProviderManagementConstants {
         "idp:notifications.apiLimitReachedError.error.description",
         "idp:notifications.apiLimitReachedError.error.message",
         "cec1f247-32fd-4624-9915-f469195a53ac"
-    )
+    );
 
     /**
      * AuthenticationProvider Connections create limit reached error.
     **/
-     public static readonly ERROR_CREATE_LIMIT_REACHED_IDP: IdentityAppsError = new IdentityAppsError(
-         "IDP-60035",
-         "authenticationProvider:notifications.apiLimitReachedError.error.description",
-         "authenticationProvider:notifications.apiLimitReachedError.error.message",
-         "cec1f247-32fd-4624-9915-f469195a53ac"
-     )
+    public static readonly ERROR_CREATE_LIMIT_REACHED_IDP: IdentityAppsError = new IdentityAppsError(
+        "IDP-60035",
+        "authenticationProvider:notifications.apiLimitReachedError.error.description",
+        "authenticationProvider:notifications.apiLimitReachedError.error.message",
+        "cec1f247-32fd-4624-9915-f469195a53ac"
+    );
 
-     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
+    public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 
     /**
      * Name of the FIDO connector configuration.
