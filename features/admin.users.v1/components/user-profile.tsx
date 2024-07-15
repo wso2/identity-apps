@@ -236,47 +236,60 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             let configurationStatuses: AccountConfigSettingsInterface = { ...configSettings } ;
 
             for (const property of connectorProperties) {
-                if (property.name === ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE) {
-                    configurationStatuses = {
-                        ...configurationStatuses,
-                        accountDisable: property.value
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
-                    || property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
-                    || property.name === ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET) {
-
-                    if (property.value === "true") {
+                switch (property.name) {
+                    case ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE:
                         configurationStatuses = {
                             ...configurationStatuses,
-                            forcePasswordReset: property.value
+                            accountDisable: property.value
                         };
-                    }
-                } else if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
-                    configurationStatuses = {
-                        ...configurationStatuses,
-                        accountLock: property.value
-                    };
-                } else if (property.name === ServerConfigurationsConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS) {
-                    configurationStatuses = {
-                        ...configurationStatuses,
-                        isMultipleEmailAndMobileNumberEnabled: property.value
-                    };
-                } else if (property.name === ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION) {
-                    configurationStatuses = {
-                        ...configurationStatuses,
-                        isEmailVerificationEnabled: property.value
-                    };
-                } else if (property.name === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION) {
-                    configurationStatuses = {
-                        ...configurationStatuses,
-                        isMobileVerificationEnabled: property.value
-                    };
-                } else if (property.name
-                    === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER) {
-                    configurationStatuses = {
-                        ...configurationStatuses,
-                        isMobileVerificationByPrivilegeUserEnabled: property.value
-                    };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET:
+                    case ServerConfigurationsConstants.OTP_PASSWORD_RESET:
+                    case ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET:
+                        if (property.value === "true") {
+                            configurationStatuses = {
+                                ...configurationStatuses,
+                                forcePasswordReset: property.value
+                            };
+                        }
+
+                        break;
+                    case ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            accountLock: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            isMultipleEmailAndMobileNumberEnabled: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            isEmailVerificationEnabled: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            isMobileVerificationEnabled: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            isMobileVerificationByPrivilegeUserEnabled: property.value
+                        };
+
+                        break;
                 }
             }
             setConfigSettings(configurationStatuses);
@@ -1365,7 +1378,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param value - value of the attribute
      */
     const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, value: string) => {
-
         const data: {
             Operations: Array<{
                 op: string, value: Record<string, string
@@ -1477,7 +1489,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param value - Value of the attribute
      */
     const handleVerify = (schema: ProfileSchemaInterface, value: string) => {
-
         setIsSubmitting(true);
         const data: {
             Operations: Array<{ op: string, value: Record<string, string | Record<string, string>> }>,
@@ -1536,7 +1547,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 handleUserUpdate(user.id);
             })
             .catch((error: AxiosError) => {
-
                 if (error?.response?.data?.detail || error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,
@@ -1546,7 +1556,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                     return;
                 }
-
                 dispatch(addAlert({
                     description: t(`${translationKey}genericError.description`),
                     level: AlertLevels.ERROR,
@@ -1565,7 +1574,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param value - Value of the attribute
      */
     const handleMakePrimary = (schema: ProfileSchemaInterface, value: string) => {
-
         const data: {
             Operations: Array<{
                 op: string,
@@ -1645,7 +1653,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         fieldName: string,
         key: number
     ): ReactElement => {
-
         let attributeValueList: string[] = [];
         let verifiedAttributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
@@ -1730,7 +1737,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     } }
                     maxLength={
                         fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                            ? 1024
+                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
                             : (
                                 schema.maxLength
                                     ? schema.maxLength
@@ -1911,7 +1918,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
-
         if (schema.type.toUpperCase() === "BOOLEAN") {
             return (
                 <Field
@@ -2053,7 +2059,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     } }
                     maxLength={
                         fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                            ? 1024
+                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
                             : (
                                 schema.maxLength
                                     ? schema.maxLength
@@ -2086,7 +2092,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns the form field for the profile schema.
      */
     const generateProfileEditForm = (schema: ProfileSchemaInterface, key: number): JSX.Element => {
-
         // Hide the email and mobile number fields when the multi-valued email and mobile config is enabled.
         const fieldsToHide: string[] = [
             configSettings?.isMultipleEmailAndMobileNumberEnabled === "true"
@@ -2186,7 +2191,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns ReactElement Generates the delete confirmation modal.
      */
     const generateDeleteConfirmationModalForMultiValuedField = (): JSX.Element => {
-
         if (isEmpty(selectedAttributeInfo?.value)) {
             return null;
         }
