@@ -203,6 +203,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           files: ./modules/core/coverage/coverage-final.json
+          token: ${{ secrets.CODECOV_TOKEN }}
           flags: '@wso2is/core'
           verbose: true
 
@@ -211,6 +212,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           files: ./features/coverage/coverage-final.json
+          token: ${{ secrets.CODECOV_TOKEN }}
           flags: '@wso2is/features'
           verbose: true
 
@@ -218,6 +220,7 @@ jobs:
         id: upload-wso2is-i18n-coverage-1
         uses: codecov/codecov-action@v3
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./modules/i18n/coverage/coverage-final.json
           flags: '@wso2is/i18n'
           verbose: true
