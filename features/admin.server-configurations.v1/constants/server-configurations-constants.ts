@@ -30,7 +30,7 @@ export class ServerConfigurationsConstants {
      *
      */
     public static readonly IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID: string =
-    "QWNjb3VudCBNYW5hZ2VtZW50IFBvbGljaWVz";
+        "QWNjb3VudCBNYW5hZ2VtZW50IFBvbGljaWVz";
 
     /**
      * Regex matcher to identify if the connector is deprecated.
@@ -390,9 +390,9 @@ export class ServerConfigurationsConstants {
     /**
      * Custom connector IDs.
      */
-    public static readonly SAML2_SSO_CONNECTOR_ID: string = "saml2-sso"
-    public static readonly SESSION_MANAGEMENT_CONNECTOR_ID: string = "session-management"
-    public static readonly WS_FEDERATION_CONNECTOR_ID: string = "ws-fed"
+    public static readonly SAML2_SSO_CONNECTOR_ID: string = "saml2-sso";
+    public static readonly SESSION_MANAGEMENT_CONNECTOR_ID: string = "session-management";
+    public static readonly WS_FEDERATION_CONNECTOR_ID: string = "ws-fed";
 
     /**
      * Predefined connector catergory IDs.
