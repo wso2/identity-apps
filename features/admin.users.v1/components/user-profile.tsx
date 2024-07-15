@@ -1073,7 +1073,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 handleUserUpdate(user.id);
             })
             .catch((error: AxiosError) => {
-
                 if (error?.response?.data?.detail || error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,
@@ -1457,7 +1456,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 handleUserUpdate(user.id);
             })
             .catch((error: AxiosError) => {
-
                 if (error?.response?.data?.detail || error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,
@@ -1623,7 +1621,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 handleUserUpdate(user.id);
             })
             .catch((error: AxiosError) => {
-
                 if (error?.response?.data?.detail || error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,
