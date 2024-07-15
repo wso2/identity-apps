@@ -253,7 +253,7 @@
                                 <% } %>
                             </div>
 
-                            <input type='hidden' name='username' id='resendFlagElement'
+                            <input type='hidden' name='username'
                                 value='<%=Encode.forHtmlAttribute(username)%>'/>
                             <input type="hidden" name="channel"
                                 value='<%=IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP%>'/>
