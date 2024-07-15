@@ -1,10 +1,19 @@
-/**  
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+/**
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -49,27 +58,6 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_PROVISIONING_SETTINGS", "applications.edit.provisioningSettings")
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings")
         .set("APPLICATION_EDIT_INFO", "applications.edit.info");
-
-    /**
-     * Key for the `Edit Application` tag in the docs structure object.
-     */
-    // public static readonly EDIT_APPLICATIONS_DOCS_KEY: string = `${
-    //     DocumentationConstants.PORTAL_DOCS_KEY }.Applications["Edit Application"]`;
-
-    /**
-     * Key for the application samples tag in the docs structure object.
-     */
-    public static readonly APPLICATION_SAMPLES_DOCS_KEY: string = "Quick Starts[\"Choose a Sample Type\"]";
-
-    /**
-     * Key for the application docs tag in the docs structure object.
-     */
-    public static readonly APPLICATION_DOCS_KEY: string = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
-
-    /**
-     * Key for the overview tag in the docs structure object.
-     */
-    public static readonly APPLICATION_DOCS_OVERVIEW: string = "Overview";
 
     /**
      * Key for the URL search param for application state.

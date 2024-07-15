@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,12 +18,8 @@
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
-    AppUtils,
     ConfigReducerStateInterface,
-    HelpPanelUtils,
-    UIConstants,
-    getHelpPanelActionIcons,
-    toggleHelpPanelVisibility
+    UIConstants
 } from "@wso2is/admin.core.v1";
 import { deleteRoleById, getRolesList, searchRoleList } from "@wso2is/admin.roles.v2/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
@@ -34,29 +30,22 @@ import {
     AlertLevels,
     RoleListInterface,
     RolesInterface,
-    StorageIdentityAppsSettingsInterface,
     UserstoreListResponseInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    HelpPanelLayout,
-    HelpPanelTabInterface,
     ListLayout,
-    Markdown,
     PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import cloneDeep from "lodash-es/cloneDeep";
 import find from "lodash-es/find";
-import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { CreateRoleWizard, RoleList } from "../components";
-import helpDoc from "../data/role.md";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -87,8 +76,6 @@ const RolesPage = (): ReactElement => {
     const { t } = useTranslation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const [ showHelpPanel, setShowHelpPanel ] = useState<boolean>(false);
-    const [ tabsActiveIndex ] = useState<number>(0);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -108,16 +95,10 @@ const RolesPage = (): ReactElement => {
     const [ paginatedRoles, setPaginatedRoles ] = useState<RoleListInterface>();
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
-    const roleHelpShownStatusKey: string = "isRoleHelpShown";
 
     useEffect(() => {
         if (searchQuery == "") {
             getRoles();
-        }
-        if (helpPanelShown()) {
-            dispatch(toggleHelpPanelVisibility(true));
-            setShowHelpPanel(!showHelpPanel);
-            setHelpPanelShown();
         }
     },[ initialRolList?.Resources?.length != 0 ]);
 
@@ -174,34 +155,6 @@ const RolesPage = (): ReactElement => {
             .finally(() => {
                 setRoleListFetchRequestLoading(false);
             });
-    };
-
-    /**
-     * Get whether to show the help panel
-     * Help panel only shows for the first time
-     */
-    const helpPanelShown = (): boolean => {
-
-        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
-
-        return !isEmpty(userPreferences) &&
-            !userPreferences.identityAppsSettings?.devPortal?.[roleHelpShownStatusKey];
-    };
-
-    /**
-     * Set status of first time help panel is shown
-     */
-    const setHelpPanelShown = (): void => {
-        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
-
-        if (isEmpty(userPreferences) || !userPreferences?.identityAppsSettings?.devPortal) {
-            return;
-        }
-
-        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
-
-        newPref.identityAppsSettings.devPortal[roleHelpShownStatusKey] = true;
-        AppUtils.setUserPreferences(newPref);
     };
 
     /**
@@ -405,111 +358,73 @@ const RolesPage = (): ReactElement => {
         getRoles();
     };
 
-    const helpPanelTabs: HelpPanelTabInterface[] = [
-        {
-            content: (
-                <Markdown
-                    source={ helpDoc }
-                    data-testid={ "role-help-panel-configs-tab-markdown-renderer" }
-                />
-            ),
-            heading: "Help",
-            hidden: false,
-            icon: {
-                icon: <Icon disabled size="large" name="question circle outline" className="ml-0"/>
-            }
-        }
-    ];
-
     return (
-        <HelpPanelLayout
-            activeIndex={ tabsActiveIndex }
-            sidebarDirection="right"
-            sidebarMiniEnabled={ true }
-            tabs={ helpPanelTabs }
-            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
-            isPinned={ HelpPanelUtils.isPanelPinned() }
-            icons={ {
-                close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin,
-                unpin: getHelpPanelActionIcons().unpin
-            } }
-            sidebarToggleTooltip={ t("helpPanel:actions.open") }
-            pinButtonTooltip={ t("helpPanel:actions.pin") }
-            unpinButtonTooltip={ t("helpPanel:actions.unPin") }
-            onHelpPanelVisibilityChange={ (isVisible: boolean) => {
-                dispatch(toggleHelpPanelVisibility(isVisible));
-                setShowHelpPanel(!showHelpPanel);
-            } }
-            visible={ showHelpPanel }
-        >
-            <PageLayout
-                action={
-                    (isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0))
-                && (
-                    <PrimaryButton
-                        data-testid="role-mgt-roles-list-add-button"
-                        onClick={ () => setShowWizard(true) }
-                    >
-                        <Icon
-                            data-testid="role-mgt-roles-list-add-button-icon"
-                            name="add"
-                        />
-                        { t("roles:list.buttons.addButton", { type: "Role" }) }
-                    </PrimaryButton>
-                )
-                }
-                title={ t("pages:roles.title") }
-                description={
-                    `Create roles and assign permissions to collectively manage access to the ${
-                        config.ui.productName } console.`
-                }
-            >
-                {
-                    !isEmptyResults &&
-                (<ListLayout
-                    advancedSearch={ advancedSearchFilter() }
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    sortStrategy={ listSortingStrategy }
-                    showPagination={ paginatedRoles?.Resources?.length > 0 }
-                    showTopActionPanel={
-                        isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0)
-                    }
-                    totalPages={ Math.ceil(initialRolList?.Resources?.length / listItemLimit) }
-                    totalListSize={ initialRolList?.Resources?.length }
+        <PageLayout
+            action={
+                (isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0))
+            && (
+                <PrimaryButton
+                    data-testid="role-mgt-roles-list-add-button"
+                    onClick={ () => setShowWizard(true) }
                 >
-                    <RoleList
-                        advancedSearch={ advancedSearchFilter() }
-                        data-testid="role-mgt-roles-list"
-                        handleRoleDelete={ handleOnDelete }
-                        showHeader={ true }
-                        showRoleType={ false }
-                        isGroup={ false }
-                        isLoading={ isRoleListFetchRequestLoading }
-                        onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        roleList={ paginatedRoles }
-                        searchQuery={ searchQuery }
+                    <Icon
+                        data-testid="role-mgt-roles-list-add-button-icon"
+                        name="add"
                     />
-                </ListLayout>)
+                    { t("roles:list.buttons.addButton", { type: "Role" }) }
+                </PrimaryButton>
+            )
+            }
+            title={ t("pages:roles.title") }
+            description={
+                `Create roles and assign permissions to collectively manage access to the ${
+                    config.ui.productName } console.`
+            }
+        >
+            {
+                !isEmptyResults &&
+            (<ListLayout
+                advancedSearch={ advancedSearchFilter() }
+                currentListSize={ listItemLimit }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                onSortStrategyChange={ handleListSortingStrategyOnChange }
+                sortStrategy={ listSortingStrategy }
+                showPagination={ paginatedRoles?.Resources?.length > 0 }
+                showTopActionPanel={
+                    isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0)
                 }
-                {
-                    showWizard && (
-                        <CreateRoleWizard
-                            data-testid="role-mgt-create-role-wizard"
-                            isAddGroup={ false }
-                            closeWizard={ () => setShowWizard(false) }
-                            updateList={ () => setListUpdated(true) }
-                            submitStep={ "UserList" }
-                        />
-                    )
-                }
-            </PageLayout>
-        </HelpPanelLayout>
+                totalPages={ Math.ceil(initialRolList?.Resources?.length / listItemLimit) }
+                totalListSize={ initialRolList?.Resources?.length }
+            >
+                <RoleList
+                    advancedSearch={ advancedSearchFilter() }
+                    data-testid="role-mgt-roles-list"
+                    handleRoleDelete={ handleOnDelete }
+                    showHeader={ true }
+                    showRoleType={ false }
+                    isGroup={ false }
+                    isLoading={ isRoleListFetchRequestLoading }
+                    onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    roleList={ paginatedRoles }
+                    searchQuery={ searchQuery }
+                />
+            </ListLayout>)
+            }
+            {
+                showWizard && (
+                    <CreateRoleWizard
+                        data-testid="role-mgt-create-role-wizard"
+                        isAddGroup={ false }
+                        closeWizard={ () => setShowWizard(false) }
+                        updateList={ () => setListUpdated(true) }
+                        submitStep={ "UserList" }
+                    />
+                )
+            }
+        </PageLayout>
     );
 };
 

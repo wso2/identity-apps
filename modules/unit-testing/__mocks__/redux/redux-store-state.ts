@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@
  * @remarks If you add new attributes to the reducers, you will need to add them to this file.
  */
 
-/* eslint-disable sort-keys, max-len */
+/* eslint-disable sort-keys, max-len, @typescript-eslint/typedef */
 const ReduxStoreStateMock: any = {
     accessControl: {
         isDevelopAllowed: true,
@@ -73,17 +73,6 @@ const ReduxStoreStateMock: any = {
                 basePath: "/console/develop",
                 displayName: "Develop",
                 path: "/console/develop/applications"
-            },
-            documentation: {
-                baseURL: "https://api.github.com",
-                contentBaseURL: "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
-                githubOptions: {
-                    branch: "new_restructure"
-                },
-                imagePrefixURL: "https://github.com/wso2/docs-is/raw/new_restructure/en/docs/",
-                provider: "GITHUB",
-                structureFileType: "YAML",
-                structureFileURL: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
             },
             extensions: {
                 asgardeoTryItURL: ""
@@ -563,12 +552,6 @@ const ReduxStoreStateMock: any = {
     governanceConnector: {
         categories: []
     },
-    helpPanel: {
-        activeTabIndex: 0,
-        docStructure: null,
-        docURL: null,
-        visibility: false
-    },
     identityProvider: {
         meta: {
             authenticators: []
@@ -610,6 +593,6 @@ const ReduxStoreStateMock: any = {
         profileSchemas: []
     }
 };
-/* eslint-enable sort-keys, max-len */
+/* eslint-enable sort-keys, max-len, @typescript-eslint/typedef */
 
 export default ReduxStoreStateMock;

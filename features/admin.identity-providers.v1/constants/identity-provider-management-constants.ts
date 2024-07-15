@@ -21,7 +21,6 @@ import SweIdpTemplate from "@wso2is/admin.extensions.v1/identity-provider-templa
 import TrustedTokenIssuerTemplate from
     "@wso2is/admin.extensions.v1/identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { DocumentationConstants } from "./documentation-constants";
 import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
 import EnterpriseIdPTemplate from
     "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
@@ -51,18 +50,6 @@ export class IdentityProviderManagementConstants {
      * Identifier for the local IDP.
      */
     public static readonly LOCAL_IDP_IDENTIFIER: string = "LOCAL";
-
-    /**
-     * Doc key for the IDP overview page.
-     */
-    public static readonly IDP_OVERVIEW_DOCS_KEY: string = `${
-        DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Overview"]`;
-
-    /**
-     * Doc key for the IDP edit page.
-     */
-    public static readonly IDP_EDIT_OVERVIEW_DOCS_KEY: string = `${
-        DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Edit Identity Provider"]["Overview"]`;
 
     /**
      * Set of internal idps which are forbidden from deleting.
@@ -378,12 +365,6 @@ export class IdentityProviderManagementConstants {
     **/
     public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: IdentityProviderTemplateLoadingStrategies =
         IdentityProviderTemplateLoadingStrategies.LOCAL;
-
-    /**
-     * Doc key for the IDP create page.
-    **/
-    public static readonly IDP_TEMPLATES_CREATE_DOCS_KEY: string = `${
-        DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Create New Identity Provider"]`;
 
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching connection template.";

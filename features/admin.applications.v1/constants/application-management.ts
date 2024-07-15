@@ -20,7 +20,6 @@ import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/cons
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { DocumentationConstants } from "./documentation-constants";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
@@ -76,27 +75,6 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
         .set("APPLICATIONS_SETTINGS", "applications.settings")
         .set("TRUSTED_APPS", "applications.trustedApps");
-
-    /**
-     * Key for the `Edit Application` tag in the docs structure object.
-     */
-    public static readonly EDIT_APPLICATIONS_DOCS_KEY: string = `${
-        DocumentationConstants.PORTAL_DOCS_KEY }.Applications["Edit Application"]`;
-
-    /**
-     * Key for the application samples tag in the docs structure object.
-     */
-    public static readonly APPLICATION_SAMPLES_DOCS_KEY: string = "Quick Starts[\"Choose a Sample Type\"]";
-
-    /**
-     * Key for the application docs tag in the docs structure object.
-     */
-    public static readonly APPLICATION_DOCS_KEY: string = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
-
-    /**
-     * Key for the overview tag in the docs structure object.
-     */
-    public static readonly APPLICATION_DOCS_OVERVIEW: string = "Overview";
 
     /**
      * Key for the URL search param for application state.
