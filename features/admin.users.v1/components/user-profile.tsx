@@ -1696,7 +1696,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showVerifyButton = (value: string): boolean =>
-            verificationEnabled && !verifiedAttributeValueList.includes(value);
+            schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+            && verificationEnabled
+            && !verifiedAttributeValueList.includes(value);
 
         return (
             <>
