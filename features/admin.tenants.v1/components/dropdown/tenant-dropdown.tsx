@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
-import { CircularProgress } from "@mui/material";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import { ArrowLeftArrowRightIcon, BuildingCircleCheckIcon, HierarchyIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs";
