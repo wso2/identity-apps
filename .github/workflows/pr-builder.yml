@@ -4,8 +4,8 @@ name: 👷 PR Builder
 
 on:
   pull_request:
-    types: [ opened, synchronize, labeled ]
-    branches: [ master ]
+    types: [opened, synchronize, labeled]
+    branches: [master]
     paths-ignore:
       - "**.md"
       - "LICENSE"
@@ -25,12 +25,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
+        node-version: [lts/*]
+        pnpm-version: [8.7.4]
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
@@ -39,12 +39,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: 🐳 Set SHAs for Nx
-        id: set-shas
-        uses: nrwl/nx-set-shas@v3
-        with:
-          main-branch-name: "master"
 
       - name: 🥡 Setup pnpm
         id: setup-pnpm
@@ -77,23 +71,18 @@ jobs:
         run: |
             bash ./scripts/lint-changed.sh ${{ github.event.pull_request.number }}
 
-      # Temporarily disable linting all files as it is failing intermittently.
-      # - name: ⏳ Lint All Files
-      #   id: lint-with-eslint
-      #   run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --plain --target=lint --parallel=3
-
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
     if: ${{ github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
+        node-version: [lts/*]
+        pnpm-version: [8.7.4]
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
@@ -102,12 +91,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: 🐳 Set SHAs for Nx
-        id: set-shas
-        uses: nrwl/nx-set-shas@v3
-        with:
-          main-branch-name: "master"
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
@@ -142,16 +125,16 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
-    needs: [ typecheck ]
+    needs: [typecheck]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
+        node-version: [lts/*]
+        pnpm-version: [8.7.4]
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v2
 
       - name: 🟢 Setup node
         id: setup-node
@@ -227,18 +210,18 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ test, typecheck ]
+    needs: [test, typecheck]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts/* ]
-        maven-version: [ 3.8.6 ]
-        java-version: [ 11 ]
-        pnpm-version: [ 8.7.4 ]
+        node-version: [lts/*]
+        maven-version: [3.8.6]
+        java-version: [11]
+        pnpm-version: [8.7.4]
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v2
 
       - name: 🟢 Setup node
         id: setup-node
@@ -253,12 +236,6 @@ jobs:
           java-version: ${{ matrix.java-version }}
           distribution: "adopt"
           cache: maven
-
-      - name: 🦩 Set up Maven
-        uses: stCarolas/setup-maven@v4
-        id: mvn-setup
-        with:
-          maven-version: ${{ matrix.maven-version }}
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
