@@ -60,7 +60,6 @@ $header-upgrade-btn-text-fill-color: transparent;
 .header-upgrade-btn:hover {
     background-image: $header-upgrade-btn-text-color;
     border: 1px solid #FBCB30;
-    box-shadow: 0px 1px 5px 0px #c9a63633, 0px 4px 20px 0px #deb83bcc;
 
     .oxygen-icon {
         fill: var(--oxygen-palette-primary-contrastText);
