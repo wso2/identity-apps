@@ -4,8 +4,8 @@ name: 👷 PR Builder
 
 on:
   pull_request:
-    types: [ opened, synchronize, labeled ]
-    branches: [ master ]
+    types: [opened, synchronize, labeled]
+    branches: [master]
     paths-ignore:
       - "**.md"
       - "LICENSE"
@@ -17,6 +17,7 @@ concurrency:
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 jobs:
   lint:
@@ -30,13 +31,11 @@ jobs:
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v3
 
       - name: 🟢 Setup node
         id: setup-node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -93,13 +92,11 @@ jobs:
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v3
 
       - name: 🟢 Setup node
         id: setup-node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -151,11 +148,11 @@ jobs:
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
 
       - name: 🟢 Setup node
         id: setup-node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -199,28 +196,25 @@ jobs:
           pnpm nyc:text-report
 
       - name: Upload `@wso2is/core` coverage reports to Codecov
-        id: upload-wso2is-core-coverage-1
+        id: upload-wso2is-core-coverage
         uses: codecov/codecov-action@v3
         with:
           files: ./modules/core/coverage/coverage-final.json
-          token: ${{ secrets.CODECOV_TOKEN }}
           flags: '@wso2is/core'
           verbose: true
 
       - name: Upload `@wso2is/features` coverage reports to Codecov
-        id: upload-wso2is-features-coverage-1
+        id: upload-wso2is-features-coverage
         uses: codecov/codecov-action@v3
         with:
           files: ./features/coverage/coverage-final.json
-          token: ${{ secrets.CODECOV_TOKEN }}
           flags: '@wso2is/features'
           verbose: true
 
       - name: Upload `@wso2is/i18n` coverage reports to Codecov
-        id: upload-wso2is-i18n-coverage-1
+        id: upload-wso2is-i18n-coverage
         uses: codecov/codecov-action@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./modules/i18n/coverage/coverage-final.json
           flags: '@wso2is/i18n'
           verbose: true
@@ -238,11 +232,11 @@ jobs:
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
 
       - name: 🟢 Setup node
         id: setup-node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -302,3 +296,4 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
