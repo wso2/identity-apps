@@ -237,6 +237,7 @@ export enum UserAddOptionTypes {
 export enum BulkUserImportStatus {
     FAILED = "FAILED",
     SUCCESS = "SUCCESS",
+    ALL = "ALL"
 }
 
 /**

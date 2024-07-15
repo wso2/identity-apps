@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useState } from "react";
 import { Message } from "semantic-ui-react";
 
@@ -29,10 +29,6 @@ export interface WizardAlert {
     code?: string | number;
     traceId?: string | number;
     level: AlertLevels;
-}
-
-interface WizardAlertProps {
-    ["data-componentid"]?: string;
 }
 
 /**
@@ -51,7 +47,9 @@ type UseWizardAlertHookReturnType = [ WizardAlert, React.Dispatch<React.SetState
  *
  * @returns An array containing the state, setState function and the alert React element.
  */
-export const useWizardAlert = (props?: WizardAlertProps): UseWizardAlertHookReturnType => {
+export const useWizardAlert = (props: IdentifiableComponentInterface = {
+    "data-componentid": "wizard-alert"
+}): UseWizardAlertHookReturnType => {
 
     const { ["data-componentid"]: componentId } = props || { "data-componentid": "wizard-alert" };
     const [ alert, setAlert ] = useState<WizardAlert>(null);

@@ -561,7 +561,7 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
  * Fetch all local claims.
  *
  * @param params - limit, offset, sort, attributes, filter.
-
+ *
  * @returns response.
  * @throws IdentityAppsApiException
  */
