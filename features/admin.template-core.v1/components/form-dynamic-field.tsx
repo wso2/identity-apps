@@ -16,11 +16,17 @@
  * under the License.
  */
 
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CheckboxFieldAdapter, FinalFormField, FormApi, TextFieldAdapter } from "@wso2is/form";
+import { CheckboxFieldAdapter, FilePickerAdapter, FinalFormField, FormApi, TextFieldAdapter } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { DynamicFieldInterface, DynamicInputFieldTypes } from "../models/dynamic-fields";
+import { Icon } from "semantic-ui-react";
+import {
+    DynamicFieldInterface,
+    DynamicFilePickerFieldInterface,
+    DynamicInputFieldTypes
+} from "../models/dynamic-fields";
 
 /**
  * Prop types for the dynamic input fields.
@@ -123,6 +129,36 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         readOnly={ readOnly || field?.readOnly }
                         rows={ 3 }
                         multiline={ true }
+                        required={ field?.required }
+                        helperText={
+                            field?.helperText ? (
+                                <Hint compact>
+                                    { field?.helperText }
+                                </Hint>
+                            ) : null
+                        }
+                    />
+                );
+            case DynamicInputFieldTypes.FILE:
+                return (
+                    <FinalFormField
+                        fullWidth
+                        FormControlProps={ {
+                            margin: "dense"
+                        } }
+                        aria-label={ field?.["aria-label"] }
+                        data-componentid={ field?.dataComponentId }
+                        name={ field?.name }
+                        label={ field?.label }
+                        fileType={ (field as DynamicFilePickerFieldInterface)?.fileType }
+                        dropzoneText={ (field as DynamicFilePickerFieldInterface)?.dropzoneText }
+                        pasteAreaPlaceholderText={
+                            (field as DynamicFilePickerFieldInterface)?.pasteAreaPlaceholderText }
+                        uploadButtonText={ (field as DynamicFilePickerFieldInterface)?.uploadButtonText }
+                        hidePasteOption={ (field as DynamicFilePickerFieldInterface)?.hidePasteOption }
+                        placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
+                        selectedIcon={ <Icon name="file alternate" size="huge"/> }
+                        component={ FilePickerAdapter }
                         required={ field?.required }
                         helperText={
                             field?.helperText ? (

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { SupportedFileTypes } from "@wso2is/form/src/components/adapters/file-picker-adapter";
+
 /**
  * Interface to define a dynamic form.
  */
@@ -89,6 +91,36 @@ export interface DynamicFieldInterface {
 }
 
 /**
+ * Data types required to render the dynamic file picker.
+ */
+export interface DynamicFilePickerFieldInterface extends DynamicFieldInterface {
+    /**
+     * File type to be used in the FilePicker component.
+     */
+    fileType: SupportedFileTypes;
+    /**
+     * In the dropzone we can explain what types of file
+     * and some descriptive info about the required file.
+     */
+    dropzoneText: string;
+    /**
+     * This is the placeholder text for paste tab content
+     * area. By default this has a value like the following:-
+     * "Paste your content in this area..."
+     */
+    pasteAreaPlaceholderText?: string;
+    /**
+     * The manual upload button text. This button is
+     * placed beneath the description.
+     */
+    uploadButtonText: string;
+    /**
+     * Hide selection tabs & paste section.
+     */
+    hidePasteOption?: boolean;
+}
+
+/**
  * Interface for the handlers of dynamic fields.
  */
 export interface DynamicFieldHandlerInterface {
@@ -123,9 +155,9 @@ export enum DynamicInputFieldTypes {
      */
     TEXTAREA = "textarea",
     /**
-     * Application certificate field.
+     * File picker field.
      */
-    APPLICATION_CERTIFICATE = "application-certificate"
+    FILE = "file"
 }
 
 /**

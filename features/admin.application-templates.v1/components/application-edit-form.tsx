@@ -235,17 +235,19 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                     if (protocolConfigurations) {
                         updateProtocolConfigurations();
                     } else {
+                        callback();
+
                         dispatch(addAlert({
                             description: t("applications:notifications.updateApplication.success" +
                                 ".description"),
                             level: AlertLevels.SUCCESS,
                             message: t("applications:notifications.updateApplication.success.message")
                         }));
-
-                        callback();
                     }
                 })
                 .catch((error: AxiosError) => {
+                    callback();
+
                     if (error?.response?.data?.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,
@@ -264,8 +266,6 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                         message: t("applications:notifications.updateApplication.genericError" +
                             ".message")
                     }));
-
-                    callback();
                 });
         } else if (protocolConfigurations) {
             updateProtocolConfigurations();
