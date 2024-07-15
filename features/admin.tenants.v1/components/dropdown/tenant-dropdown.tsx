@@ -313,16 +313,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const loadingComponent = () => {
         return (
             <Item className="tenant-account">
-                <GenericIcon
-                    icon={ <CircularProgress size={ 22 }/> }
-                    inline
-                    size="x22"
-                    fill="white"
-                    className="mt-3 mr-3"
-                />
+                <CircularProgress size={ 22 } className="tenant-list-item-loader"/>
                 <Item.Content className="tenant-list-item-content">
                     <div className="name">
-                        Loading...
+                        { t("common:loading") }...
                     </div>
                 </Item.Content>
             </Item>
