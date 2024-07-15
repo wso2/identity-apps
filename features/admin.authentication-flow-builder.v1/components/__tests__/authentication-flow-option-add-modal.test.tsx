@@ -16,22 +16,27 @@
  * under the License.
  */
 
+import DeploymentConfigProvider from "@wso2is/admin.core.v1/providers/deployment-config-provider";
 import UserPreferenceProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../test-configs/utils";
 import AuthenticationFlowOptionAddModal, {
     AuthenticationFlowOptionAddModalPropsInterface
 } from "../authentication-flow-option-add-modal";
 
 describe("AuthenticationFlowOptionAddModal", () => {
-    const defaultProps: AuthenticationFlowOptionAddModalPropsInterface = {};
+    const defaultProps: AuthenticationFlowOptionAddModalPropsInterface = {
+        open: true
+    };
 
-    it.skip("renders the AuthenticationFlowOptionAddModal component", () => {
+    it("renders the AuthenticationFlowOptionAddModal component", () => {
         render(
             <UserPreferenceProvider>
-                <AuthenticationFlowOptionAddModal { ...defaultProps } />
+                <DeploymentConfigProvider>
+                    <AuthenticationFlowOptionAddModal { ...defaultProps } />
+                </DeploymentConfigProvider>
             </UserPreferenceProvider>
             , { allowedScopes: fullPermissions });
 

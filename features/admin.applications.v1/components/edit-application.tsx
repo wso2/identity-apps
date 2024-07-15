@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -205,6 +206,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ isDisableInProgress, setIsDisableInProgress ] = useState<boolean>(false);
     const [ enableStatus, setEnableStatus ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
+    const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.branding?.disabledFeatures);
 
     /**
      * Called when an application updates.
@@ -247,7 +250,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (
                 isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
-                && !isSubOrganization()
+                && (isSubOrganization() ?
+                    !brandingDisabledFeatures.includes(
+                        BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG): true)
                 && !isMyAccount
             ) {
                 if (applicationConfig.editApplication.
@@ -1056,6 +1061,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
+                isBrandingSectionHidden={ brandingDisabledFeatures.includes(BrandingPreferencesConstants.
+                    APP_WISE_BRANDING_FEATURE_TAG) }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_GENERAL_SETTINGS", application) }
                 data-componentid={ `${ componentId }-general-settings` }

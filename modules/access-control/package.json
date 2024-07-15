@@ -27,6 +27,7 @@
         "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "pnpm eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to . --max-warnings=0",
         "test": "jest --passWithNoTests",
+        "test:coverage": "jest --passWithNoTests --coverage --collect-coverage",
         "typecheck": "pnpm compile"
     },
     "author": "WSO2",

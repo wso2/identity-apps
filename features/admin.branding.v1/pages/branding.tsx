@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import AIBrandingPreferenceProvider from "@wso2is/admin.branding.ai.v1/providers/ai-branding-preference-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import BrandingPageLayout from "../components/branding-page-layout";
@@ -36,7 +37,9 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
 
     return (
         <BrandingPreferenceProvider>
-            <BrandingPageLayout />
+            <AIBrandingPreferenceProvider>
+                <BrandingPageLayout />
+            </AIBrandingPreferenceProvider>
         </BrandingPreferenceProvider>
     );
 };

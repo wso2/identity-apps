@@ -913,18 +913,57 @@ export interface ApplicationsNS {
             sections: {
                 applicationNativeAuthentication: {
                     heading: string;
-                    alerts: {
-                        clientAttestation: string;
-                    };
                     fields: {
                         enableAPIBasedAuthentication: {
                             hint: string;
                             label: string;
                         };
+                    };
+                };
+                clientAttestation: {
+                    heading: string;
+                    alerts: {
+                        clientAttestationAlert: string;
+                    };
+                    fields: {
                         enableClientAttestation: {
                             hint: string;
                             label: string;
                         };
+                        androidAttestationServiceCredentials: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                            };
+                        };
+                    };
+                };
+                trustedApps: {
+                    heading: string;
+                    alerts: {
+                        trustedAppSettingsAlert: string;
+                        link: string;
+                    };
+                    fields: {
+                        enableFIDOTrustedApps: {
+                            hint: string;
+                            label: string;
+                        };
+                    };
+                    modal:{
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    }
+                };
+                platformSettings: {
+                    heading: string;
+                    subTitle: string;
+                    fields: {
                         android: {
                             heading: string;
                             fields: {
@@ -933,16 +972,19 @@ export interface ApplicationsNS {
                                     label: string;
                                     placeholder: string;
                                     validations: {
-                                        empty: string;
+                                        emptyForAttestation: string;
+                                        emptyForFIDO: string;
                                     };
                                 };
-                                androidAttestationServiceCredentials: {
+                                keyHashes: {
                                     hint: string;
                                     label: string;
                                     placeholder: string;
                                     validations: {
-                                        empty: string;
+                                        invalidOrEmpty: string;
+                                        duplicate: string;
                                     };
+                                    tooltip: string;
                                 };
                             };
                         };
@@ -1036,6 +1078,15 @@ export interface ApplicationsNS {
             }
         };
         generalDetails: {
+            sections: {
+                branding: {
+                    title: string;
+                }
+            };
+            brandingLink: {
+                hint: string;
+                label: string;
+            };
             fields: {
                 name: {
                     label: string;
@@ -1435,6 +1486,27 @@ export interface ApplicationsNS {
                             };
                         };
                     };
+                };
+                subjectToken: {
+                    fields: {
+                        enable: {
+                            hint: string;
+                            label: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        expiry: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                            };
+                        };
+                    };
+                    heading: string;
                 };
                 requestObjectSignature: {
                     heading: string;

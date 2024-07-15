@@ -25,6 +25,7 @@ import {
 import { FormState } from "@wso2is/form";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Context, createContext } from "react";
+import { BrandingModes } from "../constants";
 import {
     CustomTextConfigurationModes,
     CustomTextInterface,
@@ -161,6 +162,22 @@ export interface BrandingPreferenceContextProps {
      * Persist the active custom text preference configuration tab.
      */
     updateActiveCustomTextConfigurationMode: (mode: CustomTextConfigurationModes) => void;
+    /**
+     * Branding mode to enable/disable app-wise branding.
+     */
+    brandingMode: string;
+    /**
+     * Sets the branding mode.
+     */
+    setBrandingMode: (mode: BrandingModes) => void;
+    /**
+     * Selected application for app-wise branding.
+     */
+    selectedApplication: string;
+    /**
+     * Sets the selected application.
+     */
+    setSelectedApplication: (application: string) => void;
 }
 
 /**

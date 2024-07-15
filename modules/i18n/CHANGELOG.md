@@ -1,5 +1,29 @@
 # @wso2is/i18n
 
+## 2.5.1
+
+### Patch Changes
+
+- [#6581](https://github.com/wso2/identity-apps/pull/6581) [`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Improve android thumbprint error handling
+
+## 2.5.0
+
+### Minor Changes
+
+- [#6543](https://github.com/wso2/identity-apps/pull/6543) [`a7d0c020b04ba382733280407fc202910f4fc8f4`](https://github.com/wso2/identity-apps/commit/a7d0c020b04ba382733280407fc202910f4fc8f4) Thanks [@Thumimku](https://github.com/Thumimku)! - Add Impersonation support
+
+## 2.4.8
+
+### Patch Changes
+
+- [#6570](https://github.com/wso2/identity-apps/pull/6570) [`82bbbf2303853076342ef80ef7d987bed16df01f`](https://github.com/wso2/identity-apps/commit/82bbbf2303853076342ef80ef7d987bed16df01f) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Load trusted app consent required config and handle consent UI according to it
+
+## 2.4.7
+
+### Patch Changes
+
+- [#6553](https://github.com/wso2/identity-apps/pull/6553) [`a533e58d21d759f0a27d804f17b042a2819a8955`](https://github.com/wso2/identity-apps/commit/a533e58d21d759f0a27d804f17b042a2819a8955) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Add Trusted Apps UI to application configurations
+
 ## 2.4.6
 
 ### Patch Changes

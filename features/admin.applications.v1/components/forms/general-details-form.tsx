@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppConstants, AppState, UIConfigInterface } from "@wso2is/admin.core.v1";
+import Link from "@oxygen-ui/react/Link";
+import { PaletteIcon } from "@oxygen-ui/react-icons";
+import { AppConstants, AppState, UIConfigInterface, history } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -26,6 +28,8 @@ import {
     ContentLoader,
     DocumentationLink,
     EmphasizedSegment,
+    Heading,
+    Hint,
     Message,
     useDocumentation
 } from "@wso2is/react-components";
@@ -94,6 +98,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Application
      */
     application?: ApplicationInterface;
+    /**
+     * Is the Branding Section Hidden?
+     */
+    isBrandingSectionHidden?: boolean;
 }
 
 /**
@@ -158,6 +166,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isSubmitting,
         isManagementApp,
         application,
+        isBrandingSectionHidden,
         [ "data-testid" ]: testId
     } = props;
 
@@ -174,6 +183,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
+    const isSubOrganizationType: boolean = orgType === OrganizationType.SUBORGANIZATION;
 
     const {
         data: myAccountStatus,
@@ -378,7 +388,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             ".placeholder")
                     }
                     value={ name }
-                    readOnly={ readOnly || orgType === OrganizationType.SUBORGANIZATION }
+                    hidden={ isSubOrganizationType }
+                    readOnly={ readOnly || isSubOrganizationType }
                     validation ={ (value: string) => validateName(value.toString().trim()) }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     minLength={ 3 }
@@ -401,6 +412,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 ".placeholder")
                         }
                         value={ description }
+                        hidden={ isSubOrganizationType }
                         readOnly={ readOnly }
                         validation ={ (value: string) => validateDescription(value.toString().trim()) }
                         maxLength={ 300 }
@@ -434,7 +446,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             ".fields.imageUrl.hint")
                     }
                     width={ 16 }
-                    hidden={ hiddenFields?.includes("imageUrl") }
+                    hidden={ isSubOrganizationType || hiddenFields?.includes("imageUrl") }
                 />
             }
             { (
@@ -487,6 +499,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 }
                             </Trans>
                         ) }
+                        hidden={ isSubOrganizationType }
                         width={ 16 }
                     /> ) : null
             }
@@ -516,6 +529,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             )
                         }
                         validation={ validateAccessURL }
+                        hidden={ isSubOrganizationType }
                         maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MAX_LENGTH }
                         minLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MIN_LENGTH }
                         data-testid={ `${ testId }-application-access-url-input` }
@@ -523,7 +537,35 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         width={ 16 }
                     />)
             }
-
+            {
+                (!isBrandingSectionHidden &&
+                !isM2MApplication &&
+                orgType !== OrganizationType.SUBORGANIZATION) && <Divider />
+            }
+            {
+                (!isBrandingSectionHidden && !isM2MApplication) && (
+                    <>
+                        <Heading as="h5">
+                            { t("applications:forms.generalDetails.sections.branding.title") }
+                        </Heading>
+                        <PaletteIcon fill="#ff7300" /> &nbsp;
+                        <Link
+                            className="application-branding-link"
+                            color="primary"
+                            data-componentid={ `${testId}-application-branding-link` }
+                            onClick={ () => {
+                                history.push({
+                                    pathname: AppConstants.getPaths().get("BRANDING"),
+                                    state: appId
+                                });
+                            } }
+                        >
+                            { t("applications:forms.generalDetails.brandingLink.label") }
+                        </Link>
+                        <Hint>{ t("applications:forms.generalDetails.brandingLink.hint") }</Hint>
+                    </>
+                )
+            }
             <Field.Button
                 form={ FORM_ID }
                 size="small"
@@ -535,6 +577,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={
+                    isSubOrganizationType ||
                     !hasRequiredScope || (
                         readOnly
                         && applicationConfig.generalSettings.getFieldReadOnlyStatus(
