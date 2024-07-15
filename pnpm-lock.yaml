@@ -299,9 +299,6 @@ importers:
       eslint-config-prettier:
         specifier: 9.1.0
         version: 9.1.0(eslint@8.46.0)
-      eslint-plugin-cypress:
-        specifier: 2.15.2
-        version: 2.15.2(eslint@8.46.0)
       eslint-plugin-header:
         specifier: jeradrutnam/eslint-plugin-header#main
         version: github.com/jeradrutnam/eslint-plugin-header/f5f6e64ffd8b1050400b1a45b7ec2eef9684bee3(eslint@8.46.0)
@@ -36361,6 +36358,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       ini: 2.0.0
+    dev: false
 
   /global@4.4.0:
     resolution: {integrity: sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==}
@@ -37666,6 +37664,7 @@ packages:
     dependencies:
       global-dirs: 3.0.1
       is-path-inside: 3.0.3
+    dev: false
 
   /is-interactive@1.0.0:
     resolution: {integrity: sha512-2HvIEKRoqS62guEC+qBjpvRubdX910WCMuJTZ+I9yvqKU2/12eSL549HMwtabb4oupdj2sMP50k+XJfB/8JE6w==}
