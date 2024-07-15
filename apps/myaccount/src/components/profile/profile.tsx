@@ -1621,10 +1621,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         (value: string, validation: Validation) => validateField(value, validation, schema, fieldName) }
                     value={ resolveProfileInfoSchemaValue(schema) }
                     maxLength={
-                        schema.name === EMAIL_ATTRIBUTE ? EMAIL_MAX_LENGTH : (fieldName.toLowerCase().includes("uri")
-                        || fieldName.toLowerCase().includes("url")) ? 1024 : (schema.maxLength
-                                ? schema.maxLength
-                                : ProfileConstants.CLAIM_VALUE_MAX_LENGTH)
+                        schema.name === EMAIL_ATTRIBUTE
+                            ? EMAIL_MAX_LENGTH
+                            : (fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url"))
+                                ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
+                                : (schema.maxLength
+                                    ? schema.maxLength
+                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH)
                     }
                 />
                 <Field hidden={ true } type="divider" />

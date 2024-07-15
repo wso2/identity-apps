@@ -101,6 +101,8 @@ export class ProfileConstants {
      */
     public static readonly CLAIM_VALUE_MAX_LENGTH: number = 255;
 
+    public static readonly URI_CLAIM_VALUE_MAX_LENGTH: number = 1024;
+
     // Mobile and email verification
 
     public static readonly USER_CLAIM_UPDATE_CONNECTOR: string = "user-claim-update";
