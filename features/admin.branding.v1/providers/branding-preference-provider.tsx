@@ -524,7 +524,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     const updatedValues: FormState<CustomTextInterface, CustomTextInterface> = cloneDeep(subscription);
 
                     if (updatedValues) {
-                        for (const key in resolvedCustomText?.preference?.text) {
+                        for (const key in customTextFallbacks?.preference?.text) {
                             // Check if the key is missing in the values object.
                             // Disable ESLint check for the next line until the cause of getting this error is fixed.
                             // eslint-disable-next-line no-unsafe-optional-chaining
