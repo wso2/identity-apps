@@ -1,5 +1,15 @@
 # @wso2is/admin.authorization.v1
 
+## 2.20.24
+
+### Patch Changes
+
+- Updated dependencies [[`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360)]:
+  - @wso2is/theme@2.0.90
+  - @wso2is/react-components@2.2.16
+  - @wso2is/dynamic-forms@2.0.74
+  - @wso2is/form@2.0.75
+
 ## 2.20.23
 
 ### Patch Changes
