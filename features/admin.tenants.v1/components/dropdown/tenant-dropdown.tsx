@@ -129,7 +129,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
-    const associatedTenantsLimit: number = 10;
+    const associatedTenantsLimit: number = 15;
 
     useEffect(() => {
         setAssociatedTenantsOffset(0);
