@@ -1,5 +1,20 @@
 # @wso2is/admin.tenants.v1
 
+## 2.20.63
+
+### Patch Changes
+
+- [#6579](https://github.com/wso2/identity-apps/pull/6579) [`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add infinite scrolling to tenant association dropdown
+
+- Updated dependencies [[`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360)]:
+  - @wso2is/theme@2.0.90
+  - @wso2is/admin.core.v1@2.22.5
+  - @wso2is/admin.extensions.v1@2.21.33
+  - @wso2is/admin.organizations.v1@2.20.63
+  - @wso2is/react-components@2.2.16
+  - @wso2is/dynamic-forms@2.0.74
+  - @wso2is/form@2.0.75
+
 ## 2.20.62
 
 ### Patch Changes
