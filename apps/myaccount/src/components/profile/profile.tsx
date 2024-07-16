@@ -535,6 +535,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            if (isEmpty(values.get(formName))) {
+                setIsSubmitting(false);
+
+                return;
+            }
             const currentValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
 
             currentValues.push(values.get(formName) as string);
@@ -1275,6 +1280,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let verificationEnabled: boolean = false;
         let verifyPopupHeader: string = "";
         let pendingEmailAddress: string = "";
+        let maxAllowedLimit: number = 0;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             verifyPopupHeader = t("myAccount:components.profile.actions.verifyEmail");
@@ -1289,6 +1295,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             primaryAttributeValue = profileDetails?.profileInfo?.emails[0];
             verificationEnabled = isEmailVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
+            maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verifyPopupHeader = t("myAccount:components.profile.actions.verifyMobile");
@@ -1297,6 +1304,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
             verificationEnabled = isMobileVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(MOBILE_ATTRIBUTE);
+            maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
         }
 
         // Move the primary attribute value to the top of the list.
@@ -1345,6 +1353,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             <>
                 <Field
                     action={ { icon: "plus", type: "submit" } }
+                    disabled={ isSubmitting || attributeValueList?.length >= maxAllowedLimit }
                     className="multi-input-box"
                     autoFocus={ true }
                     label=""
@@ -1356,8 +1365,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             { fieldName }) }
                     type="text"
                     validation={
-                        (value: string, validation: Validation) =>
-                            validateField(value, validation, schema, fieldName) }
+                        (value: string, validation: Validation) => validateField(value, validation, schema, fieldName)
+                    }
                     maxLength={
                         schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                             ? EMAIL_MAX_LENGTH
@@ -1471,6 +1480,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 hidden={ !showVerifyButton(value) }
                                                                 onClick={ () => handleVerify(schema, value) }
                                                                 disabled={ isSubmitting }
+                                                                data-componentid={
+                                                                    `${testId}-editing-section-${
+                                                                        schema.name.replace(".", "-")
+                                                                    }-verify-button`
+                                                                }
                                                             >
                                                                 <Popup
                                                                     size="tiny"
@@ -1488,6 +1502,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 hidden={ !showMakePrimaryButton(value) }
                                                                 onClick={ () => handleMakePrimary(schema, value) }
                                                                 disabled={ isSubmitting }
+                                                                data-componentid={
+                                                                    `${testId}-editing-section-${
+                                                                        schema.name.replace(".", "-")
+                                                                    }-make-primary-button`
+                                                                }
                                                             >
                                                                 <Popup
                                                                     size="tiny"
@@ -1510,6 +1529,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                     );
                                                                 } }
                                                                 disabled={ isSubmitting }
+                                                                data-componentid={
+                                                                    `${testId}-editing-section-${
+                                                                        schema.name.replace(".", "-")
+                                                                    }-delete-button`
+                                                                }
                                                             >
                                                                 <Popup
                                                                     size="tiny"
@@ -1617,6 +1641,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     autoFocus={ true }
                     label=""
                     name={ schema.name }
+                    data-testid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
+                    data-componentid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
                     placeholder={ getPlaceholderText(schema, fieldName) }
                     required={ schema.required }
                     requiredErrorMessage={
@@ -1957,6 +1983,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         return (
             <Popup
+                name="pending-email-popup"
                 size="tiny"
                 trigger={
                     (<Icon
@@ -1977,6 +2004,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         return (
             <Popup
+                name="verified-popup"
                 size="tiny"
                 trigger={
                     (
@@ -1996,6 +2024,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         return (
             <Popup
+                name="primary-popup"
                 size="tiny"
                 trigger={
                     (
@@ -2391,7 +2420,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                 <Message
                                     type="info"
                                     content={ "Your profile cannot be managed from this portal." +
-                                    " Please contact your administrator for more details." }
+                                        " Please contact your administrator for more details." }
+                                    data-testid={ `${testId}-read-only-profile-banner` }
                                     data-componentid={ `${testId}-read-only-profile-banner` }
                                 />
                             </Container>
