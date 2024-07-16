@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -301,33 +301,6 @@ export class ApplicationManagementUtils {
 
         return samples;
     };
-
-    /**
-     * Get the docs key for the SDKs.
-     *
-     * @param template - Template id.
-     * @returns The docs key of the SDK.
-     */
-    public static getSDKDocsKey = (template: string): string => `${
-        ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].SDKs`;
-
-    /**
-     * Get the docs key for the Samples.
-     *
-     * @param template - Template id.
-     * @returns The docs key of the Samples.
-     */
-    public static getSampleDocsKey = (template: string): string => `${
-        ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Samples`;
-
-    /**
-     * Get the docs key for the Configurations.
-     *
-     * @param template - Template id.
-     * @returns The docs key of Configuration.
-     */
-    public static getConfigDocsKey = (template: string): string => `${
-        ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Configurations`;
 
     /**
      * Separate out multiple origins in the passed string.
