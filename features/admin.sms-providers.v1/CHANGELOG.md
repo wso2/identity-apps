@@ -1,5 +1,14 @@
 # @wso2is/admin.sms-providers.v1
 
+## 2.20.62
+
+### Patch Changes
+
+- Updated dependencies [[`2cb42f81fd5acddb6dcb534183f6c0332ec53bff`](https://github.com/wso2/identity-apps/commit/2cb42f81fd5acddb6dcb534183f6c0332ec53bff)]:
+  - @wso2is/admin.core.v1@2.22.4
+  - @wso2is/admin.connections.v1@2.20.62
+  - @wso2is/admin.extensions.v1@2.21.32
+
 ## 2.20.61
 
 ### Patch Changes
