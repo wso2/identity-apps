@@ -1,5 +1,16 @@
 # @wso2is/admin.tenants.v1
 
+## 2.20.66
+
+### Patch Changes
+
+- [#6603](https://github.com/wso2/identity-apps/pull/6603) [`b53be241072f3cfd843d78f08d0614f6c5db96c1`](https://github.com/wso2/identity-apps/commit/b53be241072f3cfd843d78f08d0614f6c5db96c1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Increase associated tenant list to 15
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.22.8
+  - @wso2is/admin.extensions.v1@2.21.36
+  - @wso2is/admin.organizations.v1@2.20.66
+
 ## 2.20.65
 
 ### Patch Changes
