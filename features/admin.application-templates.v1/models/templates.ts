@@ -132,3 +132,11 @@ export enum ApplicationTemplateCategories {
      */
     SSO_INTEGRATION = "SSO-INTEGRATION",
 }
+
+/**
+ * Supported application feature status list.
+ */
+export enum ApplicationTemplateFeatureStatus {
+    NEW = "new",
+    COMING_SOON = "comingSoon"
+}

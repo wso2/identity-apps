@@ -37,7 +37,7 @@ export class ApplicationTemplateConstants {
         }
     ];
 
-    public static readonly COMING_SOON_ATTRIBUTE_KEY: string = "comingSoon";
+    public static readonly FEATURE_STATUS_ATTRIBUTE_KEY: string = "featureStatus";
 
     public static readonly SUPPORTED_TECHNOLOGIES_ATTRIBUTE_KEY: string = "supportedTechnologies";
 

@@ -34,7 +34,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useMemo } from "rea
 import { useTranslation } from "react-i18next";
 import { ApplicationTemplateConstants } from "../constants/templates";
 import "./application-template-card.scss";
-import { SupportedTechnologyMetadataInterface } from "../models/templates";
+import { ApplicationTemplateFeatureStatus, SupportedTechnologyMetadataInterface } from "../models/templates";
 
 /**
  * Props for the application template card component.
@@ -94,9 +94,9 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
     }, [ template ]);
 
     /**
-     * Check whether the current application template should be displayed as a 'coming soon' template.
+     * Resolve the current template feature status.
      */
-    const comingSoon: boolean = useMemo(() => {
+    const featureStatus: ApplicationTemplateFeatureStatus = useMemo(() => {
         if (!template?.customAttributes
             || !Array.isArray(template?.customAttributes)
             || template?.customAttributes?.length <= 0) {
@@ -106,19 +106,36 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
 
         const property: CustomAttributeInterface = template?.customAttributes?.find(
             (property: CustomAttributeInterface) =>
-                property?.key === ApplicationTemplateConstants.COMING_SOON_ATTRIBUTE_KEY
+                property?.key === ApplicationTemplateConstants.FEATURE_STATUS_ATTRIBUTE_KEY
         );
 
-        return property?.value === "true";
+        return property?.value;
     }, [ template ]);
+
+    /**
+     * Resolve the corresponding label for the current feature label.
+     *
+     * @param featureStatus - Feature status from the template.
+     * @returns The feature status label.
+     */
+    const resolveRibbonLabel = (featureStatus: ApplicationTemplateFeatureStatus): string => {
+        switch (featureStatus) {
+            case ApplicationTemplateFeatureStatus.COMING_SOON:
+                return t("common:comingSoon");
+            case ApplicationTemplateFeatureStatus.NEW:
+                return t("common:new");
+        }
+    };
 
     return (
         <Card
             key={ template?.id }
-            className={ classnames("application-template", { disabled: comingSoon }) }
+            className={ classnames("application-template", {
+                disabled: featureStatus === ApplicationTemplateFeatureStatus.COMING_SOON
+            }) }
             onClick={
                 (e: MouseEvent<HTMLDivElement>) => {
-                    if (!comingSoon) {
+                    if (featureStatus !== ApplicationTemplateFeatureStatus.COMING_SOON) {
                         onClick(e);
                     }
                 }
@@ -126,10 +143,15 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
             data-componentid={ `${componentId}-${template?.id}` }
         >
             {
-                comingSoon
+                featureStatus
                     ? (
-                        <div className="application-template-coming-soon-ribbon">
-                            { t("common:comingSoon") }
+                        <div
+                            className={ classnames("application-template-ribbon", {
+                                "coming-soon": featureStatus === ApplicationTemplateFeatureStatus.COMING_SOON,
+                                "new": featureStatus === ApplicationTemplateFeatureStatus.NEW
+                            }) }
+                        >
+                            { resolveRibbonLabel(featureStatus) }
                         </div>
                     )
                     : null

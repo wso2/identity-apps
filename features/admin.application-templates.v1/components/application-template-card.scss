@@ -36,7 +36,7 @@
         }
     }
 
-    .application-template-coming-soon-ribbon {
+    .application-template-ribbon {
         position: absolute;
         right: 0;
         top: 13px;
@@ -45,7 +45,6 @@
         color: #fff;
         height: 24px;
         width: 100px;
-        background: linear-gradient(270deg,#ff9d4d 0,#ff7300 100%);
         display: flex;
         flex-direction: row;
         align-content: center;
@@ -53,6 +52,14 @@
         justify-content: space-around;
         clip-path: polygon(4% 0,0 100%,100% 100%,100% 0,100% 0);
         -webkit-clip-path: polygon(4% 0,0 100%,100% 100%,100% 0,100% 0);
+
+        &.coming-soon {
+            background: linear-gradient(270deg,#ff9d4d 0,#ff7300 100%);
+        }
+
+        &.new {
+            background: #3fb81f;
+        }
     }
 
     .application-template-header {
