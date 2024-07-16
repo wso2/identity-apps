@@ -19,13 +19,22 @@
 import { URLUtils } from "@wso2is/core/utils";
 import {
     Link,
-    MarkdownCustomComponentPropsInterface
+    MarkdownCustomComponentPropsInterface,
+    PrimaryButton
 } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import useGlobalMarkdown from "../../../../hooks/use-global-markdown";
 
 const DEFAULT_DOWNLOAD_FILE_NAME: string = "download";
+
+/**
+ * Component types for rendering the link.
+ */
+enum ComponentTypes {
+    LINK = "link",
+    BUTTON = "button"
+}
 
 /**
  * Props interface for the `MarkdownLink` component.
@@ -57,6 +66,10 @@ interface MarkdownLinkProps extends MarkdownCustomComponentPropsInterface<"a"> {
          * The type that should be assigned to the above content file.
          */
         type?: string;
+        /**
+         * Component type of the link element.
+         */
+        as?: ComponentTypes;
     };
 }
 
@@ -127,21 +140,32 @@ const MarkdownLink: FunctionComponent<MarkdownLinkProps> = (props: MarkdownLinkP
     }
 
     return (
-        <Link
-            link={ href }
-            onClick={
-                isInternalUrl
-                    ? () => onHandleInternalUrl(href)
-                    : dataConfig?.download && initDownload
-            }
-            external={ !(dataConfig?.external === false) }
-            target={ (dataConfig?.external === false) ? "_self" : "_blank" }
-            data-componentid={ componentId }
-            title={ title }
-            icon={ dataConfig?.download ? "arrow alternate circle down outline" : undefined }
-        >
-            {  children }
-        </Link>
+        dataConfig?.as === ComponentTypes.BUTTON && dataConfig?.download
+            ? (
+                <PrimaryButton
+                    content={ children }
+                    onClick={ initDownload }
+                    data-componentid={ componentId }
+                    icon="cloud download"
+                />
+            )
+            : (
+                <Link
+                    link={ href }
+                    onClick={
+                        isInternalUrl
+                            ? () => onHandleInternalUrl(href)
+                            : dataConfig?.download && initDownload
+                    }
+                    external={ !(dataConfig?.external === false) }
+                    target={ (dataConfig?.external === false) ? "_self" : "_blank" }
+                    data-componentid={ componentId }
+                    title={ title }
+                    icon={ dataConfig?.download ? "arrow alternate circle down outline" : undefined }
+                >
+                    {  children }
+                </Link>
+            )
     );
 };
 

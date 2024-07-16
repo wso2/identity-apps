@@ -39,6 +39,11 @@ interface Heading3Props extends MarkdownCustomComponentPropsInterface<"h3"> {
          * Content of the number element.
          */
         content?: string;
+        /**
+         * Enable indentation for child elements.
+         * By default indentation is enabled.
+         */
+        indent?: boolean;
     };
 }
 
@@ -95,7 +100,10 @@ const Heading3: FunctionComponent<Heading3Props> = (props: Heading3Props): React
         }
     };
 
-    const classes: string = classNames({ "markdown-heading-container": dataConfig?.numbered });
+    const classes: string = classNames({
+        "markdown-heading-container": dataConfig?.numbered,
+        "markdown-heading3-children-indent": dataConfig?.indent === false ? false : true
+    });
 
     return (
         <Typography className={ classes } variant="h4" component="h3" data-componentid={ componentId }>

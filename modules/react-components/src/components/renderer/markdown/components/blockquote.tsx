@@ -19,8 +19,10 @@
 import Alert, { AlertProps } from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import { MarkdownCustomComponentPropsInterface } from "@wso2is/react-components";
+import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { childRenderer } from "./utils";
+import "./blockquote.scss";
 
 /**
  * Custom blockquote component types.
@@ -78,12 +80,14 @@ const Blockquote: FunctionComponent<BlockquoteProps> = (props: BlockquoteProps):
         return null;
     }
 
+    const classes: string = classNames({ "markdown-blockquote-alert": !dataConfig?.type });
+
     return (
-        dataConfig?.type === CustomBlockquoteTypes.WRAPPER || !dataConfig?.type
+        dataConfig?.type === CustomBlockquoteTypes.WRAPPER
             ? (
                 <div
                     style={ {
-                        marginLeft: `${ 5 * (dataConfig?.indent === undefined ? 9 : dataConfig?.indent) }px`
+                        marginLeft: `${ 5 * (dataConfig?.indent === undefined ? 0 : dataConfig?.indent) }px`
                     } }
                 >
                     { childRenderer(props) }
@@ -91,13 +95,11 @@ const Blockquote: FunctionComponent<BlockquoteProps> = (props: BlockquoteProps):
             )
             : (
                 <Alert
-                    severity={ dataConfig?.type || "info" }
-                    icon={ dataConfig?.icon === false ? false : undefined }
-                    variant={ dataConfig?.variant || "standard" }
+                    severity={ dataConfig?.type }
+                    className={ classes }
+                    icon={ dataConfig?.type ? (dataConfig?.icon === false ? false : undefined) : false }
+                    variant={ dataConfig?.type ? dataConfig?.variant ?? "standard" : "standard" }
                     data-componentid={ componentId }
-                    style={ {
-                        marginLeft: `${ 5 * (dataConfig?.indent === undefined ? 0 : dataConfig?.indent) }px`
-                    } }
                 >
                     {
                         dataConfig?.title ? (
