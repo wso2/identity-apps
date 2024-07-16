@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.2
+
+### Patch Changes
+
+- [#6600](https://github.com/wso2/identity-apps/pull/6600) [`e5b95f9ed5ab1c50c8339364f15dfab1eb0ee27d`](https://github.com/wso2/identity-apps/commit/e5b95f9ed5ab1c50c8339364f15dfab1eb0ee27d) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix Typo in attributes section
+
 ## 2.5.1
 
 ### Patch Changes
