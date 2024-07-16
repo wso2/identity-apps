@@ -534,7 +534,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <ApplicationTabComponentsFilter
                             tabId={ ApplicationTabIDs.PROTOCOL }
                         >
-                            <Grid.Row columns={ 1 }>
+                            <Grid.Row columns={ 1 } data-componentid="application-edit-inbound-saml-form-issuer">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     {
                                         initialValues?.issuer
@@ -589,7 +589,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Row>
                             {
                                 (applicationConfig.inboundSAMLForm.showApplicationQualifier) && (
-                                    <Grid.Row columns={ 1 }>
+                                    <Grid.Row
+                                        columns={ 1 }
+                                        data-componentid="application-edit-inbound-saml-form-application-qualifier"
+                                    >
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Field
                                                 ref={ applicationQualifier }
@@ -730,7 +733,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     </Hint>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row columns={ 1 }>
+                            <Grid.Row
+                                columns={ 1 }
+                                data-componentid="application-edit-inbound-saml-form-idp-entity-id-alias"
+                            >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ idpEntityIdAlias }
@@ -977,7 +983,13 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         { t("applications:forms.inboundSAML.sections" +
                                             ".ssoProfile.heading") }
                                     </Heading>
-                                    <Divider hidden/>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row
+                                columns={ 2 }
+                                data-componentid="application-edit-inbound-saml-form-bindings"
+                            >
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ bindings }
                                         label={
@@ -1019,7 +1031,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             {
                                 isArtifactBindingAllowed
                                     ? (
-                                        <Grid.Row columns={ 1 }>
+                                        <Grid.Row
+                                            columns={ 1 }
+                                            data-componentid={ "application-edit-inbound-saml-form"
+                                                + "-signature-validation-for-artifact-binding" }
+                                        >
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                 <Field
                                                     ref={ signatureValidationForArtifactBinding }
@@ -1130,7 +1146,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Grid.Column>
                             </Grid.Row>
                             <div ref={ audience }></div>
-                            <Grid.Row columns={ 1 }>
+                            <Grid.Row
+                                columns={ 1 }
+                                data-componentid="application-edit-inbound-saml-form-audience"
+                            >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <URLInput
                                         urlState={ audiences }
@@ -1207,7 +1226,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Grid.Column>
                             </Grid.Row>
                             <div ref={ recipient }></div>
-                            <Grid.Row columns={ 1 }>
+                            <Grid.Row
+                                columns={ 1 }
+                                data-componentid="application-edit-inbound-saml-form-recipient"
+                            >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <URLInput
                                         urlState={ recipients }
@@ -1790,46 +1812,47 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             { /* Assertion Query/Request Profile */ }
                             {
                                 (applicationConfig.inboundSAMLForm.showQueryRequestProfile) && (
-                                    <>
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                <Divider/>
-                                            </Grid.Column>
-                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                <Heading as="h5">
-                                                    { t("applications:forms.inboundSAML.sections" +
-                                                    ".requestProfile.heading") }
-                                                </Heading>
-                                                <Divider hidden/>
-                                                <Field
-                                                    ref={ assertionQueryProfile }
-                                                    name="assertionQueryProfile"
-                                                    label=""
-                                                    required={ false }
-                                                    requiredErrorMessage={
-                                                        t("applications:forms" +
-                                                            ".inboundSAML.sections.requestProfile.fields.enable" +
-                                                            ".validations.empty")
+                                    <Grid.Row
+                                        columns={ 1 }
+                                        data-componentid="application-edit-inbound-saml-form-assertion-query-profile"
+                                    >
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Divider/>
+                                        </Grid.Column>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Heading as="h5">
+                                                { t("applications:forms.inboundSAML.sections" +
+                                                ".requestProfile.heading") }
+                                            </Heading>
+                                            <Divider hidden/>
+                                            <Field
+                                                ref={ assertionQueryProfile }
+                                                name="assertionQueryProfile"
+                                                label=""
+                                                required={ false }
+                                                requiredErrorMessage={
+                                                    t("applications:forms" +
+                                                        ".inboundSAML.sections.requestProfile.fields.enable" +
+                                                        ".validations.empty")
+                                                }
+                                                value={
+                                                    initialValues?.enableAssertionQueryProfile ?
+                                                        [ "enableAssertionQueryProfile" ] : []
+                                                }
+                                                type="checkbox"
+                                                children={ [
+                                                    {
+                                                        label: t("applications:" +
+                                                            "forms.inboundSAML.sections.requestProfile.fields" +
+                                                            ".enable.label"),
+                                                        value: "enableAssertionQueryProfile"
                                                     }
-                                                    value={
-                                                        initialValues?.enableAssertionQueryProfile ?
-                                                            [ "enableAssertionQueryProfile" ] : []
-                                                    }
-                                                    type="checkbox"
-                                                    children={ [
-                                                        {
-                                                            label: t("applications:" +
-                                                                "forms.inboundSAML.sections.requestProfile.fields" +
-                                                                ".enable.label"),
-                                                            value: "enableAssertionQueryProfile"
-                                                        }
-                                                    ] }
-                                                    readOnly={ readOnly }
-                                                    data-testid={ `${ testId }-assertion-query-profile-checkbox` }
-                                                />
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </>
+                                                ] }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ testId }-assertion-query-profile-checkbox` }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
                                 )
                             }
                             { /* Certificate Section */ }
