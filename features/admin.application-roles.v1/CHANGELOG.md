@@ -1,5 +1,23 @@
 # @wso2is/admin.application-roles.v1
 
+## 2.21.7
+
+### Patch Changes
+
+- [#6587](https://github.com/wso2/identity-apps/pull/6587) [`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab) Thanks [@brionmario](https://github.com/brionmario)! - [cleanup] Remove `documentation` object & related logic from Console + Other cleanup
+
+- Updated dependencies [[`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab)]:
+  - @wso2is/admin.identity-providers.v1@2.20.65
+  - @wso2is/admin.extensions.v1@2.21.35
+  - @wso2is/react-components@2.2.17
+  - @wso2is/admin.core.v1@2.22.7
+  - @wso2is/core@2.0.52
+  - @wso2is/admin.applications.v1@2.21.35
+  - @wso2is/admin.connections.v1@2.20.65
+  - @wso2is/admin.groups.v1@2.20.65
+  - @wso2is/admin.userstores.v1@2.20.65
+  - @wso2is/access-control@3.0.12
+
 ## 2.21.6
 
 ### Patch Changes
