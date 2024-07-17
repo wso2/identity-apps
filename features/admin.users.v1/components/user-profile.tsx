@@ -1780,7 +1780,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             && !verifiedAttributeValueList.includes(value);
 
         return (
-            <>
+            <div key={ key }>
                 <Field
                     action={ {
                         icon: "plus",
@@ -1805,7 +1805,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
-                    key={ key }
                     readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
                     validation={ (value: string, validation: Validation) => {
                         if (!RegExp(primaryAttributeSchema.regEx).test(value)) {
@@ -1846,6 +1845,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     <Accordion
                         elevation={ 0 }
                         className="oxygen-accordion"
+                        data-componentid={ `${ testId }-profile-form-${ schema.name }-accordion` }
                         expanded={ expandMultiAttributeAccordion[schema.name] }
                         onChange={ () => setExpandMultiAttributeAccordion(
                             {
@@ -1873,7 +1873,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             {
                                 showVerifiedPopup(accordionLabelValue)
                                 && (
-                                    <div className="verified-icon" >
+                                    <div
+                                        className="verified-icon"
+                                        data-componentid={ `${ testId }-profile-form-${ schema.name }-verified-icon` }
+                                    >
                                         <Tooltip
                                             trigger={ (
                                                 <span> <CheckIcon fill="blue" /></span>
@@ -1887,7 +1890,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             {
                                 showPrimaryPopup(accordionLabelValue)
                                 && (
-                                    <div className="primary-icon">
+                                    <div
+                                        className="primary-icon"
+                                        data-componentid={ `${ testId }-profile-form-${ schema.name }-primary-icon` }
+                                    >
                                         <Tooltip
                                             trigger={ (
                                                 <span> <StarIcon fill="green" /></span>
@@ -1959,6 +1965,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 size="small"
                                                                 hidden={ !showVerifyButton(value) }
                                                                 onClick={ () => handleVerify(schema, value) }
+                                                                data-componentid={
+                                                                    `${testId}-profile-form
+                                                                    -${schema.name}-verify-button`
+                                                                }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
                                                                 <Tooltip
@@ -1973,6 +1983,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 size="small"
                                                                 hidden={ !showMakePrimaryButton(value) }
                                                                 onClick={ () => handleMakePrimary(schema, value) }
+                                                                data-componentid={
+                                                                    `${testId}-profile-form
+                                                                    -${schema.name}-make-primary-button`
+                                                                }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
                                                                 <Tooltip
@@ -1990,6 +2004,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                     setSelectedAttributeInfo({ schema, value });
                                                                     setShowMultiValuedItemDeleteConfirmationModal(true);
                                                                 } }
+                                                                data-componentid={
+                                                                    `${testId}-profile-form
+                                                                    -${schema.name}-delete-button`
+                                                                }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
                                                                 <Tooltip
@@ -2011,7 +2029,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         </AccordionDetails>
                     </Accordion>
                 </div>
-            </>
+            </div>
         );
     };
 
