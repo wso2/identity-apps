@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import DeploymentConfigProvider from "@wso2is/admin.core.v1/providers/deployment-config-provider";
+import ResourceEndpointsProvider from "@wso2is/admin.core.v1/providers/resource-enpoints-provider";
 import UserPreferenceProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
 import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
@@ -35,7 +36,9 @@ describe("AuthenticationFlowOptionAddModal", () => {
         render(
             <UserPreferenceProvider>
                 <DeploymentConfigProvider>
-                    <AuthenticationFlowOptionAddModal { ...defaultProps } />
+                    <ResourceEndpointsProvider>
+                        <AuthenticationFlowOptionAddModal { ...defaultProps } />
+                    </ResourceEndpointsProvider>
                 </DeploymentConfigProvider>
             </UserPreferenceProvider>
             , { allowedScopes: fullPermissions });
