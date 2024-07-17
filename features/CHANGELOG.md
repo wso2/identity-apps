@@ -1,5 +1,46 @@
 # @wso2is/features
 
+## 2.21.31
+
+### Patch Changes
+
+- Updated dependencies [[`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab)]:
+  - @wso2is/react-components@2.2.17
+  - @wso2is/core@2.0.52
+  - @wso2is/dynamic-forms@2.0.75
+  - @wso2is/form@2.0.76
+  - @wso2is/access-control@3.0.12
+  - @wso2is/forms@2.0.42
+  - @wso2is/i18n@2.5.3
+
+## 2.21.30
+
+### Patch Changes
+
+- Updated dependencies [[`e5b95f9ed5ab1c50c8339364f15dfab1eb0ee27d`](https://github.com/wso2/identity-apps/commit/e5b95f9ed5ab1c50c8339364f15dfab1eb0ee27d)]:
+  - @wso2is/i18n@2.5.2
+
+## 2.21.29
+
+### Patch Changes
+
+- [#6579](https://github.com/wso2/identity-apps/pull/6579) [`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add infinite scrolling to tenant association dropdown
+
+- Updated dependencies [[`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360)]:
+  - @wso2is/theme@2.0.90
+  - @wso2is/react-components@2.2.16
+  - @wso2is/dynamic-forms@2.0.74
+  - @wso2is/form@2.0.75
+
+## 2.21.28
+
+### Patch Changes
+
+- Updated dependencies [[`6500ca1be1c4bbc939c7a0024b80f2aa5be123f1`](https://github.com/wso2/identity-apps/commit/6500ca1be1c4bbc939c7a0024b80f2aa5be123f1)]:
+  - @wso2is/react-components@2.2.15
+  - @wso2is/dynamic-forms@2.0.73
+  - @wso2is/form@2.0.74
+
 ## 2.21.27
 
 ### Patch Changes

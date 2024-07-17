@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "../../../admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1";
 
 /**
  * Mocks the Redux store state.
@@ -24,7 +24,7 @@ import { AppState } from "../../../admin.core.v1";
  * @remarks If you add new attributes to the reducers, you will need to add them to this file.
  */
 
-/* eslint-disable sort-keys, max-len */
+/* eslint-disable sort-keys, max-len, @typescript-eslint/typedef */
 const ReduxStoreStateMock: AppState = {
     accessControl: {
         isDevelopAllowed: true,
@@ -271,17 +271,6 @@ const ReduxStoreStateMock: AppState = {
                 basePath: "/console/develop",
                 displayName: "Develop",
                 path: "/console/develop/applications"
-            },
-            documentation: {
-                baseURL: "https://api.github.com",
-                contentBaseURL: "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
-                githubOptions: {
-                    branch: "new_restructure"
-                },
-                imagePrefixURL: "https://github.com/wso2/docs-is/raw/new_restructure/en/docs/",
-                provider: "GITHUB",
-                structureFileType: "YAML",
-                structureFileURL: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
             },
             extensions: {
                 asgardeoTryItURL: ""
@@ -799,12 +788,6 @@ const ReduxStoreStateMock: AppState = {
     governanceConnector: {
         categories: []
     },
-    helpPanel: {
-        activeTabIndex: 0,
-        docStructure: null,
-        docURL: null,
-        visibility: false
-    },
     identityProvider: {
         meta: {
             authenticators: []
@@ -848,6 +831,6 @@ const ReduxStoreStateMock: AppState = {
         profileSchemas: []
     }
 };
-/* eslint-enable sort-keys, max-len */
+/* eslint-enable sort-keys, max-len, @typescript-eslint/typedef */
 
 export default ReduxStoreStateMock;

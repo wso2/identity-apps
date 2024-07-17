@@ -67,17 +67,6 @@ if (commonConfig?.useExtensionTestConfig) {
                     path: "/t/testorg/develop/applications"
                 },
                 docSiteUrl: "https://is.docs.wso2.com/",
-                documentation: {
-                    baseURL: "https://api.github.com",
-                    contentBaseURL: "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
-                    githubOptions: {
-                        branch: "new_restructure"
-                    },
-                    imagePrefixURL: "https://github.com/wso2/docs-is/raw/new_restructure/en/docs/",
-                    provider: "GITHUB",
-                    structureFileType: "YAML",
-                    structureFileURL: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
-                },
                 extensions: {
                     collaboratorUsernameRegex: "^[\\u00C0-\\u00FFa-zA-Z0-9.+\\-_]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,10}$",
                     community: "https://wso2iem-en-community.insided.com/ssoproxy/login?ssoType=openidconnect&returnUrl=https://wso2iem-en-community.insided.com/asgardeo-1",

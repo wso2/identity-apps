@@ -1,5 +1,27 @@
 # @wso2is/react-components
 
+## 2.2.17
+
+### Patch Changes
+
+- [#6587](https://github.com/wso2/identity-apps/pull/6587) [`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab) Thanks [@brionmario](https://github.com/brionmario)! - [cleanup] Remove `documentation` object & related logic from Console + Other cleanup
+
+- Updated dependencies [[`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab)]:
+  - @wso2is/core@2.0.52
+
+## 2.2.16
+
+### Patch Changes
+
+- Updated dependencies [[`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360)]:
+  - @wso2is/theme@2.0.90
+
+## 2.2.15
+
+### Patch Changes
+
+- [#6585](https://github.com/wso2/identity-apps/pull/6585) [`6500ca1be1c4bbc939c7a0024b80f2aa5be123f1`](https://github.com/wso2/identity-apps/commit/6500ca1be1c4bbc939c7a0024b80f2aa5be123f1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update console callback URL to getting started page on error boundary being triggered
+
 ## 2.2.14
 
 ### Patch Changes

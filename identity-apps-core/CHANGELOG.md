@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 2.4.13
+
+### Patch Changes
+
+- Updated dependencies [[`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360)]:
+  - @wso2is/theme@2.0.90
+
+## 2.4.12
+
+### Patch Changes
+
+- [#6596](https://github.com/wso2/identity-apps/pull/6596) [`cce9b64aa0ad028482ba974fe32434015d8dd821`](https://github.com/wso2/identity-apps/commit/cce9b64aa0ad028482ba974fe32434015d8dd821) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix parameter passing issues in password recovery flow.
+
 ## 2.4.11
 
 ### Patch Changes

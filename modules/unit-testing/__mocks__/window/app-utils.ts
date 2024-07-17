@@ -62,17 +62,6 @@ interface CustomWindow extends Window {
                 displayName: "app",
                 path: "/t/testorg/app/applications"
             },
-            documentation: {
-                baseURL: "https://api.github.com",
-                contentBaseURL: "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
-                githubOptions: {
-                    branch: "new_restructure"
-                },
-                imagePrefixURL: "https://github.com/wso2/docs-is/raw/new_restructure/en/docs/",
-                provider: "GITHUB",
-                structureFileType: "YAML",
-                structureFileURL: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
-            },
             idpConfigs: {
                 serverOrigin: "https://localhost:9443",
                 enablePKCE: true,
