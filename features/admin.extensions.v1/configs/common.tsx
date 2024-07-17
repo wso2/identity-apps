@@ -151,7 +151,6 @@ export const commonConfig: CommonConfig = {
         }
     },
     primaryUserstoreOnly: true,
-    useExtensionTestConfig: false,
     userEditSection: {
         isGuestUser: true,
         showEmail: true
