@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
+
 /**
  * Mocks the Redux store state.
  *
@@ -23,18 +25,214 @@
  */
 
 /* eslint-disable sort-keys, max-len, @typescript-eslint/typedef */
-const ReduxStoreStateMock: any = {
+const ReduxStoreStateMock: AppState = {
     accessControl: {
         isDevelopAllowed: true,
         isManageAllowed: true
     },
     application: {
+        groupedTemplates: [
+            {
+                id: "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7",
+                templateId: "single-page-application",
+                name: "Single-Page Application",
+                description: "A web application that runs application logic in the browser.",
+                image: "spa",
+                authenticationProtocol: "oidc",
+                types: [
+                    {
+                        displayName: "React",
+                        logo: {},
+                        name: "react"
+                    },
+                    {
+                        displayName: "Angular",
+                        logo: {},
+                        name: "angular"
+                    },
+                    {
+                        displayName: "Vue",
+                        logo: {},
+                        name: "vue"
+                    },
+                    {
+                        displayName: "Javascript",
+                        logo: {},
+                        name: "javascript"
+                    }
+                ],
+                category: "DEFAULT",
+                displayOrder: 0,
+                templateGroup: "spa",
+                application: {
+                    name: "",
+                    advancedConfigurations: {
+                        discoverableByEndUsers: false,
+                        skipLogoutConsent: true,
+                        skipLoginConsent: true
+                    },
+                    authenticationSequence: {
+                        type: "DEFAULT",
+                        steps: [
+                            {
+                                id: 1,
+                                options: [
+                                    {
+                                        idp: "LOCAL",
+                                        authenticator: "basic"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    claimConfiguration: {
+                        dialect: "LOCAL",
+                        requestedClaims: [
+                            {
+                                claim: {
+                                    uri: "http://wso2.org/claims/username"
+                                }
+                            }
+                        ]
+                    },
+                    inboundProtocolConfiguration: {
+                        oidc: {
+                            accessToken: {
+                                applicationAccessTokenExpiryInSeconds: 3600,
+                                bindingType: "sso-session",
+                                revokeTokensWhenIDPSessionTerminated: true,
+                                type: "Default",
+                                userAccessTokenExpiryInSeconds: 3600,
+                                validateTokenBinding: false
+                            },
+                            grantTypes: [
+                                "authorization_code",
+                                "refresh_token"
+                            ],
+                            allowedOrigins: [
+                                "https://localhost:3000"
+                            ],
+                            callbackURLs: [
+                                "https://localhost:3000"
+                            ],
+                            pkce: {
+                                mandatory: true,
+                                supportPlainTransformAlgorithm: false
+                            },
+                            publicClient: true,
+                            refreshToken: {
+                                expiryInSeconds: 86400,
+                                renewRefreshToken: true
+                            }
+                        }
+                    }
+                }
+            }
+        ],
         meta: {
             customInboundProtocolChecked: false,
             customInboundProtocols: [],
             inboundProtocols: [],
             protocolMeta: {}
-        }
+        },
+        templates: [
+            {
+                id: "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7",
+                templateId: "single-page-application",
+                name: "Single-Page Application",
+                description: "A web application that runs application logic in the browser.",
+                image: "spa",
+                authenticationProtocol: "oidc",
+                types: [
+                    {
+                        displayName: "React",
+                        logo: {},
+                        name: "react"
+                    },
+                    {
+                        displayName: "Angular",
+                        logo: {},
+                        name: "angular"
+                    },
+                    {
+                        displayName: "Vue",
+                        logo: {},
+                        name: "vue"
+                    },
+                    {
+                        displayName: "Javascript",
+                        logo: {},
+                        name: "javascript"
+                    }
+                ],
+                category: "DEFAULT",
+                displayOrder: 0,
+                templateGroup: "spa",
+                application: {
+                    name: "",
+                    advancedConfigurations: {
+                        discoverableByEndUsers: false,
+                        skipLogoutConsent: true,
+                        skipLoginConsent: true
+                    },
+                    authenticationSequence: {
+                        type: "DEFAULT",
+                        steps: [
+                            {
+                                id: 1,
+                                options: [
+                                    {
+                                        idp: "LOCAL",
+                                        authenticator: "basic"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    claimConfiguration: {
+                        dialect: "LOCAL",
+                        requestedClaims: [
+                            {
+                                claim: {
+                                    uri: "http://wso2.org/claims/username"
+                                }
+                            }
+                        ]
+                    },
+                    inboundProtocolConfiguration: {
+                        oidc: {
+                            accessToken: {
+                                applicationAccessTokenExpiryInSeconds: 3600,
+                                bindingType: "sso-session",
+                                revokeTokensWhenIDPSessionTerminated: true,
+                                type: "Default",
+                                userAccessTokenExpiryInSeconds: 3600,
+                                validateTokenBinding: false
+                            },
+                            grantTypes: [
+                                "authorization_code",
+                                "refresh_token"
+                            ],
+                            allowedOrigins: [
+                                "https://localhost:3000"
+                            ],
+                            callbackURLs: [
+                                "https://localhost:3000"
+                            ],
+                            pkce: {
+                                mandatory: true,
+                                supportPlainTransformAlgorithm: false
+                            },
+                            publicClient: true,
+                            refreshToken: {
+                                expiryInSeconds: 86400,
+                                renewRefreshToken: true
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     },
     auth: {
         displayName: "admin@carbon.super",
@@ -161,6 +359,27 @@ const ReduxStoreStateMock: any = {
             identityProviderTemplateLoadingStrategy: "LOCAL",
             appTitle: "Console | WSO2 Identity Server",
             features: {
+                apiResources: {
+                    disabledFeatures: [],
+                    enabled: true,
+                    scopes: {
+                        create: [
+                            "internal_api_resource_create"
+                        ],
+                        delete: [
+                            "internal_api_resource_delete"
+                        ],
+                        feature: [
+                            "console:apiResources"
+                        ],
+                        read: [
+                            "internal_api_resource_view"
+                        ],
+                        update: [
+                            "internal_api_resource_update"
+                        ]
+                    }
+                },
                 applications: {
                     disabledFeatures: [],
                     enabled: true,
@@ -442,6 +661,23 @@ const ReduxStoreStateMock: any = {
             isLeftNavigationCategorized: true,
             isRequestPathAuthenticationEnabled: true,
             isSignatureValidationCertificateAliasEnabled: false,
+            legacyMode: {
+                apiResourcesV1: false,
+                apiResourcesV2: true,
+                applicationListSystemApps: false,
+                applicationOIDCSubjectIdentifier: true,
+                applicationRequestPathAuthentication: false,
+                applicationSystemAppsSettings: false,
+                backupCodesForSubOrganizations: true,
+                certificates: false,
+                consoleFeatureScopeCheck: true,
+                loginAndRegistrationEmailDomainDiscovery: true,
+                organizations: true,
+                roleMapping: false,
+                rolesV1: false,
+                saasApplications: false,
+                secretsManagement: false
+            },
             listAllAttributeDialects: false,
             privacyPolicyConfigs: {
                 visibleOnFooter: true
@@ -569,7 +805,9 @@ const ReduxStoreStateMock: any = {
             name: "Organization",
             id: "org-0001",
             ref: "/org-001"
-        }
+        },
+        isFirstLevelOrganization: true,
+        organizationType: "SUPER_ORGANIZATION"
     },
     profile: {
         isSCIMEnabled: true,
