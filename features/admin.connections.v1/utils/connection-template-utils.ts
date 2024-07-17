@@ -210,7 +210,6 @@ export class ConnectionTemplateManagementUtils {
 
         getConnectionTemplatesConfig().groups.forEach(
             async (config: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
-                console.log("config", config);
 
                 if (!config.enabled) return;
                 groups.push(
@@ -219,8 +218,6 @@ export class ConnectionTemplateManagementUtils {
                 );
             }
         );
-        console.log("groups", groups);
-
 
         return Promise.all([ ...groups ]);
 
@@ -270,9 +267,10 @@ export const getCertificateOptionsForTemplate = (templateId: string): { JWKS: bo
  */
 export const loadLocalFileBasedConnectionTemplateGroups = (): ConnectionTemplateGroupInterface[] => {
 
-    return getConnectionTemplatesConfig().groups.map((groupConfig: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
-        if (groupConfig.enabled) {
-            return groupConfig.resource as ConnectionTemplateGroupInterface;
-        }
-    });
+    return getConnectionTemplatesConfig().groups.map(
+        (groupConfig: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
+            if (groupConfig.enabled) {
+                return groupConfig.resource as ConnectionTemplateGroupInterface;
+            }
+        });
 };

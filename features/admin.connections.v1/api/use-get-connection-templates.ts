@@ -82,7 +82,7 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
             ConnectionManagementConstants.IDP_TEMPLATE_IDS.ENTERPRISE,
             ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC,
             ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML,
-            ...UIConfig?.hiddenConnectionTemplates
+            ...(UIConfig?.hiddenConnectionTemplates || [])
         ];
 
         // Trusted token issuer is not useful for login flow.

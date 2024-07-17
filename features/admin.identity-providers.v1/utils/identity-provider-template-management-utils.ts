@@ -25,7 +25,8 @@ import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates
 import {
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateListItemInterface,
-    IdentityProviderTemplateListResponseInterface} from "../models";
+    IdentityProviderTemplateListResponseInterface
+} from "../models";
 import { setIdentityProviderTemplates } from "../store";
 
 /**
