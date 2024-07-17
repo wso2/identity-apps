@@ -612,7 +612,6 @@ export interface TemplateConfigInterface<T = Record<string, unknown>> {
 export interface ConnectionTemplatesConfigInterface {
     categories: TemplateConfigInterface<ConnectionTemplateCategoryInterface>[] | any;
     groups?: TemplateConfigInterface<ConnectionTemplateGroupInterface>[] | any;
-    templates: TemplateConfigInterface<any>[] | any;
 }
 
 /**

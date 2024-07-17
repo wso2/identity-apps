@@ -210,6 +210,8 @@ export class ConnectionTemplateManagementUtils {
 
         getConnectionTemplatesConfig().groups.forEach(
             async (config: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
+                console.log("config", config);
+
                 if (!config.enabled) return;
                 groups.push(
                     config.resource as (ConnectionTemplateGroupInterface |
@@ -217,6 +219,8 @@ export class ConnectionTemplateManagementUtils {
                 );
             }
         );
+        console.log("groups", groups);
+
 
         return Promise.all([ ...groups ]);
 
@@ -257,4 +261,18 @@ export const getCertificateOptionsForTemplate = (templateId: string): { JWKS: bo
     }
 
     return undefined;
+};
+
+/**
+ * Utility function to load local file based connection template groups.
+ *
+ * @returns Array of connection template groups.
+ */
+export const loadLocalFileBasedConnectionTemplateGroups = (): ConnectionTemplateGroupInterface[] => {
+
+    return getConnectionTemplatesConfig().groups.map((groupConfig: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
+        if (groupConfig.enabled) {
+            return groupConfig.resource as ConnectionTemplateGroupInterface;
+        }
+    });
 };
