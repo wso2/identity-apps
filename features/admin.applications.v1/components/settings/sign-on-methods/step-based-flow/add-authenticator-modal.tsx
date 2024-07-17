@@ -19,12 +19,10 @@
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import {
     ConnectionManagementConstants,
-    ConnectionTemplateCategoryInterface,
     ConnectionTemplateInterface
 } from "@wso2is/admin.connections.v1";
 import { useGetConnectionTemplates } from "@wso2is/admin.connections.v1/api/use-get-connection-templates";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
-import { ConnectionTemplateManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-template-utils";
 import { ConnectionsManagementUtils, resolveConnectionName } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
@@ -37,7 +35,6 @@ import {
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface,
-    IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import {
@@ -59,9 +56,7 @@ import {
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
-import orderBy from "lodash-es/orderBy";
 import startCase from "lodash-es/startCase";
-import union from "lodash-es/union";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -211,10 +206,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const [ showAddNewAuthenticatorView, setShowAddNewAuthenticatorView ] = useState<boolean>(false);
     const [ filterLabels, setFilterLabels ] = useState<string[]>([]);
     const [ selectedFilterLabels, setSelectedFilterLabels ] = useState<string[]>([]);
-    const [
-        categorizedIdPTemplates,
-        setCategorizedIdPTemplates
-    ] = useState<ConnectionTemplateCategoryInterface[]>([]);
 
     /**
      * Fetch connection templates list when the add new authenticator modal is open.
@@ -223,7 +214,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         data: connectionTemplates,
         isLoading: isConnectionTemplatesFetchRequestLoading,
         error: connectionTemplatesFetchRequestError
-    } = useGetConnectionTemplates(null, null, null, showAddNewAuthenticatorView);
+    } = useGetConnectionTemplates(null, null, null, showAddNewAuthenticatorView, true);
 
     /**
      * Handle error from fetching IdP templates.
@@ -305,7 +296,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         _filteredAuthenticators = _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
             return (
                 authenticator.name !==
-                      IdentityProviderManagementConstants.ORGANIZATION_AUTHENTICATOR
+                    IdentityProviderManagementConstants.ORGANIZATION_AUTHENTICATOR
             );
         });
 
@@ -313,41 +304,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         setAllAuthenticators(_filteredAuthenticators);
         extractAuthenticatorLabels(_filteredAuthenticators);
     }, [ unfilteredAuthenticators ]);
-
-    /**
-     * Persists the categorized IDP templates.
-     *
-     * @param templates - Templates to persist.
-     * @returns Promise returned from `categorizeTemplates`.
-     */
-    const persistCategorizedTemplates = (
-        templates: IdentityProviderTemplateInterface[]
-    ): Promise<void | ConnectionTemplateCategoryInterface[]> => {
-
-        return ConnectionTemplateManagementUtils.categorizeTemplates(templates)
-            .then((response: ConnectionTemplateCategoryInterface[]) => {
-
-                let tags: string[] = [];
-
-                response.filter((category: ConnectionTemplateCategoryInterface) => {
-                    // Order the templates by pushing coming soon items to the end.
-                    category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
-
-                    category.templates.filter((template: IdentityProviderTemplateInterface) => {
-                        if (!(template?.tags && Array.isArray(template.tags) && template.tags.length > 0)) {
-                            return;
-                        }
-
-                        tags = union(tags, template.tags);
-                    });
-                });
-
-                setCategorizedIdPTemplates(response);
-            })
-            .catch(() => {
-                setCategorizedIdPTemplates([]);
-            });
-    };
 
     /**
      * Filter out the displayable set of authenticators by validating against
@@ -789,12 +745,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * Authenticator add click.
      */
     const handleNewAuthenticatorAddClick = (): void => {
-        if (groupedIDPTemplates) {
-            persistCategorizedTemplates(groupedIDPTemplates)
-                .then(() => setShowAddNewAuthenticatorView(true));
-
-            return;
-        }
+        setShowAddNewAuthenticatorView(true);
     };
 
     return (
@@ -842,7 +793,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 </Modal.Content>
             ) }
             {
-                showAddNewAuthenticatorView && categorizedIdPTemplates
+                showAddNewAuthenticatorView
                     ? renderAddNewAuthenticatorContent()
                     : renderAuthenticatorSelectionContent()
             }
