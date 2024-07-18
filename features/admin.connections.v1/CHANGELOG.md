@@ -1,5 +1,25 @@
 # @wso2is/admin.connections.v1
 
+## 2.21.0
+
+### Minor Changes
+
+- [#6564](https://github.com/wso2/identity-apps/pull/6564) [`2fcba18b79408465216e000a09d230f274f70fb3`](https://github.com/wso2/identity-apps/commit/2fcba18b79408465216e000a09d230f274f70fb3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update Login flow authenticator modal to use connection templates list via API
+
+### Patch Changes
+
+- Updated dependencies [[`5fc75427e1f0533085be5eea41f5eb1ada894b67`](https://github.com/wso2/identity-apps/commit/5fc75427e1f0533085be5eea41f5eb1ada894b67), [`2fcba18b79408465216e000a09d230f274f70fb3`](https://github.com/wso2/identity-apps/commit/2fcba18b79408465216e000a09d230f274f70fb3)]:
+  - @wso2is/admin.core.v1@2.23.0
+  - @wso2is/admin.identity-providers.v1@2.21.0
+  - @wso2is/admin.applications.v1@2.22.0
+  - @wso2is/admin.connections.v1@2.21.0
+  - @wso2is/admin.claims.v1@2.20.70
+  - @wso2is/admin.console-settings.v1@2.20.70
+  - @wso2is/admin.extensions.v1@2.21.40
+  - @wso2is/admin.organizations.v1@2.20.70
+  - @wso2is/admin.roles.v2@2.20.70
+  - @wso2is/admin.userstores.v1@2.20.70
+
 ## 2.20.69
 
 ### Patch Changes
