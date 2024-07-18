@@ -34,6 +34,22 @@ const ReduxStoreStateMock: any = {
             customInboundProtocols: [],
             inboundProtocols: [],
             protocolMeta: {}
+        },
+        oidcConfigurations: {
+            authorizeEndpoint: "https://localhost:9443/t/testorg/oauth2/authorize",
+            dynamicClientRegistrationEndpoint: "https://localhost:9443/t/testorg/api/identity/oauth2/dcr/v1.1/register",
+            endSessionEndpoint: "https://localhost:9443/t/testorg/oidc/logout",
+            introspectionEndpoint: "https://localhost:9443/t/testorg/oauth2/introspect",
+            jwksEndpoint: "https://localhost:9443/t/testorg/oauth2/jwks",
+            mtlsPushedAuthorizationRequestEndpoint: "https://localhost:9443/t/testorg/oauth2/par",
+            mtlsTokenEndpoint: "https://localhost:9443/t/testorg/oauth2/token",
+            pushedAuthorizationRequestEndpoint: "https://localhost:9443/t/testorg/oauth2/par",
+            sessionIframeEndpoint: "https://localhost:9443/t/testorg/oidc/checksession",
+            tokenEndpoint: "https://localhost:9443/t/testorg/oauth2/token",
+            tokenRevocationEndpoint: "https://localhost:9443/t/testorg/oauth2/revoke",
+            userEndpoint: "https://localhost:9443/t/testorg/oauth2/userinfo",
+            webFingerEndpoint: "https://localhost:9443/t/testorg/.well-known/webfinger",
+            wellKnownEndpoint: "https://localhost:9443/t/testorg/oauth2/token/.well-known/openid-configuration"
         }
     },
     auth: {

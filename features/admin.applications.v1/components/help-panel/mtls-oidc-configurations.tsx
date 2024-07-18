@@ -59,7 +59,7 @@ export const MTLSOIDCConfigurations: FunctionComponent<MtlsConfigurationsPropsIn
     const { t } = useTranslation();
 
     return (
-        <>
+        <div data-componentid={ componentId }>
             <Grid verticalAlign="middle">
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
@@ -110,7 +110,7 @@ export const MTLSOIDCConfigurations: FunctionComponent<MtlsConfigurationsPropsIn
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </>
+        </div>
     );
 };
 
