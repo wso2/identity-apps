@@ -187,7 +187,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<LocalAuthenticatorInterface[]>) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     IdentityProviderManagementConstants.LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,

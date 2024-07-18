@@ -1132,7 +1132,7 @@ export const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<NotificationSenderSMSInterface>) => {
             if (response.status !== 201) {
                 throw new IdentityAppsApiException(
                     AuthenticatorManagementConstants.ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER,
