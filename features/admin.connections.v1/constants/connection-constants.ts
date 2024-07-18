@@ -63,7 +63,7 @@ export class ConnectionManagementConstants {
     public static readonly MICROSOFT_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
     public static readonly APPLE_AUTHENTICATOR_ID: string = "QXBwbGVPSURDQXV0aGVudGljYXRvcg";
     public static readonly HYPR_AUTHENTICATOR_ID: string = "SFlQUkF1dGhlbnRpY2F0b3I";
-    public static readonly SIWE_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I"
+    public static readonly SIWE_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
 
     // Known Social/Enterprise authenticator names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
@@ -169,7 +169,7 @@ export class ConnectionManagementConstants {
         "idp:notifications.apiLimitReachedError.error.description",
         "idp:notifications.apiLimitReachedError.error.message",
         "cec1f247-32fd-4624-9915-f469195a53ac"
-    )
+    );
 
     public static readonly ORG_ENTERPRISE_CONNECTION_ID: string  = "organization-enterprise-idp";
 
@@ -219,7 +219,7 @@ export class ConnectionManagementConstants {
         ENTERPRISE_PROTOCOLS: string;
     } = {
         ENTERPRISE_PROTOCOLS: "enterprise-protocols"
-    }
+    };
 
     /**
      * Set of IDP template Ids.
