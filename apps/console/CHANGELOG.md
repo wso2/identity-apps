@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.21.1
+
+### Patch Changes
+
+- [#6612](https://github.com/wso2/identity-apps/pull/6612) [`0a35caa9972460a49f6e86821051fe18b044dc26`](https://github.com/wso2/identity-apps/commit/0a35caa9972460a49f6e86821051fe18b044dc26) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Set null for non pvt key jwt auth methods.
+
 ## 2.21.0
 
 ### Minor Changes
