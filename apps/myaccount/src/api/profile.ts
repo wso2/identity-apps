@@ -161,14 +161,12 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
 
             return Promise.resolve(profileResponse);
         })
-        .catch((error: HttpError) => {
+        .catch((error: unknown) => {
             // Check if the API responds with a `500` error, if it does,
             // navigate the user to the login error page.
             if (
-                error.response &&
-                error.response.data &&
-                error.response.data.status &&
-                error.response.data.status === "500"
+                error instanceof HttpError &&
+                error?.response?.data?.status === "500"
             ) {
                 store.dispatch(toggleSCIMEnabled(false));
 
