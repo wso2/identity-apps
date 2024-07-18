@@ -26,7 +26,7 @@ import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { HttpMethods } from "@wso2is/core/models";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { ConnectionTemplateInterface } from "../models/connection";
-import { loadLocalFileBasedConnectionTemplateGroups } from "../utils/connection-template-utils";
+import { groupConnectionTemplates } from "../utils/connection-template-utils";
 
 /**
  * Hook to get the connection template list with limit and offset.
@@ -72,7 +72,7 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
         isLoading
     } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
-    let filteredData: ConnectionTemplateInterface[] = undefined;
+    let groupedConnectionTemplates: ConnectionTemplateInterface[] = undefined;
 
     if (data) {
         const hiddenConnectionTemplateIds: string[] = [
@@ -80,12 +80,10 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
             ConnectionManagementConstants.IDP_TEMPLATE_IDS
                 .ORGANIZATION_ENTERPRISE_IDP,
             ConnectionManagementConstants.IDP_TEMPLATE_IDS.ENTERPRISE,
-            ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC,
-            ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML,
             ...(UIConfig?.hiddenConnectionTemplates || [])
         ];
 
-        // Trusted token issuer is not useful for login flow.
+        // Hide specific connection templates for login flow builder.
         if (isLoginFlow) {
             hiddenConnectionTemplateIds.push(ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID);
         }
@@ -93,21 +91,22 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
         const fetchedConnectionTemplates: ConnectionTemplateInterface[] = data as ConnectionTemplateInterface[];
 
         // Filter out the hidden connection templates.
-        filteredData = fetchedConnectionTemplates.filter((template: ConnectionTemplateInterface) => {
-            return !hiddenConnectionTemplateIds.includes(template.id);
-        });
+        const filteredData: ConnectionTemplateInterface[] = fetchedConnectionTemplates
+            .filter((template: ConnectionTemplateInterface) => {
+                return !hiddenConnectionTemplateIds.includes(template.id);
+            });
 
-        // Append the local file based connection templates.
-        filteredData = [ ...filteredData, ...loadLocalFileBasedConnectionTemplateGroups() ];
+        // Group the connection templates.
+        groupedConnectionTemplates = groupConnectionTemplates(filteredData);
 
         // Sort the connection templates based on the display order.
-        filteredData.sort((a: ConnectionTemplateInterface, b: ConnectionTemplateInterface) => {
+        groupedConnectionTemplates.sort((a: ConnectionTemplateInterface, b: ConnectionTemplateInterface) => {
             return a.displayOrder - b.displayOrder;
         });
     }
 
     return {
-        data: filteredData as Data,
+        data: groupedConnectionTemplates as Data,
         error: error,
         isLoading,
         isValidating,

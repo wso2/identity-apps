@@ -213,6 +213,15 @@ export class ConnectionManagementConstants {
     };
 
     /**
+     * Set of connection template group Ids.
+     */
+    public static readonly CONNECTION_TEMPLATE_GROUPS: {
+        ENTERPRISE_PROTOCOLS: string;
+    } = {
+        ENTERPRISE_PROTOCOLS: "enterprise-protocols"
+    }
+
+    /**
      * Set of IDP template Ids.
      */
     public static readonly IDP_TEMPLATE_IDS: {

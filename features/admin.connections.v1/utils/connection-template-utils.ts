@@ -21,6 +21,7 @@ import { I18n } from "@wso2is/i18n";
 import groupBy from "lodash-es/groupBy";
 import { getConnectionTemplatesConfig } from "../configs/templates";
 import { getConnectionCapabilityIcons } from "../configs/ui";
+import { ConnectionManagementConstants } from "../constants/connection-constants";
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateGroupInterface,
@@ -265,7 +266,7 @@ export const getCertificateOptionsForTemplate = (templateId: string): { JWKS: bo
  *
  * @returns Array of connection template groups.
  */
-export const loadLocalFileBasedConnectionTemplateGroups = (): ConnectionTemplateGroupInterface[] => {
+const loadLocalFileBasedConnectionTemplateGroups = (): ConnectionTemplateGroupInterface[] => {
 
     return getConnectionTemplatesConfig().groups.map(
         (groupConfig: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
@@ -274,3 +275,48 @@ export const loadLocalFileBasedConnectionTemplateGroups = (): ConnectionTemplate
             }
         });
 };
+
+/**
+ * Utility function to group connection templates based on local file based groups.
+ *
+ * @param templates - Templates list to be grouped.
+ * @returns A list of grouped templates.
+ */
+export const groupConnectionTemplates = (
+    templates: ConnectionTemplateInterface[]): ConnectionTemplateInterface[] => {
+
+    // Connection templates are grouped based on local file based groups.
+    const localFileBasedConnectionTemplateGroups: ConnectionTemplateGroupInterface[]
+        = loadLocalFileBasedConnectionTemplateGroups();
+
+    let _templates: ConnectionTemplateInterface[] = [ ...templates ];
+    const groupedTemplates: ConnectionTemplateInterface[] = [];
+
+    for (const group of localFileBasedConnectionTemplateGroups) {
+        const updatedGroup: ConnectionTemplateGroupInterface = { ...group };
+
+        /**
+         * OIDC and SAML are grouped under "Enterprise Protocols".
+         */
+        if (group.id === ConnectionManagementConstants.CONNECTION_TEMPLATE_GROUPS.ENTERPRISE_PROTOCOLS) {
+            const subTemplateIds: string[] = [
+                ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC,
+                ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML
+            ];
+
+            updatedGroup.subTemplates = _templates
+                .filter((template: ConnectionTemplateInterface) => {
+                    return subTemplateIds.includes(template.id);
+                });
+            // Remove grouped sub templates from main template list.
+            _templates = _templates.filter((template: ConnectionTemplateInterface) => {
+                return !subTemplateIds.includes(template.id);
+            });
+        }
+
+        groupedTemplates.push(updatedGroup);
+    }
+
+    return [ ...groupedTemplates, ..._templates ];
+};
+
