@@ -1425,6 +1425,10 @@ export interface ApplicationsNS {
                             label: string;
                             placeholder: string;
                         };
+                        reusePvtKeyJwt: {
+                            hint: string;
+                            label: string;
+                        };
                         signingAlgorithm: {
                             hint: string;
                             label: string;
