@@ -1693,6 +1693,11 @@ export const applications: ApplicationsNS = {
                             label: "Client authentication method",
                             placeholder: "Select method"
                         },
+                        reusePvtKeyJwt: {
+                            hint: "If enabled, the JWT can be reused again within its expiration period. " +
+                                "JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
+                            label: "Private Key JWT Reuse Enabled"
+                        },
                         signingAlgorithm: {
                             hint: "The dropdown contains the supported client assertion signing" +
                                 " algorithms.",
