@@ -1,5 +1,22 @@
 # @wso2is/features
 
+## 2.21.34
+
+### Patch Changes
+
+- [#6510](https://github.com/wso2/identity-apps/pull/6510) [`a11be2907a610c8b4d71942c49ba38cdd76ee9e8`](https://github.com/wso2/identity-apps/commit/a11be2907a610c8b4d71942c49ba38cdd76ee9e8) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide MTLS server info for M2M applications
+
+* [#6616](https://github.com/wso2/identity-apps/pull/6616) [`768bb7367149129d198d65d69f07e6f97a6a2ed7`](https://github.com/wso2/identity-apps/commit/768bb7367149129d198d65d69f07e6f97a6a2ed7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade asgardeo react sdk version
+
+* Updated dependencies [[`768bb7367149129d198d65d69f07e6f97a6a2ed7`](https://github.com/wso2/identity-apps/commit/768bb7367149129d198d65d69f07e6f97a6a2ed7)]:
+  - @wso2is/core@2.0.54
+  - @wso2is/access-control@3.0.14
+  - @wso2is/dynamic-forms@2.0.77
+  - @wso2is/form@2.0.78
+  - @wso2is/forms@2.0.44
+  - @wso2is/i18n@2.5.6
+  - @wso2is/react-components@2.2.19
+
 ## 2.21.33
 
 ### Patch Changes

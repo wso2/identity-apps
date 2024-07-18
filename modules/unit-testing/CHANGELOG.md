@@ -1,5 +1,11 @@
 # @wso2is/unit-testing
 
+## 0.1.3
+
+### Patch Changes
+
+- [#6616](https://github.com/wso2/identity-apps/pull/6616) [`768bb7367149129d198d65d69f07e6f97a6a2ed7`](https://github.com/wso2/identity-apps/commit/768bb7367149129d198d65d69f07e6f97a6a2ed7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade asgardeo react sdk version
+
 ## 0.1.2
 
 ### Patch Changes
