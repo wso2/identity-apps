@@ -20,7 +20,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "devDependencies": {
-    "@asgardeo/auth-react": "^4.0.4",
+    "@asgardeo/auth-react": "^5.0.3",
     "@wso2is/admin.extensions.v1": "workspace:*",
     "@wso2is/admin.core.v1": "workspace:*",
     "msw": "^0.36.8",
