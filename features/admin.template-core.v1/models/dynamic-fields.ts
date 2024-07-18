@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SupportedFileTypes } from "@wso2is/form/src/components/adapters/file-picker-adapter";
+import { SupportedFileTypes } from "@wso2is/form";
 
 /**
  * Interface to define a dynamic form.

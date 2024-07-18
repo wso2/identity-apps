@@ -53,6 +53,8 @@ module.exports = {
         "\\.svg": "<rootDir>/../modules/unit-testing/__mocks__/svgr.ts",
         "^lodash-es/(.*)$": "<rootDir>/../node_modules/lodash/$1",
         "^react($|/.+)": "<rootDir>/node_modules/react$1",
+        "react-markdown": "<rootDir>/../modules/unit-testing/__mocks__/empty-mock.ts",
+        "rehype-attr": "<rootDir>/../modules/unit-testing/__mocks__/empty-mock.ts",
         "uuid": "<rootDir>/node_modules/uuid"
     },
     modulePaths: [
