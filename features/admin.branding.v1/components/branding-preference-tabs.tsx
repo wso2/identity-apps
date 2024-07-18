@@ -461,7 +461,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         <Chip
                             size="small"
                             sx={ { marginLeft: 1 } }
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t("common:beta") }
                             className="oxygen-chip-beta"
                         />
                     ) }

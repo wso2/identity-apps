@@ -175,7 +175,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t("common:beta") }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }
@@ -201,7 +201,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t("common:beta") }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }

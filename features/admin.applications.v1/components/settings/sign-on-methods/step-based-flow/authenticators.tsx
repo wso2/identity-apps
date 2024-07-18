@@ -377,7 +377,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return (
                 <Chip
                     size="small"
-                    label={ t("common:beta").toUpperCase() }
+                    label={ t("common:beta") }
                     className="oxygen-chip-beta"
                 />
             );

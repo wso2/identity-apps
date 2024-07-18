@@ -2069,7 +2069,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { applicationConfig.advancedConfigurations.showHybridFlowFeatureStatusChip && (
                                         <div className="oxygen-chip-div" >
                                             <Chip
-                                                label={ t("common:new").toUpperCase() }
+                                                label={ t("common:new") }
                                                 className="oxygen-menu-item-chip oxygen-chip-new" />
                                         </div>
                                     ) }
