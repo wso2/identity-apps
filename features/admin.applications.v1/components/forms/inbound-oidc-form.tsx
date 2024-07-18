@@ -1129,11 +1129,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             if (!isPublicClient) {
+                let tokenEndpointAllowReusePvtKeyJwtValue: boolean = null;
+
+                if (values.get("tokenEndpointAuthMethod") === PRIVATE_KEY_JWT) {
+                    tokenEndpointAllowReusePvtKeyJwtValue = values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0;
+                }
+
                 inboundConfigFormValues = {
                     ...inboundConfigFormValues,
                     clientAuthentication: {
                         tlsClientAuthSubjectDn: subjectDN,
-                        tokenEndpointAllowReusePvtKeyJwt: values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0,
+                        tokenEndpointAllowReusePvtKeyJwt: tokenEndpointAllowReusePvtKeyJwtValue,
                         tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
                         tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
                     }
