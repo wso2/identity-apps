@@ -275,6 +275,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const formRef: MutableRefObject<HTMLFormElement> = useRef<HTMLFormElement>();
     const updateRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tokenEndpointAuthMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const tokenEndpointAllowReusePvtKeyJwt: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tokenEndpointAuthSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tlsClientAuthSubjectDn: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requirePushedAuthorizationRequests: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -1305,10 +1306,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             if (!isPublicClient) {
+                let tokenEndpointAllowReusePvtKeyJwtValue: boolean = null;
+
+                if (values.get("tokenEndpointAuthMethod") === PRIVATE_KEY_JWT) {
+                    tokenEndpointAllowReusePvtKeyJwtValue = values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0;
+                }
+
                 inboundConfigFormValues = {
                     ...inboundConfigFormValues,
                     clientAuthentication: {
                         tlsClientAuthSubjectDn: subjectDN,
+                        tokenEndpointAllowReusePvtKeyJwt: tokenEndpointAllowReusePvtKeyJwtValue,
                         tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
                         tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
                     }
@@ -2240,6 +2248,39 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                             </Grid.Column>
                         </Grid.Row>
+                        { selectedAuthMethod === PRIVATE_KEY_JWT &&
+                            (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ tokenEndpointAllowReusePvtKeyJwt }
+                                            name="tokenEndpointAllowReusePvtKeyJwt"
+                                            required={ false }
+                                            type="checkbox"
+                                            disabled={ isPublicClient }
+                                            value={
+                                                initialValues?.clientAuthentication?.tokenEndpointAllowReusePvtKeyJwt ?
+                                                    [ "tokenEndpointAllowReusePvtKeyJwt" ]
+                                                    : [] }
+                                            readOnly={ readOnly }
+                                            data-componentId={
+                                                `${ componentId }-client-auth-pvt-key-jwt-reuse-checkbox` }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundOIDC.sections" +
+                                                        ".clientAuthentication.fields.reusePvtKeyJwt.label"),
+                                                    value: "tokenEndpointAllowReusePvtKeyJwt"
+                                                }
+                                            ] }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundOIDC.sections" +
+                                                ".clientAuthentication.fields.reusePvtKeyJwt.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
                         { selectedAuthMethod === PRIVATE_KEY_JWT &&
                             (
                                 <Grid.Row columns={ 1 }>

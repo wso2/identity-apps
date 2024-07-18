@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/i18n",
-    "version": "2.5.3",
+    "version": "2.5.5",
     "description": "This module contains the configs, helpers and translations required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",
@@ -31,13 +31,14 @@
         "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to . --max-warnings=0",
         "test": "jest --passWithNoTests",
+        "test:coverage": "jest --passWithNoTests --coverage --collect-coverage",
         "test:watch": "pnpm test -- --watch",
         "typecheck": "pnpm compile"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^2.0.52",
+        "@wso2is/core": "^2.0.53",
         "@types/jest": "^29.5.12",
         "babel-jest": "^26.3.0",
         "i18next": "^21.9.1",
