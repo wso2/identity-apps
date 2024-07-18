@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,6 @@ import {
 } from "@wso2is/admin.applications.v1/models";
 import { history } from "@wso2is/admin.core.v1";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, useDocumentation } from "@wso2is/react-components";
@@ -38,7 +37,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { IntegrateSDKs } from "./integrate-sdks";
@@ -106,7 +105,6 @@ FunctionComponent<TraditionalOIDCWebApplicationQuickStartPropsInterface> = (
         setSelectedTechnology
     ] = useState<SupportedTraditionalOIDCAppTechnologyTypes>(undefined);
     const [ appList, setAppList ] = useState<ApplicationListInterface>(undefined);
-    const isHelpPanelVisible: boolean = useSelector((state: AppState) => state.helpPanel.visibility);
     const [ addedCallBackUrls ] = useState<string[]>([]);
     const [ addedOrigins ] = useState<string[]>([]);
 
@@ -329,7 +327,7 @@ FunctionComponent<TraditionalOIDCWebApplicationQuickStartPropsInterface> = (
                     : (
                         <>
                             <Grid.Row>
-                                <Grid.Column width={ isHelpPanelVisible ? 16 : 13 }>
+                                <Grid.Column width={ 13 }>
                                     <QuickStartPanelOverview
                                         technology={ selectedTechnology }
                                         applicationType={ template.id }
@@ -343,7 +341,7 @@ FunctionComponent<TraditionalOIDCWebApplicationQuickStartPropsInterface> = (
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
-                                <Grid.Column width={ isHelpPanelVisible ? 16 : 13 }>
+                                <Grid.Column width={ 13 }>
                                     { resolveQuickStartMode() }
                                 </Grid.Column>
                             </Grid.Row>

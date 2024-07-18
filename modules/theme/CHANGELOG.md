@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.90
+
+### Patch Changes
+
+- [#6579](https://github.com/wso2/identity-apps/pull/6579) [`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add infinite scrolling to tenant association dropdown
+
 ## 2.0.89
 
 ### Patch Changes
