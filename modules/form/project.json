@@ -52,6 +52,14 @@
                 "cwd": "modules/form",
                 "parallel": false
             }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test:coverage",
+                "cwd": "modules/form",
+                "parallel": false
+            }
         }
     }
 }

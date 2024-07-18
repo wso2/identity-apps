@@ -1,5 +1,171 @@
 # @wso2is/admin.api-resources.v1
 
+## 2.20.69
+
+### Patch Changes
+
+- [#6608](https://github.com/wso2/identity-apps/pull/6608) [`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update asgardeo react sdk version
+
+- Updated dependencies [[`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066)]:
+  - @wso2is/admin.extensions.v1@2.21.39
+  - @wso2is/admin.core.v1@2.22.11
+  - @wso2is/core@2.0.53
+  - @wso2is/access-control@3.0.13
+  - @wso2is/form@2.0.77
+  - @wso2is/forms@2.0.43
+  - @wso2is/react-components@2.2.18
+
+## 2.20.68
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.22.10
+  - @wso2is/admin.extensions.v1@2.21.38
+
+## 2.20.67
+
+### Patch Changes
+
+- Updated dependencies [[`c958ec82e451e0b7b30eb6fa2a25de59abefe31e`](https://github.com/wso2/identity-apps/commit/c958ec82e451e0b7b30eb6fa2a25de59abefe31e)]:
+  - @wso2is/admin.extensions.v1@2.21.37
+  - @wso2is/admin.core.v1@2.22.9
+
+## 2.20.66
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.22.8
+  - @wso2is/admin.extensions.v1@2.21.36
+
+## 2.20.65
+
+### Patch Changes
+
+- Updated dependencies [[`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab)]:
+  - @wso2is/admin.extensions.v1@2.21.35
+  - @wso2is/react-components@2.2.17
+  - @wso2is/admin.core.v1@2.22.7
+  - @wso2is/core@2.0.52
+  - @wso2is/form@2.0.76
+  - @wso2is/access-control@3.0.12
+  - @wso2is/forms@2.0.42
+
+## 2.20.64
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.22.6
+  - @wso2is/admin.extensions.v1@2.21.34
+
+## 2.20.63
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.22.5
+  - @wso2is/admin.extensions.v1@2.21.33
+  - @wso2is/react-components@2.2.16
+  - @wso2is/form@2.0.75
+
+## 2.20.62
+
+### Patch Changes
+
+- Updated dependencies [[`2cb42f81fd5acddb6dcb534183f6c0332ec53bff`](https://github.com/wso2/identity-apps/commit/2cb42f81fd5acddb6dcb534183f6c0332ec53bff)]:
+  - @wso2is/admin.core.v1@2.22.4
+  - @wso2is/admin.extensions.v1@2.21.32
+
+## 2.20.61
+
+### Patch Changes
+
+- Updated dependencies [[`6500ca1be1c4bbc939c7a0024b80f2aa5be123f1`](https://github.com/wso2/identity-apps/commit/6500ca1be1c4bbc939c7a0024b80f2aa5be123f1)]:
+  - @wso2is/react-components@2.2.15
+  - @wso2is/admin.core.v1@2.22.3
+  - @wso2is/admin.extensions.v1@2.21.31
+  - @wso2is/form@2.0.74
+
+## 2.20.60
+
+### Patch Changes
+
+- Updated dependencies [[`3392011ce0dddf65ac9072a1a153f28c0e7e846f`](https://github.com/wso2/identity-apps/commit/3392011ce0dddf65ac9072a1a153f28c0e7e846f)]:
+  - @wso2is/admin.core.v1@2.22.2
+  - @wso2is/admin.extensions.v1@2.21.30
+
+## 2.20.59
+
+### Patch Changes
+
+- Updated dependencies [[`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146)]:
+  - @wso2is/react-components@2.2.14
+  - @wso2is/admin.core.v1@2.22.1
+  - @wso2is/admin.extensions.v1@2.21.29
+  - @wso2is/form@2.0.73
+
+## 2.20.58
+
+### Patch Changes
+
+- Updated dependencies [[`a7d0c020b04ba382733280407fc202910f4fc8f4`](https://github.com/wso2/identity-apps/commit/a7d0c020b04ba382733280407fc202910f4fc8f4)]:
+  - @wso2is/admin.core.v1@2.22.0
+  - @wso2is/admin.extensions.v1@2.21.28
+
+## 2.20.57
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.21.27
+  - @wso2is/react-components@2.2.13
+  - @wso2is/admin.core.v1@2.21.27
+  - @wso2is/form@2.0.72
+
+## 2.20.56
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.21.26
+  - @wso2is/admin.extensions.v1@2.21.26
+
+## 2.20.55
+
+### Patch Changes
+
+- Updated dependencies [[`82bbbf2303853076342ef80ef7d987bed16df01f`](https://github.com/wso2/identity-apps/commit/82bbbf2303853076342ef80ef7d987bed16df01f)]:
+  - @wso2is/admin.core.v1@2.21.25
+  - @wso2is/admin.extensions.v1@2.21.25
+
+## 2.20.54
+
+### Patch Changes
+
+- Updated dependencies [[`1820d54f7dd5fa826c4747964fd2c1af9b7c3d8c`](https://github.com/wso2/identity-apps/commit/1820d54f7dd5fa826c4747964fd2c1af9b7c3d8c)]:
+  - @wso2is/admin.core.v1@2.21.24
+  - @wso2is/admin.extensions.v1@2.21.24
+
+## 2.20.53
+
+### Patch Changes
+
+- Updated dependencies [[`a533e58d21d759f0a27d804f17b042a2819a8955`](https://github.com/wso2/identity-apps/commit/a533e58d21d759f0a27d804f17b042a2819a8955)]:
+  - @wso2is/admin.extensions.v1@2.21.23
+  - @wso2is/admin.core.v1@2.21.23
+
+## 2.20.52
+
+### Patch Changes
+
+- Updated dependencies [[`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394)]:
+  - @wso2is/admin.extensions.v1@2.21.22
+  - @wso2is/admin.core.v1@2.21.22
+  - @wso2is/react-components@2.2.12
+  - @wso2is/form@2.0.71
+
 ## 2.20.51
 
 ### Patch Changes

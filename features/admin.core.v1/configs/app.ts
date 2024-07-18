@@ -43,8 +43,6 @@ import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoi
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
-import { DocumentationConstants } from "@wso2is/core/constants";
-import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { I18nConstants, UIConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
@@ -119,24 +117,6 @@ export class Config {
             customServerHost: window[ "AppUtils" ]?.getConfig()?.customServerHost,
             developerApp: window[ "AppUtils" ]?.getConfig()?.developerApp,
             docSiteURL: window[ "AppUtils" ]?.getConfig()?.docSiteUrl,
-            documentation: {
-                baseURL: window[ "AppUtils" ]?.getConfig()?.documentation?.baseURL
-                    ?? DocumentationConstants.GITHUB_API_BASE_URL,
-                contentBaseURL: window[ "AppUtils" ]?.getConfig()?.documentation?.contentBaseURL
-                    ?? DocumentationConstants.DEFAULT_CONTENT_BASE_URL,
-                githubOptions: {
-                    branch: window[ "AppUtils" ]?.getConfig()?.documentation?.githubOptions?.branch
-                        ?? DocumentationConstants.DEFAULT_BRANCH
-                },
-                imagePrefixURL: window[ "AppUtils" ]?.getConfig()?.documentation?.imagePrefixURL
-                    ?? DocumentationConstants.DEFAULT_IMAGE_PREFIX_URL,
-                provider: window[ "AppUtils" ]?.getConfig()?.documentation?.provider
-                    ?? DocumentationProviders.GITHUB,
-                structureFileType: window[ "AppUtils" ]?.getConfig()?.documentation?.structureFileType
-                    ?? DocumentationStructureFileTypes.YAML,
-                structureFileURL: window[ "AppUtils" ]?.getConfig()?.documentation?.structureFileURL
-                    ?? DocumentationConstants.DEFAULT_STRUCTURE_FILE_URL
-            },
             extensions: window[ "AppUtils" ]?.getConfig()?.extensions,
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
@@ -187,6 +167,7 @@ export class Config {
                 I18nConstants.USERSTORES_NAMESPACE,
                 I18nConstants.VALIDATION_NAMESPACE,
                 I18nConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE,
+                I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE,
                 I18nConstants.TRANSFER_LIST_NAMESPACE,
                 I18nConstants.USER_NAMESPACE,
                 I18nConstants.USERS_NAMESPACE,
@@ -348,6 +329,7 @@ export class Config {
             isSAASDeployment: window[ "AppUtils" ]?.getConfig()?.ui?.isSAASDeployment,
             isSignatureValidationCertificateAliasEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isSignatureValidationCertificateAliasEnabled,
+            isTrustedAppConsentRequired: window[ "AppUtils" ]?.getConfig()?.ui?.isTrustedAppConsentRequired ?? false,
             isXacmlConnectorEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isXacmlConnectorEnabled,
             legacyMode: window[ "AppUtils" ]?.getConfig()?.ui?.legacyMode,
             listAllAttributeDialects: window[ "AppUtils" ]?.getConfig()?.ui?.listAllAttributeDialects,

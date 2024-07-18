@@ -86,7 +86,7 @@ export const getOrganizations = (
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationListInterface>) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get organizations."));
             }
@@ -168,7 +168,7 @@ export const addOrganization = (organization: AddOrganizationInterface): Promise
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationResponseInterface>) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 201) {
                 return Promise.reject(new Error("Failed to create organization."));
             }
@@ -202,7 +202,7 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationResponseInterface>) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get the organization."));
             }
@@ -237,7 +237,7 @@ export const updateOrganization = (
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationResponseInterface>) => {
+        .then((response: HttpResponse) => {
             if (response?.status !== 200) {
                 return Promise.reject(new Error("Failed to update the organization."));
             }
@@ -272,7 +272,7 @@ export const patchOrganization = (
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationResponseInterface>) => {
+        .then((response: HttpResponse) => {
             if (response?.status !== 200) {
                 return Promise.reject(new Error("Failed to update the organization."));
             }

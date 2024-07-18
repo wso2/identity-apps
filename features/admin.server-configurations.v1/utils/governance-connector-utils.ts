@@ -379,6 +379,14 @@ export class GovernanceConnectorUtils {
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
                         status: FeatureStatusLabel.NEW,
                         testId: "email-domain-discovery-card"
+                    },
+                    {
+                        description: I18n.instance.t("pages:impersonation.subTitle"),
+                        header: I18n.instance.t("pages:impersonation.title"),
+                        id: ServerConfigurationsConstants.IMPERSONATION,
+                        route: AppConstants.getPaths().get("IMPERSONATION"),
+                        status: FeatureStatusLabel.NEW,
+                        testId: "impersonation-card"
                     }
                 ],
                 displayOrder: 0,

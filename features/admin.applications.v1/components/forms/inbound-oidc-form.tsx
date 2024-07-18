@@ -21,6 +21,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants/impersonation-configuration";
 import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
@@ -241,6 +242,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isRefreshTokenWithoutAllowedGrantType,
         setRefreshTokenWithoutAlllowdGrantType
     ] = useState<boolean>(false);
+    const [ isSubjectTokenEnabled, setIsSubjectTokenEnabled ] = useState<boolean>(false);
+    const [ isSubjectTokenFeatureAvailable, setIsSubjectTokenFeatureAvailable ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const clientSecret: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -272,12 +275,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const formRef: MutableRefObject<HTMLFormElement> = useRef<HTMLFormElement>();
     const updateRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tokenEndpointAuthMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const tokenEndpointAllowReusePvtKeyJwt: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tokenEndpointAuthSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tlsClientAuthSubjectDn: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requirePushedAuthorizationRequests: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionAlgorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -578,6 +584,26 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
     }, [ initialValues ]);
+
+    /**
+     * Sets if subject token is enabled.
+     */
+    useEffect(() => {
+        setIsSubjectTokenEnabled(initialValues?.subjectToken ? initialValues?.subjectToken?.enable : false);
+        setIsSubjectTokenFeatureAvailable(initialValues?.subjectToken ? true : false);
+    }, [ initialValues ]);
+
+    useEffect(() => {
+        if (isGrantChanged) {
+            if (!selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)) {
+                setIsSubjectTokenEnabled(false);
+            }
+
+            if (initialValues?.subjectToken) {
+                setIsSubjectTokenEnabled(initialValues?.subjectToken?.enable);
+            }
+        }
+    }, [ selectedGrantTypes, isGrantChanged ]);
 
     /**
      * Set the certificate type.
@@ -1189,6 +1215,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     renewRefreshToken: values.get("RefreshToken")?.length > 0
                 },
                 scopeValidators: values.get("scopeValidator"),
+                subjectToken: {
+                    applicationSubjectTokenExpiryInSeconds : values.get("applicationSubjectTokenExpiryInSeconds")
+                        ? parseInt(values.get("applicationSubjectTokenExpiryInSeconds"), 10)
+                        : ImpersonationConfigConstants.DEFAULT_SUBJECT_TOKEN_EXPIRY_TIME,
+                    enable : values.get("SubjectToken")?.length > 0
+                },
                 validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation")?.length > 0
             };
 
@@ -1278,6 +1310,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     ...inboundConfigFormValues,
                     clientAuthentication: {
                         tlsClientAuthSubjectDn: subjectDN,
+                        tokenEndpointAllowReusePvtKeyJwt: values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0,
                         tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
                         tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
                     }
@@ -1379,6 +1412,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     ? parseInt(values.get("expiryInSeconds"), 10)
                     : Number(metadata?.defaultRefreshTokenExpiryTime),
                 renewRefreshToken: values.get("RefreshToken")?.length > 0
+            },
+            subjectToken: {
+                applicationSubjectTokenExpiryInSeconds : values.get("applicationSubjectTokenExpiryInSeconds")
+                    ? parseInt(values.get("applicationSubjectTokenExpiryInSeconds"), 10)
+                    : ImpersonationConfigConstants.DEFAULT_SUBJECT_TOKEN_EXPIRY_TIME,
+                enable : values.get("SubjectToken")?.length > 0
+
             }
         };
 
@@ -1562,6 +1602,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 break;
             case "expiryInSeconds":
                 expiryInSeconds.current.scrollIntoView(options);
+
+                break;
+            case "subjectToken":
+                subjectToken.current.scrollIntoView(options);
+
+                break;
+            case "applicationSubjectTokenExpiryInSeconds":
+                applicationSubjectTokenExpiryInSeconds.current.scrollIntoView(options);
 
                 break;
             case "audience":
@@ -2194,6 +2242,39 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                             </Grid.Column>
                         </Grid.Row>
+                        { selectedAuthMethod === PRIVATE_KEY_JWT &&
+                            (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ tokenEndpointAllowReusePvtKeyJwt }
+                                            name="tokenEndpointAllowReusePvtKeyJwt"
+                                            required={ false }
+                                            type="checkbox"
+                                            disabled={ isPublicClient }
+                                            value={
+                                                initialValues?.clientAuthentication?.tokenEndpointAllowReusePvtKeyJwt ?
+                                                    [ "tokenEndpointAllowReusePvtKeyJwt" ]
+                                                    : [] }
+                                            readOnly={ readOnly }
+                                            data-componentId={
+                                                `${ componentId }-client-auth-pvt-key-jwt-reuse-checkbox` }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundOIDC.sections" +
+                                                        ".clientAuthentication.fields.reusePvtKeyJwt.label"),
+                                                    value: "tokenEndpointAllowReusePvtKeyJwt"
+                                                }
+                                            ] }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundOIDC.sections" +
+                                                ".clientAuthentication.fields.reusePvtKeyJwt.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
                         { selectedAuthMethod === PRIVATE_KEY_JWT &&
                             (
                                 <Grid.Row columns={ 1 }>
@@ -2928,7 +3009,122 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </>
                 )
             }
+            { /* Subject Token */ }
+            { selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
+                && !isSystemApplication
+                && !isDefaultApplication
+                && isSubjectTokenFeatureAvailable
+                && (
+                    <>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 }>
+                                <Heading as="h4">
+                                    { t("applications:forms.inboundOIDC.sections.subjectToken.heading") }
+                                </Heading>
+                                <Field
+                                    ref={ subjectToken }
+                                    name="SubjectToken"
+                                    label=""
+                                    required={ false }
+                                    requiredErrorMessage={
+                                        t("applications:forms.inboundOIDC.sections" +
+                                            ".subjectToken.fields.enable.validations.empty")
+                                    }
+                                    type="checkbox"
+                                    listen={ (values: Map<string, FormValue>): void => {
+                                        const isSubjectTokenEnabled: boolean = values?.get("SubjectToken")
+                                            ?.includes("subjectToken");
 
+                                        setIsSubjectTokenEnabled(isSubjectTokenEnabled);
+                                    } }
+                                    value={
+                                        initialValues?.subjectToken?.enable
+                                            ? [ "subjectToken" ]
+                                            : []
+                                    }
+                                    children={ [
+                                        {
+                                            label: t("applications:forms.inboundOIDC" +
+                                                ".sections.subjectToken.fields.enable.label"),
+                                            value: "subjectToken"
+                                        }
+                                    ] }
+                                    readOnly={ readOnly }
+                                    data-componentid={ `${ testId }-subject-token-checkbox` }
+                                />
+                                <Hint>
+                                    <Trans
+                                        i18nKey={
+                                            "applications:forms.inboundOIDC.sections" +
+                                            ".subjectToken.fields.enable.hint"
+                                        }
+                                    >
+                                        Select to enable the subject token response type for this application
+                                        to be used in the impersonation flow.
+                                    </Trans>
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        { isSubjectTokenEnabled
+                            && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ applicationSubjectTokenExpiryInSeconds }
+                                            name="applicationSubjectTokenExpiryInSeconds"
+                                            label={
+                                                t("applications:forms.inboundOIDC.sections" +
+                                                ".subjectToken.fields.expiry.label")
+                                            }
+                                            required={ true }
+                                            requiredErrorMessage={
+                                                t("applications:forms.inboundOIDC.sections" +
+                                                ".subjectToken.fields.expiry.validations.empty")
+                                            }
+                                            placeholder={
+                                                t("applications:forms.inboundOIDC.sections" +
+                                                ".subjectToken.fields.expiry.placeholder")
+                                            }
+                                            validation={ (value: FormValue, validation: Validation) => {
+                                                if (!isValidExpiryTime(value.toString())) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(
+                                                        t("applications:forms.inboundOIDC" +
+                                                        ".sections.subjectToken.fields.expiry.validations.invalid")
+                                                    );
+                                                }
+                                            } }
+                                            value={ initialValues?.subjectToken
+                                                ? initialValues.subjectToken
+                                                    .applicationSubjectTokenExpiryInSeconds.toString()
+                                                : ImpersonationConfigConstants.DEFAULT_SUBJECT_TOKEN_EXPIRY_TIME }
+                                            type="number"
+                                            readOnly={ readOnly }
+                                            min={ 1 }
+                                            data-testid={ `${ testId }-subject-token-expiry-time-input` }
+                                        />
+                                        <Hint>
+                                            <Trans
+                                                i18nKey={
+                                                    "applications:forms.inboundOIDC.sections" +
+                                                ".subjectToken.fields.expiry.hint"
+                                                }
+                                            >
+                                            Specify the validity period of the <Code withBackground>subject_token</Code>
+                                            in seconds.
+                                            </Trans>
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
+                    </>
+                )
+            }
             { /* ID Token */ }
             {
                 !isM2MApplication
@@ -4148,6 +4344,7 @@ InboundOIDCForm.defaultProps = {
         refreshToken: undefined,
         scopeValidators: [],
         state: undefined,
+        subjectToken: undefined,
         validateRequestObjectSignature: undefined
     }
 };

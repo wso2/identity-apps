@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -64,17 +64,6 @@ interface CustomExtendedWindow extends Window {
                 path: "/t/testorg/develop/applications"
             },
             docSiteUrl: "https://is.docs.wso2.com/",
-            documentation: {
-                baseURL: "https://api.github.com",
-                contentBaseURL: "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
-                githubOptions: {
-                    branch: "new_restructure"
-                },
-                imagePrefixURL: "https://github.com/wso2/docs-is/raw/new_restructure/en/docs/",
-                provider: "GITHUB",
-                structureFileType: "YAML",
-                structureFileURL: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
-            },
             extensions: {
                 collaboratorUsernameRegex: "^[\\u00C0-\\u00FFa-zA-Z0-9.+\\-_]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,10}$",
                 community: "https://wso2iem-en-community.insided.com/ssoproxy/login?ssoType=openidconnect&returnUrl=https://wso2iem-en-community.insided.com/asgardeo-1",

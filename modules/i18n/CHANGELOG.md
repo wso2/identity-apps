@@ -1,5 +1,55 @@
 # @wso2is/i18n
 
+## 2.5.5
+
+### Patch Changes
+
+- Updated dependencies [[`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066)]:
+  - @wso2is/core@2.0.53
+
+## 2.5.4
+
+### Patch Changes
+
+- [#6491](https://github.com/wso2/identity-apps/pull/6491) [`91db151942242a5829066d4b1d42cf8ce4feafe9`](https://github.com/wso2/identity-apps/commit/91db151942242a5829066d4b1d42cf8ce4feafe9) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add reuse pvt key jwt checkbox to protocol tab
+
+## 2.5.3
+
+### Patch Changes
+
+- Updated dependencies [[`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab)]:
+  - @wso2is/core@2.0.52
+
+## 2.5.2
+
+### Patch Changes
+
+- [#6600](https://github.com/wso2/identity-apps/pull/6600) [`e5b95f9ed5ab1c50c8339364f15dfab1eb0ee27d`](https://github.com/wso2/identity-apps/commit/e5b95f9ed5ab1c50c8339364f15dfab1eb0ee27d) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix Typo in attributes section
+
+## 2.5.1
+
+### Patch Changes
+
+- [#6581](https://github.com/wso2/identity-apps/pull/6581) [`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Improve android thumbprint error handling
+
+## 2.5.0
+
+### Minor Changes
+
+- [#6543](https://github.com/wso2/identity-apps/pull/6543) [`a7d0c020b04ba382733280407fc202910f4fc8f4`](https://github.com/wso2/identity-apps/commit/a7d0c020b04ba382733280407fc202910f4fc8f4) Thanks [@Thumimku](https://github.com/Thumimku)! - Add Impersonation support
+
+## 2.4.8
+
+### Patch Changes
+
+- [#6570](https://github.com/wso2/identity-apps/pull/6570) [`82bbbf2303853076342ef80ef7d987bed16df01f`](https://github.com/wso2/identity-apps/commit/82bbbf2303853076342ef80ef7d987bed16df01f) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Load trusted app consent required config and handle consent UI according to it
+
+## 2.4.7
+
+### Patch Changes
+
+- [#6553](https://github.com/wso2/identity-apps/pull/6553) [`a533e58d21d759f0a27d804f17b042a2819a8955`](https://github.com/wso2/identity-apps/commit/a533e58d21d759f0a27d804f17b042a2819a8955) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Add Trusted Apps UI to application configurations
+
 ## 2.4.6
 
 ### Patch Changes

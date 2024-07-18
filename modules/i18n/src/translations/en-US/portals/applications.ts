@@ -1109,18 +1109,57 @@ export const applications: ApplicationsNS = {
             sections: {
                 applicationNativeAuthentication: {
                     heading: "App-Native Authentication",
-                    alerts: {
-                        clientAttestation: "For client attestation to work, the app-native authentication API must be enabled."
-                    },
                     fields: {
                         enableAPIBasedAuthentication: {
                             hint: "Select to authorize application to perform browserless, in-app authentication via app-native authentication API.",
                             label: "Enable app-native authentication API"
-                        },
+                        }
+                    }
+                },
+                clientAttestation: {
+                    heading: "Client Attestation",
+                    alerts: {
+                        clientAttestationAlert: "For client attestation to work, the app-native authentication API must be enabled."
+                    },
+                    fields: {
                         enableClientAttestation: {
                             hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform.",
                             label: "Enable client attestation"
                         },
+                        androidAttestationServiceCredentials: {
+                            hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
+                            label: "Service account credentials",
+                            placeholder: "Content of the JSON key file for the Google service account credentials",
+                            validations: {
+                                empty: "Google service account credentials are required for client attestation.",
+                                invalid: "Invalid Google service account credentials"
+                            }
+                        }
+                    }
+                },
+                trustedApps: {
+                    heading: "Trusted App Settings",
+                    alerts: {
+                        trustedAppSettingsAlert: "Enabling this feature will publish details under Platform Settings to a public endpoint shared across all Asgardeo organizations. This means that other organizations can access details about the application and the associated organization.",
+                        link: "Read for more."
+                    },
+                    fields: {
+                        enableFIDOTrustedApps: {
+                            hint: "Select to trust the app for user login with passkey. Provide the details of the application under Platform Settings.",
+                            label: "Add as a FIDO trusted app"
+                        }
+                    },
+                    modal: {
+                        assertionHint : "I understand and wish to proceed.",
+                        header: "Are you sure?",
+                        message: "For validation purposes, the details available under Platform Settings will be listed on a public endpoint shared across all organizations.",
+                        content: ""
+                    }
+                },
+                platformSettings: {
+                    heading: "Platform Settings",
+                    subTitle: "The following platform specific configurations are needed when enabling client-attestation or trusted app related features.",
+                    fields: {
                         android: {
                             heading: "Android",
                             fields: {
@@ -1129,16 +1168,20 @@ export const applications: ApplicationsNS = {
                                     label: "Package name",
                                     placeholder: "com.example.myapp",
                                     validations: {
-                                        empty: "Application package name is required for client attestation."
+                                        emptyForAttestation: "Application package name is required for client attestation.",
+                                        emptyForFIDO: "Application package name is required for FIDO trusted apps."
                                     }
                                 },
-                                androidAttestationServiceCredentials: {
-                                    hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
-                                    label: "Service account credentials",
-                                    placeholder: "Content of the JSON key file for the Google service account credentials",
+                                keyHashes: {
+                                    hint: "The SHA256 fingerprints related to the signing certificate of your application.",
+                                    label: "Key Hashes",
+                                    placeholder: "D4:B9:A3",
                                     validations: {
-                                        empty: "Google service account credentials are required for client attestation."
-                                    }
+                                        invalidOrEmpty: "A valid key hash is required for FIDO trusted apps.",
+                                        duplicate: "Same key hashes added."
+                                    },
+                                    tooltip: "Add Thumbprint"
+
                                 }
                             }
                         },
@@ -1650,6 +1693,11 @@ export const applications: ApplicationsNS = {
                             label: "Client authentication method",
                             placeholder: "Select method"
                         },
+                        reusePvtKeyJwt: {
+                            hint: "If enabled, the JWT can be reused again within its expiration period. " +
+                                "JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
+                            label: "Private Key JWT Reuse Enabled"
+                        },
                         signingAlgorithm: {
                             hint: "The dropdown contains the supported client assertion signing" +
                                 " algorithms.",
@@ -1720,6 +1768,28 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     heading: "Refresh Token"
+                },
+                subjectToken: {
+                    fields: {
+                        enable: {
+                            hint: "If enabled, this application can be used in the user impersonation flows.",
+                            label: "Enable subject token response type",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        expiry: {
+                            hint: "Specify the validity period of the <1>subject_token</1> in seconds.",
+                            label: "Subject token expiry time",
+                            placeholder: "Enter the subject token expiry time",
+                            validations: {
+                                empty: "Please fill the subject token expiry time",
+                                invalid: "Subject token expiry time should be in seconds. " +
+                                    "Decimal points and negative numbers are not allowed."
+                            }
+                        }
+                    },
+                    heading: "Subject Token"
                 },
                 requestObjectSignature: {
                     description: "{{productName}} supports receiving an OIDC authentication request as " +

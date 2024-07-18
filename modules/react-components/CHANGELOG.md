@@ -1,5 +1,54 @@
 # @wso2is/react-components
 
+## 2.2.18
+
+### Patch Changes
+
+- Updated dependencies [[`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066)]:
+  - @wso2is/core@2.0.53
+
+## 2.2.17
+
+### Patch Changes
+
+- [#6587](https://github.com/wso2/identity-apps/pull/6587) [`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab) Thanks [@brionmario](https://github.com/brionmario)! - [cleanup] Remove `documentation` object & related logic from Console + Other cleanup
+
+- Updated dependencies [[`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab)]:
+  - @wso2is/core@2.0.52
+
+## 2.2.16
+
+### Patch Changes
+
+- Updated dependencies [[`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360)]:
+  - @wso2is/theme@2.0.90
+
+## 2.2.15
+
+### Patch Changes
+
+- [#6585](https://github.com/wso2/identity-apps/pull/6585) [`6500ca1be1c4bbc939c7a0024b80f2aa5be123f1`](https://github.com/wso2/identity-apps/commit/6500ca1be1c4bbc939c7a0024b80f2aa5be123f1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update console callback URL to getting started page on error boundary being triggered
+
+## 2.2.14
+
+### Patch Changes
+
+- [#6581](https://github.com/wso2/identity-apps/pull/6581) [`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Improve android thumbprint error handling
+
+## 2.2.13
+
+### Patch Changes
+
+- Updated dependencies [[`f1d9b7ccbe14f1a42b6d3360da664acf39ba6909`](https://github.com/wso2/identity-apps/commit/f1d9b7ccbe14f1a42b6d3360da664acf39ba6909)]:
+  - @wso2is/theme@2.0.89
+
+## 2.2.12
+
+### Patch Changes
+
+- Updated dependencies [[`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394)]:
+  - @wso2is/theme@2.0.88
+
 ## 2.2.11
 
 ### Patch Changes

@@ -114,7 +114,7 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<AuthenticatorInterface[]>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     IdentityProviderManagementConstants.AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
@@ -206,7 +206,7 @@ export const updateMultiFactorAuthenticatorDetails = (
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<MultiFactorAuthenticatorInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionManagementConstants.MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR,
@@ -248,7 +248,7 @@ export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterfac
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<AuthenticatorInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionManagementConstants.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
@@ -290,7 +290,7 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<MultiFactorAuthenticatorInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionManagementConstants.MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,

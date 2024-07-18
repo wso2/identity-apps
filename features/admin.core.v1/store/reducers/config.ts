@@ -67,7 +67,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 tenantQualifiedPath: ""
             },
             docSiteURL: "",
-            documentation: null,
             extensions: null,
             helpCenterURL: "",
             idpConfigs: null,
@@ -118,6 +117,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             guests: "",
             guestsList: "",
             identityProviders: "",
+            impersonationConfigurations: "",
             jwtAuthenticationServiceMgt: "",
             localAuthenticators: "",
             localClaims: "",
@@ -263,6 +263,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isRequestPathAuthenticationEnabled: undefined,
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
+            isTrustedAppConsentRequired: undefined,
             listAllAttributeDialects: undefined,
             privacyPolicyConfigs: null,
             productName: "",

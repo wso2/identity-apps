@@ -40,6 +40,7 @@ export interface ApplicationConfig {
         showMyAccountStatus: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
+        showTrustedAppConsentWarning: boolean;
     };
     allowedGrantTypes: Record<string, string[]>,
     generalSettings: {

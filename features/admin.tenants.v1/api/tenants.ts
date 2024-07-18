@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -120,7 +120,11 @@ export const checkDuplicateTenants = (tenantName: string): Promise<AxiosResponse
  *
  * @returns - A promise that resolves with the tenant request response object.
  */
-export const getAssociatedTenants = (): Promise<TenantRequestResponse> => {
+export const getAssociatedTenants = (
+    attributes?: string,
+    limit?: number,
+    offset?: number
+): Promise<TenantRequestResponse> => {
     const orgType: OrganizationType = store.getState().organization.organizationType;
 
     // If the user is a privileged user or the function is being called inside a suborganization
@@ -140,6 +144,11 @@ export const getAssociatedTenants = (): Promise<TenantRequestResponse> => {
 
     const requestConfig: AxiosRequestConfig = {
         method: HttpMethods.GET,
+        params: {
+            attributes,
+            limit,
+            offset
+        },
         url: store.getState().config.endpoints.tenantAssociationApi + getDomainQueryParam()
     };
 

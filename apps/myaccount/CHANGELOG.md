@@ -1,5 +1,177 @@
 # @wso2is/myaccount
 
+## 2.7.68
+
+### Patch Changes
+
+- [#6608](https://github.com/wso2/identity-apps/pull/6608) [`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update asgardeo react sdk version
+
+- Updated dependencies [[`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066)]:
+  - @wso2is/admin.organizations.v1@2.20.69
+  - @wso2is/core@2.0.53
+  - @wso2is/common.branding.v1@2.20.69
+  - @wso2is/access-control@3.0.13
+  - @wso2is/forms@2.0.43
+  - @wso2is/i18n@2.5.5
+  - @wso2is/react-components@2.2.18
+
+## 2.7.67
+
+### Patch Changes
+
+- Updated dependencies [[`91db151942242a5829066d4b1d42cf8ce4feafe9`](https://github.com/wso2/identity-apps/commit/91db151942242a5829066d4b1d42cf8ce4feafe9)]:
+  - @wso2is/i18n@2.5.4
+  - @wso2is/admin.organizations.v1@2.20.68
+  - @wso2is/common.branding.v1@2.20.68
+
+## 2.7.66
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.20.67
+  - @wso2is/common.branding.v1@2.20.67
+
+## 2.7.65
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.20.66
+  - @wso2is/common.branding.v1@2.20.66
+
+## 2.7.64
+
+### Patch Changes
+
+- Updated dependencies [[`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab)]:
+  - @wso2is/react-components@2.2.17
+  - @wso2is/core@2.0.52
+  - @wso2is/admin.organizations.v1@2.20.65
+  - @wso2is/common.branding.v1@2.20.65
+  - @wso2is/access-control@3.0.12
+  - @wso2is/forms@2.0.42
+  - @wso2is/i18n@2.5.3
+
+## 2.7.63
+
+### Patch Changes
+
+- Updated dependencies [[`e5b95f9ed5ab1c50c8339364f15dfab1eb0ee27d`](https://github.com/wso2/identity-apps/commit/e5b95f9ed5ab1c50c8339364f15dfab1eb0ee27d)]:
+  - @wso2is/i18n@2.5.2
+  - @wso2is/admin.organizations.v1@2.20.64
+  - @wso2is/common.branding.v1@2.20.64
+
+## 2.7.62
+
+### Patch Changes
+
+- Updated dependencies [[`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360)]:
+  - @wso2is/theme@2.0.90
+  - @wso2is/admin.organizations.v1@2.20.63
+  - @wso2is/react-components@2.2.16
+  - @wso2is/common.branding.v1@2.20.63
+
+## 2.7.61
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.20.62
+  - @wso2is/common.branding.v1@2.20.62
+
+## 2.7.60
+
+### Patch Changes
+
+- Updated dependencies [[`6500ca1be1c4bbc939c7a0024b80f2aa5be123f1`](https://github.com/wso2/identity-apps/commit/6500ca1be1c4bbc939c7a0024b80f2aa5be123f1)]:
+  - @wso2is/react-components@2.2.15
+  - @wso2is/admin.organizations.v1@2.20.61
+  - @wso2is/common.branding.v1@2.20.61
+
+## 2.7.59
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.20.60
+  - @wso2is/common.branding.v1@2.20.60
+
+## 2.7.58
+
+### Patch Changes
+
+- [#6567](https://github.com/wso2/identity-apps/pull/6567) [`c877df930874467071aa7c7a0e5809351c0a922f`](https://github.com/wso2/identity-apps/commit/c877df930874467071aa7c7a0e5809351c0a922f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove Cookiepro from onprem
+
+- Updated dependencies [[`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146)]:
+  - @wso2is/react-components@2.2.14
+  - @wso2is/i18n@2.5.1
+  - @wso2is/admin.organizations.v1@2.20.59
+  - @wso2is/common.branding.v1@2.20.59
+
+## 2.7.57
+
+### Patch Changes
+
+- Updated dependencies [[`a7d0c020b04ba382733280407fc202910f4fc8f4`](https://github.com/wso2/identity-apps/commit/a7d0c020b04ba382733280407fc202910f4fc8f4)]:
+  - @wso2is/i18n@2.5.0
+  - @wso2is/admin.organizations.v1@2.20.58
+  - @wso2is/common.branding.v1@2.20.58
+
+## 2.7.56
+
+### Patch Changes
+
+- Updated dependencies [[`f1d9b7ccbe14f1a42b6d3360da664acf39ba6909`](https://github.com/wso2/identity-apps/commit/f1d9b7ccbe14f1a42b6d3360da664acf39ba6909)]:
+  - @wso2is/theme@2.0.89
+  - @wso2is/admin.organizations.v1@2.20.57
+  - @wso2is/react-components@2.2.13
+  - @wso2is/common.branding.v1@2.20.57
+
+## 2.7.55
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.20.56
+  - @wso2is/common.branding.v1@2.20.56
+
+## 2.7.54
+
+### Patch Changes
+
+- Updated dependencies [[`82bbbf2303853076342ef80ef7d987bed16df01f`](https://github.com/wso2/identity-apps/commit/82bbbf2303853076342ef80ef7d987bed16df01f)]:
+  - @wso2is/i18n@2.4.8
+  - @wso2is/admin.organizations.v1@2.20.55
+  - @wso2is/common.branding.v1@2.20.55
+
+## 2.7.53
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.20.54
+  - @wso2is/common.branding.v1@2.20.54
+
+## 2.7.52
+
+### Patch Changes
+
+- Updated dependencies [[`a533e58d21d759f0a27d804f17b042a2819a8955`](https://github.com/wso2/identity-apps/commit/a533e58d21d759f0a27d804f17b042a2819a8955)]:
+  - @wso2is/i18n@2.4.7
+  - @wso2is/admin.organizations.v1@2.20.53
+  - @wso2is/common.branding.v1@2.20.53
+
+## 2.7.51
+
+### Patch Changes
+
+- Updated dependencies [[`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394)]:
+  - @wso2is/common.branding.v1@2.20.52
+  - @wso2is/theme@2.0.88
+  - @wso2is/admin.organizations.v1@2.20.52
+  - @wso2is/react-components@2.2.12
+
 ## 2.7.50
 
 ### Patch Changes

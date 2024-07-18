@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,7 +34,6 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "./config";
-import { PortalDocumentationStructureInterface } from "./help-panel";
 import { AppViewTypes } from "./ui";
 
 /**
@@ -56,16 +55,6 @@ export interface GlobalReducerStateInterface extends CommonGlobalReducerStateInt
     SupportedLanguagesMeta> {
 
     activeView: AppViewTypes;
-}
-
-/**
- * Help panel reducer state interface.
- */
-export interface HelpPanelReducerStateInterface {
-    activeTabIndex: number;
-    docURL: string;
-    docStructure: PortalDocumentationStructureInterface;
-    visibility: boolean;
 }
 
 export interface AccessControlReducerStateInterface {

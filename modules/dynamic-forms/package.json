@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/dynamic-forms",
-    "version": "2.0.69",
+    "version": "2.0.76",
     "private": true,
     "description": "Dynamic form library for WSO2 Identity Server front end applications.",
     "keywords": [
@@ -26,15 +26,16 @@
         "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "jest --passWithNoTests",
+        "test:coverage": "jest --passWithNoTests --coverage --collect-coverage",
         "test:watch": "pnpm test -- --watch",
         "typecheck": "pnpm compile"
     },
     "dependencies": {
         "@oxygen-ui/react": "^1.11.0",
         "@mui/material": "^5.13.0",
-        "@wso2is/core": "^2.0.51",
+        "@wso2is/core": "^2.0.53",
         "@wso2is/validation": "^2.0.6",
-        "@wso2is/react-components": "^2.2.11",
+        "@wso2is/react-components": "^2.2.18",
         "final-form": "^4.20.9",
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",

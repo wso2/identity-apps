@@ -64,6 +64,10 @@ export const pages: pagesNS = {
         subTitle: "Create and manage user groups, assign permissions for groups.",
         title: "Groups"
     },
+    impersonation: {
+        subTitle: "Configure impersonation settings for organization.",
+        title: "Impersonation"
+    },
     invite: {
         subTitle: "Invite and manage admins and developers.",
         title: "Admins & Developers"

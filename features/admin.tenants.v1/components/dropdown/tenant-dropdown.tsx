@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import { ArrowLeftArrowRightIcon, BuildingCircleCheckIcon, HierarchyIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs";
@@ -42,8 +43,10 @@ import {
     HeaderPropsInterface as ReusableHeaderPropsInterface
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
@@ -112,6 +115,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const [ isSwitchTenantsSelected, setIsSwitchTenantsSelected ] = useState<boolean>(false);
     const [ isSetDefaultTenantInProgress, setIsSetDefaultTenantInProgress ] = useState<boolean>(false);
     const [ associatedTenants, setAssociatedTenants ] = useState<string[]>([]);
+    const [ associatedTenantsOffset, setAssociatedTenantsOffset ] = useState<number>(0);
+    const [ hasMoreAssociatedTenants, setHasMoreAssociatedTenants ] = useState<boolean>(true);
     const [ defaultTenant, setDefaultTenant ] = useState<string>("");
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ organizationId, setOrganizationId ] = useState<string>("");
@@ -124,9 +129,12 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
+    const associatedTenantsLimit: number = 15;
+
     useEffect(() => {
+        setAssociatedTenantsOffset(0);
         if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {
-            getAssociatedTenants()
+            getAssociatedTenants(null, associatedTenantsLimit, associatedTenantsOffset)
                 .then((response: TenantRequestResponse) => {
                     let defaultDomain: string = "";
                     const tenants: string[] = [];
@@ -142,6 +150,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     dispatch(setTenants<TenantInfo>(response.associatedTenants));
                     setAssociatedTenants(tenants);
                     setDefaultTenant(defaultDomain);
+                    setHasMoreAssociatedTenants(response.totalResults > response.associatedTenants.length);
                 })
                 .catch((error: any) => {
                     dispatch(
@@ -222,58 +231,136 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             });
     };
 
+    /**
+     * Load more tenants in the list using infinite scroll.
+     */
+    const loadMoreItems = () => {
+        // Fetch more tenants.
+        if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {
+            getAssociatedTenants(null, associatedTenantsLimit, associatedTenantsOffset + associatedTenantsLimit)
+                .then((response: TenantRequestResponse) => {
+                    let defaultDomain: string = defaultTenant;
+                    const tenants: string[] = [];
+
+                    response.associatedTenants.forEach((tenant: TenantInfo) => {
+                        if (isEmpty(defaultTenant) && tenant.default) {
+                            defaultDomain = tenant.domain;
+                        }
+
+                        tenants.push(tenant.domain);
+                    });
+                    // Add tenants to the associatedTenants state
+                    setAssociatedTenants([ ...associatedTenants, ...tenants ]);
+                    setAssociatedTenantsOffset(associatedTenantsOffset + associatedTenantsLimit);
+                    setDefaultTenant(defaultDomain);
+                    setHasMoreAssociatedTenants(associatedTenantsLimit === response.associatedTenants.length);
+                })
+                .catch((error: any) => {
+                    dispatch(
+                        addAlert({
+                            description:
+                                error?.description &&
+                                t("extensions:manage.features.tenant.notifications." + "getTenants.description"),
+                            level: AlertLevels.ERROR,
+                            message:
+                                error?.description &&
+                                t("extensions:manage.features.tenant.notifications." + "getTenants.message")
+                        })
+                    );
+                });
+        }
+    };
+
+    /**
+     * Resolve associated tenant record.
+     *
+     * @param tempTenantAssociation - Tenant name.
+     * @param index - Index.
+     */
+    const resolveAssociatedTenantRecord = (tempTenantAssociation: string, index: number): ReactElement => {
+        if (tenantAssociations.currentTenant !== tempTenantAssociation) {
+            return (
+                <Item
+                    className="tenant-account"
+                    key={ index }
+                    onClick={ () => handleTenantSwitch(tempTenantAssociation) }
+                >
+                    <GenericIcon
+                        icon={ getMiscellaneousIcons().tenantIcon }
+                        inline
+                        size="x22"
+                        fill="white"
+                        className="mt-3"
+                    />
+                    <Item.Content className="tenant-list-item-content">
+                        <div
+                            className="name"
+                            data-testid={ `${ tempTenantAssociation }-tenant-la-name` }
+                        >
+                            { tempTenantAssociation }
+                        </div>
+                    </Item.Content>
+                </Item>
+            );
+        }
+
+        return null;
+    };
+
+    /**
+     * Loading component.
+     */
+    const loadingComponent = () => {
+        return (
+            <Item className="tenant-account">
+                <CircularProgress size={ 22 } className="tenant-list-item-loader"/>
+                <Item.Content className="tenant-list-item-content">
+                    <div className="name">
+                        { t("common:loading") }...
+                    </div>
+                </Item.Content>
+            </Item>
+        );
+    };
+
     const resolveAssociatedTenants = (): ReactElement => {
         if (Array.isArray(tempTenantAssociationsList)) {
             return (
                 <Item.Group
+                    id="associated-tenants-container"
                     className="tenants-list"
                     unstackable
                     data-testid={ "associated-tenants-container" }
                 >
                     {
-                        tempTenantAssociationsList.length > 0 ?
-                            (
-                                tempTenantAssociationsList.map((association: string, index: number) => (
-                                    (association !== tenantAssociations.currentTenant)
-                                        ? (
-                                            <Item
-                                                className="tenant-account"
-                                                key={ index }
-                                                onClick={ () => handleTenantSwitch(association) }
-                                            >
-                                                <GenericIcon
-                                                    icon={ getMiscellaneousIcons().tenantIcon }
-                                                    inline
-                                                    size="x22"
-                                                    fill="white"
-                                                    className="mt-3"
-                                                />
-                                                <Item.Content className="tenant-list-item-content">
-                                                    <div
-                                                        className="name"
-                                                        data-testid={ `${ association }-tenant-la-name` }
-                                                    >
-                                                        { association }
-                                                    </div>
-                                                </Item.Content>
-                                            </Item>
-                                        )
-                                        : null
-                                ))
-                            ) : (
-                                <Item
-                                    className="empty-list"
-                                >
-                                    <Item.Content verticalAlign="middle">
-                                        <Item.Description>
-                                            <div className="message">
-                                                { t("extensions:manage.features.tenant."
-                                                + "header.tenantSearch.emptyResultMessage") }
-                                            </div>
-                                        </Item.Description>
-                                    </Item.Content>
-                                </Item>
-                            )
+                        tempTenantAssociationsList.length > 0 ? (
+                            <InfiniteScroll
+                                dataLength={ tempTenantAssociationsList.length }
+                                next={ loadMoreItems }
+                                hasMore={ hasMoreAssociatedTenants }
+                                loader={ loadingComponent() }
+                                endMessage={ null }
+                                scrollableTarget="associated-tenants-container"
+                            >
+                                {
+                                    tempTenantAssociationsList.map((tenant: string, index: number) =>
+                                        resolveAssociatedTenantRecord(tenant, index))
+                                }
+                            </InfiniteScroll>
+                        ) : (
+                            <Item
+                                className="empty-list"
+                            >
+                                <Item.Content verticalAlign="middle">
+                                    <Item.Description>
+                                        <div className="message">
+                                            { t("extensions:manage.features.tenant."
+                                            + "header.tenantSearch.emptyResultMessage") }
+                                        </div>
+                                    </Item.Description>
+                                </Item.Content>
+                            </Item>
+                        )
                     }
                 </Item.Group>
             );
