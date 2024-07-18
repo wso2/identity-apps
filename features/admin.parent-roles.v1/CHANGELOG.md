@@ -1,5 +1,13 @@
 # @wso2is/admin.parent-roles.v1
 
+## 2.20.70
+
+### Patch Changes
+
+- Updated dependencies [[`5fc75427e1f0533085be5eea41f5eb1ada894b67`](https://github.com/wso2/identity-apps/commit/5fc75427e1f0533085be5eea41f5eb1ada894b67)]:
+  - @wso2is/admin.core.v1@2.23.0
+  - @wso2is/admin.extensions.v1@2.21.40
+
 ## 2.20.69
 
 ### Patch Changes

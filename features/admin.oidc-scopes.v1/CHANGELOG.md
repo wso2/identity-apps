@@ -1,5 +1,14 @@
 # @wso2is/admin.oidc-scopes.v1
 
+## 2.20.70
+
+### Patch Changes
+
+- Updated dependencies [[`5fc75427e1f0533085be5eea41f5eb1ada894b67`](https://github.com/wso2/identity-apps/commit/5fc75427e1f0533085be5eea41f5eb1ada894b67), [`2fcba18b79408465216e000a09d230f274f70fb3`](https://github.com/wso2/identity-apps/commit/2fcba18b79408465216e000a09d230f274f70fb3)]:
+  - @wso2is/admin.core.v1@2.23.0
+  - @wso2is/admin.applications.v1@2.22.0
+  - @wso2is/admin.claims.v1@2.20.70
+
 ## 2.20.69
 
 ### Patch Changes

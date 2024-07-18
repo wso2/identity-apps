@@ -1,5 +1,54 @@
 # @wso2is/admin.core.v1
 
+## 2.23.0
+
+### Minor Changes
+
+- [#6564](https://github.com/wso2/identity-apps/pull/6564) [`5fc75427e1f0533085be5eea41f5eb1ada894b67`](https://github.com/wso2/identity-apps/commit/5fc75427e1f0533085be5eea41f5eb1ada894b67) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Expose `isLoading` property from `useRequest` hook
+
+### Patch Changes
+
+- Updated dependencies [[`2fcba18b79408465216e000a09d230f274f70fb3`](https://github.com/wso2/identity-apps/commit/2fcba18b79408465216e000a09d230f274f70fb3)]:
+  - @wso2is/admin.identity-providers.v1@2.21.0
+  - @wso2is/admin.applications.v1@2.22.0
+  - @wso2is/admin.connections.v1@2.21.0
+  - @wso2is/admin.api-resources.v1@2.20.70
+  - @wso2is/admin.api-resources.v2@2.20.70
+  - @wso2is/admin.authentication.v1@2.20.70
+  - @wso2is/admin.branding.v1@2.20.70
+  - @wso2is/admin.certificates.v1@2.20.70
+  - @wso2is/admin.claims.v1@2.20.70
+  - @wso2is/admin.console-settings.v1@2.20.70
+  - @wso2is/admin.email-and-sms.v1@2.20.70
+  - @wso2is/admin.email-management.v1@2.20.70
+  - @wso2is/admin.email-providers.v1@2.20.70
+  - @wso2is/admin.email-templates.v1@2.20.70
+  - @wso2is/admin.extensions.v1@2.21.40
+  - @wso2is/admin.extensions.v2@2.20.70
+  - @wso2is/admin.groups.v1@2.20.70
+  - @wso2is/admin.identity-verification-providers.v1@2.20.70
+  - @wso2is/admin.impersonation.v1@1.1.12
+  - @wso2is/admin.oidc-scopes.v1@2.20.70
+  - @wso2is/admin.org-insights.v1@2.20.70
+  - @wso2is/admin.organization-discovery.v1@2.20.70
+  - @wso2is/admin.organizations.v1@2.20.70
+  - @wso2is/admin.private-key-jwt.v1@2.20.70
+  - @wso2is/admin.remote-repository-configuration.v1@2.20.70
+  - @wso2is/admin.roles.v1@2.20.70
+  - @wso2is/admin.roles.v2@2.20.70
+  - @wso2is/admin.saml2-configuration.v1@2.20.70
+  - @wso2is/admin.secrets.v1@2.20.70
+  - @wso2is/admin.server-configurations.v1@2.21.12
+  - @wso2is/admin.server.v1@2.20.70
+  - @wso2is/admin.session-management.v1@2.20.70
+  - @wso2is/admin.sms-providers.v1@2.20.70
+  - @wso2is/admin.tenants.v1@2.20.70
+  - @wso2is/admin.users.v1@2.20.70
+  - @wso2is/admin.userstores.v1@2.20.70
+  - @wso2is/admin.validation.v1@2.20.70
+  - @wso2is/admin.workflow-approvals.v1@2.20.70
+  - @wso2is/admin.wsfed-configuration.v1@2.20.70
+
 ## 2.22.11
 
 ### Patch Changes
