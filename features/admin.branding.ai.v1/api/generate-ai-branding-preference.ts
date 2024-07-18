@@ -55,7 +55,7 @@ const generateBrandingPreference = (
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<GenerateBrandingAPIResponseInterface>) => {
             if (response.status !== 202) {
                 throw new Error("Failed to generate branding preference: ${response.statusText}");
             }

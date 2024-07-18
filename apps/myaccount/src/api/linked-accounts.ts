@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -51,7 +51,7 @@ export const getAssociations = (): Promise<LinkedAccountInterface[]> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<LinkedAccountInterface[]>) => {
             if (response.status !== 200) {
                 return Promise.reject("Failed to retrieve the linked accounts");
             }

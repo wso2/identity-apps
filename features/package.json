@@ -16,7 +16,7 @@
         "test:watch": "pnpm run test --watchAll"
     },
     "dependencies": {
-        "@asgardeo/auth-react": "^5.0.2",
+        "@asgardeo/auth-react": "^4.0.4",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
         "@monaco-editor/react": "^4.5.1",

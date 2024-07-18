@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -78,7 +78,7 @@ export const fetchConsentedApps = async (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<ConsentInterface[]>) => {
             return response.data;
         })
         .catch((error: HttpError) => {
@@ -108,7 +108,7 @@ export const fetchConsentReceipt = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<ConsentReceiptInterface>) => {
             return response.data;
         })
         .catch((error: HttpError) => {
@@ -242,7 +242,7 @@ export const revokeConsentedApp = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<ConsentReceiptInterface>) => {
             // TODO: change the return type
             return response.data;
         })
@@ -300,7 +300,7 @@ export const updateConsentedClaims = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<ConsentReceiptInterface>) => {
             return response.data;
         })
         .catch((error: HttpError) => {
