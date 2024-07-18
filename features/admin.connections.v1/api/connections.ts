@@ -324,6 +324,7 @@ export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Err
 
 /**
  * Hook to get the connection template list with limit and offset.
+ * @deprecated - Use `useGetConnectionTemplates` from `use-get-connection-templates.ts`
  *
  * @param limit - Maximum Limit of the connection templates.
  * @param offset - Offset for get to start.
