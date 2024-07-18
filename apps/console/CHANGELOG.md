@@ -1,5 +1,58 @@
 # @wso2is/console
 
+## 2.20.39
+
+### Patch Changes
+
+- [#6608](https://github.com/wso2/identity-apps/pull/6608) [`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update asgardeo react sdk version
+
+* [#6584](https://github.com/wso2/identity-apps/pull/6584) [`8d0d368a7860de4f17ae63ea6e326d7d9043ade4`](https://github.com/wso2/identity-apps/commit/8d0d368a7860de4f17ae63ea6e326d7d9043ade4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Push fidp param set logic as higher as possible in the sign in hook
+
+* Updated dependencies [[`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066)]:
+  - @wso2is/admin.identity-verification-providers.v1@2.20.69
+  - @wso2is/admin.remote-repository-configuration.v1@2.20.69
+  - @wso2is/admin.organization-discovery.v1@2.20.69
+  - @wso2is/admin.server-configurations.v1@2.21.11
+  - @wso2is/admin.saml2-configuration.v1@2.20.69
+  - @wso2is/admin.wsfed-configuration.v1@2.20.69
+  - @wso2is/admin.session-management.v1@2.20.69
+  - @wso2is/admin.workflow-approvals.v1@2.20.69
+  - @wso2is/admin.console-settings.v1@2.20.69
+  - @wso2is/admin.email-management.v1@2.20.69
+  - @wso2is/admin.email-providers.v1@2.20.69
+  - @wso2is/admin.private-key-jwt.v1@2.20.69
+  - @wso2is/admin.authentication.v1@2.20.69
+  - @wso2is/admin.api-resources.v1@2.20.69
+  - @wso2is/admin.api-resources.v2@2.20.69
+  - @wso2is/admin.authorization.v1@2.20.28
+  - @wso2is/admin.email-and-sms.v1@2.20.69
+  - @wso2is/admin.impersonation.v1@1.1.11
+  - @wso2is/admin.organizations.v1@2.20.69
+  - @wso2is/admin.sms-providers.v1@2.20.69
+  - @wso2is/admin.applications.v1@2.21.39
+  - @wso2is/admin.certificates.v1@2.20.69
+  - @wso2is/admin.org-insights.v1@2.20.69
+  - @wso2is/admin.connections.v1@2.20.69
+  - @wso2is/admin.oidc-scopes.v1@2.20.69
+  - @wso2is/admin.extensions.v1@2.21.39
+  - @wso2is/admin.validation.v1@2.20.69
+  - @wso2is/admin.branding.v1@2.20.69
+  - @wso2is/admin.secrets.v1@2.20.69
+  - @wso2is/admin.claims.v1@2.20.69
+  - @wso2is/admin.groups.v1@2.20.69
+  - @wso2is/admin.server.v1@2.20.69
+  - @wso2is/admin.roles.v1@2.20.69
+  - @wso2is/admin.roles.v2@2.20.69
+  - @wso2is/admin.users.v1@2.20.69
+  - @wso2is/admin.core.v1@2.22.11
+  - @wso2is/core@2.0.53
+  - @wso2is/access-control@3.0.13
+  - @wso2is/dynamic-forms@2.0.76
+  - @wso2is/form@2.0.77
+  - @wso2is/forms@2.0.43
+  - @wso2is/i18n@2.5.5
+  - @wso2is/react-components@2.2.18
+
 ## 2.20.38
 
 ### Patch Changes
