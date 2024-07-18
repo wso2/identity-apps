@@ -18,9 +18,9 @@
 
 /* eslint-env jest */
 
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
-import { render, screen } from "../../../../test-configs/utils";
 import { Info } from "../info";
 
 describe("Info tab of Application Edit view renders as expected", () => {
