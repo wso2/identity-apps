@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.4
+
+### Patch Changes
+
+- [#6491](https://github.com/wso2/identity-apps/pull/6491) [`91db151942242a5829066d4b1d42cf8ce4feafe9`](https://github.com/wso2/identity-apps/commit/91db151942242a5829066d4b1d42cf8ce4feafe9) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add reuse pvt key jwt checkbox to protocol tab
+
 ## 2.5.3
 
 ### Patch Changes
