@@ -138,6 +138,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+    const isMultipleEmailAndMobileNumberEnabled: boolean = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
@@ -153,8 +154,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
-    const [ isMultipleEmailAndMobileNumberEnabled, setIsMultipleEmailAndMobileNumberEnabled ] =
-        useState<boolean>(false);
     const [ expandMultiAttributeAccordion, setExpandMultiAttributeAccordion ] = useState<Record<string, boolean>>({
         [EMAIL_ADDRESSES_ATTRIBUTE]: false,
         [MOBILE_NUMBERS_ATTRIBUTE]: false
@@ -184,8 +183,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 "connector-name": ProfileConstants.USER_CLAIM_UPDATE_CONNECTOR,
                 properties: [
                     ProfileConstants.ENABLE_EMAIL_VERIFICATION,
-                    ProfileConstants.ENABLE_MOBILE_VERIFICATION,
-                    ProfileConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS
+                    ProfileConstants.ENABLE_MOBILE_VERIFICATION
                 ]
             }
         ];
@@ -202,9 +200,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         }
                         if (prop.name === ProfileConstants.ENABLE_MOBILE_VERIFICATION) {
                             setIsMobileVerificationEnabled(prop.value.toLowerCase() == "true");
-                        }
-                        if (prop.name === ProfileConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS) {
-                            setIsMultipleEmailAndMobileNumberEnabled(prop.value.toLowerCase() == "true");
                         }
                     });
                 } else {
@@ -1034,7 +1029,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const generateSchemaForm = (schema: ProfileSchema, index: number): JSX.Element => {
 
         // Define schemas to hide.
-        const attributesToHide: string[] = isMultipleEmailAndMobileNumberEnabled
+        const attributesToHide: string[] = isMultipleEmailAndMobileNumberEnabled === true
             ? [ EMAIL_ATTRIBUTE, MOBILE_ATTRIBUTE, VERIFIED_MOBILE_NUMBERS_ATTRIBUTE,
                 VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE ]
             : [ EMAIL_ADDRESSES_ATTRIBUTE, MOBILE_NUMBERS_ATTRIBUTE,
@@ -1767,7 +1762,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         // Ensure primaryAttributeValue is defined and attributeValueList is an array.
         if (!isEmpty(primaryAttributeValue) && Array.isArray(attributeValueList)) {
-            attributeValueList = attributeValueList.filter((value: string) => value !== primaryAttributeValue);
+            attributeValueList = attributeValueList.filter((value: string) =>
+                value !== primaryAttributeValue
+                && !isEmpty(value)
+            );
             attributeValueList.unshift(primaryAttributeValue);
         }
 
@@ -2324,7 +2322,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const showMobileVerification = (schema: ProfileSchema): boolean =>
         showMobileUpdateWizard && (
-            isMultipleEmailAndMobileNumberEnabled
+            isMultipleEmailAndMobileNumberEnabled === true
                 ? schema.name === MOBILE_NUMBERS_ATTRIBUTE
                 : schema.name === MOBILE_ATTRIBUTE
         );
@@ -2394,8 +2392,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                             : profileInfo.get(schema.name)
                                                                     }
                                                                     isMobileRequired={ schema.required }
-                                                                    isMultipleEmailAndMobileNumberEnabled
-                                                                        = { isMultipleEmailAndMobileNumberEnabled }
+                                                                    isMultipleEmailAndMobileNumberEnabled =
+                                                                        {
+                                                                            isMultipleEmailAndMobileNumberEnabled
+                                                                        === true
+                                                                        }
                                                                 />
                                                             )
                                                             : null
