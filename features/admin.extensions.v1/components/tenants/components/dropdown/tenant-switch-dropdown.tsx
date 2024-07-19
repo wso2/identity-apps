@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, Grid, Icon, Input, Item, Loader, Segment } from "semantic-ui-react";
 import { ReactComponent as CrossIcon } from "../../../../../themes/default/assets/images/icons/cross-icon.svg";
+import FeatureStatusLabel from "../../../feature-gate/models/feature-gate";
 import { getAssociatedTenants } from "../../api";
 import { TenantInfo, TenantRequestResponse } from "../../models";
 import { AddTenantWizard } from "../add-modal";
@@ -244,7 +245,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                                                 data-componentid={ `${ componentId }-new-button` }
                                             >
                                                 <PlusIcon fill="black" />
-                                                { t("common:new") }
+                                                { t(FeatureStatusLabel.NEW) }
                                             </Button>
                                         </Show>
                                     </Grid.Column>

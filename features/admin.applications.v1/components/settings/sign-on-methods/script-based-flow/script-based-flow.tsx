@@ -17,11 +17,14 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import { GearIcon } from "@oxygen-ui/react-icons";
+import { DiamondIcon, GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
-import { ELK_RISK_BASED_TEMPLATE_NAME } from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
+import {
+    ELK_RISK_BASED_TEMPLATE_NAME
+} from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { deleteSecret, getSecretList } from "@wso2is/admin.secrets.v1/api/secret";
@@ -1281,7 +1284,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                         }
                                                         trigger={ (
                                                             <Chip
-                                                                label="PREMIUM"
+                                                                icon = { <DiamondIcon /> }
+                                                                label={ t(FeatureStatusLabel.PREMIUM) }
                                                                 className="oxygen-menu-item-chip oxygen-chip-premium"
                                                                 style={ { height: "fit-content" } }
                                                             />

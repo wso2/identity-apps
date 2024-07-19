@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import { GenericIcon, Heading, Hint, ResourceGrid } from "@wso2is/react-components";
@@ -147,7 +148,7 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                                                     }
                                                     isResourceComingSoon={ template.comingSoon }
                                                     disabled={ template.disabled }
-                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                    comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                                     resourceDescription={ template.description }
                                                     resourceImage={
                                                         ConnectionsManagementUtils

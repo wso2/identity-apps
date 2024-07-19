@@ -25,6 +25,7 @@ import {
 } from "@wso2is/admin.core.v1/constants/app-constants";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -513,7 +514,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         isResourceComingSoon={ template.comingSoon }
                                                         disabled={ isTemplateDisabled }
                                                         disabledHint={ disabledHint }
-                                                        comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                        comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                                         resourceDescription={
                                                             template?.description
                                                                 ?.replaceAll("{{productName}}", productName)
