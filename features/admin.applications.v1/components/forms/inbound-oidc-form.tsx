@@ -21,6 +21,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants/impersonation-configuration";
 import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -68,16 +69,14 @@ import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { getGeneralIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
-import CustomApplicationTemplate
-    from "../../data/application-templates/templates/custom-application/custom-application.json";
-import M2MApplicationTemplate
-    from "../../data/application-templates/templates/m2m-application/m2m-application.json";
-import MobileTemplate
-    from "../../data/application-templates/templates/mobile-application/mobile-application.json";
-import OIDCWebApplicationTemplate
-    from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
-import SinglePageApplicationTemplate
-    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
+import CustomApplicationTemplate from
+    "../../data/application-templates/templates/custom-application/custom-application.json";
+import M2MApplicationTemplate from "../../data/application-templates/templates/m2m-application/m2m-application.json";
+import MobileTemplate from "../../data/application-templates/templates/mobile-application/mobile-application.json";
+import OIDCWebApplicationTemplate from
+    "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
+import SinglePageApplicationTemplate from
+    "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
@@ -576,11 +575,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         if (initialValues?.grantTypes) {
-            setSelectedGrantTypes([ ...initialValues?.grantTypes ]);
+            setSelectedGrantTypes([ ...initialValues.grantTypes ]);
         }
 
         if (initialValues?.allowedOrigins) {
-            setAllowedOrigins(initialValues?.allowedOrigins.toString());
+            setAllowedOrigins(initialValues.allowedOrigins.toString());
         }
 
     }, [ initialValues ]);
@@ -1306,11 +1305,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             if (!isPublicClient) {
+                let tokenEndpointAllowReusePvtKeyJwtValue: boolean = null;
+
+                if (values.get("tokenEndpointAuthMethod") === PRIVATE_KEY_JWT) {
+                    tokenEndpointAllowReusePvtKeyJwtValue = values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0;
+                }
+
                 inboundConfigFormValues = {
                     ...inboundConfigFormValues,
                     clientAuthentication: {
                         tlsClientAuthSubjectDn: subjectDN,
-                        tokenEndpointAllowReusePvtKeyJwt: values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0,
+                        tokenEndpointAllowReusePvtKeyJwt: tokenEndpointAllowReusePvtKeyJwtValue,
                         tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
                         tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
                     }
@@ -2071,7 +2076,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { applicationConfig.advancedConfigurations.showHybridFlowFeatureStatusChip && (
                                         <div className="oxygen-chip-div" >
                                             <Chip
-                                                label={ t("common:new").toUpperCase() }
+                                                label={ t(FeatureStatusLabel.NEW) }
                                                 className="oxygen-menu-item-chip oxygen-chip-new" />
                                         </div>
                                     ) }

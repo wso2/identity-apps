@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,22 +15,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { ConnectionTemplateCategoryInterface, ConnectionTemplateGroupInterface } from "@wso2is/admin.connections.v1";
+import { ConnectionTemplateManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-template-utils";
 import { store } from "@wso2is/admin.core.v1";
-import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
-import groupBy from "lodash-es/groupBy";
 import { getIdentityProviderTemplateList } from "../api";
 import { handleGetIDPTemplateListError } from "../components/utils/common-utils";
-import { getIdPCapabilityIcons } from "../configs/ui";
 import { TemplateConfigInterface, getIdentityProviderTemplatesConfig } from "../data/identity-provider-templates";
 import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
 import {
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateListItemInterface,
-    IdentityProviderTemplateListResponseInterface,
-    SupportedServices,
-    SupportedServicesInterface
+    IdentityProviderTemplateListResponseInterface
 } from "../models";
 import { setIdentityProviderTemplates } from "../store";
 
@@ -72,13 +67,13 @@ export class IdentityProviderTemplateManagementUtils {
                         = IdentityProviderTemplateManagementUtils.resolveHelpContent(response);
 
                     if (!skipGrouping) {
-                        IdentityProviderTemplateManagementUtils.groupIdentityProviderTemplates(templates)
+                        ConnectionTemplateManagementUtils.groupConnectionTemplates(templates)
                             .then((groups: IdentityProviderTemplateInterface[]) => {
                                 if (sort) {
-                                    templates = IdentityProviderTemplateManagementUtils
-                                        .sortIdentityProviderTemplates(templates);
-                                    groups = IdentityProviderTemplateManagementUtils
-                                        .sortIdentityProviderTemplates(groups);
+                                    templates = ConnectionTemplateManagementUtils
+                                        .sortConnectionTemplates(templates);
+                                    groups = ConnectionTemplateManagementUtils
+                                        .sortConnectionTemplates(groups);
                                 }
                                 store.dispatch(setIdentityProviderTemplates(templates));
                                 store.dispatch(setIdentityProviderTemplates(groups, true));
@@ -94,8 +89,8 @@ export class IdentityProviderTemplateManagementUtils {
 
                     if (sort) {
                         templatesWithServices =
-                            IdentityProviderTemplateManagementUtils
-                                .sortIdentityProviderTemplates(templatesWithServices);
+                            ConnectionTemplateManagementUtils
+                                .sortConnectionTemplates(templatesWithServices);
                     }
 
                     store.dispatch(setIdentityProviderTemplates(templatesWithServices));
@@ -129,75 +124,12 @@ export class IdentityProviderTemplateManagementUtils {
     };
 
     /**
-     * Retrieve the IDP template identified by the template ID from local files.
-     *
-     * @param templateId - ID of the template.
-     * @param _skipGrouping - Skip grouping of templates.
-     * @param sort - Should the returning templates be sorted.
-     * @returns Identity provider template.
-     */
-    public static getIdentityProviderTemplate = (templateId: string, _skipGrouping: boolean = false,
-        sort: boolean = true): Promise<IdentityProviderTemplateInterface> => {
-
-        return IdentityProviderTemplateManagementUtils.loadLocalFileBasedTemplates()
-            .then((response: any): any => {
-
-                response = response.filter((template: IdentityProviderTemplateListItemInterface) => {
-                    return template.id === templateId;
-                });
-                const templates: any = IdentityProviderTemplateManagementUtils
-                    .resolveHelpContent(response);
-
-                let templatesWithServices: IdentityProviderTemplateInterface[] =
-                    IdentityProviderTemplateManagementUtils.interpretAvailableTemplates(templates);
-
-                if (sort) {
-                    templatesWithServices =
-                        IdentityProviderTemplateManagementUtils.sortIdentityProviderTemplates(templatesWithServices);
-                }
-
-                return Promise.resolve(templatesWithServices[0]);
-            });
-    };
-
-    /**
-     * Build supported services from the given service identifiers.
-     *
-     * @param serviceIdentifiers - Set of service identifiers.
-     */
-    public static buildSupportedServices = (serviceIdentifiers: string[]): SupportedServicesInterface[] => {
-        return serviceIdentifiers?.map((serviceIdentifier: string): SupportedServicesInterface => {
-            switch (serviceIdentifier) {
-                case SupportedServices.AUTHENTICATION:
-                    return {
-                        displayName: I18n.instance.t(
-                            "console:develop.pages.authenticationProviderTemplate.supportServices." +
-                                "authenticationDisplayName"
-                        ),
-                        logo: getIdPCapabilityIcons()[SupportedServices.AUTHENTICATION],
-                        name: SupportedServices.AUTHENTICATION
-                    };
-                case SupportedServices.PROVISIONING:
-                    return {
-                        displayName: I18n.instance.t(
-                            "console:develop.pages.authenticationProviderTemplate.supportServices." +
-                                "provisioningDisplayName"
-                        ),
-                        logo: getIdPCapabilityIcons()[SupportedServices.PROVISIONING],
-                        name: SupportedServices.PROVISIONING
-                    };
-            }
-        });
-    };
-
-
-    /**
      * Interpret available templates from the response templates.
      *
      * @param templates - List of response templates.
      * @returns List of templates.
      */
-    public static interpretAvailableTemplates = (templates: any[]):
+    private static interpretAvailableTemplates = (templates: any[]):
         IdentityProviderTemplateInterface[] => {
         return templates?.map((eachTemplate: any) => {
             if (eachTemplate?.services[ 0 ] === "") {
@@ -208,141 +140,11 @@ export class IdentityProviderTemplateManagementUtils {
             } else {
                 return {
                     ...eachTemplate,
-                    services: IdentityProviderTemplateManagementUtils.buildSupportedServices(eachTemplate?.services)
+                    services: ConnectionTemplateManagementUtils.buildSupportedServices(eachTemplate?.services)
                 };
             }
         });
     };
-
-    /**
-     * Sort the IDP templates based on display order.
-     *
-     * @param templates - App templates.
-     * @returns Sorted templates.
-     */
-    private static sortIdentityProviderTemplates(
-        templates: IdentityProviderTemplateInterface[]): IdentityProviderTemplateInterface[] {
-
-        const identityProviderTemplates: IdentityProviderTemplateInterface[] = [ ...templates ];
-
-        // Sort templates based on displayOrder.
-        identityProviderTemplates.sort((a: IdentityProviderTemplateInterface, b: IdentityProviderTemplateInterface) =>
-            (a.displayOrder !== -1 ? a.displayOrder : Infinity) - (b.displayOrder !== -1 ? b.displayOrder : Infinity));
-
-        return identityProviderTemplates;
-    }
-
-    /**
-     * Categorize the IDP templates.
-     *
-     * @param templates - Templates list.
-     * @returns Categorized templates.
-     */
-    public static categorizeTemplates(
-        templates: IdentityProviderTemplateInterface[]): Promise<void | ConnectionTemplateCategoryInterface[]> {
-
-        let categorizedTemplates: ConnectionTemplateCategoryInterface[] = [];
-
-        const groupedByCategory: Record<string, IdentityProviderTemplateInterface[]> = groupBy(templates, "category");
-
-        return this.loadLocalFileBasedTemplateCategories()
-            .then((categories: ConnectionTemplateCategoryInterface[]) => {
-
-                categorizedTemplates = [ ...categories ];
-
-                categorizedTemplates.forEach((category: ConnectionTemplateCategoryInterface) => {
-                    if (Object.prototype.hasOwnProperty.call(groupedByCategory, category.id)) {
-                        category.templates = groupedByCategory[ category.id ];
-                    }
-                });
-
-                return categorizedTemplates;
-            })
-            .catch(() => {
-                return categorizedTemplates;
-            });
-    }
-
-    /**
-     * Group the identity provider templates.
-     * @param templates - Identity provider templates.
-     */
-    private static async groupIdentityProviderTemplates(
-        templates: IdentityProviderTemplateInterface[]
-    ): Promise<IdentityProviderTemplateInterface[]> {
-
-        const groupedTemplates: IdentityProviderTemplateInterface[] = [];
-
-        return IdentityProviderTemplateManagementUtils
-            .loadLocalFileBasedIdentityProviderTemplateGroups()
-            .then((response: ConnectionTemplateGroupInterface[]) => {
-                templates.forEach((template: IdentityProviderTemplateInterface) => {
-                    if (!template.templateGroup) {
-                        groupedTemplates.push(template);
-
-                        return;
-                    }
-                    const group: ConnectionTemplateGroupInterface = response
-                        .find((group: ConnectionTemplateGroupInterface) => {
-                            return group.id === template.templateGroup;
-                        });
-
-                    if (!group) {
-                        groupedTemplates.push(template);
-
-                        return;
-                    }
-                    if (groupedTemplates.some((groupedTemplate: IdentityProviderTemplateInterface) =>
-                        groupedTemplate.id === template.templateGroup)) {
-                        groupedTemplates.forEach(
-                            (editingTemplate: IdentityProviderTemplateInterface, index: number) => {
-                                if (editingTemplate.id === template.templateGroup) {
-                                    groupedTemplates[ index ] = {
-                                        ...group,
-                                        subTemplates: [ ...editingTemplate.subTemplates, template ]
-                                    };
-
-                                    return;
-                                }
-                            });
-
-                        return;
-                    }
-                    groupedTemplates.push({
-                        ...group,
-                        subTemplates: [ template ]
-                    });
-                });
-
-                return groupedTemplates;
-            });
-
-    }
-
-    /**
-     * Once called it will return the available groups from the
-     * {@link getIdentityProviderTemplatesConfig}
-     */
-    private static async loadLocalFileBasedIdentityProviderTemplateGroups():
-        Promise<(ConnectionTemplateGroupInterface |
-            Promise<ConnectionTemplateGroupInterface>)[]> {
-
-        const groups: (ConnectionTemplateGroupInterface
-            | Promise<ConnectionTemplateGroupInterface>)[] = [];
-
-        getIdentityProviderTemplatesConfig().groups.forEach(
-            async (config: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
-                if (!config.enabled) return;
-                groups.push(
-                    config.resource as (ConnectionTemplateGroupInterface |
-                        Promise<ConnectionTemplateGroupInterface>)
-                );
-            }
-        );
-
-        return Promise.all([ ...groups ]);
-
-    }
 
     /**
      * Loads local file based IDP templates.
@@ -368,33 +170,6 @@ export class IdentityProviderTemplateManagementUtils {
             });
 
         return Promise.all([ ...templates ]);
-    }
-
-    /**
-     * Loads local file based IDP template categories.
-     *
-     * @returns Local file based IDP template categories.
-     */
-    private static async loadLocalFileBasedTemplateCategories(): Promise<(ConnectionTemplateCategoryInterface
-        | Promise<ConnectionTemplateCategoryInterface>)[]> {
-
-        const categories: (ConnectionTemplateCategoryInterface
-            | Promise<ConnectionTemplateCategoryInterface>)[] = [];
-
-        getIdentityProviderTemplatesConfig().categories
-            .forEach(async (config: TemplateConfigInterface<ConnectionTemplateCategoryInterface>) => {
-                if (!config.enabled) {
-                    return;
-                }
-
-                categories.push(
-                    config.resource as (
-                        ConnectionTemplateCategoryInterface
-                        | Promise<ConnectionTemplateCategoryInterface>)
-                );
-            });
-
-        return Promise.all([ ...categories ]);
     }
 
     /**

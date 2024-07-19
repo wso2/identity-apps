@@ -21,6 +21,7 @@ import { I18n } from "@wso2is/i18n";
 import groupBy from "lodash-es/groupBy";
 import { getConnectionTemplatesConfig } from "../configs/templates";
 import { getConnectionCapabilityIcons } from "../configs/ui";
+import { ConnectionManagementConstants } from "../constants/connection-constants";
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateGroupInterface,
@@ -145,7 +146,7 @@ export class ConnectionTemplateManagementUtils {
      * Group the identity provider templates.
      * @param templates - Templates list to be grouped.
      */
-    private static async groupConnectionTemplates(
+    public static async groupConnectionTemplates(
         templates: ConnectionTemplateInterface[]
     ): Promise<ConnectionTemplateInterface[]> {
 
@@ -201,7 +202,7 @@ export class ConnectionTemplateManagementUtils {
      * Once called it will return the available groups from the
      * {@link getConnectionTemplatesConfig}
      */
-    private static async loadLocalFileBasedIdentityProviderTemplateGroups():
+    public static async loadLocalFileBasedIdentityProviderTemplateGroups():
         Promise<(ConnectionTemplateGroupInterface |
             Promise<ConnectionTemplateGroupInterface>)[]> {
 
@@ -210,6 +211,7 @@ export class ConnectionTemplateManagementUtils {
 
         getConnectionTemplatesConfig().groups.forEach(
             async (config: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
+
                 if (!config.enabled) return;
                 groups.push(
                     config.resource as (ConnectionTemplateGroupInterface |
@@ -258,3 +260,63 @@ export const getCertificateOptionsForTemplate = (templateId: string): { JWKS: bo
 
     return undefined;
 };
+
+/**
+ * Utility function to load local file based connection template groups.
+ *
+ * @returns Array of connection template groups.
+ */
+const loadLocalFileBasedConnectionTemplateGroups = (): ConnectionTemplateGroupInterface[] => {
+
+    return getConnectionTemplatesConfig().groups.map(
+        (groupConfig: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
+            if (groupConfig.enabled) {
+                return groupConfig.resource as ConnectionTemplateGroupInterface;
+            }
+        });
+};
+
+/**
+ * Utility function to group connection templates based on local file based groups.
+ *
+ * @param templates - Templates list to be grouped.
+ * @returns A list of grouped templates.
+ */
+export const groupConnectionTemplates = (
+    templates: ConnectionTemplateInterface[]): ConnectionTemplateInterface[] => {
+
+    // Connection templates are grouped based on local file based groups.
+    const localFileBasedConnectionTemplateGroups: ConnectionTemplateGroupInterface[]
+        = loadLocalFileBasedConnectionTemplateGroups();
+
+    let _templates: ConnectionTemplateInterface[] = [ ...templates ];
+    const groupedTemplates: ConnectionTemplateInterface[] = [];
+
+    for (const group of localFileBasedConnectionTemplateGroups) {
+        const updatedGroup: ConnectionTemplateGroupInterface = { ...group };
+
+        /**
+         * OIDC and SAML are grouped under "Enterprise Protocols".
+         */
+        if (group.id === ConnectionManagementConstants.CONNECTION_TEMPLATE_GROUPS.ENTERPRISE_PROTOCOLS) {
+            const subTemplateIds: string[] = [
+                ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC,
+                ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML
+            ];
+
+            updatedGroup.subTemplates = _templates
+                .filter((template: ConnectionTemplateInterface) => {
+                    return subTemplateIds.includes(template.id);
+                });
+            // Remove grouped sub templates from main template list.
+            _templates = _templates.filter((template: ConnectionTemplateInterface) => {
+                return !subTemplateIds.includes(template.id);
+            });
+        }
+
+        groupedTemplates.push(updatedGroup);
+    }
+
+    return [ ...groupedTemplates, ..._templates ];
+};
+
