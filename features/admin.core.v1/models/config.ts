@@ -471,6 +471,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Config to check whether consent is required for trusted apps.
      */
     isTrustedAppConsentRequired?: boolean;
+    /**
+     * Config to check whether the multiple emails and mobile numbers per user feature is enabled.
+     */
+    isMultipleEmailsAndMobileNumbersEnabled?: boolean;
 }
 
 /**
