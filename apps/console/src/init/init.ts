@@ -16,7 +16,6 @@
  * under the License.
  */
 
-// common constants
 import { CommonConstants } from "@wso2is/core/constants";
 import TimerWorker from "@wso2is/core/workers/timer.worker";
 import { AppUtils } from "./app-utils";

@@ -40,7 +40,7 @@ export const fetchUserSessions = (): Promise<UserSessions> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<UserSessions>) => {
             return response.data;
         })
         .catch((error: HttpError) => {

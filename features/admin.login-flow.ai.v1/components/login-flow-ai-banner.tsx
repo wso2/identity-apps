@@ -42,6 +42,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
+import FeatureStatusLabel from "../../admin.extensions.v1/components/feature-gate/models/feature-gate";
 import useAvailableAuthenticators from "../api/use-available-authenticators";
 import useUserClaims from "../api/use-user-claims";
 import useAILoginFlow from "../hooks/use-ai-login-flow";
@@ -175,7 +176,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }
@@ -201,7 +202,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }

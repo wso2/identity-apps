@@ -1,5 +1,48 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.21.14
+
+### Patch Changes
+
+- [#6617](https://github.com/wso2/identity-apps/pull/6617) [`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85) Thanks [@Achintha444](https://github.com/Achintha444)! - update the design of the Chip component
+
+- Updated dependencies [[`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85)]:
+  - @wso2is/admin.server-configurations.v1@2.21.14
+  - @wso2is/admin.identity-providers.v1@2.21.2
+  - @wso2is/admin.extensions.v1@2.21.42
+  - @wso2is/admin.validation.v1@2.20.72
+  - @wso2is/react-components@2.2.20
+  - @wso2is/admin.users.v1@2.20.72
+  - @wso2is/admin.core.v1@2.23.2
+  - @wso2is/access-control@3.0.15
+  - @wso2is/dynamic-forms@2.0.78
+  - @wso2is/forms@2.0.45
+  - @wso2is/theme@2.0.91
+  - @wso2is/core@2.0.55
+  - @wso2is/form@2.0.79
+  - @wso2is/i18n@2.5.7
+
+## 2.21.13
+
+### Patch Changes
+
+- [#6616](https://github.com/wso2/identity-apps/pull/6616) [`768bb7367149129d198d65d69f07e6f97a6a2ed7`](https://github.com/wso2/identity-apps/commit/768bb7367149129d198d65d69f07e6f97a6a2ed7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade asgardeo react sdk version
+
+- Updated dependencies [[`768bb7367149129d198d65d69f07e6f97a6a2ed7`](https://github.com/wso2/identity-apps/commit/768bb7367149129d198d65d69f07e6f97a6a2ed7)]:
+  - @wso2is/admin.server-configurations.v1@2.21.13
+  - @wso2is/admin.identity-providers.v1@2.21.1
+  - @wso2is/admin.extensions.v1@2.21.41
+  - @wso2is/admin.validation.v1@2.20.71
+  - @wso2is/admin.users.v1@2.20.71
+  - @wso2is/admin.core.v1@2.23.1
+  - @wso2is/core@2.0.54
+  - @wso2is/access-control@3.0.14
+  - @wso2is/dynamic-forms@2.0.77
+  - @wso2is/form@2.0.78
+  - @wso2is/forms@2.0.44
+  - @wso2is/i18n@2.5.6
+  - @wso2is/react-components@2.2.19
+
 ## 2.21.12
 
 ### Patch Changes

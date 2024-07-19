@@ -26,9 +26,11 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
+import { DiamondIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { SubscriptionContext } from "@wso2is/admin.extensions.v1/components/subscription/contexts/subscription-context";
 import {
     TenantTier,
@@ -51,7 +53,6 @@ import { ReactComponent as CommunityIcon } from "../../themes/wso2is/assets/imag
 import { ReactComponent as ContactSupportIcon } from "../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
-import { ReactComponent as DiamondIcon } from "../assets/icons/diamond.svg";
 import { AppConstants, OrganizationType } from "../constants";
 import { history } from "../helpers";
 import useGlobalVariables from "../hooks/use-global-variables";
@@ -170,7 +171,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
         return "";
     };
 
-    // TODO: Need to add a diamond icon to the upgrade button.
     const generateHeaderButtons = (): ReactElement[] => [
         window["AppUtils"].getConfig().docSiteUrl && (
             <Button
@@ -248,7 +248,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                                     />
                                 </ListItemIcon>
                                 { I18n.instance.t("extensions:common.help.helpCenterLink") }
-                                <Chip label="PREMIUM" className="oxygen-menu-item-chip oxygen-chip-premium" />
+                                <Chip
+                                    icon={ <DiamondIcon /> }
+                                    label={ t(FeatureStatusLabel.PREMIUM) }
+                                    className="oxygen-menu-item-chip oxygen-chip-premium"
+                                />
                             </>
                         </MenuItem>
                     ) }

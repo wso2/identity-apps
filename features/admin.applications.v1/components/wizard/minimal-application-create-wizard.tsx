@@ -35,6 +35,7 @@ import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modal
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
@@ -1114,7 +1115,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                     { applicationConfig.advancedConfigurations.showFapiFeatureStatusChip && (
                                         <div className="oxygen-chip-div" >
                                             <Chip
-                                                label={ t("common:beta").toUpperCase() }
+                                                label={ t(FeatureStatusLabel.BETA) }
                                                 className="oxygen-menu-item-chip oxygen-chip-beta" />
                                         </div>
                                     ) }
