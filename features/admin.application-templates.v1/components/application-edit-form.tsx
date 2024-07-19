@@ -90,20 +90,17 @@ export interface ApplicationEditFormPropsInterface extends IdentifiableComponent
  *
  * @param Props - Props to be injected into the component.
  */
-export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInterface> = (
-    props: ApplicationEditFormPropsInterface
-): ReactElement => {
-    const {
-        tab,
-        application,
-        protocolName,
-        inboundProtocolConfigurations,
-        isLoading,
-        onUpdate,
-        onProtocolUpdate,
-        readOnly,
-        ["data-componentid"]: componentId
-    } = props;
+export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInterface> = ({
+    tab,
+    application,
+    protocolName,
+    inboundProtocolConfigurations,
+    isLoading,
+    onUpdate,
+    onProtocolUpdate,
+    readOnly,
+    ["data-componentid"]: componentId = "application-edit-form"
+}: ApplicationEditFormPropsInterface): ReactElement => {
 
     const { customValidations } = useValidationHandlers();
     const { customInitializers } = useInitializeHandlers();
@@ -287,11 +284,4 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
             data-componentid={ componentId }
         />
     );
-};
-
-/**
- * Default props for the application edit form component.
- */
-ApplicationEditForm.defaultProps = {
-    "data-componentid": "application-edit-form"
 };

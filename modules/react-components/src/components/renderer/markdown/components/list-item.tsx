@@ -27,28 +27,20 @@ import { childRenderer } from "./utils";
  */
 const ListItem: FunctionComponent<
     MarkdownCustomComponentPropsInterface<"li">
-> = (props: MarkdownCustomComponentPropsInterface<"li">): ReactElement => {
-    const {
-        children,
-        "data-componentid": componentId
-    } = props;
+> = ({
+    children,
+    "data-componentid": componentId = "custom-markdown-li"
+}: MarkdownCustomComponentPropsInterface<"li">): ReactElement => {
 
     return (
         <li data-componentid={ componentId }>
             {
                 typeof children === "string"
                     ? children
-                    : childRenderer(props)
+                    : childRenderer({ children })
             }
         </li>
     );
-};
-
-/**
- * Default props for the `ListItem` component.
- */
-ListItem.defaultProps = {
-    "data-componentid": "custom-markdown-li"
 };
 
 export { ListItem as li };

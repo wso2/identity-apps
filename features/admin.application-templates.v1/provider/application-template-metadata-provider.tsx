@@ -44,8 +44,10 @@ export interface ApplicationTemplateMetadataProviderProps {
  */
 const ApplicationTemplateMetadataProvider: FunctionComponent<
     PropsWithChildren<ApplicationTemplateMetadataProviderProps>
-> = (props: PropsWithChildren<ApplicationTemplateMetadataProviderProps>): ReactElement => {
-    const { children, template } = props;
+> = ({
+    children,
+    template
+}: PropsWithChildren<ApplicationTemplateMetadataProviderProps>): ReactElement => {
 
     const { t } = useTranslation();
 

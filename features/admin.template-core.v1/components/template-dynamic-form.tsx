@@ -92,22 +92,19 @@ export interface TemplateDynamicFormPropsInterface extends IdentifiableComponent
  *
  * @param Props - Props to be injected into the component.
  */
-export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInterface> = (
-    props: TemplateDynamicFormPropsInterface
-): ReactElement => {
-    const {
-        customInitializers,
-        customSubmissionHandlers,
-        customValidations,
-        form,
-        initialFormValues,
-        templatePayload,
-        buttonText,
-        onFormSubmit,
-        isLoading,
-        readOnly,
-        ["data-componentid"]: componentId
-    } = props;
+export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInterface> = ({
+    customInitializers,
+    customSubmissionHandlers,
+    customValidations,
+    form,
+    initialFormValues,
+    templatePayload,
+    buttonText,
+    onFormSubmit,
+    isLoading,
+    readOnly,
+    ["data-componentid"]: componentId = "template-dynamic-form"
+}: TemplateDynamicFormPropsInterface): ReactElement => {
 
     const { validate } = useValidationHandlers(customValidations);
     const { initialize } = useInitializeHandlers(customInitializers);
@@ -252,11 +249,4 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
             }
         </EmphasizedSegment>
     );
-};
-
-/**
- * Default props for the template dynamic form component.
- */
-TemplateDynamicForm.defaultProps = {
-    "data-componentid": "template-dynamic-form"
 };

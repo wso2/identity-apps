@@ -27,11 +27,10 @@ import { childRenderer } from "./utils";
  */
 const OrderedList: FunctionComponent<
     MarkdownCustomComponentPropsInterface<"ol">
-> = (props: MarkdownCustomComponentPropsInterface<"ol">): ReactElement => {
-    const {
-        children,
-        "data-componentid": componentId
-    } = props;
+> = ({
+    children,
+    "data-componentid": componentId = "custom-markdown-ul"
+}: MarkdownCustomComponentPropsInterface<"ol">): ReactElement => {
 
     if (!Array.isArray(children)) {
         return null;
@@ -39,16 +38,9 @@ const OrderedList: FunctionComponent<
 
     return (
         <ol data-componentid={ componentId }>
-            { childRenderer(props) }
+            { childRenderer({ children }) }
         </ol>
     );
-};
-
-/**
- * Default props for the `OrderedList` component.
- */
-OrderedList.defaultProps = {
-    "data-componentid": "custom-markdown-ul"
 };
 
 export { OrderedList as ol };

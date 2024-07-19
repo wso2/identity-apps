@@ -69,12 +69,11 @@ interface BlockquoteProps extends MarkdownCustomComponentPropsInterface<"blockqu
  *
  * @param Props - Props to be injected into the component.
  */
-const Blockquote: FunctionComponent<BlockquoteProps> = (props: BlockquoteProps): ReactElement => {
-    const {
-        children,
-        "data-config": dataConfig,
-        "data-componentid": componentId
-    } = props;
+const Blockquote: FunctionComponent<BlockquoteProps> = ({
+    children,
+    "data-config": dataConfig,
+    "data-componentid": componentId = "custom-markdown-blockquote"
+}: BlockquoteProps): ReactElement => {
 
     if (!children || !Array.isArray(children)) {
         return null;
@@ -90,7 +89,7 @@ const Blockquote: FunctionComponent<BlockquoteProps> = (props: BlockquoteProps):
                         marginLeft: `${ 5 * (dataConfig?.indent === undefined ? 0 : dataConfig?.indent) }px`
                     } }
                 >
-                    { childRenderer(props) }
+                    { childRenderer({ children }) }
                 </div>
             )
             : (
@@ -106,17 +105,10 @@ const Blockquote: FunctionComponent<BlockquoteProps> = (props: BlockquoteProps):
                             <AlertTitle>{ dataConfig?.title }</AlertTitle>
                         ) : null
                     }
-                    { childRenderer(props) }
+                    { childRenderer({ children }) }
                 </Alert>
             )
     );
-};
-
-/**
- * Default props for the `Blockquote` component.
- */
-Blockquote.defaultProps = {
-    "data-componentid": "custom-markdown-blockquote"
 };
 
 export { Blockquote as blockquote };

@@ -28,11 +28,10 @@ import { childRenderer } from "./utils";
  */
 const Heading5: FunctionComponent<
     MarkdownCustomComponentPropsInterface<"h5">
-> = (props: MarkdownCustomComponentPropsInterface<"h5">): ReactElement => {
-    const {
-        children,
-        "data-componentid": componentId
-    } = props;
+> = ({
+    children,
+    "data-componentid": componentId = "custom-markdown-heading5"
+}: MarkdownCustomComponentPropsInterface<"h5">): ReactElement => {
 
     if (!children) {
         return null;
@@ -44,18 +43,11 @@ const Heading5: FunctionComponent<
                 typeof children === "string" ? (
                     children
                 ): (
-                    childRenderer(props)
+                    childRenderer({ children })
                 )
             }
         </Typography>
     );
-};
-
-/**
- * Default props for the `Heading5` component.
- */
-Heading5.defaultProps = {
-    "data-componentid": "custom-markdown-heading5"
 };
 
 export { Heading5 as h5 };

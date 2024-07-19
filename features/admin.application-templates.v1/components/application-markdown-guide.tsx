@@ -93,17 +93,14 @@ interface MarkdownGuideDataInterface {
  *
  * @param Props - Props to be injected into the component.
  */
-export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuidePropsInterface> = (
-    props: ApplicationMarkdownGuidePropsInterface
-): ReactElement => {
-    const {
-        application,
-        inboundProtocolConfigurations,
-        content,
-        isLoading,
-        protocolName,
-        ["data-componentid"]: componentId
-    } = props;
+export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuidePropsInterface> = ({
+    application,
+    inboundProtocolConfigurations,
+    content,
+    isLoading,
+    protocolName,
+    ["data-componentid"]: componentId = "application-markdown-guide"
+}: ApplicationMarkdownGuidePropsInterface): ReactElement => {
 
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state?.application?.samlConfigurations);
@@ -192,11 +189,4 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
             data-componentid={ componentId }
         />
     );
-};
-
-/**
- * Default props for the `ApplicationMarkdownGuide` guide.
- */
-ApplicationMarkdownGuide.defaultProps = {
-    "data-componentid": "application-markdown-guide"
 };

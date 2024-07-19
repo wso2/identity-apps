@@ -116,28 +116,25 @@ export interface ResourceCreateWizardPropsInterface extends ModalProps, Identifi
  *
  * @param Props - Props to be injected into the component.
  */
-export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsInterface> = (
-    props: ResourceCreateWizardPropsInterface
-): ReactElement => {
-    const {
-        ["data-componentid"]: componentId,
-        form,
-        initialFormValues,
-        showWizard,
-        templateId,
-        templateName,
-        templateDescription,
-        templatePayload,
-        guide,
-        buttonText,
-        customValidations,
-        customInitializers,
-        customSubmissionHandlers,
-        onClose,
-        onFormSubmit,
-        isLoading,
-        ...rest
-    } = props;
+export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsInterface> = ({
+    ["data-componentid"]: componentId = "resource-create-wizard",
+    form,
+    initialFormValues,
+    showWizard,
+    templateId,
+    templateName,
+    templateDescription,
+    templatePayload,
+    guide,
+    buttonText,
+    customValidations,
+    customInitializers,
+    customSubmissionHandlers,
+    onClose,
+    onFormSubmit,
+    isLoading,
+    ...rest
+}: ResourceCreateWizardPropsInterface): ReactElement => {
 
     const { validate } = useValidationHandlers(customValidations);
     const { initialize } = useInitializeHandlers(customInitializers);
@@ -387,11 +384,4 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
             ) }
         </ModalWithSidePanel>
     );
-};
-
-/**
- * Default props for the resource creation wizard.
- */
-ResourceCreateWizard.defaultProps = {
-    "data-componentid": "resource-create-wizard"
 };

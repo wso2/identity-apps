@@ -63,10 +63,10 @@ export interface ApplicationTemplateGridPropsInterface extends
  *
  * @returns Application template select page.
  */
-const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInterface> = (
-    props: ApplicationTemplateGridPropsInterface
-): ReactElement => {
-    const { onTemplateSelect, ["data-componentid"]: componentId } = props;
+const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInterface> = ({
+    onTemplateSelect,
+    ["data-componentid"]: componentId = "application-template-grid"
+}: ApplicationTemplateGridPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
@@ -421,13 +421,6 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
             }
         </GridLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-ApplicationTemplateGrid.defaultProps = {
-    "data-componentid": "application-template-grid"
 };
 
 export default ApplicationTemplateGrid;

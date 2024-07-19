@@ -54,12 +54,11 @@ export interface ExtensionTemplatesProviderProps {
  */
 const ExtensionTemplatesProvider: FunctionComponent<
     PropsWithChildren<ExtensionTemplatesProviderProps>
-> = (props: PropsWithChildren<ExtensionTemplatesProviderProps>): ReactElement => {
-    const {
-        categories,
-        children,
-        resourceType
-    } = props;
+> = ({
+    categories,
+    children,
+    resourceType
+}: PropsWithChildren<ExtensionTemplatesProviderProps>): ReactElement => {
 
     const { t } = useTranslation();
 

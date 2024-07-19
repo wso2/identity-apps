@@ -60,13 +60,10 @@ export interface ApplicationCreateWizardPropsInterface extends ModalProps, Ident
  *
  * @param Props - Props to be injected into the component.
  */
-export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardPropsInterface> = (
-    props: ApplicationCreateWizardPropsInterface
-): ReactElement => {
-    const {
-        ["data-componentid"]: componentId,
-        onClose
-    } = props;
+export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardPropsInterface> = ({
+    ["data-componentid"]: componentId = "application-create-wizard",
+    onClose
+}: ApplicationCreateWizardPropsInterface): ReactElement => {
 
     const { customValidations } = useValidationHandlers();
     const { customInitializers } = useInitializeHandlers();
@@ -271,11 +268,4 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             data-componentid={ componentId }
         />
     );
-};
-
-/**
- * Default props for the application creation wizard.
- */
-ApplicationCreateWizard.defaultProps = {
-    "data-componentid": "application-create-wizard"
 };

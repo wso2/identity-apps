@@ -27,21 +27,13 @@ import "./divider.scss";
  */
 const MarkdownDivider: FunctionComponent<
     MarkdownCustomComponentPropsInterface<"hr">
-> = (props: MarkdownCustomComponentPropsInterface<"hr">): ReactElement => {
-    const {
-        "data-componentid": componentId
-    } = props;
+> = ({
+    "data-componentid": componentId = "custom-markdown-divider"
+}: MarkdownCustomComponentPropsInterface<"hr">): ReactElement => {
 
     return (
         <div className="markdown-divider" data-componentid={ componentId }/>
     );
-};
-
-/**
- * Default props for the `MarkdownDivider` component.
- */
-MarkdownDivider.defaultProps = {
-    "data-componentid": "custom-markdown-divider"
 };
 
 export { MarkdownDivider as hr };

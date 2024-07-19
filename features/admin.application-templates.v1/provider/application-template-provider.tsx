@@ -45,8 +45,10 @@ export interface ApplicationTemplateProviderProps {
  */
 const ApplicationTemplateProvider: FunctionComponent<
     PropsWithChildren<ApplicationTemplateProviderProps>
-> = (props: PropsWithChildren<ApplicationTemplateProviderProps>): ReactElement => {
-    const { children, template } = props;
+> = ({
+    children,
+    template
+}: PropsWithChildren<ApplicationTemplateProviderProps>): ReactElement => {
 
     const { t } = useTranslation();
 

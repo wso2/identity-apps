@@ -52,12 +52,11 @@ interface Heading4Props extends MarkdownCustomComponentPropsInterface<"h4"> {
  *
  * @param Props - Props to be injected into the component.
  */
-const Heading4: FunctionComponent<Heading4Props> = (props: Heading4Props): ReactElement => {
-    const {
-        children,
-        "data-config": dataConfig,
-        "data-componentid": componentId
-    } = props;
+const Heading4: FunctionComponent<Heading4Props> = ({
+    children,
+    "data-config": dataConfig,
+    "data-componentid": componentId = "custom-markdown-heading4"
+}: Heading4Props): ReactElement => {
 
     if (!children) {
         return null;
@@ -79,7 +78,7 @@ const Heading4: FunctionComponent<Heading4Props> = (props: Heading4Props): React
                             typeof children === "string" ? (
                                 children
                             ): (
-                                childRenderer(props)
+                                childRenderer({ children })
                             )
                         }
                     </span>
@@ -92,7 +91,7 @@ const Heading4: FunctionComponent<Heading4Props> = (props: Heading4Props): React
                         typeof children === "string" ? (
                             children
                         ): (
-                            childRenderer(props)
+                            childRenderer({ children })
                         )
                     }
                 </>
@@ -110,13 +109,6 @@ const Heading4: FunctionComponent<Heading4Props> = (props: Heading4Props): React
             { resolveContent() }
         </Typography>
     );
-};
-
-/**
- * Default props for the `Heading4` component.
- */
-Heading4.defaultProps = {
-    "data-componentid": "custom-markdown-heading4"
 };
 
 export { Heading4 as h4 };

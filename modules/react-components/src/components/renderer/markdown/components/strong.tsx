@@ -26,11 +26,10 @@ import React, { FunctionComponent, ReactElement } from "react";
  */
 const Strong: FunctionComponent<
     MarkdownCustomComponentPropsInterface<"strong">
-> = (props: MarkdownCustomComponentPropsInterface<"strong">): ReactElement => {
-    const {
-        children,
-        "data-componentid": componentId
-    } = props;
+> = ({
+    children,
+    "data-componentid": componentId = "custom-markdown-strong"
+}: MarkdownCustomComponentPropsInterface<"strong">): ReactElement => {
 
     if (typeof children !== "string") {
         return null;
@@ -39,13 +38,6 @@ const Strong: FunctionComponent<
     return (
         <strong data-componentid={ componentId }>{ children }</strong>
     );
-};
-
-/**
- * Default props for the `Strong` component.
- */
-Strong.defaultProps = {
-    "data-componentid": "custom-markdown-strong"
 };
 
 export { Strong as strong };

@@ -28,11 +28,10 @@ import { childRenderer } from "./utils";
  */
 const Paragraph: FunctionComponent<
     MarkdownCustomComponentPropsInterface<"p">
-> = (props: MarkdownCustomComponentPropsInterface<"p">): ReactElement => {
-    const {
-        children,
-        "data-componentid": componentId
-    } = props;
+> = ({
+    children,
+    "data-componentid": componentId = "custom-markdown-paragraph"
+}: MarkdownCustomComponentPropsInterface<"p">): ReactElement => {
 
     if (!children) {
         return null;
@@ -44,18 +43,11 @@ const Paragraph: FunctionComponent<
                 typeof children === "string" ? (
                     children
                 ): (
-                    childRenderer(props)
+                    childRenderer({ children })
                 )
             }
         </Typography>
     );
-};
-
-/**
- * Default props for the `Paragraph` component.
- */
-Paragraph.defaultProps = {
-    "data-componentid": "custom-markdown-paragraph"
 };
 
 export { Paragraph as p };

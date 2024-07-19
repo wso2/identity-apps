@@ -51,15 +51,12 @@ export interface MarkdownGuidePropsInterface extends IdentifiableComponentInterf
  *
  * @param Props - Props to be injected into the component.
  */
-export const MarkdownGuide: FunctionComponent<MarkdownGuidePropsInterface> = (
-    props: MarkdownGuidePropsInterface
-): ReactElement => {
-    const {
-        data,
-        content,
-        isLoading,
-        ["data-componentid"]: componentId
-    } = props;
+export const MarkdownGuide: FunctionComponent<MarkdownGuidePropsInterface> = ({
+    data,
+    content,
+    isLoading,
+    ["data-componentid"]: componentId = "markdown-guide"
+}: MarkdownGuidePropsInterface): ReactElement => {
 
     const appBaseName: string = useSelector((state: AppState) =>
         state?.config?.deployment?.appBaseName);
@@ -119,11 +116,4 @@ export const MarkdownGuide: FunctionComponent<MarkdownGuidePropsInterface> = (
             </Grid.Row>
         </Grid>
     );
-};
-
-/**
- * Default props for the `MarkdownGuide` guide.
- */
-MarkdownGuide.defaultProps = {
-    "data-componentid": "markdown-guide"
 };

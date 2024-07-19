@@ -27,11 +27,10 @@ import { childRenderer } from "./utils";
  */
 const UnorderedList: FunctionComponent<
     MarkdownCustomComponentPropsInterface<"ul">
-> = (props: MarkdownCustomComponentPropsInterface<"ul">): ReactElement => {
-    const {
-        children,
-        "data-componentid": componentId
-    } = props;
+> = ({
+    children,
+    "data-componentid": componentId = "custom-markdown-ul"
+}: MarkdownCustomComponentPropsInterface<"ul">): ReactElement => {
 
     if (!Array.isArray(children)) {
         return null;
@@ -39,16 +38,9 @@ const UnorderedList: FunctionComponent<
 
     return (
         <ul data-componentid={ componentId }>
-            { childRenderer(props) }
+            { childRenderer({ children }) }
         </ul>
     );
-};
-
-/**
- * Default props for the `UnorderedList` component.
- */
-UnorderedList.defaultProps = {
-    "data-componentid": "custom-markdown-ul"
 };
 
 export { UnorderedList as ul };

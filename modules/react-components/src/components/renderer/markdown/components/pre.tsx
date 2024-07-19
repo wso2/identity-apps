@@ -39,12 +39,11 @@ interface MarkdownPreProps extends MarkdownCustomComponentPropsInterface<"pre"> 
  *
  * @param Props - Props to be injected into the component.
  */
-const MarkdownPre: FunctionComponent<MarkdownPreProps> = (props: MarkdownPreProps): ReactElement => {
-    const {
-        children,
-        "data-config": dataConfig,
-        "data-componentid": componentId
-    } = props;
+const MarkdownPre: FunctionComponent<MarkdownPreProps> = ({
+    children,
+    "data-config": dataConfig,
+    "data-componentid": componentId = "custom-markdown-pre"
+}: MarkdownPreProps): ReactElement => {
 
     let content: string = children?.["props"]?.["children"];
     const language: string = children?.["props"]?.["className"]?.split("language-")?.[1];
@@ -71,13 +70,6 @@ const MarkdownPre: FunctionComponent<MarkdownPreProps> = (props: MarkdownPreProp
             />
         </div>
     );
-};
-
-/**
- * Default props for the `MarkdownPre` component.
- */
-MarkdownPre.defaultProps = {
-    "data-componentid": "custom-markdown-pre"
 };
 
 export { MarkdownPre as pre };

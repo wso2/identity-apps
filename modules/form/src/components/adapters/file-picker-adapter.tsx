@@ -116,27 +116,27 @@ export interface FilePickerAdapterPropsInterface extends FieldRenderProps<string
  * @param props - Props for the FilePickerAdapter component.
  * @returns The rendered FilePickerAdapter component.
  */
-const FilePickerAdapter: FunctionComponent<FilePickerAdapterPropsInterface> = (
-    props: FilePickerAdapterPropsInterface
-): ReactElement => {
-    const {
-        name,
-        input,
-        meta,
-        label,
-        fileType,
-        dropzoneText,
-        pasteAreaPlaceholderText,
-        uploadButtonText,
-        fullWidth = true,
-        InputLabelProps,
-        required,
-        helperText,
-        hidePasteOption,
-        placeholderIcon,
-        selectedIcon,
-        FormControlProps = {}
-    } = props;
+const FilePickerAdapter: FunctionComponent<FilePickerAdapterPropsInterface> = ({
+    name,
+    input,
+    meta,
+    label,
+    fileType,
+    dropzoneText,
+    pasteAreaPlaceholderText,
+    uploadButtonText,
+    fullWidth = true,
+    InputLabelProps = {
+        disableAnimation: true,
+        shrink: false
+    },
+    required,
+    helperText,
+    hidePasteOption,
+    placeholderIcon,
+    selectedIcon,
+    FormControlProps = {}
+}: FilePickerAdapterPropsInterface): ReactElement => {
 
     const [ file, setFile ] = useState<File>(null);
     const [ pastedContent, setPastedContent ] = useState<string>(null);
@@ -183,13 +183,6 @@ const FilePickerAdapter: FunctionComponent<FilePickerAdapterPropsInterface> = (
             { helperText && <FormHelperText className="helper-text">{ helperText }</FormHelperText> }
         </FormControl>
     );
-};
-
-FilePickerAdapter.defaultProps = {
-    InputLabelProps: {
-        disableAnimation: true,
-        shrink: false
-    }
 };
 
 export default FilePickerAdapter;

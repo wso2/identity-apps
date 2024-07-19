@@ -59,14 +59,11 @@ export interface ApplicationTemplateCardPropsInterface extends IdentifiableCompo
  *
  * @returns Application template card component.
  */
-const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInterface> = (
-    props: ApplicationTemplateCardPropsInterface
-): ReactElement => {
-    const {
-        template,
-        onClick,
-        ["data-componentid"]: componentId
-    } = props;
+const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInterface> = ({
+    template,
+    onClick,
+    ["data-componentid"]: componentId = "application-template-card"
+}: ApplicationTemplateCardPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -206,13 +203,6 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
             </CardContent>
         </Card>
     );
-};
-
-/**
- * Default props for the component.
- */
-ApplicationTemplateCard.defaultProps = {
-    "data-componentid": "application-template-card"
 };
 
 export default ApplicationTemplateCard;

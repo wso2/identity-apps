@@ -42,13 +42,12 @@ interface MarkdownImageProps extends MarkdownCustomComponentPropsInterface<"img"
  *
  * @param Props - Props to be injected into the component.
  */
-const MarkdownImage: FunctionComponent<MarkdownImageProps> = (props: MarkdownImageProps): ReactElement => {
-    const {
-        src,
-        alt,
-        "data-config": dataConfig,
-        "data-componentid": componentId
-    } = props;
+const MarkdownImage: FunctionComponent<MarkdownImageProps> = ({
+    src,
+    alt,
+    "data-config": dataConfig,
+    "data-componentid": componentId = "custom-markdown-image"
+}: MarkdownImageProps): ReactElement => {
 
     const classes: string = classNames(
         "markdown-image",
@@ -66,13 +65,6 @@ const MarkdownImage: FunctionComponent<MarkdownImageProps> = (props: MarkdownIma
             data-componentid={ componentId }
         />
     );
-};
-
-/**
- * Default props for the `MarkdownImage` component.
- */
-MarkdownImage.defaultProps = {
-    "data-componentid": "custom-markdown-image"
 };
 
 export { MarkdownImage as img };

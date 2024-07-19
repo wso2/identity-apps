@@ -30,11 +30,10 @@ export type GlobalMarkdownProviderProps = PropsWithChildren & GlobalMarkdownCont
  * @param props - Props for the provider.
  * @returns Global markdown provider.
  */
-const GlobalMarkdownProvider = (props: GlobalMarkdownProviderProps): ReactElement => {
-    const {
-        children,
-        ...rest
-    } = props;
+const GlobalMarkdownProvider = ({
+    children,
+    ...rest
+}: GlobalMarkdownProviderProps): ReactElement => {
 
     return (
         <GlobalMarkdownContext.Provider

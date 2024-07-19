@@ -52,12 +52,11 @@ interface Heading1Props extends MarkdownCustomComponentPropsInterface<"h1"> {
  *
  * @param Props - Props to be injected into the component.
  */
-const Heading1: FunctionComponent<Heading1Props> = (props: Heading1Props): ReactElement => {
-    const {
-        children,
-        "data-config": dataConfig,
-        "data-componentid": componentId
-    } = props;
+const Heading1: FunctionComponent<Heading1Props> = ({
+    children,
+    "data-config": dataConfig,
+    "data-componentid": componentId = "custom-markdown-heading1"
+}: Heading1Props): ReactElement => {
 
     if (!children) {
         return null;
@@ -79,7 +78,7 @@ const Heading1: FunctionComponent<Heading1Props> = (props: Heading1Props): React
                             typeof children === "string" ? (
                                 children
                             ): (
-                                childRenderer(props)
+                                childRenderer({ children })
                             )
                         }
                     </span>
@@ -92,7 +91,7 @@ const Heading1: FunctionComponent<Heading1Props> = (props: Heading1Props): React
                         typeof children === "string" ? (
                             children
                         ): (
-                            childRenderer(props)
+                            childRenderer({ children })
                         )
                     }
                 </>
@@ -110,13 +109,6 @@ const Heading1: FunctionComponent<Heading1Props> = (props: Heading1Props): React
             { resolveContent() }
         </Typography>
     );
-};
-
-/**
- * Default props for the `Heading1` component.
- */
-Heading1.defaultProps = {
-    "data-componentid": "custom-markdown-heading1"
 };
 
 export { Heading1 as h1 };

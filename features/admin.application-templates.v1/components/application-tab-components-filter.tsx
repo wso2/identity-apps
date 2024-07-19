@@ -41,13 +41,11 @@ export interface ApplicationTabComponentsFilterPropsInterface extends Identifiab
  */
 export const ApplicationTabComponentsFilter: FunctionComponent<
     PropsWithChildren<ApplicationTabComponentsFilterPropsInterface>
-> = (
-    props: PropsWithChildren<ApplicationTabComponentsFilterPropsInterface>
-): ReactElement => {
-    const {
-        tabId,
-        children
-    } = props;
+> = ({
+    tabId,
+    children,
+    "data-componentid": _componentId = "application-tab-components-filter"
+}: PropsWithChildren<ApplicationTabComponentsFilterPropsInterface>): ReactElement => {
 
     const {
         templateMetadata,
@@ -103,11 +101,4 @@ export const ApplicationTabComponentsFilter: FunctionComponent<
                     </>
                 )
     );
-};
-
-/**
- * Default props for the `ApplicationTabComponentsFilter` component.
- */
-ApplicationTabComponentsFilter.defaultProps = {
-    "data-componentid": "application-tab-components-filter"
 };

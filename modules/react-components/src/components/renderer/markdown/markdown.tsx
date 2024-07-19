@@ -58,17 +58,15 @@ export interface MarkdownPropsInterface extends Options, IdentifiableComponentIn
  *
  * @returns the markdown renderer component
  */
-export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: MarkdownPropsInterface): ReactElement => {
-
-    const {
-        source,
-        className,
-        textAlign,
-        properties,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId,
-        ...rest
-    } = props;
+export const Markdown: FunctionComponent<MarkdownPropsInterface> = ({
+    source,
+    className,
+    textAlign = "left",
+    properties,
+    [ "data-componentid" ]: componentId = "markdown-renderer",
+    [ "data-testid" ]: testId = "markdown-renderer",
+    ...rest
+}: MarkdownPropsInterface): ReactElement => {
 
     const classes = classNames(
         "markdown",
@@ -98,13 +96,4 @@ export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: Markd
             </ReactMarkdown>
         </GlobalMarkdownProvider>
     );
-};
-
-/**
- * Default proptypes for the markdown component.
- */
-Markdown.defaultProps = {
-    "data-componentid": "markdown-renderer",
-    "data-testid": "markdown-renderer",
-    textAlign: "left"
 };

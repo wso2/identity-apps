@@ -56,14 +56,12 @@ export interface ApplicationCreationAdapterPropsInterface extends IdentifiableCo
  *
  * @returns Application creation adapter component.
  */
-const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPropsInterface> = (
-    props: ApplicationCreationAdapterPropsInterface
-): ReactElement => {
-    const {
-        template,
-        showWizard,
-        onClose
-    } = props;
+const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPropsInterface> = ({
+    template,
+    showWizard,
+    onClose,
+    "data-componentid": _componentId = "application-creation-adapter"
+}: ApplicationCreationAdapterPropsInterface): ReactElement => {
 
     const oldApplicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state?.application?.groupedTemplates);
@@ -133,13 +131,6 @@ const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPr
                 : renderApplicationCreationWizard()
             : null
     );
-};
-
-/**
- * Default props for the component.
- */
-ApplicationCreationAdapter.defaultProps = {
-    "data-componentid": "application-creation-adapter"
 };
 
 export default ApplicationCreationAdapter;

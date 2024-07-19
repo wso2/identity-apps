@@ -52,12 +52,11 @@ interface Heading3Props extends MarkdownCustomComponentPropsInterface<"h3"> {
  *
  * @param Props - Props to be injected into the component.
  */
-const Heading3: FunctionComponent<Heading3Props> = (props: Heading3Props): ReactElement => {
-    const {
-        children,
-        "data-config": dataConfig,
-        "data-componentid": componentId
-    } = props;
+const Heading3: FunctionComponent<Heading3Props> = ({
+    children,
+    "data-config": dataConfig,
+    "data-componentid": componentId = "custom-markdown-heading3"
+}: Heading3Props): ReactElement => {
 
     if (!children) {
         return null;
@@ -79,7 +78,7 @@ const Heading3: FunctionComponent<Heading3Props> = (props: Heading3Props): React
                             typeof children === "string" ? (
                                 children
                             ): (
-                                childRenderer(props)
+                                childRenderer({ children })
                             )
                         }
                     </span>
@@ -92,7 +91,7 @@ const Heading3: FunctionComponent<Heading3Props> = (props: Heading3Props): React
                         typeof children === "string" ? (
                             children
                         ): (
-                            childRenderer(props)
+                            childRenderer({ children })
                         )
                     }
                 </>
@@ -110,13 +109,6 @@ const Heading3: FunctionComponent<Heading3Props> = (props: Heading3Props): React
             { resolveContent() }
         </Typography>
     );
-};
-
-/**
- * Default props for the `Heading3` component.
- */
-Heading3.defaultProps = {
-    "data-componentid": "custom-markdown-heading3"
 };
 
 export { Heading3 as h3 };

@@ -53,13 +53,13 @@ export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInt
  */
 export const FormDynamicField: FunctionComponent<PropsWithChildren<
     FormDynamicFieldPropsInterface
->> = (props: PropsWithChildren<FormDynamicFieldPropsInterface>): ReactElement => {
-    const {
-        field,
-        form: _form,
-        readOnly,
-        ["data-componentid"]: componentId, ...rest
-    } = props;
+>> = ({
+    field,
+    form: _form,
+    readOnly,
+    ["data-componentid"]: componentId = "form-dynamic-field",
+    ...rest
+}: PropsWithChildren<FormDynamicFieldPropsInterface>): ReactElement => {
 
     const getDynamicFieldAdapter = (type: DynamicInputFieldTypes): ReactElement => {
         switch (type) {
@@ -202,11 +202,4 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
             { getDynamicFieldAdapter(field?.type) }
         </div>
     );
-};
-
-/**
- * Default props injected to the `FormDynamicField` component.
- */
-FormDynamicField.defaultProps = {
-    "data-componentid": "form-dynamic-field"
 };

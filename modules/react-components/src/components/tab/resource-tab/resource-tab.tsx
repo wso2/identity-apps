@@ -130,29 +130,26 @@ export const TAB_URL_HASH_FRAGMENT: string = "tab=";
  *
  * @returns Resource tab component
  */
-export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & ResourceTabSubComponentsInterface = (
-    props: ResourceTabPropsInterface
-): ReactElement => {
-
-    const {
-        isLoading,
-        attached,
-        className,
-        onInitialize,
-        panes,
-        defaultActiveIndex,
-        loadingStateOptions,
-        pointing,
-        secondary,
-        onTabChange,
-        isAutomaticTabRedirectionEnabled,
-        tabIdentifier,
-        controlTabRedirectionInternally,
-        defaultActiveTab,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId,
-        ...rest
-    } = props;
+export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & ResourceTabSubComponentsInterface = ({
+    isLoading = false,
+    attached = false,
+    className,
+    onInitialize,
+    panes,
+    defaultActiveIndex,
+    loadingStateOptions,
+    pointing = true,
+    secondary = true,
+    onTabChange,
+    isAutomaticTabRedirectionEnabled = false,
+    tabIdentifier,
+    controlTabRedirectionInternally = false,
+    defaultActiveTab = 0,
+    tabIdentifierURLFrag = "",
+    [ "data-componentid" ]: componentId = "resource-tabs",
+    [ "data-testid" ]: testId = "resource-tabs",
+    ...rest
+}: ResourceTabPropsInterface): ReactElement => {
 
     const classes: string = classNames(
         "tabs resource-tabs",
@@ -328,25 +325,10 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
             activeIndex={ activeIndex }
             data-componentid={ componentId }
             data-testid={ testId }
+            tabIdentifierURLFrag = { tabIdentifierURLFrag }
             { ...rest }
         />
     );
-};
-
-/**
- * Default props for the resource tab component.
- */
-ResourceTab.defaultProps = {
-    attached: false,
-    controlTabRedirectionInternally: false,
-    "data-componentid": "resource-tabs",
-    "data-testid": "resource-tabs",
-    defaultActiveTab: 0,
-    isAutomaticTabRedirectionEnabled: false,
-    isLoading: false,
-    pointing: true,
-    secondary: true,
-    tabIdentifierURLFrag: ""
 };
 
 ResourceTab.Pane = ResourceTabPane;

@@ -26,11 +26,10 @@ import React, { FunctionComponent, ReactElement } from "react";
  */
 const MarkdownCode: FunctionComponent<
     MarkdownCustomComponentPropsInterface<"code">
-> = (props: MarkdownCustomComponentPropsInterface<"code">): ReactElement => {
-    const {
-        children,
-        "data-componentid": componentId
-    } = props;
+> = ({
+    children,
+    "data-componentid": componentId = "custom-markdown-code"
+}: MarkdownCustomComponentPropsInterface<"code">): ReactElement => {
 
     if (typeof children !== "string") {
         return null;
@@ -39,13 +38,6 @@ const MarkdownCode: FunctionComponent<
     return (
         <Code data-componentid={ componentId }>{ children }</Code>
     );
-};
-
-/**
- * Default props for the `MarkdownCode` component.
- */
-MarkdownCode.defaultProps = {
-    "data-componentid": "custom-markdown-code"
 };
 
 export { MarkdownCode as code };

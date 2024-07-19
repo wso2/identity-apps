@@ -52,12 +52,11 @@ interface Heading2Props extends MarkdownCustomComponentPropsInterface<"h2"> {
  *
  * @param Props - Props to be injected into the component.
  */
-const Heading2: FunctionComponent<Heading2Props> = (props: Heading2Props): ReactElement => {
-    const {
-        children,
-        "data-config": dataConfig,
-        "data-componentid": componentId
-    } = props;
+const Heading2: FunctionComponent<Heading2Props> = ({
+    children,
+    "data-config": dataConfig,
+    "data-componentid": componentId = "custom-markdown-heading2"
+}: Heading2Props): ReactElement => {
 
     if (!children) {
         return null;
@@ -79,7 +78,7 @@ const Heading2: FunctionComponent<Heading2Props> = (props: Heading2Props): React
                             typeof children === "string" ? (
                                 children
                             ): (
-                                childRenderer(props)
+                                childRenderer({ children })
                             )
                         }
                     </span>
@@ -92,7 +91,7 @@ const Heading2: FunctionComponent<Heading2Props> = (props: Heading2Props): React
                         typeof children === "string" ? (
                             children
                         ): (
-                            childRenderer(props)
+                            childRenderer({ children })
                         )
                     }
                 </>
@@ -110,13 +109,6 @@ const Heading2: FunctionComponent<Heading2Props> = (props: Heading2Props): React
             { resolveContent() }
         </Typography>
     );
-};
-
-/**
- * Default props for the `Heading2` component.
- */
-Heading2.defaultProps = {
-    "data-componentid": "custom-markdown-heading2"
 };
 
 export { Heading2 as h2 };

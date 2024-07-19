@@ -43,13 +43,9 @@ type ApplicationTemplateSelectPageInterface = TestableComponentInterface;
  *
  * @returns Application template select page.
  */
-const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelectPageInterface> = (
-    props: ApplicationTemplateSelectPageInterface
-): ReactElement => {
-
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelectPageInterface> = ({
+    "data-testid": testId = "application-templates"
+}: ApplicationTemplateSelectPageInterface): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -102,13 +98,6 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             </ApplicationTemplateProvider>
         </PageLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-ApplicationTemplateSelectPage.defaultProps = {
-    "data-testid": "application-templates"
 };
 
 /**

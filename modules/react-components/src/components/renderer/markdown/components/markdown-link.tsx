@@ -78,14 +78,13 @@ interface MarkdownLinkProps extends MarkdownCustomComponentPropsInterface<"a"> {
  *
  * @param Props - Props to be injected into the component.
  */
-const MarkdownLink: FunctionComponent<MarkdownLinkProps> = (props: MarkdownLinkProps): ReactElement => {
-    const {
-        href,
-        title,
-        children,
-        "data-config": dataConfig,
-        "data-componentid": componentId
-    } = props;
+const MarkdownLink: FunctionComponent<MarkdownLinkProps> = ({
+    href,
+    title,
+    children,
+    "data-config": dataConfig,
+    "data-componentid": componentId = "custom-markdown-link"
+}: MarkdownLinkProps): ReactElement => {
 
     const { onHandleInternalUrl } = useGlobalMarkdown();
 
@@ -167,13 +166,6 @@ const MarkdownLink: FunctionComponent<MarkdownLinkProps> = (props: MarkdownLinkP
                 </Link>
             )
     );
-};
-
-/**
- * Default props for the `MarkdownLink` component.
- */
-MarkdownLink.defaultProps = {
-    "data-componentid": "custom-markdown-link"
 };
 
 export { MarkdownLink as a };

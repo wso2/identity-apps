@@ -66,22 +66,18 @@ interface LinkPropsInterface extends IdentifiableComponentInterface {
  * @param props - Props injected to the component.
  * @returns the link component.
  */
-export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
-    props: PropsWithChildren<LinkPropsInterface>
-): ReactElement => {
-
-    const {
-        children,
-        className,
-        external,
-        icon,
-        iconPosition,
-        link,
-        onClick,
-        target,
-        title,
-        [ "data-componentid" ]: componentId
-    } = props;
+export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = ({
+    children,
+    className,
+    external = true,
+    icon = "external",
+    iconPosition = "right",
+    link = "#",
+    onClick,
+    target = "_blank",
+    title,
+    [ "data-componentid" ]: componentId = "link"
+}: PropsWithChildren<LinkPropsInterface>): ReactElement => {
 
     const classes = classNames(
         "link pointing",
@@ -118,16 +114,4 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
             { external && icon && iconPosition === "right" && <Icon className="ml-1" name={ icon } /> }
         </a>
     );
-};
-
-/**
- * Prop types for the component.
- */
-Link.defaultProps = {
-    "data-componentid": "link",
-    external: true,
-    icon: "external",
-    iconPosition: "right",
-    link: "#",
-    target: "_blank"
 };
