@@ -135,7 +135,7 @@ export class GovernanceConnectorUtils {
             id: "VXNlciBPbmJvYXJkaW5n",
             name: "User Onboarding"
         }
-    ]
+    ];
 
     /**
      * Filter governance categories of a connector for a sub organization.
