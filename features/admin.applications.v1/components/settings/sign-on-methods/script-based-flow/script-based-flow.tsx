@@ -17,9 +17,17 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import { GearIcon } from "@oxygen-ui/react-icons";
+import Divider from "@oxygen-ui/react/Divider";
+import IconButton from "@oxygen-ui/react/IconButton";
+import List from "@oxygen-ui/react/List";
+import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemText from "@oxygen-ui/react/ListItemText";
+import Typography from "@oxygen-ui/react/Typography";
+import { GearIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
-import { ELK_RISK_BASED_TEMPLATE_NAME } from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
+import {
+    ELK_RISK_BASED_TEMPLATE_NAME
+} from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -70,7 +78,7 @@ import { Trans, useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
+import { Checkbox, Dropdown, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
 import { getAdaptiveAuthTemplates } from "../../../../api";
@@ -81,6 +89,7 @@ import {
     AuthenticationSequenceInterface
 } from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
+import "./script-based-flow.scss";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -862,80 +871,42 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             />
                         )
                     }
-                    <Dropdown.Menu
+                    <List
                         data-componentid={ `${ componentId }-secret-list` }
-                        scrolling
-                        className={ "custom-dropdown" }
+                        className="secrets-dropdown"
                     >
                         {
-                            filteredSecretList.length>0 ? (
+                            filteredSecretList.length > 0 ? (
                                 filteredSecretList.map((
-                                    secret: SecretModel
+                                    secret: SecretModel,
+                                    index: number
                                 ) => (
-                                    <Dropdown.Item
-                                        key={ secret.secretId }
-                                    >
-                                        <Header
-                                            as={ "h6" }
-                                            className={ "header-with-icon" }
-                                            style={ { margin: "0.25rem auto" } }
+                                    <>
+                                        <ListItem
+                                            key={ secret.secretId }
+                                            data-componentid={ `${ componentId }-list-item-${ secret.secretId }` }
                                         >
-                                            <GenericIcon
-                                                defaultIcon
-                                                link={ true }
-                                                linkType="primary"
-                                                transparent
-                                                floated="right"
-                                                size="micro"
-                                                style={ { paddingTop: 0 } }
-                                                icon={ (
-                                                    <Tooltip
-                                                        trigger={ (
-                                                            <Icon name="trash alternate"/>
-                                                        ) }
-                                                        content={ t("common:delete") }
-                                                        size="mini"
-                                                    />
-                                                ) }
+                                            <ListItemText
+                                                primary={ <Typography noWrap>{ secret.secretName }</Typography> }
+                                                secondary={ <Typography noWrap>{ secret.description }</Typography> }
+                                            />
+                                            <IconButton
+                                                onClick={ () => addSecretToScript(secret) }
+                                                data-componentid={ `${ componentId }-secret-add` }
+                                            >
+                                                <PlusIcon size={ 14 } />
+                                            </IconButton>
+                                            <IconButton
                                                 onClick={ () => {
                                                     handleSecretDelete(secret);
                                                 } }
                                                 data-componentid={ `${ componentId }-secret-delete` }
-                                            />
-                                            <GenericIcon
-                                                defaultIcon
-                                                transparent
-                                                link={ true }
-                                                linkType="primary"
-                                                floated="right"
-                                                size="micro"
-                                                style={ { paddingTop: 0 } }
-                                                icon={ (
-                                                    <Tooltip
-                                                        trigger={ (
-                                                            <Icon name="plus"/>
-                                                        ) }
-                                                        content={ t("applications:edit." +
-                                                            "sections.signOnMethod.sections.authenticationFlow." +
-                                                            "sections.scriptBased.secretsList.tooltips.plusIcon") }
-                                                        size="mini"
-                                                    />
-                                                ) }
-                                                onClick={ () => {
-                                                    addSecretToScript(secret);
-                                                } }
-                                                data-componentid={ `${ componentId }-secret-add` }
-                                            />
-                                            <Header.Content>
-                                                { secret.secretName }
-                                            </Header.Content>
-                                            <Header.Subheader
-                                                className="truncate ellipsis"
                                             >
-                                                { secret.description }
-                                            </Header.Subheader>
-                                        </Header>
-                                    </Dropdown.Item>
+                                                <TrashIcon size={ 14 } />
+                                            </IconButton>
+                                        </ListItem>
+                                        { index !== filteredSecretList?.length - 1 && <Divider /> }
+                                    </>
                                 ))
                             ) : (
                                 <Dropdown.Item
@@ -948,26 +919,27 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 />
                             )
                         }
-                    </Dropdown.Menu>
-                    { featureConfig?.secretsManagement?.enabled && hasRequiredScopes(featureConfig?.secretsManagement,
-                        featureConfig?.secretsManagement?.scopes?.create, allowedScopes) &&
-                        (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
-                        OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-                        OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
-                        <Dropdown.Menu
-                            className={ "create-button-item" }
-                            scrolling
-                        >
-                            <Dropdown.Item
-                                key={ "createSecret" }
-                                text={ t("applications:edit.sections.signOnMethod" +
-                                    ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
-                                onClick={ () => {
-                                    setShowAddSecretModal(true);
-                                } }
-                            />
-                        </Dropdown.Menu>
-                    ) }
+                        { featureConfig?.secretsManagement?.enabled &&
+                            hasRequiredScopes(featureConfig?.secretsManagement,
+                                featureConfig?.secretsManagement?.scopes?.create, allowedScopes) &&
+                            (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
+                            OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+                            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
+                            <Dropdown.Menu
+                                className={ "create-button-item" }
+                                scrolling
+                            >
+                                <Dropdown.Item
+                                    key={ "createSecret" }
+                                    text={ t("applications:edit.sections.signOnMethod" +
+                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
+                                    onClick={ () => {
+                                        setShowAddSecretModal(true);
+                                    } }
+                                />
+                            </Dropdown.Menu>
+                        ) }
+                    </List>
                 </Dropdown.Menu>
             </Dropdown>
         );
