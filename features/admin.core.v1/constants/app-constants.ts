@@ -380,10 +380,6 @@ export class AppConstants {
             [ "USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation` ],
             [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
-            [
-                "PRIVATE_KEY_JWT_CONFIG_EDIT",
-                `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration`
-            ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
             [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/server/logs` ],
             [ "SESSION_MANAGEMENT",
