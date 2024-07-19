@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.8
+
+### Patch Changes
+
+- [#6620](https://github.com/wso2/identity-apps/pull/6620) [`0981cd4b6901ae53119de1bd63f36fba79ebd533`](https://github.com/wso2/identity-apps/commit/0981cd4b6901ae53119de1bd63f36fba79ebd533) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Improvements to Trusted App UI
+
 ## 2.5.7
 
 ### Patch Changes
