@@ -44,7 +44,7 @@ const useValidationHandlers = (): { customValidations: CustomValidationsFunction
      * @returns An error message if validation fails, or `null` if validation succeeds.
      */
     const customValidations = async (
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         field: DynamicFieldInterface,
         handler: DynamicFieldHandlerInterface
     ): Promise<string | null> => {
@@ -54,7 +54,7 @@ const useValidationHandlers = (): { customValidations: CustomValidationsFunction
             case ApplicationTemplateValidationHandlers.APPLICATION_NAME:
                 validationResult = await validateApplicationName(
                     get(formValues, field?.name)?.toString()?.trim(),
-                    get(formValues, "id")
+                    get(formValues, "id") as string
                 );
 
                 break;

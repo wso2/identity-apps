@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Typography } from "@mui/material";
+import Typography from "@oxygen-ui/react/Typography";
 import { InboundProtocolsMeta } from "@wso2is/admin.applications.v1/components/meta";
 import { AuthProtocolMetaListItemInterface } from "@wso2is/admin.applications.v1/models";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";

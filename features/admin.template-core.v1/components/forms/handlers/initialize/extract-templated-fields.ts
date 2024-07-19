@@ -46,11 +46,11 @@ const templateToRegex = (template: string): RegExp => {
  */
 const extractTemplatedFields = (
     templateValue: string,
-    formValues:Record<string, any>,
+    formValues:Record<string, unknown>,
     fieldName: string,
     propertyPath: string
 ): void => {
-    const currentValue: string = get(formValues, propertyPath);
+    const currentValue: string = get(formValues, propertyPath) as string;
 
     if (currentValue && typeof currentValue === "string"
         && templateValue && typeof templateValue === "string") {

@@ -29,10 +29,10 @@ import {
  * Function definition for custom initialize handler.
  */
 export type CustomInitializeFunction = (
-    formValues: Record<string, any>,
+    formValues: Record<string, unknown>,
     field: DynamicFieldInterface,
     handler: DynamicFieldHandlerInterface,
-    templatePayload: Record<string, any>
+    templatePayload: Record<string, unknown>
 ) => Promise<void>;
 
 /**
@@ -45,9 +45,9 @@ const useInitializeHandlers = (
     customInitializers: CustomInitializeFunction
 ): {
     initialize: (
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         fields: DynamicFieldInterface[],
-        templateData: Record<string, any>
+        templateData: Record<string, unknown>
     ) => Promise<void> } => {
 
     /**
@@ -59,10 +59,10 @@ const useInitializeHandlers = (
      * @param templatePayload - Template payload values.
      */
     const initializeField = async (
-        values: Record<string, any>,
+        values: Record<string, unknown>,
         field: DynamicFieldInterface,
         initializers: DynamicFieldHandlerInterface[],
-        templatePayload: Record<string, any>
+        templatePayload: Record<string, unknown>
     ): Promise<void> => {
         for (const initializer of initializers) {
             const { name, props } = initializer;
@@ -70,10 +70,10 @@ const useInitializeHandlers = (
             switch (name) {
                 case CommonInitializeHandlers.EXTRACT_TEMPLATED_FIELDS:
                     extractTemplatedFields(
-                        get(templatePayload, props?.propertyPath),
+                        get(templatePayload, props?.propertyPath as string) as string,
                         values,
                         field?.name,
-                        props?.propertyPath
+                        props?.propertyPath as string
                     );
 
                     break;
@@ -93,9 +93,9 @@ const useInitializeHandlers = (
      * @param templatePayload - Template payload values.
      */
     const initializeAllFields = async (
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         fields: DynamicFieldInterface[],
-        templateData: Record<string, any>
+        templateData: Record<string, unknown>
     ): Promise<void> => {
         for (const field of fields) {
             const initializers: DynamicFieldHandlerInterface[] = field?.handlers?.filter(
@@ -109,9 +109,9 @@ const useInitializeHandlers = (
 
     return {
         initialize: (
-            formValues: Record<string, any>,
+            formValues: Record<string, unknown>,
             fields: DynamicFieldInterface[],
-            templateData: Record<string, any>
+            templateData: Record<string, unknown>
         ): Promise<void> => initializeAllFields(formValues, fields, templateData)
     };
 };

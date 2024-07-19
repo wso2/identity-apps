@@ -41,10 +41,10 @@ const useSubmissionHandlers = (): { customSubmissionHandlers: CustomSubmissionFu
      * @param templatePayload - Template payload values.
      */
     const customSubmissionHandlers = async (
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         field: DynamicFieldInterface,
         handler: DynamicFieldHandlerInterface,
-        _templatePayload: Record<string, any>
+        _templatePayload: Record<string, unknown>
     ): Promise<void> => {
         switch (handler?.name) {
             case ApplicationTemplateSubmissionHandlers.BUILD_CALLBACK_URLS_WITH_REGEXP:

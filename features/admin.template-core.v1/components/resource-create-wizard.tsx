@@ -80,7 +80,7 @@ export interface ResourceCreateWizardPropsInterface extends ModalProps, Identifi
     /**
      * Initial values for the form fields.
      */
-    initialFormValues: Record<string, any>;
+    initialFormValues: Record<string, unknown>;
     /**
      * Identifier of the extension template.
      */
@@ -96,7 +96,7 @@ export interface ResourceCreateWizardPropsInterface extends ModalProps, Identifi
     /**
      * Template payload values.
      */
-    templatePayload: Record<string, any>;
+    templatePayload: Record<string, unknown>;
     /**
      * i18n key of the form main button text.
      */
@@ -104,7 +104,10 @@ export interface ResourceCreateWizardPropsInterface extends ModalProps, Identifi
     /**
      * Function to handle form submission.
      */
-    onFormSubmit: (values: Record<string, any>, callback: (errorMsg: string, errorDescription: string) => void) => void;
+    onFormSubmit: (
+        values: Record<string, unknown>,
+        callback: (errorMsg: string, errorDescription: string) => void
+    ) => void;
     /**
      * Loading status for the wizard.
      */
@@ -152,7 +155,7 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
      */
     useEffect(() => {
         const prepareInitialValues = async (): Promise<void> => {
-            let initialValues: Record<string, any>;
+            let initialValues: Record<string, unknown>;
 
             if (form?.submitDefinedFieldsOnly) {
                 const paths: string[] = form?.fields?.map((field: DynamicFieldInterface) => field?.name);
@@ -193,9 +196,9 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
      *
      * @param values - Submission values from the form fields.
      */
-    const onSubmit = async (values: Record<string, any>): Promise<void> => {
+    const onSubmit = async (values: Record<string, unknown>): Promise<void> => {
         setIsSubmitting(true);
-        const formValues: Record<string, any> = cloneDeep(values);
+        const formValues: Record<string, unknown> = cloneDeep(values);
 
         /**
          * Make sure that cleared text fields are set to an empty string.
@@ -265,14 +268,14 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
                                         mutators={ {
                                             setFormAttribute: (
                                                 [ fieldName, fieldVal ]: [ fieldName: string, fieldVal: any ],
-                                                state: MutableState<Record<string, any>, Record<string, any>>,
-                                                { changeValue }: Tools<Record<string, any>, Record<string, any>>
+                                                state: MutableState<Record<string, unknown>, Record<string, unknown>>,
+                                                { changeValue }: Tools<Record<string, unknown>, Record<string, unknown>>
                                             ) => {
                                                 changeValue(state, fieldName, () => fieldVal);
                                             }
                                         } }
                                         validate={
-                                            (formValues: Record<string, any>) => validate(formValues, form?.fields)
+                                            (formValues: Record<string, unknown>) => validate(formValues, form?.fields)
                                         }
                                         render={ ({ form: formState, handleSubmit }: FormRenderProps) => {
                                             formSubmit = handleSubmit;

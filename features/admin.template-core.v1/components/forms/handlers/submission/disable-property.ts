@@ -24,7 +24,7 @@ import unset from "lodash-es/unset";
  * @param formValues - Object containing initial values for the form.
  * @param fieldName - Path of the field value within the object.
  */
-const disableProperty = (formValues:Record<string, any>, fieldName: string): void => {
+const disableProperty = (formValues:Record<string, unknown>, fieldName: string): void => {
     unset(formValues, fieldName);
 };
 

@@ -135,7 +135,7 @@ export interface DynamicFieldHandlerInterface {
     /**
      * Props that need to be passed into the handler method.
      */
-    props?: Record<string, any>;
+    props?: Record<string, unknown>;
 }
 
 /**

@@ -30,7 +30,7 @@ import unset from "lodash-es/unset";
  */
 const templatedProperty = (
     templateValue: string,
-    formValues:Record<string, any>,
+    formValues:Record<string, unknown>,
     fieldName: string,
     propertyPath: string
 ): void => {

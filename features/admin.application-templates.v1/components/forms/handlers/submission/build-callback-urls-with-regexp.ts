@@ -34,8 +34,8 @@ import get from "lodash-es/get";
  * const urls = buildCallBackUrlsWithRegExp(["https://example.com/login", "https://app.example.com/login"]);
  * // Result: ["regexp=(https://example.com/login|https://app.example.com/login)"]
  */
-const buildCallBackUrlsWithRegExp = (formValues: Record<string, any>, fieldName: string): string[] => {
-    const urls: string[] = get(formValues, fieldName);
+const buildCallBackUrlsWithRegExp = (formValues: Record<string, unknown>, fieldName: string): string[] => {
+    const urls: string[] = get(formValues, fieldName) as string[];
     const sanitizedURLs: string[] = urls?.map((url: string) => url?.replace(/['"]+/g, "")) || [];
 
     if (sanitizedURLs?.length > 1) {

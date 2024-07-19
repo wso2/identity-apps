@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { AppState } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -64,11 +63,11 @@ export interface TemplateDynamicFormPropsInterface extends IdentifiableComponent
     /**
      * Initial values for the form fields.
      */
-    initialFormValues: Record<string, any>;
+    initialFormValues: Record<string, unknown>;
     /**
      * Template payload values.
      */
-    templatePayload: Record<string, any>;
+    templatePayload: Record<string, unknown>;
     /**
      * i18n key of the form main button text.
      */
@@ -76,7 +75,7 @@ export interface TemplateDynamicFormPropsInterface extends IdentifiableComponent
     /**
      * Function to handle form submission.
      */
-    onFormSubmit: (values: Record<string, any>, callback: () => void) => void;
+    onFormSubmit: (values: Record<string, unknown>, callback: () => void) => void;
     /**
      * Loading status for the wizard.
      */
@@ -120,7 +119,7 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
      */
     useEffect(() => {
         const prepareInitialValues = async (): Promise<void> => {
-            let initialValues: Record<string, any>;
+            let initialValues: Record<string, unknown>;
 
             if (form?.submitDefinedFieldsOnly) {
                 const paths: string[] = form?.fields?.map((field: DynamicFieldInterface) => field?.name);
@@ -147,9 +146,9 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
      *
      * @param values - Submission values from the form fields.
      */
-    const onSubmit = async (values: ApplicationInterface): Promise<void> => {
+    const onSubmit = async (values: Record<string, unknown>): Promise<void> => {
         setIsSubmitting(true);
-        const formValues: ApplicationInterface = cloneDeep(values);
+        const formValues: Record<string, unknown> = cloneDeep(values);
 
         /**
          * Make sure that cleared text fields are set to an empty string.
@@ -184,13 +183,13 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
                             mutators={ {
                                 setFormAttribute: (
                                     [ fieldName, fieldVal ]: [ fieldName: string, fieldVal: any ],
-                                    state: MutableState<Record<string, any>, Record<string, any>>,
-                                    { changeValue }: Tools<Record<string, any>, Record<string, any>>
+                                    state: MutableState<Record<string, unknown>, Record<string, unknown>>,
+                                    { changeValue }: Tools<Record<string, unknown>, Record<string, unknown>>
                                 ) => {
                                     changeValue(state, fieldName, () => fieldVal);
                                 }
                             } }
-                            validate={ (formValues: Record<string, any>) => validate(formValues, form?.fields) }
+                            validate={ (formValues: Record<string, unknown>) => validate(formValues, form?.fields) }
                             render={ ({ form: formState, handleSubmit }: FormRenderProps) => {
                                 return (
                                     <form id={ `${componentId}-form` } onSubmit={ handleSubmit }>

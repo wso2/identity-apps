@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
+import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Tooltip from "@oxygen-ui/react/Tooltip";

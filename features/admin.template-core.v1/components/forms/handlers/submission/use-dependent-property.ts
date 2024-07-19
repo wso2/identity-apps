@@ -29,7 +29,7 @@ import { useSelector } from "react-redux";
 const useDependentProperty = (): {
     dependentProperty: (
         templateValue: string,
-        formValues:Record<string, any>,
+        formValues:Record<string, unknown>,
         fieldName: string,
         placeholder: string
     ) => void
@@ -71,7 +71,7 @@ const useDependentProperty = (): {
      */
     const dependentProperty = async (
         templateValue: string,
-        formValues:Record<string, any>,
+        formValues:Record<string, unknown>,
         fieldName: string,
         placeholder: string
     ): Promise<void> => {

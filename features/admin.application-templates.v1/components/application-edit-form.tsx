@@ -151,7 +151,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
      * @param values - Submission values from the form fields.
      * @param callback - Callback function to execute after form submission is complete.
      */
-    const handleFormSubmission = (values: Record<string, any>, callback: () => void): void => {
+    const handleFormSubmission = (values: Record<string, unknown>, callback: () => void): void => {
         let protocolKeyName: string = protocolName;
 
         if (SupportedAuthProtocolTypes.WS_FEDERATION === protocolKeyName) {
@@ -161,8 +161,8 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
         }
 
         const editPaths: string[] = tab?.form?.fields?.map((field: DynamicFieldInterface) => field?.name);
-        let protocolConfigurations: Record<string, any>;
-        let applicationConfigurations: Record<string, any>;
+        let protocolConfigurations: Record<string, unknown>;
+        let applicationConfigurations: Record<string, unknown>;
 
         if (values?.inboundProtocolConfiguration?.[protocolKeyName]) {
             if (SupportedAuthProtocolTypes.SAML === protocolKeyName) {
@@ -225,7 +225,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
         };
 
         if (applicationConfigurations && Object.keys(applicationConfigurations)?.length > 0) {
-            updateApplicationDetails(applicationConfigurations as ApplicationInterface)
+            updateApplicationDetails(applicationConfigurations as unknown as ApplicationInterface)
                 .then(() => {
                     onUpdate(application?.id);
 
@@ -275,8 +275,8 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
             customInitializers={ customInitializers }
             customSubmissionHandlers={ customSubmissionHandlers }
             form={ tab?.form }
-            initialFormValues={ initialValues }
-            templatePayload={ templateData?.payload }
+            initialFormValues={ initialValues as unknown as Record<string, unknown> }
+            templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
             buttonText={ t("common:update") }
             onFormSubmit={ handleFormSubmission }
             isLoading={ isLoading || isTemplateDataFetchRequestLoading }

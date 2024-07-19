@@ -43,7 +43,7 @@ interface DuplicateApplicationListCache {
 const useUniqueApplicationName = (): {
     generateUniqueApplicationName: (
         initialApplicationName: string,
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         fieldName: string
     ) => Promise<void>
 } => {
@@ -58,7 +58,7 @@ const useUniqueApplicationName = (): {
      */
     const generateUniqueApplicationName = async (
         initialApplicationName: string,
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         fieldName: string
     ): Promise<void> => {
 

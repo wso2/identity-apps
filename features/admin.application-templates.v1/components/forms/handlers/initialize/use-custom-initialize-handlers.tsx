@@ -44,10 +44,10 @@ const useInitializeHandlers = (): { customInitializers: CustomInitializeFunction
      * @param templatePayload - Template payload values.
      */
     const customInitializers = async (
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         field: DynamicFieldInterface,
         handler: DynamicFieldHandlerInterface,
-        templatePayload: Record<string, any>
+        templatePayload: Record<string, unknown>
     ): Promise<void> => {
         switch (handler?.name) {
             case ApplicationTemplateInitializeHandlers.UNIQUE_APPLICATION_NAME:

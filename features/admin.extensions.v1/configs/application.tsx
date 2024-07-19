@@ -53,6 +53,7 @@ import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
+import { ApplicationTabIDs } from "./models/application";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SamlWebAppTemplate
@@ -102,19 +103,6 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
 
     return identityRegex.test(claim.mappedLocalClaimURI);
 };
-
-export enum ApplicationTabIDs {
-    GENERAL = "general",
-    PROTOCOL = "protocol",
-    USER_ATTRIBUTES = "user-attributes",
-    SIGN_IN_METHODS = "sign-in-method",
-    PROVISIONING = "provisioning",
-    ADVANCED = "advanced",
-    SHARED_ACCESS = "shared-access",
-    INFO = "info",
-    API_AUTHORIZATION = "api-authorization",
-    APPLICATION_ROLES = "application-roles"
-}
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {

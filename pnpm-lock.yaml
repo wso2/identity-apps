@@ -16236,12 +16236,6 @@ importers:
 
   features/admin.template-core.v1:
     dependencies:
-      '@wso2is/admin.application-templates.v1':
-        specifier: ^1.0.0
-        version: link:../admin.application-templates.v1
-      '@wso2is/admin.applications.v1':
-        specifier: ^2.21.11
-        version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.21.11
         version: link:../admin.core.v1

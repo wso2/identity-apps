@@ -39,7 +39,7 @@ export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInt
     /**
      * Form state from the form library.
      */
-    form: FormApi<Record<string, any>>;
+    form: FormApi<Record<string, unknown>>;
     /**
      * Whether the form field is read only or not.
      */

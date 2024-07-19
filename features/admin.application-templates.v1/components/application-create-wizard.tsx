@@ -119,7 +119,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         // If that's available, navigate to the edit page.
         if (createdAppId) {
             let searchParams: string = "?";
-            const defaultTabIndex: number = 0;
+            const defaultTabIndex: number | string = templateMetadata?.edit?.defaultActiveTabId ?? 0;
 
             if (isClientSecretHashEnabled) {
                 searchParams = `${ searchParams }${
@@ -146,15 +146,17 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @param callback - Callback function to execute after form submission is complete.
      */
     const handleFormSubmission = (
-        values: Record<string, any>,
+        values: Record<string, unknown>,
         callback: (errorMsg: string, errorDescription: string) => void
     ): void => {
         const isApplicationSharingEnabled: boolean = get(
-            values, ApplicationTemplateConstants.APPLICATION_CREATE_WIZARD_SHARING_FIELD_NAME) ?? false;
+            values,
+            ApplicationTemplateConstants.APPLICATION_CREATE_WIZARD_SHARING_FIELD_NAME
+        ) as boolean ?? false;
 
         unset(values, ApplicationTemplateConstants.APPLICATION_CREATE_WIZARD_SHARING_FIELD_NAME);
 
-        createApplication(values as MainApplicationInterface)
+        createApplication(values as unknown as MainApplicationInterface)
             .then((response: AxiosResponse) => {
                 eventPublisher.compute(() => {
                     eventPublisher.publish("application-register-new-application", {
@@ -257,11 +259,11 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             customSubmissionHandlers={ customSubmissionHandlers }
             form={ formDefinition }
             guide={ templateMetadata?.create?.guide }
-            initialFormValues={ templateData?.payload }
+            initialFormValues={ templateData?.payload as unknown as Record<string, unknown> }
             templateId={ templateData?.id }
             templateName={ templateData?.name }
             templateDescription={ templateData?.description }
-            templatePayload={ templateData?.payload }
+            templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
             buttonText={ t("common:create") }
             onFormSubmit={ handleFormSubmission }
             isLoading={ isTemplateDataFetchRequestLoading || isTemplateMetadataFetchRequestLoading }

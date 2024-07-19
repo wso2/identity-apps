@@ -16,12 +16,9 @@
  * under the License.
  */
 
-import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { useSelector } from "react-redux";
 
 /**
@@ -31,22 +28,10 @@ import { useSelector } from "react-redux";
  */
 const useApplicationSharingEligibility = (): boolean => {
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const applicationFeatureAccessConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
-        return state.config?.ui?.features?.applications;
-    });
-    const organizationEnabled: string = useSelector((state: AppState) => state.config?.ui?.legacyMode?.organizations);
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isClientSecretHashEnabled);
 
-    const { isOrganizationManagementEnabled } = useGlobalVariables();
-
-    return (isOrganizationManagementEnabled
-        && organizationEnabled
-        && applicationConfig.editApplication.showApplicationShare
-        && hasRequiredScopes(
-            applicationFeatureAccessConfig, applicationFeatureAccessConfig?.scopes?.update, allowedScopes
-        )
+    return (applicationConfig.editApplication.showApplicationShare
         && !isSubOrganization()
         && !isClientSecretHashEnabled);
 };

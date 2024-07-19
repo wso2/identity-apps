@@ -35,7 +35,7 @@ export interface MarkdownGuidePropsInterface extends IdentifiableComponentInterf
     /**
      * Data that can be templated in a Markdown script.
      */
-    data: Record<string, any>;
+    data: Record<string, unknown>;
     /**
      * Content to be displayed in Markdown format.
      */

@@ -32,7 +32,7 @@ import {
  * Function definition for custom validations.
  */
 export type CustomValidationsFunction = (
-    formValues: Record<string, any>,
+    formValues: Record<string, unknown>,
     field: DynamicFieldInterface,
     handler: DynamicFieldHandlerInterface
 ) => Promise<string | null>;
@@ -47,7 +47,7 @@ const useValidationHandlers = (
     customValidations: CustomValidationsFunction
 ): {
     validate: (
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         fields: DynamicFieldInterface[]
     ) => Promise<{ [key: string]: string }> } => {
 
@@ -88,7 +88,7 @@ const useValidationHandlers = (
      * @returns An error message if validation fails, or `null` if validation succeeds.
      */
     const validateField = async (
-        values: Record<string, any>,
+        values: Record<string, unknown>,
         field: DynamicFieldInterface,
         validations: DynamicFieldHandlerInterface[]
     ): Promise<string | null> => {
@@ -103,12 +103,17 @@ const useValidationHandlers = (
 
             switch (name) {
                 case CommonValidationHandlers.REQUIRED:
-                    validationResult = handleErrorMessage(requiredField(get(values, field?.name)), props?.errorMessage);
+                    validationResult = handleErrorMessage(
+                        requiredField(get(values, field?.name)),
+                        props?.errorMessage as string
+                    );
 
                     break;
                 case CommonValidationHandlers.URL:
                     validationResult = handleErrorMessage(
-                        await validateURL(get(values, field?.name)), props?.errorMessage);
+                        await validateURL(get(values, field?.name) as string),
+                        props?.errorMessage as string
+                    );
 
                     break;
             }
@@ -133,7 +138,7 @@ const useValidationHandlers = (
      * @returns An error object containing error messages for each provided field.
      */
     const validateAllFields = async (
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         fields: DynamicFieldInterface[]
     ): Promise<{ [key: string]: string }> => {
         const errorObject: { [key: string]: string } = {};
@@ -163,7 +168,7 @@ const useValidationHandlers = (
 
     return {
         validate: (
-            formValues: Record<string, any>,
+            formValues: Record<string, unknown>,
             fields: DynamicFieldInterface[]
         ): Promise<{ [key: string]: string }> =>
             validateAllFields(formValues, fields)

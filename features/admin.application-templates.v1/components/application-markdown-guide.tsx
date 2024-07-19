@@ -183,7 +183,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
 
     return (
         <MarkdownGuide
-            data={ data }
+            data={ data as unknown as Record<string, unknown> }
             content={ content }
             isLoading={ isLoading }
             data-componentid={ componentId }

@@ -32,10 +32,10 @@ import {
  * Function definition for custom submission handler.
  */
 export type CustomSubmissionFunction = (
-    formValues: Record<string, any>,
+    formValues: Record<string, unknown>,
     field: DynamicFieldInterface,
     handler: DynamicFieldHandlerInterface,
-    templatePayload: Record<string, any>
+    templatePayload: Record<string, unknown>
 ) => Promise<void>;
 
 /**
@@ -48,9 +48,9 @@ const useSubmissionHandlers = (
     customSubmissionHandlers: CustomSubmissionFunction
 ): {
     submission: (
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         fields: DynamicFieldInterface[],
-        templateData: Record<string, any>
+        templateData: Record<string, unknown>
     ) => Promise<void> } => {
 
     const { dependentProperty } = useDependentProperty();
@@ -64,10 +64,10 @@ const useSubmissionHandlers = (
      * @param templatePayload - Template payload values.
      */
     const submitField = async (
-        values: Record<string, any>,
+        values: Record<string, unknown>,
         field: DynamicFieldInterface,
         submissionHandlers: DynamicFieldHandlerInterface[],
-        templatePayload: Record<string, any>
+        templatePayload: Record<string, unknown>
     ): Promise<void> => {
         for (const submissionHandler of submissionHandlers) {
             const { name, props } = submissionHandler;
@@ -75,19 +75,19 @@ const useSubmissionHandlers = (
             switch (name) {
                 case CommonSubmissionHandlers.UNIQUE_ID_GENERATOR:
                     uniqueIDGenerator(
-                        get(templatePayload, field?.name),
+                        get(templatePayload, field?.name) as string,
                         values,
                         field?.name,
-                        props?.placeholder
+                        props?.placeholder as string
                     );
 
                     break;
                 case CommonSubmissionHandlers.DEPENDENT_PROPERTY:
                     dependentProperty(
-                        get(templatePayload, field?.name),
+                        get(templatePayload, field?.name) as string,
                         values,
                         field?.name,
-                        props?.placeholder
+                        props?.placeholder as string
                     );
 
                     break;
@@ -97,10 +97,10 @@ const useSubmissionHandlers = (
                     break;
                 case CommonSubmissionHandlers.TEMPLATED_PROPERTY:
                     templatedProperty(
-                        get(templatePayload, props?.propertyPath),
+                        get(templatePayload, props?.propertyPath as string) as string,
                         values,
                         field?.name,
-                        props?.propertyPath
+                        props?.propertyPath as string
                     );
 
                     break;
@@ -120,9 +120,9 @@ const useSubmissionHandlers = (
      * @param templatePayload - Template payload values.
      */
     const submitAllFields = async (
-        formValues: Record<string, any>,
+        formValues: Record<string, unknown>,
         fields: DynamicFieldInterface[],
-        templateData: Record<string, any>
+        templateData: Record<string, unknown>
     ): Promise<void> => {
         for (const field of fields) {
             let submissionHandlers: DynamicFieldHandlerInterface[] = field?.handlers?.filter(
@@ -143,9 +143,9 @@ const useSubmissionHandlers = (
 
     return {
         submission: (
-            formValues: Record<string, any>,
+            formValues: Record<string, unknown>,
             fields: DynamicFieldInterface[],
-            templateData: Record<string, any>
+            templateData: Record<string, unknown>
         ): Promise<void> => submitAllFields(formValues, fields, templateData)
     };
 };
