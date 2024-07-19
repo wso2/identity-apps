@@ -301,7 +301,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                && (
+                    UIConfig?.legacyMode?.applicationSystemAppsSettings ||
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                )
+            ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
@@ -363,8 +367,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 && !isM2MApplication
                 && (
                     UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)
-                ) {
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                )
+            ) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(

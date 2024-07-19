@@ -209,7 +209,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
                         pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
                     });
-    
+
                     return;
                 } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
                     history.push({
@@ -220,11 +220,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 : ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB
                         }`
                     });
-    
+
                     return;
                 }
             }
-            
+
             history.push({
                 pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
                 search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -713,7 +713,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         data-testid={ `${ componentId }-role-checkbox` }
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
                             .showIncludeUserstoreDomainRole ||
-                            !UIConfig?.legacyMode?.roleMapping}
+                            !UIConfig?.legacyMode?.roleMapping }
                         hint={
                             t("applications:forms.advancedAttributeSettings." +
                                 "sections.role.fields.role.hint")

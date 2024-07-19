@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { Show } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
@@ -29,6 +28,7 @@ import {
     getGeneralIcons,
     history
 } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
