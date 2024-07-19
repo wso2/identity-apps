@@ -147,7 +147,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-componentid={ `${ componentId }-configuration-settings` }
-                uiMetaData={ uiMetaData.pages.edit.settings }
+                uiMetaData={ uiMetaData?.common?.configProperties }
                 isReadOnly={ isReadOnly }
                 loader={ getContentLoader }
             />
