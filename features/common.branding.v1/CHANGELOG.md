@@ -1,5 +1,16 @@
 # @wso2is/common.branding.v1
 
+## 2.20.72
+
+### Patch Changes
+
+- [#6617](https://github.com/wso2/identity-apps/pull/6617) [`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85) Thanks [@Achintha444](https://github.com/Achintha444)! - update the design of the Chip component
+
+- Updated dependencies [[`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85)]:
+  - @wso2is/admin.organizations.v1@2.20.72
+  - @wso2is/admin.core.v1@2.23.2
+  - @wso2is/core@2.0.55
+
 ## 2.20.71
 
 ### Patch Changes

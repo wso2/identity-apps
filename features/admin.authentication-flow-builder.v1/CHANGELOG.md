@@ -1,5 +1,24 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.20.72
+
+### Patch Changes
+
+- [#6617](https://github.com/wso2/identity-apps/pull/6617) [`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85) Thanks [@Achintha444](https://github.com/Achintha444)! - update the design of the Chip component
+
+- Updated dependencies [[`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85)]:
+  - @wso2is/admin.server-configurations.v1@2.21.14
+  - @wso2is/admin.identity-providers.v1@2.21.2
+  - @wso2is/admin.login-flow.ai.v1@2.20.72
+  - @wso2is/admin.organizations.v1@2.20.72
+  - @wso2is/admin.applications.v1@2.22.2
+  - @wso2is/admin.connections.v1@2.21.2
+  - @wso2is/admin.extensions.v1@2.21.42
+  - @wso2is/admin.secrets.v1@2.20.72
+  - @wso2is/react-components@2.2.20
+  - @wso2is/admin.core.v1@2.23.2
+  - @wso2is/core@2.0.55
+
 ## 2.20.71
 
 ### Patch Changes
