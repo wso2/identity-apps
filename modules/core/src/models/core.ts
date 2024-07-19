@@ -213,8 +213,5 @@ export interface SVGRLoadedInterface {
 export interface LegacyModeInterface {
     applicationListSystemApps: boolean;
     applicationSystemAppsSettings: boolean;
-    approvals: boolean;
-    certificates: boolean;
     roleMapping: boolean;
-    secretsManagement: boolean;
 }

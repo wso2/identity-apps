@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ProductVersionConfigInterface } from "./core";
+import { LegacyModeInterface, ProductVersionConfigInterface } from "./core";
 import { GravatarConfig } from "./profile";
 
 /**
