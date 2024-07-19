@@ -74,7 +74,7 @@ export class I18nConstants {
      * JWT private key configuration namespace.
      */
     public static readonly IMPERSONATION_CONFIGURATION_NAMESPACE: string =
-    I18nModuleConstants.IMPERSONATION_NAMESPACE;
+        I18nModuleConstants.IMPERSONATION_NAMESPACE;
 
     /**
      * transferList namespace.
@@ -95,7 +95,7 @@ export class I18nConstants {
      * governanceConnectors namespace.
      */
     public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string =
-    I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
+        I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
 
     /**
      * Groups namespace.
@@ -121,7 +121,7 @@ export class I18nConstants {
      * Parent org invitations namespace.
      */
     public static readonly PARENT_ORG_INVITATIONS_NAMESPACE: string =
-    I18nModuleConstants.PARENT_ORG_INVITATIONS_NAMESPACE;
+        I18nModuleConstants.PARENT_ORG_INVITATIONS_NAMESPACE;
 
     /**
      * OIDC scopes namespace.
@@ -137,7 +137,7 @@ export class I18nConstants {
      * Organization discovery namespace.
      */
     public static readonly ORGANIZATION_DISCOVERY_NAMESPACE: string =
-      I18nModuleConstants.ORGANIZATION_DISCOVERY_NAMESPACE;
+        I18nModuleConstants.ORGANIZATION_DISCOVERY_NAMESPACE;
 
     /**
      * Organizations namespace.
@@ -238,7 +238,7 @@ export class I18nConstants {
      * authenticationProvider namespace.
      */
     public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string =
-      I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
+        I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
 
     /**
     * AI namespace.

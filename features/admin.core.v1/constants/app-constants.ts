@@ -485,7 +485,7 @@ export class AppConstants {
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
         "roles",
         ...(this.getAdministratorsFeatureConfig()?.enabled ? [ "consoleSettings" ] : [])
-    ]
+    ];
 
     /**
      * Route ids that are enabled in only for super admins.
@@ -495,7 +495,7 @@ export class AppConstants {
         "remote-logging",
         "internal-notification-sending",
         "server"
-    ]
+    ];
 
     /**
      * Route id of the console settings page.
