@@ -543,7 +543,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                                 external={ false }
                                             >
                                                 email templates
-                                            </Link> and other relevant locations are updated accordingly.
+                                            </Link> and other relevant locations are updated to reflect the
+                                            application status accordingly.
                                         </Trans>
                                     </>
                                 )
