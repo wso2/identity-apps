@@ -3,4 +3,4 @@
 "@wso2is/console": patch
 ---
 
-Hide private-key-jwt-config-edit menu.
+Hide organization level private key JWT authentication configuration
