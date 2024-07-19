@@ -80,6 +80,7 @@
         "@wso2is/admin.server.v1": "^2.20.70",
         "@wso2is/admin.session-management.v1": "^2.20.70",
         "@wso2is/admin.sms-providers.v1": "^2.20.70",
+        "@wso2is/admin.template-core.v1": "^1.0.0",
         "@wso2is/admin.users.v1": "^2.20.70",
         "@wso2is/admin.validation.v1": "^2.20.70",
         "@wso2is/admin.workflow-approvals.v1": "^2.20.70",

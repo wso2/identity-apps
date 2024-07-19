@@ -593,6 +593,9 @@ importers:
       '@wso2is/admin.sms-providers.v1':
         specifier: ^2.20.70
         version: link:../../features/admin.sms-providers.v1
+      '@wso2is/admin.template-core.v1':
+        specifier: ^1.0.0
+        version: link:../../features/admin.template-core.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.20.70
         version: link:../../features/admin.users.v1
