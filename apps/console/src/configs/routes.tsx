@@ -976,20 +976,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT"),
                     protected: true,
                     showOnSidePanel: false
-                },
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.private-key-jwt.v1/pages/private-key-jwt-config-edit")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().jwtKey
-                    },
-                    id: "private-key-jwt-config-edit",
-                    name: "Private Key JWT Client Authentication for OIDC Configuration Edit",
-                    path: AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
