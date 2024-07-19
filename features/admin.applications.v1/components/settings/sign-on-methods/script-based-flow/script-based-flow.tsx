@@ -19,8 +19,9 @@
 import Chip from "@oxygen-ui/react/Chip";
 import { DiamondIcon, GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
-import { ELK_RISK_BASED_TEMPLATE_NAME } from
-    "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
+import {
+    ELK_RISK_BASED_TEMPLATE_NAME
+} from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
