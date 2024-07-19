@@ -19,6 +19,7 @@
 import Popover from "@mui/material/Popover";
 import OxygenButton from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import OxygenCode from "@oxygen-ui/react/Code";
 import Divider from "@oxygen-ui/react/Divider";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -82,7 +83,7 @@ import { Trans, useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Checkbox, Dropdown, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
+import { Checkbox, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
 import { getAdaptiveAuthTemplates } from "../../../../api";
@@ -185,7 +186,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
     const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
-    const [ isSecretsDropdownOpen, setIsSecretsDropdownOpen ] = useState<boolean>(false);
     const adaptiveFeatureStatus : FeatureStatus = useCheckFeatureStatus("console.application.signIn.adaptiveAuth");
     const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
     const [ isPremiumFeature, setIsPremiumFeature ] = useState<boolean>(false);
@@ -808,6 +808,83 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * Render the secret list dropdown.
      */
     const renderSecretListDropdown = (): ReactElement => {
+        const resolveSecretListContent = () => {
+            if (isSecretListLoading) {
+                return (
+                    <ListItem
+                        className="create-new-secret-dropdown-item-loading"
+                        data-componentid={ `${ componentId }-list-loader` }
+                    >
+                        <CircularProgress size={ 20 } />
+                    </ListItem>
+                );
+            }
+
+            if (filteredSecretList.length > 0) {
+                return (
+                    filteredSecretList.map((
+                        secret: SecretModel,
+                        index: number
+                    ) => (
+                        <>
+                            <ListItem
+                                key={ secret.secretId }
+                                data-componentid={ `${ componentId }-list-item-${ secret.secretId }` }
+                            >
+                                <ListItemText
+                                    primary={ <Typography noWrap>{ secret.secretName }</Typography> }
+                                    secondary={ <Typography noWrap>{ secret.description }</Typography> }
+                                />
+                                <IconButton
+                                    onClick={ () => addSecretToScript(secret) }
+                                    data-componentid={ `${ componentId }-secret-add` }
+                                >
+                                    <PlusIcon size={ 14 } />
+                                </IconButton>
+                                <IconButton
+                                    onClick={ () => {
+                                        handleSecretDelete(secret);
+                                    } }
+                                    data-componentid={ `${ componentId }-secret-delete` }
+                                >
+                                    <TrashIcon size={ 14 } />
+                                </IconButton>
+                            </ListItem>
+                            { index !== filteredSecretList?.length - 1 && <Divider /> }
+                        </>
+                    ))
+                );
+            }
+
+            return (
+                <ListItem
+                    className="create-new-secret-dropdown-empty-placeholder"
+                    data-componentid={ `${ componentId }-empty-placeholder` }
+                >
+                    <ListItemText>
+                        <Typography variant="body1" align="center" gutterBottom="true">
+                            { t("authenticationFlow:scriptEditor.secretSelector." +
+                                "emptyPlaceholder.header") }
+                        </Typography>
+                        <Divider  />
+                        <Typography variant="caption">
+                            <Trans
+                                i18nKey={
+                                    "authenticationFlow:scriptEditor.secretSelector." +
+                                    "emptyPlaceholder.description"
+                                }
+                            >
+                                    Securely store access keys as secrets. A secret can
+                                    replace the consumer secret in <OxygenCode variant="caption">
+                                        callChoreo()</OxygenCode> function
+                                    in the conditional authentication scripts.
+                            </Trans>
+                        </Typography>
+                    </ListItemText>
+                </ListItem>
+            );
+        };
+
         return (
             <>
                 <GenericIcon
@@ -838,7 +915,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     data-componentid={ `${ componentId }-popover` }
                 >
                     {
-                        secretList.length > 0 && (
+                        !isSecretListLoading && secretList.length > 0 && (
                             <div className="secret-search-input-container">
                                 <Input
                                     data-componentid={ `${ componentId }-secret-search` }
@@ -866,91 +943,34 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         data-componentid={ `${ componentId }-secret-list` }
                         className="secrets-dropdown"
                     >
-                        {
-                            filteredSecretList.length > 0 ? (
-                                filteredSecretList.map((
-                                    secret: SecretModel,
-                                    index: number
-                                ) => (
-                                    <>
-                                        <ListItem
-                                            key={ secret.secretId }
-                                            data-componentid={ `${ componentId }-list-item-${ secret.secretId }` }
-                                        >
-                                            <ListItemText
-                                                primary={ <Typography noWrap>{ secret.secretName }</Typography> }
-                                                secondary={ <Typography noWrap>{ secret.description }</Typography> }
-                                            />
-                                            <IconButton
-                                                onClick={ () => addSecretToScript(secret) }
-                                                data-componentid={ `${ componentId }-secret-add` }
-                                            >
-                                                <PlusIcon size={ 14 } />
-                                            </IconButton>
-                                            <IconButton
-                                                onClick={ () => {
-                                                    handleSecretDelete(secret);
-                                                } }
-                                                data-componentid={ `${ componentId }-secret-delete` }
-                                            >
-                                                <TrashIcon size={ 14 } />
-                                            </IconButton>
-                                        </ListItem>
-                                        { index !== filteredSecretList?.length - 1 && <Divider /> }
-                                    </>
-                                ))
-                            ) : (
-                                <ListItem
-                                    className="create-new-secret-dropdown-empty-placeholder"
-                                    data-componentid={ `${ componentId }-empty-placeholder` }
-                                >
-                                    <ListItemText>
-                                        <Typography variant="body1" align="center" gutterBottom="true">
-                                            { t("authenticationFlow:scriptEditor.secretSelector." +
-                                                "emptyPlaceholder.header") }
-                                        </Typography>
-                                        <Divider  />
-                                        <Typography variant="caption">
-                                            <Trans
-                                                i18nKey={
-                                                    "authenticationFlow:scriptEditor.secretSelector." +
-                                                    "emptyPlaceholder.description"
-                                                }
-                                            >
-                                                    Securely store access keys as secrets. A secret can
-                                                    replace the consumer secret in <OxygenCode variant="caption">
-                                                        callChoreo()</OxygenCode> function
-                                                    in the conditional authentication scripts.
-                                            </Trans>
-                                        </Typography>
-                                    </ListItemText>
-                                </ListItem>
-                            )
-                        }
-                        <Divider />
+                        { resolveSecretListContent() }
                         { featureConfig?.secretsManagement?.enabled &&
                             hasRequiredScopes(featureConfig?.secretsManagement,
                                 featureConfig?.secretsManagement?.scopes?.create, allowedScopes) &&
+                                !isSecretListLoading &&
                             (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
                             OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
                             OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
-                            <ListItem onClick={ () => null } disableGutters disablePadding>
-                                <OxygenButton
-                                    fullWidth
-                                    color="primary"
-                                    className="create-new-secret-button"
-                                    startIcon={ <PlusIcon size={ 14 } /> }
-                                    onClick={ () => {
-                                        setSecretsDropdownAnchorEl(null);
-                                        setIsDropdownOpen(false);
-                                        setShowAddSecretModal(true);
-                                    } }
-                                    data-componentid={ `${ componentId }-create-new-secret-button` }
-                                >
-                                    { t("applications:edit.sections.signOnMethod" +
-                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
-                                </OxygenButton>
-                            </ListItem>
+                            <>
+                                <Divider />
+                                <ListItem onClick={ () => null } disableGutters disablePadding>
+                                    <OxygenButton
+                                        fullWidth
+                                        color="primary"
+                                        className="create-new-secret-button"
+                                        startIcon={ <PlusIcon size={ 14 } /> }
+                                        onClick={ () => {
+                                            setSecretsDropdownAnchorEl(null);
+                                            setIsDropdownOpen(false);
+                                            setShowAddSecretModal(true);
+                                        } }
+                                        data-componentid={ `${ componentId }-create-new-secret-button` }
+                                    >
+                                        { t("applications:edit.sections.signOnMethod" +
+                                            ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
+                                    </OxygenButton>
+                                </ListItem>
+                            </>
                         ) }
                     </List>
                 </Popover>
@@ -1333,7 +1353,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 hasRequiredScopes(featureConfig?.secretsManagement,
                                                     featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && (
                                                 <Menu.Item
-                                                    className={ `action ${ isSecretsDropdownOpen
+                                                    className={ `action ${ isDropdownOpen
                                                         ? "selected-secret"
                                                         : ""
                                                     }` }>
