@@ -143,7 +143,10 @@ export interface ApplicationsNS {
         disableApplication: {
             header: string;
             message: string;
-            content: string;
+            content: {
+                0: string;
+                1: string;
+            };
             assertionHint: string;
         },
         enableApplication: {

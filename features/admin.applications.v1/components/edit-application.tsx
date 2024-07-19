@@ -19,6 +19,7 @@
 import { Show } from "@wso2is/access-control";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
 import {
+    AppConstants,
     AppState,
     CORSOriginsListInterface,
     EventPublisher,
@@ -41,13 +42,14 @@ import {
     CopyInputField,
     DangerZone,
     DangerZoneGroup,
+    Link,
     ResourceTab,
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
@@ -1040,7 +1042,32 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 >
                     { enableStatus
                         ? t("applications:confirmations.enableApplication.content")
-                        : t("applications:confirmations.disableApplication.content") }
+                        : (
+                            <>
+                                <Trans
+                                    i18nKey={ "applications:confirmations.disableApplication.content.0" }
+                                >
+                                    This may prevent consumers from accessing the application,
+                                    but it can be resolved by re-enabling the application.
+                                </Trans>
+                                <br /><br />
+                                <Trans
+                                    i18nKey={ "applications:confirmations.disableApplication.content.1" }
+                                >
+                                            Ensure that the references to the application in
+                                    <Link
+                                        data-componentid={ `${componentId}-link-email-templates-page` }
+                                        onClick={
+                                            () => history.push(AppConstants.getPaths().get("EMAIL_MANAGEMENT"))
+                                        }
+                                        external={ false }
+                                    >
+                                        email templates
+                                    </Link> and other relevant locations are updated to reflect the application
+                                    status accordingly.
+                                </Trans>
+                            </>
+                        ) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>

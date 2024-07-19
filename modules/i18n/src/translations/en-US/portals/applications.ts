@@ -199,8 +199,12 @@ export const applications: ApplicationsNS = {
         },
         disableApplication: {
             header: "Are you sure?",
-            content: "This may cause the consumers being unable to access the application. This is temporary and " +
-            "reversible by enabling the application.",
+            content: {
+                0: "This may prevent consumers from accessing the application, but it can be resolved by " +
+                "re-enabling the application.",
+                1: "Ensure that the references to the application in <1>email templates</1> " +
+                "and other relevant locations are updated to reflect the application status accordingly."
+            },
             message: "If you disable this application, consumers will not be able to access the application. "+
             "The application also will loose access to user data. Please proceed with caution.",
             assertionHint: "Please confirm your action."
