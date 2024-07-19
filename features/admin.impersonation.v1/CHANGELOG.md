@@ -1,5 +1,17 @@
 # @wso2is/admin.impersonation.v1
 
+## 1.1.17
+
+### Patch Changes
+
+- Updated dependencies [[`98ae1e51e5e4c1bbaf52ac814af1da1722efb596`](https://github.com/wso2/identity-apps/commit/98ae1e51e5e4c1bbaf52ac814af1da1722efb596)]:
+  - @wso2is/theme@2.0.92
+  - @wso2is/admin.core.v1@2.23.5
+  - @wso2is/admin.server-configurations.v1@2.21.17
+  - @wso2is/react-components@2.2.21
+  - @wso2is/dynamic-forms@2.0.79
+  - @wso2is/form@2.0.80
+
 ## 1.1.16
 
 ### Patch Changes

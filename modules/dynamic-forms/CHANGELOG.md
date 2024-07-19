@@ -1,5 +1,12 @@
 # @wso2is/dynamic-forms
 
+## 2.0.79
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.2.21
+
 ## 2.0.78
 
 ### Patch Changes
