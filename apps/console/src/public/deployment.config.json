@@ -1146,9 +1146,7 @@
         "legacyMode": {
             "applicationListSystemApps": false,
             "applicationSystemAppsSettings": false,
-            "certificates": false,
-            "roleMapping": false,
-            "secretsManagement": false
+            "roleMapping": false
         },
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},
