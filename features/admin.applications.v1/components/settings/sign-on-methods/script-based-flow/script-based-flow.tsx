@@ -850,7 +850,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <TrashIcon size={ 14 } />
                                 </IconButton>
                             </ListItem>
-                            { index !== filteredSecretList?.length - 1 && <Divider /> }
+                            { index !== filteredSecretList?.length - 1 && <Divider/> }
                         </>
                     ))
                 );
@@ -866,7 +866,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             { t("authenticationFlow:scriptEditor.secretSelector." +
                                 "emptyPlaceholder.header") }
                         </Typography>
-                        <Divider  />
+                        <Divider/>
                         <Typography variant="caption">
                             <Trans
                                 i18nKey={
