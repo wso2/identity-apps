@@ -16,7 +16,10 @@
  * under the License.
  */
 
+import Popover from "@mui/material/Popover";
+import OxygenButton from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import OxygenCode from "@oxygen-ui/react/Code";
 import Divider from "@oxygen-ui/react/Divider";
 import IconButton from "@oxygen-ui/react/IconButton";
 import List from "@oxygen-ui/react/List";
@@ -186,7 +189,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
     const [ isPremiumFeature, setIsPremiumFeature ] = useState<boolean>(false);
     const [ isELKConfigureClicked, setIsELKConfigureClicked ] = useState<boolean>(false);
-
+    const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
+    const [ secretsDropdownAnchorEl, setSecretsDropdownAnchorEl ] = useState<null | HTMLElement>(null);
     /**
      * List of secrets for the selected `secretType`. It can hold secrets of
      * either a custom one or the static type "ADAPTIVE_AUTH_CALL_CHOREO"
@@ -803,72 +807,58 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * Render the secret list dropdown.
      */
     const renderSecretListDropdown = (): ReactElement => {
-        return(
-            <Dropdown
-                defaultOpen={ !isSecretListLoading }
-                labeled
-                button
-                upward={ false }
-                options={ filteredSecretList }
-                onOpen={ () => setIsSecretsDropdownOpen(true) }
-                onClose={ () => setIsSecretsDropdownOpen(false) }
-                icon ={ (
-                    <Popup
-                        disabled={ isSecretsDropdownOpen }
-                        trigger={ (
-                            <div>
-                                <GenericIcon
-                                    hoverable
-                                    transparent
-                                    defaultIcon
-                                    size="micro"
-                                    hoverType="rounded"
-                                    icon={ getOperationIcons().keyIcon }
-                                    data-componentid={
-                                        `${ componentId }-code-editor-secret-selection`
-                                    }
-                                />
-                            </div>
-                        ) }
-                        content={ (
-                            <Trans
-                                i18nKey={
-                                    "applications:edit." +
-                                    "sections.signOnMethod.sections.authenticationFlow." +
-                                    "sections.scriptBased.secretsList.tooltips.keyIcon"
-                                }
-                            >
-                                Securely store access keys as secrets. A secret can
-                                replace the consumer secret in <Code>callChoreo()</Code> function
-                                in the conditional authentication scripts.
-                            </Trans>
-                        ) }
-                        position="bottom left"
-                        pinned={ true }
-                    />
-                ) }
-            >
-                <Dropdown.Menu>
+        return (
+            <>
+                <GenericIcon
+                    hoverable
+                    transparent
+                    defaultIcon
+                    size="micro"
+                    hoverType="rounded"
+                    icon={ getOperationIcons().keyIcon }
+                    data-componentid={
+                        `${ componentId }-code-editor-secret-selection`
+                    }
+                    onClick={ (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                        setSecretsDropdownAnchorEl(event.currentTarget);
+                        setIsDropdownOpen(true);
+                    } }
+                />
+                <Popover
+                    anchorEl={ secretsDropdownAnchorEl }
+                    open={ isDropdownOpen }
+                    onClose={ () => {
+                        setSecretsDropdownAnchorEl(null);
+                        setIsDropdownOpen(false);
+                        setFilteredSecretList(secretList);
+                    } }
+                    transformOrigin={ { horizontal: "right", vertical: "top" } }
+                    anchorOrigin={ { horizontal: "right", vertical: "bottom" } }
+                    data-componentid={ `${ componentId }-popover` }
+                >
                     {
                         secretList.length > 0 && (
-                            <Input
-                                data-componentid={ `${ componentId }-secret-search` }
-                                icon="search"
-                                iconPosition="left"
-                                className="search"
-                                placeholder={ t("applications:edit.sections.signOnMethod" +
-                                    ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
-                                onChange={ (data: ChangeEvent<HTMLInputElement>
-                                ) => {
-                                    if (!data.currentTarget?.value) {
-                                        setFilteredSecretList(secretList);
-                                    } else {
-                                        setFilteredSecretList(secretList.filter((secret: SecretModel) => secret.
-                                            secretName.toLowerCase().includes(data.currentTarget.value.toLowerCase())));
-                                    }
-                                } }
-                                onClick={ (e: React.MouseEvent<HTMLElement>) => e.stopPropagation() }
-                            />
+                            <div className="secret-search-input-container">
+                                <Input
+                                    data-componentid={ `${ componentId }-secret-search` }
+                                    icon="search"
+                                    iconPosition="left"
+                                    className="secret-search-input"
+                                    placeholder={ t("applications:edit.sections.signOnMethod" +
+                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
+                                    onChange={ (data: ChangeEvent<HTMLInputElement>
+                                    ) => {
+                                        if (!data.currentTarget?.value) {
+                                            setFilteredSecretList(secretList);
+                                        } else {
+                                            setFilteredSecretList(secretList.filter((secret: SecretModel) => secret.
+                                                secretName.toLowerCase().includes(
+                                                    data.currentTarget.value.toLowerCase())));
+                                        }
+                                    } }
+                                    onClick={ (e: React.MouseEvent<HTMLElement>) => e.stopPropagation() }
+                                />
+                            </div>
                         )
                     }
                     <List
@@ -909,41 +899,62 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     </>
                                 ))
                             ) : (
-                                <Dropdown.Item
+                                <ListItem
+                                    className="create-new-secret-dropdown-empty-placeholder"
                                     data-componentid={ `${ componentId }-empty-placeholder` }
-                                    key={ "secretEmptyPlaceholder" }
-                                    text={ t("applications:edit.sections.signOnMethod" +
-                                        ".sections.authenticationFlow.sections.scriptBased.secretsList." +
-                                        "emptyPlaceholder") }
-                                    disabled
-                                />
+                                >
+                                    <ListItemText>
+                                        <Typography variant="body1" align="center" gutterBottom="true">
+                                            { t("authenticationFlow:scriptEditor.secretSelector." +
+                                                "emptyPlaceholder.header") }
+                                        </Typography>
+                                        <Divider  />
+                                        <Typography variant="caption">
+                                            <Trans
+                                                i18nKey={
+                                                    "authenticationFlow:scriptEditor.secretSelector." +
+                                                    "emptyPlaceholder.description"
+                                                }
+                                            >
+                                                    Securely store access keys as secrets. A secret can
+                                                    replace the consumer secret in <OxygenCode variant="caption">
+                                                        callChoreo()</OxygenCode> function
+                                                    in the conditional authentication scripts.
+                                            </Trans>
+                                        </Typography>
+                                    </ListItemText>
+                                </ListItem>
                             )
                         }
+                        <Divider />
                         { featureConfig?.secretsManagement?.enabled &&
                             hasRequiredScopes(featureConfig?.secretsManagement,
                                 featureConfig?.secretsManagement?.scopes?.create, allowedScopes) &&
                             (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
                             OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
                             OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
-                            <Dropdown.Menu
-                                className={ "create-button-item" }
-                                scrolling
-                            >
-                                <Dropdown.Item
-                                    key={ "createSecret" }
-                                    text={ t("applications:edit.sections.signOnMethod" +
-                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
+                            <ListItem onClick={ () => null } disableGutters disablePadding>
+                                <OxygenButton
+                                    fullWidth
+                                    color="primary"
+                                    className="create-new-secret-button"
+                                    startIcon={ <PlusIcon size={ 14 } /> }
                                     onClick={ () => {
+                                        setSecretsDropdownAnchorEl(null);
+                                        setIsDropdownOpen(false);
                                         setShowAddSecretModal(true);
                                     } }
-                                />
-                            </Dropdown.Menu>
+                                    data-componentid={ `${ componentId }-create-new-secret-button` }
+                                >
+                                    { t("applications:edit.sections.signOnMethod" +
+                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
+                                </OxygenButton>
+                            </ListItem>
                         ) }
                     </List>
-                </Dropdown.Menu>
-            </Dropdown>
+                </Popover>
+            </>
         );
-
     };
 
     /**
