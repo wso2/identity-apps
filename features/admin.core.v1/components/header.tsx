@@ -171,7 +171,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
         return "";
     };
 
-    // TODO: Need to add a diamond icon to the upgrade button.
     const generateHeaderButtons = (): ReactElement[] => [
         window["AppUtils"].getConfig().docSiteUrl && (
             <Button
