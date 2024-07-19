@@ -220,6 +220,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
+    const [ isJWTAccessTokenTypeSelected, setJWTAccessTokenTypeSelected ] =useState<boolean>(false);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
@@ -337,6 +338,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const PKCE_KEY: string = "PKCE";
     const ENABLE_PKCE_CHECKBOX_VALUE: string = "mandatory";
     const SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE: string = "supportPlainTransformAlgorithm";
+    const JWT: string = "JWT";
 
     /**
      * The listener handler for the enable PKCE toggle form field. This function
@@ -583,6 +585,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             setAllowedOrigins(initialValues?.allowedOrigins.toString());
         }
 
+    }, [ initialValues ]);
+
+
+    /**
+     * Check whether which access token type is enabled.
+     */
+    useEffect(() => {
+
+        if (initialValues?.accessToken) {
+            setJWTAccessTokenTypeSelected(initialValues?.accessToken?.type === JWT);
+        } else {
+            setJWTAccessTokenTypeSelected(metadata?.accessTokenType?.defaultValue === JWT);
+        }
     }, [ initialValues ]);
 
     /**
@@ -2566,6 +2581,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 }
                                 type="radio"
                                 children={ getAllowedListForAccessToken(metadata?.accessTokenType, false) }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setJWTAccessTokenTypeSelected(
+                                        values.get("type") === JWT
+                                    );
+                                } }
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
@@ -3020,6 +3040,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isSystemApplication
                 && !isDefaultApplication
                 && isSubjectTokenFeatureAvailable
+                && isJWTAccessTokenTypeSelected
                 && (
                     <>
                         <Grid.Row columns={ 2 }>
