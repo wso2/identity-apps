@@ -6,4 +6,4 @@
 "@wso2is/i18n": patch
 ---
 
-Remove all the pvt-key-jwt UI.
+Remove UI elements related to organization-level private key JWT configuration.
