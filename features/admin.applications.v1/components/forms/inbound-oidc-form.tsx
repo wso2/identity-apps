@@ -598,7 +598,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         } else {
             setJWTAccessTokenTypeSelected(metadata?.accessTokenType?.defaultValue === JWT);
         }
-    }, [ initialValues ]);
+    }, [ initialValues, metadata ]);
 
     /**
      * Sets if subject token is enabled.
