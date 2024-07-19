@@ -29,6 +29,7 @@ import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-conf
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -567,7 +568,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                     isResourceComingSoon={ template.comingSoon }
                                     disabled={ isTemplateDisabled }
                                     disabledHint={ disabledHint }
-                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                    comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                     resourceDescription={ template.description }
                                     resourceImage={
                                         ConnectionsManagementUtils

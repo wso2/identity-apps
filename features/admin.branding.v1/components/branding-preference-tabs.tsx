@@ -19,6 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
     BrandingPreferenceInterface,
@@ -461,7 +462,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         <Chip
                             size="small"
                             sx={ { marginLeft: 1 } }
-                            label={ t("common:beta") }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta"
                         />
                     ) }
@@ -469,7 +470,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         <Chip
                             size="small"
                             sx={ { marginLeft: 1 } }
-                            label={ t("common:comingSoon") }
+                            label={ t(FeatureStatusLabel.COMING_SOON) }
                         />
                     ) }
                 </Menu.Item>

@@ -23,6 +23,7 @@ import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/c
 import { AppState } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -377,7 +378,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return (
                 <Chip
                     size="small"
-                    label={ t("common:beta") }
+                    label={ t(FeatureStatusLabel.BETA) }
                     className="oxygen-chip-beta"
                 />
             );
