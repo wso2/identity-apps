@@ -394,7 +394,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 }
             }
 
-
             history.push({
                 pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
                     .replace(":id", appId).replace(":tabName", tabName),
