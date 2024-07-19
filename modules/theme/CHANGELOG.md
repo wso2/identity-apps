@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.92
+
+### Patch Changes
+
+- [#6619](https://github.com/wso2/identity-apps/pull/6619) [`98ae1e51e5e4c1bbaf52ac814af1da1722efb596`](https://github.com/wso2/identity-apps/commit/98ae1e51e5e4c1bbaf52ac814af1da1722efb596) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix overflow issue in secrets dropdown
+
 ## 2.0.91
 
 ### Patch Changes

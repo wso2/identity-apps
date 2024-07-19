@@ -1,5 +1,34 @@
 # @wso2is/admin.applications.v1
 
+## 2.22.5
+
+### Patch Changes
+
+- [#6619](https://github.com/wso2/identity-apps/pull/6619) [`98ae1e51e5e4c1bbaf52ac814af1da1722efb596`](https://github.com/wso2/identity-apps/commit/98ae1e51e5e4c1bbaf52ac814af1da1722efb596) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix overflow issue in secrets dropdown
+
+- Updated dependencies []:
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.75
+  - @wso2is/admin.connections.v1@2.21.5
+  - @wso2is/admin.console-settings.v1@2.20.75
+  - @wso2is/admin.core.v1@2.23.5
+  - @wso2is/admin.extensions.v1@2.21.45
+  - @wso2is/admin.identity-providers.v1@2.21.5
+  - @wso2is/admin.login-flow.ai.v1@2.20.75
+  - @wso2is/admin.oidc-scopes.v1@2.20.75
+  - @wso2is/admin.organizations.v1@2.20.75
+  - @wso2is/admin.roles.v2@2.20.75
+  - @wso2is/admin.authorization.v1@2.20.32
+  - @wso2is/admin.branding.v1@2.20.75
+  - @wso2is/admin.claims.v1@2.20.75
+  - @wso2is/admin.impersonation.v1@1.1.17
+  - @wso2is/admin.secrets.v1@2.20.75
+  - @wso2is/admin.server-configurations.v1@2.21.17
+  - @wso2is/admin.userstores.v1@2.20.75
+  - @wso2is/admin.wsfed-configuration.v1@2.20.75
+  - @wso2is/react-components@2.2.21
+  - @wso2is/admin.api-resources.v2@2.20.75
+  - @wso2is/form@2.0.80
+
 ## 2.22.4
 
 ### Patch Changes
