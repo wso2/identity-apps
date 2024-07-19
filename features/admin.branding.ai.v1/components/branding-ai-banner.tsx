@@ -32,9 +32,10 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import FeatureStatusLabel from "../../admin.extensions.v1/components/feature-gate/models/feature-gate";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
-import useGenerateAIBrandingPreference,
-{ GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
+import useGenerateAIBrandingPreference, { GenerateAIBrandingPreferenceFunc }
+    from "../hooks/use-generate-ai-branding-preference";
 import { BannerState } from "../models/types";
 import "./branding-ai-banner.scss";
 
@@ -99,7 +100,7 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }
@@ -125,7 +126,7 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }

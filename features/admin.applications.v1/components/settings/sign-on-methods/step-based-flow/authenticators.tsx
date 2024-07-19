@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,14 +18,15 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppState } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { AuthenticatorMeta } from "@wso2is/admin.identity-providers.v1/meta/authenticator-meta";
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface
@@ -377,7 +378,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return (
                 <Chip
                     size="small"
-                    label={ t("common:beta").toUpperCase() }
+                    label={ t(FeatureStatusLabel.BETA) }
                     className="oxygen-chip-beta"
                 />
             );

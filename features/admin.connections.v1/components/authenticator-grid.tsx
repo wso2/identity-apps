@@ -26,6 +26,7 @@ import {
 } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -412,7 +413,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                             .includes(authenticator.name)
                                     }
                                     isResourceComingSoon={ authenticatorConfig?.isComingSoon }
-                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                    comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                     resourceName={
                                         isIdP
                                             ? authenticator.name

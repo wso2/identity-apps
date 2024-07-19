@@ -761,7 +761,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                       && (
                           <Chip
                               size="small"
-                              label={ t(FeatureStatusLabel.NEW).toUpperCase() }
+                              label={ t(FeatureStatusLabel.NEW) }
                               className="oxygen-chip-new"
                           />
                       ) }
