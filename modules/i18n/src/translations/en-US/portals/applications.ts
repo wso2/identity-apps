@@ -1123,11 +1123,11 @@ export const applications: ApplicationsNS = {
                     },
                     fields: {
                         enableClientAttestation: {
-                            hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform.",
+                            hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform. To enable this you will be required to setup <1>Platform Settings</1>.",
                             label: "Enable client attestation"
                         },
                         androidAttestationServiceCredentials: {
-                            hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
+                            hint: "Provide the Google service account credentials in the JSON format for Android applications. This will be used to access the  Google Play Integrity Service.",
                             label: "Service account credentials",
                             placeholder: "Content of the JSON key file for the Google service account credentials",
                             validations: {
@@ -1140,12 +1140,12 @@ export const applications: ApplicationsNS = {
                 trustedApps: {
                     heading: "Trusted App Settings",
                     alerts: {
-                        trustedAppSettingsAlert: "Enabling this feature will publish details under Platform Settings to a public endpoint shared across all Asgardeo organizations. This means that other organizations can access details about the application and the associated organization.",
+                        trustedAppSettingsAlert: "Enabling this feature will publish details under <1>Platform Settings</1> to a public endpoint accessible to all Asgardeo organizations. Consequently, other organizations can view information about your application and its associated organization. This option is not applicable if you are using custom domains.",
                         link: "Read for more."
                     },
                     fields: {
                         enableFIDOTrustedApps: {
-                            hint: "Select to trust the app for user login with passkey. Provide the details of the application under Platform Settings.",
+                            hint: "Select to trust the app for user login with passkey. Provide the details of the application under <1>Platform Settings</1>.",
                             label: "Add as a FIDO trusted app"
                         }
                     },
