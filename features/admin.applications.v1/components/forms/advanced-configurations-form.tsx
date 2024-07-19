@@ -283,6 +283,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             } else {
                 setClearThumbprinstError(true);
             }
+        } else {
+            setClearThumbprinstError(true);
         }
 
         return errors;
