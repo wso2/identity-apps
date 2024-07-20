@@ -24,6 +24,7 @@ import {
     ApplicationListItemInterface
 } from "@wso2is/admin.applications.v1/models/application";
 import { AppConstants, UIConstants, history } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, LinkButton, ListLayout } from "@wso2is/react-components";
@@ -71,6 +72,8 @@ const ApplicationSelectionModal: FunctionComponent<ApplicationSelectionModalInte
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const { UIConfig } = useUIConfig();
 
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);

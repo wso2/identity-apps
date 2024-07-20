@@ -35,7 +35,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
-import { RouteInterface } from "@wso2is/core/models";
+import { LegacyModeInterface, RouteInterface } from "@wso2is/core/src/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
