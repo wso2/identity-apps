@@ -21,9 +21,6 @@ import { ConnectionTemplateLoadingStrategies } from "../models/connection";
 
 type MinMax = { min: number; max: number };
 
-/**
- * Class containing connection management constants.
- */
 export class ConnectionManagementConstants {
 
     /**
