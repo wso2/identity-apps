@@ -1929,6 +1929,10 @@ TODO : Move values to separate variables and cleanup styles.
     color: black !important;
 }
 
+#onetrust-policy-text *:not(a) {
+    color: inherit !important;
+}
+
 #onetrust-pc-btn-handler {
     background: #F6F4F2 !important;
     text-transform: capitalize !important;
