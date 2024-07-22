@@ -58,6 +58,7 @@ export class AuthenticatorManagementConstants {
     public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME: string = "EmailOTP";
     public static readonly SMS_OTP_AUTHENTICATOR_NAME: string = "SMSOTP";
     public static readonly ORGANIZATION_SSO_AUTHENTICATOR_NAME: string = "OrganizationAuthenticator";
+    public static readonly ORGANIZATION_AUTHENTICATOR: string = "SSO";
 
     // Federated Authenticators
     public static readonly IPROOV_AUTHENTICATOR_NAME: string = "IproovAuthenticator";
