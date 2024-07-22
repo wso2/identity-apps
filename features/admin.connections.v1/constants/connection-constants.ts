@@ -17,7 +17,6 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { ConnectionTemplateLoadingStrategies } from "../models/connection";
 
 type MinMax = { min: number; max: number };
 
@@ -74,14 +73,11 @@ export class ConnectionManagementConstants {
     public static readonly OFFICE_365_AUTHENTICATOR_NAME: string = "Office365Authenticator";
     public static readonly MS_LIVE_AUTHENTICATOR_NAME: string = "MicrosoftWindowsLiveAuthenticator";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_NAME: string = "IWAKerberosAuthenticator";
-    public static readonly MICROSOFT_AUTHENTICATOR_NAME: string = "MicrosoftAuthenticator";
     public static readonly APPLE_AUTHENTICATOR_NAME: string = "AppleOIDCAuthenticator";
 
     public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
     public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
-    public static readonly OIDC_AUTHENTICATOR_NAME: string = "OpenIDConnectAuthenticator";
-    public static readonly SAML_AUTHENTICATOR_NAME: string = "SAMLSSOAuthenticator";
 
     public static readonly IDP_NAME_LENGTH: MinMax = { max: 120, min: 3 };
     public static readonly JWKS_URL_LENGTH: MinMax = { max: 2048, min: 0 };
@@ -90,7 +86,6 @@ export class ConnectionManagementConstants {
     public static readonly CLAIM_USERNAME: string  = "http://wso2.org/claims/username";
     public static readonly CLAIM_EMAIL: string  = "http://wso2.org/claims/emailaddress";
     public static readonly CLAIM_MOBILE: string  = "http://wso2.org/claims/mobile";
-    public static readonly CLAIM_ROLE: string  = "http://wso2.org/claims/role";
     public static readonly CLAIM_ROLES: string  = "http://wso2.org/claims/roles";
     public static readonly OIDC_ROLES_CLAIM: string  = "roles";
     public static readonly LOCAL_DIALECT_GROUP_CLAIM: string  = "http://wso2.org/claims/groups";
@@ -113,23 +108,11 @@ export class ConnectionManagementConstants {
         IMAGE_URL_MIN_LENGTH: 3
     };
 
-    /**
-     * Default connection template loading strategy.
-    **/
-    public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: ConnectionTemplateLoadingStrategies =
-    ConnectionTemplateLoadingStrategies.LOCAL;
-
     public static readonly CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity providers.";
 
     public static readonly CONNECTIONS_FETCH_ERROR: string = "An error occurred while fetching " +
     "the identity providers.";
-
-    public static readonly CONNECTION_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
-        "invalid status code while fetching identity provider template.";
-
-    public static readonly CONNECTION_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching " +
-    "the required identity provider template.";
 
     public static readonly LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the local authenticator.";
@@ -204,22 +187,13 @@ export class ConnectionManagementConstants {
     public static readonly USER_ID_IN_CLAIMS: string = "IsUserIdInClaims";
 
     /**
-     * Google Scope mappings.
-     */
-    public static readonly GOOGLE_SCOPE_DICTIONARY: Record<string, string> = {
-        EMAIL: "email",
-        OPENID: "openid",
-        PROFILE: "profile"
-    };
-
-    /**
      * Set of connection template group Ids.
      */
     public static readonly CONNECTION_TEMPLATE_GROUPS: {
         ENTERPRISE_PROTOCOLS: string;
     } = {
-        ENTERPRISE_PROTOCOLS: "enterprise-protocols"
-    };
+            ENTERPRISE_PROTOCOLS: "enterprise-protocols"
+        };
 
     /**
      * Set of IDP template Ids.
@@ -238,19 +212,19 @@ export class ConnectionManagementConstants {
         SAML: string;
         SWE: string;
     } = {
-        APPLE: "apple-idp",
-        ENTERPRISE: "enterprise-idp",
-        FACEBOOK: "facebook-idp",
-        GITHUB: "github-idp",
-        GOOGLE: "google-idp",
-        HYPR: "hypr-idp",
-        LINKEDIN: "linkedin-idp",
-        MICROSOFT: "microsoft-idp",
-        OIDC: "enterprise-oidc-idp",
-        ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
-        SAML: "enterprise-saml-idp",
-        SWE: "swe-idp"
-    };
+            APPLE: "apple-idp",
+            ENTERPRISE: "enterprise-idp",
+            FACEBOOK: "facebook-idp",
+            GITHUB: "github-idp",
+            GOOGLE: "google-idp",
+            HYPR: "hypr-idp",
+            LINKEDIN: "linkedin-idp",
+            MICROSOFT: "microsoft-idp",
+            OIDC: "enterprise-oidc-idp",
+            ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
+            SAML: "enterprise-saml-idp",
+            SWE: "swe-idp"
+        };
 
     /**
      * Set of Connection setup guide links.
@@ -272,25 +246,16 @@ export class ConnectionManagementConstants {
 
 export class SIWEConstants {
 
-    public static readonly SIWE_REGISTRATION_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-SIWE-00001";
-    public static readonly SIWE_REGISTRATION_ERROR_CODE: string = "ASG-CON-SIWE-00002";
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-]     */
+     */
     private constructor() { }
-
-    public static readonly SIWE_CLIENT_REGISTRATION_DOCS_URL: string = "https://docs.login.xyz/servers/" +
-        "oidc-provider/hosted-oidc-provider#openid-connect-client-registration";
-
-    // eslint-disable-next-line max-len
-    public static readonly SIWE_CLIENT_REGISTRATION_CURL_COMMAND: string = "curl -X POST https://oidc.signinwithethereum.org/register -H 'Content-Type: application/json' -d '{\"redirect_uris\": [ \"${commonauth}\" ]}'";
 
     /**
      * SIWE Scope mappings.
-]     */
+     */
     public static readonly SIWE_SCOPE_DICTIONARY: Record<string, string> = {
         OPENID: "openid",
         PROFILE: "profile"

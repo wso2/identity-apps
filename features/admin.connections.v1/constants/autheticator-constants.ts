@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,8 +39,6 @@ export class AuthenticatorManagementConstants {
     public static readonly TOTP_AUTHENTICATOR_ID: string = "dG90cA";
     public static readonly ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID: string = "U2Vzc2lvbkV4ZWN1dG9y";
     public static readonly X509_CERTIFICATE_AUTHENTICATOR_ID: string = "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg";
-    public static readonly BASIC_AUTH_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoUmVxdWVzdFBhdGhBdXRoZW50aWNhdG9y";
-    public static readonly OAUTH_BEARER_AUTHENTICATOR_ID: string = "T0F1dGhSZXF1ZXN0UGF0aEF1dGhlbnRpY2F0b3I";
     public static readonly EMAIL_OTP_AUTHENTICATOR_ID: string = "ZW1haWwtb3RwLWF1dGhlbnRpY2F0b3I";
     public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_ID: string = "RW1haWxPVFA";
     public static readonly BACKUP_CODE_AUTHENTICATOR_ID: string = "YmFja3VwLWNvZGUtYXV0aGVudGljYXRvcg";
@@ -93,14 +91,6 @@ export class AuthenticatorManagementConstants {
         IDP_DESCRIPTION_MIN_LENGTH: 3,
         IDP_NAME_MAX_LENGTH: 50,
         IDP_NAME_MIN_LENGTH: 3
-    };
-
-    /**
-     * General Form element constraints.
-     */
-    public static readonly GENERAL_FORM_CONSTRAINTS: Record<string, string | number> = {
-        IMAGE_URL_MAX_LENGTH: 2048,
-        IMAGE_URL_MIN_LENGTH: 3
     };
 
     /**
@@ -215,29 +205,12 @@ export class AuthenticatorManagementConstants {
     };
 
     /**
-     * Scopes to request from GitHub.
-     */
-    public static readonly MICROSOFT_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
-        AuthenticatorManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID,
-        AuthenticatorManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL,
-        AuthenticatorManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE
-    ];
-
-    /**
      * GitHub Scope mappings.
      */
     public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
         USER_EMAIL: "user:email",
         USER_READ: "read:user"
     };
-
-    /**
-     * Scopes to request from GitHub.
-     */
-    public static readonly GITHUB_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
-        AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL,
-        AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ
-    ];
 
     /**
      * Facebook Scope mappings.
@@ -248,61 +221,12 @@ export class AuthenticatorManagementConstants {
     };
 
     /**
-     * Facebook Scope mappings.
-    **/
-    public static readonly FACEBOOK_PUBLIC_PROFILE_FIELD_DICTIONARY: Record<string, string> = {
-        AGE_RANGE: "age_range",
-        EMAIL: "email",
-        FIRST_NAME: "first_name",
-        GENDER: "gender",
-        ID: "id",
-        LAST_NAME: "last_name",
-        LINK: "link",
-        NAME: "name"
-    };
-
-    /**
-     * Scopes to request from Facebook.
-     **/
-    public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
-        AuthenticatorManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL,
-        AuthenticatorManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE
-    ];
-
-    /**
-     * Profile fields to request from Facebook.
-    **/
-    public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_PROFILE_FIELDS: string[] = [
-        "id",
-        "name",
-        "gender",
-        "email",
-        "first_name",
-        "last_name",
-        "age_range",
-        "link"
-    ];
-
-    /**
      * Apple scope mappings.
      */
     public static readonly APPLE_SCOPE_DICTIONARY: Record<string, string> = {
         EMAIL: "email",
         NAME: "name"
     };
-
-    /**
-     * Scopes to request from Apple.
-     */
-    public static readonly APPLE_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
-        AuthenticatorManagementConstants.APPLE_SCOPE_DICTIONARY.EMAIL,
-        AuthenticatorManagementConstants.APPLE_SCOPE_DICTIONARY.NAME
-    ];
-
-    /**
-     * Default Apple client secret validity period.
-     */
-    public static readonly APPLE_AUTHENTICATOR_CLIENT_SECRET_VALIDITY_PERIOD: string = "15777000";
 
     /**
      * Key of the Apple client secret regenerate attribute.
@@ -331,23 +255,6 @@ export class AuthenticatorManagementConstants {
         AuthenticatorManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.SECRET_VALIDITY_PERIOD,
         AuthenticatorManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.TEAM_ID
     ];
-
-    public static readonly SIWE_REGISTRATION_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-SIWE-00001";
-    public static readonly SIWE_REGISTRATION_ERROR_CODE: string = "ASG-CON-SIWE-00002";
-
-    public static readonly SIWE_CLIENT_REGISTRATION_DOCS_URL: string = "https://docs.login.xyz/servers/" +
-        "oidc-provider/hosted-oidc-provider#openid-connect-client-registration";
-
-    // eslint-disable-next-line max-len
-    public static readonly SIWE_CLIENT_REGISTRATION_CURL_COMMAND: string = "curl -X POST https://oidc.signinwithethereum.org/register -H 'Content-Type: application/json' -d '{\"redirect_uris\": [ \"${commonauth}\" ]}'";
-
-    /**
-     * SIWE Scope mappings.
-     */
-    public static readonly SIWE_SCOPE_DICTIONARY: Record<string, string> = {
-        OPENID: "openid",
-        PROFILE: "profile"
-    };
 
     public static readonly ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER: string = "An error occurred while adding SMS " +
         "Notification Sender";
