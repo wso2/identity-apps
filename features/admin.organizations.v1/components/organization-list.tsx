@@ -59,6 +59,7 @@ import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { GenericOrganization, OrganizationInterface, OrganizationListInterface } from "../models";
+import "./organization-list.scss";
 
 /**
  *
@@ -313,10 +314,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             { organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID
                                && (< Header.Content >
                                    <Icon
-                                       className="mr-2 ml-0 vertical-aligned-baseline"
+                                       className="organization-active-icon organization-active-icon-active"
                                        size="small"
                                        name="circle"
-                                       color="green"
                                    />
                                </Header.Content>)
                             }
@@ -325,10 +325,13 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     trigger={
                                         (<Icon
                                             data-componentid={ `${ componentId }-org-status-icon` }
-                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                            className={ "organization-active-icon "
+                                                + (organization.status === "ACTIVE"
+                                                    ? "organization-active-icon-active"
+                                                    : "organization-active-icon-inactive")
+                                            }
                                             size="small"
                                             name="circle"
-                                            color={ organization.status === "ACTIVE" ? "green" : "orange" }
                                         />)
                                     }
                                     content={
