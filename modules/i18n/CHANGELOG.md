@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.12
+
+### Patch Changes
+
+- [#6627](https://github.com/wso2/identity-apps/pull/6627) [`9f8577942314da8308aeae398f6d7d0eaf1b93ed`](https://github.com/wso2/identity-apps/commit/9f8577942314da8308aeae398f6d7d0eaf1b93ed) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update application disable warning message
+
 ## 2.5.11
 
 ### Patch Changes
