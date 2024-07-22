@@ -489,6 +489,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hidden={ resolveDropDownHiddenStatus() }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-attribute-dropdown` }
+                        data-componentid={ `${ componentId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
                         enableReinitialize={ true }
                         hint={ resolveSubjectAttributeHint() }
