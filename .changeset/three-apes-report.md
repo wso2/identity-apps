@@ -4,4 +4,4 @@
 "@wso2is/admin.users.v1": patch
 ---
 
-Address comments in pr-4175
+Address review comments in pull request #4175 
