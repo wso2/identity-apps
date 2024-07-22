@@ -318,11 +318,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
      * @returns The hidden status.
      */
     const resolveSubjectAttributeHiddenStatus = (): boolean => {
-        return (
-            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
-            (onlyOIDCConfigured && !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) ||
-            (onlyOIDCConfigured && !showSubjectAttribute)
-        );
+        return !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
+                onlyOIDCConfigured ||
+                (onlyOIDCConfigured && !showSubjectAttribute)
+        ;
     };
 
     const validateLinkedAccountCheckboxHandler = (value: boolean) => {
@@ -669,7 +668,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         </div>): null }
                     <Divider
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
+                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping  }
                     />
                     {
                         applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&

@@ -56,7 +56,6 @@ import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/
 import { AppConstants, OrganizationType } from "../constants";
 import { history } from "../helpers";
 import useGlobalVariables from "../hooks/use-global-variables";
-import useUIConfig from "../hooks/use-ui-configs";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
@@ -95,7 +94,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
 
-    const { UIConfig } = useUIConfig();
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
 
@@ -140,11 +138,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
      *  - the user is logged in to a non-super-tenant account
      */
     const isOrgSwitcherEnabled: boolean = useMemo(() => {
-        // If the organizations feature is disabled, do not show the org switcher.
-        if (!UIConfig?.legacyMode?.organizations) {
-            return false;
-        }
-
         return (
             isOrganizationManagementEnabled &&
             (organizationType === OrganizationType.SUPER_ORGANIZATION ||

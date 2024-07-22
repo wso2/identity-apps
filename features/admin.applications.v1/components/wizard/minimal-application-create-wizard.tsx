@@ -33,7 +33,6 @@ import {
 } from "@wso2is/admin.core.v1";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -165,7 +164,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const { getLink } = useDocumentation();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
-    const { UIConfig } = useUIConfig();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const tenantName: string = store.getState().config.deployment.tenant;
 
@@ -1127,7 +1125,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                     {
                         isOrganizationManagementEnabled
-                        && UIConfig?.legacyMode?.organizations
                         && applicationConfig.editApplication.showApplicationShare
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION

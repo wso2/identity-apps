@@ -319,19 +319,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 } }
             >
                 <Field.CheckboxLegacy
-                    ariaLabel="Saas application"
-                    name="saas"
-                    label={ t("applications:forms.advancedConfig.fields.saas.label") }
-                    required={ false }
-                    value={ config?.saas ? [ "saas" ] : [] }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-sass-checkbox` }
-                    data-componentid={ `${ testId }-sass-checkbox` }
-                    hint={ t("applications:forms.advancedConfig.fields.saas.hint") }
-                    hidden={ !UIConfig?.legacyMode?.saasApplications ||
-                        !applicationConfig.advancedConfigurations.showSaaS }
-                />
-                <Field.CheckboxLegacy
                     ariaLabel="Skip consent login"
                     name="skipConsentLogin"
                     label={ t("applications:forms.advancedConfig.fields.skipConsentLogin" +
