@@ -1,5 +1,20 @@
 # @wso2is/admin.authentication.v1
 
+## 2.20.77
+
+### Patch Changes
+
+- [#6632](https://github.com/wso2/identity-apps/pull/6632) [`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to `1.13.1` to fix the issue in the design of the default Chip design.
+
+- Updated dependencies [[`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a)]:
+  - @wso2is/admin.authorization.v1@2.20.34
+  - @wso2is/admin.organizations.v1@2.20.77
+  - @wso2is/admin.extensions.v1@2.21.47
+  - @wso2is/admin.users.v1@2.20.77
+  - @wso2is/admin.core.v1@2.23.7
+  - @wso2is/core@2.0.56
+  - @wso2is/i18n@2.5.10
+
 ## 2.20.76
 
 ### Patch Changes
