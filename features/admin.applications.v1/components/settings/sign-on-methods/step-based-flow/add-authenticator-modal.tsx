@@ -18,6 +18,7 @@
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import {
+    AuthenticatorManagementConstants,
     ConnectionManagementConstants,
     ConnectionTemplateInterface
 } from "@wso2is/admin.connections.v1";
@@ -31,16 +32,9 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import {
     AuthenticatorCategories,
-    GenericAuthenticatorInterface,
-    IdentityProviderTemplateItemInterface
+    GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import {
-    IdentityProviderTemplateManagementUtils
-} from "@wso2is/admin.identity-providers.v1/utils/identity-provider-template-management-utils";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -183,10 +177,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
-    const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
-        (state: AppState) => state.identityProvider?.groupedTemplates
-    );
-
     // External connection resources URL from the UI config.
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
@@ -256,17 +246,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     }, [ connectionTemplatesFetchRequestError ]);
 
     /**
-     * Fetches IdP templates if not available.
-     */
-    useEffect(() => {
-        if (groupedIDPTemplates) {
-            return;
-        }
-
-        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates();
-    }, [ groupedIDPTemplates ]);
-
-    /**
      * Update the internal filtered authenticators state when the prop changes.
      */
     useEffect(() => {
@@ -297,7 +276,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         _filteredAuthenticators = _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
             return (
                 authenticator.name !==
-                    IdentityProviderManagementConstants.ORGANIZATION_AUTHENTICATOR
+                    AuthenticatorManagementConstants.ORGANIZATION_AUTHENTICATOR
             );
         });
 
