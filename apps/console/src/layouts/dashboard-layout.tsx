@@ -81,6 +81,7 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
 import { getAppViewRoutes } from "../configs/routes";
+import useGracefulRouteHandling from "../hooks/use-graceful-route-handling";
 
 /**
  * Parent component for features inherited from Dashboard layout skeleton.
@@ -94,6 +95,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
 ): ReactElement => {
     const { location } = props;
 
+    const { gracefullyHandleRouting } = useGracefulRouteHandling();
     const dispatch: ThunkDispatch<AppState, void, Action> = useDispatch();
     const { t } = useTranslation();
 
@@ -185,7 +187,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
 
         if (initLoad.current) {
             // Try to handle any un-expected routing issues. Returns a void if no issues are found.
-            RouteUtils.gracefullyHandleRouting(
+            gracefullyHandleRouting(
                 filteredRoutes,
                 AppConstants.getAdminViewBasePath(),
                 location.pathname

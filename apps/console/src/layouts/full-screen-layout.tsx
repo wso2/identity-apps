@@ -22,7 +22,6 @@ import {
     AppUtils,
     FeatureConfigInterface,
     ProtectedRoute,
-    RouteUtils,
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1";
 import { RouteInterface } from "@wso2is/core/models";
@@ -47,6 +46,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { getFullScreenViewRoutes } from "../configs/routes";
+import useGracefulRouteHandling from "../hooks/use-graceful-route-handling";
 
 /**
  * Full Screen View Prop types.
@@ -73,6 +73,7 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { gracefullyHandleRouting } = useGracefulRouteHandling();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -95,7 +96,7 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
             allowedScopes);
 
         // Try to handle any un-expected routing issues. Returns a void if no issues are found.
-        RouteUtils.gracefullyHandleRouting(routes, AppConstants.getFullScreenViewBasePath(), location.pathname);
+        gracefullyHandleRouting(routes, AppConstants.getFullScreenViewBasePath(), location.pathname);
 
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(routes);
