@@ -70,7 +70,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         brandingMode,
         setBrandingMode,
         selectedApplication,
-        setSelectedApplication
+        setSelectedApplication,
+        updateActiveTab
     } = useBrandingPreference();
 
     const {
@@ -263,14 +264,28 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                 value={ brandingMode }
                                                 disabled={ isBrandingAppsRedirect }
                                             >
-                                                <ToggleButton value={ BrandingModes.ORGANIZATION }>
+                                                <ToggleButton
+                                                    value={ BrandingModes.ORGANIZATION }
+                                                    onClick={ () => {
+                                                        updateActiveTab(
+                                                            BrandingPreferencesConstants.TABS.GENERAL_TAB_ID
+                                                        );
+                                                    } }
+                                                >
                                                     <BuildingIcon
                                                         className="toggle-button-icon"
                                                         size={ 14 }
                                                     />
                                                     { t("extensions:develop.branding.pageHeader.organization") }
                                                 </ToggleButton>
-                                                <ToggleButton value={ BrandingModes.APPLICATION }>
+                                                <ToggleButton
+                                                    value={ BrandingModes.APPLICATION }
+                                                    onClick={ () => {
+                                                        updateActiveTab(
+                                                            BrandingPreferencesConstants.TABS.GENERAL_TAB_ID
+                                                        );
+                                                    } }
+                                                >
                                                     <TilesIcon
                                                         className="toggle-button-icon"
                                                         size={ 14 }

@@ -170,6 +170,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         showCustomTextRevertAllConfirmationModal,
         setShowCustomTextRevertAllConfirmationModal
     ] = useState<boolean>(false);
+    const [ tabIndex, setTabIndex ] = useState<number>(0);
 
     /**
      * Sets the branding preference preview config.
@@ -480,6 +481,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
 
         if (!isSplitView) {
             panes.push({
+                "data-tabid": BrandingPreferencesConstants.TABS.PREVIEW_TAB_ID,
                 menuItem: t("extensions:develop.branding.tabs.preview.label"),
                 render: PreviewPreferenceTabPane
             });
@@ -515,11 +517,29 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         return preferenceForPreview;
     };
 
+    /**
+     * Sets the tab index based on the active tab.
+     */
+    useEffect(() => {
+        const tabMapping: {[x: string]: number;} = {
+            [BrandingPreferencesConstants.TABS.GENERAL_TAB_ID]:
+                BrandingPreferencesConstants.TAB_INDEX.GENERAL_TAB_INDEX,
+            [BrandingPreferencesConstants.TABS.DESIGN_TAB_ID]: BrandingPreferencesConstants.TAB_INDEX.DESIGN_TAB_INDEX,
+            [BrandingPreferencesConstants.TABS.ADVANCED_TAB_ID]:
+                BrandingPreferencesConstants.TAB_INDEX.ADVANCED_TAB_INDEX,
+            [BrandingPreferencesConstants.TABS.TEXT_TAB_ID]: BrandingPreferencesConstants.TAB_INDEX.TEXT_TAB_INDEX,
+            [BrandingPreferencesConstants.TABS.PREVIEW_TAB_ID]: BrandingPreferencesConstants.TAB_INDEX.PREVIEW_TAB_INDEX
+        };
+
+        setTabIndex(tabMapping[activeTab] ?? 0);
+    }, [ activeTab ]);
+
     return (
         <Segment.Group horizontal className="basic branding-preference-tab-group" data-componentid={ componentId }>
             <Segment basic padded={ false }>
                 <ResourceTab
                     attached="top"
+                    activeIndex={ tabIndex }
                     secondary={ false }
                     pointing={ false }
                     onTabChange={ (
