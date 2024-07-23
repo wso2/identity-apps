@@ -1,5 +1,23 @@
 # @wso2is/admin.application-roles.v1
 
+## 2.21.25
+
+### Patch Changes
+
+- [#6651](https://github.com/wso2/identity-apps/pull/6651) [`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to 1.13.2
+
+- Updated dependencies [[`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672)]:
+  - @wso2is/admin.identity-providers.v1@2.21.13
+  - @wso2is/admin.applications.v1@2.22.13
+  - @wso2is/admin.connections.v1@2.21.13
+  - @wso2is/admin.extensions.v1@2.21.53
+  - @wso2is/admin.userstores.v1@2.20.83
+  - @wso2is/admin.groups.v1@2.20.83
+  - @wso2is/react-components@2.2.25
+  - @wso2is/admin.core.v1@2.23.13
+  - @wso2is/access-control@3.0.18
+  - @wso2is/core@2.0.58
+
 ## 2.21.24
 
 ### Patch Changes
