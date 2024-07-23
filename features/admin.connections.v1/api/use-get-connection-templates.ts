@@ -25,7 +25,6 @@ import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpo
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { HttpMethods } from "@wso2is/core/models";
 import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { ConnectionTemplateInterface } from "../models/connection";
 import { groupConnectionTemplates } from "../utils/connection-template-utils";
 
@@ -86,7 +85,8 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
 
         // Hide specific connection templates for login flow builder.
         if (isLoginFlow) {
-            hiddenConnectionTemplateIds.push(ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID);
+            hiddenConnectionTemplateIds.push(CommonAuthenticatorManagementConstants
+                .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
         }
 
         const fetchedConnectionTemplates: ConnectionTemplateInterface[] = data as ConnectionTemplateInterface[];

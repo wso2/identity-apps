@@ -27,7 +27,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -258,7 +257,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
         // Set the client secret regenerate property.
         if (regenerateSecret === true) {
             properties.push({
-                key: IdentityProviderManagementConstants.APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY,
+                key: FederatedAuthenticatorConstants.APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY,
                 value: "true"
             });
         }

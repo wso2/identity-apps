@@ -95,17 +95,6 @@ export class ConnectionManagementConstants {
         ConnectionManagementConstants.CLAIM_MOBILE
     ];
 
-    public static readonly TRUSTED_TOKEN_TEMPLATE_ID: string = "trusted-token-issuer";
-    public static readonly EXPERT_MODE_TEMPLATE_ID: string = "expert-mode-idp";
-
-    /**
-     * General Form element constraints.
-     */
-    public static readonly GENERAL_FORM_CONSTRAINTS: Record<string, string | number> = {
-        IMAGE_URL_MAX_LENGTH: 2048,
-        IMAGE_URL_MIN_LENGTH: 3
-    };
-
     public static readonly CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity providers.";
 

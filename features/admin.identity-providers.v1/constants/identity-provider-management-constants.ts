@@ -24,11 +24,6 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
  */
 export class IdentityProviderManagementConstants {
 
-    /**
-     * Key of the Apple client secret regenerate attribute.
-     */
-    public static readonly APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY: string = "RegenerateClientSecret";
-
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching connection templates list.";
 

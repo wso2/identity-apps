@@ -29,6 +29,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface,
@@ -395,11 +396,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             value={ editingIDP.image }
                             data-testid={ `${ testId }-idp-image` }
                             maxLength={
-                                ConnectionManagementConstants
+                                ConnectionUIConstants
                                     .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number
                             }
                             minLength={
-                                ConnectionManagementConstants
+                                ConnectionUIConstants
                                     .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number
                             }
                             hint={ t("authenticationProvider:forms." +

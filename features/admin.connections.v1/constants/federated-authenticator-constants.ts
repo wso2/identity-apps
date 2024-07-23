@@ -72,4 +72,9 @@ export class FederatedAuthenticatorConstants {
         EMAIL: "email",
         NAME: "name"
     };
+
+    /**
+     * Key of the Apple client secret regenerate attribute.
+     */
+    public static readonly APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY: string = "RegenerateClientSecret";
 }

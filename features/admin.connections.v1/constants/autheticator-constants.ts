@@ -78,11 +78,6 @@ export class AuthenticatorManagementConstants {
      */
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
-    /**
-     * Key of the Apple client secret regenerate attribute.
-     */
-    public static readonly APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY: string = "RegenerateClientSecret";
-
     public static readonly ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER: string = "An error occurred while adding SMS " +
         "Notification Sender";
 

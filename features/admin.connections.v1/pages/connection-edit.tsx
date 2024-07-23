@@ -302,7 +302,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         }
 
         if (!connector.templateId) {
-            connector.templateId = ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID;
+            connector.templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE;
         }
 
         let template: ConnectionTemplateInterface = {};
@@ -354,8 +354,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        if (identityProviderTemplate?.id === ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID ||
-            identityProviderTemplate?.id === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID ||
+        if (identityProviderTemplate?.id
+                === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
+            identityProviderTemplate?.id
+                === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE ||
             identityProviderTemplate?.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
             identityProviderTemplate?.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SAML) {
 

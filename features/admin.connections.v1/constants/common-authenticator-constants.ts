@@ -32,6 +32,7 @@ export class CommonAuthenticatorManagementConstants {
     public static readonly CONNECTION_TEMPLATE_IDS: {
         APPLE: string;
         ENTERPRISE: string;
+        EXPERT_MODE: string;
         FACEBOOK: string;
         GITHUB: string;
         GOOGLE: string;
@@ -47,6 +48,7 @@ export class CommonAuthenticatorManagementConstants {
     } = {
             APPLE: "apple-idp",
             ENTERPRISE: "enterprise-idp",
+            EXPERT_MODE: "expert-mode-idp",
             FACEBOOK: "facebook-idp",
             GITHUB: "github-idp",
             GOOGLE: "google-idp",

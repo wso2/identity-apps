@@ -64,6 +64,14 @@ export class ConnectionUIConstants {
     } as const;
 
     /**
+     * General Form element constraints.
+     */
+    public static readonly GENERAL_FORM_CONSTRAINTS: Record<string, string | number> = {
+        IMAGE_URL_MAX_LENGTH: 2048,
+        IMAGE_URL_MIN_LENGTH: 3
+    };
+
+    /**
      * Authenticator Settings Form element constraints.
      */
     public static readonly AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, string | number> = {

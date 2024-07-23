@@ -54,6 +54,7 @@ import {
 } from "../../../api/authenticators";
 import { getConnectionIcons } from "../../../configs/ui";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
+import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -124,7 +125,7 @@ const commonAuthenticators: string[] = [
     ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
     ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
     ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID,
+    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
     ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
     ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID
 ];
@@ -189,8 +190,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const isActiveTemplateExpertMode: boolean = useMemo(() => {
         return identityProviderConfig?.templates?.expertMode &&
-            (identityProvider.templateId === ConnectionManagementConstants
-                .EXPERT_MODE_TEMPLATE_ID);
+            (identityProvider.templateId === CommonAuthenticatorManagementConstants
+                .CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
     }, [ identityProvider, identityProviderConfig  ]);
 
     useEffect(() => {

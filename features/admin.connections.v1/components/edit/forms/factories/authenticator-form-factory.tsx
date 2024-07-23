@@ -153,7 +153,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
     }
 
     // Render the form dynamically for federated authenticators in custom connector.
-    if (templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID) {
+    if (templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE) {
         return (
             <CommonAuthenticatorForm
                 mode={ mode }
