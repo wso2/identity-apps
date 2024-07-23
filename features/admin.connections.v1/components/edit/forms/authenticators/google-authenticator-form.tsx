@@ -25,7 +25,6 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
@@ -512,11 +511,11 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     )
                 }
                 maxLength={
-                    AuthenticatorManagementConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                    ConnectionUIConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .ADDITIONAL_QUERY_PARAMS_MAX_LENGTH as number
                 }
                 minLength={
-                    AuthenticatorManagementConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                    ConnectionUIConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .ADDITIONAL_QUERY_PARAMS_MIN_LENGTH as number
                 }
                 width={ 16 }

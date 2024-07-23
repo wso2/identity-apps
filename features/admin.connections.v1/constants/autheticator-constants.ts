@@ -79,14 +79,6 @@ export class AuthenticatorManagementConstants {
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
     /**
-     * Google Authenticator Settings Form element constraints.
-     */
-    public static readonly GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, number> = {
-        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
-        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0
-    };
-
-    /**
      * Microsoft Scope mappings.
      */
     public static readonly MICROSOFT_SCOPE_DICTIONARY: Record<string, string> = {

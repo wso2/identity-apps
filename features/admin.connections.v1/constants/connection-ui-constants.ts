@@ -158,4 +158,12 @@ export class ConnectionUIConstants {
             TEAM_ID_MAX_LENGTH: 10,
             TEAM_ID_MIN_LENGTH: 10
         };
+
+    /**
+     * Google Authenticator Settings Form element constraints.
+     */
+    public static readonly GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, number> = {
+        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0
+    };
 }

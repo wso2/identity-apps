@@ -33,7 +33,6 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -514,11 +513,11 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     )
                 }
                 maxLength={
-                    IdentityProviderManagementConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                    ConnectionUIConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .ADDITIONAL_QUERY_PARAMS_MAX_LENGTH as number
                 }
                 minLength={
-                    IdentityProviderManagementConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                    ConnectionUIConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .ADDITIONAL_QUERY_PARAMS_MIN_LENGTH as number
                 }
                 width={ 16 }
