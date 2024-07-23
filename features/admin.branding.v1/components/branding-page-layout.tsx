@@ -70,7 +70,9 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         brandingMode,
         setBrandingMode,
         selectedApplication,
-        setSelectedApplication
+        setSelectedApplication,
+        activeTab,
+        updateActiveTab
     } = useBrandingPreference();
 
     const {
@@ -270,7 +272,15 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                     />
                                                     { t("extensions:develop.branding.pageHeader.organization") }
                                                 </ToggleButton>
-                                                <ToggleButton value={ BrandingModes.APPLICATION }>
+                                                <ToggleButton
+                                                    value={ BrandingModes.APPLICATION }
+                                                    onClick={ () => {
+                                                        activeTab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID &&
+                                                        updateActiveTab(
+                                                            BrandingPreferencesConstants.TABS.GENERAL_TAB_ID
+                                                        );
+                                                    } }
+                                                >
                                                     <TilesIcon
                                                         className="toggle-button-icon"
                                                         size={ 14 }
