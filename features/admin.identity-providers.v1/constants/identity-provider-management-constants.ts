@@ -25,22 +25,6 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
 export class IdentityProviderManagementConstants {
 
     /**
-     * Facebook Scope mappings.
-     */
-    public static readonly FACEBOOK_SCOPE_DICTIONARY: Record<string, string> = {
-        EMAIL: "email",
-        PUBLIC_PROFILE: "public_profile"
-    };
-
-    /**
-     * Apple scope mappings.
-     */
-    public static readonly APPLE_SCOPE_DICTIONARY: Record<string, string> = {
-        EMAIL: "email",
-        NAME: "name"
-    };
-
-    /**
      * Map of Apple authenticator secret regenerative fields.
      */
     public static readonly APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY: Record<string, string> = {

@@ -79,14 +79,6 @@ export class AuthenticatorManagementConstants {
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
     /**
-     * Facebook Scope mappings.
-     */
-    public static readonly FACEBOOK_SCOPE_DICTIONARY: Record<string, string> = {
-        EMAIL: "email",
-        PUBLIC_PROFILE: "public_profile"
-    };
-
-    /**
      * Apple scope mappings.
      */
     public static readonly APPLE_SCOPE_DICTIONARY: Record<string, string> = {

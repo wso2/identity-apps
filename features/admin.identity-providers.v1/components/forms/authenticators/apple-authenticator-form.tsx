@@ -17,6 +17,9 @@
  */
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
@@ -274,26 +277,26 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.EMAIL) {
+        if (scope === FederatedAuthenticatorConstants.APPLE_SCOPE_DICTIONARY.EMAIL) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.apple.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.EMAIL }
+                        { FederatedAuthenticatorConstants.APPLE_SCOPE_DICTIONARY.EMAIL }
                     </Code>
                 ),
                 icon: "envelope outline"
             };
         }
 
-        if (scope === IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.NAME) {
+        if (scope === FederatedAuthenticatorConstants.APPLE_SCOPE_DICTIONARY.NAME) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.apple.scopes.list.name.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.NAME }
+                        { FederatedAuthenticatorConstants.APPLE_SCOPE_DICTIONARY.NAME }
                     </Code>
                 ),
                 icon: "user outline"

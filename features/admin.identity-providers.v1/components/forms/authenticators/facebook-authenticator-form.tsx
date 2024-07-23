@@ -18,6 +18,9 @@
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "@wso2is/admin.connections.v1/models/connection";
@@ -28,7 +31,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -245,26 +247,26 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL) {
+        if (scope === FederatedAuthenticatorConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.facebook.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL }
+                        { FederatedAuthenticatorConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL }
                     </Code>
                 ),
                 icon: "envelope outline"
             };
         }
 
-        if (scope === IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE) {
+        if (scope === FederatedAuthenticatorConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.facebook.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE }
+                        { FederatedAuthenticatorConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE }
                     </Code>
                 ),
                 icon: "user outline"
