@@ -78,30 +78,6 @@ export class AuthenticatorManagementConstants {
      */
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
-    /**
-     * Email OTP Authenticator Settings Form element constraints.
-     */
-    public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
-        EXPIRY_TIME_MAX_LENGTH: number;
-        EXPIRY_TIME_MAX_VALUE: number;
-        EXPIRY_TIME_MIN_LENGTH: number;
-        EXPIRY_TIME_MIN_VALUE: number;
-        OTP_LENGTH_MAX_LENGTH: number;
-        OTP_LENGTH_MAX_VALUE: number;
-        OTP_LENGTH_MIN_LENGTH: number;
-        OTP_LENGTH_MIN_VALUE: number;
-    } = {
-
-            EXPIRY_TIME_MAX_LENGTH: 10000,
-            EXPIRY_TIME_MAX_VALUE: 1440,
-            EXPIRY_TIME_MIN_LENGTH: 1,
-            EXPIRY_TIME_MIN_VALUE: 1,
-            OTP_LENGTH_MAX_LENGTH: 2,
-            OTP_LENGTH_MAX_VALUE: 10,
-            OTP_LENGTH_MIN_LENGTH: 1,
-            OTP_LENGTH_MIN_VALUE: 4
-        };
-
     public static readonly SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
         EXPIRY_TIME_MAX_LENGTH: number;
         EXPIRY_TIME_MAX_VALUE: number;
