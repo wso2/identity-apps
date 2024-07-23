@@ -39,4 +39,13 @@ export class FederatedAuthenticatorConstants {
         OPENID: "openid",
         PROFILE: "profile"
     };
+
+    /**
+     * Microsoft Scope mappings.
+     */
+    public static readonly MICROSOFT_SCOPE_DICTIONARY: Record<string, string> = {
+        EMAIL: "email",
+        OPENID: "openid",
+        PROFILE: "profile"
+    };
 }

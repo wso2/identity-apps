@@ -17,6 +17,9 @@
  */
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
@@ -24,7 +27,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -248,39 +250,39 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL) {
+        if (scope === FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.microsoft.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL }
+                        { FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL }
                     </Code>
                 ),
                 icon: "envelope outline"
             };
         }
 
-        if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID) {
+        if (scope === FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.microsoft.scopes.list.openid.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID }
+                        { FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID }
                     </Code>
                 ),
                 icon: "openid"
             };
         }
 
-        if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE) {
+        if (scope === FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.microsoft.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE }
+                        { FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE }
                     </Code>
                 ),
                 icon: "user outline"

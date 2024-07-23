@@ -25,15 +25,6 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
 export class IdentityProviderManagementConstants {
 
     /**
-     * Microsoft Scope mappings.
-     */
-    public static readonly MICROSOFT_SCOPE_DICTIONARY: Record<string, string> = {
-        EMAIL: "email",
-        OPENID: "openid",
-        PROFILE: "profile"
-    };
-
-    /**
      * GitHub Scope mappings.
      */
     public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
