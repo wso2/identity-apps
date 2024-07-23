@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
 import { TenantInfo } from "@wso2is/admin.extensions.v1/components/tenants/models";
@@ -31,7 +31,7 @@ import {
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "@wso2is/admin.server-configurations.v1";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes, resolveUserEmails } from "@wso2is/core/helpers";
+import { resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -156,7 +156,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
@@ -165,6 +164,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         (state: AppState) => state.global.supportedI18nLanguages
     );
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasUsersUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.update
+    );
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -1146,8 +1149,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     const resolveDangerActions = (): ReactElement => {
-        if (!hasRequiredScopes(
-            featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)) {
+        if (!hasUsersUpdatePermissions) {
             return null;
         }
 
