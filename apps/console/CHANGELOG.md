@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.21.14
+
+### Patch Changes
+
+- [#6652](https://github.com/wso2/identity-apps/pull/6652) [`5b57d4d5a2b5efa1fcd0df2ff7d0bb4d78af0175`](https://github.com/wso2/identity-apps/commit/5b57d4d5a2b5efa1fcd0df2ff7d0bb4d78af0175) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Early return signin hook when tenant needs to be authenticated with the platformIDP
+
 ## 2.21.13
 
 ### Patch Changes
