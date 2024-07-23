@@ -1,5 +1,24 @@
 # @wso2is/admin.organizations.v1
 
+## 2.20.82
+
+### Patch Changes
+
+- [#6640](https://github.com/wso2/identity-apps/pull/6640) [`6eea3816bd7cabfbf2137a9a8390ef72d8fe7b9d`](https://github.com/wso2/identity-apps/commit/6eea3816bd7cabfbf2137a9a8390ef72d8fe7b9d) Thanks [@Achintha444](https://github.com/Achintha444)! - Remove the unnecessary header text in the organization section.
+
+- Updated dependencies [[`6eea3816bd7cabfbf2137a9a8390ef72d8fe7b9d`](https://github.com/wso2/identity-apps/commit/6eea3816bd7cabfbf2137a9a8390ef72d8fe7b9d)]:
+  - @wso2is/admin.extensions.v1@2.21.52
+  - @wso2is/admin.applications.v1@2.22.12
+  - @wso2is/admin.authentication.v1@2.20.82
+  - @wso2is/admin.connections.v1@2.21.12
+  - @wso2is/admin.core.v1@2.23.12
+  - @wso2is/admin.groups.v1@2.20.82
+  - @wso2is/admin.identity-providers.v1@2.21.12
+  - @wso2is/admin.roles.v2@2.20.82
+  - @wso2is/admin.tenants.v1@2.20.82
+  - @wso2is/admin.users.v1@2.20.82
+  - @wso2is/admin.userstores.v1@2.20.82
+
 ## 2.20.81
 
 ### Patch Changes
