@@ -1,5 +1,19 @@
 # @wso2is/admin.branding.v1
 
+## 2.20.84
+
+### Patch Changes
+
+- [#6648](https://github.com/wso2/identity-apps/pull/6648) [`0f0ec200bc3a537054fded2653a4db10f0104847`](https://github.com/wso2/identity-apps/commit/0f0ec200bc3a537054fded2653a4db10f0104847) Thanks [@savindi7](https://github.com/savindi7)! - Move to General tab on switch to Application in the Branding page.
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.ai.v1@2.20.84
+  - @wso2is/admin.core.v1@2.23.14
+  - @wso2is/admin.extensions.v1@2.21.54
+  - @wso2is/admin.organizations.v1@2.20.84
+  - @wso2is/admin.server-configurations.v1@2.21.26
+  - @wso2is/common.branding.v1@2.20.84
+
 ## 2.20.83
 
 ### Patch Changes
