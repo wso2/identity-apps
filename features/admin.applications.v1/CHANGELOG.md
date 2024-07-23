@@ -1,5 +1,31 @@
 # @wso2is/admin.applications.v1
 
+## 2.22.11
+
+### Patch Changes
+
+- [#6641](https://github.com/wso2/identity-apps/pull/6641) [`a3f99a44971f28c54f037ca96436e8863222432e`](https://github.com/wso2/identity-apps/commit/a3f99a44971f28c54f037ca96436e8863222432e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix subject attribute dropdown not appearing on clicking alternate subject identifier checkbox
+
+- Updated dependencies []:
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.81
+  - @wso2is/admin.connections.v1@2.21.11
+  - @wso2is/admin.console-settings.v1@2.20.81
+  - @wso2is/admin.core.v1@2.23.11
+  - @wso2is/admin.extensions.v1@2.21.51
+  - @wso2is/admin.identity-providers.v1@2.21.11
+  - @wso2is/admin.login-flow.ai.v1@2.20.81
+  - @wso2is/admin.oidc-scopes.v1@2.20.81
+  - @wso2is/admin.organizations.v1@2.20.81
+  - @wso2is/admin.roles.v2@2.20.81
+  - @wso2is/admin.api-resources.v2@2.20.81
+  - @wso2is/admin.branding.v1@2.20.81
+  - @wso2is/admin.claims.v1@2.20.81
+  - @wso2is/admin.impersonation.v1@1.1.23
+  - @wso2is/admin.secrets.v1@2.20.81
+  - @wso2is/admin.server-configurations.v1@2.21.23
+  - @wso2is/admin.userstores.v1@2.20.81
+  - @wso2is/admin.wsfed-configuration.v1@2.20.81
+
 ## 2.22.10
 
 ### Patch Changes
