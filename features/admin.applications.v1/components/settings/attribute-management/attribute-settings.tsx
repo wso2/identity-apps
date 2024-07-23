@@ -1133,7 +1133,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         const PRIVATE_KEY_JWT: string = "private_key_jwt";
 
         if (oidcSubmitValue?.clientAuthentication?.tokenEndpointAuthMethod == null
-            && oidcSubmitValue?.clientAuthentication?.tokenEndpointAuthMethod != PRIVATE_KEY_JWT) {
+            || oidcSubmitValue?.clientAuthentication?.tokenEndpointAuthMethod != PRIVATE_KEY_JWT) {
             delete oidcSubmitValue?.clientAuthentication?.tokenEndpointAllowReusePvtKeyJwt;
         }
 
