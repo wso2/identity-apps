@@ -71,6 +71,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         setBrandingMode,
         selectedApplication,
         setSelectedApplication,
+        activeTab,
         updateActiveTab
     } = useBrandingPreference();
 
@@ -264,14 +265,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                 value={ brandingMode }
                                                 disabled={ isBrandingAppsRedirect }
                                             >
-                                                <ToggleButton
-                                                    value={ BrandingModes.ORGANIZATION }
-                                                    onClick={ () => {
-                                                        updateActiveTab(
-                                                            BrandingPreferencesConstants.TABS.GENERAL_TAB_ID
-                                                        );
-                                                    } }
-                                                >
+                                                <ToggleButton value={ BrandingModes.ORGANIZATION }>
                                                     <BuildingIcon
                                                         className="toggle-button-icon"
                                                         size={ 14 }
@@ -281,6 +275,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                 <ToggleButton
                                                     value={ BrandingModes.APPLICATION }
                                                     onClick={ () => {
+                                                        activeTab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID &&
                                                         updateActiveTab(
                                                             BrandingPreferencesConstants.TABS.GENERAL_TAB_ID
                                                         );
