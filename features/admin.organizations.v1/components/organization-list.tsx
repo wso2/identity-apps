@@ -48,6 +48,7 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -60,7 +61,6 @@ import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { GenericOrganization, OrganizationInterface, OrganizationListInterface } from "../models";
 import "./organization-list.scss";
-import classNames from "classnames";
 
 /**
  *
