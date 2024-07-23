@@ -1,5 +1,13 @@
 # @wso2is/admin.parent-roles.v1
 
+## 2.20.84
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.14
+  - @wso2is/admin.extensions.v1@2.21.54
+
 ## 2.20.83
 
 ### Patch Changes

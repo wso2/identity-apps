@@ -1,5 +1,15 @@
 # @wso2is/admin.api-resources.v1
 
+## 2.20.84
+
+### Patch Changes
+
+- [#6355](https://github.com/wso2/identity-apps/pull/6355) [`bb65dfe1d4c9f1c4d873f0edc58f05f903aa443d`](https://github.com/wso2/identity-apps/commit/bb65dfe1d4c9f1c4d873f0edc58f05f903aa443d) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Enforce useRequiredScopes in place of hasRequiredScopes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.14
+  - @wso2is/admin.extensions.v1@2.21.54
+
 ## 2.20.83
 
 ### Patch Changes
