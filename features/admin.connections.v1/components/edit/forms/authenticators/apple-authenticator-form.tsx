@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -312,9 +313,9 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ 
-                (values: Record<string, any>) => 
-                    onSubmit(getUpdatedConfigurations(values as AppleAuthenticatorFormInitialValuesInterface)) 
+            onSubmit={
+                (values: Record<string, any>) =>
+                    onSubmit(getUpdatedConfigurations(values as AppleAuthenticatorFormInitialValuesInterface))
             }
             initialValues={ initialValues }
         >
@@ -345,7 +346,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 value={ formFields?.ClientId?.value }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -376,7 +377,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                     )
                 }
                 value={ formFields?.TeamId?.value }
-                maxLength={ 
+                maxLength={
                     AuthenticatorManagementConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.TEAM_ID_MAX_LENGTH as number
                 }
@@ -412,7 +413,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                     )
                 }
                 value={ formFields?.KeyId?.value }
-                maxLength={ 
+                maxLength={
                     AuthenticatorManagementConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.KEY_ID_MAX_LENGTH as number
                 }
@@ -449,7 +450,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                     )
                 }
                 value={ formFields?.PrivateKey?.value }
-                maxLength={ 
+                maxLength={
                     AuthenticatorManagementConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.PRIVATE_KEY_MAX_LENGTH as number
                 }
@@ -485,7 +486,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                     )
                 }
                 value={ formFields?.SecretValidityPeriod?.value }
-                maxLength={ 
+                maxLength={
                     AuthenticatorManagementConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .SECRET_VALIDITY_PERIOD_MAX_LENGTH as number
@@ -525,7 +526,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 }
                 maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -556,7 +557,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                     )
                 }
                 value={ formFields?.AdditionalQueryParams?.value }
-                maxLength={ 
+                maxLength={
                     AuthenticatorManagementConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .ADDITIONAL_QUERY_PARAMS_MAX_LENGTH as number
@@ -630,7 +631,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                                 The type of access provided for the connected apps to access data from Apple.
                                 Click <a
                                     href={
-                                        "https://developer.apple.com/documentation/sign_in_with_apple" + 
+                                        "https://developer.apple.com/documentation/sign_in_with_apple" +
                                         "/clientconfigi/3230955-scope"
                                     }
                                     target="_blank"

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -33,6 +34,7 @@ import {
     CommonAuthenticatorFormPropertyInterface
 } from "../../../../models/authenticators";
 import {
+    CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models/connection";
 
@@ -189,7 +191,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
 
         originalInitialValues.properties.map((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
-                .find((meta) => meta.key === value.key);
+                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
 
             resolvedFormFields = {
                 ...resolvedFormFields,
@@ -218,7 +220,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
     const getUpdatedConfigurations = (values: FacebookAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
 
-        const properties = [];
+        const properties: CommonPluggableComponentPropertyInterface[] = [];
 
         for (const [ key, value ] of Object.entries(values)) {
             if (key !== undefined) {
@@ -280,7 +282,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
+            onSubmit={ (values: Record<string, unknown>) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
         >
             <Field.Input
@@ -310,7 +312,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 value={ formFields?.ClientId?.value }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -351,7 +353,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_SECRET_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -384,7 +386,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 }
                 maxLength={ formFields?.callBackUrl?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number
                 }
                 width={ 16 }

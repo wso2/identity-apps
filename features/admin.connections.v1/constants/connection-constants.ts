@@ -49,8 +49,6 @@ export class ConnectionManagementConstants {
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
     public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
 
-    public static readonly GOOGLE_ONE_TAP_ENABLED: string = "IsGoogleOneTapEnabled";
-
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
     public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,14 @@
  * under the License.
  */
 
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import {
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface
+} from "@wso2is/admin.connections.v1/models/connection";
 import { AppConstants, AppState } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
@@ -197,14 +205,14 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
         originalInitialValues.properties.map((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
-                .find((meta) => meta.key === value.key);
+                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
 
             /**
             * Parsing string  to boolean only for Google One Tap value
             */
             let localValue : any;
 
-            if (value.key === IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED) {
+            if (value.key === FederatedAuthenticatorConstants.GOOGLE_ONE_TAP_ENABLED_PARAM) {
                 if (value.value === "true") {
                     localValue = true;
                 } else {
@@ -259,7 +267,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
     const getUpdatedConfigurations = (values: GoogleAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
 
-        const properties = [];
+        const properties: CommonPluggableComponentPropertyInterface[] = [];
 
         for (const [ key, value ] of Object.entries(values)) {
             if (key !== undefined) {
@@ -285,39 +293,39 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.EMAIL) {
+        if (scope === FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.EMAIL) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.google.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.EMAIL }
+                        { FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.EMAIL }
                     </Code>
                 ),
                 icon: "envelope outline"
             };
         }
 
-        if (scope === IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.OPENID) {
+        if (scope === FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.OPENID) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.google.scopes.list.openid.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.OPENID }
+                        { FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.OPENID }
                     </Code>
                 ),
                 icon: "openid"
             };
         }
 
-        if (scope === IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.PROFILE) {
+        if (scope === FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.PROFILE) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.google.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.PROFILE }
+                        { FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.PROFILE }
                     </Code>
                 ),
                 icon: "user outline"
@@ -360,7 +368,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
+            onSubmit={ (values: Record<string, unknown>) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
         >
             <Field.Input
@@ -394,10 +402,10 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     )
                 }
                 value={ formFields?.ClientId?.value }
-                maxLength={ IdentityProviderManagementConstants
+                maxLength={ ConnectionUIConstants
                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -438,7 +446,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_SECRET_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -471,7 +479,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 }
                 maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -520,7 +528,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 ? (
                     <Field.Checkbox
                         ariaLabel="Enable Google One Tap as a sign in option"
-                        name={ IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED }
+                        name={ FederatedAuthenticatorConstants.GOOGLE_ONE_TAP_ENABLED_PARAM }
                         required={ false }
                         toggle
                         label={

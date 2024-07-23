@@ -79,21 +79,6 @@ export class AuthenticatorManagementConstants {
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
     /**
-     * Authenticator Settings Form element constraints.
-     */
-    public static readonly AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, string | number> = {
-        CALLBACK_URL_MIN_LENGTH: 3,
-        CLIENT_ID_MAX_LENGTH: 100,
-        CLIENT_ID_MIN_LENGTH: 3,
-        CLIENT_SECRET_MAX_LENGTH: 100,
-        CLIENT_SECRET_MIN_LENGTH: 3,
-        IDP_DESCRIPTION_MAX_LENGTH: 50,
-        IDP_DESCRIPTION_MIN_LENGTH: 3,
-        IDP_NAME_MAX_LENGTH: 50,
-        IDP_NAME_MIN_LENGTH: 3
-    };
-
-    /**
      * Email OTP Authenticator Settings Form element constraints.
      */
     public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
@@ -180,20 +165,6 @@ export class AuthenticatorManagementConstants {
         ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
         ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0
     };
-
-    /**
-     * Google Scope mappings.
-     */
-    public static readonly GOOGLE_SCOPE_DICTIONARY: Record<string, string> = {
-        EMAIL: "email",
-        OPENID: "openid",
-        PROFILE: "profile"
-    };
-
-    /**
-     * Google One Tap enabling request parameter
-     */
-    public static readonly GOOGLE_ONE_TAP_ENABLED: string = "IsGoogleOneTapEnabled";
 
     /**
      * Microsoft Scope mappings.

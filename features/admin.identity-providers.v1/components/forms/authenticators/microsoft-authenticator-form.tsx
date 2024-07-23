@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
@@ -356,10 +357,10 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                     )
                 }
                 value={ formFields?.ClientId?.value }
-                maxLength={ IdentityProviderManagementConstants
+                maxLength={ ConnectionUIConstants
                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -400,7 +401,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_SECRET_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -433,7 +434,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 }
                 maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -469,7 +470,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -505,7 +506,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }

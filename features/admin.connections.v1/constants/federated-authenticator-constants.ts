@@ -25,4 +25,18 @@ export class FederatedAuthenticatorConstants {
      * the class.
      */
     private constructor() { }
+
+    /**
+     * Google One Tap enabling request parameter.
+     */
+    public static readonly GOOGLE_ONE_TAP_ENABLED_PARAM: string = "IsGoogleOneTapEnabled";
+
+    /**
+     * Google Scope mappings.
+     */
+    public static readonly GOOGLE_SCOPE_DICTIONARY: Record<string, string> = {
+        EMAIL: "email",
+        OPENID: "openid",
+        PROFILE: "profile"
+    };
 }
