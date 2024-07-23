@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { URLUtils } from "@wso2is/core/utils";
 import {
@@ -29,7 +30,6 @@ import { CopyInputField, GenericIcon, Hint, XMLFileStrategy } from "@wso2is/reac
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
-import { IdentityProviderConstants } from "../../../constants/identity-provider-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonPluggableComponentMetaPropertyInterface,
@@ -723,7 +723,7 @@ export const getFieldType = (
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     mode: AuthenticatorSettingsFormModes
 ): FieldType => {
-    if (propertyMetadata?.key === IdentityProviderConstants.USER_ID_IN_CLAIMS) {
+    if (propertyMetadata?.key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
         return FieldType.RADIO;
     } else if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
         return FieldType.CHECKBOX;
@@ -783,7 +783,7 @@ export const getPropertyField = (
             return getCheckboxField(property, propertyMetadata, testId, showField);
         }
         case FieldType.RADIO : {
-            if (propertyMetadata?.key === IdentityProviderConstants.USER_ID_IN_CLAIMS) {
+            if (propertyMetadata?.key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
                 return getUserIdClaimRadioButtonField(property, propertyMetadata, listen, testId);
             } else {
                 return getRadioButtonFieldWithListener(property, propertyMetadata, listen, testId);

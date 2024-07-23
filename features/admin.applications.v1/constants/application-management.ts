@@ -17,6 +17,7 @@
  */
 
 import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -320,7 +321,7 @@ export class ApplicationManagementConstants {
     public static readonly UNABLE_FETCH_APPLICATIONS: string = "An error occurred while fetching applications.";
 
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID: string =
-        IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
+        LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
 
     public static readonly MYACCOUNT_STATUS_UPDATE_ERROR: string = "An error occurred while updating " +
         "status of the My Account Portal.";

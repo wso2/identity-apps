@@ -19,6 +19,7 @@
 import SIWEIdPTemplate from "@wso2is/admin.extensions.v1/identity-provider-templates/templates/swe/swe.json";
 import groupBy from "lodash-es/groupBy";
 import { getConnectionTemplatesConfig } from "../configs/templates";
+import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import {
     ConnectionTemplateCategoryInterface,
@@ -266,8 +267,8 @@ export const groupConnectionTemplates = (
          */
         if (group.id === ConnectionManagementConstants.CONNECTION_TEMPLATE_GROUPS.ENTERPRISE_PROTOCOLS) {
             const subTemplateIds: string[] = [
-                ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC,
-                ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML
+                CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC,
+                CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SAML
             ];
 
             updatedGroup.subTemplates = _templates

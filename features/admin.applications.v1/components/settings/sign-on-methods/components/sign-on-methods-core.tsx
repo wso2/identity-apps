@@ -21,6 +21,9 @@ import AuthenticationFlowBuilder
 import AuthenticationFlowProvider
     from "@wso2is/admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
 import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
+import {
+    CommonAuthenticatorManagementConstants
+} from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
@@ -633,19 +636,19 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         let authenticatorName: string = null; // Which flow triggered the flow? i.e Google, Facebook etc.
 
         if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
             authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.GITHUB_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
             authenticatorName = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
             authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT;
             authenticatorName = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.APPLE_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE;
             authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME;
         } else {
             return null;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,9 @@ import {
     AuthenticationSequenceInterface,
     AuthenticatorInterface
 } from "@wso2is/admin.applications.v1/models/application";
+import {
+    CommonAuthenticatorManagementConstants
+} from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -90,26 +93,26 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
         if (selectedSequence.id === "GoogleSocialLoginSequence") {
             authenticatorId = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID;
             authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME;
-            setAuthenticatorCategoryTemplate(IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
+            setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE);
             setAuthenticatorCategoryDisplayName(
                 IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME
             );
         } else if (selectedSequence.id === "GithubSocialLoginSequence") {
             authenticatorId = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID;
             authenticatorName = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME;
-            setAuthenticatorCategoryTemplate(IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB);
+            setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB);
             setAuthenticatorCategoryDisplayName(IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_DISPLAY_NAME);
         } else if (selectedSequence.id === "FacebookSocialLoginSequence") {
             authenticatorId = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID;
             authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME;
-            setAuthenticatorCategoryTemplate(IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK);
+            setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK);
             setAuthenticatorCategoryDisplayName(
                 IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME
             );
         } else if (selectedSequence.id === "AppleSocialLoginSequence") {
             authenticatorId = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID;
             authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME;
-            setAuthenticatorCategoryTemplate(IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE);
+            setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE);
             setAuthenticatorCategoryDisplayName(IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME);
         }
 

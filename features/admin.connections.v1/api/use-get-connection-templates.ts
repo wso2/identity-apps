@@ -24,6 +24,7 @@ import useRequest, {
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { HttpMethods } from "@wso2is/core/models";
+import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { ConnectionTemplateInterface } from "../models/connection";
 import { groupConnectionTemplates } from "../utils/connection-template-utils";
@@ -76,10 +77,10 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
 
     if (data) {
         const hiddenConnectionTemplateIds: string[] = [
-            ConnectionManagementConstants.IDP_TEMPLATE_IDS.LINKEDIN,
-            ConnectionManagementConstants.IDP_TEMPLATE_IDS
+            CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.LINKEDIN,
+            CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS
                 .ORGANIZATION_ENTERPRISE_IDP,
-            ConnectionManagementConstants.IDP_TEMPLATE_IDS.ENTERPRISE,
+            CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.ENTERPRISE,
             ...(UIConfig?.hiddenConnectionTemplates || [])
         ];
 

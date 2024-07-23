@@ -18,6 +18,7 @@
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorCategories } from "@wso2is/admin.connections.v1/models/authenticators";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { getGeneralIcons } from "@wso2is/admin.core.v1";
@@ -285,7 +286,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
             let authenticator: GenericAuthenticatorInterface = null;
 
-            if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
+            if (option.idp === LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER) {
                 authenticator = authenticators.find((item: GenericAuthenticatorInterface) =>
                     item.defaultAuthenticator.name === option.authenticator
                 );

@@ -20,7 +20,6 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
 import SweIdpTemplate from "@wso2is/admin.extensions.v1/identity-provider-templates/templates/swe/swe.json";
 import TrustedTokenIssuerTemplate from
     "@wso2is/admin.extensions.v1/identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json";
-import { IdentityAppsError } from "@wso2is/core/errors";
 import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
 import EnterpriseIdPTemplate from
     "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
@@ -37,76 +36,13 @@ import EnterpriseOIDCIdPTemplate from
 import EnterpriseOrganizationIdPTemplate from "../data/identity-provider-templates/templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdPTemplate from
     "../data/identity-provider-templates/templates/saml-identity-provider/enterprise-saml-identity-provider.json";
-import { IdentityProviderTemplateLoadingStrategies } from "../models";
 
 /**
  * Class containing identity provider management constants.
  */
 export class IdentityProviderManagementConstants {
 
-    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS: number = 3;
 
-    /**
-     * Identifier for the local IDP.
-     */
-    public static readonly LOCAL_IDP_IDENTIFIER: string = "LOCAL";
-
-    /**
-     * Set of internal idps which are forbidden from deleting.
-     * // TODO: Remove this once validating is available from the backend level.
-     */
-    public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
-
-    /**
-     * Key for the URL search param for IDP state.
-     */
-    public static readonly IDP_STATE_URL_SEARCH_PARAM_KEY: string = "state";
-
-    /**
-     * URL Search param for newly created IDPs.
-     */
-    public static readonly NEW_IDP_URL_SEARCH_PARAM: string = `?${
-        IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
-
-    /**
-     * Key for the URL search param for IDP create wizard trigger.
-     */
-    public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY: string = "open";
-
-    /**
-     * Set of IDP template Ids.
-     */
-    public static readonly IDP_TEMPLATE_IDS: {
-        APPLE: string;
-        ENTERPRISE: string;
-        EXPERT_MODE: string;
-        FACEBOOK: string;
-        GITHUB: string;
-        GOOGLE: string;
-        HYPR: string;
-        IPROOV: string;
-        MICROSOFT: string;
-        OIDC: string;
-        ORGANIZATION_ENTERPRISE_IDP: string;
-        SAML: string;
-        TRUSTED_TOKEN_ISSUER: string;
-        SWE: string;
-    } = {
-        APPLE: AppleIdPTemplate.id,
-        ENTERPRISE: EnterpriseIdPTemplate.id,
-        EXPERT_MODE: ExpertModeIdPTemplate.id,
-        FACEBOOK: FacebookIdPTemplate.id,
-        GITHUB: GitHubIdPTemplate.id,
-        GOOGLE: GoogleIdPTemplate.id,
-        HYPR: HYPRIdPTemplate.id,
-        IPROOV: IProovIdPTemplate.id,
-        MICROSOFT: MicrosoftIDPTemplate.id,
-        OIDC: EnterpriseOIDCIdPTemplate.id,
-        ORGANIZATION_ENTERPRISE_IDP: EnterpriseOrganizationIdPTemplate.id,
-        SAML: EnterpriseSAMLIdPTemplate.id,
-        SWE: SweIdpTemplate.id,
-        TRUSTED_TOKEN_ISSUER: TrustedTokenIssuerTemplate.id
-    };
 
     /**
      * Authenticator Settings Form element constraints.
@@ -124,14 +60,6 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
-     * General Form element constraints.
-     */
-    public static readonly GENERAL_FORM_CONSTRAINTS: Record<string, string | number> = {
-        IMAGE_URL_MAX_LENGTH: 2048,
-        IMAGE_URL_MIN_LENGTH: 3
-    };
-
-    /**
      * Email OTP Authenticator Settings Form element constraints.
      */
     public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
@@ -145,15 +73,15 @@ export class IdentityProviderManagementConstants {
         OTP_LENGTH_MIN_VALUE: number;
     } = {
 
-        EXPIRY_TIME_MAX_LENGTH: 10000,
-        EXPIRY_TIME_MAX_VALUE: 1440,
-        EXPIRY_TIME_MIN_LENGTH: 1,
-        EXPIRY_TIME_MIN_VALUE: 1,
-        OTP_LENGTH_MAX_LENGTH: 2,
-        OTP_LENGTH_MAX_VALUE: 10,
-        OTP_LENGTH_MIN_LENGTH: 1,
-        OTP_LENGTH_MIN_VALUE: 4
-    };
+            EXPIRY_TIME_MAX_LENGTH: 10000,
+            EXPIRY_TIME_MAX_VALUE: 1440,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1,
+            OTP_LENGTH_MAX_LENGTH: 2,
+            OTP_LENGTH_MAX_VALUE: 10,
+            OTP_LENGTH_MIN_LENGTH: 1,
+            OTP_LENGTH_MIN_VALUE: 4
+        };
 
     public static readonly SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
         EXPIRY_TIME_MAX_LENGTH: number;
@@ -170,19 +98,19 @@ export class IdentityProviderManagementConstants {
         ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
     } = {
 
-        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
-        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100,
-        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
-        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
-        EXPIRY_TIME_MAX_LENGTH: 4,
-        EXPIRY_TIME_MAX_VALUE: 1440,
-        EXPIRY_TIME_MIN_LENGTH: 1,
-        EXPIRY_TIME_MIN_VALUE: 1,
-        OTP_LENGTH_MAX_LENGTH: 2,
-        OTP_LENGTH_MAX_VALUE: 10,
-        OTP_LENGTH_MIN_LENGTH: 1,
-        OTP_LENGTH_MIN_VALUE: 4
-    };
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
+            EXPIRY_TIME_MAX_LENGTH: 4,
+            EXPIRY_TIME_MAX_VALUE: 1440,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1,
+            OTP_LENGTH_MAX_LENGTH: 2,
+            OTP_LENGTH_MAX_VALUE: 10,
+            OTP_LENGTH_MIN_LENGTH: 1,
+            OTP_LENGTH_MIN_VALUE: 4
+        };
 
     /**
      * Apple Authenticator Settings Form element constraints.
@@ -199,17 +127,17 @@ export class IdentityProviderManagementConstants {
         TEAM_ID_MAX_LENGTH: number,
         TEAM_ID_MIN_LENGTH: number
     } = {
-        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
-        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
-        KEY_ID_MAX_LENGTH: 10,
-        KEY_ID_MIN_LENGTH: 10,
-        PRIVATE_KEY_MAX_LENGTH: 1000,
-        PRIVATE_KEY_MIN_LENGTH: 100,
-        SECRET_VALIDITY_PERIOD_MAX_LENGTH: 8,
-        SECRET_VALIDITY_PERIOD_MIN_LENGTH: 2,
-        TEAM_ID_MAX_LENGTH: 10,
-        TEAM_ID_MIN_LENGTH: 10
-    };
+            ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
+            ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
+            KEY_ID_MAX_LENGTH: 10,
+            KEY_ID_MIN_LENGTH: 10,
+            PRIVATE_KEY_MAX_LENGTH: 1000,
+            PRIVATE_KEY_MIN_LENGTH: 100,
+            SECRET_VALIDITY_PERIOD_MAX_LENGTH: 8,
+            SECRET_VALIDITY_PERIOD_MIN_LENGTH: 2,
+            TEAM_ID_MAX_LENGTH: 10,
+            TEAM_ID_MIN_LENGTH: 10
+        };
 
     /**
      * Google Authenticator Settings Form element constraints.
@@ -243,29 +171,12 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
-     * Scopes to request from GitHub.
-     */
-    public static readonly MICROSOFT_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
-        IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID,
-        IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL,
-        IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE
-    ];
-
-    /**
      * GitHub Scope mappings.
      */
     public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
         USER_EMAIL: "user:email",
         USER_READ: "read:user"
     };
-
-    /**
-     * Scopes to request from GitHub.
-     */
-    public static readonly GITHUB_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
-        IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL,
-        IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ
-    ];
 
     /**
      * Facebook Scope mappings.
@@ -276,61 +187,12 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
-     * Facebook Scope mappings.
-    **/
-    public static readonly FACEBOOK_PUBLIC_PROFILE_FIELD_DICTIONARY: Record<string, string> = {
-        AGE_RANGE: "age_range",
-        EMAIL: "email",
-        FIRST_NAME: "first_name",
-        GENDER: "gender",
-        ID: "id",
-        LAST_NAME: "last_name",
-        LINK: "link",
-        NAME: "name"
-    };
-
-    /**
-     * Scopes to request from Facebook.
-     **/
-    public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
-        IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL,
-        IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE
-    ];
-
-    /**
-     * Profile fields to request from Facebook.
-    **/
-    public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_PROFILE_FIELDS: string[] = [
-        "id",
-        "name",
-        "gender",
-        "email",
-        "first_name",
-        "last_name",
-        "age_range",
-        "link"
-    ];
-
-    /**
      * Apple scope mappings.
      */
     public static readonly APPLE_SCOPE_DICTIONARY: Record<string, string> = {
         EMAIL: "email",
         NAME: "name"
     };
-
-    /**
-     * Scopes to request from Apple.
-     */
-    public static readonly APPLE_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
-        IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.EMAIL,
-        IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.NAME
-    ];
-
-    /**
-     * Default Apple client secret validity period.
-     */
-    public static readonly APPLE_AUTHENTICATOR_CLIENT_SECRET_VALIDITY_PERIOD: string = "15777000";
 
     /**
      * Map of Apple authenticator secret regenerative fields.
@@ -360,26 +222,11 @@ export class IdentityProviderManagementConstants {
      */
     public static readonly APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY: string = "RegenerateClientSecret";
 
-    /**
-     * Default IDP template loading strategy.
-    **/
-    public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: IdentityProviderTemplateLoadingStrategies =
-        IdentityProviderTemplateLoadingStrategies.LOCAL;
-
-    public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
-        "invalid status code while fetching connection template.";
-
-    public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching " +
-        "the required connection template.";
-
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching connection templates list.";
 
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching " +
         "the required connection templates list.";
-
-    public static readonly IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
-        " updating the JIT provisioning configurations of the connection.";
 
     public static readonly LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching local authenticators.";
@@ -387,44 +234,14 @@ export class IdentityProviderManagementConstants {
     public static readonly LOCAL_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "authenticators.";
 
-    public static readonly LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-        "status code while fetching the local authenticator.";
-
-    public static readonly LOCAL_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the " +
-        "local authenticator.";
-
     public static readonly AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the authenticators.";
 
     public static readonly AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "authenticators.";
 
-    public static readonly AUTHENTICATOR_TAGS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-        "status code while fetching the authenticator tags.";
-
-    public static readonly AUTHENTICATOR_TAGS_FETCH_ERROR: string = "An error occurred while fetching the " +
-        "authenticator tags.";
-
-    public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-        "status code while fetching the multi-factor authenticator.";
-
-    public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the " +
-        "multi-factor authenticator.";
-
-    public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
-        "invalid status code while updating the multi-factor authenticator.";
-
-    public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: string = "An error occurred while updating the " +
-        "multi-factor authenticator.";
-
     public static readonly COMBINED_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "and federated authenticators.";
-
-    public static readonly IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
-        "configurations of the connection.";
-
-    public static readonly IDENTITY_PROVIDER_CERTIFICATE_UPDATE_ERROR: string = "An error occurred while updating " +
-        "the certificate of the connection.";
 
     public static readonly FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while updating the Passkey connector configs.";
@@ -442,11 +259,6 @@ export class IdentityProviderManagementConstants {
 
     public static readonly FIDO_TRUSTED_APPS_SHA_SEPARATOR: string = "|";
 
-    public static readonly BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR: string = "BasicAuthRequestPathAuthenticator";
-    public static readonly OAUTH_REQUEST_PATH_AUTHENTICATOR: string = "OAuthRequestPathAuthenticator";
-    public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
-    public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
-    public static readonly X509_AUTHENTICATOR: string = "x509CertificateAuthenticator";
     public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
     public static readonly TOTP_AUTHENTICATOR: string = "totp";
     public static readonly IPROOV_AUTHENTICATOR: string = "IproovAuthenticator";
@@ -454,7 +266,6 @@ export class IdentityProviderManagementConstants {
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
-    public static readonly ORGANIZATION_AUTHENTICATOR: string = "SSO";
     public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig?.overriddenAuthenticatorNames?.
         SMS_OTP_AUTHENTICATOR ?? "sms-otp";
 
@@ -463,8 +274,6 @@ export class IdentityProviderManagementConstants {
 
     // Known IS Predefined/Protocols authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
-    public static readonly PASSIVE_STS_AUTHENTICATOR_ID: string = "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I";
-    public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
 
     // Known Local Authenticator IDS.
     public static readonly BASIC_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoZW50aWNhdG9y";
@@ -477,8 +286,6 @@ export class IdentityProviderManagementConstants {
     public static readonly TOTP_AUTHENTICATOR_ID: string = "dG90cA";
     public static readonly ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID: string = "U2Vzc2lvbkV4ZWN1dG9y";
     public static readonly X509_CERTIFICATE_AUTHENTICATOR_ID: string = "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg";
-    public static readonly BASIC_AUTH_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoUmVxdWVzdFBhdGhBdXRoZW50aWNhdG9y";
-    public static readonly OAUTH_BEARER_AUTHENTICATOR_ID: string = "T0F1dGhSZXF1ZXN0UGF0aEF1dGhlbnRpY2F0b3I";
     public static readonly EMAIL_OTP_AUTHENTICATOR_ID: string = "ZW1haWwtb3RwLWF1dGhlbnRpY2F0b3I";
     public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_ID: string = "RW1haWxPVFA";
     public static readonly BACKUP_CODE_AUTHENTICATOR_ID: string = "YmFja3VwLWNvZGUtYXV0aGVudGljYXRvcg";
@@ -527,38 +334,8 @@ export class IdentityProviderManagementConstants {
     // Keys for the initial values of Email OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
 
-    // Authenticator Endpoints
-    public static readonly MICROSOFT_AUTHENTICATION_ENDPOINT_URL: string =
-        "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
-
-    // Token Endpoints
-    public static readonly MICROSOFT_TOKEN_ENDPOINT_URL: string =
-        "https://login.microsoftonline.com/common/oauth2/v2.0/token";
-
     // Keys for the initial values of SMS OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
-
-    /**
-     * Identity provider create limit reached error.
-    **/
-    public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
-        "IDP-60035",
-        "idp:notifications.apiLimitReachedError.error.description",
-        "idp:notifications.apiLimitReachedError.error.message",
-        "cec1f247-32fd-4624-9915-f469195a53ac"
-    );
-
-    /**
-     * AuthenticationProvider Connections create limit reached error.
-    **/
-    public static readonly ERROR_CREATE_LIMIT_REACHED_IDP: IdentityAppsError = new IdentityAppsError(
-        "IDP-60035",
-        "authenticationProvider:notifications.apiLimitReachedError.error.description",
-        "authenticationProvider:notifications.apiLimitReachedError.error.message",
-        "cec1f247-32fd-4624-9915-f469195a53ac"
-    );
-
-    public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 
     /**
      * Name of the FIDO connector configuration.

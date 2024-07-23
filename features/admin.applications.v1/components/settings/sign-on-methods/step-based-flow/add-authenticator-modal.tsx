@@ -23,6 +23,9 @@ import {
     ConnectionTemplateInterface
 } from "@wso2is/admin.connections.v1";
 import { useGetConnectionTemplates } from "@wso2is/admin.connections.v1/api/use-get-connection-templates";
+import {
+    CommonAuthenticatorManagementConstants
+} from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils, resolveConnectionName } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -524,8 +527,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                             let disabledHint: ReactNode = undefined;
 
                             // Disable the Apple template in localhost as it's not supported.
-                            if (template.id === ConnectionManagementConstants
-                                .IDP_TEMPLATE_IDS.APPLE &&
+                            if (template.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
                                                         hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
                                 isTemplateDisabled = true;

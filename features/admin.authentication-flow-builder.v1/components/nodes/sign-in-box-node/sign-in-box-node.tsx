@@ -35,6 +35,7 @@ import {
     AuthenticatorInterface
 } from "@wso2is/admin.applications.v1/models/application";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -271,7 +272,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
 
         let authenticator: GenericAuthenticatorInterface = null;
 
-        if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
+        if (option.idp === LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER) {
             authenticator = authenticators.find(
                 (item: GenericAuthenticatorInterface) => item.defaultAuthenticator.name === option.authenticator
             );

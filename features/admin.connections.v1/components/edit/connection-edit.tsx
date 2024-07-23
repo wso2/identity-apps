@@ -19,9 +19,6 @@
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -51,7 +48,9 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
+import { CommonAuthenticatorManagementConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import {
     ConnectionAdvanceInterface,
     ConnectionInterface,
@@ -401,7 +400,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         }
 
         if (Array.isArray(extensions) && extensions.length > 0) {
-            if (!urlSearchParams.get(ConnectionManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
+            if (!urlSearchParams.get(ConnectionUIConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
                 setDefaultActiveIndex(1);
             }
         }
@@ -423,7 +422,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
         if (shouldShowTab(type, ConnectionTabTypes.GENERAL)) {
             panes.push({
-                "data-tabid": ConnectionManagementConstants.GENERAL_TAB_ID,
+                "data-tabid": ConnectionUIConstants.TabIds.GENERAL,
                 menuItem: "General",
                 render: GeneralIdentityProviderSettingsTabPane
             });
@@ -431,7 +430,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
         if (shouldShowTab(type, ConnectionTabTypes.SETTINGS) && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
-                "data-tabid": ConnectionManagementConstants.SETTINGS_TAB_ID,
+                "data-tabid": ConnectionUIConstants.TabIds.SETTINGS,
                 menuItem: "Settings",
                 render: AuthenticatorSettingsTabPane
             });
@@ -452,10 +451,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         // Evaluate whether to Show/Hide `Attributes`.
         if (shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES)
             && !isOrganizationEnterpriseAuthenticator
-            && (type !== IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC)
-            && (type !== IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML || attributesForSamlEnabled)) {
+            && (type !== CommonAuthenticatorManagementConstants
+                .CONNECTION_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC)
+            && (type !== CommonAuthenticatorManagementConstants
+                .CONNECTION_TEMPLATE_IDS.SAML || attributesForSamlEnabled)) {
             panes.push({
-                "data-tabid": ConnectionManagementConstants.ATTRIBUTES_TAB_ID,
+                "data-tabid": ConnectionUIConstants.TabIds.ATTRIBUTES,
                 menuItem: "Attributes",
                 render: AttributeSettingsTabPane
             });
@@ -463,7 +464,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
         if (shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) && isApplicationReadAccessAllowed) {
             panes.push({
-                "data-tabid": ConnectionManagementConstants.CONNECTED_APPS_TAB_ID,
+                "data-tabid": ConnectionUIConstants.TabIds.CONNECTED_APPS,
                 menuItem: "Connected Apps",
                 render: ConnectedAppsTabPane
             });
@@ -473,7 +474,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         featureConfig?.identityProviderGroups?.enabled &&
         !isOrganizationEnterpriseAuthenticator) {
             panes.push({
-                "data-tabid": ConnectionManagementConstants.IDENTITY_PROVIDER_GROUPS_TAB_ID,
+                "data-tabid": ConnectionUIConstants.TabIds.IDENTITY_PROVIDER_GROUPS,
                 menuItem: "Groups",
                 render: IdentityProviderGroupsTabPane
             });
@@ -483,7 +484,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
         !isOrganizationEnterpriseAuthenticator) {
             panes.push({
-                "data-tabid": ConnectionManagementConstants.OUTBOUND_PROVISIONING_TAB_ID,
+                "data-tabid": ConnectionUIConstants.TabIds.OUTBOUND_PROVISIONING,
                 menuItem: "Outbound Provisioning",
                 render: OutboundProvisioningSettingsTabPane
             });
@@ -493,7 +494,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         identityProviderConfig.editIdentityProvider.showJitProvisioning &&
         !isOrganizationEnterpriseAuthenticator) {
             panes.push({
-                "data-tabid": ConnectionManagementConstants.JIT_PROVISIONING_TAB_ID,
+                "data-tabid": ConnectionUIConstants.TabIds.JIT_PROVISIONING,
                 menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
                 render: JITProvisioningSettingsTabPane
             });
@@ -503,7 +504,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
         !isOrganizationEnterpriseAuthenticator) {
             panes.push({
-                "data-tabid": ConnectionManagementConstants.ADVANCED_TAB_ID,
+                "data-tabid": ConnectionUIConstants.TabIds.ADVANCED,
                 menuItem: "Advanced",
                 render: AdvancedSettingsTabPane
             });

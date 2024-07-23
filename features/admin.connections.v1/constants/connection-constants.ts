@@ -156,31 +156,6 @@ export class ConnectionManagementConstants {
 
     public static readonly ORG_ENTERPRISE_CONNECTION_ID: string  = "organization-enterprise-idp";
 
-    /**
-     * Key for the URL search param for IDP create wizard trigger.
-     */
-    public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY: string = "open";
-
-    /**
-     * Key for the URL search param for IDP state.
-     */
-    public static readonly IDP_STATE_URL_SEARCH_PARAM_KEY: string = "state";
-
-    /**
-     * URL Search param for newly created IDPs.
-     */
-    public static readonly NEW_IDP_URL_SEARCH_PARAM: string = `?${
-        this.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
-
-    public static readonly ADVANCED_TAB_ID: string  = "advanced";
-    public static readonly ATTRIBUTES_TAB_ID: string  = "attributes";
-    public static readonly CONNECTED_APPS_TAB_ID: string  = "connected-apps";
-    public static readonly GENERAL_TAB_ID: string  = "general";
-    public static readonly JIT_PROVISIONING_TAB_ID: string  = "jit-provisioning";
-    public static readonly OUTBOUND_PROVISIONING_TAB_ID: string  = "outbound-provisioning";
-    public static readonly SETTINGS_TAB_ID: string  = "settings";
-    public static readonly IDENTITY_PROVIDER_GROUPS_TAB_ID: string  = "identity-provider-groups";
-
     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 
     public static readonly GOOGLE_PRIVATE_KEY: string = "google_prov_private_key";
@@ -193,37 +168,6 @@ export class ConnectionManagementConstants {
         ENTERPRISE_PROTOCOLS: string;
     } = {
             ENTERPRISE_PROTOCOLS: "enterprise-protocols"
-        };
-
-    /**
-     * Set of IDP template Ids.
-     */
-    public static readonly IDP_TEMPLATE_IDS: {
-        APPLE: string;
-        ENTERPRISE: string;
-        FACEBOOK: string;
-        GITHUB: string;
-        GOOGLE: string;
-        HYPR: string;
-        LINKEDIN: string;
-        MICROSOFT: string;
-        OIDC: string;
-        ORGANIZATION_ENTERPRISE_IDP: string;
-        SAML: string;
-        SWE: string;
-    } = {
-            APPLE: "apple-idp",
-            ENTERPRISE: "enterprise-idp",
-            FACEBOOK: "facebook-idp",
-            GITHUB: "github-idp",
-            GOOGLE: "google-idp",
-            HYPR: "hypr-idp",
-            LINKEDIN: "linkedin-idp",
-            MICROSOFT: "microsoft-idp",
-            OIDC: "enterprise-oidc-idp",
-            ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
-            SAML: "enterprise-saml-idp",
-            SWE: "swe-idp"
         };
 
     /**

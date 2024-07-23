@@ -21,6 +21,7 @@ import { ReactNode, lazy } from "react";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models/authenticators";
 import { FederatedAuthenticatorInterface } from "../models/connection";
 
@@ -43,7 +44,7 @@ export class AuthenticatorMeta {
     public static getAuthenticatorDescription(authenticatorId: string): string {
 
         return get({
-            [ AuthenticatorManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
+            [ LocalAuthenticatorConstants.BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
                 "credentials.",
             [ AuthenticatorManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
                 "control the authentication flow.",
@@ -184,7 +185,7 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: getConnectionIcons()?.fido,
             [ AuthenticatorManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: getConnectionIcons()?.x509,
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.totp,
-            [ AuthenticatorManagementConstants.BASIC_AUTHENTICATOR_ID ]: getConnectionIcons()?.basic,
+            [ LocalAuthenticatorConstants.BASIC_AUTHENTICATOR_ID ]: getConnectionIcons()?.basic,
             [
             AuthenticatorManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
             ]: getConnectionIcons()?.sessionExecutor,
@@ -252,7 +253,7 @@ export class AuthenticatorMeta {
     public static getAuthenticatorTemplateName(authenticatorId: string): string {
 
         return get({
-            [ AuthenticatorManagementConstants.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
+            [ LocalAuthenticatorConstants.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
             [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: "fido",
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: "totp",
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",

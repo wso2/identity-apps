@@ -23,7 +23,6 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
-import { IdentityProviderConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -56,6 +55,8 @@ import {
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 import "./application-edit.scss";
+// eslint-disable-next-line import/order
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 
 /**
  * Proptypes for the applications edit page component.
@@ -337,12 +338,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             if (callBackRedirect === ApplicationManagementConstants.ROLE_CALLBACK_REDIRECT) {
                 history.push({
                     pathname: AppConstants.getPaths().get("ROLE_EDIT").replace(":id", callBackIdpID),
-                    state: IdentityProviderConstants.CONNECTED_APPS_TAB_ID
+                    state: ConnectionUIConstants.TabIds.CONNECTED_APPS
                 });
             } else {
                 history.push({
                     pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
-                    state: IdentityProviderConstants.CONNECTED_APPS_TAB_ID
+                    state: ConnectionUIConstants.TabIds.CONNECTED_APPS
                 });
             }
         }
