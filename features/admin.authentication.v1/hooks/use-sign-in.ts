@@ -284,6 +284,8 @@ const useSignIn = (): UseSignInInterface => {
                 redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
 
                 window.location.href = redirectUrl.href;
+
+                return;
             }
         }
 
