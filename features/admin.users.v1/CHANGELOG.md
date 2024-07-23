@@ -1,5 +1,25 @@
 # @wso2is/admin.users.v1
 
+## 2.20.84
+
+### Patch Changes
+
+- [#6355](https://github.com/wso2/identity-apps/pull/6355) [`bb65dfe1d4c9f1c4d873f0edc58f05f903aa443d`](https://github.com/wso2/identity-apps/commit/bb65dfe1d4c9f1c4d873f0edc58f05f903aa443d) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Enforce useRequiredScopes in place of hasRequiredScopes
+
+- Updated dependencies [[`bb65dfe1d4c9f1c4d873f0edc58f05f903aa443d`](https://github.com/wso2/identity-apps/commit/bb65dfe1d4c9f1c4d873f0edc58f05f903aa443d)]:
+  - @wso2is/admin.users.v1@2.20.84
+  - @wso2is/admin.core.v1@2.23.14
+  - @wso2is/admin.extensions.v1@2.21.54
+  - @wso2is/admin.authentication.v1@2.20.84
+  - @wso2is/admin.claims.v1@2.20.84
+  - @wso2is/admin.groups.v1@2.20.84
+  - @wso2is/admin.organizations.v1@2.20.84
+  - @wso2is/admin.roles.v2@2.20.84
+  - @wso2is/admin.server-configurations.v1@2.21.26
+  - @wso2is/admin.validation.v1@2.20.84
+  - @wso2is/admin.identity-providers.v1@2.21.14
+  - @wso2is/admin.userstores.v1@2.20.84
+
 ## 2.20.83
 
 ### Patch Changes
